@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Register {% endblock %}
+{% block content %}
+    <div class="span-18 box">
+        <fieldset><legend>Register</legend>
+             <form id="registration_form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="span-16 form-5px">
+                        <div class="span-7 column border">
+                            <div>
+                                <h3 class="title">Your Organization<br/><br/></h3>
+                            </div>
+                            <div class="{{ form.organization_name.css_classes }} form-row-10px">
+                                {{ form.organization_name.label_tag }}<br/>
+                                {{ form.organization_name }}
+                                <div>
+                                    {{ form.organization_name.errors }}
+                                </div>
+
+                            </div>
+                            <div class="{{ form.organization_sector.css_classes  }} form-row-10px">
+                                {{ form.organization_sector.label_tag }}<br/>
+                                {{ form.organization_sector }}
+                                {{ form.organization_sector.errors }}
+                            </div>
+                            <div class="{{ form.organization_addressline1.css_classes  }} form-row-10px">
+                                {{ form.organization_addressline1.label_tag }}<br/>
+                                {{ form.organization_addressline1 }}
+                                {{ form.organization_addressline1.errors }}
+                            </div>
+                            <div class="{{ form.organization_addressline2.css_classes  }} form-row-10px">
+                                {{ form.organization_addressline2.label_tag }}<br/>
+                                {{ form.organization_addressline2 }}
+                                {{ form.organization_addressline2.errors }}
+                            </div>
+                            <div class="{{ form.organization_city.css_classes  }} form-row-10px">
+                                {{ form.organization_city.label_tag }}<br/>
+                                {{ form.organization_city }}
+                                {{ form.organization_city.errors }}
+                            </div>
+                            <div class="{{ form.organization_state.css_classes  }} form-row-10px">
+                                {{ form.organization_state.label_tag }}<br/>
+                                {{ form.organization_state }}
+                                {{ form.organization_state.errors }}
+                            </div>
+                            <div class="{{ form.organization_country.css_classes  }} form-row-10px">
+                                {{ form.organization_country.label_tag }}<br/>
+                                {{ form.organization_country }}
+                                {{ form.organization_country.errors }}
+                            </div>
+                            <div class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
+                                {{ form.organization_zipcode.label_tag }}<br/>
+                                {{ form.organization_zipcode }}
+                                {{ form.organization_zipcode.errors }}
+                            </div>
+                            <div class="{{ form.organization_office_phone.css_classes  }} form-row-10px">
+                                {{ form.organization_office_phone.label_tag }}<br/>
+                                {{ form.organization_office_phone }}
+                                {{ form.organization_office_phone.errors }}
+                            </div>
+                            <div class="{{ form.organization_website.css_classes  }} form-row-10px">
+                                {{ form.organization_website.label_tag }}<br/>
+                                {{ form.organization_website }}
+                                {{ form.organization_website.errors }}
+                            </div>
+                        </div>
+                        <div class="span-7 column last">
+                            <div>
+                                <h3 class="title">Point of Contact / <br>Account Administrator</h3>
+                            </div>
+                             <div class="{{ form.title.css_classes  }} form-row-10px">
+                                {{ form.title.label_tag }}<br/>
+                                {{ form.title }}
+                                {{ form.title.errors }}
+                            </div>
+                            <div class="{{ form.first_name.css_classes  }} form-row-10px">
+                                {{ form.first_name.label_tag }}<br/>
+                                {{ form.first_name }}
+                                {{ form.first_name.errors }}
+                            </div>
+
+                            <div class="{{ form.last_name.css_classes  }} form-row-10px">
+                                {{ form.last_name.label_tag }}<br/>
+                                {{ form.last_name }}
+                                {{ form.last_name.errors }}
+                            </div>
+                            <div class="{{ form.email.css_classes  }} form-row-10px">
+                                {{ form.email.label_tag }}<br/>
+                                {{ form.email }}
+                                {{ form.email.errors }}
+                            </div>
+                            <div class="{{ form.password.css_classes  }} form-row-10px">
+                                {{ form.password.label_tag }}<br/>
+                                {{ form.password }}
+                                {{ form.password.errors }}
+                            </div>
+                            <div class="{{ form.confirm_password.css_classes  }} form-row-10px">
+                                {{ form.confirm_password.label_tag }}<br/>
+                                {{ form.confirm_password }}
+                                {{ form.confirm_password.errors }}
+                            </div>
+                            <div>
+                                <input type="submit" value="Register" />
+                                <div class="span-8 last">Already registered? <a href="{% url django.contrib.auth.views.login %}">Login here!</a></div>
+                            </div>
+                        </div>
+                    </div>
+             </form>
+        </fieldset>
+    </div>
+{% endblock %}

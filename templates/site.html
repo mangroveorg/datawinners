@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>
+        {% block page_title %} {% endblock %}
+    </title>
+    {% block page_meta %} {% endblock %}
+    {% include 'javascript.html' %}
+    {% block page_js %} {% endblock %}
+    {% include 'css.html' %}
+    {% block page_css %} {% endblock %}
+</head>
+<body>
+    {% block body %} {% endblock %}
+</body>
+</html>

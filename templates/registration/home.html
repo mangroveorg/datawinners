@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="span-18 box">
+        <div class="span-9">
+            <h4>Welcome {{ user.title }} {{ user.first_name }} {{ user.last_name }}</h4>
+        </div>
+    </div>
+{% endblock %}
