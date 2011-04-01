@@ -1,5 +1,3 @@
-from authentication.authentication_service import AuthenticationService
-from authentication.models import UserModel
 from datawinners.registration.forms import RegistrationForm
 from mock import Mock
 from mock import patch
