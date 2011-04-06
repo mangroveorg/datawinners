@@ -15,7 +15,8 @@ def deploy(branch,commit_sha):
             else:
                 run("git branch -D %s" % branch)
                 run("git checkout -b %s %s" % (branch,commit_sha) )
-            run("source %s/awe_ve/bin/activate" % home_dir )
+            run("source %sawe_ve/bin/activate" % home_dir )
+            run("which pip")
             run("pip install -r requirements.pip")
         with cd(code_dir+'/src/datawinners'):
             run("python manage.py syncdb")
