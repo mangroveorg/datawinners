@@ -9,7 +9,7 @@ def deploy(branch,commit_sha):
     with cd(code_dir):
         run("git pull origin develop")
         run("git checkout -b %s %s" % (branch,commit_sha) )
-        run("%s/awe_ve/bin/activate" % code_dir )
+        run("source %s/awe_ve/bin/activate" % code_dir )
         run("pip install -r requirements.pip")
     with cd(code_dir+'/src/datawinners'):
         run("python manage.py syncdb")
