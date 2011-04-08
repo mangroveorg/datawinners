@@ -20,6 +20,19 @@ def delete_if_branch_exists(build_number):
     if branch_exists(build_number):
         run("git branch -D %s" % build_number)
 
+def restart_gunicorn(virtual_env):
+    if gunicorn_is_running():
+        stop_gunicorn()
+    start_gunicorn(virtual_env)
+
+def gunicorn_is_running():
+    return not run("pgrep gunicorn").failed
+
+def stop_gunicorn():
+    run("kill -9 `pgrep gunicorn`")
+
+def start_gunicorn(virtual_env):
+    activate_and_run(virtual_env,"gunicorn_django -D -b 0.0.0.0:8000 --pid=mangrove_gunicorn")
 
 def deploy(build_number,home_dir,virtual_env):
     """build_number : hudson build number to be deployed
@@ -38,4 +51,4 @@ def deploy(build_number,home_dir,virtual_env):
             activate_and_run(virtual_env,"pip install -r requirements.pip")
         with cd(code_dir+'/src/datawinners'):
             activate_and_run(virtual_env,"python manage.py syncdb")
-
+            restart_gunicorn(virtual_env)
