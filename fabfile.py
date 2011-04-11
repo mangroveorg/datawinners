@@ -49,6 +49,7 @@ def deploy(build_number,home_dir,virtual_env):
             delete_if_branch_exists(build_number)
             run("git checkout -b %s $COMMIT_SHA" % (build_number,) )
             activate_and_run(virtual_env,"pip install -r requirements.pip")
+            run("chmod -R ../%s 777" %code_dir)
         with cd(code_dir+'/src/datawinners'):
             activate_and_run(virtual_env,"python manage.py syncdb")
             restart_gunicorn(virtual_env)
