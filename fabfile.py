@@ -1,4 +1,4 @@
-from fabric.api import run
+from fabric.api import run,sudo
 from fabric.context_managers import cd, settings
 
 def git_clone_if_not_present(code_dir):
@@ -53,7 +53,7 @@ def deploy(build_number,home_dir,virtual_env,environment="test"):
             delete_if_branch_exists(build_number)
             run("git checkout -b %s $COMMIT_SHA" % (build_number,) )
             activate_and_run(virtual_env,"pip install -r requirements.pip")
-        run("chmod -R 777 %s" %code_dir)
+        sudo("chmod -R 777 %s" %code_dir)
         with cd(code_dir+'/src/datawinners'):
             update_configuration(ENVIRONMENT_CONFIGURATIONS[environment])
             activate_and_run(virtual_env,"python manage.py syncdb")
