@@ -24,10 +24,10 @@ class SimpleBackend(object):
         Create and immediately log in a new user.
 
         """
-        print 'I am Here!!!'
         username, email, password = kwargs['email'], kwargs['email'], kwargs['password1']
         new_user = User.objects.create_user(username, email, password)
         new_user.first_name = kwargs.get('first_name')
+        new_user.last_name =  kwargs.get('last_name')
         new_user.save()
         organization = Organization(name = kwargs.get('organization_name'), sector = kwargs.get('organization_sector')
                                              , addressline1 = kwargs.get('organization_addressline1'), addressline2 = kwargs.get('organization_addressline2')

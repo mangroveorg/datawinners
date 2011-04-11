@@ -3,7 +3,7 @@
 {% block page_title %} Login {% endblock %}
 
 {% block messages %}
-    {% if form.errors %}
+    {% if form.errors and not form.username.errors and not form.password.errors %}
         <div class=" error span-12 push-6 message-box">Your username and password didn't match.
             Please try again
         </div>
@@ -21,16 +21,15 @@
                         <div class="{{ form.username.css_classes  }} form-row-10px">
                             {{ form.username.label_tag }}<br/>
                             {{ form.username }}
+                            {{ form.username.errors }}
                         </div>
-
                         <div class="{{ form.password.css_classes  }} form-row-10px">
                             {{ form.password.label_tag }}<br/>
                             {{ form.password }}
+                            {{ form.password.errors }}
                         </div>
-
                         <div class="span-8">
                             <input type="submit" value="Login"/>
-
                             <div class="span-8 last">Not registered? <a href="/register">We can fix that!</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
                         </div>
                     </div>
