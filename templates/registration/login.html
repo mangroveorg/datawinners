@@ -1,16 +1,15 @@
 {% extends 'layout.html' %}
 
 {% block page_title %} Login {% endblock %}
-{% block messages %}
 
+{% block messages %}
     {% if form.errors %}
         <div class=" error span-12 push-6 message-box">Your username and password didn't match.
             Please try again
         </div>
     {% endif %}
-
-
 {% endblock %}
+
 {% block content %}
     <div class="span-12 box push-6">
         <fieldset>
@@ -32,8 +31,7 @@
                         <div class="span-8">
                             <input type="submit" value="Login"/>
 
-                            <div class="span-8 last">Not registered? <a
-                                    href="{% url datawinners.registration.views.register %}">We can fix that!</a></div>
+                            <div class="span-8 last">Not registered? <a href="/register">We can fix that!</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
                         </div>
                     </div>
                 </div>

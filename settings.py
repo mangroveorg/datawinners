@@ -118,7 +118,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-LOGIN_REDIRECT_URL=('home')
+LOGIN_REDIRECT_URL=('/home')
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -127,15 +127,17 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'datawinners.registration'
+    'datawinners.accountmanagement',
+    'registration',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
 
-AUTHENTICATION_BACKENDS= ('datawinners.registration.authentication_backend.NGOUserModelBackend',)
-CUSTOM_USER_MODEL = 'registration.NGOUser'
+#AUTHENTICATION_BACKENDS= ('datawinners.accountmanagement.authentication_backend.NGOUserModelBackend',)
+#
+#CUSTOM_USER_MODEL = 'accountmangement.NGOUser'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -159,3 +161,9 @@ LOGGING = {
         },
     }
 }
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'test.datawinners@gmail.com'
+EMAIL_HOST_PASSWORD = 'd@t@winners'
+EMAIL_PORT = 587

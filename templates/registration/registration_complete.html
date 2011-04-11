@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Registration Confirmation {% endblock %}
+{% block content %}
+    <div class="span-12 box push-6">
+        <fieldset><legend>Registration Confirmation</legend>
+                    <div class="span-8 last">
+                        <div class="span-8">
+                            <div class="form-row-10px">
+                            You have successfully registered!! 
+                            </div>
+                        </div>
+                    </div>
+        </fieldset>
+        <div class="span-2 push-1 right"><a href="{% url django.contrib.auth.views.login %}">Login</a></div>
+    </div>
+{% endblock %}
