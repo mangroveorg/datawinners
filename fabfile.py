@@ -34,11 +34,15 @@ def stop_gunicorn():
 def start_gunicorn(virtual_env):
     activate_and_run(virtual_env,"gunicorn_django -D -b 0.0.0.0:8000 --pid=mangrove_gunicorn")
 
-def deploy(build_number,home_dir,virtual_env):
+def deploy(build_number,home_dir,virtual_env,environment="test"):
     """build_number : hudson build number to be deployed
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
     """
+    ENVIRONMENT_CONFIGURATIONS = {
+                                    "showcase" :{"SITE_ID":1},
+                                    "test"   :{"SITE_ID":1}
+                                 }
     run("export COMMIT_SHA=`curl http://hudson.mvpafrica.org:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
     code_dir = home_dir+'/mangrove'
@@ -51,5 +55,12 @@ def deploy(build_number,home_dir,virtual_env):
             activate_and_run(virtual_env,"pip install -r requirements.pip")
         run("chmod -R 777 %s" %code_dir)
         with cd(code_dir+'/src/datawinners'):
+            update_configuration(ENVIRONMENT_CONFIGURATIONS[environment])
             activate_and_run(virtual_env,"python manage.py syncdb")
             restart_gunicorn(virtual_env)
+
+def update_configuration(environment):
+    sed_commands = ""
+    for key in environment:
+        sed_commands += "-e 's/@%s@/%s/' " % (key, environment[key])
+    run("sed  %s settings.py.template > settings.py" % sed_commands)
