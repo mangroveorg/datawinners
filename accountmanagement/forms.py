@@ -2,9 +2,6 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, Set
 from registration.forms import RegistrationFormUniqueEmail
 from django import forms
 
-
-
-
 class RegistrationForm(RegistrationFormUniqueEmail):
 
     error_css_class = 'error'

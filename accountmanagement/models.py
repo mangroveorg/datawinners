@@ -14,3 +14,8 @@ class Organization(models.Model):
     website = models.TextField()
     org_id=models.TextField()
 
+class NGOUserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    title = models.TextField()
+    org_id = models.TextField()
+    

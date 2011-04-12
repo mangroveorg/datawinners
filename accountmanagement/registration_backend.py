@@ -1,10 +1,13 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
+from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
 
 class RegistrationBackend(object):
@@ -70,16 +73,28 @@ class RegistrationBackend(object):
         class of this backend as the sender.
 
         """
-        username, email, password = kwargs['username'], kwargs['email'], kwargs['password1']
+        email, password =  kwargs['email'], kwargs['password1']
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(username, email,
-                                                                    password, site)
+#        new_user = RegistrationProfile.objects.create_inactive_user(email, email,
+#                                                                    password, site)
+        new_user = User.objects.create_user(email,email,password)
+        new_user.first_name = kwargs.get('first_name')
+        new_user.last_name =  kwargs.get('last_name')
+        new_user.save()
+        organization = Organization(name = kwargs.get('organization_name'), sector = kwargs.get('organization_sector')
+                                             , addressline1 = kwargs.get('organization_addressline1'), addressline2 = kwargs.get('organization_addressline2')
+                                             , city = kwargs.get('organization_city'), state = kwargs.get('organization_state')
+                                             , country = kwargs.get('organization_country'), zipcode = kwargs.get('organization_zipcode')
+                                             , office_phone = kwargs.get('organization_office_phone'), website = kwargs.get('organization_website')
+                                             , org_id=OrganizationIdCreator().generateId()
+                                             )
+        organization.save()
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
-                                     request=request)
+                                     request=request,title=kwargs.get("title"),organization_id=organization.org_id)
         return new_user
 
     def activate(self, request, activation_key):
@@ -128,7 +143,7 @@ class RegistrationBackend(object):
         user registration.
 
         """
-        return ('registration_complete', (), {})
+        return ('/registration_complete', (), {})
 
     def post_activation_redirect(self, request, user):
         """
@@ -136,4 +151,4 @@ class RegistrationBackend(object):
         account activation.
 
         """
-        return ('registration_activation_complete', (), {})
+        return ('/registration_activation_complete', (), {})

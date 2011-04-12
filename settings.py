@@ -109,6 +109,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'datawinners.urls'
+AUTH_PROFILE_MODULE = "accountmanagement.NGOUserProfile"
 
 TEMPLATE_DIRS = (
 #    os.path.join(PROJECT_DIR, 'registration'),
