@@ -1,8 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block page_title %} Register Reporter {% endblock %}
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/reporter_register.js"></script>
+{% endblock %}
 {% block content %}
     <div class="span-18 box">
+        {% if message %}
+             <div id="flash-message" class="success">
+                 {{ message }}
+             </div>
+        {% endif %}
         <fieldset><legend>Register Reporter</legend>
              <form id="registration_form" action="" method="POST">
                     {% csrf_token %}
