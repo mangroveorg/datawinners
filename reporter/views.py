@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization
 from datawinners.reporter.forms import ReporterRegistrationForm
 
 from datastore import datarecord
