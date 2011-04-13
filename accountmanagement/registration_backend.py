@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import RequestSite
@@ -78,9 +80,9 @@ class RegistrationBackend(object):
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-#        new_user = RegistrationProfile.objects.create_inactive_user(email, email,
-#                                                                    password, site)
-        new_user = User.objects.create_user(email,email,password)
+        new_user = RegistrationProfile.objects.create_inactive_user(email, email,
+                                                                    password, site)
+#        new_user = User.objects.create_user(email,email,password)
         new_user.first_name = kwargs.get('first_name')
         new_user.last_name =  kwargs.get('last_name')
         new_user.save()
@@ -96,24 +98,6 @@ class RegistrationBackend(object):
                                      user=new_user,
                                      request=request,title=kwargs.get("title"),organization_id=organization.org_id)
         return new_user
-
-    def activate(self, request, activation_key):
-        """
-        Given an an activation key, look up and activate the user
-        account corresponding to that key (if possible).
-
-        After successful activation, the signal
-        ``registration.signals.user_activated`` will be sent, with the
-        newly activated ``User`` as the keyword argument ``user`` and
-        the class of this backend as the sender.
-
-        """
-        activated = RegistrationProfile.objects.activate_user(activation_key)
-        if activated:
-            signals.user_activated.send(sender=self.__class__,
-                                        user=activated,
-                                        request=request)
-        return activated
 
     def registration_allowed(self, request):
         """
@@ -144,11 +128,3 @@ class RegistrationBackend(object):
 
         """
         return ('/registration_complete', (), {})
-
-    def post_activation_redirect(self, request, user):
-        """
-        Return the name of the URL to redirect to after successful
-        account activation.
-
-        """
-        return ('/registration_activation_complete', (), {})

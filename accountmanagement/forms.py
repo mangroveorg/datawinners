@@ -1,6 +1,10 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
 from registration.forms import RegistrationFormUniqueEmail
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 class RegistrationForm(RegistrationFormUniqueEmail):
 
@@ -45,6 +49,19 @@ class LoginForm(AuthenticationForm):
         username = self.cleaned_data.get('username')
         self.cleaned_data['username'] = username.lower()
         return self.cleaned_data['username']
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            self.user_cache = authenticate(username=username, password=password)
+            if self.user_cache is None:
+                raise forms.ValidationError(_("Please enter a correct username and password."))
+            elif not self.user_cache.is_active:
+                raise forms.ValidationError(_("This account is inactive."))
+        self.check_for_test_cookie()
+        return self.cleaned_data
 
 
 class ResetPasswordForm(PasswordResetForm):

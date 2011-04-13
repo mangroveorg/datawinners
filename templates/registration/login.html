@@ -4,8 +4,10 @@
 
 {% block messages %}
     {% if form.errors and not form.username.errors and not form.password.errors %}
-        <div class=" error span-12 push-6 message-box">Your username and password didn't match.
-            Please try again
+        <div class=" error span-12 push-6 message-box">
+            {% for key,error in form.errors.items %}
+                {{ error }}
+            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}
@@ -19,7 +21,7 @@
                 <div class="span-8 last">
                     <div class="span-8">
                         <div class="{{ form.username.css_classes  }} form-row-10px">
-                            {{ form.username.label_tag }}<br/>
+                            <label for="id_username">Email</label><br/>
                             {{ form.username }}
                             {{ form.username.errors }}
                         </div>

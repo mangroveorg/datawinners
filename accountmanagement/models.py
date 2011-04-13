@@ -1,4 +1,6 @@
-from django.contrib.auth.models import User, UserManager
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
+from django.contrib.auth.models import User
 from django.db import models
 
 class Organization(models.Model):

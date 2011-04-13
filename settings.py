@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 # Django settings for web project.
 import os
 
@@ -120,6 +122,8 @@ TEMPLATE_DIRS = (
 )
 
 LOGIN_REDIRECT_URL=('/home')
+
+ACCOUNT_ACTIVATION_DAYS = 7
 
 INSTALLED_APPS = (
     'django.contrib.auth',

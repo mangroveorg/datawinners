@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="span-18 box">
+    <div class="span-9">
+{% if account %}
+
+<p>Account successfully activated</p>
+
+<p><a href="{% url auth_login %}">Log in</a></p>
+
+{% else %}
+
+<p>Account activation failed</p>
+
+{% endif %}
+
+</div>
+</div>
+
+{% endblock %}

@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from django.conf.urls.defaults import patterns, include, url
 from datawinners.accountmanagement.forms import RegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm
 from django.contrib import admin
@@ -17,4 +19,5 @@ urlpatterns = patterns('',
     (r'^registration_complete$',registration_complete),
     (r'^home$',home),
     url(r'^admin/', include(admin.site.urls)),
+
 )

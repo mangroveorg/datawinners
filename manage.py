@@ -1,3 +1,4 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 #!/usr/bin/env python
 from django.core.management import execute_manager, setup_environ
 import imp
