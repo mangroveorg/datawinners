@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Register Reporter {% endblock %}
+{% block content %}
+    <div class="span-18 box">
+        <fieldset><legend>Register Reporter</legend>
+             <form id="registration_form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="span-16 form-5px">
+                        <div class="span-7 column border">
+                            <div>
+                                <h3 class="title">Register a Reporter (Field Staff)<br/><br/></h3>
+                            </div>
+                            <div class="{{ form.first_name.css_classes }} form-row-10px">
+                                {{ form.first_name.label_tag }}<br/>
+                                {{ form.first_name }}
+                                <div>
+                                    {{ form.first_name.errors }}
+                                </div>
+                            </div>
+                            <div class="{{ form.last_name.css_classes }} form-row-10px">
+                                {{ form.last_name.label_tag }}<br/>
+                                {{ form.last_name }}
+                                <div>
+                                    {{ form.last_name.errors }}
+                                </div>
+                            </div>
+                            <div class="{{ form.telephone_number.css_classes }} form-row-10px">
+                                {{ form.telephone_number.label_tag }}<br/>
+                                {{ form.telephone_number }}
+                                <div>
+                                    {{ form.telephone_number.errors }}
+                                </div>
+                            </div>
+                            <div class="{{ form.commune.css_classes }} form-row-10px">
+                                {{ form.commune.label_tag }}<br/>
+                                {{ form.commune }}
+                                <div>
+                                    {{ form.commune.errors }}
+                                </div>
+                            </div>
+                            <div class="{{ form.clinical_affiliation.css_classes }} form-row-10px">
+                                {{ form.clinical_affiliation.label_tag }}<br/>
+                                {{ form.clinical_affiliation }}
+                                <div>
+                                    {{ form.clinical_affiliation.errors }}
+                                </div>
+                            </div>
+                            <div>
+                                <input type="submit" value="Register" />
+                            </div>
+                        </div>
+                    </div>
+             </form>
+        </fieldset>
+    </div>
+{% endblock %}

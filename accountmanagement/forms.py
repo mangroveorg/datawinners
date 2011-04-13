@@ -2,9 +2,10 @@
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
-from registration.forms import RegistrationFormUniqueEmail
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from registration.forms import RegistrationFormUniqueEmail
+
 
 class RegistrationForm(RegistrationFormUniqueEmail):
 
