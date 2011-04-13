@@ -28,13 +28,10 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     organization_website = forms.URLField(required=False, label='Website Url')
     username = forms.CharField(max_length=30, required=False)
 
-    def clean_email(self):
-        super(RegistrationForm, self).clean_email()
-        email = self.cleaned_data.get('email')
-        self.cleaned_data['email'] = email.lower()
-        return self.cleaned_data['email']
 
     def clean(self):
+        email = self.cleaned_data.get('email')
+        self.cleaned_data['email'] = email.lower()
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 msg = "The two password fields didn't match."
@@ -55,14 +52,17 @@ class LoginForm(AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
+        self.check_for_username_and_password(password, username)
+        self.check_for_test_cookie()
+        return self.cleaned_data
+
+    def check_for_username_and_password(self, password, username):
         if username and password:
             self.user_cache = authenticate(username=username, password=password)
             if self.user_cache is None:
-                raise forms.ValidationError(_("Please enter a correct username and password."))
+                raise forms.ValidationError(_("Please enter a correct email and password."))
             elif not self.user_cache.is_active:
                 raise forms.ValidationError(_("This account is inactive."))
-        self.check_for_test_cookie()
-        return self.cleaned_data
 
 
 class ResetPasswordForm(PasswordResetForm):

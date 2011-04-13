@@ -51,6 +51,7 @@ def deploy(build_number,home_dir,virtual_env,environment="test"):
     with settings(warn_only=True):
         git_clone_if_not_present(code_dir)
         with cd(code_dir):
+            run("git reset --hard HEAD")
             sync_develop_branch()
             delete_if_branch_exists(build_number)
             run("git checkout -b %s $COMMIT_SHA" % (build_number,) )
