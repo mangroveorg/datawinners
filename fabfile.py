@@ -42,8 +42,8 @@ def deploy(build_number,home_dir,virtual_env,environment="test"):
        virtual_env : path to your virtual_env folder
     """
     ENVIRONMENT_CONFIGURATIONS = {
-                                    "showcase" :{"SITE_ID":1},
-                                    "test"   :{"SITE_ID":1}
+                                    "showcase" :{"SITE_ID":2},
+                                    "test"   :{"SITE_ID":4}
                                  }
     run("export COMMIT_SHA=`curl http://hudson.mvpafrica.org:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
