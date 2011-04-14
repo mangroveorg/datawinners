@@ -19,8 +19,7 @@ def register(request):
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         form_data = form.cleaned_data
-        print form_data
-        data =[(k,v) for k,v in form_data.items()]
+        data =form_data.items()
         registered_reporter = datarecord.register(manager=get_db_manager(),entity_type=[organization.name, "Reporter"], data=data, location=[],
                                                   source="Web")
         form = ReporterRegistrationForm()
