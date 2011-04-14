@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block page_title %} Report on {{ form.entity_type }} in {{ form.location }} {% endblock %}
+{% block content %}
+    <div class="span-18 box">
+        <table>
+            <tr>
+                {% for header in form.column_headers%}
+                    <th>{{ header}}</th>
+                {% endfor %}
+            </tr>
+            {% for row in form.values%}
+                <tr>
+                    {% for data in row %}
+                        <td>{{ data }}</td>
+                    {% endfor %}
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

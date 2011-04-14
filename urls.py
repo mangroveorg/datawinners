@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     (r'',include('datawinners.accountmanagement.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'',include('datawinners.reporter.urls')),
+    (r'',include('datawinners.reports.urls')),
     # Examples:
     # url(r'^$', 'web.views.home', name='home'),
     # url(r'^web/', include('web.foo.urls')),
