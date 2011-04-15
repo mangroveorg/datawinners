@@ -56,7 +56,8 @@ def hierarchy_report(request):
             aggregates_field = form.cleaned_data['aggregates_field']
             aggregates={aggregates_field:"sum"}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
-            aggregate_on={'type': aggregate_on_path,"level":2}
+            level=form.cleaned_data['level']
+            aggregate_on={'type': aggregate_on_path,"level":level}
             report_data = data.fetch(manager, entity_type=["Health_Facility", "Clinic"],
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,

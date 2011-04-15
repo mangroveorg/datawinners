@@ -1,13 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.forms.fields import CharField
+from django.forms.fields import CharField,IntegerField
 from django.forms.forms import Form
 
 
 class ReportHierarchy(Form):
-    
+    error_css_class = 'error'
+    required_css_class = 'required'
     aggregate_on_path = CharField(required = True)
     aggregates_field = CharField(required = True)
+    column_headers = list
+    values = list
+    level = IntegerField()
 
 class Report(Form):
     error_css_class = 'error'
