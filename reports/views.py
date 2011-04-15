@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore import data
-from reports.forms import Report
+from reports.forms import Report, ReportHierarchy
 from mangrove.datastore.entity import Entity
 from mangrove.datastore.database import get_db_manager
 
@@ -49,7 +49,9 @@ def hierarchy_report(request):
     manager = get_db_manager('http://localhost:5984/', 'mangrove-hierarchy')
     LoadData(manager).load_data_for_hierarchy_report()
     if request.method == 'POST':
-        form = Report(request.POST)
+        form = ReportHierarchy(request.POST)
+        print form
+        print form.is_valid()
         if form.is_valid():
             aggregates_field = form.cleaned_data['aggregates_field']
             aggregates={aggregates_field:"sum"}
@@ -62,7 +64,7 @@ def hierarchy_report(request):
             print report_data
             tabulate_output(form, report_data,"Path")
     else:
-        form = Report()
+        form = ReportHierarchy()
 
 #    report_data = data.fetch(manager, entity_type=["Health_Facility", "Clinic"],
 #                             aggregates={"patients": "sum"},

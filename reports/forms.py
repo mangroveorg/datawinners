@@ -3,6 +3,12 @@
 from django.forms.fields import CharField
 from django.forms.forms import Form
 
+
+class ReportHierarchy(Form):
+    
+    aggregate_on_path = CharField(required = True)
+    aggregates_field = CharField(required = True)
+
 class Report(Form):
     error_css_class = 'error'
     required_css_class = 'required'
@@ -11,6 +17,5 @@ class Report(Form):
     column_headers = list
     values = list
     filter = CharField(required=False,label='Filter')
-    aggregate_on_path = CharField(required = True)
-    aggregates_field = CharField(required = True)
+    
 
