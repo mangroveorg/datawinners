@@ -24,7 +24,6 @@ def report(request):
                                                  "patients": "sum"},
                                      filter=filter
             )
-            print report_data
             tabulate_output(form, report_data,"Clinic_id")
             
     else:
@@ -50,8 +49,6 @@ def hierarchy_report(request):
     LoadData(manager).load_data_for_hierarchy_report()
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
-        print form
-        print form.is_valid()
         if form.is_valid():
             aggregates_field = form.cleaned_data['aggregates_field']
             aggregates={aggregates_field:"sum"}
@@ -61,7 +58,6 @@ def hierarchy_report(request):
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
-            print report_data
             tabulate_output(form, report_data,"Path")
     else:
         form = ReportHierarchy()
