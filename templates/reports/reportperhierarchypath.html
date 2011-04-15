@@ -2,7 +2,28 @@
 {% block page_title %} Report on {{ form.entity_type }}{% endblock %}
 {% block content %}
 <div class = "span-18 box">
-        <table>
+    <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="span-8 last">
+                        <div class="span-8">
+                            <div class="{{ form.aggregate_on_path.css_classes  }} form-row-10px">
+                                {{ form.aggregate_on_path.label_tag }}
+                                {{ form.aggregate_on_path }}
+                                {{ form.aggregate_on_path.errors }}
+                            </div>
+                            <div class="{{ form.aggregates_field.css_classes  }} form-row-10px">
+                                {{ form.aggregates_field.label_tag }}
+                                {{ form.aggregates_field }}
+                                {{ form.aggregates_field.errors }}
+                            </div>
+                            <div class="span-8">
+                                <input type="submit" value="Report"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+    <table>
             <tr>
                 {% for header in form.column_headers%}
                     <th>{{ header}}</th>

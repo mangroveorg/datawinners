@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 import datetime
 from pytz import UTC
 from django.shortcuts import render_to_response
@@ -5,7 +7,6 @@ from django.template.context import RequestContext
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore import data
 from reports.forms import Report
-from datawinners.reports.forms import HierarchyReport
 from mangrove.datastore.entity import Entity
 from mangrove.datastore.database import get_db_manager
 
@@ -45,16 +46,28 @@ def tabulate_output(form, report_data,first_column_name):
 
 
 def hierarchy_report(request):
-    form = Report()
-    form.entity_type = "Clinic"
     manager = get_db_manager('http://localhost:5984/', 'mangrove-hierarchy')
     LoadData(manager).load_data_for_hierarchy_report()
-
-    report_data = data.fetch(manager, entity_type=["Health_Facility", "Clinic"],
-                             aggregates={"patients": "sum"},
-                             aggregate_on={'type': 'location', "level": 2},
+    if request.method == 'POST':
+        form = Report(request.POST)
+        if form.is_valid():
+            aggregates_field = form.cleaned_data['aggregates_field']
+            aggregates={aggregates_field:"sum"}
+            aggregate_on_path = form.cleaned_data['aggregate_on_path']
+            aggregate_on={'type': aggregate_on_path,"level":2}
+            report_data = data.fetch(manager, entity_type=["Health_Facility", "Clinic"],
+                             aggregates=aggregates,
+                             aggregate_on=aggregate_on,
                              )
-    tabulate_output(form, report_data,"Path")
+            print report_data
+            tabulate_output(form, report_data,"Path")
+    else:
+        form = Report()
+
+#    report_data = data.fetch(manager, entity_type=["Health_Facility", "Clinic"],
+#                             aggregates={"patients": "sum"},
+#                             aggregate_on={'type': 'location', "level": 2},
+#                             )
 
     _delete_db_and_remove_db_manager(manager)
     return render_to_response('reports/reportperhierarchypath.html', {'form': form},
