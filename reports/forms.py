@@ -8,4 +8,9 @@ class Report(Form):
     values = dict
     pass
 
-
+class HierarchyReport(Form):
+    entity_type=CharField()
+    column_headers =list
+    rows = list
+    values=list
+    pass
