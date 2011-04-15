@@ -2,6 +2,26 @@
 {% block page_title %} Report on {{ form.entity_type }} in {{ form.location }} {% endblock %}
 {% block content %}
     <div class="span-18 box">
+        <form action="" method="POST">
+                {% csrf_token %}
+                <div class="span-8 last">
+                    <div class="span-8">
+                        <div class="{{ form.entity_type.css_classes  }} form-row-10px">
+                            {{ form.entity_type.label_tag }}
+                            {{ form.entity_type }}
+                            {{ form.entity_type.errors }}
+                        </div>
+                        <div class="{{ form.filter.css_classes  }} form-row-10px">
+                            {{ form.filter.label_tag }}
+                            {{ form.filter }}
+                            {{ form.filter.errors }}
+                        </div>
+                        <div class="span-8">
+                            <input type="submit" value="Report"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
         <table>
             <tr>
                 {% for header in form.column_headers%}
@@ -13,7 +33,6 @@
                     {% for data in row %}
                         <td>{{ data }}</td>
                     {% endfor %}
-
                 </tr>
             {% endfor %}
         </table>

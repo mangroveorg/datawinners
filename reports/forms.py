@@ -2,11 +2,13 @@ from django.forms.fields import CharField
 from django.forms.forms import Form
 
 class Report(Form):
-    location = CharField()
-    entity_type = CharField()
+    error_css_class = 'error'
+    required_css_class = 'required'
+
+    entity_type = CharField(required=True,label='Entity Type')
     column_headers = list
-    values = dict
-    pass
+    values = list
+    filter = CharField(required=False,label='Filter')
 
 class HierarchyReport(Form):
     entity_type=CharField()
