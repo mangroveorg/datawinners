@@ -4,17 +4,15 @@
 <div class = "span-18 box">
         <table>
             <tr>
-                <th>Path </th>
                 {% for header in form.column_headers%}
                     <th>{{ header}}</th>
                 {% endfor %}
             </tr>
-            {% for k in form.rows%}
+            {% for row in form.values%}
                 <tr>
-                    <td>{{k}}</td>
-                    {% for header in form.column_headers%}
-                    <td>{{form.values}}</td>
-                    
+                    {% for data in row %}
+                        <td>{{ data }}</td>
+                    {% endfor %}
                 </tr>
             {% endfor %}
         </table>

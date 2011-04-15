@@ -14,5 +14,6 @@ class HierarchyReport(Form):
     entity_type=CharField()
     column_headers =list
     rows = list
-    values=list
+    values=dict
+    x = list
     pass
