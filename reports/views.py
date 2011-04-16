@@ -24,7 +24,6 @@ def report(request):
                                                  "patients": "sum"},
                                      filter=filter
             )
-            print report_data
             tabulate_output(form, report_data,"Clinic_id")
             
     else:
