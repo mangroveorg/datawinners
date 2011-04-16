@@ -50,8 +50,6 @@ def hierarchy_report(request):
     LoadData(manager).load_data_for_hierarchy_report()
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
-        print form
-        print form.is_valid()
         if form.is_valid():
             aggregates_field = form.cleaned_data['aggregates_field']
             aggregates={aggregates_field:"sum"}
@@ -62,7 +60,6 @@ def hierarchy_report(request):
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
-            print report_data
             tabulate_output(form, report_data,"Path")
     else:
         form = ReportHierarchy()
@@ -87,6 +84,7 @@ class LoadData:
 
         # Entities for State 1: Maharashtra
         e = Entity(self.manager, entity_type=ENTITY_TYPE, location=['India', 'MH', 'Pune'])
+        e.set_aggregation_path("governance",["Director","Med_Officer","Surgeon"])
         id1 = e.save()
 
         e.add_data(data=[("beds", 300), ("meds", 20), ("director", "Dr. A"), ("patients", 10)],
@@ -95,6 +93,7 @@ class LoadData:
                    event_time=MARCH)
 
         e = Entity(self.manager, entity_type=ENTITY_TYPE, location=['India', 'MH', 'Pune'])
+        e.set_aggregation_path("governance",["Director","Med_Supervisor","Surgeon"])
         id2 = e.save()
         e.add_data(data=[("beds", 100), ("meds", 10), ("director", "Dr. AA"), ("patients", 50)],
                    event_time=FEB)
@@ -102,6 +101,7 @@ class LoadData:
                    event_time=MARCH)
 
         e = Entity(self.manager, entity_type=ENTITY_TYPE, location=['India', 'MH', 'Mumbai'])
+        e.set_aggregation_path("governance",["Director","Med_Officer","Doctor"])
         id3 = e.save()
         e.add_data(data=[("beds", 100), ("meds", 10), ("director", "Dr. AAA"), ("patients", 50)],
                    event_time=FEB)
@@ -110,12 +110,14 @@ class LoadData:
 
         # Entities for State 2: karnataka
         e = Entity(self.manager, entity_type=ENTITY_TYPE, location=['India', 'Karnataka', 'Bangalore'])
+        e.set_aggregation_path("governance",["Director","Med_Supervisor","Nurse"])
         id4 = e.save()
         e.add_data(data=[("beds", 100), ("meds", 250), ("director", "Dr. B1"), ("patients", 50)],
                    event_time=FEB)
         e.add_data(data=[("beds", 200), ("meds", 400), ("director", "Dr. B2"), ("patients", 20)],
                    event_time=MARCH)
         e = Entity(self.manager, entity_type=ENTITY_TYPE, location=['India', 'Karnataka', 'Hubli'])
+        e.set_aggregation_path("governance",["Director","Med_Officer","Surgeon"])
         id5 = e.save()
         e.add_data(data=[("beds", 100), ("meds", 250), ("director", "Dr. B1"), ("patients", 50)],
                    event_time=FEB)
@@ -125,6 +127,7 @@ class LoadData:
 
         # Entities for State 3: Kerala
         e = Entity(self.manager, entity_type=ENTITY_TYPE, location=['India', 'Kerala', 'Kochi'])
+        e.set_aggregation_path("governance",["Director","Med_Officer","Nurse"])
         id6 = e.save()
         e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. C"), ("patients", 12)],
                    event_time=MARCH)
