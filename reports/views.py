@@ -10,6 +10,8 @@ from mangrove.datastore.database import get_db_manager
 def report(request):
     manager = get_db_manager()
     data_set=DataFormatter()
+    column_headers = []
+    values = []
     if request.method == 'POST':
         form = Report(request.POST)
         if form.is_valid():
@@ -22,10 +24,10 @@ def report(request):
                                                  "patients": "sum"},
                                      filter=filter
             )
-            data_set.tabulate_output(report_data,"Clinic_id")
+            column_headers,values = data_set.tabulate_output(report_data,"Clinic_id")
     else:
         form = Report()
-    return render_to_response('reports/reportperlocation.html', {'form': form,'dataset':data_set},
+    return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,'column_values':values},
                               context_instance=RequestContext(request))
 
 class DataFormatter(object):
@@ -40,11 +42,12 @@ class DataFormatter(object):
         self.values = []
         for row in information:
             self.values.append([row[h] for h in self.column_headers])
-
+        return self.column_headers,self.values
 
 def hierarchy_report(request):
     manager = get_db_manager()
     data_set=DataFormatter()
+    column_headers,values = [],[]
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
         if form.is_valid():
@@ -58,10 +61,10 @@ def hierarchy_report(request):
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
-            data_set.tabulate_output(report_data,"Path")
+            column_headers,values = data_set.tabulate_output(report_data,"Path")
     else:
         form = ReportHierarchy()
 
-    return render_to_response('reports/reportperhierarchypath.html', {'form': form,'data_set':data_set},
+    return render_to_response('reports/reportperhierarchypath.html', {'form': form,'column_headers':column_headers,'column_values':values},
                           context_instance=RequestContext(request))
 

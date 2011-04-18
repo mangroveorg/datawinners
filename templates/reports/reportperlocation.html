@@ -24,11 +24,11 @@
             </form>
         <table>
             <tr>
-                {% for header in dataset.column_headers%}
+                {% for header in column_headers%}
                     <th>{{ header}}</th>
                 {% endfor %}
             </tr>
-            {% for row in dataset.values%}
+            {% for row in column_values%}
                 <tr>
                     {% for data in row %}
                         <td>{{ data }}</td>

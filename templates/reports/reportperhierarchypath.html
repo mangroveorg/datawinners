@@ -36,11 +36,11 @@
 
     <table>
         <tr>
-            {% for header in data_set.column_headers%}
+            {% for header in column_headers%}
             <th>{{ header}}</th>
             {% endfor %}
         </tr>
-        {% for row in data_set.values%}
+        {% for row in column_values%}
         <tr>
             {% for data in row %}
             <td>{{ data }}</td>
