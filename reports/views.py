@@ -21,7 +21,7 @@ def report(request):
             filter_criteria = form.cleaned_data['filter']
             filter = {'location': filter_criteria.split(",")} if filter_criteria else None
             report_data = data.fetch(manager, entity_type=entity_type,
-                                     aggregates={"director": "latest",
+                                     aggregates={"director":data.reduce_functions.LATEST,
                                                  "beds": "latest",
                                                  "patients": "sum"},
                                      filter=filter
@@ -54,7 +54,7 @@ def hierarchy_report(request):
         form = ReportHierarchy(request.POST)
         if form.is_valid():
             aggregates_field = form.cleaned_data['aggregates_field']
-            aggregates={aggregates_field:"sum"}
+            aggregates={aggregates_field:data.reduce_functions.SUM}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
             level=form.cleaned_data['level']
             aggregate_on={'type': aggregate_on_path,"level":level}
