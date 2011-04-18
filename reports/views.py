@@ -54,7 +54,8 @@ def hierarchy_report(request):
         form = ReportHierarchy(request.POST)
         if form.is_valid():
             aggregates_field = form.cleaned_data['aggregates_field']
-            aggregates={aggregates_field:data.reduce_functions.SUM}
+            reduce_function=form.cleaned_data['reduce']
+            aggregates={aggregates_field:reduce_function}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
             level=form.cleaned_data['level']
             aggregate_on={'type': aggregate_on_path,"level":level}

@@ -16,6 +16,11 @@
                     {{ form.aggregates_field }}
                     {{ form.aggregates_field.errors }}
                 </div>
+                <div class="{{ form.reduce.css_classes  }} form-row-10px">
+                    {{ form.reduce.label_tag }}
+                    {{ form.reduce }}
+                    {{ form.reduce.errors }}
+                </div>
                 <div class="{{ form.level.css_classes  }} form-row-10px">
                     {{ form.level.label_tag }}
                     {{ form.level }}
