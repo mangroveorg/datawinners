@@ -31,11 +31,11 @@
 
     <table>
         <tr>
-            {% for header in form.column_headers%}
+            {% for header in data_set.column_headers%}
             <th>{{ header}}</th>
             {% endfor %}
         </tr>
-        {% for row in form.values%}
+        {% for row in data_set.values%}
         <tr>
             {% for data in row %}
             <td>{{ data }}</td>

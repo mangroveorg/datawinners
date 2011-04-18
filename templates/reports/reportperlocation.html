@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block page_title %} Report on {{ form.entity_type }} in {{ form.location }} {% endblock %}
+{% block page_title %} Report on {{ form.entity_type.value }} in {{ form.location.value }} {% endblock %}
 {% block content %}
     <div class="span-18 box">
         <form action="" method="POST">
@@ -24,11 +24,11 @@
             </form>
         <table>
             <tr>
-                {% for header in form.column_headers%}
+                {% for header in dataset.column_headers%}
                     <th>{{ header}}</th>
                 {% endfor %}
             </tr>
-            {% for row in form.values%}
+            {% for row in dataset.values%}
                 <tr>
                     {% for data in row %}
                         <td>{{ data }}</td>

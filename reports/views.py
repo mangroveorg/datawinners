@@ -12,41 +12,44 @@ from mangrove.datastore.database import get_db_manager
 
 
 def report(request):
+    manager = get_db_manager()
+    data_set=DataFormatter()
     if request.method == 'POST':
         form = Report(request.POST)
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type'].split(",")
             filter_criteria = form.cleaned_data['filter']
             filter = {'location': filter_criteria.split(",")} if filter_criteria else None
-            report_data = data.fetch(get_db_manager(), entity_type=entity_type,
+            report_data = data.fetch(manager, entity_type=entity_type,
                                      aggregates={"director": "latest",
                                                  "beds": "latest",
                                                  "patients": "sum"},
                                      filter=filter
             )
-            tabulate_output(form, report_data,"Clinic_id")
-            
+            data_set.tabulate_output(report_data,"Clinic_id")
     else:
         form = Report()
-    return render_to_response('reports/reportperlocation.html', {'form': form},
+    return render_to_response('reports/reportperlocation.html', {'form': form,'dataset':data_set},
                               context_instance=RequestContext(request))
 
+class DataFormatter(object):
 
-def tabulate_output(form, report_data,first_column_name):
-    for id, record in report_data.items():
-        record[first_column_name] = id
-    id, info = report_data.items()[0] if report_data.items() else ("", {})
-    form.column_headers = info.keys()
-    form.column_headers.sort()
-    information = [v for k, v in report_data.items()]
-    form.values = []
-    for row in information:
-        form.values.append([row[h] for h in form.column_headers])
+    def tabulate_output(self, report_data,first_column_name):
+        for id, record in report_data.items():
+            record[first_column_name] = id
+        id, info = report_data.items()[0] if report_data.items() else ("", {})
+        self.column_headers = info.keys()
+        self.column_headers.sort()
+        information = [v for k, v in report_data.items()]
+        self.values = []
+        for row in information:
+            self.values.append([row[h] for h in self.column_headers])
 
 
 def hierarchy_report(request):
-    manager = get_db_manager('http://localhost:5984/', 'mangrove-hierarchy')
-    LoadData(manager).load_data_for_hierarchy_report()
+    manager = get_db_manager()
+#    LoadData(manager).load_data_for_hierarchy_report()
+    data_set=DataFormatter()
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
         if form.is_valid():
@@ -59,7 +62,8 @@ def hierarchy_report(request):
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
-            tabulate_output(form, report_data,"Path")
+            print report_data
+            data_set.tabulate_output(report_data,"Path")
     else:
         form = ReportHierarchy()
 
@@ -68,8 +72,8 @@ def hierarchy_report(request):
 #                             aggregate_on={'type': 'location', "level": 2},
 #                             )
 
-    _delete_db_and_remove_db_manager(manager)
-    return render_to_response('reports/reportperhierarchypath.html', {'form': form},
+#    _delete_db_and_remove_db_manager(manager)
+    return render_to_response('reports/reportperhierarchypath.html', {'form': form,'data_set':data_set},
                           context_instance=RequestContext(request))
 
 class LoadData:
