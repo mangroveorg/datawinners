@@ -30,23 +30,20 @@ def report(request):
     return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,'column_values':values},
                               context_instance=RequestContext(request))
 
-class DataFormatter(object):
-
-    def tabulate_output(self, report_data,first_column_name):
-        for id, record in report_data.items():
-            record[first_column_name] = id
-        id, info = report_data.items()[0] if report_data.items() else ("", {})
-        self.column_headers = info.keys()
-        self.column_headers.sort()
-        information = [v for k, v in report_data.items()]
-        self.values = []
-        for row in information:
-            self.values.append([row[h] for h in self.column_headers])
-        return self.column_headers,self.values
+def tabulate_output(report_data,first_column_name):
+    for id, record in report_data.items():
+        record[first_column_name] = id
+    id, info = report_data.items()[0] if report_data.items() else ("", {})
+    column_headers = info.keys()
+    column_headers.sort()
+    information = [v for k, v in report_data.items()]
+    values = []
+    for row in information:
+        values.append([row[h] for h in column_headers])
+    return column_headers,values
 
 def hierarchy_report(request):
     manager = get_db_manager()
-    data_set=DataFormatter()
     column_headers,values = [],[]
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
@@ -61,7 +58,7 @@ def hierarchy_report(request):
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
-            column_headers,values = data_set.tabulate_output(report_data,"Path")
+            column_headers,values = tabulate_output(report_data,"Path")
     else:
         form = ReportHierarchy()
 
