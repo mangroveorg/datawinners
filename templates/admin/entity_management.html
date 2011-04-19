@@ -10,13 +10,13 @@
                  {{ message }}
              </div>
         {% endif %}
-        <fieldset ><legend>Create an Entity</legend>
+        <fieldset ><legend>Define an Entity</legend>
             <form id="entity_creation_form" action="" method="POST">
                 {% csrf_token %}
                     <div class="span-16 form-5px">
                         <div class="span-7 column border">
                             <div>
-                                <h3 class="title">Create an Entity<br/><br/></h3>
+                                <h3 class="title">Define an Entity<br/><br/></h3>
                             </div>
                             <div class="{{ form.entity_type.css_classes }} form-row-10px">
                                 {{ form.entity_type.label_tag }}<br/>
