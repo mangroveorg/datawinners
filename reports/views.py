@@ -1,21 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.forms.widgets import Select
 
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore import data
+from mangrove.datastore.entity import load_all_entity_types
 from reports.forms import Report, ReportHierarchy
 from mangrove.datastore.database import get_db_manager
 
 
 def report(request):
     manager = get_db_manager()
-    data_set=DataFormatter()
     column_headers = []
     values = []
     if request.method == 'POST':
         form = Report(request.POST)
         if form.is_valid():
-            entity_type = form.cleaned_data['entity_type'].split(",")
+            entity_type = form.cleaned_data['entity_type'].split(".")
             filter_criteria = form.cleaned_data['filter']
             filter = {'location': filter_criteria.split(",")} if filter_criteria else None
             report_data = data.fetch(manager, entity_type=entity_type,
@@ -24,7 +25,7 @@ def report(request):
                                                  "patients": "sum"},
                                      filter=filter
             )
-            column_headers,values = data_set.tabulate_output(report_data,"Clinic_id")
+            column_headers,values = tabulate_output(report_data,"Clinic_id")
     else:
         form = Report()
     return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,'column_values':values},

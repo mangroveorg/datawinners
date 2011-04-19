@@ -1,8 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.forms.fields import CharField,IntegerField
+from django.forms.fields import CharField,IntegerField, ChoiceField
 from django.forms.forms import Form
 from django import forms
+from django.forms.models import fields_for_model
+from django.forms.widgets import Select
+from mangrove.datastore.database import get_db_manager
+from mangrove.datastore.entity import load_all_entity_types
 
 
 class ReportHierarchy(Form):
@@ -19,8 +23,20 @@ class ReportHierarchy(Form):
 class Report(Form):
     error_css_class = 'error'
     required_css_class = 'required'
-    
-    entity_type = CharField(required=True,label='Entity Type')
     filter = CharField(required=False,label='Filter')
+    entity_type = ChoiceField(label="Entity type", required=True)
+
+    def get_entity_types(self):
+        manager = get_db_manager()
+        type_dict = load_all_entity_types(manager)
+        type_list = [(k, v) for k, v in type_dict.items()]
+        return type_list
+
+    def __init__(self, *args, **kwargs):
+        super(Report, self).__init__(*args, **kwargs)
+        type_list = self.get_entity_types()
+        self.fields['entity_type']._set_choices(type_list)
+
+
     
 
