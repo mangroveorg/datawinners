@@ -1,7 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block page_title %} Login {% endblock %}
-
+{% block page_js %}
+    <script type="text/javascript" >
+        $(document).ready(function(){
+            $('#logout_link').hide()
+        })
+    </script>
+{% endblock %}
 {% block messages %}
     {% if form.errors and not form.username.errors and not form.password.errors %}
         <div class=" error span-12 push-6 message-box">
@@ -32,7 +38,7 @@
                         </div>
                         <div class="span-8">
                             <input type="submit" value="Login"/>
-                            <div class="span-8 last">Not registered? <a href="/register">We can fix that!</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
+                            <div class="span-8 last">Not registered? <a href="/register">Create an account</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
                         </div>
                     </div>
                 </div>
