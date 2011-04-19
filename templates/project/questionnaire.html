@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Create a Questionnaire {% endblock %}
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="span-24 box">
+        <div id="questions-panel" class="span-6 first">
+        </div>
+        <div id="question-detail-panel" class="span-18 last">
+        </div>
+        <div>
+            <a id="add-question">Add Question</a>
+        </div>
+    </div>
+    <div id="question-template" class="hide">
+        <div class="question-master">
+            <a class="question-link">
+                <span class="question-title">Sample question.</span>
+                <span class="question-code">#Question Code#</span>
+            </a>
+        </div>
+        <div class="question-detail hide">
+            <div>
+                <label>Question</label>
+                <input class="question-title" />
+            </div>
+            
+            <div>
+                <label>Question Code</label>
+                <input class="question-code" />
+            </div>
+
+            <div>
+                <label>Answer type</label>
+                <input type="radio" name="answer-group" value="Date">Date</input>
+                <input type="radio" name="answer-group" value="integer">Number</input>
+                <input type="radio" name="answer-group" value="string">Word or Phrase</input>
+                <input type="radio" name="answer-group" value="multiplechoice"> List of Choices</input>
+                <div class="choices hide">
+                    <p><input class="answer-choice"></p>
+                    <a class="add-choice-link">Add Choice</a>
+                </div>
+            </div>
+            <p>
+                <input type="button" class="update-question" value="Update Question">
+            </p>
+        </div>
+    </div>
+{% endblock %}
