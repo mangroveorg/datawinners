@@ -1,5 +1,4 @@
 import re
-from mangrove.datastore.question import TextQuestion
 
 def create_question_list(post_dict):
     keys = post_dict.keys()
