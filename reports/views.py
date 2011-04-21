@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.contrib.auth.decorators import login_required
 from django.forms.widgets import Select
 
 from django.shortcuts import render_to_response
@@ -8,7 +9,7 @@ from mangrove.datastore.entity import load_all_entity_types
 from reports.forms import Report, ReportHierarchy
 from mangrove.datastore.database import get_db_manager
 
-
+@login_required(login_url='/login')
 def report(request):
     manager = get_db_manager()
     column_headers = []
@@ -43,6 +44,7 @@ def tabulate_output(report_data,first_column_name):
         values.append([row[h] for h in column_headers])
     return column_headers,values
 
+@login_required(login_url='/login')
 def hierarchy_report(request):
     manager = get_db_manager()
     column_headers,values = [],[]
