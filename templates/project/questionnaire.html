@@ -6,17 +6,59 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
-        <div class="span-24 box">
-            <form action="/project/questionnaire/save" method="POST">
-
-        <div id="questions-panel" class="span-6 first">
+    <div class="span-24 box">
+        <div id="questions-panel" class="span-6 first" >
+            <div data-bind="template: 'question-list-template'" class="first">                
+            </div>
+            <div class="last">
+                <a href="#" data-bind="click: function() { viewModel.addQuestion(); }">Add a Question</a>
+            </div>
         </div>
-            </form>
-
         <div id="question-detail-panel" class="span-18 last">
+            <table>
+                <tr>
+                    <td>
+                        Question
+                    </td>
+                    <td>
+                        <input data-bind="value: selectedQuestion.title"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Code
+                    </td>
+                    <td>
+                        <input data-bind="value: selectedQuestion.code"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Description
+                    </td>
+                    <td>
+                        <input data-bind="value: selectedQuestion.description"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Type
+                    </td>
+                    <td>
+                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion.type" /> Text</div>
+                        <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion.type" /> Number</div>
+                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion.type" /> Choice</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+{#                        <a href="#" data-bind="click: function() { viewModel.updateQuestion(); }">Update Question</a>#}
+                    </td>
+                </tr>
+            </table>
         </div>
         <div>
-            <a id="add-question">Add Question</a>
+
         </div>
     </div>
     <div id="question-template" class="hide">
@@ -31,7 +73,7 @@
                 <label>Question</label>
                 <input class="question-title" name="question-title"/>
             </div>
-            
+
             <div>
                 <label>Question Code</label>
                 <input class="question-code" name="question-code"/>
@@ -53,5 +95,19 @@
             </p>
         </div>
     </div>
-        <input id = "submit-button" type="button" value ="Save Questionnaire"/>
-       {% endblock %}
+    <input id="submit-button" type="button" value="Save Questionnaire"/>
+
+    <script type="text/html" id="choice-template">
+    </script>
+    <script type="text/html" id="question-list-template">
+        <table>
+            {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
+                <p>
+                    <a href="#" data-bind="text: displayQuestion">
+                    </a>
+                    <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
+                </p>
+            {% templatetag openvariable %}/each{% templatetag closevariable %}
+        </table>
+    </script>
+{% endblock %}
