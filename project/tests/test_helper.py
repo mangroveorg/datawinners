@@ -1,6 +1,6 @@
 import unittest
 from datawinners.project.helper import create_question_list
-from mangrove.datastore.question import TextQuestion
+#from mangrove.datastore.question import TextQuestion
 
 class TestHelper(unittest.TestCase):
     def test_creates_question_list_from_dict(self):
