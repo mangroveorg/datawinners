@@ -24,6 +24,7 @@ class Report(Form):
     error_css_class = 'error'
     required_css_class = 'required'
     filter = CharField(required=False,label='Filter')
+    aggregates_field = CharField(required=True,label="Field")
     entity_type = ChoiceField(label="Entity type", required=True)
 
     def get_entity_types(self):

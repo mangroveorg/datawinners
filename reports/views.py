@@ -20,11 +20,10 @@ def report(request):
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type'].split(".")
             filter_criteria = form.cleaned_data['filter']
+            aggregates_field = form.cleaned_data['aggregates_field']
             filter = {'location': filter_criteria.split(",")} if filter_criteria else None
             report_data = data.fetch(manager, entity_type=entity_type,
-                                     aggregates={"director":data.reduce_functions.LATEST,
-                                                 "beds": "latest",
-                                                 "patients": "sum"},
+                                     aggregates={aggregates_field:data.reduce_functions.LATEST},
                                      filter=filter
             )
             column_headers,values = tabulate_output(report_data,"Clinic_id")
