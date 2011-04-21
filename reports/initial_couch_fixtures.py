@@ -1,14 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
-from mangrove.datastore.entity import Entity
+from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
+from mangrove.datastore.exceptions import EntityTypeAlreadyDefined
 
 def load_data():
     manager = get_db_manager()
     ENTITY_TYPE = ["Health_Facility", "Clinic"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
+
+
+    #  Default Entity Types
+    try:
+        define_type(manager, "Reporter")
+    except EntityTypeAlreadyDefined:
+        pass
 
     # Entities for State 1: Maharashtra
     e = Entity(manager, entity_type=ENTITY_TYPE, location=['India', 'MH', 'Pune'])
@@ -59,5 +67,7 @@ def load_data():
     e.save()
     e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. C"), ("patients", 12)],
                event_time=MARCH)
+
+
 
   
