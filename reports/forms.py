@@ -23,7 +23,7 @@ class ReportHierarchy(Form):
 class Report(Form):
     error_css_class = 'error'
     required_css_class = 'required'
-    filter = CharField(required=False,label='Filter')
+    filter = CharField(required=False,label='Location Filter (e.g India,MH)')
     aggregates_field = CharField(required=True,label="Field")
     entity_type = ChoiceField(label="Entity type", required=True)
 
