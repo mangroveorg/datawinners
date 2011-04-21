@@ -23,16 +23,36 @@ $(document).ready(function(){
             $('#question-detail-panel input[type=radio][value=' + option + ']').checked();
         });
         
-        $('#question-detail-panel input[value!=multiplechoice][type=radio]').unbind('click').click(function(){
+        $('#question-detail-panel input[value!=select1][type=radio]').unbind('click').click(function(){
             $('#question-detail-panel .choices').hide();
         });
         
-        $('#question-detail-panel input[value=multiplechoice][type=radio]').unbind('click').click(function(){
+        $('#question-detail-panel input[value=select1][type=radio]').unbind('click').click(function(){
             $('#question-detail-panel .choices input').remove();
             $('#question-detail-panel .choices').show();
             $('#question-detail-panel .choices .add-choice-link').unbind('click').click(function(){
                 $('<p><input class="answer-choice"></p>').insertBefore($(this));
             });
         });
+
+    });
+
+    $('#submit-button').click(function(){
+       //read the question-list panel
+        var questionsToPost = $('#questions-panel .question-detail').clone(true).show();
+        var counter = 0;
+        questionsToPost.each(function(){
+            $(this).find('input[name]').each(function(){
+                $(this).attr('name', $(this).attr('name') + '[' + counter + ']');
+            });
+            counter++;
+        });
+        var myForm = $('<form></form>').append(questionsToPost).append($('input[type=hidden][name=csrfmiddlewaretoken]'));
+        jQuery.post('/project/questionnaire/save',myForm.serialize());
+        
+
+       //append it to a form
+        //serialize the form
+        //submit the form
     });
 })
