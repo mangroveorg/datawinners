@@ -14,6 +14,7 @@ def report(request):
     manager = get_db_manager()
     column_headers = []
     values = []
+    error_message = None
     if request.method == 'POST':
         form = Report(request.POST)
         if form.is_valid():
@@ -27,9 +28,12 @@ def report(request):
                                      filter=filter
             )
             column_headers,values = tabulate_output(report_data,"Clinic_id")
+            if not len(values):
+                error_message = 'Sorry, No records found for this query'
     else:
         form = Report()
-    return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,'column_values':values},
+    return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,
+                                                                 'column_values':values,'error_message':error_message},
                               context_instance=RequestContext(request))
 
 def tabulate_output(report_data,first_column_name):

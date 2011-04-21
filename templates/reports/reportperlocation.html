@@ -36,5 +36,8 @@
                 </tr>
             {% endfor %}
         </table>
+        {% if error_message %}
+        <div class="error">{{ error_message }}</div>
+        {% endif %}
     </div>
 {% endblock %}
