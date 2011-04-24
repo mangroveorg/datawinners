@@ -13,6 +13,7 @@ $(document).ready(function(){
         },
         removeQuestion: function(question){
             viewModel.questions.remove(question);
+            viewModel.changeSelectedQuestion(viewModel.questions()[0]);
         },
         addOptionToQuestion: function(question){
             question.choices.push('');
@@ -20,13 +21,16 @@ $(document).ready(function(){
         },
         selectedQuestion: ko.observable({}),
         changeSelectedQuestion: function(question){
-            viewModel.selectedQuestion = question;
+            viewModel.selectedQuestion(question);
             viewModel.selectedQuestion.valueHasMutated();
             viewModel.questions.valueHasMutated();
         }
     };
+    viewModel.addQuestion();
+
     viewModel.displayQuestion =ko.dependentObservable(function(){
-            return (viewModel.questions[0].title);
-    });
-        ko.applyBindings(viewModel);
+            return this.selectedQuestion().title();
+    },viewModel);
+
+    ko.applyBindings(viewModel);
 })

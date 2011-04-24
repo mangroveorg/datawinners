@@ -21,7 +21,7 @@
                         Question
                     </td>
                     <td>
-                        <input data-bind="value: selectedQuestion.title"/>
+                        <input data-bind="value: selectedQuestion().title"/>
                     </td>
                 </tr>
                 <tr>
@@ -29,7 +29,7 @@
                         Code
                     </td>
                     <td>
-                        <input data-bind="value: selectedQuestion.code"/>
+                        <input data-bind="value: selectedQuestion().code"/>
                     </td>
                 </tr>
                 <tr>
@@ -37,7 +37,7 @@
                         Description
                     </td>
                     <td>
-                        <input data-bind="value: selectedQuestion.description"/>
+                        <input data-bind="value: selectedQuestion().description"/>
                     </td>
                 </tr>
                 <tr>
@@ -45,9 +45,9 @@
                         Type
                     </td>
                     <td>
-                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion.type" /> Text</div>
-                        <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion.type" /> Number</div>
-                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion.type" /> Choice</div>
+                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" /> Text</div>
+                        <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" /> Number</div>
+                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type" /> Choice</div>
                     </td>
                 </tr>
                 <tr>
@@ -103,7 +103,7 @@
         <table>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
                 <p>
-                    <a href="#" data-bind="text: displayQuestion">
+                    <a href="#" data-bind="text: question.title">
                     </a>
                     <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
                 </p>
