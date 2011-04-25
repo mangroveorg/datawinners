@@ -53,8 +53,8 @@ $(document).ready(function(){
     viewModel.addQuestion();
     ko.applyBindings(viewModel);
 
-    $('#question-detail-panel .choice-question-checkbox').live('click', function() {
-        viewModel.selectedQuestion().choices([]);
-        viewModel.selectedQuestion().choices.valueHasMutated();
+    $("#submit-button").click(function(){
+        var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
+        $.post('/project/questionnaire/save', data);
     });
 })

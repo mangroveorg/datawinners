@@ -12,9 +12,12 @@ def questionnaire(request):
     return render_to_response('project/questionnaire.html', context_instance=RequestContext(request))
 
 def save_questionnaire(request):
+#    if request.POST:
+
     print "hello world"
-    q_list=helper.create_question_list(request.POST)
-    #Build Questions
+    print request.POST
+#    q_list=helper.create_question_list(request.POST)
+#    #Build Questions
     #Todo Check for type of each in q_list and generate Integer Q/ Text Q etc
 
     #questionnaire = Questionnaire(get_db_manager(), entity_id = "Tadaaaaaaa!",name="aids", label="Aids Questionnaire",

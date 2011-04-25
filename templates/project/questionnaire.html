@@ -47,7 +47,7 @@
                     <td>
                         <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" /> Word or Phrase</div>
                         <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" /> Number</div>
-                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type" class="choice-question-checkbox" /> List of Choices</div>
+                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type,click:function(){ viewModel.clearChoices(); return true;}" class="choice-question-checkbox" /> List of Choices</div>
                     </td>
                 </tr>
                 <tr data-bind="visible: viewModel.showAddChoice()">
