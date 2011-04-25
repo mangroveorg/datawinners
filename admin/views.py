@@ -6,7 +6,7 @@ from django.template.context import RequestContext
 from admin.forms import EntityTypeForm
 from mangrove.datastore.entity import define_type
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.exceptions import EntityTypeAlreadyDefined
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 
 @login_required(login_url='/login')
 def create_entity(request):

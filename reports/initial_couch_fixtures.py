@@ -3,7 +3,7 @@ import datetime
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
-from mangrove.datastore.exceptions import EntityTypeAlreadyDefined
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 
 def load_data():
     manager = get_db_manager()
