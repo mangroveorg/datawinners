@@ -44,9 +44,17 @@ $(document).ready(function(){
             viewModel.selectedQuestion(question);
             viewModel.selectedQuestion.valueHasMutated();
             viewModel.questions.valueHasMutated();
+        },
+        clearChoices: function(){
+            viewModel.selectedQuestion().choices([]);
         }
 
     };
     viewModel.addQuestion();
     ko.applyBindings(viewModel);
+
+    $('#question-detail-panel .choice-question-checkbox').live('click', function() {
+        viewModel.selectedQuestion().choices([]);
+        viewModel.selectedQuestion().choices.valueHasMutated();
+    });
 })
