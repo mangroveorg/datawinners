@@ -45,14 +45,21 @@
                         Type
                     </td>
                     <td>
-                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" /> Text</div>
+                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" /> Word or Phrase</div>
                         <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" /> Number</div>
-                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type" /> Choice</div>
+                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type" /> List of Choices</div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-{#                        <a href="#" data-bind="click: function() { viewModel.updateQuestion(); }">Update Question</a>#}
+                <tr data-bind="visible: viewModel.showAddChoice()">
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <div>
+                            <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
+                            <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -61,49 +68,19 @@
 
         </div>
     </div>
-    <div id="question-template" class="hide">
-        <div class="question-master">
-            <a class="question-link">
-                <span class="question-title">Sample question.</span>
-                <span class="question-code">#Question Code#</span>
-            </a>
-        </div>
-        <div class="question-detail hide">
-            <div>
-                <label>Question</label>
-                <input class="question-title" name="question-title"/>
-            </div>
-
-            <div>
-                <label>Question Code</label>
-                <input class="question-code" name="question-code"/>
-            </div>
-
-            <div>
-                <label>Answer type</label>
-                <input type="radio" name="answer-group" value="date">Date</input>
-                <input type="radio" name="answer-group" value="integer">Number</input>
-                <input type="radio" name="answer-group" value="text">Word or Phrase</input>
-                <input type="radio" name="answer-group" value="select1"> List of Choices</input>
-                <div class="choices hide">
-                    <p><input class="answer-choice"></p>
-                    <a class="add-choice-link">Add Choice</a>
-                </div>
-            </div>
-            <p>
-                <input type="button" class="update-question" value="Update Question">
-            </p>
-        </div>
-    </div>
     <input id="submit-button" type="button" value="Save Questionnaire"/>
-
     <script type="text/html" id="choice-template">
+            <p>
+                <input  data-bind="value: value" />
+                <a href="#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}" >Delete</a>
+                
+            </p>
     </script>
     <script type="text/html" id="question-list-template">
         <table>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
                 <p>
-                    <a href="#" data-bind="text: question.title">
+                    <a href="#" data-bind="text: question.display, click: function() { viewModel.changeSelectedQuestion(question); } ">
                     </a>
                     <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
                 </p>
