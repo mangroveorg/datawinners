@@ -3,6 +3,7 @@
 {% block page_title %} Create a Questionnaire {% endblock %}
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
 {% endblock %}
 {% block content %}
     {% csrf_token %}
