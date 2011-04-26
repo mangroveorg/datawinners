@@ -1,3 +1,5 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from mangrove.datastore.field import TextField, IntegerField, SelectField
 from mangrove.datastore.form_model import FormModel
 

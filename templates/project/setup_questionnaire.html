@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block page_title %} Setup the Project {% endblock %}
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="span-24 box">
+    <form action="" method="POST">
+    <div class="{{ form.name.css_classes  }} form-row-10px">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    <div class="{{ form.entity_type.css_classes  }} form-row-10px">
+        {{ form.entity_type.label_tag }}
+        {{ form.entity_type }}
+        {{ form.entity_type.errors }}
+    </div>
+     <div class="{{ form.questionnaire_type.css_classes  }} form-row-10px">
+        {{ form.questionnaire_type.label_tag }}
+        {{ form.questionnaire_type }}
+        {{ form.questionnaire_type.errors }}
+    </div>
+    <div class="span-8">
+        <input type="submit" value="Next"/>
+    </div>
+    </form>
+</div>
+{% endblock %}
