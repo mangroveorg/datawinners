@@ -59,9 +59,9 @@
                     </td>
                     <td>
                         <div>
-                            <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
                             <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
                             </div>
+                            <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
                         </div>
                     </td>
                 </tr>
@@ -85,7 +85,9 @@
                 <p>
                     <a href="#" data-bind="text: question.display, click: function() { viewModel.changeSelectedQuestion(question); } ">
                     </a>
+                    <span data-bind="visible: viewModel.canQuestionBeDeleted()">
                     <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
+                    </span>
                 </p>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
         </table>

@@ -21,7 +21,9 @@ $(document).ready(function(){
             viewModel.selectedQuestion.valueHasMutated();
             viewModel.questions.valueHasMutated();
         },
-
+        canQuestionBeDeleted: function(){
+            return viewModel.questions().length>1
+        },
         removeQuestion: function(question){
             viewModel.questions.remove(question);
             viewModel.changeSelectedQuestion(viewModel.questions()[0]);
