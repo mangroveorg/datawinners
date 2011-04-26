@@ -8,7 +8,14 @@
     {% include 'javascript.html' %}
     {% block page_js %} {% endblock %}
     {% include 'css.html' %}
+    {% load compress %}
+    {% compress css %}
+        {% include 'scss.html' %}
+        {% block page_scss %} {% endblock %}
+    {% endcompress %}
     {% block page_css %} {% endblock %}
+
+
 </head>
 <body>
     {% block body %} {% endblock %}
