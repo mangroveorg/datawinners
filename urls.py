@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     (r'',include('datawinners.reports.urls')),
     (r'',include('datawinners.admin.urls')),
     (r'',include('datawinners.project.urls')),
+    (r'',include('datawinners.smstester.urls')),
     # Examples:
     # url(r'^$', 'web.views.home', name='home'),
     # url(r'^web/', include('web.foo.urls')),
