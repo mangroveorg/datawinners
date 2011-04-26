@@ -1,58 +1,60 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+var viewModel = null;
 $(document).ready(function(){
+    function Question(){
+                        this.title=ko.observable('default');
+                        this.code=ko.observable('default');
+                        this.description=ko.observable('');
+                        this.type=ko.observable('text');
+                        this.choices= ko.observableArray([]);
+                        }
+    viewModel =
+    {
+        questions : ko.observableArray([]),
+        addQuestion : function(){
+            var question = new Question();
+            question.display = ko.dependentObservable(function(){
+                                        return this.title() + ' ' + this.code();
+                                       }, question);
+            viewModel.questions.push(question);
+            viewModel.selectedQuestion(question);
+            viewModel.selectedQuestion.valueHasMutated();
+            viewModel.questions.valueHasMutated();
+        },
 
-    $('#add-question').click(function(){
-        // Copy question template to question
-        var question = $('#question-template').clone().removeAttr('id').show();
-        //Append the question to question list and detail to the detail
-        var questionDetail = question.find('.question-detail').clone().removeClass('hide');
-        $('#question-detail-panel').empty();
-        $('#questions-panel').append(question);
-        $('#question-detail-panel').append(questionDetail);
+        removeQuestion: function(question){
+            viewModel.questions.remove(question);
+            viewModel.changeSelectedQuestion(viewModel.questions()[0]);
+        },
+        showAddChoice:function(){
+            return viewModel.selectedQuestion().type() == 'choice';
+        },
+        addOptionToQuestion: function(){
+            viewModel.selectedQuestion().choices.push({value:''});
+            viewModel.selectedQuestion().choices.valueHasMutated();
+            viewModel.selectedQuestion.valueHasMutated();
+            viewModel.questions.valueHasMutated();
+        },
+        removeOptionFromQuestion:function(choice){
+            viewModel.selectedQuestion().choices.remove(choice);
+            viewModel.selectedQuestion.valueHasMutated();
+        },
+        selectedQuestion: ko.observable({}),
+        changeSelectedQuestion: function(question){
+            viewModel.selectedQuestion(question);
+            viewModel.selectedQuestion.valueHasMutated();
+            viewModel.questions.valueHasMutated();
+        },
+        clearChoices: function(){
+            viewModel.selectedQuestion().choices([]);
+        }
 
-        $('#question-detail-panel .update-question').unbind('click').click(function(){
-            question.find('.question-detail').replaceWith($('#question-detail-panel .question-detail').clone(true).hide());
-            question.find('.question-master span.question-title').text(question.find('.question-detail input.question-title').val());
-            question.find('.question-master span.question-code').text(question.find('.question-detail input.question-code').val());
-        });
+    };
+    viewModel.addQuestion();
+    ko.applyBindings(viewModel);
 
-        question.find('.question-master a.question-link').unbind('click').click(function(){
-            $('#question-detail-panel').empty();
-            $('#question-detail-panel').append(question.find('.question-detail').clone(true).show());
-            var option= question.find('#question-detail input[type=radio]:checked').val();
-            $('#question-detail-panel input[type=radio][value=' + option + ']').checked();
-        });
-        
-        $('#question-detail-panel input[value!=select1][type=radio]').unbind('click').click(function(){
-            $('#question-detail-panel .choices').hide();
-        });
-        
-        $('#question-detail-panel input[value=select1][type=radio]').unbind('click').click(function(){
-            $('#question-detail-panel .choices input').remove();
-            $('#question-detail-panel .choices').show();
-            $('#question-detail-panel .choices .add-choice-link').unbind('click').click(function(){
-                $('<p><input class="answer-choice"></p>').insertBefore($(this));
-            });
-        });
-
-    });
-
-    $('#submit-button').click(function(){
-       //read the question-list panel
-        var questionsToPost = $('#questions-panel .question-detail').clone(true).show();
-        var counter = 0;
-        questionsToPost.each(function(){
-            $(this).find('input[name]').each(function(){
-                $(this).attr('name', $(this).attr('name') + '[' + counter + ']');
-            });
-            counter++;
-        });
-        var myForm = $('<form></form>').append(questionsToPost).append($('input[type=hidden][name=csrfmiddlewaretoken]'));
-        jQuery.post('/project/questionnaire/save',myForm.serialize());
-        
-
-       //append it to a form
-        //serialize the form
-        //submit the form
+    $("#submit-button").click(function(){
+        var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
+        $.post('/project/questionnaire/save', data,function(response){$("#message-label").append("<label>"+response+"</label>")});
     });
 })
