@@ -20,3 +20,4 @@ def save_questionnaire(request):
         post_dictionary =json.loads(request.POST.keys()[0])
         form_model=helper.create_questionnaire(post_dictionary, get_db_manager())
         form_model.save()
+    return HttpResponse("Your questionnaire has been saved")

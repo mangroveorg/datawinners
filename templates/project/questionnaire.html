@@ -7,6 +7,8 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
+    <div id="message-label">
+    </div>
     <div class="span-24 box">
         <div id="questions-panel" class="span-6 first" >
             <div data-bind="template: 'question-list-template'" class="first">                
