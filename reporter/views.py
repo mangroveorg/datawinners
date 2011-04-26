@@ -16,11 +16,9 @@ def register(request):
     form = ReporterRegistrationForm(request.POST)
     message = None
     if form.is_valid():
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
         form_data = form.cleaned_data
         data =form_data.items()
-        registered_reporter = datarecord.register(manager=get_db_manager(),entity_type=[organization.name, "Reporter"], data=data, location=[],
+        registered_reporter = datarecord.register(manager=get_db_manager(),entity_type=["Reporter"], data=data, location=[],
                                                   source="Web")
         form = ReporterRegistrationForm()
         message = "The reporter was successfully registered with id %s" % registered_reporter.id

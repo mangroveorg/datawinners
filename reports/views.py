@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.contrib.auth.decorators import login_required
 from django.forms.widgets import Select
 
 from django.shortcuts import render_to_response
@@ -8,27 +9,30 @@ from mangrove.datastore.entity import load_all_entity_types
 from reports.forms import Report, ReportHierarchy
 from mangrove.datastore.database import get_db_manager
 
-
+@login_required(login_url='/login')
 def report(request):
     manager = get_db_manager()
     column_headers = []
     values = []
+    error_message = None
     if request.method == 'POST':
         form = Report(request.POST)
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type'].split(".")
             filter_criteria = form.cleaned_data['filter']
+            aggregates_field = form.cleaned_data['aggregates_field']
             filter = {'location': filter_criteria.split(",")} if filter_criteria else None
             report_data = data.fetch(manager, entity_type=entity_type,
-                                     aggregates={"director":data.reduce_functions.LATEST,
-                                                 "beds": "latest",
-                                                 "patients": "sum"},
+                                     aggregates={aggregates_field:data.reduce_functions.LATEST},
                                      filter=filter
             )
             column_headers,values = tabulate_output(report_data,"Clinic_id")
+            if not len(values):
+                error_message = 'Sorry, No records found for this query'
     else:
         form = Report()
-    return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,'column_values':values},
+    return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,
+                                                                 'column_values':values,'error_message':error_message},
                               context_instance=RequestContext(request))
 
 def tabulate_output(report_data,first_column_name):
@@ -43,6 +47,7 @@ def tabulate_output(report_data,first_column_name):
         values.append([row[h] for h in column_headers])
     return column_headers,values
 
+@login_required(login_url='/login')
 def hierarchy_report(request):
     manager = get_db_manager()
     column_headers,values = [],[]

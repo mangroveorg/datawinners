@@ -16,6 +16,12 @@
                             {{ form.filter }}
                             {{ form.filter.errors }}
                         </div>
+                        <div class="{{ form.aggregates_field.css_classes  }} form-row-10px">
+                            {{ form.aggregates_field.label_tag }}
+                            {{ form.aggregates_field }}
+                            {{ form.aggregates_field.errors }}
+                        </div>
+
                         <div class="span-8">
                             <input type="submit" value="Report"/>
                         </div>
@@ -36,5 +42,8 @@
                 </tr>
             {% endfor %}
         </table>
+        {% if error_message %}
+        <div class="error">{{ error_message }}</div>
+        {% endif %}
     </div>
 {% endblock %}
