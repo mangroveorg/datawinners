@@ -10,7 +10,6 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.form_model import FormModel
 
 @login_required(login_url='/login')
-
 def questionnaire(request):
 
     return render_to_response('project/questionnaire.html', context_instance=RequestContext(request))
