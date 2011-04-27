@@ -25,9 +25,9 @@ def load_questionnaire(questionnaire_id):
 
 
 def save_questionnaire(form_model,post_dictionary):
+    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on",entity_question_flag=True)
     form_model.delete_all_questions()
-    print "reached here"
     for question in post_dictionary:
         form_model.add_question(create_question(question))
-    print "reached here"
+    form_model.add_question(entity_id_question)
     return form_model
