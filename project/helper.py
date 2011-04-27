@@ -1,7 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from mangrove.datastore.database import get_db_manager
 
 from mangrove.datastore.field import TextField, IntegerField, SelectField
-from mangrove.datastore.form_model import FormModel
+from mangrove.datastore.form_model import FormModel, get
 
 def create_question(post_dict):
     if post_dict["type"]=="text":
@@ -13,9 +14,20 @@ def create_question(post_dict):
         return SelectField(post_dict["title"],post_dict["code"],post_dict["description"],options)
 
 
-def create_questionnaire(post,dbm):
-    question_list=[]
-    for each in post:
-        question_list.append(create_question(each))
-    return FormModel(dbm, entity_type_id="SomeType", name="SomeName", label="Some model",
-                                    form_code="1", type='Sometype', fields=question_list)
+def create_questionnaire(post,dbm=get_db_manager()):
+    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on")
+    return FormModel(dbm, entity_type_id=post["entity_type"], name=post["name"], label="Some model",
+                                    form_code=post["questionnaire_code"], type=post["questionnaire_type"], fields=[entity_id_question])
+
+
+def load_questionnaire(questionnaire_id):
+    return get(get_db_manager(), questionnaire_id)
+
+
+def save_questionnaire(form_model,post_dictionary):
+    form_model.delete_all_questions()
+    print "reached here"
+    for question in post_dictionary:
+        form_model.add_question(create_question(question))
+    print "reached here"
+    return form_model

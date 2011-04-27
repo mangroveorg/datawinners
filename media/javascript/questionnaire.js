@@ -1,24 +1,30 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-var viewModel = null;
-$(document).ready(function(){
-    function Question(){
-                        this.title=ko.observable('default');
-                        this.code=ko.observable('default');
-                        this.description=ko.observable('');
-                        this.type=ko.observable('text');
-                        this.choices= ko.observableArray([]);
+//var viewModel = null;
+function Question(title,code,description,type,choices){
+                        this.title=ko.observable(title);
+                        this.code=ko.observable(code);
+                        this.description=ko.observable(description);
+                        this.type=ko.observable(type);
+                        this.choices= ko.observableArray(choices);
                         }
-    viewModel =
+ var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question();
+            var question = new Question("Question","code","","text",[]);
             question.display = ko.dependentObservable(function(){
                                         return this.title() + ' ' + this.code();
                                        }, question);
             viewModel.questions.push(question);
             viewModel.selectedQuestion(question);
             viewModel.selectedQuestion.valueHasMutated();
+            viewModel.questions.valueHasMutated();
+        },
+        loadQuestion: function(question){
+            question.display = ko.dependentObservable(function(){
+                                        return this.title() + ' ' + this.code();
+                                       }, question);
+            viewModel.questions.push(question);
             viewModel.questions.valueHasMutated();
         },
         canQuestionBeDeleted: function(){
@@ -52,6 +58,8 @@ $(document).ready(function(){
         }
 
     };
+
+$(document).ready(function(){
     viewModel.addQuestion();
     ko.applyBindings(viewModel);
 

@@ -1,11 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
+from django.db import database
 from datawinners.project import helper
 #from mangrove.datastore.question import TextQuestion
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.field import TextField, SelectField, IntegerField
-from mangrove.datastore.form_model import FormModel
+from mangrove.datastore.form_model import FormModel, get
 
 class TestHelper(unittest.TestCase):
 
@@ -21,9 +22,13 @@ class TestHelper(unittest.TestCase):
         self.assertIsInstance(q2,IntegerField)
         self.assertIsInstance(q3,SelectField)
 
-    def test_should_create_questionnaire_from_post(self):
+    def test_should_save_questionnaire_from_post(self):
         post = [{ "title":"q1", "code":"qc1", "description":"desc1", "type":"text", "choices":[] },
-                { "title":"q2", "code":"qc2", "description":"desc2", "type":"integer", "choices":[] }]
-        questionnaire = helper.create_questionnaire(post,get_db_manager())
-        self.assertIsNotNone(questionnaire.fields)
+                { "title":"q2", "code":"qc2", "description":"desc2", "type":"integer", "choices":[] },
+                { "title":"q3", "code":"qc3", "description":"desc3", "type":"choice", "choices":[{ "value":"c1" }, { "value":"c2" } ]}
+               ]
+        q1=helper.create_question(post[0])
+        form_model=FormModel(get_db_manager(),"test","test","test",[q1],"test","test")
+        questionnaire = helper.save_questionnaire(form_model,post)
+        self.assertEqual(3,len(questionnaire.fields))
 

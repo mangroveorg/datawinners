@@ -8,6 +8,7 @@ class ProjectSetUp(Form):
     name=CharField(required=True)
     entity_type=ChoiceField(label="Entity type", required=True)
     questionnaire_type=CharField(required=True)
+    questionnaire_code = CharField(label="Questionnaire Code",required=True)
     def get_entity_types(self):
             manager = get_db_manager()
             type_dict = load_all_entity_types(manager)

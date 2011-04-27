@@ -4,20 +4,30 @@
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript">
+     var question_list=JSON.parse('{{existing_questions|safe}}');
+     question_list.forEach(function(question){
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[]));
+     });
+     </script>
 {% endblock %}
+
+
+
 {% block content %}
     {% csrf_token %}
     <div id="message-label">
     </div>
     <div class="span-24 box">
         <div id="questions-panel" class="span-6 first" >
-            <div data-bind="template: 'question-list-template'" class="first">                
+            <div data-bind="template: 'question-list-template'" class="first">
             </div>
             <div class="last">
                 <a href="#" data-bind="click: function() { viewModel.addQuestion(); }">Add a Question</a>
             </div>
         </div>
         <div id="question-detail-panel" class="span-18 last">
+
             <table>
                 <tr>
                     <td>
@@ -48,9 +58,9 @@
                         Type
                     </td>
                     <td>
-                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" /> Word or Phrase</div>
-                        <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" /> Number</div>
-                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type,click:function(){ viewModel.clearChoices(); return true;}" class="choice-question-checkbox" /> List of Choices</div>
+                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" class="required"  /> Word or Phrase</div>
+                        <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" class="required" /> Number</div>
+                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type,click:function(){ viewModel.clearChoices(); return true;}" class="choice-question-checkbox required" /> List of Choices</div>
                     </td>
                 </tr>
                 <tr data-bind="visible: viewModel.showAddChoice()">
@@ -66,12 +76,14 @@
                     </td>
                 </tr>
             </table>
+
         </div>
         <div>
 
         </div>
     </div>
     <input id="submit-button" type="button" value="Save Questionnaire"/>
+
     <script type="text/html" id="choice-template">
             <p>
                 <input  data-bind="value: value" />
