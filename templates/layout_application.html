@@ -1,0 +1,16 @@
+{% extends 'layout_master.html' %}
+
+{% block body %}
+    <div id="container_header">
+        <div class="container_24">
+            {% include 'header_application.html' %}
+        </div>
+    </div>
+    <div id="container_content">
+        <div class="container_24">
+            <div class="grid_24 content">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

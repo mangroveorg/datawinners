@@ -1,0 +1,23 @@
+#header .logo {
+  text-align: left;
+  color: #FFFFFF;
+  font-size: 24px; }
+  #header .logo .logo_data {
+    font-weight: bold; }
+  #header .logo .logo_winners {
+    font-weight: normal; }
+#header .login {
+  text-align: right;
+  color: #FFFFFF;
+  font-size: 12px; }
+  #header .login span {
+    display: inline-block;
+    padding: 8px 15px 8px 15px;
+    background: url(/media/images/login_pipe.gif) no-repeat top right; }
+  #header .login .welcome {
+    font-weight: bold; }
+  #header .login a {
+    color: #FFFFFF;
+    text-decoration: none; }
+    #header .login a :hover {
+      text-decoration: underline; }

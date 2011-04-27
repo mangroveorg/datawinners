@@ -1,0 +1,14 @@
+#container_header {
+  height: 40px;
+  overflow: hidden;
+  background: url("/media/images/application_header_bg.gif") repeat top left; }
+
+#container_content {
+  overflow: hidden;
+  min-height: 600px;
+  background: url("/media/images/application_content_bg.gif") repeat top left; }
+  #container_content .content {
+    min-height: 550px;
+    background: #FFFFFF;
+    margin-top: 50px;
+    border: 1px solid #cccccc; }
