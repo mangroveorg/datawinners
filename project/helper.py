@@ -15,7 +15,7 @@ def create_question(post_dict):
 
 
 def create_questionnaire(post,dbm=get_db_manager()):
-    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on")
+    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on",entity_question_flag=True)
     return FormModel(dbm, entity_type_id=post["entity_type"], name=post["name"], label="Some model",
                                     form_code=post["questionnaire_code"], type=post["questionnaire_type"], fields=[entity_id_question])
 
