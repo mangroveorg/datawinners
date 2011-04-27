@@ -15,7 +15,7 @@ def index(request):
             _from = form.cleaned_data["from_number"]
             _to = form.cleaned_data["to_number"]
             try:
-                submission_id = smsplayer.sumbit(dbm=get_db_manager(), text=_message, from_number=_from, to_number=_to,entity_id="something")
+                submission_id = smsplayer.sumbit(dbm=get_db_manager(), text=_message, from_number=_from, to_number=_to)
                 message=submission_id
             except MangroveException as exception:
                 message=exception.message
