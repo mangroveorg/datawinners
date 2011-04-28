@@ -1,0 +1,24 @@
+{% extends 'layout_application.html' %}
+
+
+{% block main_content %}
+    <div id="container_content">
+        <div class="container_24">
+
+            <div class="grid_24 content wizard_content">
+                <div class="wizard">
+                    {% block wizard %}{% endblock %}
+                </div>
+
+                <div class="content_wrapper">
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+
+            <div class="grid_24 buttons">
+                {% block buttons %}{% endblock %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

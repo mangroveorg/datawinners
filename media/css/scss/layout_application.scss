@@ -3,7 +3,7 @@
     overflow:hidden;
     background:url('/media/images/application_header_bg.gif') repeat top left;
 }
-#container_content{
+#container_content, #container_wizard{
     overflow:hidden;
     min-height:600px;
     background:url('/media/images/application_content_bg.gif') repeat top left;
@@ -13,4 +13,19 @@
         border:1px solid #cccccc;
         padding:20px;
     }
+    .wizard_content{
+        margin-top:50px;
+        padding:0px;
+        .wizard{
+                border:1px solid #d4972d;
+                height:140px;
+                margin:10px;
+                background:url(/media/images/wizard_bg.gif) repeat-x top left;
+        }
+        .content_wrapper{
+            padding:20px;
+
+        }
+    }
+
 }

@@ -1,0 +1,22 @@
+{% extends 'layout_wizard.html' %}
+
+{% block page_title %} Test Wizard Page {% endblock %}
+{% block page_scss %}
+    <link rel="stylesheet" href="/media/css/scss/section_test_wizard.scss" media="screen">
+{% endblock %}
+{% block wizard %}
+     {% include 'step_wizard.html' %}
+{% endblock %}
+
+{% block content %}
+    <div id="test" class="grid_22 alpha omega">
+        <h1>
+            Step 1 Define Project
+        </h1>
+    </div>
+{% endblock %}
+{% block buttons %}
+
+        buttons
+    
+{% endblock %}

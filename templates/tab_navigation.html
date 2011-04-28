@@ -1,22 +1,12 @@
-<div class="grid_24 tab_navigation">
-    <ul>
-        <li>
-          <a href="#">Dashboard</a>
-        </li>
-        <li class="active">
-          <a href="#">People</a>
-        </li>
-        <li>
-          <a href="#">Reports</a>
-        </li>
-        <li>
-          <a href="#">Training</a>
-        </li>
-        <li>
-          <a href="#">Place & Things</a>
-        </li>
-        <li>
-          <a href="#">Settings</a>
-        </li>
-    </ul>
-</div>
+{% extends 'layout_application.html' %}
+
+{% block layout_scss %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/css/scss/section_tab_navigation.scss" media="screen"
+{% endblock %}
+
+{% block navigation %}
+    <div class="grid_24 tab_navigation">
+        {% include 'tabs.html' %}
+    </div>
+{% endblock %}

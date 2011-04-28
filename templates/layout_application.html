@@ -1,4 +1,7 @@
 {% extends 'layout_master.html' %}
+{% block layout_scss %}
+    {% include 'application_scss.html' %}
+{% endblock %}
 
 {% block body %}
     <div id="container_header">
@@ -6,14 +9,16 @@
             {% include 'header_application.html' %}
         </div>
     </div>
-    <div id="container_content">
-        <div class="container_24">
+    {% block main_content %}
+        <div id="container_content">
+            <div class="container_24">
 
-            {% block navigation %} {% endblock %}
-            <div class="grid_23 content">
-                {% block content %} {% endblock %}
+                {% block navigation %} {% endblock %}
+                <div class="grid_23 content">
+                    {% block content %} {% endblock %}
+                </div>
+
             </div>
-        
         </div>
-    </div>
+    {% endblock %}
 {% endblock %}

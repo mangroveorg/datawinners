@@ -4,14 +4,24 @@
     <title>
         {% block page_title %} {% endblock %}
     </title>
+{#     The Meta tags added page level will be extended here. #}
     {% block page_meta %} {% endblock %}
+
     {% include 'javascript.html' %}
+{#     The Meta tags added page level will be extended here. #}
     {% block page_js %} {% endblock %}
-    {% include 'new_css.html' %}
+
+
+    {% include 'master_css.html' %}
+{#     The CSS files added layout level will be extended here. #}
+    {% block layout_css %}{% endblock %}
+
+{#     This block compiles the SCSS to CSS on the fly. #}
     {% load compress %}
     {% compress css %}
-        {% include 'new_scss.html' %}
+        {% block layout_scss %}{% endblock %}
         {% block page_scss %} {% endblock %}
+        {% include 'master_scss.html' %}
     {% endcompress %}
     {% block page_css %} {% endblock %}
 

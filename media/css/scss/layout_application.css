@@ -3,12 +3,22 @@
   overflow: hidden;
   background: url("/media/images/application_header_bg.gif") repeat top left; }
 
-#container_content {
+#container_content, #container_wizard {
   overflow: hidden;
   min-height: 600px;
   background: url("/media/images/application_content_bg.gif") repeat top left; }
-  #container_content .content {
+  #container_content .content, #container_wizard .content {
     min-height: 550px;
     background: #FFFFFF;
     border: 1px solid #cccccc;
     padding: 20px; }
+  #container_content .wizard_content, #container_wizard .wizard_content {
+    margin-top: 50px;
+    padding: 0px; }
+    #container_content .wizard_content .wizard, #container_wizard .wizard_content .wizard {
+      border: 1px solid #d4972d;
+      height: 140px;
+      margin: 10px;
+      background: url(/media/images/wizard_bg.gif) repeat-x top left; }
+    #container_content .wizard_content .content_wrapper, #container_wizard .wizard_content .content_wrapper {
+      padding: 20px; }

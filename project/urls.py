@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     (r'^project/questionnaire$', questionnaire),
     (r'^project/setup$', set_up_questionnaire),
     (r'^project/questionnaire/save$',save_questionnaire),
-    (r'^project/app$',direct_to_template,{'template':'project/test_application.html'})
+    (r'^project/app$',direct_to_template,{'template':'project/test_application.html'}),
+    (r'^project/wizard$',direct_to_template,{'template':'project/test_wizard.html'})
 )

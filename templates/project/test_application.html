@@ -1,15 +1,11 @@
-{% extends 'layout_application.html' %}
-
+{% extends 'tab_navigation.html' %}
 {% block page_title %} Test Application Page {% endblock %}
 {% block page_scss %}
     <link rel="stylesheet" href="/media/css/scss/section_test.scss" media="screen">
 {% endblock %}
-{% block navigation %}
-     {% include 'tab_navigation.html' %}
-{% endblock %}
 
 {% block content %}
-    <div id="test" class="grid_22    alpha omega">
+    <div id="test" class="grid_22 alpha omega">
         <h1>
             Heading Page 1
         </h1>
