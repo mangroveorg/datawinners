@@ -8,9 +8,12 @@
     </div>
     <div id="container_content">
         <div class="container_24">
-            <div class="grid_24 content">
+
+            {% block navigation %} {% endblock %}
+            <div class="grid_23 content">
                 {% block content %} {% endblock %}
             </div>
+        
         </div>
     </div>
 {% endblock %}
