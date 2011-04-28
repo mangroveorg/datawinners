@@ -25,7 +25,7 @@ def load_questionnaire(questionnaire_id):
 
 
 def save_questionnaire(form_model,post_dictionary):
-    form_model.delete_all_questions()
+    form_model.delete_all_fields()
     for question in post_dictionary:
-        form_model.add_question(create_question(question))
+        form_model.add_field(create_question(question))
     return form_model
