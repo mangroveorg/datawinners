@@ -14,6 +14,7 @@ def questionnaire(request):
     qid = request.GET["qid"]
     form_model=helper.load_questionnaire(qid)
     existing_questions=json.dumps(form_model.fields)
+    print existing_questions
     request.session["qid"] = qid
     return render_to_response('project/questionnaire.html', {"existing_questions":existing_questions}, context_instance=RequestContext(request))
 
@@ -30,7 +31,7 @@ def set_up_questionnaire(request):
 def save_questionnaire(request):
     if request.method == 'POST':
         post_dictionary =json.loads(request.POST.keys()[0])
-        print request.session["qid"]
+        print post_dictionary
         form_model=get(get_db_manager(),request.session["qid"])
         form_model=helper.save_questionnaire(form_model,post_dictionary)
         form_model.save()

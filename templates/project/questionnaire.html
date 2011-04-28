@@ -7,7 +7,7 @@
     <script type="text/javascript">
      var question_list=JSON.parse('{{existing_questions|safe}}');
      question_list.forEach(function(question){
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[]));
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag));
      });
      </script>
 {% endblock %}
@@ -43,6 +43,12 @@
                     </td>
                     <td>
                         <input data-bind="value: selectedQuestion().code"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Is it an entity question?</td>
+                    <td>
+                        <input type="checkbox" data-bind="checked:selectedQuestion().is_entity_question" />
                     </td>
                 </tr>
                 <tr>
