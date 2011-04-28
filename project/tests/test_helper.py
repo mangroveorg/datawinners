@@ -30,5 +30,5 @@ class TestHelper(unittest.TestCase):
         q1=helper.create_question(post[0])
         form_model=FormModel(get_db_manager(),"test","test","test",[q1],"test","test")
         questionnaire = helper.save_questionnaire(form_model,post)
-        self.assertEqual(3,len(questionnaire.fields))
+        self.assertEqual(4,len(questionnaire.fields))
 
