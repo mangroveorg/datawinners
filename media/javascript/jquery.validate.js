@@ -462,7 +462,9 @@ $.extend($.validator, {
 			if (this.checkable(element)) {
 				element = this.findByName( element.name )[0];
 			}
-			
+
+            console.log("here start : element " + element);
+
 			var rules = $(element).rules();
 			var dependencyMismatch = false;
 			for( method in rules ) {

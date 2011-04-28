@@ -6,7 +6,7 @@ from mangrove.datastore.form_model import FormModel, get
 
 def create_question(post_dict):
     if post_dict["type"]=="text":
-        return TextField(post_dict["title"],post_dict["code"],post_dict["description"])
+        return TextField(name=post_dict["title"],question_code=post_dict["code"],label=post_dict["description"],entity_question_flag=post_dict["is_entity_question"])
     if post_dict["type"]=="integer":
         return IntegerField(post_dict["title"],post_dict["code"],post_dict["description"])
     if post_dict["type"]=="choice":
@@ -25,9 +25,7 @@ def load_questionnaire(questionnaire_id):
 
 
 def save_questionnaire(form_model,post_dictionary):
-    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on",entity_question_flag=True)
-    form_model.delete_all_questions()
+    form_model.delete_all_fields()
     for question in post_dictionary:
-        form_model.add_question(create_question(question))
-    form_model.add_question(entity_id_question)
+        form_model.add_field(create_question(question))
     return form_model

@@ -1,17 +1,18 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 //var viewModel = null;
-function Question(title,code,description,type,choices){
+function Question(title,code,description,type,choices,entity_question){
                         this.title=ko.observable(title);
                         this.code=ko.observable(code);
                         this.description=ko.observable(description);
                         this.type=ko.observable(type);
                         this.choices= ko.observableArray(choices);
+                        this.is_entity_question = ko.observable(entity_question)
                         }
  var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question("Question","code","","text",[]);
+            var question = new Question("Question","code","","text",[],false);
             question.display = ko.dependentObservable(function(){
                                         return this.title() + ' ' + this.code();
                                        }, question);
