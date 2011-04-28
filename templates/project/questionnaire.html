@@ -18,23 +18,25 @@
     {% csrf_token %}
     <div id="message-label">
     </div>
+
     <div class="span-24 box">
         <div id="questions-panel" class="span-6 first" >
             <div data-bind="template: 'question-list-template'" class="first">
             </div>
             <div class="last">
-                <a href="#" data-bind="click: function() { viewModel.addQuestion(); }">Add a Question</a>
+                <a href="#" data-bind="click: function() { if($('#question_form').validate().form()) viewModel.addQuestion(); }">Add a Question</a>
             </div>
         </div>
+        
         <div id="question-detail-panel" class="span-18 last">
-
+            <form id="question_form">
             <table>
                 <tr>
                     <td>
                         Question
                     </td>
                     <td>
-                        <input data-bind="value: selectedQuestion().title"/>
+                        <input id="question" name="question" type="text" class="required" data-bind="value: selectedQuestion().title"/>
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +44,7 @@
                         Code
                     </td>
                     <td>
-                        <input data-bind="value: selectedQuestion().code"/>
+                        <input id="code" name="code"  type="text"  class="required" data-bind="value: selectedQuestion().code"/>
                     </td>
                 </tr>
                 <tr>
@@ -82,14 +84,13 @@
                     </td>
                 </tr>
             </table>
-
+            </form>
         </div>
         <div>
 
         </div>
     </div>
     <input id="submit-button" type="button" value="Save Questionnaire"/>
-
     <script type="text/html" id="choice-template">
             <p>
                 <input  data-bind="value: value" />
