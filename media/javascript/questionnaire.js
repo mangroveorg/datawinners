@@ -6,7 +6,8 @@ function Question(title,code,description,type,choices,entity_question){
                         this.description=ko.observable(description);
                         this.type=ko.observable(type);
                         this.choices= ko.observableArray(choices);
-                        this.is_entity_question = ko.observable(entity_question)
+                        this.is_entity_question = ko.observable(entity_question);
+                        this.canBeDeleted = function(){return !this.is_entity_question();}
                         }
  var viewModel =
     {
@@ -29,7 +30,7 @@ function Question(title,code,description,type,choices,entity_question){
             viewModel.questions.valueHasMutated();
         },
         canQuestionBeDeleted: function(){
-            return viewModel.questions().length>1
+            return viewModel.questions().length>2
         },
         removeQuestion: function(question){
             viewModel.questions.remove(question);
