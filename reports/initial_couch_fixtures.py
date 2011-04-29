@@ -82,18 +82,18 @@ def load_data():
         e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. C"), ("patients", 12)],
                event_time=MARCH)
 
-#
-#    question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity"
-#                          , language="eng", entity_question_flag=True)
-#    question2 = TextField(name="question1_Name", question_code="Q1", label="What is your name",
-#                          defaultValue="some default value", language="eng")
-#    question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
-#                             range={"min": 15, "max": 120})
-#
-#    form_model = FormModel(manager, entity_type_id="Health_Facility.Clinic", name="AIDS", label="Aids form_model",
-#                           form_code="QRID01", type='survey', fields=[
-#                    question1, question2, question3])
-#    form_model.save()
+
+    question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity"
+                          , language="eng", entity_question_flag=True)
+    question2 = TextField(name="question1_Name", question_code="Q1", label="What is your name",
+                          defaultValue="some default value", language="eng")
+    question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
+                             range={"min": 15, "max": 120})
+
+    form_model = FormModel(manager, entity_type_id="Health_Facility.Clinic", name="AIDS", label="Aids form_model",
+                           form_code="QRID01", type='survey', fields=[
+                    question1, question2, question3])
+    form_model.save()
 
 
     #Register Reporter
