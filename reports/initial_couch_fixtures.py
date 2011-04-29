@@ -98,7 +98,7 @@ def load_data():
 
     #Register Reporter
 
-    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890")], location=[],
+    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890"),("first_name","Shweta")], location=[],
                         source="sms")
 
 
