@@ -1,7 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
 from fabric.api import run,sudo
 from fabric.context_managers import cd, settings
+import os
+import sys
+
+PROJECT_DIR = os.path.dirname(__file__)
+sys.path.append(os.path.join(PROJECT_DIR, '../../src'))
+
+from reports.initial_couch_fixtures import load_data
+from mangrove.datastore.database import _delete_db_and_remove_db_manager, get_db_manager
 
 def git_clone_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
@@ -67,3 +74,12 @@ def update_configuration(environment):
     for key in environment:
         sed_commands += "-e 's/@%s@/%s/' " % (key, environment[key])
     run("sed  %s settings.py.template > settings.py" % sed_commands)
+
+
+def recreatedb():
+    _delete_db_and_remove_db_manager(get_db_manager())
+    syncdb()
+
+
+def syncdb():
+    load_data()
