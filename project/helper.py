@@ -2,7 +2,7 @@
 from mangrove.datastore.database import get_db_manager
 
 from mangrove.datastore.field import TextField, IntegerField, SelectField
-from mangrove.datastore.form_model import FormModel, get
+from mangrove.form_model.form_model import FormModel, get
 
 def create_question(post_dict):
     if post_dict["type"]=="text":

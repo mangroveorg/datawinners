@@ -7,7 +7,7 @@ from django.template.context import RequestContext
 from datawinners.project.forms import ProjectSetUp
 import helper
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.form_model import get
+from mangrove.form_model.form_model import get
 
 @login_required(login_url='/login')
 def questionnaire(request):

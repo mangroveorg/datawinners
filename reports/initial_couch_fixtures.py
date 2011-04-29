@@ -1,11 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
 from mangrove.datastore.field import TextField, IntegerField, SelectField, SelectField
-from mangrove.datastore.form_model import FormModel
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
+from mangrove.form_model.form_model import FormModel
 
 def load_data():
     manager = get_db_manager()
@@ -83,6 +84,11 @@ def load_data():
                     question1, question2, question3])
     form_model.save()
 
+
+    #Register Reporter
+
+    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890")], location=[],
+                        source="sms")
 
 
   

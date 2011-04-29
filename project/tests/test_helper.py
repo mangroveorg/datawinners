@@ -6,7 +6,7 @@ from datawinners.project import helper
 #from mangrove.datastore.question import TextQuestion
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.field import TextField, SelectField, IntegerField
-from mangrove.datastore.form_model import FormModel, get
+from mangrove.form_model.form_model import FormModel
 
 class TestHelper(unittest.TestCase):
 
