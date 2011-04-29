@@ -11,7 +11,7 @@ class TestHelper(unittest.TestCase):
     def test_creates_questions_from_dict(self):
         post = [{ "title":"q1", "code":"qc1", "description":"desc1", "type":"text", "choices":[] , "is_entity_question":True},
                 { "title":"q2", "code":"qc2", "description":"desc2", "type":"integer", "choices":[], "is_entity_question":False, "range_min":0,"range_max":100 },
-                { "title":"q3", "code":"qc3", "description":"desc3", "type":"choice", "choices":[{ "value":"c1" }, { "value":"c2" } ], "is_entity_question":False}
+                { "title":"q3", "code":"qc3", "description":"desc3", "type":"choice", "choices":[{ "value":"c1" }, { "value":"c2" } ], "is_entity_question":False, "answers_permitted":"single"}
                ]
         q1=helper.create_question(post[0])
         q2=helper.create_question(post[1])
@@ -24,7 +24,7 @@ class TestHelper(unittest.TestCase):
     def test_should_save_questionnaire_from_post(self):
         post = [{ "title":"q1", "code":"qc1", "description":"desc1", "type":"text", "choices":[], "is_entity_question":True},
                 { "title":"q2", "code":"qc2", "description":"desc2", "type":"integer", "choices":[], "is_entity_question":False,"range_min":0,"range_max":100  },
-                { "title":"q3", "code":"qc3", "description":"desc3", "type":"choice", "choices":[{ "value":"c1" }, { "value":"c2" } ], "is_entity_question":False}
+                { "title":"q3", "code":"qc3", "description":"desc3", "type":"choice", "choices":[{ "value":"c1" }, { "value":"c2" } ], "is_entity_question":False,"answers_permitted":"single"}
                ]
         q1=helper.create_question(post[0])
         form_model=FormModel(get_db_manager(),"test","test","test",[q1],"test","test")
