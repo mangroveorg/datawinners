@@ -12,7 +12,8 @@ def create_question(post_dict):
         return IntegerField(post_dict["title"],post_dict["code"],post_dict["description"], range)
     if post_dict["type"]=="choice":
         options = [choice["value"] for choice in post_dict["choices"]]
-        return SelectField(post_dict["title"],post_dict["code"],post_dict["description"],options)
+        single_select = True if post_dict["answers_permitted"]=="single" else False
+        return SelectField(post_dict["title"],post_dict["code"],post_dict["description"],options, single_select_flag=single_select)
 
 
 def create_questionnaire(post,dbm=get_db_manager()):
