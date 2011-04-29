@@ -7,7 +7,7 @@ from django.template.context import RequestContext
 from datawinners.project.forms import ProjectSetUp
 import helper
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.form_model import get
+from mangrove.form_model.form_model import get
 
 @login_required(login_url='/login')
 def questionnaire(request):
@@ -18,6 +18,7 @@ def questionnaire(request):
     request.session["qid"] = qid
     return render_to_response('project/questionnaire.html', {"existing_questions":existing_questions}, context_instance=RequestContext(request))
 
+@login_required(login_url='/login')
 def set_up_questionnaire(request):
     if request.method == 'GET':
         form=ProjectSetUp()
