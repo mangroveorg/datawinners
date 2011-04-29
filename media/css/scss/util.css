@@ -1,5 +1,5 @@
 .padding_right_null {
-  padding-right: 0; }
+  padding-right: 0 !important; }
 
 .padding_left_null {
   padding-left: 0; }

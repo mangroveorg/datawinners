@@ -1,11 +1,9 @@
-{% extends 'layout_wizard.html' %}
+{% extends 'step_wizard.html' %}
 
 {% block page_title %} Test Wizard Page {% endblock %}
 {% block page_scss %}
+    {{ block.super }}
     <link rel="stylesheet" href="/media/css/scss/section_test_wizard.scss" media="screen">
-{% endblock %}
-{% block wizard %}
-     {% include 'step_wizard.html' %}
 {% endblock %}
 
 {% block content %}
