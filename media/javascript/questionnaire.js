@@ -72,6 +72,6 @@ $(document).ready(function(){
 
     $("#submit-button").click(function(){
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
-        $.post('/project/questionnaire/save', data,function(response){$("#message-label").append("<label>"+response+"</label>")});
+        $.post('/project/questionnaire/save', data,function(response){$("#message-label").html("<label>"+response+"</label>")});
     });
 })

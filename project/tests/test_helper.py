@@ -1,10 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import json
 
 import unittest
-from django.db import database
 from datawinners.project import helper
-#from mangrove.datastore.question import TextQuestion
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.field import TextField, SelectField, IntegerField
 from mangrove.form_model.form_model import FormModel
