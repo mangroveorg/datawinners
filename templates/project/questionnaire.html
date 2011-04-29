@@ -7,7 +7,7 @@
     <script type="text/javascript">
      var question_list=JSON.parse('{{existing_questions|safe}}');
      question_list.forEach(function(question){
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag));
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
      });
      </script>
 {% endblock %}
@@ -75,6 +75,21 @@
                             </div>
                             <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
                         </div>
+                    </td>
+                </tr>
+                <tr data-bind="visible: viewModel.showAddRange()">
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <p>
+                            Min:
+                            <input name="range_min" data-bind="value:selectedQuestion().range_min"/>
+                        </p>
+                        <p>
+                            Min:
+                            <input name="range_max" data-bind="value:selectedQuestion().range_max"/>
+                        </p>
                     </td>
                 </tr>
             </table>

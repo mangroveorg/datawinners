@@ -1,19 +1,21 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 //var viewModel = null;
-function Question(title,code,description,type,choices,entity_question){
+function Question(title,code,description,type,choices,entity_question,range_min,range_max){
                         this.title=ko.observable(title);
                         this.code=ko.observable(code);
                         this.description=ko.observable(description);
                         this.type=ko.observable(type);
                         this.choices= ko.observableArray(choices);
                         this.is_entity_question = ko.observable(entity_question);
+                        this.range_min = ko.observable(range_min);
+                        this.range_max = ko.observable(range_max);
                         this.canBeDeleted = function(){return !this.is_entity_question();}
                         }
  var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question("Question","code","","text",[],false);
+            var question = new Question("Question","code","","text",[],false,0,0);
             question.display = ko.dependentObservable(function(){
                                         return this.title() + ' ' + this.code();
                                        }, question);
@@ -38,6 +40,9 @@ function Question(title,code,description,type,choices,entity_question){
         },
         showAddChoice:function(){
             return viewModel.selectedQuestion().type() == 'choice';
+        },
+        showAddRange:function(){
+            return viewModel.selectedQuestion().type() == 'integer';
         },
         addOptionToQuestion: function(){
             viewModel.selectedQuestion().choices.push({value:''});
