@@ -22,7 +22,7 @@
             <div data-bind="template: 'question-list-template'" class="first">
             </div>
             <div class="last">
-                <a href="#" data-bind="click: function() { if($('#question_form').validate().form()) viewModel.addQuestion(); }">Add a Question</a>
+                <a href="#" data-bind="click: function() {viewModel.addQuestion();}">Add a Question</a>
             </div>
         </div>
         
