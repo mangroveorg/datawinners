@@ -85,7 +85,7 @@ def load_data():
 
     question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity"
                           , language="eng", entity_question_flag=True)
-    question2 = TextField(name="question1_Name", question_code="Q1", label="What is your name",
+    question2 = TextField(name="Name", question_code="Q1", label="What is your name",
                           defaultValue="some default value", language="eng")
     question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
                              range={"min": 15, "max": 120})
@@ -94,11 +94,8 @@ def load_data():
                            form_code="QRID01", type='survey', fields=[
                     question1, question2, question3])
     form_model.save()
-
-
     #Register Reporter
-
-    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890")], location=[],
+    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890"),("first_name","Shweta")], location=[],
                         source="sms")
 
 

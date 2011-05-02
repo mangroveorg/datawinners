@@ -2,9 +2,10 @@
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.smstester.forms import SMSTesterForm
-from mangrove.transport.smsplayer import smsplayer
+from mangrove.datastore.reporter import get_from_reporter
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import MangroveException
+from mangrove.transport.submissions import SubmissionHandler, Request
 
 def index(request):
     message=""
@@ -15,11 +16,17 @@ def index(request):
             _from = form.cleaned_data["from_number"]
             _to = form.cleaned_data["to_number"]
             try:
-                submission_id = smsplayer.submit(dbm=get_db_manager(), text=_message, from_number=_from, to_number=_to)
-                message=submission_id
+                s = SubmissionHandler(dbm = get_db_manager())
+                response = s.accept(Request(transport="sms",message = _message,source = _from,destination = _to))
+                if response.success:
+                    reporter = get_from_reporter(get_db_manager(), _from)
+                    message = "Thank You for your submission "+ reporter.get("first_name")
+                else:
+                    message = "\n".join(response.errors)
             except MangroveException as exception:
-                message=exception.message
+                message = exception.message
     else:
         form = SMSTesterForm()
 
-    return render_to_response('smstester/index.html', {'form': form,'message':message},context_instance=RequestContext(request))
+    return render_to_response('smstester/index.html',
+                              {'form': form,'message':message},context_instance=RequestContext(request))
