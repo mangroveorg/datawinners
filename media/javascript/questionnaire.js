@@ -86,6 +86,7 @@ $(document).ready(function(){
 
     $("#submit-button").click(function(){
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
-        $.post('/project/questionnaire/save', data,function(response){$("#message-label").html("<label>"+response+"</label>")});
+        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data}
+        $.post('/project/questionnaire/save', post_data,function(response){$("#message-label").html("<label>"+response+"</label>")});
     });
 })

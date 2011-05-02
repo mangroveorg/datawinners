@@ -15,7 +15,6 @@ def questionnaire(request):
     qid = request.GET["qid"]
     form_model = helper.load_questionnaire(qid)
     existing_questions = json.dumps(form_model.fields)
-    print existing_questions
     request.session["qid"] = qid
     return render_to_response('project/questionnaire.html', {"existing_questions": existing_questions},
                               context_instance=RequestContext(request))
@@ -38,9 +37,10 @@ def complete_profile(request):
 
 def save_questionnaire(request):
     if request.method == 'POST':
-        post_dictionary = json.loads(request.POST.keys()[0])
-        print post_dictionary
+        questionnaire_code = request.POST['questionnaire-code']
+        post_dictionary = json.loads(request.POST['question-set'])
         form_model = get(get_db_manager(), request.session["qid"])
         form_model = helper.save_questionnaire(form_model, post_dictionary)
+        form_model.form_code = questionnaire_code
         form_model.save()
     return HttpResponse("Your questionnaire has been saved")
