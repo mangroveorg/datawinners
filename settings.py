@@ -134,11 +134,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'datawinners.accountmanagement',
     'registration',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    'compressor'
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'compressor',
+    'datawinners.main'
 )
 
 COMPILER_FORMATS = {
