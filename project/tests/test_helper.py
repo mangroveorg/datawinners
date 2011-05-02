@@ -31,3 +31,4 @@ class TestHelper(unittest.TestCase):
         questionnaire = helper.save_questionnaire(form_model,post)
         self.assertEqual(3,len(questionnaire.fields))
 
+

@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners.project.models import Project, Project
 from mangrove.datastore.database import get_db_manager
 
 from mangrove.datastore.field import TextField, IntegerField, SelectField
@@ -19,8 +20,7 @@ def create_question(post_dict):
 
 def create_questionnaire(post,dbm=get_db_manager()):
     entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on",entity_question_flag=True)
-    return FormModel(dbm, entity_type_id=post["entity_type"], name=post["name"], label="Some model",
-                                    form_code=post["questionnaire_code"], type=post["questionnaire_type"], fields=[entity_id_question])
+    return FormModel(dbm, entity_type_id=post["entity_type"], name=post["name"],fields=[entity_id_question],form_code='dummy',type='survey')
 
 def load_questionnaire(questionnaire_id):
     return get(get_db_manager(), questionnaire_id)
@@ -30,3 +30,4 @@ def save_questionnaire(form_model,post_dictionary):
     for question in post_dictionary:
         form_model.add_field(create_question(question))
     return form_model
+
