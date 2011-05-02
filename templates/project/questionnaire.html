@@ -5,15 +5,9 @@
     <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
-     var question_list=JSON.parse('{{existing_questions|safe}}');
-     question_list.forEach(function(question){
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
-     });
-     </script>
+        var question_list=JSON.parse('{{existing_questions|safe}}');
+    </script>
 {% endblock %}
-
-
-
 {% block content %}
     {% csrf_token %}
     <div id="message-label">
@@ -62,7 +56,7 @@
                     <td>
                         <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" class="required"  /> Word or Phrase</div>
                         <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" class="required" /> Number</div>
-                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().type,click:function(){ viewModel.clearChoices(); return true;}" class="choice-question-checkbox required" /> List of Choices</div>
+                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().isAChoiceTypeQuestion" class="choice-question-checkbox required" /> List of Choices</div>
                     </td>
                 </tr>
                 <tr data-bind="visible: viewModel.showAddChoice()">
@@ -76,8 +70,8 @@
                             <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
                         </div>
                         <div>
-                            <input type="radio" name ="answers_possible" value="single" data-bind="checked:selectedQuestion().answers_permitted" class="required"/>only one answer<br/>
-                            <input type="radio" name = "answers_possible" value="multiple" data-bind="checked:selectedQuestion().answers_permitted" class="required"/>multiple answers are permitted<br/>
+                            <input type="radio" name ="answers_possible" value="select1" data-bind="checked:selectedQuestion().type" class="required"/>only one answer<br/>
+                            <input type="radio" name = "answers_possible" value="select" data-bind="checked:selectedQuestion().type" class="required"/>multiple answers are permitted<br/>
                         </div>
                     </td>
                 </tr>
@@ -91,7 +85,7 @@
                             <input name="range_min" data-bind="value:selectedQuestion().range_min"/>
                         </p>
                         <p>
-                            Min:
+                            Max:
                             <input name="range_max" data-bind="value:selectedQuestion().range_max"/>
                         </p>
                     </td>
