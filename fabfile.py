@@ -7,7 +7,7 @@ import sys
 PROJECT_DIR = os.path.dirname(__file__)
 sys.path.append(os.path.join(PROJECT_DIR, '../../src'))
 
-from reports.initial_couch_fixtures import load_data
+
 from mangrove.datastore.database import _delete_db_and_remove_db_manager, get_db_manager
 
 def git_clone_if_not_present(code_dir):
@@ -52,7 +52,7 @@ def deploy(build_number,home_dir,virtual_env,environment="test"):
                                     "showcase" :{"SITE_ID":2},
                                     "test"   :{"SITE_ID":4}
                                  }
-    run("export COMMIT_SHA=`curl http://hudson.mvpafrica.org:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
+    run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
     code_dir = home_dir+'/mangrove'
     with settings(warn_only=True):
@@ -74,12 +74,3 @@ def update_configuration(environment):
     for key in environment:
         sed_commands += "-e 's/@%s@/%s/' " % (key, environment[key])
     run("sed  %s settings.py.template > settings.py" % sed_commands)
-
-
-def recreatedb():
-    _delete_db_and_remove_db_manager(get_db_manager())
-    syncdb()
-
-
-def syncdb():
-    load_data()
