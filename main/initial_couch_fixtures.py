@@ -13,14 +13,14 @@ def define_entity_instance(manager, ENTITY_TYPE, location, id):
 
 def load_data():
     manager = get_db_manager()
-    ENTITY_TYPE = ["Health_Facility", "Clinic"]
+    ENTITY_TYPE = ["Clinic"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
 
-    #  Default Entity Types
+    #  The Default Entity Types
     try:
         define_type(manager, "Reporter")
-        define_type(manager, ["Health_Facility", "Clinic"])
+        define_type(manager, "Clinic")
     except EntityTypeAlreadyDefined:
         pass
 
@@ -90,7 +90,7 @@ def load_data():
     question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
                              range={"min": 15, "max": 120})
 
-    form_model = FormModel(manager, entity_type_id="Health_Facility.Clinic", name="AIDS", label="Aids form_model",
+    form_model = FormModel(manager, entity_type_id="Clinic", name="AIDS", label="Aids form_model",
                            form_code="QRID01", type='survey', fields=[
                     question1, question2, question3])
     form_model.save()
