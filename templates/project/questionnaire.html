@@ -3,7 +3,7 @@
 {% block page_title %} Create a Questionnaire {% endblock %}
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         var question_list = JSON.parse('{{existing_questions|safe}}');
@@ -147,6 +147,5 @@
         <a href="#" class="cancel">Cancel</a>
         <input id="submit-button" type="button" value="Save Questionnaire"/>
 {% endblock %}
-
 
 
