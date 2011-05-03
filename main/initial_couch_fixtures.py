@@ -24,64 +24,87 @@ def load_data():
     except EntityTypeAlreadyDefined:
         pass
 
-    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'MH', 'Pune'], "100")
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'MH', 'Pune'], "CID001")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
         e.save()
     except Exception:
         pass
     else:
-        e.add_data(data=[("beds", 300), ("meds", 20), ("director", "Dr. A"), ("patients", 10)],
+        e.add_data(data=[("beds", 300), ("meds", 20), ("director", "Dr. Donald Duck"), ("patients", 10)],
                    event_time=FEB)
         e.add_data(data=[("beds", 500), ("meds", 20), ("patients", 20)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'MH', 'Pune'], "200")
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'MH', 'Pune'], "CID002")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
     except Exception:
         pass
     else:
-        e.add_data(data=[("beds", 100), ("meds", 10), ("director", "Dr. AA"), ("patients", 50)],
+        e.add_data(data=[("beds", 100), ("meds", 10), ("director", "Dr. Scrooge"), ("patients", 50)],
                    event_time=FEB)
         e.add_data(data=[("beds", 200), ("meds", 20), ("patients", 20)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'MH', 'Mumbai'], "300")
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'MH', 'Mumbai'], "CID003")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
     except Exception:
         pass
     else:
-        e.add_data(data=[("beds", 100), ("meds", 10), ("director", "Dr. AAA"), ("patients", 50)],
+        e.add_data(data=[("beds", 100), ("meds", 10), ("director", "Dr. Huey"), ("patients", 50)],
                event_time=FEB)
         e.add_data(data=[("beds", 200), ("meds", 20), ("patients", 50)],
                event_time=MARCH)
 
-    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], "400")
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], "CID004")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
     except Exception:
         pass
     else:
-        e.add_data(data=[("beds", 100), ("meds", 250), ("director", "Dr. B1"), ("patients", 50)],
+        e.add_data(data=[("beds", 100), ("meds", 250), ("director", "Dr. Dewey"), ("patients", 50)],
                event_time=FEB)
-        e.add_data(data=[("beds", 200), ("meds", 400), ("director", "Dr. B2"), ("patients", 20)],
+        e.add_data(data=[("beds", 200), ("meds", 400), ("director", "Dr. Louie"), ("patients", 20)],
                event_time=MARCH)
 
-    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], "500")
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], "CID005")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
     except:
         pass
     else:
-        e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. C"), ("patients", 12)],
+        e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. Glomgold"), ("patients", 12)],
                event_time=MARCH)
 
+
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'], "CID006")
+    e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
+    try:
+        e.save()
+    except:
+        pass
+    else:
+        e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. Flintheart"), ("patients", 12)],
+               event_time=MARCH)
+
+
+    e = define_entity_instance(manager, ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], "CID007")
+    e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
+    try:
+        e.save()
+    except:
+        pass
+    else:
+        e.add_data(data=[("beds", 200), ("meds", 50), ("director", "Dr. Duck"), ("patients", 12)],
+               event_time=MARCH)
+
+        
 
     question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity"
                           , language="eng", entity_question_flag=True)
