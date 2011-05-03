@@ -22,20 +22,36 @@ def questionnaire(request):
                               context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
-def complete_profile(request):
+def create_profile(request):
     if request.method == 'GET':
         form = ProjectProfile()
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+
     form = ProjectProfile(request.POST)
     if form.is_valid():
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=form.cleaned_data['entity_type'],
-                          devices=form.cleaned_data['device'])
+                          devices=form.cleaned_data['devices'])
         form_model = helper.create_questionnaire(post=form.cleaned_data)
         qid = form_model.save()
         project.qid=qid
         project.save()
         return HttpResponseRedirect('/project/questionnaire?qid='+qid)
+    else:
+        return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+
+def edit_profile(request):
+
+    if request.method == 'GET':
+        project=models.get_project(request.GET['pid'])
+        form = ProjectProfile(project)
+        return render_to_response('project/profile.html',{'form':form},context_instance=RequestContext(request))
+
+    project=models.get_project(request.GET['pid'])
+    form = ProjectProfile(request.POST)
+    if form.is_valid():
+        project.update(form.cleaned_data)
+        return HttpResponseRedirect('/project/questionnaire?qid='+ project.qid)
 
 def save_questionnaire(request):
     if request.method == 'POST':
@@ -60,5 +76,6 @@ def project_listing(request):
 @login_required(login_url='/login')
 def project_overview(request):
     project=models.get_project(request.GET["pid"])
-    project_overview=dict(what=3,how=project['devices'])
+    link = '/project/profile/edit?pid='+request.GET["pid"]
+    project_overview=dict(what=3,how=project['devices'],link=link)
     return render_to_response('project/overview.html',{'project':project_overview})
