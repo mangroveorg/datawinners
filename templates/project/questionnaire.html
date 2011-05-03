@@ -1,124 +1,140 @@
-{% extends 'layout.html' %}
+{% extends 'step_wizard.html' %}
 
 {% block page_title %} Create a Questionnaire {% endblock %}
 {% block page_js %}
+    {{ block.super }}
     <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
-        var question_list=JSON.parse('{{existing_questions|safe}}');
+        var question_list = JSON.parse('{{existing_questions|safe}}');
+        $(document).ready(function(){
+            $("#tab_items .questionnaire").addClass("current");
+            set_current_tab();
+        })
+
     </script>
-{% endblock %}
-{% block content %}
-    {% csrf_token %}
-    <div id="message-label">
-    </div>
-
-    <div class="span-24 box">
-        <div>
-            Questionnaire Code : <br/>
-            <input id='questionnaire-code'/>
-        </div>
-        <div id="questions-panel" class="span-6 first" >
-            <div data-bind="template: 'question-list-template'" class="first">
-            </div>
-            <div class="last">
-                <a href="#" data-bind="click: function() { if($('#question_form').validate().form()) viewModel.addQuestion(); }">Add a Question</a>
-            </div>
-        </div>
-        
-        <div id="question-detail-panel" class="span-18 last">
-            <form id="question_form">
-            <table>
-                <tr>
-                    <td>
-                        Question
-                    </td>
-                    <td>
-                        <input id="question" name="question" type="text" class="required" data-bind="value: selectedQuestion().title"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Code
-                    </td>
-                    <td>
-                        <input id="code" name="code"  type="text"  class="required" data-bind="value: selectedQuestion().code"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Description
-                    </td>
-                    <td>
-                        <input data-bind="value: selectedQuestion().description"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Type
-                    </td>
-                    <td>
-                        <div><input type="radio" name="type" value="text" data-bind="checked: selectedQuestion().type" class="required"  /> Word or Phrase</div>
-                        <div><input type="radio" name="type" value="integer" data-bind="checked: selectedQuestion().type" class="required" /> Number</div>
-                        <div><input type="radio" name="type" value="choice" data-bind="checked: selectedQuestion().isAChoiceTypeQuestion" class="choice-question-checkbox required" /> List of Choices</div>
-                    </td>
-                </tr>
-                <tr data-bind="visible: viewModel.showAddChoice()">
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        <div>
-                            <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
-                            </div>
-                            <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
-                        </div>
-                        <div>
-                            <input type="radio" name ="answers_possible" value="select1" data-bind="checked:selectedQuestion().type" class="required"/>only one answer<br/>
-                            <input type="radio" name = "answers_possible" value="select" data-bind="checked:selectedQuestion().type" class="required"/>multiple answers are permitted<br/>
-                        </div>
-                    </td>
-                </tr>
-                <tr data-bind="visible: viewModel.showAddRange()">
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        <p>
-                            Min:
-                            <input name="range_min" data-bind="value:selectedQuestion().range_min"/>
-                        </p>
-                        <p>
-                            Max:
-                            <input name="range_max" data-bind="value:selectedQuestion().range_max"/>
-                        </p>
-                    </td>
-                </tr>
-            </table>
-            </form>
-        </div>
-        <div>
-
-        </div>
-    </div>
-    <input id="submit-button" type="button" value="Save Questionnaire"/>
     <script type="text/html" id="choice-template">
-            <p>
-                <input  data-bind="value: value" />
-                <a href="#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}" >Delete</a>
-            </p>
+        <p>
+            <input data-bind="value: value"/>
+            <a href="#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+        </p>
     </script>
     <script type="text/html" id="question-list-template">
         <table>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                <p>
-                    <a href="#" data-bind="text: question.display, click: function() { viewModel.changeSelectedQuestion(question); } ">
-                    </a>
+            <p>
+                <a href="#"
+                   data-bind="text: question.display, click: function() { viewModel.changeSelectedQuestion(question); } ">
+                </a>
                     <span data-bind="visible: question.canBeDeleted()">
                     <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
                     </span>
-                </p>
+            </p>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
         </table>
     </script>
 {% endblock %}
+
+
+
+{% block content %}
+    {% csrf_token %}
+    <div class="questionnare_header">Header</div>
+    <div class="questionnare_content">
+        <div id="message-label">
+        </div>
+
+        <div class="">
+            <div>
+                Questionnaire Code : <br/>
+                <input id='questionnaire-code'/>
+            </div>
+            <div id="questions-panel" class="grid_8">
+                <div data-bind="template: 'question-list-template'" class="">
+                </div>
+                <div class="add_question">
+                    <a href="#"
+                       data-bind="click: function() { if($('#question_form').validate().form()) viewModel.addQuestion(); }">Add
+                        a Question</a>
+                </div>
+            </div>
+
+            <div id="question-detail-panel" class="grid_11">
+                <form id="question_form">
+                    <fieldset>
+                        <legend>Add Questionnare</legend>
+                        <ul>
+                            <li>
+                                <label>Question</label>
+                                <input id="question" name="question" type="text" class="required"
+                                       data-bind="value: selectedQuestion().title"/>
+                            </li>
+                            <li>
+                                <label>Code</label>
+                                <input id="code" name="code" type="text" class="required"
+                                       data-bind="value: selectedQuestion().code"/>
+                            </li>
+                            <li>
+                                <label>Description</label>
+                                <textarea data-bind="value: selectedQuestion().description" ></textarea>
+                            </li>
+                            <li>
+                                <label>Type</label>
+
+                                <div><input type="radio" name="type" value="text"
+                                            data-bind="checked: selectedQuestion().type" class="required"/> Word or Phrase
+                                </div>
+                                <div><input type="radio" name="type" value="integer"
+                                            data-bind="checked: selectedQuestion().type" class="required"/> Number
+                                </div>
+                                <div><input type="radio" name="type" value="choice"
+                                            data-bind="checked: selectedQuestion().type,click:function(){ viewModel.clearChoices(); return true;}"
+                                            class="choice-question-checkbox required"/> List of Choices
+                                </div>
+                            </li>
+                            <li data-bind="visible: viewModel.showAddChoice()">
+                                <div>
+                                    <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
+                                    </div>
+                                    <a href="#" data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add
+                                        Choice</a>
+                                </div>
+                                <div>
+                                    <input type="radio" name="answers_possible" value="single"
+                                           data-bind="checked:selectedQuestion().answers_permitted" class="required"/>
+                                    only one answer<br/>
+                                    <input type="radio" name="answers_possible" value="multiple"
+                                           data-bind="checked:selectedQuestion().answers_permitted" class="required"/>
+                                    multiple answers are permitted<br/>
+                                </div>
+                            </li>
+                            <li data-bind="visible: viewModel.showAddRange()">
+                                &nbsp;
+                                <div>
+                                    <p>
+                                        Min:
+                                        <input name="range_min" data-bind="value:selectedQuestion().range_min"/>
+                                    </p>
+
+                                    <p>
+                                        Min:
+                                        <input name="range_max" data-bind="value:selectedQuestion().range_max"/>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </fieldset>
+                </form>
+            </div>
+            <input id="submit-button" type="button" value="Save Questionnaire"/>
+            <div>
+            </div>
+        </div>
+    </div>
+{#    <div class="text_align_right">#}
+{#        <input id="submit-button" type="button" value="Save Questionnaire"/>#}
+{#    </div>#}
+{% endblock %}
+
+
+

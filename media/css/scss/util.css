@@ -22,3 +22,7 @@
 
 .margin_bottom_null {
   margin-left: 0; }
+
+/*Text alignments*/
+.text_align_right {
+  text-align: right; }

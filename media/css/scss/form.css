@@ -1,0 +1,18 @@
+form fieldset legend {
+  font-size: 20px; }
+form ul li {
+  margin-bottom: 10px; }
+  form ul li input[type=text] {
+    width: 350px;
+    height: 25px;
+    border-color: #cccccc; }
+  form ul li a {
+    color: #0070ac; }
+  form ul li textarea {
+    width: 350px;
+    height: 100px;
+    border-color: #cccccc; }
+  form ul li label {
+    font-size: 14px;
+    display: block;
+    font-weight: bold; }

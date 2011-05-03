@@ -1,9 +1,16 @@
-{% extends 'layout.html' %}
+{% extends 'step_wizard.html' %}
 
 {% block page_title %} Setup the Project {% endblock %}
 {% block page_js %}
-    <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>
+     {{ block.super }}
+{#    <script type="text/javascript" src="/media/javascript/questionnaire.js"></script>#}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script>
+            $(document).ready(function(){
+            $("#tab_items .define").addClass("current");
+            set_current_tab();
+        })
+    </script>
 {% endblock %}
 {% block content %}
     <div class="span-24 box">

@@ -1,5 +1,7 @@
 $slider_handle:#176aba;
 $slider_range:#FFFFFF;
+
+/*The top most yellow wizard section styles*/
 .wizard{
     #step_wizard{
         margin:15px 0 0 40px;
@@ -41,20 +43,53 @@ $slider_range:#FFFFFF;
             float:left;
             font-weight:bold;
             padding:10px 95px 0 0px;
-            &.two{
+            &.questionnaire{
                 padding-right:153px;
             }
-            &.three{
+            &.people{
                 padding-right:160px;
             }
-            &.four{
+            &.reminder{
                 padding-right:110px;
             }
-            &.five{
+            &.finish{
                 padding-right:0px;
             }
         }
        
 
+    }
+}
+
+/*The content styles for wizard based pages*/
+.wizard_content{
+    .content_wrapper{
+        .questionnare_header{
+            border:1px solid #cccccc;
+            height:110px;
+            margin-bottom:20px
+        }
+        .questionnare_content{
+            border:1px solid #cccccc;
+            min-height:500px;
+            #questions-panel, #question-detail-panel{
+                padding-left:50px;
+                margin-top:20px;
+            }
+            #questions-panel{
+                a{
+                    color: #0070ac;
+                }
+                .add_question{
+                    font-size:14px;
+                    margin-top:30px;
+                    font-weight:bold;
+                }
+            }
+            #question-detail-panel{
+                border-left:1px solid #cccccc;
+
+            }
+        }
     }
 }
