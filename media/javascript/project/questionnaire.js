@@ -24,7 +24,7 @@ var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question("Question","code","","text",[],false,0,0);
+            var question = new Question("Question","code","","text",[],false,0,"");
             question.display = ko.dependentObservable(function(){
                 return this.title() + ' ' + this.code();
             }, question);

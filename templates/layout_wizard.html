@@ -10,13 +10,19 @@
                     {% block wizard %}{% endblock %}
                 </div>
 
-                <div class="content_wrapper">
+                <div class="content_wrapper grid_22 alpha omega">
+                    <div class="step_number">
+                         {% block step_number %}{% endblock %}
+                    </div>
                     {% block content %} {% endblock %}
                 </div>
             </div>
 
             <div class="grid_24 buttons">
-                {% block buttons %}{% endblock %}
+                 <div class="text_align_right buttons">
+                     {% block buttons %}{% endblock %}
+                     <input id="submit_button_right" type="button"/>
+                 </div>
             </div>
 
         </div>

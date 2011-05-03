@@ -1,5 +1,7 @@
 $slider_handle:#176aba;
 $slider_range:#FFFFFF;
+
+/*The top most yellow wizard section styles*/
 .wizard{
     #step_wizard{
         margin:15px 0 0 40px;
@@ -41,20 +43,116 @@ $slider_range:#FFFFFF;
             float:left;
             font-weight:bold;
             padding:10px 95px 0 0px;
-            &.two{
+            &.questionnaire{
                 padding-right:153px;
             }
-            &.three{
+            &.people{
                 padding-right:160px;
             }
-            &.four{
+            &.reminder{
                 padding-right:110px;
             }
-            &.five{
+            &.finish{
                 padding-right:0px;
             }
         }
        
 
+    }
+}
+
+/*The content styles for wizard based pages*/
+.wizard_content{
+    .content_wrapper{
+        .questionnaire_code{
+            margin-bottom:20px;
+            label{
+                font-weight:bold;
+            }
+            input{
+                width:130px;
+                height:20px;
+                border-color:#CCCCCC;
+            }
+            h5{
+                margin-bottom:10px;
+            }
+        }
+        .define_project{
+
+        }
+        .step_number{
+            margin-bottom:20px;
+        }
+        .questionnaire_code{
+            label{
+                display:inline;
+            }
+        }
+        .questionnare_header{
+            border:1px solid #cccccc;
+            height:20px;
+            margin-bottom:20px
+        }
+        .questionnare_content{
+            border:1px solid #cccccc;
+            min-height:500px;
+            margin-bottom:20px;
+            #questions-panel, #question-detail-panel{
+                padding-left:50px;
+                margin:20px 0 20px 0;
+            }
+            #message-label{
+                label{
+                    color:#269700;
+                }
+            }
+            #questions-panel{
+                a{
+                    color: #0070ac;
+                }
+                .add_question{
+                    font-size:14px;
+                    margin-top:30px;
+                    font-weight:bold;
+                }
+                .question_list{
+                    ol li{
+                        margin-bottom:10px;
+                    }
+                    .delete a{
+                        color:#000000;
+                    }
+                }
+            }
+            #question-detail-panel{
+                border-left:1px solid #cccccc;
+
+            }
+        }
+    }
+}
+.buttons{
+    .buttons{
+        margin:15px 0 15px 15px;
+        #submit_button_right{
+            background:url('/media/images/arrow_wizard.png') no-repeat top right;
+            position:relative;
+            left:-8px;
+            top:0px;
+            padding:13px 13px 13px 13px;
+            display:inline;
+        }
+        #submit-button{
+            color:#6f451d;
+            font-family:"Arial";
+            font-weight:bold;
+            border:0px;
+            background:url('/media/images/arrow_wizard.png') no-repeat top left;
+            padding:13px 6px 13px 22px;
+        }
+        .cancel{
+            margin-right:10px;
+        }
     }
 }

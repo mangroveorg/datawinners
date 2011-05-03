@@ -1,0 +1,70 @@
+$text_box_width: 350px;
+$select_box_width:150px;
+$border_color: #CCCCCC;
+$link_color:#0070ac;
+
+form{
+        fieldset{
+            legend{
+                font-size:20px;
+            }
+        }
+    ul li{
+        margin-bottom:20px;
+        input[type=text]{
+            width:$text_box_width;
+            height:25px;
+            border-color:$border_color;
+        }
+        a{
+            color:$link_color;
+        }
+        textarea{
+            width:$text_box_width;
+            height:100px;
+            border-color:$border_color;
+        }
+        label{
+            font-size:14px;
+            display:block;
+            font-weight:bold;
+        }
+        ul li{
+            margin-bottom:0px;
+            label{
+                font-size:12px;
+                display:inline;
+                font-weight:normal;
+            }
+        }
+    }
+}
+
+/*Form elements without form tag*/
+input[type=text]{
+    width:$text_box_width;
+    height:25px;
+    border-color:$border_color;
+}
+input[type=button]{
+    border:0px;
+}
+a{
+    color:$link_color;
+}
+textarea{
+    width:$text_box_width;
+    height:100px;
+    border-color:$border_color;
+}
+label{
+    font-size:14px;
+    display:block;
+    font-weight:bold;
+}
+select{
+    width:auto;
+    height:25px;
+    border-color:$border_color;
+    background:#FFFFFF;
+}
