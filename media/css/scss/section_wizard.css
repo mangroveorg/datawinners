@@ -41,9 +41,23 @@
       padding-right: 0px; }
 
 /*The content styles for wizard based pages*/
+.wizard_content .content_wrapper .questionnaire_code {
+  margin-bottom: 20px; }
+  .wizard_content .content_wrapper .questionnaire_code label {
+    font-weight: bold; }
+  .wizard_content .content_wrapper .questionnaire_code input {
+    width: 130px;
+    height: 20px;
+    border-color: #CCCCCC; }
+  .wizard_content .content_wrapper .questionnaire_code h5 {
+    margin-bottom: 10px; }
+.wizard_content .content_wrapper .step_number {
+  margin-bottom: 20px; }
+.wizard_content .content_wrapper .questionnaire_code label {
+  display: inline; }
 .wizard_content .content_wrapper .questionnare_header {
   border: 1px solid #cccccc;
-  height: 110px;
+  height: 20px;
   margin-bottom: 20px; }
 .wizard_content .content_wrapper .questionnare_content {
   border: 1px solid #cccccc;
@@ -59,3 +73,21 @@
     font-weight: bold; }
   .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
     border-left: 1px solid #cccccc; }
+
+.buttons .buttons {
+  margin: 15px 0 15px 15px; }
+  .buttons .buttons .right_arrow {
+    background: url("/media/images/arrow_wizard.png") no-repeat top right;
+    position: relative;
+    left: -4px;
+    top: -1px;
+    padding: 13px; }
+  .buttons .buttons #submit-button {
+    color: #6f451d;
+    font-family: "Arial";
+    font-weight: bold;
+    border: 0px;
+    background: url("/media/images/arrow_wizard.png") no-repeat top left;
+    padding: 11px 6px 11px 22px; }
+  .buttons .buttons .cancel {
+    margin-right: 10px; }

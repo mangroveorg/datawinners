@@ -12,38 +12,51 @@
         })
     </script>
 {% endblock %}
+
+{% block step_number %}
+    <h3>Step1: Define Project</h3>
+    <p>Description about the step goes here</p>
+{% endblock %}
 {% block content %}
-    <div class="span-24 box">
-        <form action="" method="POST">
+<form action="" method="POST">
+    <div class="define_project">
             {% csrf_token %}
-            <div class="{{ form.name.css_classes  }} form-row-10px">
+        <ul>
+            <li class="{{ form.name.css_classes  }} form-row-10px">
                 {{ form.name.label_tag }}
                 {{ form.name }}
                 {{ form.name.errors }}
-            </div>
-            <div class="{{ form.goals.css_classes  }} form-row-10px first">
+            </li>
+            <li class="{{ form.goals.css_classes  }} form-row-10px first">
                 {{ form.goals.label_tag }}
                 {{ form.goals }}
                 {{ form.goals.errors }}
-            </div>
-            <div class="{{ form.project_type.css_classes  }} form-row-10px">
+            </li>
+            <li class="{{ form.project_type.css_classes  }} form-row-10px">
                 {{ form.project_type.label_tag }}
                 {{ form.project_type }}
                 {{ form.project_type.errors }}
-            </div>
-            <div class="{{ form.entity_type.css_classes  }} form-row-10px">
+            </li>
+            <li class="{{ form.entity_type.css_classes  }} form-row-10px">
                 {{ form.entity_type.label_tag }}
                 {{ form.entity_type }}
                 {{ form.entity_type.errors }}
-            </div>
-            <div class="{{ form.device.css_classes  }} form-row-10px">
+            </li>
+            <li class="{{ form.device.css_classes  }} form-row-10px">
                 {{ form.device.label_tag }}
                 {{ form.device }}
                 {{ form.device.errors }}
-            </div>
-            <div class="span-8">
-                <input type="submit" value="Next"/>
-            </div>
-        </form>
+            </li>
+        </ul>
+    </div>
+
+
+{% endblock %}
+{% block buttons %}
+    <div class="text_align_right buttons">
+        <a href="#" class="cancel">Cancel</a>
+        <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
+        <span class="right_arrow">&nbsp;</span>
     </div>
 {% endblock %}
+</form>

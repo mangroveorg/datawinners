@@ -9,7 +9,7 @@ class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey','Survey project: I want to collect data from the field'),('public information','Public information: I want to send information'))
     DEVICE_CHOICES = (('sms','SMS'),('smartphone','Smart Phone'))
     name=CharField(required=True)
-    goals = CharField(max_length=300,label='Project Background And Goals',required=False)
+    goals = CharField(max_length=300,widget=forms.Textarea,label='Project Background And Goals',required=False)
     project_type = ChoiceField(label='Project Type',required=True,widget=forms.RadioSelect,choices=PROJECT_TYPE_CHOICES)
     entity_type=ChoiceField(label="Subjects", required=True)
     device = MultipleChoiceField(label='Device',widget=forms.CheckboxSelectMultiple,choices=DEVICE_CHOICES,required=True)

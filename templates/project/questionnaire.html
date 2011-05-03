@@ -36,19 +36,25 @@
 {% endblock %}
 
 
-
+{% block step_number %}
+    <h3>Step2: Questionnaire</h3>
+    <p>Description about the step goes here</p>
+{% endblock %}
 {% block content %}
     {% csrf_token %}
+    <ul class="questionnaire_code">
+         <li>
+            <h5>Your Questionnaire</h5>
+            <label>Questionnaire Code :</label>
+            <input id='questionnaire-code'/>
+        </li>
+    </ul>
     <div class="questionnare_header">Header</div>
     <div class="questionnare_content">
         <div id="message-label">
         </div>
 
-        <div class="">
-            <div>
-                Questionnaire Code : <br/>
-                <input id='questionnaire-code'/>
-            </div>
+        <div>
             <div id="questions-panel" class="grid_8">
                 <div data-bind="template: 'question-list-template'" class="">
                 </div>
@@ -78,7 +84,7 @@
                                 <label>Description</label>
                                 <textarea data-bind="value: selectedQuestion().description" ></textarea>
                             </li>
-                            <li>
+                            <li class="margin_null">
                                 <label>Type</label>
 
                                 <div><input type="radio" name="type" value="text"
@@ -126,14 +132,17 @@
                     </fieldset>
                 </form>
             </div>
-            <input id="submit-button" type="button" value="Save Questionnaire"/>
             <div>
             </div>
         </div>
     </div>
-{#    <div class="text_align_right">#}
-{#        <input id="submit-button" type="button" value="Save Questionnaire"/>#}
-{#    </div>#}
+{% endblock %}
+{% block buttons %}
+    <div class="text_align_right buttons">
+        <a href="#" class="cancel">Cancel</a>
+        <input id="submit-button" type="button" value="Save Questionnaire"/>
+        <span class="right_arrow">&nbsp;</span>
+    </div>
 {% endblock %}
 
 
