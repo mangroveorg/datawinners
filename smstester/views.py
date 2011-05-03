@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.smstester.forms import SMSTesterForm
-from mangrove.datastore.reporter import get_from_reporter
+from mangrove.datastore.reporter import find_reporter
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
@@ -19,7 +19,7 @@ def index(request):
                 s = SubmissionHandler(dbm = get_db_manager())
                 response = s.accept(Request(transport="sms",message = _message,source = _from,destination = _to))
                 if response.success:
-                    reporter = get_from_reporter(get_db_manager(), _from)
+                    reporter = find_reporter(get_db_manager(), _from)
                     message = "Thank You for your submission "+ reporter.get("first_name")
                 else:
                     message = "\n".join(response.errors)
