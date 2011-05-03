@@ -65,29 +65,36 @@
   .wizard_content .content_wrapper .questionnare_content #questions-panel, .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
     padding-left: 50px;
     margin-top: 20px; }
+  .wizard_content .content_wrapper .questionnare_content #message-label label {
+    color: #269700; }
   .wizard_content .content_wrapper .questionnare_content #questions-panel a {
     color: #0070ac; }
   .wizard_content .content_wrapper .questionnare_content #questions-panel .add_question {
     font-size: 14px;
     margin-top: 30px;
     font-weight: bold; }
+  .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol li {
+    margin-bottom: 10px; }
+  .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list .delete a {
+    color: #000000; }
   .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
     border-left: 1px solid #cccccc; }
 
 .buttons .buttons {
   margin: 15px 0 15px 15px; }
-  .buttons .buttons .right_arrow {
+  .buttons .buttons #submit_button_right {
     background: url("/media/images/arrow_wizard.png") no-repeat top right;
     position: relative;
-    left: -4px;
-    top: -1px;
-    padding: 13px; }
+    left: -8px;
+    top: 0px;
+    padding: 13px 13px 13px 13px;
+    display: inline; }
   .buttons .buttons #submit-button {
     color: #6f451d;
     font-family: "Arial";
     font-weight: bold;
     border: 0px;
     background: url("/media/images/arrow_wizard.png") no-repeat top left;
-    padding: 11px 6px 11px 22px; }
+    padding: 13px 6px 13px 22px; }
   .buttons .buttons .cancel {
     margin-right: 10px; }

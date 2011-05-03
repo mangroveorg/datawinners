@@ -12,6 +12,7 @@
             set_current_tab();
         })
 
+
     </script>
     <script type="text/html" id="choice-template">
         <p>
@@ -20,18 +21,23 @@
         </p>
     </script>
     <script type="text/html" id="question-list-template">
-        <table>
+        <div class="question_list">
+            <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-            <p>
+             <li>
                 <a href="#"
                    data-bind="text: question.display, click: function() { viewModel.changeSelectedQuestion(question); } ">
                 </a>
-                    <span data-bind="visible: question.canBeDeleted()">
-                    <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
-                    </span>
-            </p>
+             <div>
+                 <span data-bind="visible: question.canBeDeleted()" class="delete">
+                     <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
+                </span>
+              </div>
+             </li>
+
             {% templatetag openvariable %}/each{% templatetag closevariable %}
-        </table>
+            </ol>
+        </div>
     </script>
 {% endblock %}
 
@@ -60,7 +66,7 @@
                 </div>
                 <div class="add_question">
                     <a href="#"
-                       data-bind="click: function() { if($('#question_form').validate().form()) viewModel.addQuestion(); }">Add
+                       data-bind="click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.addQuestion();}">Add
                         a Question</a>
                 </div>
             </div>
@@ -68,7 +74,7 @@
             <div id="question-detail-panel" class="grid_11">
                 <form id="question_form">
                     <fieldset>
-                        <legend>Add Questionnare</legend>
+                        <legend>Add Questionnaire</legend>
                         <ul>
                             <li>
                                 <label>Question</label>
@@ -107,10 +113,10 @@
                                 </div>
                                 <div>
                                     <input type="radio" name="answers_possible" value="single"
-                                           data-bind="checked:selectedQuestion().answers_permitted" class="required"/>
+                                           data-bind="checked:selectedQuestion().answers_permitted" />
                                     only one answer<br/>
                                     <input type="radio" name="answers_possible" value="multiple"
-                                           data-bind="checked:selectedQuestion().answers_permitted" class="required"/>
+                                           data-bind="checked:selectedQuestion().answers_permitted" />
                                     multiple answers are permitted<br/>
                                 </div>
                             </li>
@@ -141,7 +147,7 @@
     <div class="text_align_right buttons">
         <a href="#" class="cancel">Cancel</a>
         <input id="submit-button" type="button" value="Save Questionnaire"/>
-        <span class="right_arrow">&nbsp;</span>
+        <input id="submit_button_right" type="button"/>
     </div>
 {% endblock %}
 

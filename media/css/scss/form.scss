@@ -46,6 +46,9 @@ input[type=text]{
     height:25px;
     border-color:$border_color;
 }
+input[type=button]{
+    border:0px;
+}
 a{
     color:$link_color;
 }

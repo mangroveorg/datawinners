@@ -29,6 +29,9 @@ input[type=text] {
   height: 25px;
   border-color: #cccccc; }
 
+input[type=button] {
+  border: 0px; }
+
 a {
   color: #0070ac; }
 

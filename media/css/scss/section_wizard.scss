@@ -101,6 +101,11 @@ $slider_range:#FFFFFF;
                 padding-left:50px;
                 margin-top:20px;
             }
+            #message-label{
+                label{
+                    color:#269700;
+                }
+            }
             #questions-panel{
                 a{
                     color: #0070ac;
@@ -109,6 +114,14 @@ $slider_range:#FFFFFF;
                     font-size:14px;
                     margin-top:30px;
                     font-weight:bold;
+                }
+                .question_list{
+                    ol li{
+                        margin-bottom:10px;
+                    }
+                    .delete a{
+                        color:#000000;
+                    }
                 }
             }
             #question-detail-panel{
@@ -121,12 +134,13 @@ $slider_range:#FFFFFF;
 .buttons{
     .buttons{
         margin:15px 0 15px 15px;
-        .right_arrow{
+        #submit_button_right{
             background:url('/media/images/arrow_wizard.png') no-repeat top right;
             position:relative;
-            left:-4px;
-            top:-1px;
-            padding:13px;
+            left:-8px;
+            top:0px;
+            padding:13px 13px 13px 13px;
+            display:inline;
         }
         #submit-button{
             color:#6f451d;
@@ -134,7 +148,7 @@ $slider_range:#FFFFFF;
             font-weight:bold;
             border:0px;
             background:url('/media/images/arrow_wizard.png') no-repeat top left;
-            padding:11px 6px 11px 22px;
+            padding:13px 6px 13px 22px;
         }
         .cancel{
             margin-right:10px;
