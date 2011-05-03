@@ -1,5 +1,22 @@
 {% extends 'layout.html' %}
 {% block page_title %} Projects {% endblock %}
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/project/all.js"></script>
+{% endblock %}
 {% block content %}
-HI!!!!
+    <div class="span-18 box">
+    <table>
+        <th> Name </th>
+        <th> Created On </th>
+        <th> Type </th>
+        {% for project in projects%}
+            <tr>
+                <td><a id={{ project.id }} href='#' class='project-id-class'>{{ project.name}}</a></td>
+                <td>{{ project.created}}</td>
+                <td>{{ project.type}}</td>
+            </tr>
+        {% endfor %}
+                
+    </table>
+    </div>
 {% endblock %}

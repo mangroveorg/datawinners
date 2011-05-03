@@ -4,11 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.utils.decorators import method_decorator
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.form_model import get, FormModel
+from datawinners.project import models
 
 @login_required(login_url='/login')
 def questionnaire(request):
@@ -44,3 +46,20 @@ def save_questionnaire(request):
         form_model.form_code = questionnaire_code
         form_model.save()
     return HttpResponse("Your questionnaire has been saved")
+
+@login_required(login_url='/login')
+def project_listing(request):
+    dbm = get_db_manager()
+    project_list=[]
+    rows = dbm.load_all_rows_in_view('datawinners_views/' + 'all_projects')
+    for row in rows:
+       project= dict(name=row['value']['name'],created=row['value']['created'],type=row['value']['project_type'],id=row['value']['_id'])
+       project_list.append(project)
+    return render_to_response('project/all.html',{'projects':project_list}, context_instance=RequestContext(request))
+
+#@login_required(login_url='/login')
+#def project_overview(request):
+#    dbm=get_db_manager()
+#    project=models.get(request.GET)
+#    project_overview=dict(what=project.get_number_of_questions(),how=project.devices)
+#    return render_to_response('project/overview.html',{'project':project_overview})
