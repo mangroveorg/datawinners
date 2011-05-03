@@ -22,7 +22,7 @@
             <div data-bind="template: 'question-list-template'" class="first">
             </div>
             <div class="last">
-                <a href="#" data-bind="click: function() {viewModel.addQuestion();}">Add a Question</a>
+                <a href="#" data-bind="click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.addQuestion();}">Add a Question</a>
             </div>
         </div>
         
@@ -74,8 +74,8 @@
                             <a href="#"data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add Choice</a>
                         </div>
                         <div>
-                            <input type="radio" name ="answers_possible" value="select1" data-bind="checked:selectedQuestion().type" class="required"/>only one answer<br/>
-                            <input type="radio" name = "answers_possible" value="select" data-bind="checked:selectedQuestion().type" class="required"/>multiple answers are permitted<br/>
+                            <input type="radio" name ="answers_possible" value="select1" data-bind="checked:selectedQuestion().type" class=""/>only one answer<br/>
+                            <input type="radio" name = "answers_possible" value="select" data-bind="checked:selectedQuestion().type" class=""/>multiple answers are permitted<br/>
                         </div>
                     </td>
                 </tr>
