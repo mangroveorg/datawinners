@@ -49,17 +49,16 @@ def save_questionnaire(request):
 
 @login_required(login_url='/login')
 def project_listing(request):
-    dbm = get_db_manager()
     project_list=[]
-    rows = dbm.load_all_rows_in_view('datawinners_views/' + 'all_projects')
+    rows = models.get_all_projects()
     for row in rows:
-       project= dict(name=row['value']['name'],created=row['value']['created'],type=row['value']['project_type'],id=row['value']['_id'])
+       link = "/project/overview?pid="+row['value']['_id']
+       project= dict(name=row['value']['name'],created=row['value']['created'],type=row['value']['project_type'],link=link)
        project_list.append(project)
     return render_to_response('project/all.html',{'projects':project_list}, context_instance=RequestContext(request))
 
-#@login_required(login_url='/login')
-#def project_overview(request):
-#    dbm=get_db_manager()
-#    project=models.get(request.GET)
-#    project_overview=dict(what=project.get_number_of_questions(),how=project.devices)
-#    return render_to_response('project/overview.html',{'project':project_overview})
+@login_required(login_url='/login')
+def project_overview(request):
+    project=models.get_project(request.GET["pid"])
+    project_overview=dict(what=3,how=project['devices'])
+    return render_to_response('project/overview.html',{'project':project_overview})

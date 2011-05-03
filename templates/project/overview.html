@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block page_title %} Projects {% endblock %}
+{% block content %}
+    {{ project }}
+    <div class="span-18 box">
+        <ul>
+            <li>
+                Template<br/>
+                No template
+            </li>
+            <li>
+                What<br/>
+               
+                {{ project.what }}
+            </li>
+            <li>
+                How <br/>
+                 {% for each in project.how %}
+                    {{ each }} |
+                 {% endfor %}
+            </li>
+        </ul>
+    </div>
+{% endblock %}
