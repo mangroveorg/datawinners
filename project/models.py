@@ -23,3 +23,13 @@ class Project(DocumentBase):
             dbm = get_db_manager()
         assert isinstance(dbm, DatabaseManager)
         return dbm.save(self)
+
+def get_project(pid,dbm=get_db_manager()):
+    all_projects = get_all_projects(dbm)
+    for each in all_projects:
+        if each['value']['_id']==pid:
+            return each['value']
+    return None
+
+def get_all_projects(dbm=get_db_manager()):
+    return dbm.load_all_rows_in_view('datawinners_views/' + 'all_projects')
