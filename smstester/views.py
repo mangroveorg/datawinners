@@ -18,11 +18,7 @@ def index(request):
             try:
                 s = SubmissionHandler(dbm = get_db_manager())
                 response = s.accept(Request(transport="sms",message = _message,source = _from,destination = _to))
-                if response.success:
-                    reporter = find_reporter(get_db_manager(), _from)
-                    message = "Thank You for your submission "+ reporter.get("first_name")
-                else:
-                    message = "\n".join(response.errors)
+                message = response.message
             except MangroveException as exception:
                 message = exception.message
     else:
