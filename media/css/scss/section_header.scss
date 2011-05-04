@@ -34,8 +34,10 @@
   }
 }
 #container_header_application{
+    #container_header_wizard{
+        background:none;
+        height:60px;
     #header{
-        height:30px;
         .login{
             color:#CCCCCC;
             span{
@@ -49,29 +51,32 @@
             top:30px;
         }
     }
-}
-#main_tab{
-    text-align:right;
-    ul{
-        position:relative;
-        left:510px;
-        li{
-            padding:10px;
-            float:left;
-            a{
-                font-size:14px;
-                color: #feea89;
-                font-weight:bold;
-            }
 
-            &.current{
-                a{
-                    color: #FFFFFF;
-                }
-            }
-
-
-        }
     }
+    #main_tab{
+        text-align:right;
+        ul{
+            position:relative;
+            left:510px;
+            top:-30px;
+            li{
+                padding:10px;
+                float:left;
+                a{
+                    font-size:14px;
+                    color: #feea89;
+                    font-weight:bold;
+                }
 
+                &.current{
+                    a{
+                        color: #FFFFFF;
+                    }
+                }
+
+
+            }
+        }
+
+    }
 }

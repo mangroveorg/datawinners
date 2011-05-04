@@ -22,29 +22,30 @@
     #header .login a :hover {
       text-decoration: underline; }
 
-#container_header_application #header {
-  height: 30px; }
-  #container_header_application #header .login {
+#container_header_application #container_header_wizard {
+  background: none;
+  height: 60px; }
+  #container_header_application #container_header_wizard #header .login {
     color: #CCCCCC; }
-    #container_header_application #header .login span {
+    #container_header_application #container_header_wizard #header .login span {
       display: inline-block;
       padding: 1px 15px 2px;
       margin-top: 4px; }
-  #container_header_application #header .logo {
+  #container_header_application #container_header_wizard #header .logo {
     position: relative;
     top: 30px; }
-
-#main_tab {
+#container_header_application #main_tab {
   text-align: right; }
-  #main_tab ul {
+  #container_header_application #main_tab ul {
     position: relative;
-    left: 510px; }
-    #main_tab ul li {
+    left: 510px;
+    top: -30px; }
+    #container_header_application #main_tab ul li {
       padding: 10px;
       float: left; }
-      #main_tab ul li a {
+      #container_header_application #main_tab ul li a {
         font-size: 14px;
         color: #feea89;
         font-weight: bold; }
-      #main_tab ul li.current a {
+      #container_header_application #main_tab ul li.current a {
         color: #FFFFFF; }
