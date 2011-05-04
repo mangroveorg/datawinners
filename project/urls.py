@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     (r'^project/wizard$',direct_to_template,{'template':'project/test_wizard.html'}),
     (r'^project/all$', project_listing),
     (r'^project/overview$', project_overview),
-    (r'^project/(?P<questionnaire_code>.+?)/$', project_results),
+    (r'^project/results/(?P<questionnaire_code>.+?)/$', project_results),
 )
