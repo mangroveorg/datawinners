@@ -1,9 +1,8 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 //var viewModel = null;
- function Question(title,code,description,type,choices,entity_question,range_min,range_max){
+ function Question(title,code,type,choices,entity_question,range_min,range_max){
                             this.title=ko.observable(title);
                             this.code=ko.observable(code);
-                            this.description=ko.observable(description);
                             this.type=ko.observable(type);
                             this.choices= ko.observableArray(choices);
                             this.is_entity_question = ko.observable(entity_question);
@@ -24,7 +23,7 @@ var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question("Question","code","","text",[],false,0,"");
+            var question = new Question("Question","code","text",[],false,0,"");
             question.display = ko.dependentObservable(function(){
                 return this.title() + ' ' + this.code();
             }, question);
@@ -77,11 +76,10 @@ var viewModel =
 
 $(document).ready(function(){
     question_list.forEach(function(question){
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
      });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
-
     ko.applyBindings(viewModel);
 
     $("#submit-button").click(function(){
