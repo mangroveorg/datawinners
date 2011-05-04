@@ -101,6 +101,9 @@ $(document).ready(function(){
             code:{
                 required: true,
                 spacerule: true
+            },
+            type:{
+                required: true
             }
         }
     });

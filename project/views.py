@@ -84,7 +84,8 @@ def project_listing(request):
 def project_overview(request):
     project=models.get_project(request.GET["pid"])
     link = '/project/profile/edit?pid='+request.GET["pid"]
-    project_overview=dict(what=3,how=project['devices'],link=link)
+    number_of_questions =len(helper.load_questionnaire(project['qid']).fields)
+    project_overview=dict(what=number_of_questions,how=project['devices'],link=link)
     return render_to_response('project/overview.html',{'project':project_overview})
 
 @login_required(login_url='/login')
