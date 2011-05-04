@@ -20,7 +20,7 @@ class Project(DocumentBase):
         self.project_type = project_type
         self.entity_type = entity_type
         self.devices = devices
-#        self.devices.append("web")
+        self.devices.append("web")
 
     def save(self, dbm=None):
         if dbm is None:
