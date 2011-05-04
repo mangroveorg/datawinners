@@ -80,16 +80,42 @@ $(document).ready(function(){
      });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
+
     ko.applyBindings(viewModel);
 
-    $("#submit-button").click(function(){
-        var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
-        if($.trim($("#questionnaire-code").val()) == ""){
+    $.validator.addMethod('spacerule', function(value, element, params) {
+        var list = $('#' + element.id).val().split(" ");
+        if (list.length > 1) {
+            return false;
+        }
+        return true;
+    }, "Space not allowed in question code!!");
+
+//    //$('#code').rules("add", {spacerule:null});
+
+    $("#question_form").validate({
+        rules: {
+            question:{
+                required: true
+            },
+            code:{
+                required: true,
+                spacerule: true
+            }
+        }
+    });
+
+
+    $("#submit-button").click(function() {
+        var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+        if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("The Questionnaire code is required.");
             return;
         }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
-        $.post('/project/questionnaire/save', post_data,function(response){$("#message-label").html("<label>"+response+"</label>")});
+        $.post('/project/questionnaire/save', post_data, function(response) {
+            $("#message-label").html("<label>" + response + "</label>")
+        });
     });
 })
