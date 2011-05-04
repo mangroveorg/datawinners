@@ -15,11 +15,13 @@ from mangrove.form_model.form_model import get
 
 @login_required(login_url='/login')
 def questionnaire(request):
-    pid = request.GET["pid"]
-    project=models.get_project(pid)
-    form_model = helper.load_questionnaire(project.qid)
-    existing_questions = json.dumps(form_model.fields, default=field_to_json)
-    return render_to_response('project/questionnaire.html', {"existing_questions": existing_questions,"questionnaire_code":form_model.form_code,'project_id':pid},context_instance=RequestContext(request))
+    if request.method == 'GET':
+        pid = request.GET["pid"]
+        project=models.get_project(pid)
+        form_model = helper.load_questionnaire(project.qid)
+        existing_questions = json.dumps(form_model.fields, default=field_to_json)
+        return render_to_response('project/questionnaire.html', {"existing_questions": existing_questions,"questionnaire_code":form_model.form_code,'project_id':pid},context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 def create_profile(request):

@@ -26,7 +26,7 @@
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
              <li>
                 <a href="#"
-                   data-bind="text: question.display, click: function() { viewModel.changeSelectedQuestion(question); } ">
+                   data-bind="text: question.display, click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
                 </a>
              <div>
                  <span data-bind="visible: question.canBeDeleted()" class="delete">
