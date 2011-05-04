@@ -8,9 +8,9 @@ class TestProjectModel(unittest.TestCase):
         self.dbm = get_db_manager(database='mangrove-test')
         create_views(self.dbm)
         self.project1 = Project(name="Test1", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
-        self.project1_id = self.project1.save(self.dbm).id
+        self.project1_id = self.project1.save(self.dbm)
         self.project2 = Project(name="Test2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
-        self.project2_id = self.project2.save(self.dbm).id
+        self.project2_id = self.project2.save(self.dbm)
 
     def tearDown(self):
         _delete_db_and_remove_db_manager(self.dbm)
