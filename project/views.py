@@ -51,6 +51,7 @@ def edit_profile(request):
     form = ProjectProfile(request.POST)
     if form.is_valid():
         project.update(form.cleaned_data)
+        project.save()
         return HttpResponseRedirect('/project/questionnaire?qid='+ project.qid)
 
 def save_questionnaire(request):

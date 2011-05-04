@@ -7,7 +7,7 @@ from mangrove.form_model.form_model import FormModel, get
 
 def create_question(post_dict):
     if post_dict["type"]=="text":
-        return TextField(name=post_dict["title"],question_code=post_dict["code"],label=post_dict["description"],entity_question_flag=post_dict["is_entity_question"])
+        return TextField(name=post_dict["title"],question_code=post_dict["code"],label=post_dict["description"],entity_question_flag=post_dict.get("is_entity_question"))
     if post_dict["type"]=="integer":
         range = {"min":post_dict["range_min"], "max":post_dict["range_max"]}
         return IntegerField(post_dict["title"],post_dict["code"],post_dict["description"], range)
