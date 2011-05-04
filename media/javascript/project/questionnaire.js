@@ -115,6 +115,10 @@ $(document).ready(function(){
             $("#questionnaire-code-error").html("The Questionnaire code is required.");
             return;
         }
+        if(!$('#question_form').valid()){
+            $("#message-label").html("<label> This form has an error </label> ")
+            return;
+        }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
         $.post('/project/questionnaire/save', post_data, function(response) {

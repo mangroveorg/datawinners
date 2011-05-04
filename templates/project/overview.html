@@ -1,25 +1,23 @@
-{% extends 'layout.html' %}
+{% extends 'tab_navigation.html' %}
 {% block page_title %} Projects {% endblock %}
 {% block content %}
     <div class="span-18 box">
+        <h5>Project Profile</h5>
+        <a href ={{ project.link }}>Edit</a>
         <ul>
             <li>
-                <a href ={{ project.link }}>Edit</a>
+               <h5>Template</h5>
+                <p>No template</p>
             </li>
             <li>
-                Template<br/>
-                No template
+                <h5>What</h5>
+                <p>Questions: {{ project.what }} questions defined</p>
             </li>
             <li>
-                What<br/>
-               
-                {{ project.what }}
-            </li>
-            <li>
-                How <br/>
-                 {% for each in project.how %}
+                 <h5>How</h5>
+                 <p>{% for each in project.how %}
                     {{ each }} |
-                 {% endfor %}
+                 {% endfor %}</p>
             </li>
         </ul>
     </div>
