@@ -79,8 +79,8 @@ $(document).ready(function(){
     question_list.forEach(function(question){
         viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
      });
-
-    viewModel.addQuestion();
+    viewModel.selectedQuestion(viewModel.questions()[0]);
+    viewModel.selectedQuestion.valueHasMutated();
 
     ko.applyBindings(viewModel);
 
