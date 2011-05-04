@@ -1,9 +1,8 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 //var viewModel = null;
- function Question(title,code,description,type,choices,entity_question,range_min,range_max){
+ function Question(title,code,type,choices,entity_question,range_min,range_max){
                             this.title=ko.observable(title);
                             this.code=ko.observable(code);
-                            this.description=ko.observable(description);
                             this.type=ko.observable(type);
                             this.choices= ko.observableArray(choices);
                             this.is_entity_question = ko.observable(entity_question);
@@ -24,7 +23,7 @@ var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question("Question","code","","text",[],false,0,"");
+            var question = new Question("Question","code","text",[],false,0,"");
             question.display = ko.dependentObservable(function(){
                 return this.title() + ' ' + this.code();
             }, question);
@@ -77,21 +76,46 @@ var viewModel =
 
 $(document).ready(function(){
     question_list.forEach(function(question){
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.label.eng,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
      });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
 
     ko.applyBindings(viewModel);
 
-    $("#submit-button").click(function(){
-        var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
-        if($.trim($("#questionnaire-code").val()) == ""){
+    $.validator.addMethod('spacerule', function(value, element, params) {
+        var list = $('#' + element.id).val().split(" ");
+        if (list.length > 1) {
+            return false;
+        }
+        return true;
+    }, "Space not allowed in question code!!");
+
+//    //$('#code').rules("add", {spacerule:null});
+
+    $("#question_form").validate({
+        rules: {
+            question:{
+                required: true
+            },
+            code:{
+                required: true,
+                spacerule: true
+            }
+        }
+    });
+
+
+    $("#submit-button").click(function() {
+        var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+        if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("The Questionnaire code is required.");
             return;
         }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
-        $.post('/project/questionnaire/save', post_data,function(response){$("#message-label").html("<label>"+response+"</label>")});
+        $.post('/project/questionnaire/save', post_data, function(response) {
+            $("#message-label").html("<label>" + response + "</label>")
+        });
     });
 })

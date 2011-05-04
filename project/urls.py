@@ -1,7 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns
 from django.views.generic.simple import direct_to_template
-from datawinners.project.views import questionnaire,save_questionnaire,create_profile, project_listing, project_overview, edit_profile
+
+from datawinners.project.views import questionnaire,save_questionnaire,create_profile, project_listing, project_overview, edit_profile, project_results
 
 urlpatterns = patterns('',
     (r'^project/questionnaire$', questionnaire),
@@ -12,4 +13,5 @@ urlpatterns = patterns('',
     (r'^project/wizard$',direct_to_template,{'template':'project/test_wizard.html'}),
     (r'^project/all$', project_listing),
     (r'^project/overview$', project_overview),
+    (r'^project/(?P<questionnaire_code>.+?)/$', project_results),
 )

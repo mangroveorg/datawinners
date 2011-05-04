@@ -53,7 +53,7 @@ def deploy(build_number,home_dir,virtual_env,environment="test"):
                                     "showcase" :{"SITE_ID":2},
                                     "test"   :{"SITE_ID":4}
                                  }
-    run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha` " % (build_number,))
+    run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
     code_dir = home_dir+'/mangrove'
     with settings(warn_only=True):
@@ -63,6 +63,7 @@ def deploy(build_number,home_dir,virtual_env,environment="test"):
             sync_develop_branch()
             delete_if_branch_exists(build_number)
             run("git checkout -b %s $COMMIT_SHA" % (build_number,) )
+            run("git checkout .")
             activate_and_run(virtual_env,"pip install -r requirements.pip")
         sudo("chmod -R 777 %s" %code_dir)
         with cd(code_dir+'/src/datawinners'):

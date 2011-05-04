@@ -5,9 +5,10 @@ from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
-from mangrove.datastore.field import TextField, IntegerField
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
+from mangrove.form_model.field import TextField, IntegerField
 from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.validation import IntegerConstraint
 
 def define_entity_instance(manager, ENTITY_TYPE, location, id):
     return Entity(manager, entity_type=ENTITY_TYPE, location=location, id=id)
@@ -151,7 +152,7 @@ def load_data():
     question2 = TextField(name="Name", question_code="Q1", label="What is your name",
                           defaultValue="some default value", language="eng")
     question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
-                             range={"min": 15, "max": 120})
+                             range=IntegerConstraint(min=15,max=120))
 
     form_model = FormModel(manager, entity_type_id="Clinic", name="AIDS", label="Aids form_model",
                            form_code="QRID01", type='survey', fields=[

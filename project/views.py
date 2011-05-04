@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datetime import datetime
 import json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,7 +10,7 @@ from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
 from datawinners.project import models
-from mangrove.datastore.field import field_to_json
+from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get
 
 @login_required(login_url='/login')
@@ -86,3 +87,11 @@ def project_overview(request):
     project_overview=dict(what=3,how=project['devices'],link=link)
     return render_to_response('project/overview.html',{'project':project_overview})
 
+@login_required(login_url='/login')
+def project_results(request, questionnaire_code = None):
+#    Load the data records corresponding to the questionnaire here
+    results = {
+                'questions' : [('Q1Code', 'Q1Text', 'Q1Description',), ('Q2Code', 'Q2Text', 'Q2Description',)],
+                'submissions' : [(datetime.utcnow(), 'Q1 Ans', 'Q2 Ans',), (datetime.utcnow(), None, 'Q2 Ans',)]
+              }
+    return render_to_response('project/results.html',{'questionnaire_code': questionnaire_code, 'results': results})
