@@ -9,7 +9,7 @@ from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
 from datawinners.project import models
-from mangrove.datastore.field import field_to_json
+from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get
 
 @login_required(login_url='/login')
