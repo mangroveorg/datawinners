@@ -8,7 +8,7 @@
             <div class="grid_12 omega login">
                 <span class="welcome">Welcome Prabhu</span>
                 <span><a href="#">Your Account</a></span>
-                <span><a href="#">Log Out</a></span>
+               <span>{% if user.is_authenticated %}  <a href="{% url django.contrib.auth.views.logout %}">Logout</a> {% endif %}</span>
                 <span><a href="#" class="padding_right_null">Help</a></span>
             </div>
         </div>
