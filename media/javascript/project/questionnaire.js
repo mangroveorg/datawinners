@@ -86,7 +86,12 @@ $(document).ready(function(){
 
     $("#submit-button").click(function(){
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null,2);
+        if($.trim($("#questionnaire-code").val()) == ""){
+            $("#questionnaire-code-error").html("The Questionnaire code is required.");
+            return;
+        }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
+
         $.post('/project/questionnaire/save', post_data,function(response){$("#message-label").html("<label>"+response+"</label>")});
     });
 })
