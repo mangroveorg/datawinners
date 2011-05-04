@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datawinners.project.models import Project, Project
 from mangrove.datastore.database import get_db_manager
 
 from mangrove.datastore.field import TextField, IntegerField, SelectField

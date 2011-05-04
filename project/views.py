@@ -4,22 +4,21 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.decorators import method_decorator
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
-from mangrove.form_model.form_model import get, FormModel
 from datawinners.project import models
+from mangrove.datastore.field import field_to_json
+from mangrove.form_model.form_model import get
 
 @login_required(login_url='/login')
 def questionnaire(request):
     pid = request.GET["pid"]
     project=models.get_project(pid)
     form_model = helper.load_questionnaire(project.qid)
-    existing_questions = json.dumps(form_model.fields)
-    return render_to_response('project/questionnaire.html', {"existing_questions": existing_questions,"questionnaire_code":form_model.form_code,'project_id':pid},
-                              context_instance=RequestContext(request))
+    existing_questions = json.dumps(form_model.fields, default=field_to_json)
+    return render_to_response('project/questionnaire.html', {"existing_questions": existing_questions,"questionnaire_code":form_model.form_code,'project_id':pid},context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def create_profile(request):
@@ -86,3 +85,4 @@ def project_overview(request):
     link = '/project/profile/edit?pid='+request.GET["pid"]
     project_overview=dict(what=3,how=project['devices'],link=link)
     return render_to_response('project/overview.html',{'project':project_overview})
+
