@@ -15,6 +15,7 @@ def define_entity_instance(manager, ENTITY_TYPE, location, id):
 def load_data():
     manager = get_db_manager()
     ENTITY_TYPE = ["Clinic"]
+    ENTITY_TYPE2 = ["Water Point"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
 
@@ -22,6 +23,8 @@ def load_data():
     try:
         define_type(manager, "Reporter")
         define_type(manager, "Clinic")
+        define_type(manager, "Water Point")
+
     except EntityTypeAlreadyDefined:
         pass
 
@@ -122,8 +125,27 @@ def load_data():
         e.add_data(data=[("beds", 200,beds_type), ("meds", 50,meds_type), ("director","Dr. Duck",director_type), ("patients", 12,patients_type)],
                event_time=MARCH)
 
-        
 
+    e = define_entity_instance(manager, ENTITY_TYPE2, ['India', 'Gujrat', 'Ahmedabad'], "WP01")
+    e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
+    try:
+        e.save()
+    except Exception:
+        pass
+
+    e = define_entity_instance(manager, ENTITY_TYPE2, ['India', 'Gujrat', 'Bhuj'], "WP02")
+    e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
+    try:
+        e.save()
+    except Exception:
+        pass
+
+    e = define_entity_instance(manager, ENTITY_TYPE2, ['India', 'Gujrat', 'Kacch'], "WP03")
+    e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
+    try:
+        e.save()
+    except Exception:
+        pass
     question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity"
                           , language="eng", entity_question_flag=True)
     question2 = TextField(name="Name", question_code="Q1", label="What is your name",
