@@ -100,7 +100,7 @@
                                             data-bind="checked: selectedQuestion().type" class="required"/> Number
                                 </div>
                                 <div><input type="radio" name="type" value="choice"
-                                            data-bind="checked: selectedQuestion().type,click:function(){ viewModel.clearChoices(); return true;}"
+                                            data-bind="checked: selectedQuestion().isAChoiceTypeQuestion"
                                             class="choice-question-checkbox required"/> List of Choices
                                 </div>
                             </li>
@@ -112,11 +112,11 @@
                                         Choice</a>
                                 </div>
                                 <div>
-                                    <input type="radio" name="answers_possible" value="single"
-                                           data-bind="checked:selectedQuestion().answers_permitted" />
+                                    <input type="radio" name="answers_possible" value="select1"
+                                           data-bind="checked:selectedQuestion().type" />
                                     only one answer<br/>
-                                    <input type="radio" name="answers_possible" value="multiple"
-                                           data-bind="checked:selectedQuestion().answers_permitted" />
+                                    <input type="radio" name="answers_possible" value="select"
+                                           data-bind="checked:selectedQuestion().type" />
                                     multiple answers are permitted<br/>
                                 </div>
                             </li>
@@ -129,7 +129,7 @@
                                     </p>
 
                                     <p>
-                                        Min:
+                                        Max:
                                         <input name="range_max" data-bind="value:selectedQuestion().range_max"/>
                                     </p>
                                 </div>
