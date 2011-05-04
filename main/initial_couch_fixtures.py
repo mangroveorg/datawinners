@@ -5,8 +5,8 @@ from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
-from mangrove.datastore.field import TextField, IntegerField
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
+from mangrove.form_model.field import TextField, IntegerField
 from mangrove.form_model.form_model import FormModel
 
 def define_entity_instance(manager, ENTITY_TYPE, location, id):
