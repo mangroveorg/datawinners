@@ -3,6 +3,11 @@
   overflow: hidden;
   background: url("/media/images/application_header_bg.gif") repeat top left; }
 
+#container_header_application {
+  height: 74px;
+  overflow: hidden;
+  background: url("/media/images/hedaer_app_bg.gif") repeat top left; }
+
 #container_content, #container_wizard {
   overflow: hidden;
   min-height: 600px;

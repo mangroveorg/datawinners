@@ -33,3 +33,45 @@
 
   }
 }
+#container_header_application{
+    #header{
+        height:30px;
+        .login{
+            color:#CCCCCC;
+            span{
+                display:inline-block;
+                padding:1px 15px 2px;
+                margin-top:4px;
+            }
+        }
+        .logo{
+            position:relative;
+            top:30px;
+        }
+    }
+}
+#main_tab{
+    text-align:right;
+    ul{
+        position:relative;
+        left:510px;
+        li{
+            padding:10px;
+            float:left;
+            a{
+                font-size:14px;
+                color: #feea89;
+                font-weight:bold;
+            }
+
+            &.current{
+                a{
+                    color: #FFFFFF;
+                }
+            }
+
+
+        }
+    }
+
+}
