@@ -26,7 +26,7 @@ def report(request):
                                      aggregates={aggregates_field:data.reduce_functions.LATEST},
                                      filter=filter
             )
-            column_headers,values = tabulate_output(report_data,"Clinic_id")
+            column_headers,values = tabulate_output(report_data,"ID")
             if not len(values):
                 error_message = 'Sorry, No records found for this query'
     else:
@@ -54,13 +54,14 @@ def hierarchy_report(request):
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
         if form.is_valid():
+            entity_type = form.cleaned_data['entity_type'].split(".")
             aggregates_field = form.cleaned_data['aggregates_field']
             reduce_function=form.cleaned_data['reduce']
             aggregates={aggregates_field:reduce_function}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
             level=form.cleaned_data['level']
             aggregate_on={'type': aggregate_on_path,"level":level}
-            report_data = data.fetch(manager, entity_type=["Health_Facility", "Clinic"],
+            report_data = data.fetch(manager, entity_type=entity_type,
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
