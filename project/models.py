@@ -11,16 +11,14 @@ class Project(DocumentBase):
     devices = ListField(TextField())
     qid = TextField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=[]):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None):
         DocumentBase.__init__(self, id=id, document_type='Project')
-        assert is_sequence(devices)
         self.devices=[]
         self.name = name
         self.goals = goals
         self.project_type = project_type
         self.entity_type = entity_type
         self.devices = devices
-        self.devices.append("web")
 
     def save(self, dbm=None):
         if dbm is None:
