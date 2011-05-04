@@ -55,6 +55,8 @@ def edit_profile(request):
         project.update(form.cleaned_data)
         pid = project.save()
         return HttpResponseRedirect('/project/questionnaire?pid='+ pid)
+    else:
+        return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
 def save_questionnaire(request):
     if request.method == 'POST':
