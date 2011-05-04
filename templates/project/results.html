@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block page_title %} Results for Questionnaire ( {{ project_code }} ) {% endblock %}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/results.js"></script>
+{% endblock %}
+{% block content %}
+    <div>
+        <div>
+            <h3>Results</h3>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <h4>Filter Data by:</h4>
+                    <p>
+                        Date received between <input id="date_from" type="text" /> and <input id="date_to" type="text" />
+                    </p>
+                    <p>
+                        Answer to question <select class="question_filter"></select> is <input type="text" class="answer_filter" /> <br/>
+                    </p>
+                    <p>
+                        <a id="add_answer_filter" style="cursor:pointer">Add another</a>
+                    </p>
+                    <p>
+                        Contains <input id="contains_text" type="text" />
+                    </p>
+                    <p class="text_align_right">
+                        <button id="filter">Filter</button>
+                    </p>
+                </div>
+            </div>
+            <div id="results">
+                Results table goes here!
+            </div>
+        </div>
+    </div>
+{% endblock %}
