@@ -91,6 +91,12 @@ $(document).ready(function(){
         return true;
     }, "Space not allowed in question code!!");
 
+    $.validator.addMethod('regexrule', function(value, element, params) {
+        var text = $('#' + element.id).val();
+        var re = new RegExp('^\\w+$');
+        return re.test(text);
+    }, "Only letters, digits and underscore is valid");
+
 //    //$('#code').rules("add", {spacerule:null});
 
     $("#question_form").validate({
@@ -100,14 +106,14 @@ $(document).ready(function(){
             },
             code:{
                 required: true,
-                spacerule: true
+                spacerule: true,
+                regexrule: true
             },
             type:{
                 required: true
             }
         }
     });
-
 
     $("#submit-button").click(function() {
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
