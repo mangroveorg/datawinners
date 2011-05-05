@@ -51,6 +51,7 @@ class RegistrationBackend(object):
     fields and supported operations.
 
     """
+
     def register(self, request, **kwargs):
         """
         Given a username, email address and password, register a new
@@ -82,17 +83,20 @@ class RegistrationBackend(object):
             site = RequestSite(request)
         new_user = RegistrationProfile.objects.create_inactive_user(email, email,
                                                                     password, site)
-#        new_user = User.objects.create_user(email,email,password)
+        #        new_user = User.objects.create_user(email,email,password)
         new_user.first_name = kwargs.get('first_name')
         new_user.last_name = kwargs.get('last_name')
         new_user.save()
         organization = Organization(name=kwargs.get('organization_name'), sector=kwargs.get('organization_sector')
-                                            , addressline1=kwargs.get('organization_addressline1'), addressline2=kwargs.get('organization_addressline2')
-                                            , city=kwargs.get('organization_city'), state=kwargs.get('organization_state')
-                                            , country=kwargs.get('organization_country'), zipcode=kwargs.get('organization_zipcode')
-                                            , office_phone=kwargs.get('organization_office_phone'), website=kwargs.get('organization_website')
-                                            , org_id=OrganizationIdCreator().generateId()
-                                             )
+                                    , addressline1=kwargs.get('organization_addressline1'),
+                                    addressline2=kwargs.get('organization_addressline2')
+                                    , city=kwargs.get('organization_city'), state=kwargs.get('organization_state')
+                                    , country=kwargs.get('organization_country'),
+                                    zipcode=kwargs.get('organization_zipcode')
+                                    , office_phone=kwargs.get('organization_office_phone'),
+                                    website=kwargs.get('organization_website')
+                                    , org_id=OrganizationIdCreator().generateId()
+        )
         organization.save()
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
