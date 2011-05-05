@@ -123,12 +123,24 @@ $(document).ready(function(){
 
     $("#submit-button").click(function() {
 
-        
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("The Questionnaire code is required.");
             return;
         }
+        var list = $('#questionnaire-code').val().split(" ");
+        if (list.length > 1) {
+            $("#questionnaire-code-error").html("Space not allowed in questionnaire code.");
+            return;
+        }
+        var text = $('#questionnaire-code').val();
+        var re = new RegExp('^\\w+$');
+        if( !re.test(text)){
+            $("#questionnaire-code-error").html("Only letters, digits and underscore is valid.");
+            return;
+        }
+        $("#questionnaire-code-error").html("");
+
         if(!$('#question_form').valid()){
             $("#message-label").html("<label class='error_message'> This form has an error </label> ");
             hide_message();
