@@ -28,9 +28,9 @@ def create_questionnaire(post,dbm=get_db_manager()):
 def load_questionnaire(questionnaire_id):
     return get(get_db_manager(), questionnaire_id)
 
-def save_questionnaire(form_model,post_dictionary):
+def update_questionnaire_with_questions(form_model,question_set):
     form_model.delete_all_fields()
-    for question in post_dictionary:
+    for question in question_set:
         form_model.add_field(create_question(question))
     return form_model
 

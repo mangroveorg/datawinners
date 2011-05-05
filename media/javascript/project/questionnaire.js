@@ -139,6 +139,8 @@ $(document).ready(function(){
         $.post('/project/questionnaire/save', post_data, function(response) {
             $("#message-label").html("<label class='success_message'>" + response + "</label>");
             hide_message();
+        }).error(function(e){
+            $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
 

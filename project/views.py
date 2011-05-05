@@ -2,7 +2,7 @@
 from datetime import datetime
 import json
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.project.forms import ProjectProfile
@@ -10,6 +10,7 @@ from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
 from datawinners.project import models
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get
 
@@ -61,18 +62,23 @@ def edit_profile(request):
 def save_questionnaire(request):
     if request.method == 'POST':
         questionnaire_code = request.POST['questionnaire-code']
-        post_dictionary = json.loads(request.POST['question-set'])
+        question_set = json.loads(request.POST['question-set'])
 
         pid = request.POST['pid']
         project=models.get_project(pid)
         form_model = get(get_db_manager(), project.qid)
-        form_model = helper.save_questionnaire(form_model, post_dictionary)
-        form_model.form_code = questionnaire_code
-        form_model.name = project.name
-        form_model.entity_id = project.entity_type
-        form_model.save()
-
-        return HttpResponse("Your questionnaire has been saved")
+        try:
+            form_model = helper.update_questionnaire_with_questions(form_model, question_set)
+        except QuestionCodeAlreadyExistsException as e:
+            return HttpResponseServerError(e.message)
+        except EntityQuestionAlreadyExistsException as e:
+            return HttpResponseServerError(e.message)
+        else:
+            form_model.form_code = questionnaire_code
+            form_model.name = project.name
+            form_model.entity_id = project.entity_type
+            form_model.save()
+            return HttpResponse("Your questionnaire has been saved")
 
 @login_required(login_url='/login')
 def project_listing(request):
