@@ -32,4 +32,11 @@ class TestHelper(unittest.TestCase):
         questionnaire = helper.save_questionnaire(form_model,post)
         self.assertEqual(3,len(questionnaire.fields))
 
+    def test_should_save_questionnaire_from_post(self):
+        post = [{ "title":"q1", "code":"qc1", "type":"text", "choices":[], "is_entity_question":True},
+                { "title":"q2", "code":"qc2", "type":"integer", "choices":[], "is_entity_question":False,"range_min":0,"range_max":""  },
+                { "title":"q3", "code":"qc3",  "type":"select", "choices":[{ "value":"c1" }, { "value":"c2" } ], "is_entity_question":False,"answers_permitted":"single"}
+               ]
+        q1=helper.create_question(post[1])
+        self.assertEqual(q1.constraint.max,None)
 
