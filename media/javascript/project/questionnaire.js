@@ -45,6 +45,7 @@ var viewModel =
         removeQuestion: function(question){
             viewModel.questions.remove(question);
             viewModel.changeSelectedQuestion(viewModel.questions()[0]);
+
         },
         showAddChoice:function(){
             return viewModel.selectedQuestion().isAChoiceTypeQuestion() == "choice"
