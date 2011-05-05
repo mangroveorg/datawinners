@@ -4,12 +4,15 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField
 
 from mangrove.form_model.form_model import FormModel, get
 from mangrove.form_model.validation import IntegerConstraint
+from mangrove.utils.types import is_empty
 
 def create_question(post_dict):
     if post_dict["type"]=="text":
         return TextField(name=post_dict["title"],question_code=post_dict["code"],label="default",entity_question_flag=post_dict.get("is_entity_question"))
     if post_dict["type"]=="integer":
-        range = IntegerConstraint(min=post_dict["range_min"], max = post_dict["range_max"])
+        max_range_from_post = post_dict["range_max"]
+        max_range=max_range_from_post if not is_empty(max_range_from_post) else None
+        range = IntegerConstraint(min=post_dict["range_min"], max = max_range)
         return IntegerField(post_dict["title"],post_dict["code"],"default", range)
     if post_dict["type"]=="select":
         options = [choice["value"] for choice in post_dict["choices"]]
