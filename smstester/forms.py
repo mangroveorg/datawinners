@@ -9,7 +9,7 @@ class SMSTesterForm(Form):
 
     message = forms.CharField(required=True, label="SMS *",max_length=140,widget=Textarea( {"cols": 30,"rows": 4 }))
     to_number = forms.CharField(required=True, label="To *")
-    from_number = forms.CharField(required=True, label="From *",initial = "99001234")
+    from_number = forms.CharField(required=True, label="From *")
     response = forms.CharField(label="Response",max_length=140,widget=Textarea(),required=False)
 
     def clean_message(self):
