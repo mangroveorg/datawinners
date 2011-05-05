@@ -95,13 +95,13 @@ $(document).ready(function(){
             return false;
         }
         return true;
-    }, "Space not allowed in question code!!");
+    }, "Space is not allowed in question code.");
 
     $.validator.addMethod('regexrule', function(value, element, params) {
         var text = $('#' + element.id).val();
         var re = new RegExp('^\\w+$');
         return re.test(text);
-    }, "Only letters, digits and underscore is valid");
+    }, "Only letters, digits and underscore is valid.");
 
 //    //$('#code').rules("add", {spacerule:null});
 
@@ -125,18 +125,18 @@ $(document).ready(function(){
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
-            $("#questionnaire-code-error").html("The Questionnaire code is required.");
+            $("#questionnaire-code-error").html("<label class='error_message'> The Questionnaire code is required.</label>");
             return;
         }
         var list = $('#questionnaire-code').val().split(" ");
         if (list.length > 1) {
-            $("#questionnaire-code-error").html("Space not allowed in questionnaire code.");
+            $("#questionnaire-code-error").html("<label class='error_message'> Space is not allowed in questionnaire code.</label>");
             return;
         }
         var text = $('#questionnaire-code').val();
         var re = new RegExp('^\\w+$');
         if( !re.test(text)){
-            $("#questionnaire-code-error").html("Only letters, digits and underscore is valid.");
+            $("#questionnaire-code-error").html("<label class='error_message'> Only letters, digits and underscore is valid.</label>");
             return;
         }
         $("#questionnaire-code-error").html("");
