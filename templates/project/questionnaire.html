@@ -30,7 +30,7 @@
                 </a>
              <div>
                  <span data-bind="visible: question.canBeDeleted()" class="delete">
-                     <a href="#" data-bind="click: function() { viewModel.removeQuestion(question); }">Delete</a>
+                     <a href="#" data-bind="click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
                 </span>
               </div>
              </li>
@@ -129,6 +129,20 @@
                                     <p>
                                         Max:
                                         <input name="range_max" data-bind="value:selectedQuestion().range_max"/>
+                                    </p>
+                                </div>
+                            </li>
+                            <li data-bind="visible: viewModel.showAddTextLength()">
+                                &nbsp;
+                                <div>
+                                    <p>
+                                        Min Length:
+                                        <input name="min_length" data-bind="value:selectedQuestion().min_length"/>
+                                    </p>
+
+                                    <p>
+                                        Max Length:
+                                        <input name="max_length" data-bind="value:selectedQuestion().max_length"/>
                                     </p>
                                 </div>
                             </li>

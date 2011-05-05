@@ -1,6 +1,6 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 //var viewModel = null;
- function Question(title,code,type,choices,entity_question,range_min,range_max){
+ function Question(title,code,type,choices,entity_question,range_min,range_max,min_length,max_length){
                             this.title=ko.observable(title);
                             this.code=ko.observable(code);
                             this.type=ko.observable(type);
@@ -8,6 +8,8 @@
                             this.is_entity_question = ko.observable(entity_question);
                             this.range_min = ko.observable(range_min);
                             this.range_max = ko.observable(range_max);
+                            this.min_length = ko.observable(min_length);
+                            this.max_length = ko.observable(max_length);
                             this.canBeDeleted = function(){return !this.is_entity_question();};
                             this.isAChoiceTypeQuestion = ko.dependentObservable({
                                 read:function(){
@@ -23,7 +25,7 @@ var viewModel =
     {
         questions : ko.observableArray([]),
         addQuestion : function(){
-            var question = new Question("Question","code","text",[],false,0,"");
+            var question = new Question("Question","code","text",[],false,0,"",1,"");
             question.display = ko.dependentObservable(function(){
                 return this.title() + ' ' + this.code();
             }, question);
@@ -45,12 +47,16 @@ var viewModel =
         removeQuestion: function(question){
             viewModel.questions.remove(question);
             viewModel.changeSelectedQuestion(viewModel.questions()[0]);
+
         },
         showAddChoice:function(){
             return viewModel.selectedQuestion().isAChoiceTypeQuestion() == "choice"
         },
         showAddRange:function(){
             return viewModel.selectedQuestion().type() == 'integer';
+        },
+        showAddTextLength:function(){
+            return viewModel.selectedQuestion().type() == 'text';
         },
         addOptionToQuestion: function(){
             viewModel.selectedQuestion().choices.push({value:''});
@@ -76,13 +82,19 @@ var viewModel =
 
 $(document).ready(function(){
     question_list.forEach(function(question){
-        var min =0;
-        var max =null;
-        if (question.range){
-            min = question.range.min;
-            max = question.range.max;
+        var min_range =0;
+        var max_range =null;
+        if (question.range && question.type=="integer"){
+            min_range = question.range.min;
+            max_range = question.range.max;
         }
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.type,[],question.entity_question_flag, min, max));
+        var min_length=1;
+        var max_length=null;
+        if (question.length && question.type=="text"){
+            min_length = question.length.min;
+            max_length = question.length.max;
+        }
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.type,[],question.entity_question_flag, min_range, max_range,min_length,max_length));
      });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
@@ -95,13 +107,13 @@ $(document).ready(function(){
             return false;
         }
         return true;
-    }, "Space not allowed in question code!!");
+    }, "Space is not allowed in question code.");
 
     $.validator.addMethod('regexrule', function(value, element, params) {
         var text = $('#' + element.id).val();
         var re = new RegExp('^\\w+$');
         return re.test(text);
-    }, "Only letters, digits and underscore is valid");
+    }, "Only letters, digits and underscore is valid.");
 
 //    //$('#code').rules("add", {spacerule:null});
 
@@ -123,12 +135,24 @@ $(document).ready(function(){
 
     $("#submit-button").click(function() {
 
-        
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
-            $("#questionnaire-code-error").html("The Questionnaire code is required.");
+            $("#questionnaire-code-error").html("<label class='error_message'> The Questionnaire code is required.</label>");
             return;
         }
+        var list = $('#questionnaire-code').val().split(" ");
+        if (list.length > 1) {
+            $("#questionnaire-code-error").html("<label class='error_message'> Space is not allowed in questionnaire code.</label>");
+            return;
+        }
+        var text = $('#questionnaire-code').val();
+        var re = new RegExp('^\\w+$');
+        if( !re.test(text)){
+            $("#questionnaire-code-error").html("<label class='error_message'> Only letters, digits and underscore is valid.</label>");
+            return;
+        }
+        $("#questionnaire-code-error").html("");
+
         if(!$('#question_form').valid()){
             $("#message-label").html("<label class='error_message'> This form has an error </label> ");
             hide_message();
@@ -139,6 +163,8 @@ $(document).ready(function(){
         $.post('/project/questionnaire/save', post_data, function(response) {
             $("#message-label").html("<label class='success_message'>" + response + "</label>");
             hide_message();
+        }).error(function(e){
+            $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
 
