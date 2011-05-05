@@ -76,7 +76,12 @@ var viewModel =
 
 $(document).ready(function(){
     question_list.forEach(function(question){
-        viewModel.loadQuestion(new Question(question.name,question.question_code,question.type,[],question.entity_question_flag, question.range_min, question.range_max));
+        var min,max =null;
+        if (question.range){
+            min = question.range.min;
+            max = question.range.max;
+        }
+        viewModel.loadQuestion(new Question(question.name,question.question_code,question.type,[],question.entity_question_flag, min, max));
      });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
