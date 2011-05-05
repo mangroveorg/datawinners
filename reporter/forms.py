@@ -2,6 +2,7 @@ from django.contrib.localflavor.us.forms import USPhoneNumberField
 from django.forms.fields import CharField, RegexField
 from django.forms.forms import Form
 
+
 class ReporterRegistrationForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'

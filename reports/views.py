@@ -9,6 +9,7 @@ from mangrove.datastore.entity import load_all_entity_types
 from reports.forms import Report, ReportHierarchy
 from mangrove.datastore.database import get_db_manager
 
+
 @login_required(login_url='/login')
 def report(request):
     manager = get_db_manager()
@@ -23,19 +24,20 @@ def report(request):
             aggregates_field = form.cleaned_data['aggregates_field']
             filter = {'location': filter_criteria.split(",")} if filter_criteria else None
             report_data = data.fetch(manager, entity_type=entity_type,
-                                     aggregates={aggregates_field:data.reduce_functions.LATEST},
+                                     aggregates={aggregates_field: data.reduce_functions.LATEST},
                                      filter=filter
             )
-            column_headers,values = tabulate_output(report_data,"ID")
+            column_headers, values = tabulate_output(report_data, "ID")
             if not len(values):
                 error_message = 'Sorry, No records found for this query'
     else:
         form = Report()
-    return render_to_response('reports/reportperlocation.html', {'form': form,'column_headers':column_headers,
-                                                                 'column_values':values,'error_message':error_message},
+    return render_to_response('reports/reportperlocation.html', {'form': form, 'column_headers': column_headers,
+                                                                 'column_values': values, 'error_message': error_message},
                               context_instance=RequestContext(request))
 
-def tabulate_output(report_data,first_column_name):
+
+def tabulate_output(report_data, first_column_name):
     for id, record in report_data.items():
         record[first_column_name] = id
     id, info = report_data.items()[0] if report_data.items() else ("", {})
@@ -45,30 +47,30 @@ def tabulate_output(report_data,first_column_name):
     values = []
     for row in information:
         values.append([row[h] for h in column_headers])
-    return column_headers,values
+    return column_headers, values
+
 
 @login_required(login_url='/login')
 def hierarchy_report(request):
     manager = get_db_manager()
-    column_headers,values = [],[]
+    column_headers, values = [], []
     if request.method == 'POST':
         form = ReportHierarchy(request.POST)
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type'].split(".")
             aggregates_field = form.cleaned_data['aggregates_field']
-            reduce_function=form.cleaned_data['reduce']
-            aggregates={aggregates_field:reduce_function}
+            reduce_function = form.cleaned_data['reduce']
+            aggregates = {aggregates_field: reduce_function}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
-            level=form.cleaned_data['level']
-            aggregate_on={'type': aggregate_on_path,"level":level}
+            level = form.cleaned_data['level']
+            aggregate_on = {'type': aggregate_on_path, "level": level}
             report_data = data.fetch(manager, entity_type=entity_type,
                              aggregates=aggregates,
                              aggregate_on=aggregate_on,
                              )
-            column_headers,values = tabulate_output(report_data,"Path")
+            column_headers, values = tabulate_output(report_data, "Path")
     else:
         form = ReportHierarchy()
 
-    return render_to_response('reports/reportperhierarchypath.html', {'form': form,'column_headers':column_headers,'column_values':values},
+    return render_to_response('reports/reportperhierarchypath.html', {'form': form, 'column_headers': column_headers, 'column_values': values},
                           context_instance=RequestContext(request))
-

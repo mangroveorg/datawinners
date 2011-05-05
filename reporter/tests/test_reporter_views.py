@@ -5,6 +5,7 @@ from django.http import HttpRequest
 from mock import Mock, patch
 from datawinners.reporter.views import register
 
+
 class TestReporterViews(unittest.TestCase):
 
     pass
@@ -15,4 +16,3 @@ class TestReporterViews(unittest.TestCase):
 #        request.user = ""
 #        with patch.object(django.shortcuts, 'render_to_response') as render_to_response:
 #            result = register(request)
-
