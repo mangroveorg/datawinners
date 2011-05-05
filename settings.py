@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'registration',
     'django.contrib.admin',
     'compressor',
+    'tabs',
     'datawinners.main'
 )
 

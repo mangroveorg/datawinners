@@ -1,0 +1,24 @@
+{% extends 'layout_application.html' %}
+
+{% load tabs %}
+{% block navigation %}
+    <div class="grid_24 tab_navigation">
+        <ul>
+            <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Overview</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Questionnaire</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'reports' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Reports</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'training' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Training</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'place_things' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Place & Things</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

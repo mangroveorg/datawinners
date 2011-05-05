@@ -1,5 +1,12 @@
-{% extends 'tab_navigation.html' %}
+{% extends 'project/tab_navigation.html' %}
 {% block page_title %} Projects {% endblock %}
+
+{% load tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "overview" %}
+{{ block.super }}
+{% endblock %}
+
 {% block content %}
     <div class="span-18 box">
         <h5>Project Profile</h5>
