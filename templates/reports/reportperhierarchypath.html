@@ -6,6 +6,11 @@
         {% csrf_token %}
         <div class="span-8 last">
             <div class="span-8">
+                <div class="{{ form.entity_type.css_classes  }} form-row-10px">
+                            {{ form.entity_type.label_tag }}
+                            {{ form.entity_type }}
+                            {{ form.entity_type.errors }}
+                </div>
                 <div class="{{ form.aggregate_on_path.css_classes  }} form-row-10px">
                     {{ form.aggregate_on_path.label_tag }}
                     {{ form.aggregate_on_path }}
