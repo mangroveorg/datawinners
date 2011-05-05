@@ -76,7 +76,8 @@ var viewModel =
 
 $(document).ready(function(){
     question_list.forEach(function(question){
-        var min,max =null;
+        var min =0;
+        var max =null;
         if (question.range){
             min = question.range.min;
             max = question.range.max;
@@ -121,19 +122,27 @@ $(document).ready(function(){
     });
 
     $("#submit-button").click(function() {
+
+        
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("The Questionnaire code is required.");
             return;
         }
         if(!$('#question_form').valid()){
-            $("#message-label").html("<label> This form has an error </label> ")
+            $("#message-label").html("<label class='error_message'> This form has an error </label> ");
+            hide_message();
             return;
         }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
         $.post('/project/questionnaire/save', post_data, function(response) {
-            $("#message-label").html("<label>" + response + "</label>")
+            $("#message-label").html("<label class='success_message'>" + response + "</label>");
+            hide_message();
         });
     });
-})
+
+    function hide_message(){
+        $('#message-label label').delay(5000).fadeOut();
+    }
+});

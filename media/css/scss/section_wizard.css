@@ -66,8 +66,6 @@
   .wizard_content .content_wrapper .questionnare_content #questions-panel, .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
     padding-left: 50px;
     margin: 20px 0 20px 0; }
-  .wizard_content .content_wrapper .questionnare_content #message-label label {
-    color: #269700; }
   .wizard_content .content_wrapper .questionnare_content #questions-panel a {
     color: #0070ac; }
   .wizard_content .content_wrapper .questionnare_content #questions-panel .add_question {

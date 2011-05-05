@@ -29,3 +29,21 @@
 /*Text alignments*/
 .text_align_right {
   text-align: right; }
+
+/*Error and Success*/
+.error_message {
+  color: #FF0000;
+  margin: 20px;
+  padding: 10px; }
+
+.success_message {
+  color: green;
+  margin: 20px;
+  padding: 10px; }
+
+.error {
+  color: #FF0000; }
+
+input.error {
+  border: 1px solid #FF0000 !important;
+  color: #000000; }
