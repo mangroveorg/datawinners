@@ -10,5 +10,3 @@ class ReporterRegistrationForm(Form):
     last_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=30, error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- ", required=True, label="* Last Name")
     telephone_number = CharField(required=True, label="* Telephone Number")
     commune = CharField(max_length=30, required=True, label="* Commune")
-
-

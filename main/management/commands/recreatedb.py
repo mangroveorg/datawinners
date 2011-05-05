@@ -4,6 +4,7 @@ from datawinners.main.initial_couch_fixtures import load_data
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from datawinners.main.management.commands.recreateviews import create_views
 
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         manager = get_db_manager()

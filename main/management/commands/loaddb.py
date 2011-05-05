@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import load_data
 from mangrove.datastore.database import get_db_manager
 
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         manager = get_db_manager()

@@ -15,11 +15,11 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'mangrovedb',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'HOST':  '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -121,7 +121,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-LOGIN_REDIRECT_URL=('/home')
+LOGIN_REDIRECT_URL = ('/home')
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
@@ -142,11 +142,11 @@ INSTALLED_APPS = (
 
 COMPILER_FORMATS = {
     '.sass': {
-        'binary_path':'sass',
+        'binary_path': 'sass',
         'arguments': '*.sass *.css'
     },
     '.scss': {
-        'binary_path':'sass',
+        'binary_path': 'sass',
         'arguments': '*.scss *.css'
     }
 }

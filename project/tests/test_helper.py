@@ -7,6 +7,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import IntegerConstraint
 
+
 class TestHelper(unittest.TestCase):
     def test_creates_questions_from_dict(self):
         post = [{"title": "q1", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
@@ -50,7 +51,7 @@ class TestHelper(unittest.TestCase):
                               , language="eng", entity_question_flag=True)
         question2 = TextField(label="question1_Name", question_code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng")
-        self.assertEquals([("ID","What is associated entity"),("Q1","What is your name")],helper.get_code_and_title([question1,question2]))
+        self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], helper.get_code_and_title([question1, question2]))
 
     def test_should_create_text_question_with_no_max_length(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,

@@ -16,5 +16,3 @@ class TestReporterViews(unittest.TestCase):
 #        with patch.object(django.shortcuts, 'render_to_response') as render_to_response:
 #            result = register(request)
 
-
-

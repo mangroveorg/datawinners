@@ -24,24 +24,22 @@ class TestRegistrationForm(unittest.TestCase):
                      , 'organization_sector': 'Other'}
 
         form = RegistrationForm(base_form)
-        with patch.object(RegistrationForm,'clean_email') as get_clean_email:
-            with patch.object(RegistrationForm,'clean_username') as get_clean_username:
+        with patch.object(RegistrationForm, 'clean_email') as get_clean_email:
+            with patch.object(RegistrationForm, 'clean_username') as get_clean_username:
                 get_clean_email.return_value = uppercase_email_id
                 get_clean_username.return_value = None
                 self.assertTrue(form.is_valid())
                 self.assertTrue(form.cleaned_data.get('email') == 'a@b.com')
 
-
-
     def test_error_when_password_and_confirm_password_do_not_match(self):
-        base_form = {'first_name':'a',
-                     'last_name':'b',
-                     'email':'A@b.com',
-                     'password1':'a','password2':'b', 'organization_name':'ad','organization_addressline1':'asa','organization_city':'aaa','organization_country':'aa','organization_zipcode':'asd'
-                     ,'organization_sector':'Other'}
+        base_form = {'first_name': 'a',
+                     'last_name': 'b',
+                     'email': 'A@b.com',
+                     'password1': 'a', 'password2': 'b', 'organization_name': 'ad', 'organization_addressline1': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa', 'organization_zipcode': 'asd'
+                     , 'organization_sector': 'Other'}
         form = RegistrationForm(base_form)
-        with patch.object(RegistrationForm,'clean_email') as get_clean_email:
-            with patch.object(RegistrationForm,'clean_username') as get_clean_username:
+        with patch.object(RegistrationForm, 'clean_email') as get_clean_email:
+            with patch.object(RegistrationForm, 'clean_username') as get_clean_username:
                 get_clean_email.return_value = 'A@b.com'
                 get_clean_username.return_value = None
                 self.assertFalse(form.is_valid())

@@ -8,13 +8,13 @@ from django.conf.urls.defaults import patterns, include, url
 import settings
 
 urlpatterns = patterns('',
-    (r'',include('datawinners.accountmanagement.urls')),
+    (r'', include('datawinners.accountmanagement.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    (r'',include('datawinners.reporter.urls')),
-    (r'',include('datawinners.reports.urls')),
-    (r'',include('datawinners.admin.urls')),
-    (r'',include('datawinners.project.urls')),
-    (r'',include('datawinners.smstester.urls')),
+    (r'', include('datawinners.reporter.urls')),
+    (r'', include('datawinners.reports.urls')),
+    (r'', include('datawinners.admin.urls')),
+    (r'', include('datawinners.project.urls')),
+    (r'', include('datawinners.smstester.urls')),
     # Examples:
     # url(r'^$', 'web.views.home', name='home'),
     # url(r'^web/', include('web.foo.urls')),

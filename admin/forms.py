@@ -2,10 +2,9 @@
 from django.forms.fields import CharField
 from django.forms.forms import Form
 
+
 class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    entity_type = CharField(required = True)
-
-    
+    entity_type = CharField(required=True)

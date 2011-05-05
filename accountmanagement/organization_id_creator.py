@@ -4,6 +4,7 @@ import random
 import string
 import time
 
+
 class OrganizationIdCreator(object):
 
     def get_random_three_digit_string(self):
@@ -16,4 +17,4 @@ class OrganizationIdCreator(object):
 
     def generateId(self):
         epoch_last_six_digit = self.epoch_last_six_digit()
-        return self.get_random_three_digit_string()+ str(epoch_last_six_digit)
+        return self.get_random_three_digit_string() + str(epoch_last_six_digit)

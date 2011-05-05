@@ -75,7 +75,7 @@ class RegistrationBackend(object):
         class of this backend as the sender.
 
         """
-        email, password =  kwargs['email'], kwargs['password1']
+        email, password = kwargs['email'], kwargs['password1']
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
@@ -84,19 +84,19 @@ class RegistrationBackend(object):
                                                                     password, site)
 #        new_user = User.objects.create_user(email,email,password)
         new_user.first_name = kwargs.get('first_name')
-        new_user.last_name =  kwargs.get('last_name')
+        new_user.last_name = kwargs.get('last_name')
         new_user.save()
-        organization = Organization(name = kwargs.get('organization_name'), sector = kwargs.get('organization_sector')
-                                             , addressline1 = kwargs.get('organization_addressline1'), addressline2 = kwargs.get('organization_addressline2')
-                                             , city = kwargs.get('organization_city'), state = kwargs.get('organization_state')
-                                             , country = kwargs.get('organization_country'), zipcode = kwargs.get('organization_zipcode')
-                                             , office_phone = kwargs.get('organization_office_phone'), website = kwargs.get('organization_website')
-                                             , org_id=OrganizationIdCreator().generateId()
+        organization = Organization(name=kwargs.get('organization_name'), sector=kwargs.get('organization_sector')
+                                            , addressline1=kwargs.get('organization_addressline1'), addressline2=kwargs.get('organization_addressline2')
+                                            , city=kwargs.get('organization_city'), state=kwargs.get('organization_state')
+                                            , country=kwargs.get('organization_country'), zipcode=kwargs.get('organization_zipcode')
+                                            , office_phone=kwargs.get('organization_office_phone'), website=kwargs.get('organization_website')
+                                            , org_id=OrganizationIdCreator().generateId()
                                              )
         organization.save()
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
-                                     request=request,title=kwargs.get("title"),organization_id=organization.org_id)
+                                     request=request, title=kwargs.get("title"), organization_id=organization.org_id)
         return new_user
 
     def registration_allowed(self, request):

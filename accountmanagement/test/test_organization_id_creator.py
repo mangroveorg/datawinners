@@ -3,6 +3,7 @@
 import unittest
 from datawinners.accountmanagement.organization_id_creator import  OrganizationIdCreator
 
+
 class TestOrganizationIdCreator(unittest.TestCase):
 
     def test_creation_of_organization_id(self):
@@ -11,5 +12,4 @@ class TestOrganizationIdCreator(unittest.TestCase):
         id2 = id_creator.generateId()
         self.assertTrue(id1)
         self.assertTrue(id2)
-        self.assertFalse(id1==id2)
-
+        self.assertFalse(id1 == id2)
