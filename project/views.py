@@ -96,7 +96,7 @@ def project_overview(request):
     link = '/project/profile/edit?pid='+request.GET["pid"]
     number_of_questions =len(helper.load_questionnaire(project['qid']).fields)
     project_overview=dict(what=number_of_questions,how=project['devices'],link=link)
-    return render_to_response('project/overview.html',{'project':project_overview})
+    return render_to_response('project/overview.html',{'project':project_overview},context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code = None):
