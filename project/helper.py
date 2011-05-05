@@ -34,3 +34,6 @@ def update_questionnaire_with_questions(form_model,question_set):
         form_model.add_field(create_question(question))
     return form_model
 
+
+def get_code_and_title(fields):
+    return [(each_field.question_code,each_field.name)for each_field in fields ]
