@@ -132,6 +132,20 @@
                                     </p>
                                 </div>
                             </li>
+                            <li data-bind="visible: viewModel.showAddTextLength()">
+                                &nbsp;
+                                <div>
+                                    <p>
+                                        Min Length:
+                                        <input name="min_length" data-bind="value:selectedQuestion().min_length"/>
+                                    </p>
+
+                                    <p>
+                                        Max Length:
+                                        <input name="max_length" data-bind="value:selectedQuestion().max_length"/>
+                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </fieldset>
                 </form>
