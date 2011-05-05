@@ -3,11 +3,9 @@
     {% include 'application_scss.html' %}
 {% endblock %}
 {% block body %}
-    <div id="container_header">
-            {% block header %}
-                {% include 'header_application.html' %}
-            {% endblock %}
-    </div>
+    {% block header %}
+        {% include 'header_application.html' %}
+    {% endblock %}
     {% block main_content %}
         <div id="container_content">
             <div class="container_24">
