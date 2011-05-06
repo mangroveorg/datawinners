@@ -17,12 +17,13 @@ class ProjectProfile(Form):
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES, initial=DEVICE_CHOICES[2], required=False)
 
     def get_entity_types(self):
-            manager = get_db_manager()
-            type_dict = load_all_entity_types(manager)
-            type_list = [(k, v) for k, v in type_dict.items()]
-            return type_list
+        manager = get_db_manager()
+        type_dict = load_all_entity_types(manager)
+        type_list = [(k, v) for k, v in type_dict.items()]
+        return type_list
 
     def __init__(self, *args, **kwargs):
         super(ProjectProfile, self).__init__(*args, **kwargs)
         type_list = self.get_entity_types()
+#        type_list.extend([('new','new')])
         self.fields['entity_type']._set_choices(type_list)

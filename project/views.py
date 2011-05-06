@@ -33,6 +33,8 @@ def create_profile(request):
 
     form = ProjectProfile(request.POST)
     if form.is_valid():
+#        if form.cleaned_data['entity_type'] == 'new':
+#            return HttpResponseRedirect('/admin/entity_management.html')
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=form.cleaned_data['entity_type'],
                           devices=form.cleaned_data['devices'])
