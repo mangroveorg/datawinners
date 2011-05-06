@@ -17,7 +17,7 @@
     <script type="text/html" id="choice-template">
         <p>
             <input data-bind="value: value"/>
-            <a href="#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+            <a href="questionnaire.html#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
         </p>
     </script>
     <script type="text/html" id="question-list-template">
@@ -25,12 +25,12 @@
             <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
              <li>
-                <a href="#"
+                <a href="questionnaire.html#"
                    data-bind="text: question.display, click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
                 </a>
              <div>
                  <span data-bind="visible: question.canBeDeleted()" class="delete">
-                     <a href="#" data-bind="click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
+                     <a href="questionnaire.html#" data-bind="click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
                 </span>
               </div>
              </li>
@@ -67,7 +67,7 @@
                 <div data-bind="template: 'question-list-template'" class="">
                 </div>
                 <div class="add_question">
-                    <a href="#"
+                    <a href="questionnaire.html#"
                        data-bind="click: function() {$('#question_form').validate(); if($('#question_form').valid()) viewModel.addQuestion();}">Add
                         a Question</a>
                 </div>
@@ -106,7 +106,7 @@
                                 <div>
                                     <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
                                     </div>
-                                    <a href="#" data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add
+                                    <a href="questionnaire.html#" data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add
                                         Choice</a>
                                 </div>
                                 <div>
@@ -156,7 +156,7 @@
     </div>
 {% endblock %}
 {% block buttons %}
-        <a href="#" class="cancel">Cancel</a>
+        <a href="questionnaire.html#" class="cancel">Cancel</a>
         <input id="submit-button" type="button" value="Save Questionnaire"/>
 {% endblock %}
 
