@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore import data
 from mangrove.datastore.entity import load_all_entity_types
-from reports.forms import Report, ReportHierarchy
+from datawinners.reports.forms import Report, ReportHierarchy
 from mangrove.datastore.database import get_db_manager
 
 
