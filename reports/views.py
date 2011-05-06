@@ -1,7 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib.auth.decorators import login_required
-from django.forms.widgets import Select
-
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore import data
