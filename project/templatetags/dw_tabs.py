@@ -5,21 +5,24 @@ register = template.Library()
 ACTIVE_TAB_NAME = 'ACTIVETABS'
 DEFAULT_NAMESPACE = 'default'
 
-def get_active_tabs(context):    
+
+def get_active_tabs(context):
     active_tabs = template.Variable(ACTIVE_TAB_NAME)
     try:
         return active_tabs.resolve(context)
     except template.VariableDoesNotExist:
         return {}
 
+
 def set_active_tab(context, namespace, name):
     active_tabs = get_active_tabs(context)
     active_tabs[namespace] = name
     context[ACTIVE_TAB_NAME] = active_tabs
     
+
 def is_active_tab(context, namespace, name):
     active_tabs = get_active_tabs(context)
-    if namespace in active_tabs and active_tabs[namespace]==name:
+    if namespace in active_tabs and active_tabs[namespace] == name:
         return True
     return False
 
@@ -46,6 +49,7 @@ class ActiveTabNode(template.Node):
         set_active_tab(context, namespace, name)
         return ''
 
+
 class IfActiveTabNode(template.Node):
     def __init__(self, nodelist_true, nodelist_false, name, namespace=None):
         if namespace is None:
@@ -71,6 +75,7 @@ class IfActiveTabNode(template.Node):
             return self.nodelist_true.render(context)
         return self.nodelist_false.render(context)
 
+
 def activetab(parser, token):
     bits = token.contents.split()[1:]
     if len(bits) not in (1, 2):
@@ -84,6 +89,7 @@ def activetab(parser, token):
         
     return ActiveTabNode(name, namespace)
 activetab = register.tag('activetab', activetab)
+
 
 def ifactivetab(parser, token):
     bits = token.contents.split()[1:]
@@ -105,6 +111,3 @@ def ifactivetab(parser, token):
     return IfActiveTabNode(nodelist_true, nodelist_false, name, namespace)
 
 ifactivetab = register.tag('ifactivetab', ifactivetab)
-    
-        
-        
