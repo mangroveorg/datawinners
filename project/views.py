@@ -13,6 +13,7 @@ from datawinners.project import models
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get, get_questionnaire
+from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 
 
 @login_required(login_url='/login')
@@ -123,16 +124,18 @@ def project_results(request, questionnaire_code=None):
     results = dict()
     """
 
-    form_model = get_questionnaire(get_db_manager(), questionnaire_code)
+    dbm = get_db_manager()
+    form_model = get_questionnaire(dbm, questionnaire_code)
     questions = helper.get_code_and_title(form_model. fields)
     questionnaire = (questionnaire_code, form_model.name)
+    submissions = get_submissions_made_for_questionnaire(questionnaire_code, dbm)
+
 #    Load the data records corresponding to the questionnaire here
     results = {
-                'questionnaire': ('code', 'Title',),
-                'questions': [('Q1Code', 'Q1Text'), ('Q2Code', 'Q2Text')],
-                'submissions': [(datetime.utcnow(), 'sms', True, 'Raw Message 1',
-                                                        'Q1 Ans', 'Q2 Ans',), (datetime.utcnow(),
-                                                        'sms', False, 'Raw Message 2', None, 'Q2 Ans',)
+                'questionnaire': questionnaire,
+                'questions': questions,
+                'submissions': [(datetime.utcnow(), 'sms', True, 'Raw Message 1', 'Q1 Ans', 'Q2 Ans',),
+                                (datetime.utcnow(), 'sms', False, 'Raw Message 2', None, 'Q2 Ans',),
                                ]
               }
     pages = range(1, 10)
