@@ -140,8 +140,8 @@ def load_data():
         e.save()
     except Exception:
         pass
-    question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity"
-                          , language="eng", entity_question_flag=True)
+    question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity",
+                          language="eng", entity_question_flag=True)
     question2 = TextField(name="Name", question_code="Q1", label="What is your name",
                           defaultValue="some default value", language="eng")
     question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",

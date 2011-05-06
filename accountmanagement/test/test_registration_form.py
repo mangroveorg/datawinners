@@ -20,8 +20,8 @@ class TestRegistrationForm(unittest.TestCase):
                      'email': uppercase_email_id,
                      'password1': 'a', 'password2': 'a', 'organization_name': 'ad',
                      'organization_addressline1': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
-                     'organization_zipcode': 'asd'
-                     , 'organization_sector': 'Other'}
+                     'organization_zipcode': 'asd', 'organization_sector': 'Other'
+        }
 
         form = RegistrationForm(base_form)
         with patch.object(RegistrationForm, 'clean_email') as get_clean_email:
@@ -35,8 +35,15 @@ class TestRegistrationForm(unittest.TestCase):
         base_form = {'first_name': 'a',
                      'last_name': 'b',
                      'email': 'A@b.com',
-                     'password1': 'a', 'password2': 'b', 'organization_name': 'ad', 'organization_addressline1': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa', 'organization_zipcode': 'asd'
-                     , 'organization_sector': 'Other'}
+                     'password1': 'a',
+                     'password2': 'b',
+                     'organization_name': 'ad',
+                     'organization_addressline1': 'asa',
+                     'organization_city': 'aaa',
+                     'organization_country': 'aa',
+                     'organization_zipcode': 'asd',
+                     'organization_sector': 'Other'
+        }
         form = RegistrationForm(base_form)
         with patch.object(RegistrationForm, 'clean_email') as get_clean_email:
             with patch.object(RegistrationForm, 'clean_username') as get_clean_username:
