@@ -2,7 +2,6 @@ from couchdb.mapping import  TextField, ListField
 from mangrove.datastore.database import get_db_manager, DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 
-
 class Project(DocumentBase):
     name = TextField()
     goals = TextField()
