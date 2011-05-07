@@ -1,4 +1,3 @@
-from django.contrib.localflavor.us.forms import USPhoneNumberField
 from django.forms.fields import CharField, RegexField
 from django.forms.forms import Form
 
