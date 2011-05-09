@@ -65,5 +65,5 @@ def get_submissions(questions, submissions):
     assert is_sequence(submissions)
     for s in submissions:
         assert isinstance(s, dict) and s.get('values') is not None
-    formatted_list = [[each.get('created'), each.get('channel'), each.get('status'), each.get('message')] + [each.get('values').get(q[0]) for q in questions] for each in submissions]
+    formatted_list = [[each.get('created'), each.get('channel'), each.get('status'), each.get('error_message')] + [each.get('values').get(q[0]) for q in questions] for each in submissions]
     return [tuple(each) for each in formatted_list]
