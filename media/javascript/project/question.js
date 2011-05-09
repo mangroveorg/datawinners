@@ -1,58 +1,64 @@
-// vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
-//DW is the global name space for DataWinner
-DW.question = function(question){
-    var defaults = {
-        name : "Question",
-        question_code : "code",
-        type : "text",
-        choices :[],
-        entity_question_flag : false,
-        length : {
-          min : 1,
-          max : ""
-        },
-        range : {
-          min : 0,
-          max : ""
-        }
-    };
-    this.options = $.extend({},defaults, question);
-    this._init();
-}
-DW.question.prototype = {
-    _init : function(){
-        var q = this.options;
-        this.range_min = ko.observable(q.range.min);
-        this.range_max = ko.observable(q.range.max);
-        this.min_length = ko.observable(q.length.min);
-        this.max_length = ko.observable(q.length.max);
-        this.title = ko.observable(q.name);
-        this.code = ko.observable(q.question_code);
-        this.type = ko.observable(q.type);
-        this.choices = ko.observableArray(q.choices);
-        this.is_entity_question = ko.observable(q.entity_question_flag);
-        this.canBeDeleted = function(){return !this.is_entity_question();}
-        this.isAChoiceTypeQuestion = ko.dependentObservable({
-            read:function(){
-                return this.type() == "select"||this.type() == "select1"? "choice" : "none";},
-            write:function(value){
-                this.type(this.type() == "" ? "select":"select1");
-            },
-            owner: this
-        });
+(function(){
+    DW.questionnaire = function(question_list){
+        this.question_list = question_list;
+        this._init();
+        console.log(question_list)
     }
-};
+    DW.questionnaire.prototype = {
+        _init: function(){
+            var self = this;
+            self.question_list.forEach(function(question){
+                var min_range =0;
+                var max_range =null;
+                if (question.range && question.type=="integer"){
+                    min_range = question.range.min;
+                    max_range = question.range.max;
+                }
+                var min_length=1;
+                var max_length=null;
+                if (question.length && question.type=="text"){
+                    min_length = question.length.min;
+                    max_length = question.length.max;
+                }
+                var newQuestion = new self._createQuestion(question.name,question.question_code,question.type,[],question.entity_question_flag, min_range, max_range,min_length,max_length);
+                var loaded_question = viewModel.loadQuestion(newQuestion);
+            });
+        },
+        _createQuestion : function(title,code,type,choices,entity_question,range_min,range_max,min_length,max_length){
+            this.title=ko.observable(title);
+            this.code=ko.observable(code);
+            this.type=ko.observable(type);
+            this.choices= ko.observableArray(choices);
+            this.is_entity_question = ko.observable(entity_question);
+            this.range_min = ko.observable(range_min);
+            this.range_max = ko.observable(range_max);
+            this.min_length = ko.observable(min_length);
+            this.max_length = ko.observable(max_length);
+            this.canBeDeleted = function(){return !this.is_entity_question();};
+            this.isAChoiceTypeQuestion = ko.dependentObservable({
+                read:function(){
+                    return this.type() == "select"||this.type() == "select1"? "choice" : "none";},
+                write:function(value){
+                    this.type(this.type() == "" ? "select":"select1");
+                },
+                owner: this
+            });
+        },
+        _textQuestion : function(){
 
+        },
+        _integerQuestion : function(){
+
+        }
+
+    }
+})();
 $(document).ready(function(){
-    question_list.forEach(function(question){
-        var questions = new DW.question(question);
-        viewModel.loadQuestion(questions);
-     })
+    new DW.questionnaire(question_list);
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
-
     ko.applyBindings(viewModel);
+
 
     $.validator.addMethod('spacerule', function(value, element, params) {
         var list = $('#' + element.id).val().split(" ");
