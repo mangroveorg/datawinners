@@ -17,6 +17,7 @@ import settings
 # setup the environment before we start accessing things in the settings.
 setup_environ(settings)
 sys.path.append(os.path.join(settings.PROJECT_DIR, '../../src'))
+#sys.path.append(sys.path)
 
 if __name__ == "__main__":
     execute_manager(settings)

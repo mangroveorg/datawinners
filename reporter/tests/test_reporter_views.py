@@ -1,9 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-import django
-from django.http import HttpRequest
-from mock import Mock, patch
-from datawinners.reporter.views import register
 
 
 class TestReporterViews(unittest.TestCase):

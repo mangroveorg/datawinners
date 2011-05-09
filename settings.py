@@ -136,8 +136,8 @@ INSTALLED_APPS = (
     'registration',
     'django.contrib.admin',
     'compressor',
-    'tabs',
-    'datawinners.main'
+    'datawinners.main',
+    'datawinners.project'
 )
 
 COMPILER_FORMATS = {

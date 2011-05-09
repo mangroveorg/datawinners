@@ -3,8 +3,6 @@
 from django.forms.fields import CharField, IntegerField, ChoiceField
 from django.forms.forms import Form
 from django import forms
-from django.forms.models import fields_for_model
-from django.forms.widgets import Select
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.entity import load_all_entity_types
 

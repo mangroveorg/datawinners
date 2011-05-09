@@ -5,7 +5,6 @@ from datawinners.project import helper
 from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
-from mangrove.form_model.validation import IntegerConstraint
 
 
 class TestHelper(unittest.TestCase):
@@ -75,10 +74,3 @@ class TestHelper(unittest.TestCase):
         q1 = helper.create_question(post[0])
         self.assertEqual(q1.constraint.max, None)
         self.assertEqual(q1.constraint.min, None)
-
-    def test_should_return_code_title_tuple_list(self):
-        question1 = TextField(label="entity_question", question_code="ID", name="What is associated entity",
-                              language="eng", entity_question_flag=True)
-        question2 = TextField(label="question1_Name", question_code="Q1", name="What is your name",
-                              defaultValue="some default value", language="eng")
-        self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], helper.get_code_and_title([question1, question2]))

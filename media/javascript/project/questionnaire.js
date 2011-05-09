@@ -55,7 +55,7 @@ $(document).ready(function(){
     ko.applyBindings(viewModel);
 
     $.validator.addMethod('spacerule', function(value, element, params) {
-        var list = $('#' + element.id).val().split(" ");
+        var list = $.trim($('#' + element.id).val()).split(" ");
         if (list.length > 1) {
             return false;
         }
@@ -64,9 +64,9 @@ $(document).ready(function(){
 
     $.validator.addMethod('regexrule', function(value, element, params) {
         var text = $('#' + element.id).val();
-        var re = new RegExp('^\\w+$');
+        var re = new RegExp('^[A-Za-z0-9 ]+$');
         return re.test(text);
-    }, "Only letters, digits and underscore is valid.");
+    }, "Only letters and digits are valid.");
 
 //    //$('#code').rules("add", {spacerule:null});
 
@@ -93,24 +93,31 @@ $(document).ready(function(){
             $("#questionnaire-code-error").html("<label class='error_message'> The Questionnaire code is required.</label>");
             return;
         }
-        var list = $('#questionnaire-code').val().split(" ");
+
+        var list = $.trim($('#questionnaire-code').val()).split(" ");
         if (list.length > 1) {
             $("#questionnaire-code-error").html("<label class='error_message'> Space is not allowed in questionnaire code.</label>");
             return;
         }
+        else{
+            $('#questionnaire-code').val($.trim($('#questionnaire-code').val()))
+        }
+
         var text = $('#questionnaire-code').val();
-        var re = new RegExp('^\\w+$');
+        var re = new RegExp('^[A-Za-z0-9 ]+$');
         if( !re.test(text)){
-            $("#questionnaire-code-error").html("<label class='error_message'> Only letters, digits and underscore is valid.</label>");
+            $("#questionnaire-code-error").html("<label class='error_message'> Only letters and digits are valid.</label>");
             return;
         }
+
         $("#questionnaire-code-error").html("");
 
         if(!$('#question_form').valid()){
-            $("#message-label").html("<label class='error_message'> This form has an error </label> ");
+            $("#message-label").html("<label class='error_message'> This questionnaire has an error.</label> ");
             hide_message();
             return;
         }
+
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
         $.post('/project/questionnaire/save', post_data, function(response) {

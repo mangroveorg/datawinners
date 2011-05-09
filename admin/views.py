@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from admin.forms import EntityTypeForm
+from datawinners.admin.forms import EntityTypeForm
 from mangrove.datastore.entity import define_type
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
