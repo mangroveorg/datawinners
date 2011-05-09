@@ -29,6 +29,9 @@ var viewModel =
         showAddChoice:function(){
             return viewModel.selectedQuestion().isAChoiceTypeQuestion() == "choice"
         },
+        showDateFormats:function(){
+            return viewModel.selectedQuestion().type() == "date"
+        },
         showAddRange:function(){
             return viewModel.selectedQuestion().type() == 'integer';
         },

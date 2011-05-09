@@ -98,9 +98,30 @@
                                 <div><input type="radio" name="type" value="integer"
                                             data-bind="checked: selectedQuestion().type" class="required"/> Number
                                 </div>
+                                <div><input type="radio" name="type" value="date"
+                                            data-bind="checked: selectedQuestion().type" class="required"/> Date
+                                </div>
                                 <div><input type="radio" name="type" value="choice"
                                             data-bind="checked: selectedQuestion().isAChoiceTypeQuestion"
                                             class="choice-question-checkbox required"/> List of Choices
+                                </div>
+                            </li>
+                            <li data-bind="visible: viewModel.showDateFormats()">
+                                <div>
+                                    <p>
+                                        <label>Select Date Format</label>
+                                    </p>
+                                    <p>
+                                    <input type="radio" name="date_format" value="%m.%Y"
+                                           data-bind="checked:selectedQuestion().date_format" />
+                                    month.year (mm.yyyy)<br/>
+                                    <input type="radio" name="date_format" value="%d.%m.%Y"
+                                           data-bind="checked:selectedQuestion().date_format" />
+                                    date.month.year (dd.mm.yyyy)<br/>
+                                    <input type="radio" name="date_format" value="%m.%d.%Y"
+                                           data-bind="checked:selectedQuestion().date_format" />
+                                    month.date.year (mm.dd.yyyy)<br/>
+                                    </p>
                                 </div>
                             </li>
                             <li data-bind="visible: viewModel.showAddChoice()">

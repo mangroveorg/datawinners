@@ -47,6 +47,7 @@ DW.question.prototype = {
             },
             owner: this
         });
+        this.date_format = ko.observable(q.date_format);
     }
 };
 

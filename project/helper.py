@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.database import get_db_manager
-from mangrove.form_model.field import TextField, IntegerField, SelectField, field_attributes
+from mangrove.form_model.field import TextField, IntegerField, SelectField, field_attributes, DateField
 
 from mangrove.form_model.form_model import FormModel, get
 from mangrove.form_model.validation import IntegerConstraint, TextConstraint
@@ -14,6 +14,8 @@ def create_question(post_dict):
         return _create_integer_question(post_dict)
     if post_dict["type"] == "select":
         return _create_select_question(post_dict, single_select_flag=True)
+    if post_dict["type"] == "date":
+        return _create_date_question(post_dict)
     if post_dict["type"] == "select1":
         return _create_select_question(post_dict, single_select_flag=False)
 
@@ -54,11 +56,13 @@ def _create_integer_question(post_dict):
     range = IntegerConstraint(min=post_dict["range_min"], max=max_range)
     return IntegerField(post_dict["title"], post_dict["code"].strip(), "default", range)
 
+def _create_date_question(post_dict):
+    return DateField(post_dict["title"], post_dict["code"].strip(), "default", date_format = post_dict.get('date_format'))
+
 
 def _create_select_question(post_dict, single_select_flag):
     options = [choice["value"] for choice in post_dict["choices"]]
     return SelectField(post_dict["title"], post_dict["code"].strip(), "default", options, single_select_flag=single_select_flag)
-
 
 def get_submissions(questions, submissions):
     assert is_sequence(questions)
