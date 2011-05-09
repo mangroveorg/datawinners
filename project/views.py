@@ -125,7 +125,7 @@ def get_submissions_for_display(current_page, dbm, questionnaire_code, questions
 
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code=None):
-    current_page = int (request.GET.get('page_number') or 1)
+    current_page = int(request.GET.get('page_number') or 1)
     date_from = request.GET.get('date_from')
     date_to = request.GET.get('date_to')
     if request.GET.get('filters'):
