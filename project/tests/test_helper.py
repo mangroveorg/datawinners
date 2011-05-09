@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datetime import datetime
 
 import unittest
 from datawinners.project import helper
@@ -74,3 +75,14 @@ class TestHelper(unittest.TestCase):
         q1 = helper.create_question(post[0])
         self.assertEqual(q1.constraint.max, None)
         self.assertEqual(q1.constraint.min, None)
+
+    def test_should_return_tuple_list_of_submissions(self):
+        questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
+        submissions = [
+                        {'values': {'Q1': 'ans1', 'Q2': 'ans2'}, 'channel': 'sms', 'status': True, 'created': datetime(2011, 1, 1), 'message': 'error1'},
+                        {'values': {'Q2': 'ans22'}, 'channel': 'sms', 'status': False, 'created': datetime(2011, 1, 2), 'message': 'error2'}
+                      ]
+        required_submissions = [(datetime(2011, 1, 1), 'sms', True, 'error1', 'ans1', 'ans2',),
+                               (datetime(2011, 1, 2), 'sms', False, 'error2', None, 'ans22',),
+                              ]
+        self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))

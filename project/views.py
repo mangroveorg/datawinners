@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime
 import json
+from math import ceil
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
@@ -13,6 +14,10 @@ from datawinners.project import models
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get, get_questionnaire
+from mangrove.transport.submissions import get_submissions_made_for_questionnaire
+
+
+PAGE_SIZE = 2
 
 
 @login_required(login_url='/login')
@@ -104,38 +109,40 @@ def project_overview(request):
     return render_to_response('project/overview.html', {'project': project_overview}, context_instance=RequestContext(request))
 
 
+def get_number_of_pages_in_result(dbm, questionnaire_code):
+    submissions_count = get_submissions_made_for_questionnaire(dbm, questionnaire_code, count_only=True)
+    page_range = int(ceil(float(submissions_count[0]) / float(PAGE_SIZE)))
+    pages = range(1, page_range + 1)
+    return pages
+
+
+def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
+    submissions = get_submissions_made_for_questionnaire(dbm, questionnaire_code, page_number=current_page,
+                                                         page_size=PAGE_SIZE, count_only=False)
+    submissions = helper.get_submissions(questions, submissions)
+    return submissions
+
+
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code=None):
-    current_page = request.GET.get('page_number')
+    current_page = int(request.GET.get('page_number') or 1)
     date_from = request.GET.get('date_from')
     date_to = request.GET.get('date_to')
     if request.GET.get('filters'):
         filters = json.loads(request.GET.get('filters'))
     contains = request.GET.get('contains')
-
-    """
-    form_model = get(questionnaire_code)
-    questions = form_model.fields
-    questions=manipulate(questions)
-    questionnaire=(questionnaire_code,form_model.title)
-    submissions = submissionlog.get(questionnaire_code)
-    submissions =manipulate(submissions)
-    results = dict()
-    """
-
-    form_model = get_questionnaire(get_db_manager(), questionnaire_code)
-    questions = helper.get_code_and_title(form_model. fields)
+    dbm = get_db_manager()
+    form_model = get_questionnaire(dbm, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
-#    Load the data records corresponding to the questionnaire here
+    questions = helper.get_code_and_title(form_model. fields)
+    pages = get_number_of_pages_in_result(dbm, questionnaire_code)
+    submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
     results = {
-                'questionnaire': ('code', 'Title',),
-                'questions': [('Q1Code', 'Q1Text'), ('Q2Code', 'Q2Text')],
-                'submissions': [(datetime.utcnow(), 'sms', True, 'Raw Message 1',
-                                                        'Q1 Ans', 'Q2 Ans',), (datetime.utcnow(),
-                                                        'sms', False, 'Raw Message 2', None, 'Q2 Ans',)
-                               ]
+                'questionnaire': questionnaire,
+                'questions': questions,
+                'submissions': submissions
               }
-    pages = range(1, 10)
+
     return render_to_response('project/results.html',
                               {'questionnaire_code': questionnaire_code, 'results': results, 'pages': pages, current_page: current_page}
                               )

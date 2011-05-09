@@ -4,7 +4,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, fiel
 
 from mangrove.form_model.form_model import FormModel, get
 from mangrove.form_model.validation import IntegerConstraint, TextConstraint
-from mangrove.utils.types import is_empty
+from mangrove.utils.types import is_empty, is_sequence
 
 
 def create_question(post_dict):
@@ -58,3 +58,12 @@ def _create_integer_question(post_dict):
 def _create_select_question(post_dict, single_select_flag):
     options = [choice["value"] for choice in post_dict["choices"]]
     return SelectField(post_dict["title"], post_dict["code"].strip(), "default", options, single_select_flag=single_select_flag)
+
+
+def get_submissions(questions, submissions):
+    assert is_sequence(questions)
+    assert is_sequence(submissions)
+    for s in submissions:
+        assert isinstance(s, dict) and s.get('values') is not None
+    formatted_list = [[each.get('created'), each.get('channel'), each.get('status'), each.get('message')] + [each.get('values').get(q[0]) for q in questions] for each in submissions]
+    return [tuple(each) for each in formatted_list]
