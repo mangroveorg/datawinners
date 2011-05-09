@@ -53,3 +53,18 @@ input.error{
     border:1px solid #FF0000 !important;
     color:#000000;
 }
+
+
+/*Table Styles Temp*/
+table{
+    margin-bottom:10px;
+}
+table td, table th{
+    border:1px solid #ccc;
+    padding:6px;
+}
+table th{
+    color: #000;
+    font-weight:bold;
+    padding:10px;
+}
