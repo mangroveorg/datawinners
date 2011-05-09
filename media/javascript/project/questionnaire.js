@@ -82,7 +82,20 @@ $(document).ready(function(){
             },
             type:{
                 required: true
+            },
+            min_length:{
+                digits: true
+            },
+            max_length:{
+                digits:true
+            },
+            range_min:{
+                number: true
+            },
+            range_max:{
+                number: true
             }
+
         }
     });
 
