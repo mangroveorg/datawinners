@@ -19,8 +19,10 @@ class MyRadioFieldRenderer(RadioFieldRenderer):
                 attrs['disabled'] = 'disabled'
             yield RadioInput(self.name, self.value, attrs, choice, i)
 
+
 class MyRadioSelect(forms.RadioSelect):
     renderer = MyRadioFieldRenderer
+
 
 class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
@@ -44,5 +46,3 @@ class ProjectProfile(Form):
         super(ProjectProfile, self).__init__(*args, **kwargs)
         type_list = self.get_entity_types()
         self.fields['entity_type']._set_choices(type_list)
-
-
