@@ -140,17 +140,23 @@ $(document).ready(function(){
             $("#questionnaire-code-error").html("<label class='error_message'> The Questionnaire code is required.</label>");
             return;
         }
+
         var list = $.trim($('#questionnaire-code').val()).split(" ");
         if (list.length > 1) {
             $("#questionnaire-code-error").html("<label class='error_message'> Space is not allowed in questionnaire code.</label>");
             return;
         }
+        else{
+            $('#questionnaire-code').val($.trim($('#questionnaire-code').val()))
+        }
+
         var text = $('#questionnaire-code').val();
         var re = new RegExp('^[A-Za-z0-9 ]+$');
         if( !re.test(text)){
             $("#questionnaire-code-error").html("<label class='error_message'> Only letters and digits are valid.</label>");
             return;
         }
+
         $("#questionnaire-code-error").html("");
 
         if(!$('#question_form').valid()){
@@ -158,6 +164,7 @@ $(document).ready(function(){
             hide_message();
             return;
         }
+
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
         $.post('/project/questionnaire/save', post_data, function(response) {
