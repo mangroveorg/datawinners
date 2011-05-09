@@ -58,6 +58,10 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
                                     "showcase": {"SITE_ID": 2},
                                     "test": {"SITE_ID": 4}
                                  }
+
+    if(build_number=='lastSuccessfulBuild'):
+        build_number=run("curl curl http://178.79.163.33:8080/job/Mangrove-develop/lastSuccessfulBuild/buildNumber")
+
     run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
     code_dir = home_dir + '/mangrove'
