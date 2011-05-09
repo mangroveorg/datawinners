@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime
 import json
+from math import ceil
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
@@ -16,7 +17,7 @@ from mangrove.form_model.form_model import get, get_questionnaire
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 
 
-PAGE_SIZE = 20
+PAGE_SIZE = 2
 
 
 @login_required(login_url='/login')
@@ -110,7 +111,7 @@ def project_overview(request):
 
 def get_number_of_pages_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_questionnaire(dbm, questionnaire_code, count_only=True)
-    page_range = submissions_count[0] / PAGE_SIZE or 1
+    page_range = int(ceil(float(submissions_count[0]) / float(PAGE_SIZE)))
     pages = range(1, page_range + 1)
     return pages
 
@@ -124,7 +125,7 @@ def get_submissions_for_display(current_page, dbm, questionnaire_code, questions
 
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code=None):
-    current_page = request.GET.get('page_number') or 0
+    current_page = int (request.GET.get('page_number') or 1)
     date_from = request.GET.get('date_from')
     date_to = request.GET.get('date_to')
     if request.GET.get('filters'):
@@ -135,7 +136,7 @@ def project_results(request, questionnaire_code=None):
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model. fields)
     pages = get_number_of_pages_in_result(dbm, questionnaire_code)
-    submissions = get_submissions_for_display(current_page, dbm, questionnaire_code, questions)
+    submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
     results = {
                 'questionnaire': questionnaire,
                 'questions': questions,
