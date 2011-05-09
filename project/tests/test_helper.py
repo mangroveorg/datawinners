@@ -79,10 +79,10 @@ class TestHelper(unittest.TestCase):
     def test_should_return_tuple_list_of_submissions(self):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
         submissions = [
-                        {'values': {'Q1': 'ans1', 'Q2': 'ans2'}, 'channel': 'sms', 'status': True, 'created': datetime(2011, 1,1), 'message': 'error1'},
-                        {'values': {'Q2': 'ans22'}, 'channel': 'sms', 'status': False, 'created': datetime(2011, 1,2), 'message': 'error2'}
+                        {'values': {'Q1': 'ans1', 'Q2': 'ans2'}, 'channel': 'sms', 'status': True, 'created': datetime(2011, 1, 1), 'message': 'error1'},
+                        {'values': {'Q2': 'ans22'}, 'channel': 'sms', 'status': False, 'created': datetime(2011, 1, 2), 'message': 'error2'}
                       ]
-        required_submissions= [(datetime(2011, 1,1), 'sms', True, 'error1', 'ans1', 'ans2',),
-                               (datetime(2011, 1,2), 'sms', False, 'error2', None, 'ans22',),
+        required_submissions = [(datetime(2011, 1, 1), 'sms', True, 'error1', 'ans1', 'ans2',),
+                               (datetime(2011, 1, 2), 'sms', False, 'error2', None, 'ans22',),
                               ]
-        self.assertEquals(required_submissions,helper.get_submissions(questions, submissions))
+        self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
