@@ -70,7 +70,6 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
             run("git checkout -b %s $COMMIT_SHA" % (build_number, ))
             run("git checkout .")
             activate_and_run(virtual_env, "pip install -r requirements.pip")
-        sudo("chmod -R 777 %s" % code_dir)
         with cd(code_dir + '/src/datawinners'):
             update_configuration(ENVIRONMENT_CONFIGURATIONS[environment])
             activate_and_run(virtual_env, "python manage.py syncdb")
