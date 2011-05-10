@@ -13,17 +13,16 @@ def create_question(post_dict):
     if post_dict["type"] == "integer":
         return _create_integer_question(post_dict)
     if post_dict["type"] == "select":
-        return _create_select_question(post_dict, single_select_flag=True)
+        return _create_select_question(post_dict, single_select_flag=False)
     if post_dict["type"] == "date":
         return _create_date_question(post_dict)
     if post_dict["type"] == "select1":
-        return _create_select_question(post_dict, single_select_flag=False)
+        return _create_select_question(post_dict, single_select_flag=True)
 
 
 def create_questionnaire(post, dbm=get_db_manager()):
     entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on", entity_question_flag=True)
     return FormModel(dbm, entity_type_id=post["entity_type"], name=post["name"], fields=[entity_id_question], form_code='default', type='survey')
-
 
 def load_questionnaire(questionnaire_id):
     return get(get_db_manager(), questionnaire_id)
