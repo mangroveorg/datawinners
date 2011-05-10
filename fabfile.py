@@ -85,11 +85,11 @@ def showcase(home_dir):
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
     app_dir = home_dir + '/mangrove/src/datawinners'
-    with cd(app_dir)
+    with cd(app_dir):
         run("cp showcase_local_settings.py local_settings.py")
 
 
 def test(home_dir):
     app_dir = home_dir + '/mangrove/src/datawinners'
-    with cd(app_dir)
+    with cd(app_dir):
         run("cp test_local_settings.py local_settings.py")
