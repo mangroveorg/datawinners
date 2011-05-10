@@ -24,9 +24,9 @@ def load_data():
 
     #  The Default Entity Types
     try:
-        define_type(manager, "Reporter")
-        define_type(manager, "Clinic")
-        define_type(manager, "Water Point")
+        define_type(manager, ["Reporter"])
+        define_type(manager, ["Clinic"])
+        define_type(manager, ["Water Point"])
 
     except EntityTypeAlreadyDefined:
         pass
