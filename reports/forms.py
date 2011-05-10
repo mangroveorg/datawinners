@@ -29,7 +29,7 @@ class ReportHierarchy(Form):
     def __init__(self, *args, **kwargs):
         super(ReportHierarchy, self).__init__(*args, **kwargs)
         type_list = get_entity_types()
-        self.fields['entity_type']._set_choices(type_list)
+        self.fields['entity_type'].choices = type_list
 
 
 class Report(Form):
