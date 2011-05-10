@@ -37,12 +37,9 @@ class ProjectProfile(Form):
                                   initial=DEVICE_CHOICES[2], required=False)
 
     def get_entity_types(self):
-        manager = get_db_manager()
-        type_dict = load_all_entity_types(manager)
-        type_list = [(k, v) for k, v in type_dict.items()]
-        return type_list
+        type_dict = load_all_entity_types(get_db_manager())
+        return type_dict.items()
 
     def __init__(self, *args, **kwargs):
         super(ProjectProfile, self).__init__(*args, **kwargs)
-        type_list = self.get_entity_types()
-        self.fields['entity_type']._set_choices(type_list)
+        self.fields['entity_type']._set_choices(self.get_entity_types())
