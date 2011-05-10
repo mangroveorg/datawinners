@@ -80,12 +80,16 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
             restart_gunicorn(virtual_env)
 
 
-def showcase():
+def showcase(home_dir):
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
-    run("cp src/datawinners/showcase_local_settings.py src/datawinners/local_settings.py")
+    app_dir = home_dir + '/mangrove/src/datawinners'
+    with cd(app_dir)
+        run("cp showcase_local_settings.py local_settings.py")
 
 
-def test():
-    run("cp src/datawinners/test_local_settings.py src/datawinners/local_settings.py")
+def test(home_dir):
+    app_dir = home_dir + '/mangrove/src/datawinners'
+    with cd(app_dir)
+        run("cp test_local_settings.py local_settings.py")
