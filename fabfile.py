@@ -60,7 +60,7 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
                                  }
 
     if(build_number=='lastSuccessfulBuild'):
-        build_number=run("curl curl http://178.79.163.33:8080/job/Mangrove-develop/lastSuccessfulBuild/buildNumber")
+        build_number=run("curl http://178.79.163.33:8080/job/Mangrove-develop/lastSuccessfulBuild/buildNumber")
 
     run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
@@ -89,3 +89,7 @@ def showcase():
     env.user="mangrover"
     env.hosts=["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
+    run("cp showcase_local_settings.py local_settings.py")
+
+def test():
+    run("cp test_local_settings.py local_settings.py")
