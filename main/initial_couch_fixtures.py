@@ -23,13 +23,9 @@ def load_data():
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
 
     #  The Default Entity Types
-    try:
-        define_type(manager, ["Reporter"])
-        define_type(manager, ["Clinic"])
-        define_type(manager, ["Water Point"])
-
-    except EntityTypeAlreadyDefined:
-        pass
+    define_type(manager, ["Reporter"])
+    define_type(manager, ["Clinic"])
+    define_type(manager, ["Water Point"])
     try:
         meds_type = DataDictType(manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
         beds_type = DataDictType(manager, name='Beds', slug='beds', primitive_type='number', description='Number of beds')
