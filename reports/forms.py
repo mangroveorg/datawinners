@@ -4,14 +4,7 @@ from django.forms.fields import CharField, IntegerField, ChoiceField
 from django.forms.forms import Form
 from django import forms
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.entity import load_all_entity_types
-
-
-def get_entity_types():
-    manager = get_db_manager()
-    type_dict = load_all_entity_types(manager)
-    type_list = [(k, v) for k, v in type_dict.items()]
-    return type_list
+from mangrove.datastore.entity import get_all_entity_types
 
 
 class ReportHierarchy(Form):
@@ -28,8 +21,7 @@ class ReportHierarchy(Form):
 
     def __init__(self, *args, **kwargs):
         super(ReportHierarchy, self).__init__(*args, **kwargs)
-        type_list = get_entity_types()
-        self.fields['entity_type'].choices = type_list
+        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in get_all_entity_types(get_db_manager())]
 
 
 class Report(Form):
@@ -41,5 +33,4 @@ class Report(Form):
 
     def __init__(self, *args, **kwargs):
         super(Report, self).__init__(*args, **kwargs)
-        type_list = get_entity_types()
-        self.fields['entity_type']._set_choices(type_list)
+        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in get_all_entity_types(get_db_manager())]
