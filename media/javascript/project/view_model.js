@@ -27,7 +27,14 @@ var viewModel =
 
         },
         showAddChoice:function(){
-            return viewModel.selectedQuestion().isAChoiceTypeQuestion() == "choice"
+            if(viewModel.selectedQuestion().isAChoiceTypeQuestion() == "choice"){
+                if(viewModel.selectedQuestion().choices().length == 0){
+                    viewModel.addOptionToQuestion();
+                    viewModel.selectedQuestion().choices.valueHasMutated();
+                }
+                return true;
+            }
+            return false;
         },
         showDateFormats:function(){
             return viewModel.selectedQuestion().type() == "date"

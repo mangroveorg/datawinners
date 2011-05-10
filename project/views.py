@@ -16,9 +16,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get, get_questionnaire
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 
-
 PAGE_SIZE = 10
-
 
 @login_required(login_url='/login')
 def questionnaire(request):
