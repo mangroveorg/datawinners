@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from fabric.api import run, sudo,env
+
+from fabric.api import run, sudo, env
 from fabric.context_managers import cd, settings
 import os
 import sys
@@ -59,8 +60,8 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
                                     "test": {"SITE_ID": 4}
                                  }
 
-    if(build_number=='lastSuccessfulBuild'):
-        build_number=run("curl http://178.79.163.33:8080/job/Mangrove-develop/lastSuccessfulBuild/buildNumber")
+    if(build_number == 'lastSuccessfulBuild'):
+        build_number = run("curl http://178.79.163.33:8080/job/Mangrove-develop/lastSuccessfulBuild/buildNumber")
 
     run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))
 
@@ -78,11 +79,13 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
             activate_and_run(virtual_env, "python manage.py syncdb")
             restart_gunicorn(virtual_env)
 
+
 def showcase():
-    env.user="mangrover"
-    env.hosts=["178.79.161.90"]
+    env.user = "mangrover"
+    env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
     run("cp showcase_local_settings.py local_settings.py")
+
 
 def test():
     run("cp test_local_settings.py local_settings.py")
