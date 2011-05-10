@@ -24,6 +24,7 @@ def create_questionnaire(post, dbm=get_db_manager()):
     entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on", entity_question_flag=True)
     return FormModel(dbm, entity_type_id=post["entity_type"], name=post["name"], fields=[entity_id_question], form_code='default', type='survey')
 
+
 def load_questionnaire(questionnaire_id):
     return get(get_db_manager(), questionnaire_id)
 
@@ -55,13 +56,15 @@ def _create_integer_question(post_dict):
     range = IntegerConstraint(min=post_dict["range_min"], max=max_range)
     return IntegerField(post_dict["title"], post_dict["code"].strip(), "default", range)
 
+
 def _create_date_question(post_dict):
-    return DateField(post_dict["title"], post_dict["code"].strip(), "default", date_format = post_dict.get('date_format'))
+    return DateField(post_dict["title"], post_dict["code"].strip(), "default", date_format=post_dict.get('date_format'))
 
 
 def _create_select_question(post_dict, single_select_flag):
     options = [choice["value"] for choice in post_dict["choices"]]
     return SelectField(post_dict["title"], post_dict["code"].strip(), "default", options, single_select_flag=single_select_flag)
+
 
 def get_submissions(questions, submissions):
     assert is_sequence(questions)
