@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+from datawinners.project.models import Project
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
@@ -146,7 +147,11 @@ def load_data():
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="QRID01", type='survey', fields=[
                     question1, question2, question3])
-    form_model.save()
+    qid = form_model.save()
+    project = Project(name="Test_Project", goals="testing", project_type="survey", entity_type=ENTITY_TYPE, devices=["sms"])
+    project.qid = qid
+    project.save()
+
     #Register Reporter
     phone_number_type = DataDictType(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
     first_name_type = DataDictType(manager, name='First Name', slug='first_name', primitive_type='string')

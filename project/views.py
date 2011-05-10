@@ -17,7 +17,7 @@ from mangrove.form_model.form_model import get, get_questionnaire
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 
 
-PAGE_SIZE = 2
+PAGE_SIZE = 10
 
 
 @login_required(login_url='/login')
