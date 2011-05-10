@@ -37,7 +37,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
 
-SITE_ID = @SITE_ID@
+SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -179,3 +179,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
+
+try:
+    from local_settings import *
+except ImportError, e:
+    raise Exception("You need to create a local_settings.py from local_settings_example.py")
