@@ -6,7 +6,7 @@ DW.question = function(question){
         name : "Question",
         question_code : "code",
         type : "text",
-        choices :[],
+        choices :[{value:'Choice'}],
         entity_question_flag : false,
         length : {
           min : 1,
