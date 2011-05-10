@@ -56,8 +56,8 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
        virtual_env : path to your virtual_env folder
     """
     ENVIRONMENT_CONFIGURATIONS = {
-                                    "showcase": {"SITE_ID": 2},
-                                    "test": {"SITE_ID": 4}
+                                    "showcase": "showcase_local_settings.py",
+                                    "test": "test_local_settings.py"
                                  }
 
     if(build_number == 'lastSuccessfulBuild'):
@@ -76,20 +76,14 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
             run("git checkout .")
             activate_and_run(virtual_env, "pip install -r requirements.pip")
         with cd(code_dir + '/src/datawinners'):
+            run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
             activate_and_run(virtual_env, "python manage.py syncdb")
             restart_gunicorn(virtual_env)
 
 
-def showcase(home_dir):
+def showcase():
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
-    app_dir = home_dir + '/mangrove/src/datawinners'
-    with cd(app_dir):
-        run("cp showcase_local_settings.py local_settings.py")
 
 
-def test(home_dir):
-    app_dir = home_dir + '/mangrove/src/datawinners'
-    with cd(app_dir):
-        run("cp test_local_settings.py local_settings.py")
