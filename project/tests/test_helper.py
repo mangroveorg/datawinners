@@ -16,16 +16,23 @@ class TestHelper(unittest.TestCase):
                  "is_entity_question": False, "range_min": 0, "range_max": 100},
                 {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False,
+                 "answers_permitted": "single"},
+                {"title": "q3", "code": "qc3", "description": "desc3", "type": "select1",
+                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False,
                  "answers_permitted": "single"}
         ]
         q1 = helper.create_question(post[0])
         q2 = helper.create_question(post[1])
         q3 = helper.create_question(post[2])
+        q4 = helper.create_question(post[3])
         self.assertIsInstance(q1, TextField)
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
-        self.assertEquals(q2._to_json()["range"], {"min": 0, "max": 100})
+        self.assertIsInstance(q4, SelectField)
         self.assertEquals(q1._to_json()["length"], {"min": 1, "max": 15})
+        self.assertEquals(q2._to_json()["range"], {"min": 0, "max": 100})
+        self.assertEquals(q3._to_json()["type"], "select")
+        self.assertEquals(q4._to_json()["type"], "select1")
 
     def test_should_save_questionnaire_from_post(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
