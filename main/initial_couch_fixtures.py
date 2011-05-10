@@ -147,7 +147,7 @@ def load_data():
     question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
                              range=IntegerConstraint(min=15, max=120))
 
-    form_model = FormModel(manager, entity_type_id="Clinic", name="AIDS", label="Aids form_model",
+    form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="QRID01", type='survey', fields=[
                     question1, question2, question3])
     form_model.save()
