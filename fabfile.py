@@ -84,8 +84,8 @@ def showcase():
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
-    run("cp showcase_local_settings.py local_settings.py")
+    run("cp src/datawinners/showcase_local_settings.py src/datawinners/local_settings.py")
 
 
 def test():
-    run("cp test_local_settings.py local_settings.py")
+    run("cp src/datawinners/test_local_settings.py src/datawinners/local_settings.py")
