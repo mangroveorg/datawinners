@@ -75,15 +75,8 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
             run("git checkout .")
             activate_and_run(virtual_env, "pip install -r requirements.pip")
         with cd(code_dir + '/src/datawinners'):
-            update_configuration(ENVIRONMENT_CONFIGURATIONS[environment])
             activate_and_run(virtual_env, "python manage.py syncdb")
             restart_gunicorn(virtual_env)
-
-def update_configuration(environment):
-    sed_commands = ""
-    for key in environment:
-        sed_commands += "-e 's/@%s@/%s/' " % (key, environment[key])
-    run("sed  %s settings.py.template > settings.py" % sed_commands)
 
 def showcase():
     env.user="mangrover"
