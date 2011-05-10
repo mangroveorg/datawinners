@@ -139,6 +139,17 @@ INSTALLED_APPS = (
     'datawinners.project'
 )
 
+COMPILER_FORMATS = {
+    '.sass': {
+        'binary_path': 'sass',
+        'arguments': '*.sass *.css'
+    },
+    '.scss': {
+        'binary_path': 'sass',
+        'arguments': '*.scss *.css'
+    }
+}
+COMPRESS = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
