@@ -16,7 +16,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get, get_questionnaire
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 
-PAGE_SIZE = 10
+PAGE_SIZE = 4
 
 @login_required(login_url='/login')
 def questionnaire(request):
@@ -107,11 +107,9 @@ def project_overview(request):
     return render_to_response('project/overview.html', {'project': project_overview}, context_instance=RequestContext(request))
 
 
-def get_number_of_pages_in_result(dbm, questionnaire_code):
+def get_number_of_rows_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_questionnaire(dbm, questionnaire_code, count_only=True)
-    page_range = int(ceil(float(submissions_count[0]) / float(PAGE_SIZE)))
-    pages = range(1, page_range + 1)
-    return pages
+    return submissions_count[0]
 
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
@@ -133,7 +131,7 @@ def project_results(request, questionnaire_code=None):
     form_model = get_questionnaire(dbm, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model. fields)
-    pages = get_number_of_pages_in_result(dbm, questionnaire_code)
+    rows = get_number_of_rows_in_result(dbm, questionnaire_code)
     submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
     results = {
                 'questionnaire': questionnaire,
@@ -142,5 +140,5 @@ def project_results(request, questionnaire_code=None):
               }
 
     return render_to_response('project/results.html',
-                              {'questionnaire_code': questionnaire_code, 'results': results, 'pages': pages, current_page: current_page}
+                              {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page}
                               )

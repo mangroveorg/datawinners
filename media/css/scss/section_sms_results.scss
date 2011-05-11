@@ -1,0 +1,29 @@
+#sms_results{
+    #question_form{
+        border-bottom:1px solid #eee;
+        margin-bottom:20px;
+        #add_answer_filter{
+            font-size:14px;
+        }
+    }
+    #pagination{
+        a{
+            border:1px solid #CCCCCC;
+        }
+        .current{
+            background-color:#FFD857;
+            border:1px solid #D4972D;
+            color: #6F451D;
+            font-weight:bold;
+        }
+        .prev{
+            background-color:#FFFFFF;
+            border:1px solid #CCCCCC;
+            color:#CCCCCC;
+            font-weight:normal;
+        }
+    }
+    h3{
+        margin-bottom:20px;
+    }
+}
