@@ -29,7 +29,7 @@ def create_views(dbm):
 
 
 def exists_view(aggregation, database_manager):
-    entity_type_views = database_manager.load('_design/datawinners_views')
+    entity_type_views = database_manager._load_document('_design/datawinners_views')
     if entity_type_views is not None and entity_type_views['views'].get(aggregation):
         return True
     return False

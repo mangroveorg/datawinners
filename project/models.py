@@ -24,7 +24,7 @@ class Project(DocumentBase):
         if dbm is None:
             dbm = get_db_manager()
         assert isinstance(dbm, DatabaseManager)
-        return dbm.save(self).id
+        return dbm._save_document(self).id
 
     def update(self, value_dict):
         attribute_list = [item[0] for item in (self.items())]
@@ -34,7 +34,7 @@ class Project(DocumentBase):
 
 
 def get_project(pid, dbm=get_db_manager()):
-    return dbm.load(pid, Project)
+    return dbm._load_document(pid, Project)
 
 
 def get_all_projects(dbm=get_db_manager()):
