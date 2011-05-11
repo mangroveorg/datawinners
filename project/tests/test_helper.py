@@ -17,7 +17,7 @@ class TestHelper(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False,
                  "answers_permitted": "single"},
-                {"title": "q3", "code": "qc3", "description": "desc3", "type": "select1",
+                {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False,
                  "answers_permitted": "single"}
         ]

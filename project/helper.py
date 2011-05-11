@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.database import get_db_manager
+from mangrove.datastore.datadict import get_default_datadict_type
 from mangrove.form_model.field import TextField, IntegerField, SelectField, field_attributes, DateField
 
 from mangrove.form_model.form_model import FormModel
@@ -21,7 +22,7 @@ def create_question(post_dict):
 
 
 def create_questionnaire(post, dbm=get_db_manager()):
-    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on", entity_question_flag=True)
+    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on", entity_question_flag=True,ddtype= get_default_datadict_type())
     return FormModel(dbm, entity_type=post["entity_type"], name=post["name"], fields=[entity_id_question], form_code='default', type='survey')
 
 
@@ -47,23 +48,24 @@ def _create_text_question(post_dict):
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     length = TextConstraint(min=min_length, max=max_length)
     return TextField(name=post_dict["title"], question_code=post_dict["code"].strip(), label="default",
-                     entity_question_flag=post_dict.get("is_entity_question"), length=length)
+                     entity_question_flag=post_dict.get("is_entity_question"), length=length,ddtype= get_default_datadict_type())
 
 
 def _create_integer_question(post_dict):
     max_range_from_post = post_dict["range_max"]
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
     range = IntegerConstraint(min=post_dict["range_min"], max=max_range)
-    return IntegerField(post_dict["title"], post_dict["code"].strip(), "default", range)
+    return IntegerField(name=post_dict["title"], question_code=post_dict["code"].strip(), label="default", range=range, ddtype=get_default_datadict_type())
 
 
 def _create_date_question(post_dict):
-    return DateField(post_dict["title"], post_dict["code"].strip(), "default", date_format=post_dict.get('date_format'))
+    return DateField(name=post_dict["title"], question_code=post_dict["code"].strip(), label="default", date_format=post_dict.get('date_format'), ddtype= get_default_datadict_type())
 
 
 def _create_select_question(post_dict, single_select_flag):
     options = [choice["value"] for choice in post_dict["choices"]]
-    return SelectField(post_dict["title"], post_dict["code"].strip(), "default", options, single_select_flag=single_select_flag)
+    return SelectField(name=post_dict["title"], question_code=post_dict["code"].strip(), label="default",
+                       options=options, single_select_flag=single_select_flag, ddtype=get_default_datadict_type())
 
 
 def get_submissions(questions, submissions):
