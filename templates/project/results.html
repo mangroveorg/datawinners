@@ -2,42 +2,57 @@
 {% block page_title %} Results for Questionnaire ( {{ project_code }} ) {% endblock %}
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
 {% endblock %}
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet" />
+{% endblock %}
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_sms_results.scss" media="screen" rel="stylesheet" />
+{% endblock %}
 {% block content %}
-    <div>
-        <div>
-            <h3>Results</h3>
-        </div>
+    <div id="sms_results">
+        <h3>Results</h3>
         <div>
             <div>
-                <div>
-                    <h4>Filter Data by:</h4>
-
-                    <p>
-                        Date received between <input id="date_from" type="text"/> and <input id="date_to" type="text"/>
-                    </p>
-
-                    <p>
-                        Answer to question <select class="question_filter"></select> is <input type="text"
-                                                                                               class="answer_filter"/>
-                        <br/>
-                    </p>
-
-                    <p>
-                        <a id="add_answer_filter" style="cursor:pointer">Add another</a>
-                    </p>
-
-                    <p>
-                        Contains <input id="contains_text" type="text"/>
-                    </p>
-
-                    <p class="text_align_right">
-                        <button id="filter">Filter</button>
-                    </p>
-                </div>
+               <form id="question_form">
+                    <fieldset>
+                        <legend>Filter Data by:</legend>
+                        <ul>
+                            <li>
+                                <label>Date received between</label>
+                                    <input id="date_from" type="text"/>
+                                to
+                                    <input id="date_to" type="text"/>
+                            </li>
+                            <li class="margin_null">
+                                <h6>Answer to question</h6>
+                            </li>
+                             <li>
+                                <select class="question_filter">
+                                    <option>-------Select------</option>
+                                </select>
+                                is <input type="text" class="answer_filter"/>
+                            </li>
+                            <li>
+                                <a id="add_answer_filter" style="cursor:pointer">Add another</a>
+                            </li>
+                            <li>
+                                <label>Contains</label>
+                                <input id="contains_text" type="text"/>
+                            </li>
+                            <li>
+                                <button id="filter">Filter</button>
+                            </li>
+                         </ul>
+                    </fieldset>
+               </form>
             </div>
             <div id="results">
+                <input id="total_rows" type="hidden" value="{{ pages }}" />
                 <div>
                     <table>
                         <tr>
@@ -76,15 +91,11 @@
                             </tr>
                         {% endfor %}
                     </table>
-                    <div>
-                        {% for page in pages %}
-                                    <a class="page_number {% if page == current_page %}selected{% endif %}">
-                                      {{ page  }}&nbsp; &nbsp;
-                                    </a>
-                        {% endfor %}
-                    </div>
+
                 </div>
+
             </div>
+            <div id="pagination"></div>
         </div>
     </div>
 {% endblock %}
