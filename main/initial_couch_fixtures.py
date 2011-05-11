@@ -8,7 +8,7 @@ from mangrove.datastore.database import get_db_manager
 from pytz import UTC
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 from mangrove.form_model.field import TextField, IntegerField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, RegistrationFormModel
 from mangrove.form_model.validation import IntegerConstraint
 
 
@@ -150,8 +150,28 @@ def load_data():
     qid = form_model.save()
     project = Project(name="Test_Project", goals="testing", project_type="survey", entity_type=ENTITY_TYPE, devices=["sms"])
     project.qid = qid
-    project.save()
+    try:
+        project.save()
+    except Exception:
+        pass
+    #Create registration questionnaire
+    question1 = TextField(name="entity_type", question_code="ET", label="What is associated entity type?",
+                          language="eng", entity_question_flag=False)
+    question2 = TextField(name="name", question_code="N", label="What is the entity's name?",
+                          defaultValue="some default value", language="eng")
+    question3 = TextField(name="short_name", question_code="S", label="What is the entity's short name?",
+                          defaultValue="some default value", language="eng")
+    question4 = TextField(name="location", question_code="L", label="What is the entity's location?",
+                          defaultValue="some default value", language="eng")
+    question5 = TextField(name="description", question_code="D", label="Describe the entity",
+                          defaultValue="some default value", language="eng")
+    question6 = TextField(name="short_name", question_code="M", label="What is the associated mobile number?",
+                          defaultValue="some default value", language="eng")
 
+    form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
+                    question1, question2, question3, question4, question5, question6])
+    qid = form_model.save()
+    
     #Register Reporter
     phone_number_type = DataDictType(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
     first_name_type = DataDictType(manager, name='First Name', slug='first_name', primitive_type='string')
@@ -159,3 +179,4 @@ def load_data():
     first_name_type.save()
     register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type), ("first_name", "Shweta", first_name_type)], location=[],
                         source="sms")
+
