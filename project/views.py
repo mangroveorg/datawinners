@@ -13,7 +13,7 @@ from mangrove.datastore.database import get_db_manager
 from datawinners.project import models
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get, get_questionnaire
+from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 
 PAGE_SIZE = 10
@@ -130,7 +130,7 @@ def project_results(request, questionnaire_code=None):
         filters = json.loads(request.GET.get('filters'))
     contains = request.GET.get('contains')
     dbm = get_db_manager()
-    form_model = get_questionnaire(dbm, questionnaire_code)
+    form_model = get_form_model_by_code(dbm, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model. fields)
     pages = get_number_of_pages_in_result(dbm, questionnaire_code)
