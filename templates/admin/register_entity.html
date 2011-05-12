@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+{% block page_title %}Define an entity{% endblock %}
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
+{% endblock %}
+{% block content%}
+    <div class="span-18 box">
+        <input id='post_url' type="hidden" value="{{ post_url }}" />
+            <form id="question_form">
+                <fieldset>
+                    <legend>Add a Subject</legend>
+                    <ul>
+                        <li>
+                            <span>
+                                <label>Name</label>
+                            </span>
+                            <span>
+                                <input name="name" type="text" class="required" data-bind="value: message.N"/>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label>Short Name</label>
+                            </span>
+                            <span>
+                                <input name="short_name" type="text" class="required" data-bind="value: message.S"/>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label>Type</label>
+                            </span>
+                            <span>
+                                <select name="type" data-bind="value: message.T">
+                                    {% for entity_type in entity_types %}
+                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label>Location</label>
+                            </span>
+                            <span>
+                                <input name="location" type="text" data-bind="value: message.L"/>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label>Description</label>
+                            </span>
+                            <span>
+                                <input name="description" type="text" data-bind="value: message.D"/>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label>Mobile Number</label>
+                            </span>
+                            <span>
+                                <input name="mobile_number" type="text" class="required" data-bind="value: message.M"/>
+                            </span>
+                        </li>
+                    </ul>
+                </fieldset>
+                <input type="button" value="Register" id="register_entity" />
+            </form>
+    </div>
+{% endblock %}
