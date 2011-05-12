@@ -72,7 +72,7 @@ def save_questionnaire(request):
 
         pid = request.POST['pid']
         project = models.get_project(pid)
-        form_model = get_db_manager(project.qid, FormModel)
+        form_model = get_db_manager().get(project.qid, FormModel)
         try:
             form_model = helper.update_questionnaire_with_questions(form_model, question_set)
         except QuestionCodeAlreadyExistsException as e:
