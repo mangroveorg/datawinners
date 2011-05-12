@@ -175,8 +175,13 @@ def load_data():
     
 
     #Create registration questionnaire
+<<<<<<< HEAD
     question1 = TextField(name="entity_type", question_code="ET", label="What is associated entity type?",
                           language="eng", entity_question_flag=False,ddtype=entity_id_type)
+=======
+    question1 = TextField(name="entity_type", question_code="T", label="What is associated entity type?",
+                          language="eng", entity_question_flag=False)
+>>>>>>> making the type code as "T"|<Mahesh/Ashish>
     question2 = TextField(name="name", question_code="N", label="What is the entity's name?",
                           defaultValue="some default value", language="eng",ddtype=name_type)
     question3 = TextField(name="short_name", question_code="S", label="What is the entity's short name?",
