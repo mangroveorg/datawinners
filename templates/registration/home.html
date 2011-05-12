@@ -9,7 +9,8 @@
             <h4>Organization Office Phone : {{organization.office_phone}}</h4>
             <a href="reporter/register">Register Reporter</a><br/>
             <a href="{% url datawinners.project.views.project_listing %}">View all projects</a><br/>
-            <a href="{% url datawinners.project.views.create_profile %}">Create project</a>
+            <a href="{% url datawinners.project.views.create_profile %}">Create project</a><br/>
+            <a href="{% url datawinners.admin.views.create_entity %}">Define Entity Types</a>
         </div>
     </div>
 {% endblock %}

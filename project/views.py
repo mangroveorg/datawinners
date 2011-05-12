@@ -102,8 +102,10 @@ def project_listing(request):
 def project_overview(request):
     project = models.get_project(request.GET["pid"])
     link = '/project/profile/edit?pid=' + request.GET["pid"]
-    number_of_questions = len(helper. load_questionnaire(project['qid']). fields)
-    project_overview = dict(what=number_of_questions, how=project['devices'], link=link)
+    questionnaire = helper.load_questionnaire(project['qid'])
+    number_of_questions = len(questionnaire.fields)
+    result_link = '/project/results/%s' % questionnaire.form_code
+    project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
     return render_to_response('project/overview.html', {'project': project_overview}, context_instance=RequestContext(request))
 
 
