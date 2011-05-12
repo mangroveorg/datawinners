@@ -6,7 +6,7 @@ from mangrove.datastore.documents import SubmissionLogDocument
 
 def load_sms_data():
     dbm = get_db_manager()
-    for i in range(1,200):
+    for i in range(1, 200):
         sender = "1234567890"
         receiver = 12345
         submission_id = dbm.save(SubmissionLogDocument(channel="sms", source=sender,

@@ -6,7 +6,6 @@ from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 from mangrove.form_model.field import TextField, IntegerField
 from mangrove.form_model.form_model import FormModel, RegistrationFormModel
 from mangrove.form_model.validation import IntegerConstraint
@@ -171,7 +170,7 @@ def load_data():
     form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
                     question1, question2, question3, question4, question5, question6])
     qid = form_model.save()
-    
+
     #Register Reporter
     phone_number_type = DataDictType(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
     first_name_type = DataDictType(manager, name='First Name', slug='first_name', primitive_type='string')
@@ -179,4 +178,3 @@ def load_data():
     first_name_type.save()
     register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type), ("first_name", "Shweta", first_name_type)], location=[],
                         source="sms")
-

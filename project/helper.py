@@ -26,7 +26,7 @@ def create_questionnaire(post, dbm=get_db_manager()):
 
 
 def load_questionnaire(questionnaire_id):
-    return get_db_manager().get(questionnaire_id,FormModel)
+    return get_db_manager().get(questionnaire_id, FormModel)
 
 
 def update_questionnaire_with_questions(form_model, question_set):
