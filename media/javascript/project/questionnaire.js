@@ -25,7 +25,6 @@ DW.question = function(question){
 DW.question.prototype = {
     _init : function(){
         var q = this.options;
-        console.log(q)
         this.range_min = ko.observable(q.range.min);
         
         //This condition required especially because in DB range_max is a mandatory field
