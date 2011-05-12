@@ -102,15 +102,18 @@ def project_listing(request):
 def project_overview(request):
     project = models.get_project(request.GET["pid"])
     link = '/project/profile/edit?pid=' + request.GET["pid"]
-    number_of_questions = len(helper. load_questionnaire(project['qid']). fields)
-    project_overview = dict(what=number_of_questions, how=project['devices'], link=link)
+    questionnaire = helper.load_questionnaire(project['qid'])
+    number_of_questions = len(questionnaire.fields)
+    result_link = '/project/results/%s' % questionnaire.form_code
+    project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
     return render_to_response('project/overview.html', {'project': project_overview}, context_instance=RequestContext(request))
 
 
 def get_number_of_rows_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_questionnaire(dbm, questionnaire_code, count_only=True)
-    return submissions_count[0]
-
+    if submissions_count:
+        return submissions_count[0]
+    return None
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
     submissions = get_submissions_made_for_questionnaire(dbm, questionnaire_code, page_number=current_page,
@@ -132,13 +135,15 @@ def project_results(request, questionnaire_code=None):
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model. fields)
     rows = get_number_of_rows_in_result(dbm, questionnaire_code)
-    submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
-    results = {
-                'questionnaire': questionnaire,
-                'questions': questions,
-                'submissions': submissions
-              }
+    if rows:
+        submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
+        results = {
+                    'questionnaire': questionnaire,
+                    'questions': questions,
+                    'submissions': submissions
+                  }
 
-    return render_to_response('project/results.html',
-                              {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page}
-                              )
+        return render_to_response('project/results.html',
+                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page}
+                                  )
+    return HttpResponse("No submissions present for this project")
