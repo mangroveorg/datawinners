@@ -111,8 +111,9 @@ def project_overview(request):
 
 def get_number_of_rows_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_questionnaire(dbm, questionnaire_code, count_only=True)
-    return submissions_count[0]
-
+    if submissions_count:
+        return submissions_count[0]
+    return None
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
     submissions = get_submissions_made_for_questionnaire(dbm, questionnaire_code, page_number=current_page,
@@ -134,13 +135,15 @@ def project_results(request, questionnaire_code=None):
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model. fields)
     rows = get_number_of_rows_in_result(dbm, questionnaire_code)
-    submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
-    results = {
-                'questionnaire': questionnaire,
-                'questions': questions,
-                'submissions': submissions
-              }
+    if rows:
+        submissions = get_submissions_for_display(current_page - 1, dbm, questionnaire_code, questions)
+        results = {
+                    'questionnaire': questionnaire,
+                    'questions': questions,
+                    'submissions': submissions
+                  }
 
-    return render_to_response('project/results.html',
-                              {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page}
-                              )
+        return render_to_response('project/results.html',
+                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page}
+                                  )
+    return HttpResponse("No submissions present for this project")
