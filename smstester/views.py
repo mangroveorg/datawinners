@@ -2,7 +2,6 @@
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.smstester.forms import SMSTesterForm
-from mangrove.datastore.reporter import find_reporter
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request

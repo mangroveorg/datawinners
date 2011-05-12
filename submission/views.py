@@ -16,5 +16,3 @@ def sms(request):
     except MangroveException as exception:
         message = exception.message
     return HttpResponse(message)
-
-

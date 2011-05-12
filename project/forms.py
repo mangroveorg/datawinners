@@ -40,4 +40,4 @@ class ProjectProfile(Form):
     def __init__(self, *args, **kwargs):
         super(ProjectProfile, self).__init__(*args, **kwargs)
         entity_list = get_all_entity_types(get_db_manager())
-        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in entity_list ]
+        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in entity_list]

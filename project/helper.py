@@ -2,7 +2,7 @@
 from mangrove.datastore.database import get_db_manager
 from mangrove.form_model.field import TextField, IntegerField, SelectField, field_attributes, DateField
 
-from mangrove.form_model.form_model import FormModel, get
+from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import IntegerConstraint, TextConstraint
 from mangrove.utils.types import is_empty, is_sequence
 
@@ -26,7 +26,7 @@ def create_questionnaire(post, dbm=get_db_manager()):
 
 
 def load_questionnaire(questionnaire_id):
-    return get(get_db_manager(), questionnaire_id)
+    return get_db_manager().get(questionnaire_id, FormModel)
 
 
 def update_questionnaire_with_questions(form_model, question_set):
