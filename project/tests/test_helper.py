@@ -4,7 +4,7 @@ from datetime import datetime
 import unittest
 from mock import Mock
 from datawinners.project import helper
-from mangrove.datastore.database import get_db_manager
+from mangrove.datastore.database import get_db_manager, DatabaseManager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
@@ -96,3 +96,15 @@ class TestHelper(unittest.TestCase):
                                (datetime(2011, 1, 2), 'sms', False, 'error2', None, 'ans22',),
                               ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
+
+
+
+    def test_should_create_question_with_implicit_ddtype(self):
+        post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
+                 "is_entity_question": True, "min_length": 1, "max_length": 15}
+        text_question = helper.create_question(post)
+        self.assertEqual('qc1',text_question.ddtype.name)
+        self.assertEqual("what is your name",text_question.ddtype.description)
+        self.assertEqual("what_is_your_name",text_question.ddtype.slug)
+        self.assertEqual("text",text_question.ddtype.primitive_type)
+
