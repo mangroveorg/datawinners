@@ -15,7 +15,8 @@ DW.question = function(question){
         range : {
           min : 0,
           max : ""
-        }
+        },
+        date_format: "%m.%Y"
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
