@@ -54,4 +54,4 @@ def submit(request):
     except MangroveException as exception:
         message = exception.message
         success = False
-    return HttpResponse(json.dumps({'success': success, 'message' : message}))
+    return HttpResponse(json.dumps({'success': success, 'message' : message, 'entity_id':response.datarecord_id}))
