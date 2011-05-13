@@ -187,11 +187,10 @@ def load_data():
     question4 = TextField(name="location", question_code="L", label="What is the entity's location?",
                           defaultValue="some default value", language="eng",ddtype=location_type)
     question5 = TextField(name="description", question_code="D", label="Describe the entity",
-
                           defaultValue="some default value", language="eng",ddtype=description_type)
-    question6 = TextField(name="short_name", question_code="M", label="What is the associated mobile number?",
+    question6 = TextField(name="mobile_number", question_code="M", label="What is the associated mobile number?",
                           defaultValue="some default value", language="eng",ddtype=mobile_number_type)
-
+   
     form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
                     question1, question2, question3, question4, question5, question6])
     qid = form_model.save()
