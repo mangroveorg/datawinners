@@ -178,7 +178,7 @@ def load_data():
 
 
     question1 = TextField(name="entity_type", question_code="T", label="What is associated entity type?",
-                          language="eng", entity_question_flag=False)
+                          language="eng", entity_question_flag=False, ddtype=entity_id_type)
 
     question2 = TextField(name="name", question_code="N", label="What is the entity's name?",
                           defaultValue="some default value", language="eng",ddtype=name_type)
