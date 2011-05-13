@@ -157,4 +157,14 @@ $(document).ready(function(){
     function hide_message(){
         $('#message-label label').delay(5000).fadeOut();
     }
+
+    $('input[name=type]:radio').change(
+            function(){
+                viewModel.selectedQuestion().range_min(0);
+                viewModel.selectedQuestion().range_max("");
+                viewModel.selectedQuestion().min_length(1);
+                viewModel.selectedQuestion().max_length("");
+                viewModel.selectedQuestion().choices([]);
+            }
+    )
 });
