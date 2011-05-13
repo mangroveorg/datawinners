@@ -75,6 +75,11 @@ $(document).ready(function(){
         return re.test(text);
     }, "Only letters and digits are valid.");
 
+     $.validator.addMethod('naturalnumberrule', function(value, element, params) {
+        var num = $('#' + element.id).val();
+        return num != 0;
+    }, "Answer cannot be of length less than 1");
+
 //    //$('#code').rules("add", {spacerule:null});
 
     $("#question_form").validate({
@@ -91,7 +96,8 @@ $(document).ready(function(){
                 required: true
             },
             min_length:{
-                digits: true
+                digits: true,
+                naturalnumberrule:true
             },
             max_length:{
                 digits:true
