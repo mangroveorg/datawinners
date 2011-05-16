@@ -6,7 +6,7 @@ DW.question = function(question){
         name : "Question",
         question_code : "code",
         type : "text",
-        choices :[{value:'Choice'}],
+        choices :[{text:"", val:""}],
         entity_question_flag : false,
         length : {
           min : 1,
@@ -174,7 +174,7 @@ $(document).ready(function(){
                 viewModel.selectedQuestion().range_max("");
                 viewModel.selectedQuestion().min_length(1);
                 viewModel.selectedQuestion().max_length(12);
-                viewModel.selectedQuestion().choices([]);
+                viewModel.selectedQuestion().choices([{text:"", val:'a'}]);
             }
     )
 });

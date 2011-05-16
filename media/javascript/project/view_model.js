@@ -46,7 +46,7 @@ var viewModel =
             return viewModel.selectedQuestion().type() == 'text';
         },
         addOptionToQuestion: function(){
-            viewModel.selectedQuestion().choices.push({value:''});
+            viewModel.selectedQuestion().choices.push({text:"", val:""});
             viewModel.selectedQuestion().choices.valueHasMutated();
             viewModel.selectedQuestion.valueHasMutated();
             viewModel.questions.valueHasMutated();

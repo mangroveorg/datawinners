@@ -67,7 +67,7 @@ def _create_date_question(post_dict):
 
 
 def _create_select_question(post_dict, single_select_flag):
-    options = [choice["value"] for choice in post_dict["choices"]]
+    options = [choice["text"] for choice in post_dict["choices"]]
     return SelectField(name=post_dict["title"], question_code=post_dict["code"].strip(), label="default",
                        options=options, single_select_flag=single_select_flag, ddtype=get_default_datadict_type())
 
