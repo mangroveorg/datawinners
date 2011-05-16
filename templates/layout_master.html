@@ -12,6 +12,8 @@
          {% include 'javascript.html' %}
     {% endcompress %}
 
+    {% block uncompress %}{% endblock %}
+
     {% load compress %}
     {% compress js %}
          {% block page_js %} {% endblock %}

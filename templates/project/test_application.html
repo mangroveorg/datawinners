@@ -3,6 +3,36 @@
 {% block page_scss %}
     <link rel="stylesheet" href="/media/css/scss/section_test.scss" media="screen">
 {% endblock %}
+{% block uncompress %}
+    <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA6cQIrMEc9zlaKBjWiPM5rxSjlBXfTSDcGsB79vzL90uiOHMpbBRa1FFoX2YfuQNFvFKxQtpz0ZCeuw&amp;hl=en"></script>
+{% endblock %}
+{% block page_js %}
+    <script type="text/javascript" src="/media/javascript/gmap/jquery.gmap-1.1.0.js"></script>
+    <script>
+        $(document).ready(function(){
+             var user_location = [
+                                {latitude: 47.670553,
+                                  longitude: 9.588479,
+                                  html: "the popup message",
+                                  popup: true},
+                                { latitude: 47.65197522925437,
+                                  longitude: 9.47845458984375 },
+                                { latitude: 47.594996,
+                                  longitude: 9.600708},
+                                { address: "delhi, India" }
+                                ]
+             $("#map").gMap({ 
+                  scrollwheel: true,
+                  markers: user_location,
+                  latitude: user_location[3].latitude,
+                  longitude: user_location[3].longitude,
+                  zoom: 9
+                  });
+
+        })
+    </script>
+{% endblock %}
+
 
 {% block content %}
     <div id="test" class="grid_22 alpha omega">
@@ -10,4 +40,5 @@
             Heading Page 1
         </h1>
     </div>
+    <div id="map" style="height:400px; margin-top:20px;" class="grid_22"></div>
 {% endblock %}
