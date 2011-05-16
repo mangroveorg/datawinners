@@ -144,6 +144,7 @@ def project_results(request, questionnaire_code=None):
                   }
 
         return render_to_response('project/results.html',
-                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page}
+                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page,},
+                                  context_instance=RequestContext(request)
                                   )
     return HttpResponse("No submissions present for this project")
