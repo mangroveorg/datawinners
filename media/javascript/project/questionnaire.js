@@ -10,7 +10,7 @@ DW.question = function(question){
         entity_question_flag : false,
         length : {
           min : 1,
-          max : ""
+          max : 12
         },
         range : {
           min : 0,
