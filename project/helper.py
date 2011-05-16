@@ -3,7 +3,7 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import get_default_datadict_type, DataDictType, create_ddtype, create_ddtype
 from mangrove.form_model.field import TextField, IntegerField, SelectField, field_attributes, DateField
 from mangrove.form_model.form_model import FormModel
-from mangrove.form_model.validation import IntegerConstraint, TextConstraint
+from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence
 
@@ -58,7 +58,7 @@ def _create_text_question(post_dict,ddtype = get_default_datadict_type()):
 def _create_integer_question(post_dict):
     max_range_from_post = post_dict["range_max"]
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
-    range = IntegerConstraint(min=post_dict["range_min"], max=max_range)
+    range = NumericConstraint(min=post_dict["range_min"], max=max_range)
     return IntegerField(name=post_dict["title"], question_code=post_dict["code"].strip(), label="default", range=range, ddtype=get_default_datadict_type())
 
 

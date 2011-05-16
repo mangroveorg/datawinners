@@ -8,7 +8,7 @@ from mangrove.datastore.database import get_db_manager
 from pytz import UTC
 from mangrove.form_model.field import TextField, IntegerField
 from mangrove.form_model.form_model import FormModel, RegistrationFormModel
-from mangrove.form_model.validation import IntegerConstraint
+from mangrove.form_model.validation import NumericConstraint
 
 
 def define_entity_instance(manager, ENTITY_TYPE, location, id):
@@ -160,7 +160,7 @@ def load_data():
     question2 = TextField(name="Name", question_code="Q1", label="What is your name",
                           defaultValue="some default value", language="eng", ddtype=name_type)
     question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
-                             range=IntegerConstraint(min=15, max=120), ddtype=age_type)
+                             range=NumericConstraint(min=15, max=120), ddtype=age_type)
 
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="QRID01", type='survey', fields=[
