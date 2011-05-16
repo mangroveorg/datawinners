@@ -7,10 +7,10 @@ from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence
 
-
-def create_question(post_dict):
-
-    ddtype = create_ddtype(dbm=get_db_manager(), name = post_dict.get('code'), slug=slugify(unicode(post_dict.get('title'))),
+def create_question(post_dict,dbm=None):
+    if dbm is None:
+        dbm = get_db_manager()
+    ddtype = create_ddtype(dbm=dbm, name = post_dict.get('code'), slug=str(slugify(unicode(post_dict.get('title')))),
                                primitive_type=post_dict.get('type'), description=post_dict.get('title'))
 
     if post_dict["type"] == "text":

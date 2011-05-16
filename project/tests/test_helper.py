@@ -2,7 +2,7 @@
 from datetime import datetime
 
 import unittest
-from mock import Mock
+from mock import Mock, patch
 from datawinners.project import helper
 from mangrove.datastore.database import get_db_manager, DatabaseManager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
@@ -11,6 +11,15 @@ from mangrove.form_model.form_model import FormModel
 
 
 class TestHelper(unittest.TestCase):
+
+    def setUp(self):
+        self.patcher = patch("datawinners.project.helper.create_ddtype")
+        self.create_ddtype_mock = self.patcher.start()
+        self.create_ddtype_mock.return_value = Mock(spec=DataDictType)
+
+    def tearDown(self):
+        self.patcher.stop()
+
     def test_creates_questions_from_dict(self):
         post = [{"title": "q1", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
                  "is_entity_question": True, "min_length": 1, "max_length": 15},
@@ -97,12 +106,17 @@ class TestHelper(unittest.TestCase):
                               ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
-
-
     def test_should_create_question_with_implicit_ddtype(self):
         post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
                  "is_entity_question": True, "min_length": 1, "max_length": 15}
-        text_question = helper.create_question(post)
+
+        dbm = Mock(spec=DatabaseManager)
+
+        self.create_ddtype_mock.return_value = DataDictType(dbm,"qc1","what_is_your_name","text","what is your name")
+        text_question = helper.create_question(post,dbm)
+
+        self.create_ddtype_mock.assert_called_once_with(dbm = dbm,name = "qc1",slug = "what_is_your_name",
+                                                        primitive_type = "text", description = "what is your name")
         self.assertEqual('qc1',text_question.ddtype.name)
         self.assertEqual("what is your name",text_question.ddtype.description)
         self.assertEqual("what_is_your_name",text_question.ddtype.slug)
