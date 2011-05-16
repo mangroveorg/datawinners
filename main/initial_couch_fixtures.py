@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 from datawinners.project.models import Project
-from mangrove.datastore.datadict import DataDictType, create_ddtype
+from mangrove.datastore.datadict import DataDictType, create_ddtype, get_datadict_type_by_slug
 from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField
 from mangrove.form_model.form_model import FormModel, RegistrationFormModel
 from mangrove.form_model.validation import NumericConstraint
@@ -24,6 +24,21 @@ def create_entity_types(manager,entity_types):
             pass
 
 
+def create_if_not_exists(create_fn, *args, **kwargs):
+    try:
+        return create_fn(*args,**kwargs)
+    except DataObjectAlreadyExists:
+        return None
+
+def create_data_dict(dbm, name, slug, primitive_type,description=None):
+    try:
+        existing = get_datadict_type_by_slug(dbm,slug)
+        existing.delete()
+    except DataObjectNotFound:
+        pass
+    return create_ddtype(dbm,name,slug,primitive_type,description)
+
+
 def load_data():
     manager = get_db_manager()
     CLINIC_ENTITY_TYPE = ["Clinic"]
@@ -36,14 +51,11 @@ def load_data():
     create_entity_types(manager,[REPORTER_ENTITY_TYPE,CLINIC_ENTITY_TYPE,WATER_POINT_ENTITY_TYPE])
 
     #Data Dict Types
-    try:
-        meds_type = create_ddtype(dbm = manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
-        beds_type = create_ddtype(dbm = manager, name='Beds', slug='beds', primitive_type='number', description='Number of beds')
-        director_type = create_ddtype(dbm = manager, name='Director', slug='dir', primitive_type='string', description='Name of director')
-        facility_type = create_ddtype(dbm = manager, name='Facility', slug='facility', primitive_type='string', description='Name of facility')
-        patients_type = create_ddtype(dbm = manager, name='Patients', slug='patients', primitive_type='number', description='Patient Count')
-    except Exception:
-        pass
+    meds_type = create_data_dict(dbm = manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
+    beds_type = create_data_dict(dbm = manager, name='Beds', slug='beds', primitive_type='number', description='Number of beds')
+    director_type = create_data_dict(dbm = manager, name='Director', slug='dir', primitive_type='string', description='Name of director')
+    facility_type = create_data_dict(dbm = manager, name='Facility', slug='facility', primitive_type='string', description='Name of facility')
+    patients_type = create_data_dict(dbm = manager, name='Patients', slug='patients', primitive_type='number', description='Patient Count')
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], "CID001")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
@@ -142,12 +154,12 @@ def load_data():
     except Exception:
         pass
 
-    location_type =  create_ddtype(manager, name='Location Type', slug='location', primitive_type='string')
-    description_type =  create_ddtype(manager, name='description Type', slug='description', primitive_type='string')
-    mobile_number_type =  create_ddtype(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
-    name_type = create_ddtype(manager, name='Name', slug='Name', primitive_type='string')
-    entity_id_type =  create_ddtype(manager, name='Entity Id Type', slug='entity_id', primitive_type='string')
-    age_type =  create_ddtype(manager, name='Age Type', slug='age', primitive_type='integer')
+    location_type =  create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
+    description_type =  create_data_dict(manager, name='description Type', slug='description', primitive_type='string')
+    mobile_number_type =  create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
+    name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
+    entity_id_type =  create_data_dict(manager, name='Entity Id Type', slug='entity_id', primitive_type='string')
+    age_type =  create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
 
     question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type)
@@ -188,9 +200,8 @@ def load_data():
     qid = form_model.save()
 
     #Register Reporter
-    phone_number_type = DataDictType(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
-    first_name_type = DataDictType(manager, name='First Name', slug='first_name', primitive_type='string')
-    phone_number_type.save()
-    first_name_type.save()
-    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type), ("first_name", "Shweta", first_name_type)], location=[],
+    phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
+    first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
+    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type),
+                                                      ("first_name", "Shweta", first_name_type)], location=[],
                         source="sms")
