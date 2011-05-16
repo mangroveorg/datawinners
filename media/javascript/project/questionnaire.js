@@ -83,7 +83,16 @@ $(document).ready(function(){
 //    //$('#code').rules("add", {spacerule:null});
 
     $("#question_form").validate({
-        rules: {
+     messages: {
+         min_length:{
+             digits: "Please enter positive numbers only"
+         },
+         max_length:{
+             digits: "Please enter positive numbers only"
+         }
+
+     },
+     rules: {
             question:{
                 required: true
             },
