@@ -18,6 +18,8 @@ class MyRadioFieldRenderer(RadioFieldRenderer):
             attrs = self.attrs.copy()
             if choice[0] == 'public information':
                 attrs['disabled'] = 'disabled'
+            if choice[0] == 'survey':
+                attrs['checked'] = True
             yield RadioInput(self.name, self.value, attrs, choice, i)
 
 
