@@ -10,13 +10,13 @@
         a{
             border:1px solid #CCCCCC;
         }
-        .current{
+        span.current{
             background-color:#FFD857;
             border:1px solid #D4972D;
             color: #6F451D;
             font-weight:bold;
         }
-        .prev{
+        span.prev, span.next{
             background-color:#FFFFFF;
             border:1px solid #CCCCCC;
             color:#CCCCCC;

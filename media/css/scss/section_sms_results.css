@@ -5,12 +5,12 @@
     font-size: 14px; }
 #sms_results #pagination a {
   border: 1px solid #CCCCCC; }
-#sms_results #pagination .current {
+#sms_results #pagination span.current {
   background-color: #FFD857;
   border: 1px solid #D4972D;
   color: #6F451D;
   font-weight: bold; }
-#sms_results #pagination .prev {
+#sms_results #pagination span.prev, #sms_results #pagination span.next {
   background-color: #FFFFFF;
   border: 1px solid #CCCCCC;
   color: #CCCCCC;
