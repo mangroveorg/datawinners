@@ -26,10 +26,10 @@ class TestHelper(unittest.TestCase):
                 {"title": "q2", "code": "qc2", "description": "desc2", "type": "integer", "choices": [],
                  "is_entity_question": False, "range_min": 0, "range_max": 100},
                 {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False,
+                 "choices": [{"text":"choice1", "value": "c1"}, {"text":"choice2", "value": "c2"}], "is_entity_question": False,
                  "answers_permitted": "single"},
                 {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False,
+                 "choices": [{"text":"choice1", "value": "c1"}, {"text":"choice2", "value": "c2"}], "is_entity_question": False,
                  "answers_permitted": "single"}
         ]
         q1 = helper.create_question(post[0])
@@ -46,11 +46,11 @@ class TestHelper(unittest.TestCase):
         self.assertEquals(q4._to_json()["type"], "select1")
 
     def test_should_save_questionnaire_from_post(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
+        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [{"text":""}], "is_entity_question": True,
                  "min_length": 1, "max_length": ""},
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                {"title": "q2", "code": "qc2", "type": "integer", "choices": [{"text":""}], "is_entity_question": False,
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"text":"choice 1", "value": "c1"}, {"text": "choice 2", "value": "c2"}],
                  "is_entity_question": False, "answers_permitted": "single"}
         ]
         q1 = helper.create_question(post[0])
