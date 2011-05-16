@@ -2,7 +2,9 @@
 from django.conf.urls.defaults import patterns
 
 from datawinners.submission.views import sms
+from submission.views import submit
 
 urlpatterns = patterns('',
     (r'^submission$', sms),
+    (r'^submit$', submit),
 )

@@ -15,7 +15,8 @@ DW.question = function(question){
         range : {
           min : 0,
           max : ""
-        }
+        },
+        date_format: "%m.%Y"
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -74,6 +75,11 @@ $(document).ready(function(){
         return re.test(text);
     }, "Only letters and digits are valid.");
 
+     $.validator.addMethod('naturalnumberrule', function(value, element, params) {
+        var num = $('#' + element.id).val();
+        return num != 0;
+    }, "Answer cannot be of length less than 1");
+
 //    //$('#code').rules("add", {spacerule:null});
 
     $("#question_form").validate({
@@ -90,7 +96,8 @@ $(document).ready(function(){
                 required: true
             },
             min_length:{
-                digits: true
+                digits: true,
+                naturalnumberrule:true
             },
             max_length:{
                 digits:true
@@ -150,4 +157,14 @@ $(document).ready(function(){
     function hide_message(){
         $('#message-label label').delay(5000).fadeOut();
     }
+
+    $('input[name=type]:radio').change(
+            function(){
+                viewModel.selectedQuestion().range_min(0);
+                viewModel.selectedQuestion().range_max("");
+                viewModel.selectedQuestion().min_length(1);
+                viewModel.selectedQuestion().max_length("");
+                viewModel.selectedQuestion().choices([]);
+            }
+    )
 });
