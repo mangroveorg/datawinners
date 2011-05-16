@@ -100,7 +100,8 @@ $(document).ready(function(){
                 naturalnumberrule:true
             },
             max_length:{
-                digits:true
+                digits:true,
+                naturalnumberrule:true
             },
             range_min:{
                 number: true
