@@ -7,9 +7,9 @@ from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
 from pytz import UTC
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, DataObjectNotFound
-from mangrove.form_model.field import TextField, IntegerField
+from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel, RegistrationFormModel
-from mangrove.form_model.validation import NumericConstraint
+from mangrove.form_model.validation import NumericConstraint, TextConstraint
 
 
 def define_entity_instance(manager, ENTITY_TYPE, location, id):
@@ -159,27 +159,31 @@ def load_data():
     description_type = create_data_dict(manager, name='description Type', slug='description', primitive_type='string')
     mobile_number_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
-    entity_id_type = create_data_dict(manager, name='Entity Id', slug='entity_id', primitive_type='string')
+    entity_id_type = create_data_dict(manager, name='Entity Id Type', slug='entity_id', primitive_type='string')
     age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
+    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
+    select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
 
-    question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity",
+    question1 = TextField(label="entity_question", question_code="EID", name="What is associated entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type)
-    question2 = TextField(name="Name", question_code="Q1", label="What is your name",
+    question2 = TextField(label="Name", question_code="NA", name="What is your name?",  length=TextConstraint(min=1, max=10),
                           defaultValue="some default value", language="eng", ddtype=name_type)
-    question3 = IntegerField(name="Father's age", question_code="Q2", label="What is your Father's Age",
-                             range=NumericConstraint(min=15, max=120), ddtype=age_type)
+    question3 = IntegerField(label="Father age", question_code="FA", name="What is age of father?",
+                             range=NumericConstraint(min=18, max=100), ddtype=age_type)
+    question4 = DateField(label="Report date", question_code="RD", name="What is reporting date?",
+                          date_format="dd.mm.yyyy", ddtype=date_type)
+    question5 = SelectField(label="Blood Group", question_code="BG", name="What is your blood group?", options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True, ddtype=select_type)
+    question6 = SelectField(label="Symptoms", question_code="SY", name="What are symptoms?", options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"), ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False, ddtype=select_type)
 
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="QRID01", type='survey', fields=[
-                    question1, question2, question3])
+                           form_code="CLI001", type='survey', fields=[question1, question2, question3, question4, question5, question6])
     qid = form_model.save()
-    project = Project(name="Test_Project", goals="testing", project_type="survey", entity_type=CLINIC_ENTITY_TYPE, devices=["sms"])
+    project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE, devices=["sms"])
     project.qid = qid
     try:
         project.save()
     except Exception:
         pass
-    
 
     #Create registration questionnaire
     question1 = TextField(name="entity_type", question_code="T", label="What is associated entity type?",
@@ -195,7 +199,6 @@ def load_data():
                           defaultValue="some default value", language="eng", ddtype=description_type)
     question6 = TextField(name="mobile_number", question_code="M", label="What is the associated mobile number?",
                           defaultValue="some default value", language="eng", ddtype=mobile_number_type)
-   
     form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
                     question1, question2, question3, question4, question5, question6])
     qid = form_model.save()
