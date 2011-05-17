@@ -158,7 +158,7 @@ def load_data():
     description_type =  create_data_dict(manager, name='description Type', slug='description', primitive_type='string')
     mobile_number_type =  create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
-    entity_id_type =  create_data_dict(manager, name='Entity Id Type', slug='entity_id', primitive_type='string')
+    entity_id_type =  create_data_dict(manager, name='Entity Id', slug='entity_id', primitive_type='string')
     age_type =  create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
 
     question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity",
