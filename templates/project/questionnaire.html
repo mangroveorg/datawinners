@@ -156,14 +156,11 @@
                                 &nbsp;
                                 <div>
                                     <input type="radio" name="text_length" value="length_unlimited" checked = "true" data-bind="checked:selectedQuestion().length_limiter" />
-                                    No length limit<br/>
+                                    No, answer has no character limit<br/>
                                     <p>
                                     <input type="radio" name="text_length" value="length_limited" data-bind="checked:selectedQuestion().length_limiter" />
-                                    Max length
-                                    <div data-bind = "visible: viewModel.showLengthLimiter() " >
-                                     Enter Max Length:
+                                    Yes, maximum number of characters should be
                                         <input name="max_length" id="max_length" data-bind="value:selectedQuestion().max_length"/>
-                                     </div>
                                     </p>
                                 </div>
                             </li>

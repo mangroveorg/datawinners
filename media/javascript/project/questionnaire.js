@@ -170,5 +170,10 @@ $(document).ready(function(){
                 viewModel.selectedQuestion().length_limiter("length_unlimited");
                 viewModel.selectedQuestion().choices([{text:"", val:'a'}]);
             }
+    );
+    $('input[name=text_length]:radio').change(
+            function(){
+                viewModel.selectedQuestion().max_length("");
+            }
     )
 });
