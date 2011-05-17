@@ -152,7 +152,7 @@
                                     </p>
                                 </div>
                             </li>
-                            <li data-bind="visible: viewModel.showAddTextLength()">
+                            <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
                                 &nbsp;
                                 <div>
                                     <input type="radio" name="text_length" value="length_unlimited" checked = "true" data-bind="checked:selectedQuestion().length_limiter" />
