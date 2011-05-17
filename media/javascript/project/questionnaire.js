@@ -8,9 +8,10 @@ DW.question = function(question){
         type : "text",
         choices :[{text:"", val:""}],
         entity_question_flag : false,
+        length_limiter : "length_unlimited",
         length : {
           min : 1,
-          max : 12
+          max : 25
         },
         range : {
           min : 0,
@@ -38,7 +39,7 @@ DW.question.prototype = {
         this.type = ko.observable(q.type);
         this.choices = ko.observableArray(q.choices);
         this.is_entity_question = ko.observable(q.entity_question_flag);
-        this.canBeDeleted = function(){return !this.is_entity_question();}
+        this.canBeDeleted = function(){return !this.is_entity_question();};
         this.isAChoiceTypeQuestion = ko.dependentObservable({
             read:function(){
                 return this.type() == "select"||this.type() == "select1"? "choice" : "none";},
@@ -48,6 +49,7 @@ DW.question.prototype = {
             owner: this
         });
         this.date_format = ko.observable(q.date_format);
+        this.length_limiter = ko.observable(q.length_limiter);
     }
 };
 
@@ -55,7 +57,7 @@ $(document).ready(function(){
     question_list.forEach(function(question){
         var questions = new DW.question(question);
         viewModel.loadQuestion(questions);
-     })
+     });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
 
@@ -84,9 +86,6 @@ $(document).ready(function(){
 
     $("#question_form").validate({
      messages: {
-         min_length:{
-             digits: "Please enter positive numbers only"
-         },
          max_length:{
              digits: "Please enter positive numbers only"
          }
@@ -104,10 +103,6 @@ $(document).ready(function(){
             type:{
                 required: true
             },
-            min_length:{
-                digits: true,
-                naturalnumberrule:true
-            },
             max_length:{
                 digits:true,
                 naturalnumberrule:true
@@ -121,7 +116,6 @@ $(document).ready(function(){
 
         }
     });
-
     $("#submit-button").click(function() {
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
@@ -173,7 +167,7 @@ $(document).ready(function(){
                 viewModel.selectedQuestion().range_min(0);
                 viewModel.selectedQuestion().range_max("");
                 viewModel.selectedQuestion().min_length(1);
-                viewModel.selectedQuestion().max_length(12);
+                viewModel.selectedQuestion().max_length(25);
                 viewModel.selectedQuestion().choices([{text:"", val:'a'}]);
             }
     )

@@ -155,14 +155,15 @@
                             <li data-bind="visible: viewModel.showAddTextLength()">
                                 &nbsp;
                                 <div>
+                                    <input type="radio" name="text_length" value="length_unlimited" checked = "true" data-bind="checked:selectedQuestion().length_limiter" />
+                                    No length limit<br/>
                                     <p>
-                                        Min Length:
-                                        <input name="min_length" id="min_length" data-bind="value:selectedQuestion().min_length"/>
-                                    </p>
-
-                                    <p>
-                                        Max Length:
+                                    <input type="radio" name="text_length" value="length_limited" data-bind="checked:selectedQuestion().length_limiter" />
+                                    Max length
+                                    <div data-bind = "visible: viewModel.showLengthLimiter() " >
+                                     Enter Max Length:
                                         <input name="max_length" id="max_length" data-bind="value:selectedQuestion().max_length"/>
+                                     </div>
                                     </p>
                                 </div>
                             </li>

@@ -63,6 +63,9 @@ var viewModel =
         },
         clearChoices: function(){
             viewModel.selectedQuestion().choices([]);
+        },
+        showLengthLimiter: function(){
+           return viewModel.selectedQuestion().length_limiter() == 'length_limited'
         }
 
     };
