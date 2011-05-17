@@ -9,6 +9,9 @@ from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 
 
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
 def sms(request):
     _message = request.POST["message"]
     _from = request.POST["from_msisdn"]
