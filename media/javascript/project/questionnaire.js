@@ -11,7 +11,7 @@ DW.question = function(question){
         length_limiter : "length_unlimited",
         length : {
           min : 1,
-          max : 25
+          max : ""
         },
         range : {
           min : 0,
@@ -49,7 +49,7 @@ DW.question.prototype = {
             owner: this
         });
         this.date_format = ko.observable(q.date_format);
-        this.length_limiter = ko.observable(q.length_limiter);
+        this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
     }
 };
 
@@ -104,8 +104,7 @@ $(document).ready(function(){
                 required: true
             },
             max_length:{
-                digits:true,
-                naturalnumberrule:true
+                digits:true
             },
             range_min:{
                 number: true
@@ -167,7 +166,7 @@ $(document).ready(function(){
                 viewModel.selectedQuestion().range_min(0);
                 viewModel.selectedQuestion().range_max("");
                 viewModel.selectedQuestion().min_length(1);
-                viewModel.selectedQuestion().max_length(25);
+                viewModel.selectedQuestion().max_length("");
                 viewModel.selectedQuestion().choices([{text:"", val:'a'}]);
             }
     )
