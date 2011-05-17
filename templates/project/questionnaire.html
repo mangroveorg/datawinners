@@ -1,6 +1,10 @@
 {% extends 'step_wizard.html' %}
 
 {% block page_title %} Create a Questionnaire {% endblock %}
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet" />
+{% endblock %}
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/view_model.js"></script>
@@ -105,7 +109,7 @@
                                 </div>
                             </li>
                             <li data-bind="visible: viewModel.showDateFormats()">
-                                <div>
+                                <div class="margin_top_20">
                                     <p>
                                         <label>Select Date Format</label>
                                     </p>
@@ -123,7 +127,7 @@
                                 </div>
                             </li>
                             <li data-bind="visible: viewModel.showAddChoice()">
-                                <div>
+                                <div class="margin_top_20">
                                     <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
                                     </div>
                                     <a href="questionnaire.html#" data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add
@@ -139,8 +143,7 @@
                                 </div>
                             </li>
                             <li data-bind="visible: viewModel.showAddRange()">
-                                &nbsp;
-                                <div>
+                                <div class="margin_top_20">
                                     <p>
                                         Min:
                                         <input name="range_min" id="range_min" data-bind="value:selectedQuestion().range_min"/>
@@ -153,15 +156,16 @@
                                 </div>
                             </li>
                             <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
-                                &nbsp;
-                                <div>
+                                <div class="margin_top_20">
                                     <input type="radio" name="text_length" value="length_unlimited" checked = "true" data-bind="checked:selectedQuestion().length_limiter" />
                                     No, answer has no character limit<br/>
-                                    <p>
-                                    <input type="radio" name="text_length" value="length_limited" data-bind="checked:selectedQuestion().length_limiter" />
-                                    Yes, maximum number of characters should be
-                                        <input name="max_length" id="max_length" data-bind="value:selectedQuestion().max_length"/>
-                                    </p>
+                                    <div class="max_char">
+                                        <input type="radio" name="text_length" value="length_limited" data-bind="checked:selectedQuestion().length_limiter" />
+                                        <span class="inline">
+                                            Yes, maximum number of characters should be
+                                            <input name="max_length" id="max_length" data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter()"/>
+                                        </span>
+                                    </div>
                                 </div>
                             </li>
                         </ul>

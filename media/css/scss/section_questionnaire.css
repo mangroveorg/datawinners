@@ -1,0 +1,5 @@
+.max_char {
+  display: inline;
+  margin-top: 20px; }
+  .max_char .inline input {
+    width: 40px; }

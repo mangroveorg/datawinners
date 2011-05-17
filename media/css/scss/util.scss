@@ -27,6 +27,9 @@
 .margin_null{
     margin:0;
 }
+.margin_top_20{
+    margin-top:20px;
+}
 
 /*Text alignments*/
 .text_align_right{
@@ -67,4 +70,9 @@ table th{
     color: #000;
     font-weight:bold;
     padding:10px;
+}
+
+/* Inline and block */
+.inline{
+    display:inline;
 }
