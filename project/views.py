@@ -115,6 +115,7 @@ def get_number_of_rows_in_result(dbm, questionnaire_code):
         return submissions_count[0]
     return None
 
+
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
     submissions = get_submissions_made_for_questionnaire(dbm, questionnaire_code, page_number=current_page,
                                                          page_size=PAGE_SIZE, count_only=False)
@@ -144,7 +145,7 @@ def project_results(request, questionnaire_code=None):
                   }
 
         return render_to_response('project/results.html',
-                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page,},
+                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page},
                                   context_instance=RequestContext(request)
                                   )
     return HttpResponse("No submissions present for this project")

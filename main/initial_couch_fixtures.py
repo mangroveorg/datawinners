@@ -16,7 +16,7 @@ def define_entity_instance(manager, ENTITY_TYPE, location, id):
     return Entity(manager, entity_type=ENTITY_TYPE, location=location, id=id)
 
 
-def create_entity_types(manager,entity_types):
+def create_entity_types(manager, entity_types):
     for entity_type in entity_types:
         try:
             define_type(manager, entity_type)
@@ -26,17 +26,18 @@ def create_entity_types(manager,entity_types):
 
 def create_if_not_exists(create_fn, *args, **kwargs):
     try:
-        return create_fn(*args,**kwargs)
+        return create_fn(*args, **kwargs)
     except DataObjectAlreadyExists:
         return None
 
-def create_data_dict(dbm, name, slug, primitive_type,description=None):
+
+def create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
-        existing = get_datadict_type_by_slug(dbm,slug)
+        existing = get_datadict_type_by_slug(dbm, slug)
         existing.delete()
     except DataObjectNotFound:
         pass
-    return create_ddtype(dbm,name,slug,primitive_type,description)
+    return create_ddtype(dbm, name, slug, primitive_type, description)
 
 
 def load_data():
@@ -48,14 +49,14 @@ def load_data():
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
 
     #  The Default Entity Types
-    create_entity_types(manager,[REPORTER_ENTITY_TYPE,CLINIC_ENTITY_TYPE,WATER_POINT_ENTITY_TYPE])
+    create_entity_types(manager, [REPORTER_ENTITY_TYPE, CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
 
     #Data Dict Types
-    meds_type = create_data_dict(dbm = manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
-    beds_type = create_data_dict(dbm = manager, name='Beds', slug='beds', primitive_type='number', description='Number of beds')
-    director_type = create_data_dict(dbm = manager, name='Director', slug='dir', primitive_type='string', description='Name of director')
-    facility_type = create_data_dict(dbm = manager, name='Facility', slug='facility', primitive_type='string', description='Name of facility')
-    patients_type = create_data_dict(dbm = manager, name='Patients', slug='patients', primitive_type='number', description='Patient Count')
+    meds_type = create_data_dict(dbm=manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
+    beds_type = create_data_dict(dbm=manager, name='Beds', slug='beds', primitive_type='number', description='Number of beds')
+    director_type = create_data_dict(dbm=manager, name='Director', slug='dir', primitive_type='string', description='Name of director')
+    facility_type = create_data_dict(dbm=manager, name='Facility', slug='facility', primitive_type='string', description='Name of facility')
+    patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='number', description='Patient Count')
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], "CID001")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
@@ -154,12 +155,12 @@ def load_data():
     except Exception:
         pass
 
-    location_type =  create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
-    description_type =  create_data_dict(manager, name='description Type', slug='description', primitive_type='string')
-    mobile_number_type =  create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
+    location_type = create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
+    description_type = create_data_dict(manager, name='description Type', slug='description', primitive_type='string')
+    mobile_number_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
-    entity_id_type =  create_data_dict(manager, name='Entity Id', slug='entity_id', primitive_type='string')
-    age_type =  create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
+    entity_id_type = create_data_dict(manager, name='Entity Id', slug='entity_id', primitive_type='string')
+    age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
 
     question1 = TextField(name="entity_question", question_code="EID", label="What is associated entity",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type)
@@ -185,15 +186,15 @@ def load_data():
                           language="eng", entity_question_flag=False, ddtype=entity_id_type)
 
     question2 = TextField(name="name", question_code="N", label="What is the entity's name?",
-                          defaultValue="some default value", language="eng",ddtype=name_type)
+                          defaultValue="some default value", language="eng", ddtype=name_type)
     question3 = TextField(name="short_name", question_code="S", label="What is the entity's short name?",
                           defaultValue="some default value", language="eng", ddtype=name_type)
     question4 = TextField(name="location", question_code="L", label="What is the entity's location?",
-                          defaultValue="some default value", language="eng",ddtype=location_type)
+                          defaultValue="some default value", language="eng", ddtype=location_type)
     question5 = TextField(name="description", question_code="D", label="Describe the entity",
-                          defaultValue="some default value", language="eng",ddtype=description_type)
+                          defaultValue="some default value", language="eng", ddtype=description_type)
     question6 = TextField(name="mobile_number", question_code="M", label="What is the associated mobile number?",
-                          defaultValue="some default value", language="eng",ddtype=mobile_number_type)
+                          defaultValue="some default value", language="eng", ddtype=mobile_number_type)
    
     form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
                     question1, question2, question3, question4, question5, question6])
