@@ -12,8 +12,8 @@ from mangrove.form_model.form_model import FormModel, RegistrationFormModel
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 
 
-def define_entity_instance(manager, ENTITY_TYPE, location, id):
-    return Entity(manager, entity_type=ENTITY_TYPE, location=location, id=id)
+def define_entity_instance(manager, ENTITY_TYPE, location, short_code):
+    return Entity(manager, entity_type=ENTITY_TYPE, location=location, short_code = short_code)
 
 
 def create_entity_types(manager, entity_types):
@@ -58,7 +58,7 @@ def load_data():
     facility_type = create_data_dict(dbm=manager, name='Facility', slug='facility', primitive_type='string', description='Name of facility')
     patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='number', description='Patient Count')
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], "CID001")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID001")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
         e.save()
@@ -71,7 +71,7 @@ def load_data():
         e.add_data(data=[("beds", 500, beds_type), ("meds", 20, meds_type), ("patients", 20, patients_type)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], "CID002")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID002")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
@@ -83,7 +83,7 @@ def load_data():
         e.add_data(data=[("beds", 200, beds_type), ("meds", 20, meds_type), ("patients", 20, patients_type)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], "CID003")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], short_code="CID003")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
@@ -95,7 +95,7 @@ def load_data():
         e.add_data(data=[("beds", 200, beds_type), ("meds", 20, meds_type), ("patients", 50, patients_type)],
                event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], "CID004")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], short_code="CID004")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
@@ -107,7 +107,7 @@ def load_data():
         e.add_data(data=[("beds", 200, beds_type), ("meds", 400, meds_type), ("director", "Dr. Louie", director_type), ("patients", 20, patients_type)],
                event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], "CID005")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="CID005")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -116,7 +116,7 @@ def load_data():
     else:
         e.add_data(data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Glomgold", director_type), ("patients", 12, patients_type)],
                event_time=MARCH)
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'], "CID006")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'], short_code="CID006")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -125,7 +125,7 @@ def load_data():
     else:
         e.add_data(data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Flintheart", director_type), ("patients", 12, patients_type)],
                event_time=MARCH)
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], "CID007")
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], short_code="CID007")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -134,21 +134,21 @@ def load_data():
     else:
         e.add_data(data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Duck", director_type), ("patients", 12, patients_type)],
                event_time=MARCH)
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], "WP01")
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="WP01")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
     except Exception:
         pass
 
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], "WP02")
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="WP02")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
     except Exception:
         pass
 
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Kacch'], "WP03")
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Kacch'], short_code="WP03")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -218,4 +218,4 @@ def load_data():
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type),
                                                       ("first_name", "Shweta", first_name_type)], location=[],
-                        source="sms")
+                        source="sms", short_code="REP1")
