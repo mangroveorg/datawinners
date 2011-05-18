@@ -4,7 +4,7 @@
 DW.question = function(question){
     var defaults = {
         name : "Question",
-        question_code : "code",
+        question_code : DW.generateQuestionCode(),
         type : "text",
         choices :[{text:"", val:""}],
         entity_question_flag : false,
@@ -23,7 +23,9 @@ DW.question = function(question){
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
     this.options = $.extend({},defaults, question);
     this._init();
-}
+};
+
+
 DW.question.prototype = {
     _init : function(){
         var q = this.options;
@@ -53,6 +55,34 @@ DW.question.prototype = {
     }
 };
 
+DW.current_code ="";
+
+DW.generateQuestionCode = function(){
+    if (DW.current_code == '')
+    {
+       DW.current_code = 'AA';
+       return '';
+    }
+    else
+    {
+        var code = DW.current_code;
+        var next_code = DW.current_code;
+        var x,y = '';
+        if(next_code[1]<'Z')
+        {
+            y = String.fromCharCode(next_code[1].charCodeAt() + 1);
+            x = next_code[0];
+        }
+        else
+        {
+            x = String.fromCharCode(next_code[0].charCodeAt() + 1);
+            y = 'A';
+        }
+        next_code = x + y;
+        DW.current_code = next_code;
+        return code
+    }
+};
 $(document).ready(function(){
     question_list.forEach(function(question){
         var questions = new DW.question(question);
@@ -112,7 +142,6 @@ $(document).ready(function(){
             range_max:{
                 number: true
             }
-
         }
     });
     $("#submit-button").click(function() {
