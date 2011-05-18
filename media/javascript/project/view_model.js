@@ -72,7 +72,6 @@ var viewModel =
         },
         check_unique_code: function(test_code) {
             for (var q in viewModel.questions()) {
-                console.log(viewModel.questions()[q].question_code());
                 if (test_code == viewModel.questions()[q].question_code()) {
                     test_code = DW.generateQuestionCode();
                     test_code = viewModel.check_unique_code(test_code);

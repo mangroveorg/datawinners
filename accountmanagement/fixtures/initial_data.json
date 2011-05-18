@@ -88,7 +88,8 @@
         "model": "accountmanagement.organizationsettings",
         "fields": {
             "organization": 1,
-            "document_store": "hni_testorg_slx364903"
+            "document_store": "hni_testorg_slx364903",
+            "sms_tel_number": "0987654321"
         }
     } ,
     {
@@ -96,7 +97,8 @@
         "model": "accountmanagement.organizationsettings",
         "fields": {
             "organization": 2,
-            "document_store": "hni_testorg_coj409579"
+            "document_store": "hni_testorg_coj409579",
+            "sms_tel_number": "0123498765"
         }
     },
     {

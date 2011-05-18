@@ -2,21 +2,24 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from datawinners.main.utils import get_database_manager
+from datawinners.accountmanagement.models import OrganizationSettings
+from datawinners.main.utils import get_database_manager, get_db_manager_for
 from datawinners.smstester.forms import SMSTesterForm
+from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 
-@login_required(login_url='/login')
+
+
 def index(request):
     message = ""
-    manager = get_database_manager(request)
     if request.method == 'POST':
         form = SMSTesterForm(request.POST)
         if form.is_valid():
             _message = form.cleaned_data["message"]
             _from = form.cleaned_data["from_number"]
             _to = form.cleaned_data["to_number"]
+            manager = get_db_manager_for(_to)
             try:
                 s = SubmissionHandler(dbm=manager)
                 response = s.accept(Request(transport="sms", message=_message, source=_from, destination=_to))

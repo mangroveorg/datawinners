@@ -179,7 +179,7 @@ def load_data():
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="CLI001", type='survey', fields=[question1, question2, question3, question4, question5, question6])
     qid = form_model.save()
-    project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE, devices=["sms"])
+    project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"])
     project.qid = qid
     try:
         project.save(manager)
@@ -189,7 +189,7 @@ def load_data():
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="CLI002", type='survey', fields=[question1, question2, question3, question4, question5, question6])
     qid2 = form_model2.save()
-    project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE, devices=["sms","web"])
+    project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms","web"])
     project2.qid = qid2
     try:
         project2.save(manager)

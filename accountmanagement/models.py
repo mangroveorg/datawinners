@@ -28,6 +28,7 @@ class NGOUserProfile(models.Model):
 class OrganizationSettings(models.Model):
     organization = models.ForeignKey(Organization,unique=True)
     document_store = models.TextField()
+    sms_tel_number = models.TextField(unique=True,null=True)
 
 
 def create_organization(org_details):

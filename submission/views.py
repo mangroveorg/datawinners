@@ -3,6 +3,7 @@ import json
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from datawinners.main.utils import get_db_manager_for
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
@@ -16,7 +17,7 @@ def sms(request):
     _from = request.POST["from_msisdn"]
     _to = request.POST["to_msisdn"]
     try:
-        s = SubmissionHandler(dbm=get_db_manager())
+        s = SubmissionHandler(dbm=get_db_manager_for(_to))
         response = s.accept(Request(transport="sms", message=_message, source=_from, destination=_to))
         message = response.message
     except MangroveException as exception:
@@ -49,7 +50,8 @@ def submit(request):
     message = ''
     success = True
     try:
-        s = SubmissionHandler(dbm=get_db_manager())
+        destination_number = post.get('destination').strip()
+        s = SubmissionHandler(dbm=get_db_manager_for(destination_number))
         request = Request(transport=post.get('transport'), message=post.get('message'), source=post.get('source'),
                           destination=post.get('destination'))
         response = s.accept(request)
