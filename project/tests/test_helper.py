@@ -4,6 +4,7 @@ from datetime import datetime
 import unittest
 from mock import Mock, patch
 from datawinners.project import helper
+from datawinners.project.models import Project
 from mangrove.datastore.database import get_db_manager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectNotFound
@@ -215,6 +216,10 @@ class TestHelper(unittest.TestCase):
         post = {"entity_type": "Water Point", "name": "Test Project"}
         dbm = Mock(spec=DatabaseManager)
 
+        patcher = patch("datawinners.project.helper.generate_questionnaire_code")
+        mock = patcher.start()
+        mock.return_value = '001'
+
         expected_data_dict = DataDictType(dbm, NAME, SLUG, TYPE, LABEL)
         self.create_ddtype_mock.return_value = expected_data_dict
 
@@ -228,3 +233,23 @@ class TestHelper(unittest.TestCase):
 
         self.assertEqual(1, len(form_model.fields))
         self.assertEqual(True, form_model.fields[0].is_entity_field)
+
+        patcher.stop()
+
+    def test_should_generate_unique_questionnaire_code(self):
+        patcher = patch("datawinners.project.helper.models")
+        models_mock = patcher.start()
+        dbm = Mock(spec=DatabaseManager)
+
+        models_mock.get_all_projects.return_value = []
+        self.assertEqual(helper.generate_questionnaire_code(dbm), "001")
+
+        myproject = Mock(spec=Project)
+        models_mock.get_all_projects.return_value = [myproject]
+        self.assertEqual(helper.generate_questionnaire_code(dbm), "002")
+
+        patcher.stop()
+
+
+
+
