@@ -5,14 +5,16 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.admin.forms import EntityTypeForm
+from datawinners.main.utils import get_database_manager
 from mangrove.datastore.entity import define_type, get_all_entity_types
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
-from submission.views import submit
+from datawinners.submission.views import submit
 
 
 @login_required(login_url='/login')
 def create_entity(request):
+    get_database_manager(request)
     message = ""
     if request.method == 'GET':
         return render_to_response("admin/entity_management.html", {"form": EntityTypeForm()}, context_instance=RequestContext(request))

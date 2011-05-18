@@ -4,11 +4,12 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
+from django.template.defaultfilters import slugify
 
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, OrganizationSettings
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
 
@@ -98,9 +99,14 @@ class RegistrationBackend(object):
                                     , org_id=OrganizationIdCreator().generateId()
         )
         organization.save()
+        organization_settings = OrganizationSettings()
+        organization_settings.organization = organization
+        organization_settings.document_store = slugify("%s_%s_%s" % ("HNI",organization.name,organization.org_id))
+        organization_settings.save()
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
-                                     request=request, title=kwargs.get("title"), organization_id=organization.org_id)
+                                     request=request, title=kwargs.get("title"), organization_id=organization.org_id,
+                                     organization=organization)
         return new_user
 
     def registration_allowed(self, request):
@@ -132,3 +138,4 @@ class RegistrationBackend(object):
 
         """
         return ('/registration_complete', (), {})
+

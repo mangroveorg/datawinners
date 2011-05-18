@@ -22,3 +22,9 @@ class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     title = models.TextField()
     org_id = models.TextField()
+
+class OrganizationSettings(models.Model):
+    organization = models.ForeignKey(Organization)
+    document_store = models.TextField()
+
+
