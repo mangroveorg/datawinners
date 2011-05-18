@@ -15,13 +15,18 @@ from mangrove.form_model.form_model import FormModel
 class TestHelper(unittest.TestCase):
 
     def setUp(self):
-        self.patcher = patch("datawinners.project.helper.create_datadict_type")
-        self.create_ddtype_mock = self.patcher.start()
+        self.patcher1 = patch("datawinners.project.helper.create_datadict_type")
+        self.patcher2 = patch("datawinners.project.helper.get_datadict_type_by_slug")
+        self.create_ddtype_mock = self.patcher1.start()
+        self.get_datadict_type_by_slug_mock = self.patcher2.start()
         self.create_ddtype_mock.return_value = Mock(spec=DataDictType)
+        self.get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("","","")
+        self.dbm = Mock(spec = DatabaseManager)
 
 
     def tearDown(self):
-        self.patcher.stop()
+        self.patcher1.stop()
+        self.patcher2.stop()
 
     def test_creates_questions_from_dict(self):
         post = [{"title": "q1", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
@@ -33,10 +38,10 @@ class TestHelper(unittest.TestCase):
                 {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
-        q2 = helper.create_question(post[1])
-        q3 = helper.create_question(post[2])
-        q4 = helper.create_question(post[3])
+        q1 = helper.create_question(post[0],self.dbm)
+        q2 = helper.create_question(post[1],self.dbm)
+        q3 = helper.create_question(post[2],self.dbm)
+        q4 = helper.create_question(post[3],self.dbm)
         self.assertIsInstance(q1, TextField)
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
@@ -54,15 +59,15 @@ class TestHelper(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         form_model = FormModel(get_db_manager(), "test", "test", "test", [q1], "test", "test")
-        questionnaire = helper.update_questionnaire_with_questions(form_model, post)
+        questionnaire = helper.update_questionnaire_with_questions(form_model, post,self.dbm)
         self.assertEqual(3, len(questionnaire.fields))
 
     def test_should_create_integer_question_with_no_max_constraint(self):
         post = [{"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": ""}]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         self.assertEqual(q1.constraint.max, None)
 
     def test_should_return_code_title_tuple_list(self):
@@ -81,7 +86,7 @@ class TestHelper(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         self.assertEqual(q1.constraint.max, None)
 
     def test_should_create_text_question_with_no_max_lengt_and_min_length(self):
@@ -92,7 +97,7 @@ class TestHelper(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         self.assertEqual(q1.constraint.max, None)
         self.assertEqual(q1.constraint.min, None)
 

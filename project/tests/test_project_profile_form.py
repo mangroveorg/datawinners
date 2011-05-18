@@ -1,22 +1,17 @@
 import unittest
-from mock import patch
 from datawinners.project.forms import ProjectProfile
 
 
 class TestProjectProfile(unittest.TestCase):
     def setUp(self):
-        self.entity_patcher = patch('datawinners.project.forms.get_all_entity_types')
-        self.entity_module = self.entity_patcher.start()
-
+        pass
     def tearDown(self):
-        self.entity_patcher.stop()
-
+        pass
     def test_creates_project_profile_form(self):
-        self.entity_module.return_value = ['Reporter']
         base_form = {'name': 'Test Project', 'goals': 'Test Goals', 'project_type': 'survey', 'entity_type': 'Reporter',
                    'devices': ['sms']
         }
-        form = ProjectProfile(base_form)
+        form = ProjectProfile(data=base_form,entity_list=['Reporter'])
         self.assertTrue(form.is_valid())
         self.assertEquals(form.cleaned_data['name'], 'Test Project')
         self.assertEquals(form.cleaned_data['goals'], 'Test Goals')
@@ -25,9 +20,8 @@ class TestProjectProfile(unittest.TestCase):
         self.assertEquals(form.cleaned_data['devices'], ['sms'])
 
     def test_field_goals_not_required(self):
-        self.entity_module.return_value = ['Reporter']
         base_form = {'name': 'Test Project', 'project_type': 'survey', 'entity_type': 'Reporter',
                    'devices': ['sms']
         }
-        form = ProjectProfile(base_form)
+        form = ProjectProfile(data = base_form,entity_list=['Reporter'])
         assert form.is_valid()

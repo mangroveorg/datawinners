@@ -82,6 +82,22 @@
             "user": 2,
             "title": "Mr."
         }
+    } ,
+    {
+        "pk": 1,
+        "model": "accountmanagement.organizationsettings",
+        "fields": {
+            "organization": 1,
+            "document_store": "hni_testorg_slx364903"
+        }
+    } ,
+    {
+        "pk": 2,
+        "model": "accountmanagement.organizationsettings",
+        "fields": {
+            "organization": 2,
+            "document_store": "hni_testorg_coj409579"
+        }
     },
     {
         "pk": 1,

@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
-from string import strip
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods

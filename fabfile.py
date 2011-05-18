@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from fabric.api import run, sudo, env
+from fabric.api import run, env
 from fabric.context_managers import cd, settings
 import os
 import sys
@@ -60,7 +60,7 @@ def deploy(build_number, home_dir, virtual_env, environment="test"):
                                     "test": "test_local_settings.py"
                                  }
 
-    if(build_number == 'lastSuccessfulBuild'):
+    if build_number == 'lastSuccessfulBuild':
         build_number = run("curl http://178.79.163.33:8080/job/Mangrove-develop/lastSuccessfulBuild/buildNumber")
 
     run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-develop/%s/artifact/last_successful_commit_sha`" % (build_number,))

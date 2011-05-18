@@ -2,15 +2,11 @@
 import unittest
 import couchdb
 import django
-from django.core.management import setup_environ
-from django.db.backends.creation import BaseDatabaseCreation
 from django.db.backends.sqlite3.creation import DatabaseCreation
 from django.test import Client
 from django.test.utils import setup_test_environment, teardown_test_environment
 from  datawinners import settings
-from django.db.backends.sqlite3 import creation
 from datawinners.accountmanagement.models import Organization, OrganizationSettings
-from datawinners.main.utils import get_database_manager
 
 
 class TestMultiTenancy(unittest.TestCase):
@@ -44,6 +40,7 @@ class TestMultiTenancy(unittest.TestCase):
             title="",
             )
         response = c.post('/register', reg_post)
+        self.assertIsNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
         organization_settings = OrganizationSettings.objects.get(organization = organization)

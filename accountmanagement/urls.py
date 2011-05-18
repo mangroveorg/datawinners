@@ -5,9 +5,7 @@ from datawinners.accountmanagement.forms import RegistrationForm, LoginForm, Res
 from django.contrib import admin
 admin.autodiscover()
 from views import registration_complete, home
-import datawinners.settings as settings
 from django.contrib.auth import views as auth_views
-import user_profile_creator
 
 
 urlpatterns = patterns('',

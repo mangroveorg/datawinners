@@ -3,9 +3,14 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from mangrove.datastore.database import get_db_manager
 from  datawinners import settings
 
-def get_database_manager(request):
-    profile = request.user.get_profile()
+def get_database_manager_for_user(user):
+    profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    organization_settings = OrganizationSettings.objects.get(organization = organization)
+    organization_settings = OrganizationSettings.objects.get(organization=organization)
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+
+
+def get_database_manager(request):
+    user = request.user
+    return get_database_manager_for_user(user)

@@ -1,16 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
-from django.template.defaultfilters import slugify
 
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import Organization, OrganizationSettings
-from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
+from datawinners.accountmanagement.models import create_organization
 
 
 class RegistrationBackend(object):
@@ -53,6 +50,8 @@ class RegistrationBackend(object):
 
     """
 
+
+
     def register(self, request, **kwargs):
         """
         Given a username, email address and password, register a new
@@ -88,21 +87,7 @@ class RegistrationBackend(object):
         new_user.first_name = kwargs.get('first_name')
         new_user.last_name = kwargs.get('last_name')
         new_user.save()
-        organization = Organization(name=kwargs.get('organization_name'), sector=kwargs.get('organization_sector')
-                                    , addressline1=kwargs.get('organization_addressline1'),
-                                    addressline2=kwargs.get('organization_addressline2')
-                                    , city=kwargs.get('organization_city'), state=kwargs.get('organization_state')
-                                    , country=kwargs.get('organization_country'),
-                                    zipcode=kwargs.get('organization_zipcode')
-                                    , office_phone=kwargs.get('organization_office_phone'),
-                                    website=kwargs.get('organization_website')
-                                    , org_id=OrganizationIdCreator().generateId()
-        )
-        organization.save()
-        organization_settings = OrganizationSettings()
-        organization_settings.organization = organization
-        organization_settings.document_store = slugify("%s_%s_%s" % ("HNI",organization.name,organization.org_id))
-        organization_settings.save()
+        organization = create_organization(kwargs)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
@@ -137,5 +122,5 @@ class RegistrationBackend(object):
         user registration.
 
         """
-        return ('/registration_complete', (), {})
+        return '/registration_complete', (), {}
 

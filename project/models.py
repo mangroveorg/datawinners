@@ -1,5 +1,5 @@
 from couchdb.mapping import  TextField, ListField
-from mangrove.datastore.database import get_db_manager, DatabaseManager
+from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 
 
@@ -20,9 +20,7 @@ class Project(DocumentBase):
         self.entity_type = entity_type
         self.devices = devices
 
-    def save(self, dbm=None):
-        if dbm is None:
-            dbm = get_db_manager()
+    def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)
         return dbm._save_document(self).id
 
@@ -33,9 +31,9 @@ class Project(DocumentBase):
                 setattr(self, key, value_dict.get(key))
 
 
-def get_project(pid, dbm=get_db_manager()):
+def get_project(pid, dbm):
     return dbm._load_document(pid, Project)
 
 
-def get_all_projects(dbm=get_db_manager()):
+def get_all_projects(dbm):
     return dbm.load_all_rows_in_view('datawinners_views/' + 'all_projects')

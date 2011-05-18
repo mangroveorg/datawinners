@@ -3,8 +3,6 @@
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import RadioFieldRenderer, RadioInput
-from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.entity import get_all_entity_types
 from django import forms
 
 
@@ -39,7 +37,7 @@ class ProjectProfile(Form):
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[2], required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self,entity_list , *args, **kwargs):
         super(ProjectProfile, self).__init__(*args, **kwargs)
-        entity_list = get_all_entity_types(get_db_manager())
+        entity_list = entity_list
         self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in entity_list]

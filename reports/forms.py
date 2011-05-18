@@ -3,8 +3,7 @@
 from django.forms.fields import CharField, IntegerField, ChoiceField
 from django.forms.forms import Form
 from django import forms
-from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.entity import get_all_entity_types
+
 
 
 class ReportHierarchy(Form):
@@ -19,9 +18,9 @@ class ReportHierarchy(Form):
     level = IntegerField(min_value=1, max_value=3)
     entity_type = ChoiceField(label="Entity type", required=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, choices,*args, **kwargs):
         super(ReportHierarchy, self).__init__(*args, **kwargs)
-        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in get_all_entity_types(get_db_manager())]
+        self.fields['entity_type'].choices = choices
 
 
 class Report(Form):
@@ -31,6 +30,6 @@ class Report(Form):
     aggregates_field = CharField(required=True, label="Field")
     entity_type = ChoiceField(label="Entity type", required=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, choices,*args, **kwargs):
         super(Report, self).__init__(*args, **kwargs)
-        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in get_all_entity_types(get_db_manager())]
+        self.fields['entity_type'].choices = choices

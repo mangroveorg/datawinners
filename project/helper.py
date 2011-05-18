@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField
@@ -21,10 +20,7 @@ def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     return ddtype
 
 
-def create_question(post_dict, dbm=None):
-    if dbm is None:
-        dbm = get_db_manager()
-
+def create_question(post_dict, dbm):
     options = post_dict.get('options')
     datadict_type = options.get('ddtype') if options is not None else None
     if is_not_empty(datadict_type):
@@ -47,7 +43,7 @@ def create_question(post_dict, dbm=None):
         return _create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
 
 
-def create_questionnaire(post, dbm=get_db_manager()):
+def create_questionnaire(post, dbm):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string", description="Entity ID")
     entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type, length=TextConstraint(min=1, max=12))
@@ -55,14 +51,14 @@ def create_questionnaire(post, dbm=get_db_manager()):
                      form_code=generate_questionnaire_code(dbm), type='survey')
 
 
-def load_questionnaire(questionnaire_id):
-    return get_db_manager().get(questionnaire_id, FormModel)
+def load_questionnaire(dbm,questionnaire_id):
+    return dbm.get(questionnaire_id, FormModel)
 
 
-def update_questionnaire_with_questions(form_model, question_set):
+def update_questionnaire_with_questions(form_model, question_set,dbm):
     form_model.delete_all_fields()
     for question in question_set:
-        form_model.add_field(create_question(question))
+        form_model.add_field(create_question(question,dbm))
     return form_model
 
 
@@ -102,7 +98,8 @@ def get_submissions(questions, submissions):
     assert is_sequence(submissions)
     for s in submissions:
         assert isinstance(s, dict) and s.get('values') is not None
-    formatted_list = [[each.get('created'), each.get('channel'), each.get('status'), each.get('error_message')] + [each.get('values').get(q[0]) for q in questions] for each in submissions]
+    formatted_list = [[each.get('created'), each.get('channel'), each.get('status'), each.get('error_message')] +
+                      [each.get('values').get(q[0]) for q in questions] for each in submissions]
     return [tuple(each) for each in formatted_list]
 
 
