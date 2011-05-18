@@ -12,22 +12,6 @@
                     <ul>
                         <li>
                             <span>
-                                <label>Name</label>
-                            </span>
-                            <span>
-                                <input name="name" type="text" class="required" data-bind="value: message.N"/>
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <label>Short Name</label>
-                            </span>
-                            <span>
-                                <input name="short_name" type="text" class="required" data-bind="value: message.S"/>
-                            </span>
-                        </li>
-                        <li>
-                            <span>
                                 <label>Type</label>
                             </span>
                             <span>
@@ -36,6 +20,22 @@
                                         <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
                                     {% endfor %}
                                 </select>
+                            </span>
+                        </li>
+                        <li>
+                        <span>
+                                <label>Short Name</label>
+                            </span>
+                        <span>
+                                <input name="short_name" type="text" data-bind="value: message.S"/>
+                            </span>
+                        </li>
+                        <li>
+                        <span>
+                                <label>Name</label>
+                            </span>
+                        <span>
+                                <input name="name" type="text" class="required" data-bind="value: message.N"/>
                             </span>
                         </li>
                         <li>

@@ -30,6 +30,7 @@ def _get_data(post, key):
         return post.get(key)
     return None
 
+
 def _get_submission(post):
     format = post.get('format')
     data = json.loads(post.get('data'))
@@ -57,4 +58,4 @@ def submit(request):
     except MangroveException as exception:
         message = exception.message
         success = False
-    return HttpResponse(json.dumps({'success': success, 'message' : message, 'entity_id':response.datarecord_id}))
+    return HttpResponse(json.dumps({'success': success, 'message' : message, 'entity_id': response.datarecord_id}))

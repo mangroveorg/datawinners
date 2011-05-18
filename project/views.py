@@ -10,7 +10,7 @@ from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
 from datawinners.project import models
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
@@ -80,7 +80,10 @@ def save_questionnaire(request):
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponseServerError(e.message)
         else:
-            form_model.form_code = questionnaire_code
+            try:
+                form_model.form_code = questionnaire_code
+            except DataObjectAlreadyExists as e:
+                return HttpResponseServerError(e.message)
             form_model.name = project.name
             form_model.entity_id = project.entity_type
             form_model.save()
@@ -115,6 +118,7 @@ def get_number_of_rows_in_result(dbm, questionnaire_code):
         return submissions_count[0]
     return None
 
+
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
     submissions = get_submissions_made_for_questionnaire(dbm, questionnaire_code, page_number=current_page,
                                                          page_size=PAGE_SIZE, count_only=False)
@@ -144,7 +148,7 @@ def project_results(request, questionnaire_code=None):
                   }
 
         return render_to_response('project/results.html',
-                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page,},
+                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page},
                                   context_instance=RequestContext(request)
                                   )
     return HttpResponse("No submissions present for this project")
