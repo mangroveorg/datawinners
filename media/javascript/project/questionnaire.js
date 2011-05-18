@@ -4,7 +4,7 @@
 DW.question = function(question){
     var defaults = {
         name : "Question",
-        question_code : DW.generateQuestionCode(),
+        question_code : "code",
         type : "text",
         choices :[{text:"", val:""}],
         entity_question_flag : false,
@@ -37,7 +37,7 @@ DW.question.prototype = {
         this.min_length = ko.observable(q.length.min);
         this.max_length = ko.observable(q.length.max);
         this.title = ko.observable(q.name);
-        this.code = ko.observable(q.question_code);
+        this.question_code = ko.observable(q.question_code);
         this.type = ko.observable(q.type);
         this.choices = ko.observableArray(q.choices);
         this.is_entity_question = ko.observable(q.entity_question_flag);
@@ -55,17 +55,10 @@ DW.question.prototype = {
     }
 };
 
-DW.current_code ="";
+DW.current_code ="AA";
 
 DW.generateQuestionCode = function(){
-    if (DW.current_code == '')
-    {
-       DW.current_code = 'AA';
-       return '';
-    }
-    else
-    {
-        var code = DW.current_code;
+        var question_code = DW.current_code;
         var next_code = DW.current_code;
         var x,y = '';
         if(next_code[1]<'Z')
@@ -80,9 +73,9 @@ DW.generateQuestionCode = function(){
         }
         next_code = x + y;
         DW.current_code = next_code;
-        return code
-    }
+        return question_code
 };
+
 $(document).ready(function(){
     question_list.forEach(function(question){
         var questions = new DW.question(question);
