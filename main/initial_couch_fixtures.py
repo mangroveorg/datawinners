@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 from datawinners.project.models import Project
-from mangrove.datastore.datadict import DataDictType, create_ddtype, get_datadict_type_by_slug
+from mangrove.datastore.datadict import DataDictType, create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from mangrove.datastore.database import get_db_manager
@@ -37,7 +37,7 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
         existing.delete()
     except DataObjectNotFound:
         pass
-    return create_ddtype(dbm, name, slug, primitive_type, description)
+    return create_datadict_type(dbm,name,slug,primitive_type,description)
 
 
 def load_data():

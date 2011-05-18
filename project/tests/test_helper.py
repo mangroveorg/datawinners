@@ -14,7 +14,7 @@ from mangrove.form_model.form_model import FormModel
 class TestHelper(unittest.TestCase):
 
     def setUp(self):
-        self.patcher = patch("datawinners.project.helper.create_ddtype")
+        self.patcher = patch("datawinners.project.helper.create_datadict_type")
         self.create_ddtype_mock = self.patcher.start()
         self.create_ddtype_mock.return_value = Mock(spec=DataDictType)
 

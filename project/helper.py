@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.database import get_db_manager
-from mangrove.datastore.datadict import create_ddtype, get_datadict_type_by_slug
+from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField
 from mangrove.form_model.form_model import FormModel
@@ -15,7 +15,7 @@ def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
         ddtype = get_datadict_type_by_slug(dbm, slug)
     except DataObjectNotFound:
         #  Create new one
-        ddtype = create_ddtype(dbm=dbm, name=name, slug=slug,
+        ddtype = create_datadict_type(dbm=dbm, name=name, slug=slug,
                                primitive_type=primitive_type, description=description)
     return ddtype
 
@@ -31,7 +31,6 @@ def create_question(post_dict, dbm=None):
         datadict_slug = datadict_type.get('slug')
     else:
         datadict_slug = str(slugify(unicode(post_dict.get('title'))))
-
     ddtype = get_or_create_data_dict(dbm=dbm, name=post_dict.get('code'), slug=datadict_slug,
                                primitive_type=post_dict.get('type'), description=post_dict.get('title'))
 
