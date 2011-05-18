@@ -57,7 +57,7 @@ def edit_profile(request):
     entity_list = get_all_entity_types(manager)
     if request.method == 'GET':
         project = models.get_project(request.GET['pid'],dbm=manager)
-        form = ProjectProfile(project)
+        form = ProjectProfile(data = project,entity_list = entity_list)
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
     project = models.get_project(request.GET['pid'],dbm=manager)

@@ -11,8 +11,8 @@ class TestProjectProfile(unittest.TestCase):
         base_form = {'name': 'Test Project', 'goals': 'Test Goals', 'project_type': 'survey', 'entity_type': 'Reporter',
                    'devices': ['sms']
         }
-        form = ProjectProfile(data=base_form,entity_list=['Reporter'])
-        self.assertTrue(form.is_valid())
+        form = ProjectProfile(data=base_form,entity_list=[['Reporter']])
+        self.assertTrue(form.is_valid(),form.errors)
         self.assertEquals(form.cleaned_data['name'], 'Test Project')
         self.assertEquals(form.cleaned_data['goals'], 'Test Goals')
         self.assertEquals(form.cleaned_data['project_type'], 'survey')
@@ -23,5 +23,5 @@ class TestProjectProfile(unittest.TestCase):
         base_form = {'name': 'Test Project', 'project_type': 'survey', 'entity_type': 'Reporter',
                    'devices': ['sms']
         }
-        form = ProjectProfile(data = base_form,entity_list=['Reporter'])
+        form = ProjectProfile(data = base_form,entity_list=[['Reporter']])
         assert form.is_valid()

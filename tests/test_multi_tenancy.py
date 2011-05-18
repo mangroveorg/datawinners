@@ -40,7 +40,7 @@ class TestMultiTenancy(unittest.TestCase):
             title="",
             )
         response = c.post('/register', reg_post)
-        self.assertIsNone(response)
+        self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
         organization_settings = OrganizationSettings.objects.get(organization = organization)
@@ -55,7 +55,7 @@ class TestMultiTenancy(unittest.TestCase):
         try:
             org_db = couch_server[organization_db_name]
         except Exception:
-            self.fail("Organization database %s not created" % (org_db,))
+            self.fail("Organization database %s not created" % (organization_db_name,))
         self.assertIsNotNone(org_db)
 
         #clean up the org db

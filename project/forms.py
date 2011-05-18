@@ -38,6 +38,7 @@ class ProjectProfile(Form):
                                   initial=DEVICE_CHOICES[2], required=False)
 
     def __init__(self,entity_list , *args, **kwargs):
+        assert isinstance(entity_list,list)
         super(ProjectProfile, self).__init__(*args, **kwargs)
         entity_list = entity_list
-        self.fields['entity_type'].choices = [(t, '.'.join(t)) for t in entity_list]
+        self.fields['entity_type'].choices = [( t[-1],t[-1] ) for t in entity_list]

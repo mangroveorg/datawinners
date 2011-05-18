@@ -1,6 +1,7 @@
 from couchdb.mapping import  TextField, ListField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
+from mangrove.utils.types import is_sequence, is_string
 
 
 class Project(DocumentBase):
@@ -12,6 +13,7 @@ class Project(DocumentBase):
     qid = TextField()
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None):
+        assert entity_type is None or is_string(entity_type),"Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
         self.name = name
