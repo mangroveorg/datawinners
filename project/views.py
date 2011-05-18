@@ -10,7 +10,7 @@ from datawinners.project.models import Project
 import helper
 from mangrove.datastore.database import get_db_manager
 from datawinners.project import models
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
@@ -80,7 +80,10 @@ def save_questionnaire(request):
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponseServerError(e.message)
         else:
-            form_model.form_code = questionnaire_code
+            try:
+                form_model.form_code = questionnaire_code
+            except DataObjectAlreadyExists as e:
+                return HttpResponseServerError(e.message)
             form_model.name = project.name
             form_model.entity_id = project.entity_type
             form_model.save()
