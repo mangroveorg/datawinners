@@ -10,8 +10,9 @@ class Command(BaseCommand):
         manager = load_manager_for_default_test_account()
         print ("Deleting %s.....") % (manager.database_name,)
         _delete_db_and_remove_db_manager(manager)
-        print "Loading data....."
-        load_data()
+        manager = load_manager_for_default_test_account()
         print "Loading All View"
         create_views(manager)
+        print "Loading data....."
+        load_data()
         print "Done."

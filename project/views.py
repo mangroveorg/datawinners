@@ -25,10 +25,12 @@ def questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'GET':
         pid = request.GET["pid"]
-        project = models.get_project(pid,manager)
-        form_model = helper.load_questionnaire(manager,project.qid)
+        project = models.get_project(pid, manager)
+        form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
-        return render_to_response('project/questionnaire.html', {"existing_questions": existing_questions, "questionnaire_code": form_model.form_code, 'project_id': pid}, context_instance=RequestContext(request))
+        return render_to_response('project/questionnaire.html',
+                                  {"existing_questions": existing_questions, "questionnaire_code": form_model.form_code,
+                                   'project_id': pid}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -39,15 +41,18 @@ def create_profile(request):
         form = ProjectProfile(entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
-    form = ProjectProfile(data = request.POST,entity_list = entity_list)
+    form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=form.cleaned_data['entity_type'],
                           devices=form.cleaned_data['devices'])
-        form_model = helper.create_questionnaire(post=form.cleaned_data,dbm = manager)
+        form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         qid = form_model.save()
         project.qid = qid
-        pid = project.save(manager)
+        try:
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            return HttpResponseServerError(e.message)
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
@@ -57,15 +62,18 @@ def edit_profile(request):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
     if request.method == 'GET':
-        project = models.get_project(request.GET['pid'],dbm=manager)
-        form = ProjectProfile(data = project,entity_list = entity_list)
+        project = models.get_project(request.GET['pid'], dbm=manager)
+        form = ProjectProfile(data=project, entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
-    project = models.get_project(request.GET['pid'],dbm=manager)
-    form = ProjectProfile(data = request.POST,entity_list = entity_list)
+    project = models.get_project(request.GET['pid'], dbm=manager)
+    form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
-        project.update(form.cleaned_data)
-        pid = project.save(manager)
+        project.update(manager, form.cleaned_data)
+        try:
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            return HttpResponseServerError(e.message)
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
@@ -78,10 +86,10 @@ def save_questionnaire(request):
         question_set = json.loads(request.POST['question-set'])
 
         pid = request.POST['pid']
-        project = models.get_project(pid,dbm = manager)
+        project = models.get_project(pid, dbm=manager)
         form_model = manager.get(project.qid, FormModel)
         try:
-            form_model = helper.update_questionnaire_with_questions(form_model, question_set,manager)
+            form_model = helper.update_questionnaire_with_questions(form_model, question_set, manager)
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponseServerError(e.message)
         except EntityQuestionAlreadyExistsException as e:
@@ -100,10 +108,11 @@ def save_questionnaire(request):
 @login_required(login_url='/login')
 def project_listing(request):
     project_list = []
-    rows = models.get_all_projects(dbm = get_database_manager(request))
+    rows = models.get_all_projects(dbm=get_database_manager(request))
     for row in rows:
         link = "/project/overview?pid=" + row['value']['_id']
-        project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'], link=link)
+        project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
+                       link=link)
         project_list.append(project)
     return render_to_response('project/all.html', {'projects': project_list}, context_instance=RequestContext(request))
 
@@ -111,13 +120,14 @@ def project_listing(request):
 @login_required(login_url='/login')
 def project_overview(request):
     manager = get_database_manager(request)
-    project = models.get_project(request.GET["pid"],dbm = manager)
+    project = models.get_project(request.GET["pid"], dbm=manager)
     link = '/project/profile/edit?pid=' + request.GET["pid"]
-    questionnaire = helper.load_questionnaire(manager,project['qid'])
+    questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     result_link = '/project/results/%s' % questionnaire.form_code
     project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
-    return render_to_response('project/overview.html', {'project': project_overview}, context_instance=RequestContext(request))
+    return render_to_response('project/overview.html', {'project': project_overview},
+                              context_instance=RequestContext(request))
 
 
 def get_number_of_rows_in_result(dbm, questionnaire_code):
@@ -150,13 +160,14 @@ def project_results(request, questionnaire_code=None):
     if rows:
         submissions = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
         results = {
-                    'questionnaire': questionnaire,
-                    'questions': questions,
-                    'submissions': submissions
-                  }
+            'questionnaire': questionnaire,
+            'questions': questions,
+            'submissions': submissions
+        }
 
         return render_to_response('project/results.html',
-                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, current_page: current_page},
+                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                                   current_page: current_page},
                                   context_instance=RequestContext(request)
                                   )
     return HttpResponse("No submissions present for this project")
