@@ -7,7 +7,7 @@ from datawinners.project import helper
 from datawinners.project.models import Project
 from mangrove.datastore.database import get_db_manager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
 
@@ -15,28 +15,33 @@ from mangrove.form_model.form_model import FormModel
 class TestHelper(unittest.TestCase):
 
     def setUp(self):
-        self.patcher = patch("datawinners.project.helper.create_datadict_type")
-        self.create_ddtype_mock = self.patcher.start()
+        self.patcher1 = patch("datawinners.project.helper.create_datadict_type")
+        self.patcher2 = patch("datawinners.project.helper.get_datadict_type_by_slug")
+        self.create_ddtype_mock = self.patcher1.start()
+        self.get_datadict_type_by_slug_mock = self.patcher2.start()
         self.create_ddtype_mock.return_value = Mock(spec=DataDictType)
+        self.get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("","","")
+        self.dbm = Mock(spec = DatabaseManager)
 
 
     def tearDown(self):
-        self.patcher.stop()
+        self.patcher1.stop()
+        self.patcher2.stop()
 
     def test_creates_questions_from_dict(self):
-        post = [{"title": "q1", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
+        post = [{"title": "q1", "question_code": "qc1", "description": "desc1", "type": "text", "choices": [],
                  "is_entity_question": True, "min_length": 1, "max_length": 15},
-                {"title": "q2", "code": "qc2", "description": "desc2", "type": "integer", "choices": [],
+                {"title": "q2", "question_code": "qc2", "description": "desc2", "type": "integer", "choices": [],
                  "is_entity_question": False, "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
+                {"title": "q3", "question_code": "qc3", "description": "desc3", "type": "select",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
-                {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
+                {"title": "q4", "question_code": "qc4", "description": "desc4", "type": "select1",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
-        q2 = helper.create_question(post[1])
-        q3 = helper.create_question(post[2])
-        q4 = helper.create_question(post[3])
+        q1 = helper.create_question(post[0],self.dbm)
+        q2 = helper.create_question(post[1],self.dbm)
+        q3 = helper.create_question(post[2],self.dbm)
+        q4 = helper.create_question(post[3],self.dbm)
         self.assertIsInstance(q1, TextField)
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
@@ -47,22 +52,22 @@ class TestHelper(unittest.TestCase):
         self.assertEquals(q4._to_json()["type"], "select1")
 
     def test_should_save_questionnaire_from_post(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
+        post = [{"title": "q1", "question_code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
                  "min_length": 1, "max_length": ""},
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                {"title": "q2", "question_code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "question_code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         form_model = FormModel(get_db_manager(), "test", "test", "test", [q1], "test", "test")
-        questionnaire = helper.update_questionnaire_with_questions(form_model, post)
+        questionnaire = helper.update_questionnaire_with_questions(form_model, post,self.dbm)
         self.assertEqual(3, len(questionnaire.fields))
 
     def test_should_create_integer_question_with_no_max_constraint(self):
-        post = [{"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+        post = [{"title": "q2", "question_code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": ""}]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         self.assertEqual(q1.constraint.max, None)
 
     def test_should_return_code_title_tuple_list(self):
@@ -74,25 +79,25 @@ class TestHelper(unittest.TestCase):
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], helper.get_code_and_title([question1, question2]))
 
     def test_should_create_text_question_with_no_max_length(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
+        post = [{"title": "q1", "question_code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
                  "min_length": 1, "max_length": ""},
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                {"title": "q2", "question_code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "question_code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         self.assertEqual(q1.constraint.max, None)
 
     def test_should_create_text_question_with_no_max_lengt_and_min_length(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
+        post = [{"title": "q1", "question_code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
                  },
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                {"title": "q2", "question_code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                {"title": "q3", "question_code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = helper.create_question(post[0])
+        q1 = helper.create_question(post[0],self.dbm)
         self.assertEqual(q1.constraint.max, None)
         self.assertEqual(q1.constraint.min, None)
 
@@ -108,7 +113,7 @@ class TestHelper(unittest.TestCase):
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
-        post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
+        post = {"title": "what is your name", "question_code": "qc1", "description": "desc1", "type": "text", "choices": [],
                  "is_entity_question": True, "min_length": 1, "max_length": 15}
 
         dbm = Mock(spec=DatabaseManager)
@@ -127,7 +132,7 @@ class TestHelper(unittest.TestCase):
         self.assertEqual("text", text_question.ddtype.primitive_type)
 
     def test_should_create_integer_question_with_implicit_ddtype(self):
-        post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [], "is_entity_question": False,
+        post = {"title": "What is your age", "question_code": "age", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": 100}
 
         dbm = Mock(spec=DatabaseManager)
@@ -150,7 +155,7 @@ class TestHelper(unittest.TestCase):
         LABEL = "q3"
         SLUG = "q3"
         TYPE = "select"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": [{"value": "c1"}, {"value": "c2"}],
+        post = {"title": LABEL, "question_code": CODE, "type": TYPE, "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
 
         dbm = Mock(spec=DatabaseManager)
@@ -171,7 +176,7 @@ class TestHelper(unittest.TestCase):
         LABEL = "q3"
         SLUG = "q3"
         TYPE = "select1"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": [{"value": "c1"}, {"value": "c2"}],
+        post = {"title": LABEL, "question_code": CODE, "type": TYPE, "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
 
         dbm = Mock(spec=DatabaseManager)
@@ -192,7 +197,7 @@ class TestHelper(unittest.TestCase):
         LABEL = "q3"
         SLUG = "q3"
         TYPE = "date"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "date_format": "%m.%Y",
+        post = {"title": LABEL, "question_code": CODE, "type": TYPE, "date_format": "%m.%Y",
                  "is_entity_question": False}
 
         dbm = Mock(spec=DatabaseManager)
@@ -239,8 +244,11 @@ class TestHelper(unittest.TestCase):
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
         models_mock = patcher.start()
+        patcher1 = patch("datawinners.project.helper.get_form_model_by_code")
+        form_code_mock = patcher1.start()
         dbm = Mock(spec=DatabaseManager)
 
+        form_code_mock.side_effect = FormModelDoesNotExistsException('')
         models_mock.get_all_projects.return_value = []
         self.assertEqual(helper.generate_questionnaire_code(dbm), "001")
 
@@ -249,6 +257,31 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(helper.generate_questionnaire_code(dbm), "002")
 
         patcher.stop()
+        patcher1.stop()
+
+    def test_should_generate_next_questionnaire_code_if_code_already_exists(self):
+        patcher = patch("datawinners.project.helper.models")
+        models_mock = patcher.start()
+
+        patcher1 = patch("datawinners.project.helper.get_form_model_by_code")
+        form_code_mock = patcher1.start()
+
+        dbm = Mock(spec=DatabaseManager)
+
+        myproject = Mock(spec=Project)
+        models_mock.get_all_projects.return_value = [myproject]
+
+        def expected_side_effect(*args,**kwargs):
+            code = kwargs.get('code') or args[1]
+            if code == "003": raise FormModelDoesNotExistsException('')
+            if code == "002": return Mock(spec=FormModel)
+
+        form_code_mock.side_effect = expected_side_effect
+
+        self.assertEqual(helper.generate_questionnaire_code(dbm), "003")
+
+        patcher.stop()
+        patcher1.stop()
 
 
 

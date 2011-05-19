@@ -4,8 +4,11 @@ var viewModel =
         addQuestion : function(){
         var question = new DW.question();
             question.display = ko.dependentObservable(function(){
-                return this.title() + ' ' + this.code();
+                return this.title() + ' ' + this.question_code();
             }, question);
+            var test_code = DW.generateQuestionCode();
+//            question.options.question_code =
+            question.question_code(viewModel.check_unique_code(test_code))
             viewModel.questions.push(question);
             viewModel.selectedQuestion(question);
             viewModel.selectedQuestion.valueHasMutated();
@@ -13,7 +16,7 @@ var viewModel =
         },
         loadQuestion: function(question){
             question.display = ko.dependentObservable(function(){
-                return this.title() + ' ' + this.code();
+                return this.title() + ' ' + this.question_code();
             }, question);
             viewModel.questions.push(question);
             viewModel.questions.valueHasMutated();
@@ -66,6 +69,15 @@ var viewModel =
         },
         showLengthLimiter: function(){
            return viewModel.selectedQuestion().length_limiter() == 'length_limited'
+        },
+        check_unique_code: function(test_code) {
+            for (var q in viewModel.questions()) {
+                if (test_code == viewModel.questions()[q].question_code()) {
+                    test_code = DW.generateQuestionCode();
+                    test_code = viewModel.check_unique_code(test_code);
+                }
+            }
+            return test_code;
         }
 
     };

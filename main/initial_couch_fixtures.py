@@ -1,12 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+from django.contrib.auth.models import User
+from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
-from mangrove.datastore.datadict import DataDictType, create_datadict_type, get_datadict_type_by_slug
+from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
-from mangrove.datastore.database import get_db_manager
 from pytz import UTC
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectAlreadyExists, DataObjectNotFound
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel, RegistrationFormModel
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
@@ -24,13 +25,6 @@ def create_entity_types(manager, entity_types):
             pass
 
 
-def create_if_not_exists(create_fn, *args, **kwargs):
-    try:
-        return create_fn(*args, **kwargs)
-    except DataObjectAlreadyExists:
-        return None
-
-
 def create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
         existing = get_datadict_type_by_slug(dbm, slug)
@@ -40,8 +34,16 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
     return create_datadict_type(dbm,name,slug,primitive_type,description)
 
 
+def load_manager_for_default_test_account():
+    DEFAULT_USER = "tester150411@gmail.com"
+    user = User.objects.get(username =DEFAULT_USER)
+    return get_database_manager_for_user(user)
+
+
+
 def load_data():
-    manager = get_db_manager()
+    manager = load_manager_for_default_test_account()
+
     CLINIC_ENTITY_TYPE = ["Clinic"]
     WATER_POINT_ENTITY_TYPE = ["Water Point"]
     REPORTER_ENTITY_TYPE = ["Reporter"]
@@ -55,7 +57,6 @@ def load_data():
     meds_type = create_data_dict(dbm=manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
     beds_type = create_data_dict(dbm=manager, name='Beds', slug='beds', primitive_type='number', description='Number of beds')
     director_type = create_data_dict(dbm=manager, name='Director', slug='dir', primitive_type='string', description='Name of director')
-    facility_type = create_data_dict(dbm=manager, name='Facility', slug='facility', primitive_type='string', description='Name of facility')
     patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='number', description='Patient Count')
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID001")
@@ -178,20 +179,20 @@ def load_data():
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="CLI001", type='survey', fields=[question1, question2, question3, question4, question5, question6])
     qid = form_model.save()
-    project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE, devices=["sms"])
+    project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"])
     project.qid = qid
     try:
-        project.save()
+        project.save(manager)
     except Exception:
         pass
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="CLI002", type='survey', fields=[question1, question2, question3, question4, question5, question6])
     qid2 = form_model2.save()
-    project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE, devices=["sms","web"])
+    project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey", entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms","web"])
     project2.qid = qid2
     try:
-        project2.save()
+        project2.save(manager)
     except Exception:
         pass
 
@@ -211,7 +212,7 @@ def load_data():
                           defaultValue="some default value", language="eng", ddtype=mobile_number_type)
     form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
                     question1, question2, question3, question4, question5, question6])
-    qid = form_model.save()
+    form_model.save()
 
     #Register Reporter
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
@@ -219,3 +220,5 @@ def load_data():
     register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type),
                                                       ("first_name", "Shweta", first_name_type)], location=[],
                         source="sms", short_code="REP1")
+
+

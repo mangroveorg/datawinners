@@ -38,7 +38,7 @@ class RegistrationForm(RegistrationFormUniqueEmail):
 
     def convert_email_to_lowercase(self):
         email = self.cleaned_data.get('email')
-        if(email is not None):
+        if email is not None:
             self.cleaned_data['email'] = email.lower()
 
 

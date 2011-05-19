@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from mangrove.datastore.database import get_db_manager
+from datawinners.main.initial_couch_fixtures import load_manager_for_default_test_account
 from datawinners.settings import PROJECT_DIR
 
 import os
@@ -9,7 +9,7 @@ import string
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        manager = get_db_manager()
+        manager = load_manager_for_default_test_account()
         print ("Database %s") % (manager.database_name,)
         print "Loading Views....."
         create_views(manager)
@@ -44,7 +44,7 @@ def find_views():
                 if name not in views:
                     views[name] = {}
                 views[name][func] = f.read()
-        except:
+        except Exception:
             # doesn't match pattern, or file could be read, just skip
             pass
     return views
