@@ -2,7 +2,6 @@
 import couchdb
 import datawinners
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSettings
-from datawinners.main.utils import set_up_db_with_defaults
 from mangrove.datastore.database import get_db_manager
 
 
@@ -15,6 +14,7 @@ def ngo_user_created(sender, user, request, **kwargs):
     data.save()
 
 def create_org_database(sender, user, request, **kwargs):
+    from datawinners.initializer import run
     org = kwargs.get('organization')
     if org is None:
         return None
@@ -25,4 +25,4 @@ def create_org_database(sender, user, request, **kwargs):
     server.create(db_name)
     manager = get_db_manager(server=datawinners.settings.COUCH_DB_SERVER, database=db_name)
     assert manager,"Could not create database manager for %s " % (db_name,)
-    set_up_db_with_defaults(manager)
+    run(manager)

@@ -1,21 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 from django.contrib.auth.models import User
+from datawinners import initializer
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import Entity, define_type
 from pytz import UTC
+from mangrove.datastore.reporter import REPORTER_ENTITY_TYPE
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
-from mangrove.form_model.form_model import FormModel, RegistrationFormModel
+from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 
 
 def define_entity_instance(manager, ENTITY_TYPE, location, short_code):
     return Entity(manager, entity_type=ENTITY_TYPE, location=location, short_code = short_code)
-
 
 def create_entity_types(manager, entity_types):
     for entity_type in entity_types:
@@ -23,7 +24,6 @@ def create_entity_types(manager, entity_types):
             define_type(manager, entity_type)
         except EntityTypeAlreadyDefined:
             pass
-
 
 def create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
@@ -33,25 +33,22 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
         pass
     return create_datadict_type(dbm,name,slug,primitive_type,description)
 
-
 def load_manager_for_default_test_account():
     DEFAULT_USER = "tester150411@gmail.com"
     user = User.objects.get(username =DEFAULT_USER)
     return get_database_manager_for_user(user)
 
-
-
 def load_data():
     manager = load_manager_for_default_test_account()
+    initializer.run(manager)
 
     CLINIC_ENTITY_TYPE = ["Clinic"]
     WATER_POINT_ENTITY_TYPE = ["Water Point"]
-    REPORTER_ENTITY_TYPE = ["Reporter"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
 
     #  The Default Entity Types
-    create_entity_types(manager, [REPORTER_ENTITY_TYPE, CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
+    create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
 
     #Data Dict Types
     meds_type = create_data_dict(dbm=manager, name='Medicines', slug='meds', primitive_type='number', description='Number of medications')
@@ -156,11 +153,9 @@ def load_data():
     except Exception:
         pass
 
-    location_type = create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
-    description_type = create_data_dict(manager, name='description Type', slug='description', primitive_type='string')
-    mobile_number_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
-    entity_id_type = create_data_dict(manager, name='Entity Id Type', slug='entity_id', primitive_type='string')
+    # Entity id is a default type in the system.
+    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
     age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
@@ -196,28 +191,11 @@ def load_data():
     except Exception:
         pass
 
-    #Create registration questionnaire
-    question1 = TextField(name="entity_type", question_code="T", label="What is associated entity type?",
-                          language="eng", entity_question_flag=False, ddtype=entity_id_type)
-
-    question2 = TextField(name="name", question_code="N", label="What is the entity's name?",
-                          defaultValue="some default value", language="eng", ddtype=name_type)
-    question3 = TextField(name="short_name", question_code="S", label="What is the entity's short name?",
-                          defaultValue="some default value", language="eng", ddtype=name_type)
-    question4 = TextField(name="location", question_code="L", label="What is the entity's location?",
-                          defaultValue="some default value", language="eng", ddtype=location_type)
-    question5 = TextField(name="description", question_code="D", label="Describe the entity",
-                          defaultValue="some default value", language="eng", ddtype=description_type)
-    question6 = TextField(name="mobile_number", question_code="M", label="What is the associated mobile number?",
-                          defaultValue="some default value", language="eng", ddtype=mobile_number_type)
-    form_model = RegistrationFormModel(manager, name="REG", form_code="REG", fields=[
-                    question1, question2, question3, question4, question5, question6])
-    form_model.save()
-
+    
     #Register Reporter
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number', primitive_type='string')
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
-    register(manager, entity_type=["Reporter"], data=[("telephone_number", "1234567890", phone_number_type),
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[("telephone_number", "1234567890", phone_number_type),
                                                       ("first_name", "Shweta", first_name_type)], location=[],
                         source="sms", short_code="REP1")
 

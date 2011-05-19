@@ -1,9 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.core.exceptions import ObjectDoesNotExist
-import datawinners
 from datawinners.accountmanagement.models import Organization, OrganizationSettings
 from datawinners.settings import PROJECT_DIR
-import mangrove
 from mangrove.datastore.database import get_db_manager
 from  datawinners import settings
 from mangrove.errors.MangroveException import UnknownOrganization
@@ -31,10 +29,6 @@ def get_db_manager_for(org_tel_number):
         raise UnknownOrganization(org_tel_number)
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
-
-
-
-
 
 def create_views(dbm):
     '''Creates a standard set of views in the database'''
@@ -68,12 +62,5 @@ def find_views():
             # doesn't match pattern, or file could be read, just skip
             pass
     return views
-
-def create_all_views(manager):
-    mangrove.datastore.views.create_views(manager)
-    datawinners.main.utils.create_views(manager)
-
-def set_up_db_with_defaults(manager):
-    create_all_views(manager)
 
 view_js = find_views()

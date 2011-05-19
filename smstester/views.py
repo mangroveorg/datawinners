@@ -1,11 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from datawinners.accountmanagement.models import OrganizationSettings
-from datawinners.main.utils import get_database_manager, get_db_manager_for
+from datawinners.main.utils import  get_db_manager_for
 from datawinners.smstester.forms import SMSTesterForm
-from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 
