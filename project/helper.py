@@ -1,8 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty
@@ -106,5 +106,13 @@ def get_submissions(questions, submissions):
 def generate_questionnaire_code(dbm):
     all_projects = models.get_all_projects(dbm)
     code = len(all_projects) + 1
-    return "%03d" % (code,)
+    code = "%03d" % (code,)
+    while True:
+        try:
+            get_form_model_by_code(dbm,code)
+            code = int(code)+1
+            code = "%03d" % (code,)
+        except FormModelDoesNotExistsException:
+            break
+    return code
 

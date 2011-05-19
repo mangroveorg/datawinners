@@ -7,7 +7,7 @@ from datawinners.project import helper
 from datawinners.project.models import Project
 from mangrove.datastore.database import get_db_manager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
 
@@ -244,8 +244,11 @@ class TestHelper(unittest.TestCase):
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
         models_mock = patcher.start()
+        patcher1 = patch("datawinners.project.helper.get_form_model_by_code")
+        form_code_mock = patcher1.start()
         dbm = Mock(spec=DatabaseManager)
 
+        form_code_mock.side_effect = FormModelDoesNotExistsException('')
         models_mock.get_all_projects.return_value = []
         self.assertEqual(helper.generate_questionnaire_code(dbm), "001")
 
@@ -254,6 +257,31 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(helper.generate_questionnaire_code(dbm), "002")
 
         patcher.stop()
+        patcher1.stop()
+
+    def test_should_generate_next_questionnaire_code_if_code_already_exists(self):
+        patcher = patch("datawinners.project.helper.models")
+        models_mock = patcher.start()
+
+        patcher1 = patch("datawinners.project.helper.get_form_model_by_code")
+        form_code_mock = patcher1.start()
+
+        dbm = Mock(spec=DatabaseManager)
+
+        myproject = Mock(spec=Project)
+        models_mock.get_all_projects.return_value = [myproject]
+
+        def expected_side_effect(*args,**kwargs):
+            code = kwargs.get('code') or args[1]
+            if code == "003": raise FormModelDoesNotExistsException('')
+            if code == "002": return Mock(spec=FormModel)
+
+        form_code_mock.side_effect = expected_side_effect
+
+        self.assertEqual(helper.generate_questionnaire_code(dbm), "003")
+
+        patcher.stop()
+        patcher1.stop()
 
 
 
