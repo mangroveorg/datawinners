@@ -11,9 +11,7 @@ class Command(BaseCommand):
         manager = load_manager_for_default_test_account()
         print ("Deleting %s.....") % (manager.database_name,)
         _delete_db_and_remove_db_manager(manager)
-        print "Loading data....."
         manager = load_manager_for_default_test_account()
-        load_data()
         print "Loading All View"
         mangrove.datastore.views.create_views(manager)
         create_views(manager)
