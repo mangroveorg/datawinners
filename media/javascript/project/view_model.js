@@ -75,6 +75,7 @@ var viewModel =
                 if (test_code == viewModel.questions()[q].question_code()) {
                     test_code = DW.generateQuestionCode();
                     test_code = viewModel.check_unique_code(test_code);
+                    return test_code;
                 }
             }
             return test_code;
