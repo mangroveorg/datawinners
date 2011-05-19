@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from copy import copy
 
 import json
 from django.contrib.auth.decorators import login_required
@@ -147,7 +148,7 @@ def project_results(request, questionnaire_code=None):
     questions = helper.get_code_and_title(form_model.fields)
     rows = get_number_of_rows_in_result(manager, questionnaire_code)
     if rows:
-        submissions = get_submissions_for_display(current_page - 1, manager, questionnaire_code, questions)
+        submissions = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
         results = {
                     'questionnaire': questionnaire,
                     'questions': questions,
