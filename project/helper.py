@@ -16,7 +16,7 @@ def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     except DataObjectNotFound:
         #  Create new one
         ddtype = create_datadict_type(dbm=dbm, name=name, slug=slug,
-                               primitive_type=primitive_type, description=description)
+                                      primitive_type=primitive_type, description=description)
     return ddtype
 
 
@@ -29,7 +29,7 @@ def create_question(post_dict, dbm):
     else:
         datadict_slug = str(slugify(unicode(post_dict.get('title'))))
     ddtype = get_or_create_data_dict(dbm=dbm, name=post_dict.get('question_code'), slug=datadict_slug,
-                               primitive_type=post_dict.get('type'), description=post_dict.get('title'))
+                                     primitive_type=post_dict.get('type'), description=post_dict.get('title'))
 
     if post_dict["type"] == "text":
         return _create_text_question(post_dict, ddtype)
@@ -44,21 +44,24 @@ def create_question(post_dict, dbm):
 
 
 def create_questionnaire(post, dbm):
-    entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string", description="Entity ID")
-    entity_id_question = TextField(name="What are you reporting on?", question_code="eid", label="Entity being reported on",
-                                   entity_question_flag=True, ddtype=entity_data_dict_type, length=TextConstraint(min=1, max=12))
+    entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
+                                                    description="Entity ID")
+    entity_id_question = TextField(name="What are you reporting on?", question_code="eid",
+                                   label="Entity being reported on",
+                                   entity_question_flag=True, ddtype=entity_data_dict_type,
+                                   length=TextConstraint(min=1, max=12))
     return FormModel(dbm, entity_type=post["entity_type"], name=post["name"], fields=[entity_id_question],
                      form_code=generate_questionnaire_code(dbm), type='survey')
 
 
-def load_questionnaire(dbm,questionnaire_id):
+def load_questionnaire(dbm, questionnaire_id):
     return dbm.get(questionnaire_id, FormModel)
 
 
-def update_questionnaire_with_questions(form_model, question_set,dbm):
+def update_questionnaire_with_questions(form_model, question_set, dbm):
     form_model.delete_all_fields()
     for question in question_set:
-        form_model.add_field(create_question(question,dbm))
+        form_model.add_field(create_question(question, dbm))
     return form_model
 
 
@@ -80,11 +83,13 @@ def _create_integer_question(post_dict, ddtype):
     max_range_from_post = post_dict["range_max"]
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
     range = NumericConstraint(min=post_dict["range_min"], max=max_range)
-    return IntegerField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default", range=range, ddtype=ddtype)
+    return IntegerField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+                        range=range, ddtype=ddtype)
 
 
 def _create_date_question(post_dict, ddtype):
-    return DateField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default", date_format=post_dict.get('date_format'), ddtype=ddtype)
+    return DateField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+                     date_format=post_dict.get('date_format'), ddtype=ddtype)
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
@@ -109,10 +114,9 @@ def generate_questionnaire_code(dbm):
     code = "%03d" % (code,)
     while True:
         try:
-            get_form_model_by_code(dbm,code)
-            code = int(code)+1
+            get_form_model_by_code(dbm, code)
+            code = int(code) + 1
             code = "%03d" % (code,)
         except FormModelDoesNotExistsException:
             break
     return code
-

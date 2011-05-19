@@ -33,4 +33,4 @@ def create_entity(request):
 def register_entity(request):
     db_manager = get_database_manager(request)
     entity_types = get_all_entity_types(db_manager)
-    return render_to_response("admin/register_entity.html", {"post_url" : reverse(submit), "entity_types": entity_types}, context_instance=RequestContext(request))
+    return render_to_response("admin/register_entity.html", {"post_url": reverse(submit), "entity_types": entity_types}, context_instance=RequestContext(request))

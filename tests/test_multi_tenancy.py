@@ -43,11 +43,11 @@ class TestMultiTenancy(unittest.TestCase):
         self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
-        organization_settings = OrganizationSettings.objects.get(organization = organization)
+        organization_settings = OrganizationSettings.objects.get(organization=organization)
         organization_db_name = organization_settings.document_store
 
         expected_org_db_name = ("hni_test_org_name_%s" % (organization.org_id,)).lower()
-        self.assertEqual(expected_org_db_name,organization_db_name)
+        self.assertEqual(expected_org_db_name, organization_db_name)
 
         couch_server = couchdb.client.Server(settings.COUCH_DB_SERVER)
 
@@ -60,4 +60,3 @@ class TestMultiTenancy(unittest.TestCase):
 
         #clean up the org db
         del couch_server[organization_db_name]
-

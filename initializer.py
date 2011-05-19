@@ -2,7 +2,7 @@
 from datawinners.main.utils import create_views
 from mangrove import initializer as mangrove_intializer
 
+
 def run(manager):
     create_views(manager)
     mangrove_intializer.run(manager)
-  

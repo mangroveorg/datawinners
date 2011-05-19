@@ -32,14 +32,13 @@ def _get_data(post, key):
 
 
 def _get_submission(post):
-    format = post.get('format')
     data = json.loads(post.get('data'))
     return {
-            'transport': _get_data(data, 'transport'),
-            'source': _get_data(data, 'source'),
-            'destination': _get_data(data, 'destination'),
-            'message': _get_data(data, 'message')
-           }
+        'transport': _get_data(data, 'transport'),
+        'source': _get_data(data, 'source'),
+        'destination': _get_data(data, 'destination'),
+        'message': _get_data(data, 'message')
+    }
 
 
 @csrf_view_exempt
@@ -59,4 +58,4 @@ def submit(request):
     except MangroveException as exception:
         message = exception.message
         success = False
-    return HttpResponse(json.dumps({'success': success, 'message' : message, 'entity_id': response.datarecord_id}))
+    return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': response.datarecord_id}))

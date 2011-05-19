@@ -25,22 +25,25 @@ class NGOUserProfile(models.Model):
     title = models.TextField()
     org_id = models.TextField()
 
+
 class OrganizationSettings(models.Model):
-    organization = models.ForeignKey(Organization,unique=True)
+    organization = models.ForeignKey(Organization, unique=True)
     document_store = models.TextField()
-    sms_tel_number = models.TextField(unique=True,null=True)
+    sms_tel_number = models.TextField(unique=True, null=True)
 
 
 def create_organization(org_details):
-    organization = Organization(name=org_details.get('organization_name'), sector=org_details.get('organization_sector')
-                                , addressline1=org_details.get('organization_addressline1'),
-                                addressline2=org_details.get('organization_addressline2')
-                                , city=org_details.get('organization_city'), state=org_details.get('organization_state')
-                                , country=org_details.get('organization_country'),
-                                zipcode=org_details.get('organization_zipcode')
-                                , office_phone=org_details.get('organization_office_phone'),
-                                website=org_details.get('organization_website')
-                                , org_id=OrganizationIdCreator().generateId()
+    organization = Organization(name=org_details.get('organization_name'),
+                                sector=org_details.get('organization_sector'),
+                                addressline1=org_details.get('organization_addressline1'),
+                                addressline2=org_details.get('organization_addressline2'),
+                                city=org_details.get('organization_city'),
+                                state=org_details.get('organization_state'),
+                                country=org_details.get('organization_country'),
+                                zipcode=org_details.get('organization_zipcode'),
+                                office_phone=org_details.get('organization_office_phone'),
+                                website=org_details.get('organization_website'),
+                                org_id=OrganizationIdCreator().generateId()
     )
     organization.save()
     organization_settings = OrganizationSettings()

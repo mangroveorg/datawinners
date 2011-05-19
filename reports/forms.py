@@ -5,7 +5,6 @@ from django.forms.forms import Form
 from django import forms
 
 
-
 class ReportHierarchy(Form):
     PATH_CHOICES = (("location", "location"), ("governance", "governance"))
     REDUCE_CHOICES = (("sum", "sum"), ("count", "count"))
@@ -18,7 +17,7 @@ class ReportHierarchy(Form):
     level = IntegerField(min_value=1, max_value=3)
     entity_type = ChoiceField(label="Entity type", required=True)
 
-    def __init__(self, choices,*args, **kwargs):
+    def __init__(self, choices, *args, **kwargs):
         super(ReportHierarchy, self).__init__(*args, **kwargs)
         self.fields['entity_type'].choices = choices
 
@@ -30,6 +29,6 @@ class Report(Form):
     aggregates_field = CharField(required=True, label="Field")
     entity_type = ChoiceField(label="Entity type", required=True)
 
-    def __init__(self, choices,*args, **kwargs):
+    def __init__(self, choices, *args, **kwargs):
         super(Report, self).__init__(*args, **kwargs)
         self.fields['entity_type'].choices = choices

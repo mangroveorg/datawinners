@@ -123,4 +123,3 @@ class RegistrationBackend(object):
 
         """
         return '/registration_complete', (), {}
-

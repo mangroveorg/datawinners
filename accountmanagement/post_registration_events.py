@@ -13,8 +13,10 @@ def ngo_user_created(sender, user, request, **kwargs):
     print 'saving the user'
     data.save()
 
+
 def create_org_database(sender, user, request, **kwargs):
     from datawinners.initializer import run
+
     org = kwargs.get('organization')
     if org is None:
         return None
@@ -24,5 +26,5 @@ def create_org_database(sender, user, request, **kwargs):
     server = couchdb.client.Server(datawinners.settings.COUCH_DB_SERVER)
     server.create(db_name)
     manager = get_db_manager(server=datawinners.settings.COUCH_DB_SERVER, database=db_name)
-    assert manager,"Could not create database manager for %s " % (db_name,)
+    assert manager, "Could not create database manager for %s " % (db_name,)
     run(manager)

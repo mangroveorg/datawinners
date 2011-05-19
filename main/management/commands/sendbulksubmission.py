@@ -9,9 +9,9 @@ def load_sms_data():
     for i in range(1, 200):
         sender = "1234567890"
         receiver = 12345
-        submission_id = dbm.save(SubmissionLogDocument(channel="sms", source=sender,
+        dbm.save(SubmissionLogDocument(channel="sms", source=sender,
                                                                 destination=receiver, form_code="ddd", values={"EID": "CID001", "Q1": "prabhu", "Q2": 20},
-                                                                status=True, error_message="")).id
+                                                                status=True, error_message=""))
 
 
 def delete_sms_data():

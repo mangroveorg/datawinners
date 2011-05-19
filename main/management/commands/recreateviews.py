@@ -13,5 +13,3 @@ class Command(BaseCommand):
         mangrove.datastore.views.create_views(manager)
         create_views(manager)
         print "Done."
-
-

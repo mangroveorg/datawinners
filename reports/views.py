@@ -16,7 +16,7 @@ def report(request):
     values = []
     error_message = None
     if request.method == 'POST':
-        form = Report(data=request.POST,choices = choices)
+        form = Report(data=request.POST, choices=choices)
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type'].split(".")
             filter_criteria = form.cleaned_data['filter']
@@ -30,9 +30,10 @@ def report(request):
             if not len(values):
                 error_message = 'Sorry, No records found for this query'
     else:
-        form = Report(choices = choices)
+        form = Report(choices=choices)
     return render_to_response('reports/reportperlocation.html', {'form': form, 'column_headers': column_headers,
-                                                                 'column_values': values, 'error_message': error_message},
+                                                                 'column_values': values,
+                                                                 'error_message': error_message},
                               context_instance=RequestContext(request))
 
 
@@ -56,7 +57,7 @@ def hierarchy_report(request):
     choices = [(t, '.'.join(t)) for t in get_all_entity_types(manager)]
 
     if request.method == 'POST':
-        form = ReportHierarchy(data = request.POST,choices = choices)
+        form = ReportHierarchy(data=request.POST, choices=choices)
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type'].split(".")
             aggregates_field = form.cleaned_data['aggregates_field']
@@ -66,12 +67,13 @@ def hierarchy_report(request):
             level = form.cleaned_data['level']
             aggregate_on = {'type': aggregate_on_path, "level": level}
             report_data = data.fetch(manager, entity_type=entity_type,
-                             aggregates=aggregates,
-                             aggregate_on=aggregate_on,
-                             )
+                                     aggregates=aggregates,
+                                     aggregate_on=aggregate_on,
+                                     )
             column_headers, values = tabulate_output(report_data, "Path")
     else:
-        form = ReportHierarchy(choices = choices)
+        form = ReportHierarchy(choices=choices)
 
-    return render_to_response('reports/reportperhierarchypath.html', {'form': form, 'column_headers': column_headers, 'column_values': values},
-                          context_instance=RequestContext(request))
+    return render_to_response('reports/reportperhierarchypath.html',
+                              {'form': form, 'column_headers': column_headers, 'column_values': values},
+                              context_instance=RequestContext(request))

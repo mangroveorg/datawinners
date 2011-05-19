@@ -9,6 +9,7 @@ import os
 from glob import iglob
 import string
 
+
 def get_database_manager_for_user(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
@@ -29,6 +30,7 @@ def get_db_manager_for(org_tel_number):
         raise UnknownOrganization(org_tel_number)
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+
 
 def create_views(dbm):
     '''Creates a standard set of views in the database'''
