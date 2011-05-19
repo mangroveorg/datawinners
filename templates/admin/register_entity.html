@@ -15,7 +15,7 @@
                                 <label>Type</label>
                             </span>
                             <span>
-                                <select name="type" data-bind="value: message.T">
+                                <select name="type" data-bind="value: message.t">
                                     {% for entity_type in entity_types %}
                                         <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
                                     {% endfor %}
@@ -27,15 +27,16 @@
                                 <label>Short Name</label>
                             </span>
                         <span>
-                                <input name="short_name" type="text" data-bind="value: message.S"/>
+                                <input name="short_name" type="text" data-bind="value: message.s"/>
                             </span>
+                            <span><input name="autogen" type="checkbox" checked="true">Autogenerate</input></span>
                         </li>
                         <li>
                         <span>
                                 <label>Name</label>
                             </span>
                         <span>
-                                <input name="name" type="text" class="required" data-bind="value: message.N"/>
+                                <input name="name" type="text" class="required" data-bind="value: message.n"/>
                             </span>
                         </li>
                         <li>
@@ -43,7 +44,7 @@
                                 <label>Location</label>
                             </span>
                             <span>
-                                <input name="location" type="text" data-bind="value: message.L"/>
+                                <input name="location" type="text" data-bind="value: message.l"/>
                             </span>
                         </li>
                         <li>
@@ -51,7 +52,7 @@
                                 <label>Description</label>
                             </span>
                             <span>
-                                <input name="description" type="text" data-bind="value: message.D"/>
+                                <input name="description" type="text" data-bind="value: message.d"/>
                             </span>
                         </li>
                         <li>
@@ -59,7 +60,7 @@
                                 <label>Mobile Number</label>
                             </span>
                             <span>
-                                <input name="mobile_number" type="text" class="required" data-bind="value: message.M"/>
+                                <input name="mobile_number" type="text" class="required" data-bind="value: message.m"/>
                             </span>
                         </li>
                     </ul>

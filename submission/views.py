@@ -1,11 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners.main.utils import get_db_manager_for
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
+from main.utils import get_database_manager
 
 
 @csrf_view_exempt
@@ -44,13 +46,13 @@ def _get_submission(post):
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
+@login_required(login_url='/login')
 def submit(request):
     post = _get_submission(request.POST)
     message = ''
     success = True
     try:
-        destination_number = post.get('destination').strip()
-        s = SubmissionHandler(dbm=get_db_manager_for(destination_number))
+        s = SubmissionHandler(dbm=get_database_manager(request))
         request = Request(transport=post.get('transport'), message=post.get('message'), source=post.get('source'),
                           destination=post.get('destination'))
         response = s.accept(request)
