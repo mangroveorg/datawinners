@@ -67,3 +67,7 @@ table th {
 /* Inline and block */
 .inline {
   display: inline; }
+
+/* List styles */
+.alpha_list li {
+  list-style-type: upper-alpha; }

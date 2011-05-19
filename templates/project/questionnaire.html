@@ -18,10 +18,12 @@
         })
     </script>
     <script type="text/html" id="choice-template">
+        <li>
         <p>
             <input data-bind="value: text"/>
             <a href="questionnaire.html#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
         </p>
+        </li>
     </script>
     <script type="text/html" id="question-list-template">
         <div class="question_list">
@@ -128,8 +130,9 @@
                             </li>
                             <li data-bind="visible: viewModel.showAddChoice()">
                                 <div class="margin_top_20">
-                                    <div data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
-                                    </div>
+                                    <ol class="alpha_list" data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
+
+                                    </ol>
                                     <a href="questionnaire.html#" data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add
                                         Choice</a>
                                 </div>
