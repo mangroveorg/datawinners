@@ -26,7 +26,7 @@ class Project(DocumentBase):
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('datawinners_views/all_projects', key=self.name)
         if len(rows) and rows[0]['value']['_id'] != self.id:
-            raise DataObjectAlreadyExists('Project', 'Name', self.name)
+            raise DataObjectAlreadyExists('Project', "Name", "'%s'"%self.name )
 
     def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)

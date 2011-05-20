@@ -16,6 +16,7 @@ from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
+from django.contrib import messages
 
 PAGE_SIZE = 4
 
@@ -47,12 +48,14 @@ def create_profile(request):
                           project_type=form.cleaned_data['project_type'], entity_type=form.cleaned_data['entity_type'],
                           devices=form.cleaned_data['devices'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
-        qid = form_model.save()
-        project.qid = qid
         try:
             pid = project.save(manager)
+            qid = form_model.save()
+            project.qid = qid
+            pid = project.save(manager)
         except DataObjectAlreadyExists as e:
-            return HttpResponseServerError(e.message)
+            messages.error(request,e.message)
+            return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
@@ -73,7 +76,8 @@ def edit_profile(request):
         try:
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
-            return HttpResponseServerError(e.message)
+            messages.error(request,e.message)
+            return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))

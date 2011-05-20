@@ -20,6 +20,13 @@
 <form action="" method="POST">
     <div class="define_project">
             {% csrf_token %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <ul>
             <li class="{{ form.name.css_classes  }} form-row-10px">
                 {{ form.name.label_tag }}
