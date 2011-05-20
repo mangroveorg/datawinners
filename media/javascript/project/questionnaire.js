@@ -137,6 +137,7 @@ $(document).ready(function(){
             }
         }
     });
+
     $("#submit-button").click(function() {
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);

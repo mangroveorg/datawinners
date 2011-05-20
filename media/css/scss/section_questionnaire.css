@@ -3,3 +3,6 @@
   margin-top: 20px; }
   .max_char .inline input {
     width: 40px; }
+
+#range_max, #range_min {
+  width: 60px; }
