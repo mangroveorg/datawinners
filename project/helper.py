@@ -28,7 +28,7 @@ def create_question(post_dict, dbm):
         datadict_slug = datadict_type.get('slug')
     else:
         datadict_slug = str(slugify(unicode(post_dict.get('title'))))
-    ddtype = get_or_create_data_dict(dbm=dbm, name=post_dict.get('question_code'), slug=datadict_slug,
+    ddtype = get_or_create_data_dict(dbm=dbm, name=post_dict.get('code'), slug=datadict_slug,
                                      primitive_type=post_dict.get('type'), description=post_dict.get('title'))
 
     if post_dict["type"] == "text":
@@ -46,7 +46,7 @@ def create_question(post_dict, dbm):
 def create_questionnaire(post, dbm):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
-    entity_id_question = TextField(name="What are you reporting on?", question_code="eid",
+    entity_id_question = TextField(name="What are you reporting on?", code="eid",
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    length=TextConstraint(min=1, max=12))
@@ -66,7 +66,7 @@ def update_questionnaire_with_questions(form_model, question_set, dbm):
 
 
 def get_code_and_title(fields):
-    return [(each_field.question_code, each_field.name)for each_field in fields]
+    return [(each_field.code, each_field.name)for each_field in fields]
 
 
 def _create_text_question(post_dict, ddtype):
@@ -75,7 +75,7 @@ def _create_text_question(post_dict, ddtype):
     max_length = max_length_from_post if not is_empty(max_length_from_post) else None
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     length = TextConstraint(min=min_length, max=max_length)
-    return TextField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype)
 
 
@@ -83,18 +83,18 @@ def _create_integer_question(post_dict, ddtype):
     max_range_from_post = post_dict["range_max"]
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
     range = NumericConstraint(min=post_dict["range_min"], max=max_range)
-    return IntegerField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                         range=range, ddtype=ddtype)
 
 
 def _create_date_question(post_dict, ddtype):
-    return DateField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      date_format=post_dict.get('date_format'), ddtype=ddtype)
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
     options = [choice.get("text") for choice in post_dict["choices"]]
-    return SelectField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                        options=options, single_select_flag=single_select_flag, ddtype=ddtype)
 
 
