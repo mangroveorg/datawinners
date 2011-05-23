@@ -1,0 +1,39 @@
+{% extends 'layout_application.html' %}
+{% block layout_scss %}
+  {% include 'application_scss.html' %}
+  <link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
+{% endblock %}
+{% block body %}
+    {% block header %}
+    <div id="container_header_application">
+        <div class="container_24" id="header_application">
+            {% include 'header_wizard.html' %}
+        </div>
+    </div>
+
+    {% endblock %}
+    {% block main_content %}
+        <div id="container_content">
+            <div id="page_title">
+                {% block section_title %}
+                {% endblock %}
+            </div>
+            <div class="container_24">
+
+                <div class="grid_23 content">
+                    <div class="grid_15 alpha  left_hand_section">
+                         {% block content %} {% endblock %}
+                    </div>
+                    <div class="grid_7 right_hand_section alpha omega">
+                        {% block right_hand_section %}
+                            <h5>About Datawinners</h5>
+                            <p>Any information that is helpful to a new registrant comes here..</p>
+                        {% endblock  %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

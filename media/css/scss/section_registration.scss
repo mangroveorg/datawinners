@@ -1,0 +1,62 @@
+.organization, .administrative, .signin {
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  padding: 10px;
+  min-height:400px;
+  }
+.signin{
+    ul li{
+
+        label{
+            font-size:14px;
+            display:block;
+            font-weight:bold;
+            width:80px;
+            float:left;
+        }
+    }
+}
+.right_hand_section {
+  border: 1px solid #cccccc;
+  min-height:400px;
+  padding:10px;
+}
+
+.left_hand_section {
+  margin-right: 20px; }
+
+#container_content .content {
+  padding: 10px; }
+
+.signin_form{
+    width:400px;
+    margin:50px 0 50px 70px;
+}
+$text_box_width: 200px;
+$select_box_width:150px;
+$border_color: #CCCCCC;
+$link_color:#0070ac;
+
+form{
+    fieldset{
+        legend{
+            font-size:20px;
+        }
+    }
+    ul li{
+
+        label{
+            font-size:14px;
+            display:block;
+            font-weight:bold;
+            width:170px;
+            float:left;
+        }
+        input[type=text], input[type=password]{
+            width:$text_box_width;
+            height:15px;
+            border-color:$border_color;
+        }
+    }
+}
+
