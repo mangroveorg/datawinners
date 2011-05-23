@@ -59,7 +59,7 @@ class TestHelper(unittest.TestCase):
                  "is_entity_question": False}
         ]
         q1 = helper.create_question(post[0], self.dbm)
-        form_model = FormModel(get_db_manager(), "test", "test", "test", [q1], "test", "test")
+        form_model = FormModel(self.dbm, "test", "test", "test", [q1], "test", "test")
         questionnaire = helper.update_questionnaire_with_questions(form_model, post, self.dbm)
         self.assertEqual(3, len(questionnaire.fields))
 

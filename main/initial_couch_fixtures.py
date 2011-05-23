@@ -2,11 +2,12 @@
 import datetime
 from django.contrib.auth.models import User
 from datawinners import initializer
+from datawinners.admin.views import create_entity
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.datarecord import register
-from mangrove.datastore.entity import Entity, define_type
+from mangrove.datastore.entity import Entity, define_type, create_entity
 from pytz import UTC
 from mangrove.datastore.reporter import REPORTER_ENTITY_TYPE
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
@@ -15,8 +16,8 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 
 
-def define_entity_instance(manager, ENTITY_TYPE, location, short_code):
-    return Entity(manager, entity_type=ENTITY_TYPE, location=location, short_code=short_code)
+def define_entity_instance(manager, entity_type, location, short_code):
+    return create_entity(manager,entity_type=entity_type,location=location,aggregation_paths=None,short_code=short_code)
 
 
 def create_entity_types(manager, entity_types):
@@ -196,7 +197,9 @@ def load_data():
 
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="CLI001", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6])
+                           fields=[question1, question2, question3, question4, question5, question6],
+                           entity_type=CLINIC_ENTITY_TYPE
+                           )
     qid = form_model.save()
     project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"])
@@ -208,7 +211,8 @@ def load_data():
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="CLI002", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6])
+                            fields=[question1, question2, question3, question4, question5, question6],
+                            entity_type=CLINIC_ENTITY_TYPE)
     qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"])
