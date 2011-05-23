@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
@@ -28,13 +28,15 @@ def create_question(post_dict, dbm):
         datadict_slug = datadict_type.get('slug')
     else:
         datadict_slug = str(slugify(unicode(post_dict.get('title'))))
-    ddtype = get_or_create_data_dict(dbm=dbm, name=post_dict.get('question_code'), slug=datadict_slug,
+    ddtype = get_or_create_data_dict(dbm=dbm, name=post_dict.get('code'), slug=datadict_slug,
                                      primitive_type=post_dict.get('type'), description=post_dict.get('title'))
 
     if post_dict["type"] == "text":
         return _create_text_question(post_dict, ddtype)
     if post_dict["type"] == "integer":
         return _create_integer_question(post_dict, ddtype)
+    if post_dict["type"] == "geocode":
+        return _create_geo_code_question(post_dict, ddtype)
     if post_dict["type"] == "select":
         return _create_select_question(post_dict, single_select_flag=False, ddtype=ddtype)
     if post_dict["type"] == "date":
@@ -46,7 +48,7 @@ def create_question(post_dict, dbm):
 def create_questionnaire(post, dbm):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
-    entity_id_question = TextField(name="What are you reporting on?", question_code="eid",
+    entity_id_question = TextField(name="What are you reporting on?", code="eid",
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    length=TextConstraint(min=1, max=12))
@@ -66,7 +68,7 @@ def update_questionnaire_with_questions(form_model, question_set, dbm):
 
 
 def get_code_and_title(fields):
-    return [(each_field.question_code, each_field.name)for each_field in fields]
+    return [(each_field.code, each_field.name)for each_field in fields]
 
 
 def _create_text_question(post_dict, ddtype):
@@ -75,7 +77,7 @@ def _create_text_question(post_dict, ddtype):
     max_length = max_length_from_post if not is_empty(max_length_from_post) else None
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     length = TextConstraint(min=min_length, max=max_length)
-    return TextField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype)
 
 
@@ -83,18 +85,21 @@ def _create_integer_question(post_dict, ddtype):
     max_range_from_post = post_dict["range_max"]
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
     range = NumericConstraint(min=post_dict["range_min"], max=max_range)
-    return IntegerField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                         range=range, ddtype=ddtype)
 
 
 def _create_date_question(post_dict, ddtype):
-    return DateField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      date_format=post_dict.get('date_format'), ddtype=ddtype)
+
+def _create_geo_code_question(post_dict, ddtype):
+    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype)
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
     options = [choice.get("text") for choice in post_dict["choices"]]
-    return SelectField(name=post_dict["title"], question_code=post_dict["question_code"].strip(), label="default",
+    return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                        options=options, single_select_flag=single_select_flag, ddtype=ddtype)
 
 

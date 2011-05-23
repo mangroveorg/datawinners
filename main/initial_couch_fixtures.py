@@ -177,19 +177,19 @@ def load_data():
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
 
-    question1 = TextField(label="entity_question", question_code="EID", name="What is associated entity?",
+    question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type)
-    question2 = TextField(label="Name", question_code="NA", name="What is your name?",
+    question2 = TextField(label="Name", code="NA", name="What is your name?",
                           length=TextConstraint(min=1, max=10),
                           defaultValue="some default value", language="eng", ddtype=name_type)
-    question3 = IntegerField(label="Father age", question_code="FA", name="What is age of father?",
+    question3 = IntegerField(label="Father age", code="FA", name="What is age of father?",
                              range=NumericConstraint(min=18, max=100), ddtype=age_type)
-    question4 = DateField(label="Report date", question_code="RD", name="What is reporting date?",
+    question4 = DateField(label="Report date", code="RD", name="What is reporting date?",
                           date_format="dd.mm.yyyy", ddtype=date_type)
-    question5 = SelectField(label="Blood Group", question_code="BG", name="What is your blood group?",
+    question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
                             ddtype=select_type)
-    question6 = SelectField(label="Symptoms", question_code="SY", name="What are symptoms?",
+    question6 = SelectField(label="Symptoms", code="SY", name="What are symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
                             ddtype=select_type)

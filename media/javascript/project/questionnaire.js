@@ -4,7 +4,7 @@
 DW.question = function(question){
     var defaults = {
         name : "Question",
-        question_code : "code",
+        code : "code",
         type : "text",
         choices :[{text:"", val:""}],
         entity_question_flag : false,
@@ -37,7 +37,7 @@ DW.question.prototype = {
         this.min_length = ko.observable(q.length.min);
         this.max_length = ko.observable(q.length.max);
         this.title = ko.observable(q.name);
-        this.question_code = ko.observable(q.question_code);
+        this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.choices = ko.observableArray(q.choices);
         this.is_entity_question = ko.observable(q.entity_question_flag);
@@ -58,7 +58,7 @@ DW.question.prototype = {
 DW.current_code ="AA";
 
 DW.generateQuestionCode = function(){
-        var question_code = DW.current_code;
+        var code = DW.current_code;
         var next_code = DW.current_code;
         var x,y = '';
         if(next_code[1]<'Z')
@@ -73,7 +73,7 @@ DW.generateQuestionCode = function(){
         }
         next_code = x + y;
         DW.current_code = next_code;
-        return question_code
+        return code
 };
 
 $(document).ready(function(){
@@ -105,8 +105,6 @@ $(document).ready(function(){
         return num != 0;
     }, "Answer cannot be of length less than 1");
 
-//    //$('#code').rules("add", {spacerule:null});
-
     $("#question_form").validate({
      messages: {
          max_length:{
@@ -134,7 +132,11 @@ $(document).ready(function(){
             },
             range_max:{
                 number: true
+            },
+            choice_text:{
+                required: "#choice_text:visible"
             }
+
         }
     });
 

@@ -30,7 +30,7 @@
             $('p:has(input[type=text].answer_filter)').each(function(){
                 var p = $(this);
                 if(p.find('input.answer_filter').val().trim().length > 0){
-                    filters.push({question_code: p.find('select').val(), answer: p.find('input.answer_filter').val().trim()});
+                    filters.push({code: p.find('select').val(), answer: p.find('input.answer_filter').val().trim()});
                 }
             });
             return filters
