@@ -109,6 +109,10 @@
                                             data-bind="checked: selectedQuestion().isAChoiceTypeQuestion"
                                             class="choice-question-checkbox required"/> List of Choices
                                 </div>
+                                <div><input type="radio" name="type" value="location"
+                                            data-bind="checked: selectedQuestion().type"
+                                            class="required"/> Location
+                                </div>
                             </li>
                             <li data-bind="visible: viewModel.showDateFormats()">
                                 <div class="margin_top_20">

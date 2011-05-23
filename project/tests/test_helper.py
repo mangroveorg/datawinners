@@ -290,3 +290,23 @@ class TestHelper(unittest.TestCase):
 
         patcher.stop()
         patcher1.stop()
+
+    def test_should_create_location_question_with_implicit_ddtype(self):
+        CODE = "lc3"
+        LABEL = "what is your location"
+        SLUG = "what_is_your_location"
+        TYPE = "location"
+        post = {"title": LABEL, "code": CODE, "type": TYPE, "is_entity_question": False}
+
+        dbm = Mock(spec=DatabaseManager)
+
+        expected_data_dict = DataDictType(dbm, CODE, SLUG, TYPE, LABEL)
+        self.create_ddtype_mock.return_value = expected_data_dict
+
+        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
+            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
+            location_question = helper.create_question(post, dbm)
+
+        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=CODE, slug=SLUG,
+                                                        primitive_type=TYPE, description=LABEL)
+        self.assertEqual(expected_data_dict, location_question.ddtype)

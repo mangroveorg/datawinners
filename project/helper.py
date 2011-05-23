@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, LocationField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
@@ -35,6 +35,8 @@ def create_question(post_dict, dbm):
         return _create_text_question(post_dict, ddtype)
     if post_dict["type"] == "integer":
         return _create_integer_question(post_dict, ddtype)
+    if post_dict["type"] == "location":
+        return _create_location_question(post_dict, ddtype)
     if post_dict["type"] == "select":
         return _create_select_question(post_dict, single_select_flag=False, ddtype=ddtype)
     if post_dict["type"] == "date":
@@ -90,6 +92,9 @@ def _create_integer_question(post_dict, ddtype):
 def _create_date_question(post_dict, ddtype):
     return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      date_format=post_dict.get('date_format'), ddtype=ddtype)
+
+def _create_location_question(post_dict, ddtype):
+    return LocationField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype)
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
