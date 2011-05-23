@@ -105,8 +105,6 @@ $(document).ready(function(){
         return num != 0;
     }, "Answer cannot be of length less than 1");
 
-//    //$('#code').rules("add", {spacerule:null});
-
     $("#question_form").validate({
      messages: {
          max_length:{
@@ -134,7 +132,11 @@ $(document).ready(function(){
             },
             range_max:{
                 number: true
+            },
+            choice_text:{
+                required: "#choice_text:visible"
             }
+
         }
     });
 
