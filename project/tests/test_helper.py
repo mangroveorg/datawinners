@@ -295,7 +295,7 @@ class TestHelper(unittest.TestCase):
         CODE = "lc3"
         LABEL = "what is your location"
         SLUG = "what_is_your_location"
-        TYPE = "location"
+        TYPE = "geocode"
         post = {"title": LABEL, "code": CODE, "type": TYPE, "is_entity_question": False}
 
         dbm = Mock(spec=DatabaseManager)
