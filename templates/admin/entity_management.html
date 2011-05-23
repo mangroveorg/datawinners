@@ -1,36 +1,38 @@
-{% extends 'layout.html' %}
-{% block page_title %}Define an entity{% endblock %}
+{% extends 'layout_application.html' %}
+{% block page_title %}Add a new subject type{% endblock %}
+
+{% load dw_tabs %}
+{% block main_navigation %}
+{% activetab "main_nav" "subjects" %}
+{{ block.super }}
+{% endblock %}
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
 {% endblock %}
 {% block content%}
-    <div class="span-18 box">
+    <div class="application_register" >
         {% if message %}
              <div id="flash-message" class="success">
                  {{ message }}
              </div>
         {% endif %}
-        <fieldset ><legend>Define an Entity</legend>
             <form id="entity_creation_form" action="" method="POST">
                 {% csrf_token %}
-                    <div class="span-16 form-5px">
-                        <div class="span-7 column border">
-                            <div>
-                                <h3 class="title">Define an Entity<br/><br/></h3>
-                            </div>
-                            <div class="{{ form.entity_type.css_classes }} form-row-10px">
-                                {{ form.entity_type.label_tag }}<br/>
+                    <ul>
+                            <li>
+                                <h3 class="title">Add a new subject type</h3>
+                            </li>
+                            <li class="{{ form.entity_type.css_classes }} form-row-10px">
+                                {{ form.entity_type.label_tag }}
                                 {{ form.entity_type}}
                                 <div>
                                     {{ form.entity_type.errors }}
                                 </div>
-                            </div>
-                            <div>
-                            <input type="submit" value="Create" />
-                            </div>
-                        </div>
-                    </div>
+                            </li>
+                            <li>
+                            <input type="submit" value="Add" class = "button"/>
+                            </li>
+                    </ul>
             </form>
-        </fieldset>
     </div>
 {% endblock %}

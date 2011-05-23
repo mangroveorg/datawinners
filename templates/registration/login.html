@@ -1,6 +1,7 @@
-{% extends 'layout.html' %}
+{% extends 'layout_registration.html' %}
 
 {% block page_title %} Login {% endblock %}
+{% block section_title %} Sign into your Datawinners account {% endblock %}
 {% block page_js %}
     <script type="text/javascript" >
         $(document).ready(function(){
@@ -19,29 +20,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="span-12 box push-6">
+    <div class="signin">
         <fieldset>
-            <legend>Login</legend>
-            <form action="" method="POST">
+            <form action="" method="POST" class="signin_form">
                 {% csrf_token %}
-                <div class="span-8 last">
-                    <div class="span-8">
-                        <div class="{{ form.username.css_classes  }} form-row-10px">
-                            <label for="id_username">Email</label><br/>
+                    <ul>
+                        <li class="{{ form.username.css_classes  }} form-row-10px">
+                            <label for="id_username">Email</label>
                             {{ form.username }}
                             {{ form.username.errors }}
-                        </div>
-                        <div class="{{ form.password.css_classes  }} form-row-10px">
-                            {{ form.password.label_tag }}<br/>
+                        </li>
+                        <li class="{{ form.password.css_classes  }} form-row-10px">
+                            {{ form.password.label_tag }}
                             {{ form.password }}
                             {{ form.password.errors }}
-                        </div>
-                        <div class="span-8">
-                            <input type="submit" value="Login"/>
-                            <div class="span-8 last">Not registered? <a href="/register">Create an account</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
-                        </div>
-                    </div>
-                </div>
+                        </li>
+                        <li>
+                            <input type="submit" value="Login" class="button"/>
+                            <div>Not registered? <a href="/register">Create an account</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
+                        </li>
+                    </ul>
             </form>
         </fieldset>
     </div>

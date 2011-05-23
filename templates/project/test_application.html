@@ -10,24 +10,39 @@
     <script type="text/javascript" src="/media/javascript/gmap/jquery.gmap-1.1.0.js"></script>
     <script>
         $(document).ready(function(){
-             var user_location = [
-                                {latitude: 47.670553,
-                                  longitude: 9.588479,
-                                  html: "the popup message",
-                                  popup: true},
-                                { latitude: 47.65197522925437,
-                                  longitude: 9.47845458984375 },
-                                { latitude: 47.594996,
-                                  longitude: 9.600708},
-                                { address: "delhi, India" }
-                                ]
-             $("#map").gMap({ 
-                  scrollwheel: true,
-                  markers: user_location,
-                  latitude: user_location[3].latitude,
-                  longitude: user_location[3].longitude,
-                  zoom: 9
-                  });
+ $("#question_form").validate({
+     messages: {
+         max_length:{
+             digits: "Please enter positive numbers only"
+         }
+
+     },
+     rules: {
+            test :{
+              required: true
+            },
+            question_title:{
+                required: true
+            },
+            code:{
+                required: true
+//                spacerule: true,
+//                regexrule: true
+            },
+            type:{
+                required: true
+            },
+            max_length:{
+                digits:true
+            },
+            range_min:{
+                number: true
+            },
+            range_max:{
+                number: true
+            }
+        }
+    });
 
         })
     </script>
@@ -35,10 +50,27 @@
 
 
 {% block content %}
-    <div id="test" class="grid_22 alpha omega">
-        <h1>
-            Heading Page 1
-        </h1>
+    <div class="grid_22 alpha omega">
+<form id="question_form">
+                    <fieldset>
+                        <legend>Add Questionnaire</legend>
+                        <ul>
+                            <li>
+                                <input type="text" id="test" name="test" data-bind="value: selectedQuestion().type" />
+                            </li>
+                            <li>
+                                <label>Code</label>
+                                <input id="code" name="code" type="text" class="required"
+                                       data-bind="value: selectedQuestion().question_code" />
+                            </li>
+                            <li>
+                                <label>Question </label>
+                                <input id="question_title" name="question_title" type="text" class="required"
+                                       data-bind="value: selectedQuestion().title" />
+                            </li>
+
+                        </ul>
+                    </fieldset>
+                </form>
     </div>
-    <div id="map" style="height:400px; margin-top:20px;" class="grid_22"></div>
 {% endblock %}

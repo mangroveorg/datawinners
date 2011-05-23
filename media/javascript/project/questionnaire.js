@@ -115,7 +115,7 @@ $(document).ready(function(){
 
      },
      rules: {
-            question:{
+            question_title:{
                 required: true
             },
             code:{

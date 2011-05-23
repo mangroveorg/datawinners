@@ -2,7 +2,7 @@ form fieldset legend {
   font-size: 20px; }
 form ul li {
   margin-bottom: 20px; }
-  form ul li input[type=text] {
+  form ul li input[type=text], form ul li input[type=password] {
     width: 350px;
     height: 25px;
     border-color: #cccccc; }
@@ -22,6 +22,19 @@ form ul li {
       font-size: 12px;
       display: inline;
       font-weight: normal; }
+
+.application_register form fieldset legend {
+  font-size: 20px; }
+.application_register form ul li input[type=text], .application_register form ul li input[type=password] {
+  width: 200px;
+  height: 15px;
+  border-color: #cccccc; }
+.application_register form ul li label {
+  font-size: 14px;
+  display: block;
+  font-weight: bold;
+  float: left;
+  width: 170px; }
 
 /*Form elements without form tag*/
 input[type=text] {
@@ -51,7 +64,7 @@ select {
   border-color: #cccccc;
   background: #FFFFFF; }
 
-button {
+.button {
   border: 1px solid #D4972D;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;

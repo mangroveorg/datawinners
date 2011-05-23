@@ -7,4 +7,4 @@ class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    entity_type = CharField(required=True)
+    entity_type = CharField(required=True, label="New Subject(eg clinic, waterpoint etc)")

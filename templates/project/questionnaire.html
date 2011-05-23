@@ -85,13 +85,13 @@
                         <ul>
                             <li>
                                 <label>Question</label>
-                                <input id="question" name="question" type="text" class="required"
-                                       data-bind="value: selectedQuestion().title"/>
+                                <input id="question_title" name="question_title" type="text" class="required"
+                                       data-bind="value: selectedQuestion().title, uniqueName: true "/>
                             </li>
                             <li>
                                 <label>Code</label>
                                 <input id="code" name="code" type="text" class="required"
-                                       data-bind="value: selectedQuestion().question_code"/>
+                                       data-bind="value: selectedQuestion().question_code, uniqueName: true"/>
                             </li>
                             <li class="margin_null" data-bind="visible: !selectedQuestion().is_entity_question()">
                                 <label>Type</label>

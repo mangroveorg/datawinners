@@ -1,16 +1,27 @@
-{% extends 'layout.html' %}
+{% extends 'layout_application.html' %}
+
+{% block section_title %}Dashboard{% endblock %}
+
+{% load dw_tabs %}
+{% block main_navigation %}
+{% activetab "main_nav" "dashboard" %}
+{{ block.super }}
+{% endblock %}
+
 {% load i18n %}
 {% block content %}
-    <div class="span-18 box">
-        <div class="span-9">
-            <h4>Welcome {{ user.get_profile.title }} {{ user.first_name }} {{ user.last_name }}</h4>
-            <h4>Organization ID : {{organization.org_id}}</h4>
-            <h4>Organization Name : {{organization.name}}</h4>
-            <h4>Organization Office Phone : {{organization.office_phone}}</h4>
+    <div>
+        <div class="box" >
+            <p>Welcome {{ user.get_profile.title }} {{ user.first_name }} {{ user.last_name }}</p>
+            <p>Organization ID : {{organization.org_id}}</p>
+            <p>Organization Name : {{organization.name}}</p>
+            <p>Organization Office Phone : {{organization.office_phone}}</p>
+        </div>
+        <div class="margin_top_20">
             <a href="reporter/register">Register Reporter</a><br/>
             <a href="{% url datawinners.project.views.project_listing %}">View all projects</a><br/>
             <a href="{% url datawinners.project.views.create_profile %}">Create project</a><br/>
-            <a href="{% url datawinners.admin.views.create_entity %}">Define Entity Types</a>
+            <a href="{% url datawinners.admin.views.register_entity %}">Register Subjects</a>
         </div>
     </div>
 {% endblock %}

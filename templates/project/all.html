@@ -1,7 +1,17 @@
-{% extends 'layout.html' %}
+{% extends 'layout_application.html' %}
 {% block page_title %} Projects {% endblock %}
+{% block section_title %} All Projects {% endblock %}
+
+{% load dw_tabs %}
+{% block main_navigation %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
 {% block content %}
-    <div class="span-18 box">
+    <div class="text_align_right margin_bottom_20">
+        <a href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
+    </div>
     <table>
         <th> Name </th>
         <th> Created On </th>
@@ -14,5 +24,5 @@
             </tr>
         {% endfor %}
     </table>
-    </div>
+
 {% endblock %}

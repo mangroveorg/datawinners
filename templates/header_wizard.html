@@ -5,12 +5,23 @@
                 <span class="logo_data">Data</span>
                 <span class="logo_winners">Winners</span>
             </div>
-            <div class="grid_12 omega login">
-                <span class="welcome">Welcome Username</span>
-                <span><a href="#">Your Account</a></span>
-                <span>{% if user.is_authenticated %}  <a href="{% url django.contrib.auth.views.logout %}">Logout</a> {% endif %}</span>
-                <span><a href="#" class="padding_right_null">Help</a></span>
-            </div>
+            {% if user.is_authenticated %}
+                <div class="grid_12 omega login">
+                    <span class="welcome">Welcome {{ user.first_name }}! </span>
+                    <span><a href="#">Your Account</a></span>
+                    <span>  <a href="{% url django.contrib.auth.views.logout %}">Logout</a> </span>
+                    <span><a href="#" class="padding_right_null">Help</a></span>
+                </div>
+            {% else %}
+                <div class="grid_12 omega login">
+                    <span class="welcome">Welcome Guest!</span>
+                    <span>  <a href="{% url django.contrib.auth.views.login %}">Sign in</a> </span>
+                    <span>  <a href="{% url registration.views.register %}">Sign up</a> </span>
+                    <span><a href="#" class="padding_right_null">Help</a></span>
+                </div>
+            {% endif %}
+
+
         </div>
     </div>
 </div>

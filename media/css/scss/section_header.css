@@ -47,7 +47,7 @@
         font-size: 14px;
         color: #feea89;
         font-weight: bold; }
-      #container_header_application #main_tab ul li.current a {
+      #container_header_application #main_tab ul li.active a {
         -moz-border-radius: 15px;
         -webkit-border-radius: 15px;
         border: 1px solid #000000;

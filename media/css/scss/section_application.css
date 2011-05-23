@@ -27,3 +27,10 @@
       background: url(/media/images/wizard_bg.gif) repeat-x top left; }
     #container_content .wizard_content .content_wrapper, #container_wizard .wizard_content .content_wrapper {
       padding: 20px 40px 20px 40px; }
+  #container_content #page_title, #container_wizard #page_title {
+    height: 40px;
+    padding-top: 15px;
+    width: 950px;
+    border-radius: 1px solid red;
+    margin: 0 auto;
+    font-size: 18px; }
