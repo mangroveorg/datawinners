@@ -39,7 +39,7 @@ class TestMultiTenancy(unittest.TestCase):
             password2="a",
             title="",
             )
-        response = c.post('/register', reg_post)
+        response = c.post('/register/', reg_post)
         self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
