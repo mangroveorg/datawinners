@@ -13,6 +13,7 @@
 
     {% endblock %}
     {% block main_content %}
+
         <div id="container_content">
             <div id="page_title">
                 {% block section_title %}
@@ -22,7 +23,8 @@
 
                 <div class="grid_23 content">
                     <div class="grid_15 alpha  left_hand_section">
-                         {% block content %} {% endblock %}
+                        {% block messages %}{% endblock %} 
+                        {% block content %} {% endblock %}
                     </div>
                     <div class="grid_7 right_hand_section alpha omega">
                         {% block right_hand_section %}

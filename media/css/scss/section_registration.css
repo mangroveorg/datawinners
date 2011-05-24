@@ -1,5 +1,4 @@
 .organization, .administrative, .signin {
-  border: 1px solid #ccc;
   margin-bottom: 15px;
   padding: 10px;
   min-height: 400px; }
@@ -17,6 +16,7 @@
   padding: 10px; }
 
 .left_hand_section {
+  border: 1px solid #cccccc;
   margin-right: 20px; }
 
 #container_content .content {
