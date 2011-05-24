@@ -1,0 +1,17 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
+import helper
+from mangrove.datastore.database import get_db_manager
+from mangrove.datastore.entity import get_entities_by_type
+
+def map_entities(request):
+    #Fetch all entitites of given type
+    entity_list = get_entities_by_type(get_db_manager(),"Water Point")
+    location_list=helper.create_location_list(entity_list)
+    location_list = json.dumps(location_list)
+    return   ('maps/entity_map.html', {"location_list":location_list}, context_instance=RequestContext(request))
+
+def render_map(request):
+    return render_to_response('maps/entity_map.html', context_instance=RequestContext(request))

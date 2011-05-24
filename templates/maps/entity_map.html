@@ -1,4 +1,4 @@
-{% extends 'project/tab_navigation.html' %}
+{% extends 'layout_application.html' %}
 {% block page_title %} Test Maps Page {% endblock %}
 {% block page_scss %}
     <link rel="stylesheet" href="/media/css/scss/section_test.scss" media="screen">
@@ -10,8 +10,9 @@
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/OpenLayers.js"></script>
     <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/canvas.js"></script>
-{% endblock %}
 
+
+{% endblock %}
 
 
 {% block content %}

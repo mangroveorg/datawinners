@@ -109,6 +109,7 @@ DW.map_loader.prototype = {
 }
 
 $(document).ready(function(){
+
     new DW.map_loader();
 
 });
