@@ -23,6 +23,7 @@
                  {{ message }}
              </div>
         {% endif %}
+
         <fieldset>
              <form id="registration_form" action="" method="POST">
                     {% csrf_token %}
@@ -56,6 +57,13 @@
                                 {{ form.commune }}
                                 <div>
                                     {{ form.commune.errors }}
+                                </div>
+                            </li>
+                            <li class="{{ form.geo_code.css_classes }} form-row-10px">
+                                {{ form.geo_code.label_tag }}
+                                {{ form.geo_code }}
+                                <div>
+                                    {{ form.geo_code.errors }}
                                 </div>
                             </li>
                             <li>
