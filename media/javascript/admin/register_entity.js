@@ -4,10 +4,14 @@ $(document).ready(function(){
     var validator = $('#question_form').validate();
 
     $('#autogen').unbind('change').change(function(){
-        if($('#autogen').attr('checked') != true)
-            $('#short_name').attr('class', '')
-        else
-            $('#short_name').attr('class', 'hide');
+        if($('#autogen').attr('checked') != true){
+            $('#short_name').attr('disabled', '');
+            $('#short_name').attr('class', '');
+        }
+        else{
+            $('#short_name').attr('disabled', 'disabled');
+            $('#short_name').attr('class', 'required');
+        }
     })
 
     $('#register_entity').unbind('click').click(function() {

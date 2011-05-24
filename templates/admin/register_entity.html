@@ -19,7 +19,7 @@
                     <ul>
                         <li>
                             <span>
-                                <label>Type</label>
+                                <label>* Type</label>
                             </span>
                             <span>
                                 <select name="type" data-bind="value: message.t">
@@ -35,13 +35,13 @@
                                 <label>Short Name</label>
                             </span>
                         <span>
-                                <input id="short_name" type="text" data-bind="value: message.s" class="hide"/>
+                                <input id="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
                             </span>
                             <span><input id="autogen" type="checkbox" checked="true">Autogenerate</input></span>
                         </li>
                         <li>
                         <span>
-                                <label>Name</label>
+                                <label>* Name</label>
                             </span>
                         <span>
                                 <input name="name" type="text" class="required" data-bind="value: message.n"/>
@@ -73,7 +73,7 @@
                         </li>
                         <li>
                             <span>
-                                <label>Mobile Number</label>
+                                <label>* Mobile Number</label>
                             </span>
                             <span>
                                 <input name="mobile_number" type="text" class="required" data-bind="value: message.m"/>
