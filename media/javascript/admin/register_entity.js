@@ -6,11 +6,11 @@ $(document).ready(function(){
     $('#autogen').unbind('change').change(function(){
         if($('#autogen').attr('checked') != true){
             $('#short_name').attr('disabled', '');
-            $('#short_name').attr('class', '');
+            $('#short_name').attr('class', 'required');
         }
         else{
             $('#short_name').attr('disabled', 'disabled');
-            $('#short_name').attr('class', 'required');
+            $('#short_name').attr('class', '');
         }
     })
 
