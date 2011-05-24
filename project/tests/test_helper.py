@@ -59,7 +59,7 @@ class TestHelper(unittest.TestCase):
                  "is_entity_question": False}
         ]
         q1 = helper.create_question(post[0], self.dbm)
-        form_model = FormModel(self.dbm, "test", "test", "test", [q1], "test", "test")
+        form_model = FormModel(self.dbm, "test", "test", "test", [q1], ["test"], "test")
         questionnaire = helper.update_questionnaire_with_questions(form_model, post, self.dbm)
         self.assertEqual(3, len(questionnaire.fields))
 
@@ -219,7 +219,7 @@ class TestHelper(unittest.TestCase):
                                                         primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, integer_question.ddtype)
 
-    def test_should_create_an_entity_question_with_implicit_data_dict_type(self):
+    def test_should_create_questionnaire_with_entity_question(self):
         NAME = "eid"
         LABEL = "Entity ID"
         SLUG = "entity_id"
@@ -244,6 +244,7 @@ class TestHelper(unittest.TestCase):
 
         self.assertEqual(1, len(form_model.fields))
         self.assertEqual(True, form_model.fields[0].is_entity_field)
+        self.assertEqual(["Water Point"], form_model.entity_type)
 
         patcher.stop()
 

@@ -5,7 +5,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, Date
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
-from mangrove.utils.types import is_empty, is_sequence, is_not_empty
+from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
 import models
 
 
@@ -52,7 +52,8 @@ def create_questionnaire(post, dbm):
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    length=TextConstraint(min=1, max=12))
-    return FormModel(dbm, entity_type=post["entity_type"], name=post["name"], fields=[entity_id_question],
+    entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
+    return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=[entity_id_question],
                      form_code=generate_questionnaire_code(dbm), type='survey')
 
 
