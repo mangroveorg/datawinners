@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from datawinners.main.utils import get_db_manager_for, get_database_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
+from mangrove.utils.types import is_empty
 
 
 @csrf_view_exempt
@@ -51,7 +52,8 @@ def submit(request):
     success = True
     try:
         s = SubmissionHandler(dbm=get_database_manager(request))
-        request = Request(transport=post.get('transport'), message=post.get('message'), source=post.get('source'),
+        message ={k:v for (k,v) in post.get('message').items() if not is_empty(v)}
+        request = Request(transport=post.get('transport'), message=message, source=post.get('source'),
                           destination=post.get('destination'))
         response = s.accept(request)
         message = response.message

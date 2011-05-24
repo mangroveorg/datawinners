@@ -40,6 +40,7 @@ $(document).ready(function(){
                                 'l': ko.observable(),
                                 'd': ko.observable(),
                                 'm': ko.observable(),
+                                'g': ko.observable(),
                                 'form_code': 'REG'
                                 },
                     'transport': 'web',
