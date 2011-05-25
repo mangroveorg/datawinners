@@ -32,7 +32,7 @@
           var proj = new OpenLayers.Projection("EPSG:4326");
           var point = new OpenLayers.LonLat(73.6962890625, 26.941659545381516);
           point.transform(proj, map.getProjectionObject());
-          map.setCenter(point, 5);
+          map.setCenter(point, 2);
 
        }
 

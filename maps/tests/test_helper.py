@@ -10,8 +10,8 @@ class TestHelper(unittest.TestCase):
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_should_create_location_geojson(self):
-        expected_geojson = "[{'geometry': {'type': 'Point', 'coordinates': [1, 2]}, 'type': 'feature'}, {'geometry': {'type': 'Point', 'coordinates': [1, 3]}, 'type': 'feature'}]"
-        entity1 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP001",
+        expected_geojson='{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [1, 2]}, "type": "Feature"}, {"geometry": {"type": "Point", "coordinates": [1, 3]}, "type": "Feature"}]}'
+        entity1 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
                          geometry={'type': 'Point', 'coordinates': [1, 2]})
         entity2 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
                          geometry={'type': 'Point', 'coordinates': [1, 3]})
