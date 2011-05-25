@@ -12,7 +12,7 @@ from pytz import UTC
 from mangrove.datastore.reporter import REPORTER_ENTITY_TYPE
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 
 
@@ -227,6 +227,6 @@ def load_data():
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
                                          primitive_type='string')
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[("telephone_number", "1234567890", phone_number_type),
-                                                              ("first_name", "Shweta", first_name_type)], location=[],
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
+                                                              (NAME_FIELD, "Shweta", first_name_type)], location=[],
              source="sms", short_code="REP1")
