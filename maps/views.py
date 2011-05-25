@@ -11,7 +11,7 @@ def map_entities(request):
     entity_list = get_entities_by_type(get_db_manager(),"Water Point")
     location_list=helper.create_location_list(entity_list)
     location_list = json.dumps(location_list)
-    return   ('maps/entity_map.html', {"location_list":location_list}, context_instance=RequestContext(request))
+    return HttpResponse(location_list)
 
 def render_map(request):
     return render_to_response('maps/entity_map.html', context_instance=RequestContext(request))
