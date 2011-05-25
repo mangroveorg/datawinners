@@ -25,7 +25,7 @@ def sms(request):
         response = s.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
         message = response.message
     except MangroveException as exception:
-        message = get_exception_message_for(type=type(exception), channel=SMS)
+        message = get_exception_message_for(exception=exception, channel=SMS)
     return HttpResponse(message)
 
 
@@ -61,6 +61,6 @@ def submit(request):
         response = s.accept(request)
         message = response.message
     except MangroveException as exception:
-        message = exception.message
+        message = get_exception_message_for(exception=exception, channel=WEB)
         success = False
     return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': response.datarecord_id}))

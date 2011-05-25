@@ -9,7 +9,7 @@ SMS = "sms"
 DEFAULT_EXCEPTION_MESSAGE = "An exception has occurred"
 
 messages = {
-    
+
 
     ex.EntityTypeAlreadyDefined : {
         DEFAULT :"Entity identified by %s is already defined"},
@@ -17,10 +17,15 @@ messages = {
     ex.EntityQuestionCodeNotSubmitted : {
         DEFAULT: "You have not created a question asking the collector for the subject he is reporting on"
     },
+
     ex.FormModelDoesNotExistsException : {
         DEFAULT : "Questionnaire ID %s doesnt exist.",
         WEB:  "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS",
         SMS:  "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS"
+    },
+
+    ex.DataObjectNotFound : {
+        DEFAULT: "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
     },
 
     ex.NumberNotRegisteredException:{
@@ -31,9 +36,11 @@ messages = {
     ex.QuestionCodeAlreadyExistsException:{
         DEFAULT:"Question Code Already Exists",
         WEB:"Question Code %s provided already exists"
+    },
+
+    ex.InvalidAnswerSubmissionException:{
+        DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
     }
-
-
 
 }
 
