@@ -8,7 +8,10 @@ from datawinners.main.utils import get_db_manager_for, get_database_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
+from message_provider.message_handler import get_exception_message_for
 
+SMS = "sms"
+WEB = "web"
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -19,10 +22,10 @@ def sms(request):
     _to = request.POST["to_msisdn"]
     try:
         s = SubmissionHandler(dbm=get_db_manager_for(_to))
-        response = s.accept(Request(transport="sms", message=_message, source=_from, destination=_to))
+        response = s.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
         message = response.message
     except MangroveException as exception:
-        message = exception.message
+        message = get_exception_message_for(type=type(exception), channel=SMS)
     return HttpResponse(message)
 
 

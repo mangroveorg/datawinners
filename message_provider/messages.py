@@ -1,0 +1,39 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import mangrove.errors.MangroveException as ex
+
+
+DEFAULT = "default"
+WEB = "web"
+SMS = "sms"
+
+DEFAULT_EXCEPTION_MESSAGE = "An exception has occurred"
+
+messages = {
+    
+
+    ex.EntityTypeAlreadyDefined : {
+        DEFAULT :"Entity identified by %s is already defined"},
+
+    ex.EntityQuestionCodeNotSubmitted : {
+        DEFAULT: "You have not created a question asking the collector for the subject he is reporting on"
+    },
+    ex.FormModelDoesNotExistsException : {
+        DEFAULT : "Questionnaire ID %s doesnt exist.",
+        WEB:  "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS",
+        SMS:  "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS"
+    },
+
+    ex.NumberNotRegisteredException:{
+        DEFAULT:"This telephone number is not registered in our system.",
+        SMS: "This telephone number is not registered in our system. Please register or contact us at 033 20 426 89."
+    },
+
+    ex.QuestionCodeAlreadyExistsException:{
+        DEFAULT:"Question Code Already Exists",
+        WEB:"Question Code %s provided already exists"
+    }
+
+
+
+}
+
