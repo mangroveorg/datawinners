@@ -19,20 +19,8 @@ DW.map_loader = function() {
                 ]
     });
     this.user_location = [
-                            { latitude: 47.670553,
-                              longitude: 9.588479},
-                            { latitude: 47.65197522925437,
-                              longitude: 9.47845458984375 },
-                            { latitude: 47.594996,
-                              longitude: 9.600708},
-                            { latitude: 47.794996,
-                              longitude: 9.400708},
-                            { latitude: 47.564996,
-                              longitude: 9.300708},
-                            { latitude: 47.564996,
-                              longitude: 9.430708},
-                            { latitude: 47.564996,
-                              longitude: 9.730708}
+                            { latitude: 26.941659545381516,
+                              longitude: 73.6962890625}
                             ]
     this._init();
     this._styleMap();
@@ -101,14 +89,15 @@ DW.map_loader.prototype = {
             select.activate();
 
             //Intial focus point on the map, defined by the first data received, (right now its hard coded)
-            var focus = new OpenLayers.LonLat(9.588479, 47.670553);
+            var focus = new OpenLayers.LonLat(73.6962890625, 26.941659545381516);
             focus.transform(map.displayProjection, map.getProjectionObject())
-            map.setCenter(focus,9);
+            map.setCenter(focus,4);
     }
 
 }
 
 $(document).ready(function(){
+
     new DW.map_loader();
 
 });

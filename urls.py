@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     (r'', include('datawinners.project.urls')),
     (r'', include('datawinners.smstester.urls')),
     (r'', include('datawinners.submission.urls')),
+    (r'', include('datawinners.maps.urls')),
     # Examples:
     # url(r'^$', 'web.views.home', name='home'),
     # url(r'^web/', include('web.foo.urls')),
