@@ -1,36 +1,38 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 //DW is the global name space for DataWinner
-DW.question = function(question){
+DW.question = function(question) {
     var defaults = {
         name : "Question",
         code : "code",
         type : "text",
-        choices :[{text:"", val:""}],
+        choices :[
+            {text:"", val:""}
+        ],
         entity_question_flag : false,
         length_limiter : "length_unlimited",
         length : {
-          min : 1,
-          max : ""
+            min : 1,
+            max : ""
         },
         range : {
-          min : 0,
-          max : ""
+            min : 0,
+            max : ""
         },
         date_format: "mm.yyyy"
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
-    this.options = $.extend({},defaults, question);
+    this.options = $.extend({}, defaults, question);
     this._init();
 };
 
 
 DW.question.prototype = {
-    _init : function(){
+    _init : function() {
         var q = this.options;
         this.range_min = ko.observable(q.range.min);
-        
+
         //This condition required especially because in DB range_max is a mandatory field
         this.range_max = ko.observable(q.range.max ? q.range.max : "");
 
@@ -41,50 +43,80 @@ DW.question.prototype = {
         this.type = ko.observable(q.type);
         this.choices = ko.observableArray(q.choices);
         this.is_entity_question = ko.observable(q.entity_question_flag);
-        this.canBeDeleted = function(){return !this.is_entity_question();};
+        this.canBeDeleted = function() {
+            return !this.is_entity_question();
+        };
         this.isAChoiceTypeQuestion = ko.dependentObservable({
-            read:function(){
-                return this.type() == "select"||this.type() == "select1"? "choice" : "none";},
-            write:function(value){
-                this.type(this.type() == "" ? "select":"select1");
+            read:function() {
+                return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
+            },
+            write:function(value) {
+                this.type(this.type() == "" ? "select" : "select1");
             },
             owner: this
         });
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
+        charCount();
     }
 };
 
-DW.current_code ="AA";
+DW.current_code = "AA";
 
-DW.generateQuestionCode = function(){
-        var code = DW.current_code;
-        var next_code = DW.current_code;
-        var x,y = '';
-        if(next_code[1]<'Z')
-        {
-            y = String.fromCharCode(next_code[1].charCodeAt() + 1);
-            x = next_code[0];
-        }
-        else
-        {
-            x = String.fromCharCode(next_code[0].charCodeAt() + 1);
-            y = 'A';
-        }
-        next_code = x + y;
-        DW.current_code = next_code;
-        return code
+DW.generateQuestionCode = function() {
+    var code = DW.current_code;
+    var next_code = DW.current_code;
+    var x,y = '';
+    if (next_code[1] < 'Z') {
+        y = String.fromCharCode(next_code[1].charCodeAt() + 1);
+        x = next_code[0];
+    }
+    else {
+        x = String.fromCharCode(next_code[0].charCodeAt() + 1);
+        y = 'A';
+    }
+    next_code = x + y;
+    DW.current_code = next_code;
+    return code
 };
 
-$(document).ready(function(){
-    question_list.forEach(function(question){
+charCount = function() {
+    var questionnaire_code_len = $('#questionnaire-code').val().length;
+    var question_codes_len = 0;
+    var selected_question_code_difference = 0;
+    var max_len = 160;
+    for (var i = 0; i < viewModel.questions().length; i++) {
+        if (viewModel.selectedQuestion() == viewModel.questions()[i]) {
+            selected_question_code_difference = $('#code').val().length - viewModel.selectedQuestion().code().length;
+        }
+        question_codes_len = question_codes_len + viewModel.questions()[i].code().length +2;
+    }
+    var current_len = questionnaire_code_len + question_codes_len + selected_question_code_difference;
+    $('#char-count').html('Remaining character count: ' + (max_len - current_len));
+    if (current_len <= max_len) {
+        $("#char-count").css("color", "#666666")
+    }
+    if (current_len >= (max_len - 10)) {
+        $("#char-count").css("color", "orange")
+    }
+    if (current_len >= max_len) {
+        $("#char-count").css("color", "red")
+    }
+};
+
+$(document).ready(function() {
+    question_list.forEach(function(question) {
         var questions = new DW.question(question);
         viewModel.loadQuestion(questions);
-     });
+    });
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
 
     ko.applyBindings(viewModel);
+    charCount();
+
+    $('#questionnaire-code').keyup(charCount);
+    $('#code').keyup(charCount);
 
     $.validator.addMethod('spacerule', function(value, element, params) {
         var list = $.trim($('#' + element.id).val()).split(" ");
@@ -100,19 +132,19 @@ $(document).ready(function(){
         return re.test(text);
     }, "Only letters and digits are valid.");
 
-     $.validator.addMethod('naturalnumberrule', function(value, element, params) {
+    $.validator.addMethod('naturalnumberrule', function(value, element, params) {
         var num = $('#' + element.id).val();
         return num != 0;
     }, "Answer cannot be of length less than 1");
 
     $("#question_form").validate({
-     messages: {
-         max_length:{
-             digits: "Please enter positive numbers only"
-         }
+        messages: {
+            max_length:{
+                digits: "Please enter positive numbers only"
+            }
 
-     },
-     rules: {
+        },
+        rules: {
             question_title:{
                 required: true
             },
@@ -153,20 +185,20 @@ $(document).ready(function(){
             $("#questionnaire-code-error").html("<label class='error_message'> Space is not allowed in questionnaire code.</label>");
             return;
         }
-        else{
+        else {
             $('#questionnaire-code').val($.trim($('#questionnaire-code').val()))
         }
 
         var text = $('#questionnaire-code').val();
         var re = new RegExp('^[A-Za-z0-9 ]+$');
-        if( !re.test(text)){
+        if (!re.test(text)) {
             $("#questionnaire-code-error").html("<label class='error_message'> Only letters and digits are valid.</label>");
             return;
         }
 
         $("#questionnaire-code-error").html("");
 
-        if(!$('#question_form').valid()){
+        if (!$('#question_form').valid()) {
             $("#message-label").html("<label class='error_message'> This questionnaire has an error.</label> ");
             hide_message();
             return;
@@ -174,31 +206,34 @@ $(document).ready(function(){
 
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
-        $.post('/project/questionnaire/save', post_data, function(response) {
-            $("#message-label").html("<label class='success_message'>" + response + "</label>");
-            hide_message();
-        }).error(function(e){
+        $.post('/project/questionnaire/save', post_data,
+              function(response) {
+                  $("#message-label").html("<label class='success_message'>" + response + "</label>");
+                  hide_message();
+              }).error(function(e) {
             $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
 
-    function hide_message(){
+    function hide_message() {
         $('#message-label label').delay(5000).fadeOut();
     }
 
     $('input[name=type]:radio').change(
-            function(){
-                viewModel.selectedQuestion().range_min(0);
-                viewModel.selectedQuestion().range_max("");
-                viewModel.selectedQuestion().min_length(1);
-                viewModel.selectedQuestion().max_length("");
-                viewModel.selectedQuestion().length_limiter("length_unlimited");
-                viewModel.selectedQuestion().choices([{text:"", val:'a'}]);
-            }
-    );
+                                      function() {
+                                          viewModel.selectedQuestion().range_min(0);
+                                          viewModel.selectedQuestion().range_max("");
+                                          viewModel.selectedQuestion().min_length(1);
+                                          viewModel.selectedQuestion().max_length("");
+                                          viewModel.selectedQuestion().length_limiter("length_unlimited");
+                                          viewModel.selectedQuestion().choices([
+                                              {text:"", val:'a'}
+                                          ]);
+                                      }
+            );
     $('input[name=text_length]:radio').change(
-            function(){
-                viewModel.selectedQuestion().max_length("");
-            }
-    )
+                                             function() {
+                                                 viewModel.selectedQuestion().max_length("");
+                                             }
+            )
 });
