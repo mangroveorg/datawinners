@@ -8,7 +8,7 @@ from datawinners.main.utils import get_db_manager_for, get_database_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
-from message_provider.message_handler import get_exception_message_for
+from datawinners.message_provider.message_handler import get_exception_message_for
 
 SMS = "sms"
 WEB = "web"

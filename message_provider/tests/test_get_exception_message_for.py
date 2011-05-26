@@ -1,8 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, QuestionCodeAlreadyExistsException, NumberNotRegisteredException, MangroveException, EntityQuestionCodeNotSubmitted
-from message_provider.message_handler import get_exception_message_for
-from message_provider.messages import DEFAULT_EXCEPTION_MESSAGE
+from datawinners.message_provider.message_handler import get_exception_message_for
+from datawinners.message_provider.messages import DEFAULT_EXCEPTION_MESSAGE
 
 class TestExceptionHandler(unittest.TestCase):
 
