@@ -21,3 +21,6 @@ def get_exception_message_for(exception, channel=None):
     if exception.data is not None and "%s" in message:
         return message % exception.data
     return message
+
+def get_success_message_for(channel=None):
+    pass
