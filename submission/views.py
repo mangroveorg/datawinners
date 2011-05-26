@@ -65,7 +65,9 @@ def submit(request):
                           destination=post.get('destination'))
         response = s.accept(request)
         message = response.message
+        entity_id = response.datarecord_id
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=WEB)
         success = False
-    return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': response.datarecord_id}))
+        entity_id = None
+    return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
