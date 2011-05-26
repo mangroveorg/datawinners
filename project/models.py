@@ -18,7 +18,7 @@ class Project(DocumentBase):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
-        self.name = name
+        self.name = name.lower() if name is not None else None
         self.goals = goals
         self.project_type = project_type
         self.entity_type = entity_type
@@ -38,7 +38,7 @@ class Project(DocumentBase):
         attribute_list = [item[0] for item in (self.items())]
         for key in value_dict:
             if key in attribute_list:
-                setattr(self, key, value_dict.get(key))
+                setattr(self, key, value_dict.get(key).lower()) if key == 'name' else setattr(self, key, value_dict.get(key))
 
     def update_questionnaire(self,dbm):
         form_model = dbm.get(self.qid, FormModel)
