@@ -8,10 +8,6 @@ def get_exception_message_for(exception, channel=None):
     if channel is not None:
         message_dict = messages.get(ex_type)
         if message_dict is None:
-            if isinstance(exception, InvalidAnswerSubmissionException):
-                message = messages[InvalidAnswerSubmissionException].get(DEFAULT)
-                message % exception.data[0]
-                return message
             return exception.message
         message = message_dict.get(channel)
         if is_empty(message):
