@@ -2,6 +2,7 @@ from couchdb.mapping import  TextField, ListField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
+from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import  is_string
 
 
@@ -38,6 +39,12 @@ class Project(DocumentBase):
         for key in value_dict:
             if key in attribute_list:
                 setattr(self, key, value_dict.get(key))
+
+    def update_questionnaire(self,dbm):
+        form_model = dbm.get(self.qid, FormModel)
+        form_model.name = self.name
+        form_model.entity_type = self.entity_type
+        form_model.save()
 
 
 def get_project(pid, dbm):

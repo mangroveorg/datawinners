@@ -1,10 +1,15 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
+from mock import Mock
 from datawinners.main.utils import create_views
 from datawinners.project.models import Project, get_all_projects, get_project
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
+from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
+from mangrove.form_model.field import TextField
+from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.validation import TextConstraint
 
 
 class TestProjectModel(unittest.TestCase):
@@ -44,3 +49,19 @@ class TestProjectModel(unittest.TestCase):
         self.project1.update(self.dbm, dict(name='Test2', devices=['web', 'sms'], goals="New goals"))
         with self.assertRaises(DataObjectAlreadyExists):
             self.project1.save(self.dbm)
+
+    def test_should_update_questionnaire(self):
+        ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
+                                          primitive_type='string')
+        question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
+                              language="eng", entity_question_flag=True, ddtype=ddtype)
+        question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
+                              defaultValue="some default value", language="eng", length=TextConstraint(5, 10),
+                              ddtype=ddtype)
+        form_model = FormModel(self.dbm, name=self.project1.name, form_code="abc", fields=[question1, question2], entity_type=["Clinic"])
+        qid = form_model.save()
+        self.project1.qid = qid
+        self.project1.name = "New Name"
+        self.project1.update_questionnaire(self.dbm)
+        form_model = self.dbm.get(self.project1.qid, FormModel)
+        self.assertEqual("New Name", form_model.name)
