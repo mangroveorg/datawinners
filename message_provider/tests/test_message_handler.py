@@ -1,8 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException, QuestionCodeAlreadyExistsException, NumberNotRegisteredException, MangroveException, EntityQuestionCodeNotSubmitted
-from datawinners.message_provider.message_handler import get_exception_message_for, get_success_message_for
-from datawinners.message_provider.messages import DEFAULT_EXCEPTION_MESSAGE
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException, \
+    MangroveException, EntityQuestionCodeNotSubmitted
+from datawinners.message_provider.message_handler import get_exception_message_for
 
 class TestGetExceptionMessageHandler(unittest.TestCase):
 
@@ -39,10 +39,5 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
         expected_message = "This telephone number is not registered in our system."
         self.assertEqual(expected_message, message)
 
-
-class TestSuccessMessageHandler(unittest.TestCase):
-
-    def test_should_return_success_message_for_channel(self):
-        message = get_success_message_for(channel="web")
 
 

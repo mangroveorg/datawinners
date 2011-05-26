@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.context_processors import messages
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
@@ -9,6 +10,7 @@ from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
 from datawinners.message_provider.message_handler import get_exception_message_for
+from datawinners.message_provider import messages
 
 SMS = "sms"
 WEB = "web"
@@ -23,7 +25,10 @@ def sms(request):
     try:
         s = SubmissionHandler(dbm=get_db_manager_for(_to))
         response = s.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
-        message = response.message
+        if response.success:
+            message = messages.success_messages
+        else:
+            message = response.message
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
     return HttpResponse(message)

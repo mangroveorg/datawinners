@@ -22,5 +22,3 @@ def get_exception_message_for(exception, channel=None):
         return message % exception.data
     return message
 
-def get_success_message_for(channel=None):
-    pass

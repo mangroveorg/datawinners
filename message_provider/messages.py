@@ -44,3 +44,5 @@ messages = {
 
 }
 
+
+success_messages = "Thank you for your submission. We successfully received all answers."
