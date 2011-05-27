@@ -11,6 +11,7 @@ $(document).ready(function(){
         else{
             $('#short_name').attr('disabled', 'disabled');
             $('#short_name').attr('class', '');
+            DW.viewModel.message.s=ko.observable("")
         }
     })
 
