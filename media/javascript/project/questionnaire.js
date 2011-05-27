@@ -57,7 +57,6 @@ DW.question.prototype = {
         });
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
-        charCount();
     }
 };
 
@@ -80,18 +79,36 @@ DW.generateQuestionCode = function() {
     return code
 };
 
-charCount = function() {
+DW.charCount = function() {
     var questionnaire_code_len = $('#questionnaire-code').val().length;
     var question_codes_len = 0;
     var selected_question_code_difference = 0;
     var max_len = 160;
+    var constraints_len=0;
     for (var i = 0; i < viewModel.questions().length; i++) {
-        if (viewModel.selectedQuestion() == viewModel.questions()[i]) {
-            selected_question_code_difference = $('#code').val().length - viewModel.selectedQuestion().code().length;
+        var current_question = viewModel.questions()[i];
+        var selected_question = viewModel.selectedQuestion();
+        if (selected_question == current_question) {
+            selected_question_code_difference = $('#code').val().length - selected_question.code().length;
         }
-        question_codes_len = question_codes_len + viewModel.questions()[i].code().length +2;
+        question_codes_len = question_codes_len + current_question.code().length +2;
+        if (current_question.type() == 'integer'){
+            constraints_len = constraints_len + current_question.range_max().toString().length;
+        }
+        else if (current_question.type() == 'text' && current_question.max_length()){
+            constraints_len = constraints_len + parseInt(current_question.max_length());
+        }
+        else if (current_question.type() == 'date'){
+            constraints_len = constraints_len + current_question.date_format().length;
+        }
+        else if(current_question.type()== 'select'){
+            constraints_len = constraints_len + current_question.choices().length;
+        }
+        else if(current_question.type()== 'select1'){
+            constraints_len = constraints_len + 1;
+        }
     }
-    var current_len = questionnaire_code_len + question_codes_len + selected_question_code_difference;
+    var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
     $('#char-count').html('Remaining character count: ' + (max_len - current_len));
     if (current_len <= max_len) {
         $("#char-count").css("color", "#666666")
@@ -113,10 +130,10 @@ $(document).ready(function() {
     viewModel.selectedQuestion.valueHasMutated();
 
     ko.applyBindings(viewModel);
-    charCount();
+    DW.charCount();
 
-    $('#questionnaire-code').keyup(charCount);
-    $('#code').keyup(charCount);
+    $('#questionnaire-code').keyup(DW.charCount);
+    $('#code').keyup(DW.charCount);
 
     $.validator.addMethod('spacerule', function(value, element, params) {
         var list = $.trim($('#' + element.id).val()).split(" ");

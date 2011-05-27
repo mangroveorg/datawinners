@@ -13,7 +13,7 @@ var viewModel =
             viewModel.selectedQuestion(question);
             viewModel.selectedQuestion.valueHasMutated();
             viewModel.questions.valueHasMutated();
-            charCount();
+            DW.charCount();
         },
         loadQuestion: function(question){
             question.display = ko.dependentObservable(function(){
