@@ -2,12 +2,11 @@
 import datetime
 from django.contrib.auth.models import User
 from datawinners import initializer
-from datawinners.admin.views import create_entity
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.datarecord import register
-from mangrove.datastore.entity import Entity, define_type, create_entity
+from mangrove.datastore.entity import  define_type, create_entity
 from pytz import UTC
 from mangrove.datastore.reporter import REPORTER_ENTITY_TYPE
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound

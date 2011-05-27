@@ -40,9 +40,13 @@ messages = {
 
     ex.InvalidAnswerSubmissionException:{
         DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
-    }
+    },
+
+    ex.EntityTypeDoesNotExistsException:{
+        DEFAULT : "This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
+    },
 
 }
 
 
-success_messages = "Thank you for your submission. We successfully received all answers."
+success_messages = "Thank you for your data record. We successfully received your submission."

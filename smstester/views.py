@@ -1,13 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from atom.http_core import HttpRequest
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.utils import  get_db_manager_for
 from datawinners.smstester.forms import SMSTesterForm
 from mangrove.errors.MangroveException import MangroveException
-from mangrove.transport.submissions import SubmissionHandler, Request
 from datawinners.submission.views import sms
 
 

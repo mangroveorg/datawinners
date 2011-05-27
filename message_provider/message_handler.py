@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.errors.MangroveException import InvalidAnswerSubmissionException
 from mangrove.utils.types import is_empty
 from datawinners.message_provider.messages import messages, DEFAULT
 

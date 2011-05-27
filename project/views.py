@@ -73,7 +73,7 @@ def edit_profile(request):
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
         project.update(manager, form.cleaned_data)
-        project.update_questionnaire(dbm)
+        project.update_questionnaire(manager)
 
         try:
             pid = project.save(manager)

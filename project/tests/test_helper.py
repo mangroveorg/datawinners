@@ -5,7 +5,7 @@ import unittest
 from mock import Mock, patch
 from datawinners.project import helper
 from datawinners.project.models import Project
-from mangrove.datastore.database import get_db_manager, DatabaseManager
+from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField

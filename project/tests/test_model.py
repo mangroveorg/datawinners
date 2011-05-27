@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
-from mock import Mock
 from datawinners.main.utils import create_views
 from datawinners.project.models import Project, get_all_projects, get_project
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
