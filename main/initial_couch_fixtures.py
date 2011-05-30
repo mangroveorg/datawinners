@@ -178,7 +178,7 @@ def load_data():
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
 
     question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
-                          language="eng", entity_question_flag=True, ddtype=entity_id_type)
+                          language="eng", entity_question_flag=True, ddtype=entity_id_type, length=TextConstraint(min=1, max=12))
     question2 = TextField(label="Name", code="NA", name="What is your name?",
                           length=TextConstraint(min=1, max=10),
                           defaultValue="some default value", language="eng", ddtype=name_type)
