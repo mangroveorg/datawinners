@@ -1,5 +1,3 @@
-{% extends 'layout_application.html' %}
-{% block page_title %} Test Maps Page {% endblock %}
 {% block page_scss %}
     <link rel="stylesheet" href="/media/css/scss/section_test.scss" media="screen">
     <link rel="stylesheet" href="/media/javascript/OpenLayers-2.10/theme/default/style.css" media="screen">
@@ -11,16 +9,16 @@
     <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/OpenLayers.js"></script>
 {#    <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/canvas.js"></script>#}
     <script type="text/javascript" src="/media/javascript/mapping.js"></script>
+    <script>
+    $(document).ready(function(){
+        init('{{ entity_type  }}' );
+    });
 
+    </script>
 
 {% endblock %}
 
 
 {% block content %}
-    <div id="test" class="grid_22 alpha omega">
-        <h1>
-            Heading Page 1
-        </h1>
-    </div>
     <div id="map" style="height:400px; margin-top:20px;" class="grid_22"> </div>
 {% endblock %}

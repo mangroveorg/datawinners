@@ -1,7 +1,7 @@
 
        var map, layer;
 
-       function init(){
+       function init(entity_type){
            map = new OpenLayers.Map({
                 div: "map",
                 projection: new OpenLayers.Projection("EPSG:900913"),
@@ -24,7 +24,7 @@
                strategies: [new OpenLayers.Strategy.Fixed()],
                projection: new OpenLayers.Projection("EPSG:4326"),
                protocol: new OpenLayers.Protocol.HTTP({
-                     url: '/get_geojson/entity_type',
+                     url: '/get_geojson/entity_type?id='+entity_type,
                      format: new OpenLayers.Format.GeoJSON()
                })
             });
@@ -37,7 +37,3 @@
        }
 
 
-
-  $(document).ready(function(){
-      init();
-  })

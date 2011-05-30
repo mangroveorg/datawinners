@@ -132,7 +132,7 @@ def project_overview(request):
     number_of_questions = len(questionnaire.fields)
     result_link = '/project/results/%s' % questionnaire.form_code
     project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
-    return render_to_response('project/overview.html', {'project': project_overview},
+    return render_to_response('project/overview.html', {'project': project_overview,'entity_type':project['entity_type']},
                               context_instance=RequestContext(request))
 
 
