@@ -17,6 +17,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 from django.contrib import messages
+from mangrove.utils.types import is_string
 
 PAGE_SIZE = 4
 
@@ -80,6 +81,11 @@ def edit_profile(request):
         except DataObjectAlreadyExists as e:
             messages.error(request,e.message)
             return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+        project = models.get_project(pid, manager)
+        form_model = helper.load_questionnaire(manager, project.qid)
+        entity_type = request.POST['entity_type']
+        form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
+        form_model.save()
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
