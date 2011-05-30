@@ -114,7 +114,7 @@ DW.charCount = function() {
         constraints_len = constraints_len + delimiter_len;
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
-    $('#char-count').html('Remaining character count: ' + (max_len - current_len));
+    $('#char-count').html((max_len - current_len) + ' characters remaining');
     if (current_len <= max_len) {
         $("#char-count").css("color", "#666666")
     }
