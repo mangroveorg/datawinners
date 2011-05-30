@@ -85,27 +85,33 @@ DW.charCount = function() {
     var selected_question_code_difference = 0;
     var max_len = 160;
     var constraints_len = 0;
+    var space_len = 1;
+    var delimiter_len = 1;
 
     for (var i = 0; i < viewModel.questions().length; i++) {
         var current_question = viewModel.questions()[i];
-        question_codes_len = question_codes_len + current_question.code().length + 2;
+        question_codes_len = question_codes_len + current_question.code().length + space_len + delimiter_len;
         var question_type = current_question.type();
-//        switch(question_type)
-        if (question_type == 'integer') {
-            constraints_len = constraints_len + current_question.range_max().toString().length;
+        switch (question_type) {
+            case 'integer':
+                constraints_len = constraints_len + current_question.range_max().toString().length;
+                break;
+            case 'text':
+                if (current_question.max_length()) {
+                    constraints_len = constraints_len + parseInt(current_question.max_length());
+                }
+                break;
+            case 'date':
+                constraints_len = constraints_len + current_question.date_format().length;
+                break;
+            case 'select':
+                constraints_len = constraints_len + current_question.choices().length;
+                break;
+            case 'select1':
+                constraints_len = constraints_len + 1;
+                break;
         }
-        else if (question_type == 'text' && current_question.max_length()) {
-            constraints_len = constraints_len + parseInt(current_question.max_length());
-        }
-        else if (question_type == 'date') {
-            constraints_len = constraints_len + current_question.date_format().length;
-        }
-        else if (question_type == 'select') {
-            constraints_len = constraints_len + current_question.choices().length;
-        }
-        else if (question_type == 'select1') {
-            constraints_len = constraints_len + 1;
-        }
+        constraints_len = constraints_len + delimiter_len;
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
     $('#char-count').html('Remaining character count: ' + (max_len - current_len));
