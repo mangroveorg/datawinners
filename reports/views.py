@@ -11,7 +11,8 @@ from mangrove.datastore.entity import get_all_entity_types
 @login_required(login_url='/login')
 def report(request):
     manager = get_database_manager(request)
-    choices = [(t, '.'.join(t)) for t in get_all_entity_types(manager)]
+    types = get_all_entity_types(manager)
+    choices = [('.'.join(t), '.'.join(t)) for t in types]
     column_headers = []
     values = []
     error_message = None
