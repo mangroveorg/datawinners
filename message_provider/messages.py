@@ -46,6 +46,10 @@ messages = {
         DEFAULT : "This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
     },
 
+    ex.NoQuestionsSubmittedException:{
+        DEFAULT : "Please submit atleast one valid question code"
+    }
+
 }
 
 
