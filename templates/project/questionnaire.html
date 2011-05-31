@@ -29,6 +29,7 @@
         <div class="question_list">
             <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
+             <div>
              <li>
                 <a href="questionnaire.html#"
                    data-bind="text: question.display, click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
@@ -39,7 +40,7 @@
                 </span>
               </div>
              </li>
-
+            </div>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
         </div>
@@ -55,29 +56,28 @@
     {% csrf_token %}
 <form id="question_form">
         <fieldset>
-            <legend>Add Questionnaire</legend>
     <ul class="questionnaire_code">
          <li>
-            <h5>Your Questionnaire</h5>
             <label>Questionnaire Code :</label>
             <input id='project-id' type='hidden' value={{ project_id }} />
             <input id='questionnaire-code' class='required' value={{ questionnaire_code }} />
              <span id="questionnaire-code-error"/>
         </li>
     </ul>
-    <div class="questionnare_header grid_22 alpha omega">Header</div>
-    <div class="questionnare_content grid_22 alpha omega">
+    <div class="questionnare_header grid_23 alpha omega">Header</div>
+    <div class="questionnare_content grid_23 alpha omega">
         <div id="message-label">
         </div>
 
         <div>
-            <div id="questions-panel" class="grid_8">
+            <div id="questions-panel" class="grid_8 alpha">
+                <h4>Questions</h4>
                 <div data-bind="template: 'question-list-template'" class="">
                 </div>
                 <div class="add_question">
                     <a href="questionnaire.html#"
                        data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">Add
-                        a Question</a>
+                        another Question</a>
                 </div>
             </div>
 
