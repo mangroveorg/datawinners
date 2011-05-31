@@ -8,6 +8,8 @@ from django.test.utils import setup_test_environment, teardown_test_environment
 from nose.plugins.skip import SkipTest
 from  datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSettings
+from registration.models import RegistrationProfile
+from django.contrib.auth.models import User
 
 
 class TestMultiTenancy(unittest.TestCase):
@@ -20,7 +22,6 @@ class TestMultiTenancy(unittest.TestCase):
         teardown_test_environment()
         self.b.destroy_test_db(self.test_db)
 
-    @SkipTest
     def test_should_create_organization_setting_with_document_store_on_create_organization(self):
         c = Client()
         reg_post = dict(
@@ -42,6 +43,12 @@ class TestMultiTenancy(unittest.TestCase):
             title="",
             )
         response = c.post('/register/', reg_post)
+        self.assertIsNotNone(response)
+
+        user = User.objects.get(email = 'arojis@gmail.com')
+        profile = RegistrationProfile.objects.get(user = user)
+        activation_key = profile.activation_key
+        response = c.post('/activate/%s/' % activation_key)
         self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
