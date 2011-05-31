@@ -6,6 +6,7 @@ from datawinners.main.utils import get_database_manager
 import helper
 from mangrove.datastore.entity import get_entities_by_type
 
+
 def map_entities(request):
     entity_list = get_entities_by_type(get_database_manager(request), request.GET['id'])
     location_geojson = helper.create_location_geojson(entity_list)

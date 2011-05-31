@@ -5,8 +5,11 @@ import django
 from django.db.backends.sqlite3.creation import DatabaseCreation
 from django.test import Client
 from django.test.utils import setup_test_environment, teardown_test_environment
+from nose.plugins.skip import SkipTest
 from  datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSettings
+from registration.models import RegistrationProfile
+from django.contrib.auth.models import User
 
 
 class TestMultiTenancy(unittest.TestCase):
@@ -40,6 +43,12 @@ class TestMultiTenancy(unittest.TestCase):
             title="",
             )
         response = c.post('/register/', reg_post)
+        self.assertIsNotNone(response)
+
+        user = User.objects.get(email='arojis@gmail.com')
+        profile = RegistrationProfile.objects.get(user=user)
+        activation_key = profile.activation_key
+        response = c.post('/activate/%s/' % activation_key)
         self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")

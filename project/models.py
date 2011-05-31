@@ -27,7 +27,7 @@ class Project(DocumentBase):
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('datawinners_views/all_projects', key=self.name)
         if len(rows) and rows[0]['value']['_id'] != self.id:
-            raise DataObjectAlreadyExists('Project', "Name", "'%s'"%self.name )
+            raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
 
     def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)
@@ -38,9 +38,10 @@ class Project(DocumentBase):
         attribute_list = [item[0] for item in (self.items())]
         for key in value_dict:
             if key in attribute_list:
-                setattr(self, key, value_dict.get(key).lower()) if key == 'name' else setattr(self, key, value_dict.get(key))
+                setattr(self, key, value_dict.get(key).lower()) if key == 'name' else setattr(self, key,
+                                                                                              value_dict.get(key))
 
-    def update_questionnaire(self,dbm):
+    def update_questionnaire(self, dbm):
         form_model = dbm.get(self.qid, FormModel)
         form_model.name = self.name
         form_model.entity_type = self.entity_type

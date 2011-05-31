@@ -9,11 +9,11 @@ class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
     first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=30,
-                            error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
-                            , required=True, label="* First Name")
+                            error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- ",
+                             required=True, label="* First Name")
     last_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=30,
-                           error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
-                           , required=True, label="* Last Name")
+                           error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- ",
+                            required=True, label="* Last Name")
     telephone_number = CharField(required=True, label="* Telephone Number")
     commune = CharField(max_length=30, required=True, label="* Commune")
     geo_code = CharField(max_length=30, required=False, label="Geo Code")
@@ -27,4 +27,3 @@ class ReporterRegistrationForm(Form):
         if len(lat_long_string) < 2:
             raise ValidationError("GPS coordinates must be in the format 'lat long'.")
         return geo_code_string
-
