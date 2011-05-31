@@ -65,7 +65,7 @@ def submit(request):
                           destination=post.get('destination'))
         response = s.accept(request)
         if response.success:
-            message = messages.SUBMISSION_SUCCESS_MESSAGE
+            message = get_success_msg_for_submission_using(response)
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id
