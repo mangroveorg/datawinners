@@ -5,6 +5,7 @@ import django
 from django.db.backends.sqlite3.creation import DatabaseCreation
 from django.test import Client
 from django.test.utils import setup_test_environment, teardown_test_environment
+from nose.plugins.skip import SkipTest
 from  datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSettings
 
@@ -19,6 +20,7 @@ class TestMultiTenancy(unittest.TestCase):
         teardown_test_environment()
         self.b.destroy_test_db(self.test_db)
 
+    @SkipTest
     def test_should_create_organization_setting_with_document_store_on_create_organization(self):
         c = Client()
         reg_post = dict(
