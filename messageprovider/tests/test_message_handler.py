@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from datawinners.messageprovider.messages import success_messages, REGISTRATION, SUBMISSION
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException, \
     MangroveException, EntityQuestionCodeNotSubmitted
-from datawinners.message_provider.message_handler import get_exception_message_for
+from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
+from mangrove.transport.submissions import Response
 
 class TestGetExceptionMessageHandler(unittest.TestCase):
 
@@ -40,4 +42,29 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
         self.assertEqual(expected_message, message)
 
 
+class TestShouldTemplatizeMessage(unittest.TestCase):
+
+    def test_should_format_error_message_with_question_codes(self):
+        expected_message = "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for q1, q2"
+        errors = {"q1":"Some error", "q2":"Some other error"}
+        message = get_submission_error_message_for(errors)
+        self.assertEqual(expected_message, message)
+
+    def test_should_format_success_message_for_submission_with_reporter_name(self):
+        expected_message = success_messages[SUBMISSION] % "rep1"
+        response = Response(reporters=[{"name": "rep1"}], success=True, errors={})
+        message = get_success_msg_for_submission_using(response)
+        self.assertEqual(expected_message, message)
+
+    def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
+        expected_message = success_messages[SUBMISSION] % ""
+        response = Response(reporters=[], success=True, errors={})
+        message = get_success_msg_for_submission_using(response)
+        self.assertEqual(expected_message, message)
+
+    def test_should_format_success_message_for_registration_with_short_code(self):
+        expected_message = success_messages[REGISTRATION] % "REP1"
+        response = Response(reporters=[], success=True, errors={}, short_code="REP1")
+        message = get_success_msg_for_registration_using(response)
+        self.assertEqual(expected_message, message)
 

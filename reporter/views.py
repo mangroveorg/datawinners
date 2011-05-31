@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
+from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using
 from datawinners.reporter.forms import ReporterRegistrationForm
 
 from mangrove.errors.MangroveException import MangroveException
@@ -24,7 +25,7 @@ def register(request):
             s = SubmissionHandler(dbm=get_database_manager(request))
             response = s.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
-            message = response.message
+            message = get_success_msg_for_registration_using(response)
         except MangroveException as exception:
             message = exception.message
             success = False

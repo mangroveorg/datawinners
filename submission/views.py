@@ -8,8 +8,8 @@ from datawinners.main.utils import get_db_manager_for, get_database_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
-from datawinners.message_provider.message_handler import get_exception_message_for
-from datawinners.message_provider import messages
+from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using
+from datawinners.messageprovider import messages
 
 SMS = "sms"
 WEB = "web"
@@ -25,9 +25,9 @@ def sms(request):
         s = SubmissionHandler(dbm=get_db_manager_for(_to))
         response = s.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
         if response.success:
-            message = messages.success_messages
+            message = get_success_msg_for_submission_using(response)
         else:
-            message = response.message
+            message = get_submission_error_message_for(response.errors)
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
     return HttpResponse(message)
@@ -63,7 +63,10 @@ def submit(request):
         request = Request(transport=post.get('transport'), message=message, source=post.get('source'),
                           destination=post.get('destination'))
         response = s.accept(request)
-        message = response.message
+        if response.success:
+            message = messages.SUBMISSION_SUCCESS_MESSAGE
+        else:
+            message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=WEB)
