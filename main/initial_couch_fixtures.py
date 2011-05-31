@@ -240,3 +240,6 @@ def load_data():
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
                                                               (NAME_FIELD, "Shweta", first_name_type)], location=[],
              source="sms", short_code="REP1")
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
+                                                              (NAME_FIELD, "David", first_name_type)], location=[],
+             source="sms", short_code="REP2")
