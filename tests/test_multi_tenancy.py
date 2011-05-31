@@ -45,8 +45,8 @@ class TestMultiTenancy(unittest.TestCase):
         response = c.post('/register/', reg_post)
         self.assertIsNotNone(response)
 
-        user = User.objects.get(email = 'arojis@gmail.com')
-        profile = RegistrationProfile.objects.get(user = user)
+        user = User.objects.get(email='arojis@gmail.com')
+        profile = RegistrationProfile.objects.get(user=user)
         activation_key = profile.activation_key
         response = c.post('/activate/%s/' % activation_key)
         self.assertIsNotNone(response)

@@ -35,7 +35,6 @@ def register(request):
 
 
 def _get_data(form_data):
-
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form  model
     mapper = {'telephone_number': 'M', 'geo_code': 'G', 'Name': 'N', 'commune': 'L'}
     data = dict()
@@ -50,9 +49,7 @@ def _get_data(form_data):
     if commune is  not None:
         data[mapper['commune']] = commune
 
-    data[mapper['Name']] = " ".join([form_data.get('first_name'),form_data.get('last_name')])
+    data[mapper['Name']] = " ".join([form_data.get('first_name'), form_data.get('last_name')])
     data['form_code'] = 'REG'
     data['T'] = 'Reporter'
     return data
-
-

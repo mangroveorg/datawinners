@@ -1,13 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from datawinners.messageprovider.messages import success_messages, REGISTRATION, SUBMISSION
-from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException, \
+from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.submissions import Response
 
-class TestGetExceptionMessageHandler(unittest.TestCase):
 
+class TestGetExceptionMessageHandler(unittest.TestCase):
     def test_should_return_message_for_exception_for_channel(self):
         message = get_exception_message_for(exception=FormModelDoesNotExistsException("QC1"), channel="sms")
         expected_message = "Error with Questionnaire ID QC1. Find the Questionnaire ID on the printed questionnaire and resend SMS"
@@ -43,10 +43,9 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
 
 class TestShouldTemplatizeMessage(unittest.TestCase):
-
     def test_should_format_error_message_with_question_codes(self):
         expected_message = "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for q1, q2"
-        errors = {"q1":"Some error", "q2":"Some other error"}
+        errors = {"q1": "Some error", "q2": "Some other error"}
         message = get_submission_error_message_for(errors)
         self.assertEqual(expected_message, message)
 
@@ -67,4 +66,3 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         response = Response(reporters=[], success=True, errors={}, short_code="REP1")
         message = get_success_msg_for_registration_using(response)
         self.assertEqual(expected_message, message)
-

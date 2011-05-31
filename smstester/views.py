@@ -9,7 +9,6 @@ from mangrove.errors.MangroveException import MangroveException
 from datawinners.submission.views import sms
 
 
-
 def index(request):
     message = ""
     if request.method == 'POST':
@@ -20,12 +19,12 @@ def index(request):
             _to = form.cleaned_data["to_number"]
             manager = get_db_manager_for(_to)
             try:
-#                s = SubmissionHandler(dbm=manager)
-#                response = s.accept(Request(transport="sms", message=_message, source=_from, destination=_to))
-#                message = response.message
+            #                s = SubmissionHandler(dbm=manager)
+            #                response = s.accept(Request(transport="sms", message=_message, source=_from, destination=_to))
+            #                message = response.message
 
                 submission_request = HttpRequest(uri=reverse(sms), method='POST')
-                submission_request.POST = {"message":_message, "from_msisdn":_from, "to_msisdn":_to}
+                submission_request.POST = {"message": _message, "from_msisdn": _from, "to_msisdn": _to}
 
                 response = sms(submission_request)
                 message = response.content
