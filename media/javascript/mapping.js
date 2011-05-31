@@ -13,7 +13,9 @@
                     -20037508, -20037508, 20037508, 20037508
                 ),
                 controls: [
+                    new OpenLayers.Control.Navigation({dragPan:new OpenLayers.Control.DragPan()}),
                     new OpenLayers.Control.PanZoomBar()
+
                 ]
                });
            layer = new OpenLayers.Layer.Google("Google Layer", {
