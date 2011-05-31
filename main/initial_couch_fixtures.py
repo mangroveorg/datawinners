@@ -66,7 +66,7 @@ def load_data():
                                      description='Patient Count')
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID001",
-                               geometry={"type": "Point", "coordinates": [73.3, 29.8]})
+                               geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
         e.save()
@@ -81,7 +81,7 @@ def load_data():
                    event_time=MARCH)
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID002",
-                               geometry={"type": "Point", "coordinates": [76.3, 21.6]})
+                               geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
@@ -94,7 +94,7 @@ def load_data():
                    event_time=MARCH)
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], short_code="CID003",
-                               geometry={"type": "Point", "coordinates": [76.3, 23.8]})
+                               geometry={"type": "Point", "coordinates": [72.856164, 19.017615]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
@@ -108,7 +108,7 @@ def load_data():
                    event_time=MARCH)
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], short_code="CID004",
-                               geometry={"type": "Point", "coordinates": [76.3, 12.8]})
+                               geometry={"type": "Point", "coordinates": [77.594563, 12.971599]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
@@ -123,7 +123,7 @@ def load_data():
                    event_time=MARCH)
 
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="CID005",
-                               geometry={"type": "Point", "coordinates": [79.3, 21.8]})
+                               geometry={"type": "Point", "coordinates": [76.259625, 9.939248]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -134,7 +134,7 @@ def load_data():
                          ("patients", 12, patients_type)],
                    event_time=MARCH)
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
-                               short_code="CID006", geometry={"type": "Point", "coordinates": [71.3, 20.8]})
+                               short_code="CID006", geometry={"type": "Point", "coordinates": [78.18708, 26.227112]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -146,7 +146,7 @@ def load_data():
                   ("patients", 12, patients_type)],
             event_time=MARCH)
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], short_code="CID007",
-                               geometry={"type": "Point", "coordinates": [70.3, 18.8]})
+                               geometry={"type": "Point", "coordinates": [77.412615, 23.2599333]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -157,7 +157,7 @@ def load_data():
                          ("patients", 12, patients_type)],
                    event_time=MARCH)
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="WP01",
-                               geometry={"type": "Point", "coordinates": [76.3, 21.8]})
+                               geometry={"type": "Point", "coordinates": [72.566005, 23.0395677]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -165,15 +165,15 @@ def load_data():
         pass
 
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="WP02",
-                               geometry={"type": "Point", "coordinates": [76.3, 25.3]})
+                               geometry={"type": "Point", "coordinates": [69.66256, 23.251671]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
     except Exception:
         pass
 
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Kacch'], short_code="WP03",
-                               geometry={"type": "Point", "coordinates": [80.3, 21.6]})
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="WP03",
+                               geometry={"type": "Point", "coordinates": [77.017838, 28.46385]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
