@@ -94,6 +94,7 @@ def _create_date_question(post_dict, ddtype):
     return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      date_format=post_dict.get('date_format'), ddtype=ddtype)
 
+
 def _create_geo_code_question(post_dict, ddtype):
     return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype)
 

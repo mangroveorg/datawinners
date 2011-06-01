@@ -42,7 +42,7 @@
             "org_id": "SLX364903",
             "zipcode": "445676",
             "website": "https://help.org/",
-            "office_phone": "91-99766-76893",
+            "office_phone": "261333782943",
             "state": "MH",
             "addressline2": "Yerwada",
             "addressline1": "Don Bosco Road"
@@ -89,7 +89,7 @@
         "fields": {
             "organization": 1,
             "document_store": "hni_testorg_slx364903",
-            "sms_tel_number": "0987654321"
+            "sms_tel_number": "261333782943"
         }
     } ,
     {

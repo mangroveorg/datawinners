@@ -1,4 +1,8 @@
 /*The top most yellow wizard section styles*/
+#container_content .wizard_content .content_wrapper {
+  padding: 0 0px 0 0;
+  margin: 10px; }
+
 .wizard #step_wizard {
   margin: 15px 0 0 40px;
   width: 850px; }
@@ -39,45 +43,6 @@
       padding-right: 110px; }
     .wizard ul li.finish {
       padding-right: 0px; }
-
-/*The content styles for wizard based pages*/
-.wizard_content .content_wrapper .questionnaire_code {
-  margin-bottom: 20px; }
-  .wizard_content .content_wrapper .questionnaire_code label {
-    font-weight: bold; }
-  .wizard_content .content_wrapper .questionnaire_code input {
-    width: 130px;
-    height: 20px;
-    border-color: #CCCCCC; }
-  .wizard_content .content_wrapper .questionnaire_code h5 {
-    margin-bottom: 10px; }
-.wizard_content .content_wrapper .step_number {
-  margin-bottom: 20px; }
-.wizard_content .content_wrapper .questionnaire_code label {
-  display: inline; }
-.wizard_content .content_wrapper .questionnare_header {
-  border: 1px solid #cccccc;
-  height: 20px;
-  margin-bottom: 20px; }
-.wizard_content .content_wrapper .questionnare_content {
-  border: 1px solid #cccccc;
-  min-height: 500px;
-  margin-bottom: 20px; }
-  .wizard_content .content_wrapper .questionnare_content #questions-panel, .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
-    padding-left: 50px;
-    margin: 20px 0 20px 0; }
-  .wizard_content .content_wrapper .questionnare_content #questions-panel a {
-    color: #0070ac; }
-  .wizard_content .content_wrapper .questionnare_content #questions-panel .add_question {
-    font-size: 14px;
-    margin-top: 30px;
-    font-weight: bold; }
-  .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol li {
-    margin-bottom: 10px; }
-  .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list .delete a {
-    color: #000000; }
-  .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
-    border-left: 1px solid #cccccc; }
 
 .buttons .buttons {
   margin: 15px 0 15px 15px; }

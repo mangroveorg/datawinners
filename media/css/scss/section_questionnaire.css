@@ -6,3 +6,72 @@
 
 #range_max, #range_min {
   width: 60px; }
+
+/*The content styles for wizard based pages*/
+.wizard_content .content_wrapper .questionnaire_code label {
+  font-weight: normal;
+  font-size: 13px; }
+.wizard_content .content_wrapper .questionnaire_code input {
+  width: 90px;
+  height: 15px;
+  border-color: #CCCCCC; }
+.wizard_content .content_wrapper .questionnaire_code h5 {
+  margin-bottom: 10px; }
+.wizard_content .content_wrapper .step_number {
+  margin-bottom: 10px;
+  margin-left: 30px; }
+.wizard_content .content_wrapper .questionnaire_code label {
+  display: inline;
+  margin-left: 30px; }
+.wizard_content .content_wrapper .questionnare_header {
+  border: 1px solid #a3c7ef;
+  height: 50px;
+  margin: 0 0 20px 30px;
+  padding: 10px;
+  width: 850px;
+  background-color: #e9f6ff; }
+.wizard_content .content_wrapper .questionnare_content {
+  border-bottom: 1px solid #cccccc;
+  border-top: 1px solid #cccccc;
+  min-height: 500px;
+  margin-bottom: 20px;
+  padding-right: 17px; }
+  .wizard_content .content_wrapper .questionnare_content #question-detail-panel {
+    padding-left: 50px;
+    margin: 20px 0 20px 0; }
+  .wizard_content .content_wrapper .questionnare_content #questions-panel {
+    background: #f2f2f2 url("/media/images/questions_bg.gif") repeat-y top right;
+    padding: 20px 0 0 0px;
+    min-height: 700px; }
+    .wizard_content .content_wrapper .questionnare_content #questions-panel h4 {
+      padding-left: 30px;
+      border-bottom: 1px solid #B5B5B5;
+      width: 270px; }
+    .wizard_content .content_wrapper .questionnare_content #questions-panel a {
+      color: #0070ac; }
+    .wizard_content .content_wrapper .questionnare_content #questions-panel .add_question {
+      font-size: 14px;
+      margin: 30px 0 0 40px;
+      font-weight: normal; }
+    .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol li {
+      margin-bottom: 10px; }
+    .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol > div {
+      padding: 10px 50px 0 50px;
+      border-bottom: 1px solid #B5B5B5;
+      width: 200px; }
+      .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol > div.question_selected {
+        background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
+        position: relative; }
+      .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol > div span.selected_question_arrow {
+        display: none;
+        position: absolute;
+        top: 32%;
+        left: 269px;
+        padding: 16px;
+        background: url("/media/images/questions_hover_arrow.png") no-repeat top right; }
+      .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ol > div a {
+        color: #000000;
+        font-size: 16px; }
+    .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list .delete a {
+      color: #0070AC;
+      font-size: 12px; }

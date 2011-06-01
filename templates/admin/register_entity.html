@@ -22,7 +22,7 @@
                                 <label>* Type</label>
                             </span>
                             <span>
-                                <select name="type" data-bind="value: message.t">
+                                <select id="id_entity_type" name="type" data-bind="value: message.t">
                                     {% for entity_type in entity_types %}
                                         <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
                                     {% endfor %}

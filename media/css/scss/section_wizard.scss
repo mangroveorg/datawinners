@@ -2,6 +2,19 @@ $slider_handle:#176aba;
 $slider_range:#FFFFFF;
 
 /*The top most yellow wizard section styles*/
+#container_content {
+    .wizard_content{
+        .content_wrapper{
+            padding:0 0px 0 0;
+            margin:10px;
+        }
+        .wizard{
+        }
+    }
+
+
+
+}
 .wizard{
     #step_wizard{
         margin:15px 0 0 40px;
@@ -61,72 +74,6 @@ $slider_range:#FFFFFF;
     }
 }
 
-/*The content styles for wizard based pages*/
-.wizard_content{
-    .content_wrapper{
-        .questionnaire_code{
-            margin-bottom:20px;
-            label{
-                font-weight:bold;
-            }
-            input{
-                width:130px;
-                height:20px;
-                border-color:#CCCCCC;
-            }
-            h5{
-                margin-bottom:10px;
-            }
-        }
-        .define_project{
-
-        }
-        .step_number{
-            margin-bottom:20px;
-        }
-        .questionnaire_code{
-            label{
-                display:inline;
-            }
-        }
-        .questionnare_header{
-            border:1px solid #cccccc;
-            height:20px;
-            margin-bottom:20px
-        }
-        .questionnare_content{
-            border:1px solid #cccccc;
-            min-height:500px;
-            margin-bottom:20px;
-            #questions-panel, #question-detail-panel{
-                padding-left:50px;
-                margin:20px 0 20px 0;
-            }
-            #questions-panel{
-                a{
-                    color: #0070ac;
-                }
-                .add_question{
-                    font-size:14px;
-                    margin-top:30px;
-                    font-weight:bold;
-                }
-                .question_list{
-                    ol li{
-                        margin-bottom:10px;
-                    }
-                    .delete a{
-                        color:#000000;
-                    }
-                }
-            }
-            #question-detail-panel{
-                border-left:1px solid #cccccc;
-
-            }
-        }
-    }
-}
 .buttons{
     .buttons{
         margin:15px 0 15px 15px;

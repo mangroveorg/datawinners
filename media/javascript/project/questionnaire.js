@@ -47,14 +47,14 @@ DW.question.prototype = {
             return !this.is_entity_question();
         };
         this.isAChoiceTypeQuestion = ko.dependentObservable({
-            read:function() {
-                return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
-            },
-            write:function(value) {
-                this.type(this.type() == "" ? "select" : "select1");
-            },
-            owner: this
-        });
+                    read:function() {
+                        return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
+                    },
+                    write:function(value) {
+                        this.type(this.type() == "" ? "select" : "select1");
+                    },
+                    owner: this
+                });
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
     }
@@ -84,32 +84,37 @@ DW.charCount = function() {
     var question_codes_len = 0;
     var selected_question_code_difference = 0;
     var max_len = 160;
-    var constraints_len=0;
+    var constraints_len = 0;
+    var space_len = 1;
+    var delimiter_len = 1;
+
     for (var i = 0; i < viewModel.questions().length; i++) {
         var current_question = viewModel.questions()[i];
-        var selected_question = viewModel.selectedQuestion();
-        if (selected_question == current_question) {
-            selected_question_code_difference = $('#code').val().length - selected_question.code().length;
+        question_codes_len = question_codes_len + current_question.code().length + space_len + delimiter_len;
+        var question_type = current_question.type();
+        switch (question_type) {
+            case 'integer':
+                constraints_len = constraints_len + current_question.range_max().toString().length;
+                break;
+            case 'text':
+                if (current_question.max_length()) {
+                    constraints_len = constraints_len + parseInt(current_question.max_length());
+                }
+                break;
+            case 'date':
+                constraints_len = constraints_len + current_question.date_format().length;
+                break;
+            case 'select':
+                constraints_len = constraints_len + current_question.choices().length;
+                break;
+            case 'select1':
+                constraints_len = constraints_len + 1;
+                break;
         }
-        question_codes_len = question_codes_len + current_question.code().length +2;
-        if (current_question.type() == 'integer'){
-            constraints_len = constraints_len + current_question.range_max().toString().length;
-        }
-        else if (current_question.type() == 'text' && current_question.max_length()){
-            constraints_len = constraints_len + parseInt(current_question.max_length());
-        }
-        else if (current_question.type() == 'date'){
-            constraints_len = constraints_len + current_question.date_format().length;
-        }
-        else if(current_question.type()== 'select'){
-            constraints_len = constraints_len + current_question.choices().length;
-        }
-        else if(current_question.type()== 'select1'){
-            constraints_len = constraints_len + 1;
-        }
+        constraints_len = constraints_len + delimiter_len;
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
-    $('#char-count').html('Remaining character count: ' + (max_len - current_len));
+    $('#char-count').html((max_len - current_len) + ' characters remaining');
     if (current_len <= max_len) {
         $("#char-count").css("color", "#666666")
     }
@@ -132,9 +137,16 @@ $(document).ready(function() {
     ko.applyBindings(viewModel);
     DW.charCount();
 
-    $('#questionnaire-code').keyup(DW.charCount);
-    $('#code').keyup(DW.charCount);
-
+    $('#question_form').live("keyup", DW.charCount);
+//    $('#question_form').live("click", DW.charCount);
+    $('.delete').live("click", DW.charCount);
+    $('.question_list ol div').live("click", function(){
+        var selected = $(this).index()+1;
+        var selected_div = $('.question_list ol').find("div:nth-child("+selected+")");
+            selected_div.toggleClass("question_selected");
+            selected_div.find(".selected_question_arrow").show();
+    });
+//    $('.question_list ol div:first').trigger("click");
     $.validator.addMethod('spacerule', function(value, element, params) {
         var list = $.trim($('#' + element.id).val()).split(" ");
         if (list.length > 1) {
@@ -155,39 +167,39 @@ $(document).ready(function() {
     }, "Answer cannot be of length less than 1");
 
     $("#question_form").validate({
-        messages: {
-            max_length:{
-                digits: "Please enter positive numbers only"
-            }
+                messages: {
+                    max_length:{
+                        digits: "Please enter positive numbers only"
+                    }
 
-        },
-        rules: {
-            question_title:{
-                required: true
-            },
-            code:{
-                required: true,
-                spacerule: true,
-                regexrule: true
-            },
-            type:{
-                required: true
-            },
-            max_length:{
-                digits:true
-            },
-            range_min:{
-                number: true
-            },
-            range_max:{
-                number: true
-            },
-            choice_text:{
-                required: "#choice_text:visible"
-            }
+                },
+                rules: {
+                    question_title:{
+                        required: true
+                    },
+                    code:{
+                        required: true,
+                        spacerule: true,
+                        regexrule: true
+                    },
+                    type:{
+                        required: true
+                    },
+                    max_length:{
+                        digits:true
+                    },
+                    range_min:{
+                        number: true
+                    },
+                    range_max:{
+                        number: true
+                    },
+                    choice_text:{
+                        required: "#choice_text:visible"
+                    }
 
-        }
-    });
+                }
+            });
 
     $("#submit-button").click(function() {
 
@@ -224,10 +236,10 @@ $(document).ready(function() {
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
 
         $.post('/project/questionnaire/save', post_data,
-              function(response) {
-                  $("#message-label").html("<label class='success_message'>" + response + "</label>");
-                  hide_message();
-              }).error(function(e) {
+                function(response) {
+                    $("#message-label").html("<label class='success_message'>" + response + "</label>");
+                    hide_message();
+                }).error(function(e) {
             $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
@@ -237,20 +249,20 @@ $(document).ready(function() {
     }
 
     $('input[name=type]:radio').change(
-                                      function() {
-                                          viewModel.selectedQuestion().range_min(0);
-                                          viewModel.selectedQuestion().range_max("");
-                                          viewModel.selectedQuestion().min_length(1);
-                                          viewModel.selectedQuestion().max_length("");
-                                          viewModel.selectedQuestion().length_limiter("length_unlimited");
-                                          viewModel.selectedQuestion().choices([
-                                              {text:"", val:'a'}
-                                          ]);
-                                      }
-            );
+            function() {
+                viewModel.selectedQuestion().range_min(0);
+                viewModel.selectedQuestion().range_max("");
+                viewModel.selectedQuestion().min_length(1);
+                viewModel.selectedQuestion().max_length("");
+                viewModel.selectedQuestion().length_limiter("length_unlimited");
+                viewModel.selectedQuestion().choices([
+                    {text:"", val:'a'}
+                ]);
+            }
+    );
     $('input[name=text_length]:radio').change(
-                                             function() {
-                                                 viewModel.selectedQuestion().max_length("");
-                                             }
-            )
+            function() {
+                viewModel.selectedQuestion().max_length("");
+            }
+    )
 });

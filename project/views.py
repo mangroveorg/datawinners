@@ -17,6 +17,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 from django.contrib import messages
+from mangrove.utils.types import is_string
 
 PAGE_SIZE = 4
 
@@ -54,7 +55,7 @@ def create_profile(request):
             project.qid = qid
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
-            messages.error(request,e.message)
+            messages.error(request, e.message)
             return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
@@ -78,8 +79,13 @@ def edit_profile(request):
         try:
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
-            messages.error(request,e.message)
+            messages.error(request, e.message)
             return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+        project = models.get_project(pid, manager)
+        form_model = helper.load_questionnaire(manager, project.qid)
+        entity_type = request.POST['entity_type']
+        form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
+        form_model.save()
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
@@ -132,7 +138,8 @@ def project_overview(request):
     number_of_questions = len(questionnaire.fields)
     result_link = '/project/results/%s' % questionnaire.form_code
     project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
-    return render_to_response('project/overview.html', {'project': project_overview},
+    return render_to_response('project/overview.html',
+                              {'project': project_overview, 'entity_type': project['entity_type']},
                               context_instance=RequestContext(request))
 
 
@@ -175,5 +182,5 @@ def project_results(request, questionnaire_code=None):
                                   {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
                                    current_page: current_page},
                                   context_instance=RequestContext(request)
-                                  )
+        )
     return HttpResponse("No submissions present for this project")

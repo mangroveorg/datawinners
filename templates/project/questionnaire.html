@@ -1,6 +1,13 @@
 {% extends 'step_wizard.html' %}
 
 {% block page_title %} Questionnaire {% endblock %}
+
+{% load dw_tabs %}
+{% block main_navigation %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet" />
@@ -21,7 +28,7 @@
         <li>
         <p>
             <input id="choice_text" name="choice_text" type="text" data-bind="value: text"/>
-            <a href="questionnaire.html#" data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+            <a href="questionnaire.html#" class='delete delete_link' data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
         </p>
         </li>
     </script>
@@ -29,17 +36,16 @@
         <div class="question_list">
             <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <li>
-                <a href="questionnaire.html#"
-                   data-bind="text: question.display, click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
-                </a>
-             <div>
-                 <span data-bind="visible: question.canBeDeleted()" class="delete">
-                     <a href="questionnaire.html#" data-bind="click: function() {if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
-                </span>
-              </div>
-             </li>
+             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
+                 <li>
+                    <a href="questionnaire.html#" data-bind="text: question.display"></a>
+                    <div data-bind="visible: question.canBeDeleted()" class="delete">
+                         <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
+                    </div>
+                     <span class="selected_question_arrow"></span>
+                 </li>
 
+            </div>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
         </div>
@@ -53,45 +59,43 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
+<form id="question_form">
+        <fieldset>
     <ul class="questionnaire_code">
          <li>
-            <h5>Your Questionnaire</h5>
             <label>Questionnaire Code :</label>
             <input id='project-id' type='hidden' value={{ project_id }} />
             <input id='questionnaire-code' class='required' value={{ questionnaire_code }} />
              <span id="questionnaire-code-error"/>
         </li>
     </ul>
-    <div class="questionnare_header grid_22 alpha omega">Header</div>
-    <div class="questionnare_content grid_22 alpha omega">
+    <div class="questionnare_content grid_23 alpha omega">
         <div id="message-label">
         </div>
 
         <div>
-            <div id="questions-panel" class="grid_8">
+            <div id="questions-panel" class="grid_8 alpha">
+                <h4>Questions</h4>
                 <div data-bind="template: 'question-list-template'" class="">
                 </div>
                 <div class="add_question">
-                    <a href="questionnaire.html#"
+                    <a class="add_link" href="questionnaire.html#"
                        data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">Add
-                        a Question</a>
+                        another Question</a>
                 </div>
             </div>
 
             <div id="question-detail-panel" class="grid_11">
-                <form id="question_form">
-                    <fieldset>
-                        <legend>Add Questionnaire</legend>
                         <ul>
                             <li>
                                 <label>Question</label>
                                 <input id="question_title" name="question_title" type="text" class="required"
-                                       data-bind="value: selectedQuestion().title, uniqueName: true "/>
+                                       data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true "/>
                             </li>
                             <li>
                                 <label>Code</label>
                                 <input id="code" name="code" type="text" class="required"
-                                       data-bind="value: selectedQuestion().code"/>
+                                       data-bind="value: selectedQuestion().code, valueUpdate: 'keyup'"/>
                             </li>
                             <li class="margin_null" data-bind="visible: !selectedQuestion().is_entity_question()">
                                 <label>Type</label>
@@ -121,13 +125,13 @@
                                     </p>
                                     <p>
                                     <input type="radio" name="date_format" value="mm.yyyy"
-                                           data-bind="checked:selectedQuestion().date_format" />
+                                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'" />
                                     month.year (mm.yyyy)<br/>
                                     <input type="radio" name="date_format" value="dd.mm.yyyy"
-                                           data-bind="checked:selectedQuestion().date_format" />
+                                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'" />
                                     date.month.year (dd.mm.yyyy)<br/>
                                     <input type="radio" name="date_format" value="mm.dd.yyyy"
-                                           data-bind="checked:selectedQuestion().date_format" />
+                                           data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'" />
                                     month.date.year (mm.dd.yyyy)<br/>
                                     </p>
                                 </div>
@@ -137,15 +141,15 @@
                                     <ol class="alpha_list" data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
 
                                     </ol>
-                                    <a href="questionnaire.html#" data-bind="click: function() { viewModel.addOptionToQuestion(); }">Add
+                                    <a href="questionnaire.html#" class="add_link" data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">Add
                                         Choice</a>
                                 </div>
                                 <div>
                                     <input type="radio" name="answers_possible" value="select1"
-                                           data-bind="checked:selectedQuestion().type" />
+                                           data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'" />
                                     only one answer<br/>
                                     <input type="radio" name="answers_possible" value="select"
-                                           data-bind="checked:selectedQuestion().type" />
+                                           data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'" />
                                     multiple answers are permitted<br/>
                                 </div>
                             </li>
@@ -153,31 +157,30 @@
                                 <div class="margin_top_20">
                                     <p>
                                         Min:
-                                        <input name="range_min" type="text" id="range_min" data-bind="value:selectedQuestion().range_min"/>
+                                        <input name="range_min" type="text" id="range_min" data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup'"/>
                                     </p>
 
                                     <p>
                                         Max:
-                                        <input name="range_max" type="text" id="range_max" data-bind="value:selectedQuestion().range_max"/>
+                                        <input name="range_max" type="text" id="range_max" data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup'"/>
                                     </p>
                                 </div>
                             </li>
                             <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
                                 <div class="margin_top_20">
-                                    <input type="radio" name="text_length" value="length_unlimited" checked = "true" data-bind="checked:selectedQuestion().length_limiter" />
+                                    <input type="radio" name="text_length" value="length_unlimited" checked = "true" data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'" />
                                     No, answer has no character limit<br/>
                                     <div class="max_char">
-                                        <input type="radio"  name="text_length" value="length_limited" data-bind="checked:selectedQuestion().length_limiter" />
+                                        <input type="radio"  name="text_length" value="length_limited" data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'" />
                                         <span class="inline">
                                             Yes, maximum number of characters should be
-                                            <input name="max_length"  type="text"  id="max_length" data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter()"/>
+                                            <input name="max_length"  type="text"  id="max_length" data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup'"/>
                                         </span>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                    </fieldset>
-                </form>
+
                 <div id='char-count'>
                 </div>
             </div>
@@ -185,6 +188,8 @@
             </div>
         </div>
     </div>
+    </fieldset>
+</form>
 {% endblock %}
 {% block buttons %}
         <a href="questionnaire.html#" class="cancel">Cancel</a>
