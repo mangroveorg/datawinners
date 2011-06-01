@@ -25,7 +25,7 @@ class Project(DocumentBase):
         self.devices = devices
 
     def _check_if_project_name_unique(self, dbm):
-        rows = dbm.load_all_rows_in_view('datawinners_views/all_projects', key=self.name)
+        rows = dbm.load_all_rows_in_view('all_projects', key=self.name)
         if len(rows) and rows[0]['value']['_id'] != self.id:
             raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
 
@@ -53,4 +53,4 @@ def get_project(pid, dbm):
 
 
 def get_all_projects(dbm):
-    return dbm.load_all_rows_in_view('datawinners_views/' + 'all_projects')
+    return dbm.load_all_rows_in_view('all_projects')
