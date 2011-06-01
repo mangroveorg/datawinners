@@ -138,9 +138,15 @@ $(document).ready(function() {
     DW.charCount();
 
     $('#question_form').live("keyup", DW.charCount);
-    $('#question_form').live("click", DW.charCount);
+//    $('#question_form').live("click", DW.charCount);
     $('.delete').live("click", DW.charCount);
-
+    $('.question_list ol div').live("click", function(){
+        var selected = $(this).index()+1;
+        var selected_div = $('.question_list ol').find("div:nth-child("+selected+")");
+            selected_div.toggleClass("question_selected");
+            selected_div.find(".selected_question_arrow").show();
+    });
+//    $('.question_list ol div:first').trigger("click");
     $.validator.addMethod('spacerule', function(value, element, params) {
         var list = $.trim($('#' + element.id).val()).split(" ");
         if (list.length > 1) {

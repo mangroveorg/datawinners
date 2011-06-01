@@ -64,6 +64,7 @@ var viewModel =
             viewModel.selectedQuestion(question);
             viewModel.selectedQuestion.valueHasMutated();
             viewModel.questions.valueHasMutated();
+            $(this).addClass("question_selected");
         },
         clearChoices: function(){
             viewModel.selectedQuestion().choices([]);
