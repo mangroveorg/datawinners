@@ -65,7 +65,7 @@ def load_data():
     patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='number',
                                      description='Patient Count')
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID001",
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="cid001",
                                geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
@@ -80,7 +80,7 @@ def load_data():
         e.add_data(data=[("beds", 500, beds_type), ("meds", 20, meds_type), ("patients", 20, patients_type)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="CID002",
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="cid002",
                                geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
@@ -93,7 +93,7 @@ def load_data():
         e.add_data(data=[("beds", 200, beds_type), ("meds", 20, meds_type), ("patients", 20, patients_type)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], short_code="CID003",
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], short_code="cid003",
                                geometry={"type": "Point", "coordinates": [72.856164, 19.017615]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
@@ -107,7 +107,7 @@ def load_data():
         e.add_data(data=[("beds", 200, beds_type), ("meds", 20, meds_type), ("patients", 50, patients_type)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], short_code="CID004",
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], short_code="cid004",
                                geometry={"type": "Point", "coordinates": [77.594563, 12.971599]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
@@ -122,7 +122,7 @@ def load_data():
                          ("patients", 20, patients_type)],
                    event_time=MARCH)
 
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="CID005",
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="cid005",
                                geometry={"type": "Point", "coordinates": [76.259625, 9.939248]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
@@ -134,7 +134,7 @@ def load_data():
                          ("patients", 12, patients_type)],
                    event_time=MARCH)
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
-                               short_code="CID006", geometry={"type": "Point", "coordinates": [78.18708, 26.227112]})
+                               short_code="cid006", geometry={"type": "Point", "coordinates": [78.18708, 26.227112]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -145,7 +145,7 @@ def load_data():
             data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Flintheart", director_type),
                   ("patients", 12, patients_type)],
             event_time=MARCH)
-    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], short_code="CID007",
+    e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], short_code="cid007",
                                geometry={"type": "Point", "coordinates": [77.412615, 23.2599333]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
@@ -156,7 +156,7 @@ def load_data():
         e.add_data(data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Duck", director_type),
                          ("patients", 12, patients_type)],
                    event_time=MARCH)
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="WP01",
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
                                geometry={"type": "Point", "coordinates": [72.566005, 23.0395677]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -164,7 +164,7 @@ def load_data():
     except Exception:
         pass
 
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="WP02",
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="wp02",
                                geometry={"type": "Point", "coordinates": [69.66256, 23.251671]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -172,7 +172,7 @@ def load_data():
     except Exception:
         pass
 
-    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="WP03",
+    e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="wp03",
                                geometry={"type": "Point", "coordinates": [77.017838, 28.46385]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -206,7 +206,7 @@ def load_data():
                             ddtype=select_type)
 
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="CLI001", type='survey',
+                           form_code="cli001", type='survey',
                            fields=[question1, question2, question3, question4, question5, question6],
                            entity_type=CLINIC_ENTITY_TYPE
     )
@@ -220,7 +220,7 @@ def load_data():
         pass
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
-                            form_code="CLI002", type='survey',
+                            form_code="cli002", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6],
                             entity_type=CLINIC_ENTITY_TYPE)
     qid2 = form_model2.save()
