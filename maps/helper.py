@@ -3,6 +3,6 @@ import json
 
 
 def create_location_geojson(entity_list):
-    location_list = [{"type": "Feature", "geometry": entity.geometry} for entity in entity_list]
+    location_list = [{"type": "Feature", "geometry": entity.geometry} for entity in entity_list if entity.geometry]
     location_geojson = {"type": "FeatureCollection", "features": location_list}
     return json.dumps(location_geojson)
