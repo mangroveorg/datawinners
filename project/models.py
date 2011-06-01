@@ -32,7 +32,7 @@ class Project(DocumentBase):
     def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)
         self._check_if_project_name_unique(dbm)
-        return dbm._save_document(self).id
+        return dbm._save_document(self)
 
     def update(self, dbm, value_dict):
         attribute_list = [item[0] for item in (self.items())]
