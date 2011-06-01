@@ -1,6 +1,13 @@
 {% extends 'step_wizard.html' %}
 
 {% block page_title %} Questionnaire {% endblock %}
+
+{% load dw_tabs %}
+{% block main_navigation %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet" />
@@ -21,7 +28,7 @@
         <li>
         <p>
             <input id="choice_text" name="choice_text" type="text" data-bind="value: text"/>
-            <a href="questionnaire.html#" class='delete' data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+            <a href="questionnaire.html#" class='delete delete_link' data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
         </p>
         </li>
     </script>
@@ -29,17 +36,15 @@
         <div class="question_list">
             <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <div>
-             <li>
-                <a href="questionnaire.html#"
-                   data-bind="text: question.display, click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
-                </a>
-             <div>
-                 <span data-bind="visible: question.canBeDeleted()" class="delete">
-                     <a href="questionnaire.html#" data-bind="click: function() {if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
-                </span>
-              </div>
-             </li>
+             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
+                 <li>
+                    <a href="questionnaire.html#" data-bind="text: question.display"></a>
+                    <div data-bind="visible: question.canBeDeleted()" class="delete">
+                         <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()) viewModel.removeQuestion(question); }">Delete</a>
+                    </div>
+                     <span class="selected_question_arrow"></span>
+                 </li>
+
             </div>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
@@ -64,7 +69,6 @@
              <span id="questionnaire-code-error"/>
         </li>
     </ul>
-    <div class="questionnare_header grid_23 alpha omega">Header</div>
     <div class="questionnare_content grid_23 alpha omega">
         <div id="message-label">
         </div>
@@ -75,7 +79,7 @@
                 <div data-bind="template: 'question-list-template'" class="">
                 </div>
                 <div class="add_question">
-                    <a href="questionnaire.html#"
+                    <a class="add_link" href="questionnaire.html#"
                        data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">Add
                         another Question</a>
                 </div>
@@ -137,7 +141,7 @@
                                     <ol class="alpha_list" data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
 
                                     </ol>
-                                    <a href="questionnaire.html#" data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">Add
+                                    <a href="questionnaire.html#" class="add_link" data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">Add
                                         Choice</a>
                                 </div>
                                 <div>
