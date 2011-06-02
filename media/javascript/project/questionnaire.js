@@ -87,6 +87,8 @@ DW.charCount = function() {
     var constraints_len = 0;
     var space_len = 1;
     var delimiter_len = 1;
+    var sms_number = 1;
+    var sms_number_text = "";
 
     for (var i = 0; i < viewModel.questions().length; i++) {
         var current_question = viewModel.questions()[i];
@@ -114,16 +116,17 @@ DW.charCount = function() {
         constraints_len = constraints_len + delimiter_len;
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
-    $('#char-count').html((max_len - current_len) + ' characters remaining');
     if (current_len <= max_len) {
         $("#char-count").css("color", "#666666")
     }
-    if (current_len >= (max_len - 10)) {
-        $("#char-count").css("color", "orange")
-    }
-    if (current_len >= max_len) {
+    if (current_len > max_len) {
         $("#char-count").css("color", "red")
+        max_len = max_len+160;
+        sms_number++;
+        sms_number_text = " (" + sms_number + ")";
     }
+    $('#char-count').html((current_len) + ' / ' + max_len + sms_number_text + ' characters remaining');
+
 };
 
 $(document).ready(function() {
