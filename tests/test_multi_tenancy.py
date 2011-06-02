@@ -5,9 +5,8 @@ import django
 from django.db.backends.sqlite3.creation import DatabaseCreation
 from django.test import Client
 from django.test.utils import setup_test_environment, teardown_test_environment
-from nose.plugins.skip import SkipTest
 from  datawinners import settings
-from datawinners.accountmanagement.models import Organization, OrganizationSettings
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
 
@@ -52,7 +51,7 @@ class TestMultiTenancy(unittest.TestCase):
         self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
-        organization_settings = OrganizationSettings.objects.get(organization=organization)
+        organization_settings = OrganizationSetting.objects.get(organization=organization)
         organization_db_name = organization_settings.document_store
 
         expected_org_db_name = ("hni_test_org_name_%s" % (organization.org_id,)).lower()
