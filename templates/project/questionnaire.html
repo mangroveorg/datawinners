@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            <div id="question-detail-panel" class="grid_11">
+            <div id="question-detail-panel">
                         <ul>
                             <li>
                                 <label>Question</label>
@@ -97,7 +97,7 @@
                                 <input id="code" name="code" type="text" class="required"
                                        data-bind="value: selectedQuestion().code, valueUpdate: 'keyup'"/>
                             </li>
-                            <li class="margin_null" data-bind="visible: !selectedQuestion().is_entity_question()">
+                            <li class="question_type margin_null" data-bind="visible: !selectedQuestion().is_entity_question()">
                                 <label>Type</label>
 
                                 <div><input type="radio" name="type" value="text"
@@ -142,7 +142,7 @@
 
                                     </ol>
                                     <a href="questionnaire.html#" class="add_link" data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">Add
-                                        Choice</a>
+                                        Answer Choice</a>
                                 </div>
                                 <div>
                                     <input type="radio" name="answers_possible" value="select1"
@@ -192,8 +192,12 @@
 </form>
 {% endblock %}
 {% block buttons %}
+        <div class="grid_5 previous_step">
+            <a href="#">Previous Step:</a>
+            <a href="#" class="bold">Define Project</a>
+        </div>
         <a href="questionnaire.html#" class="cancel">Cancel</a>
-        <input id="submit-button" type="button" value="Save Questionnaire"/>
+        <input id="submit-button" type="button" value="Next Step: People"/>
 {% endblock %}
 
 

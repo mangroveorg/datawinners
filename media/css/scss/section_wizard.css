@@ -46,6 +46,8 @@
 
 .buttons .buttons {
   margin: 15px 0 15px 15px; }
+  .buttons .buttons .previous_step {
+    margin-top: 8px; }
   .buttons .buttons #submit_button_right {
     background: url("/media/images/arrow_wizard.png") no-repeat top right;
     position: relative;

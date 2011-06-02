@@ -39,6 +39,10 @@
 .text_align_right {
   text-align: right; }
 
+/* Text Styles */
+.bold {
+  font-weight: bold; }
+
 /*Error and Success*/
 .error_message {
   color: #FF0000;
