@@ -9,7 +9,6 @@ from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using
-from datawinners.messageprovider import messages
 
 SMS = "sms"
 WEB = "web"

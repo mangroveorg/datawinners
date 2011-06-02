@@ -7,11 +7,11 @@ from datawinners.project.models import Project
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.entity import  define_type, create_entity
 from pytz import UTC
-from mangrove.datastore.reporter import REPORTER_ENTITY_TYPE
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
+from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry):
