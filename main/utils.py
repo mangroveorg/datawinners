@@ -41,7 +41,7 @@ def create_views(dbm):
             funcs = view_js[v]
             map = (funcs['map'] if 'map' in funcs else None)
             reduce = (funcs['reduce'] if 'reduce' in funcs else None)
-            database_manager.create_view(view_name=v, map=map, reduce=reduce, view_document='datawinners_views')
+            database_manager.create_view(view_name=v, map=map, reduce=reduce)
 
 
 def exists_view(aggregation, database_manager):

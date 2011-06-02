@@ -25,14 +25,14 @@ class Project(DocumentBase):
         self.devices = devices
 
     def _check_if_project_name_unique(self, dbm):
-        rows = dbm.load_all_rows_in_view('datawinners_views/all_projects', key=self.name)
+        rows = dbm.load_all_rows_in_view('all_projects', key=self.name)
         if len(rows) and rows[0]['value']['_id'] != self.id:
             raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
 
     def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)
         self._check_if_project_name_unique(dbm)
-        return dbm._save_document(self).id
+        return dbm._save_document(self)
 
     def update(self, dbm, value_dict):
         attribute_list = [item[0] for item in (self.items())]
@@ -53,4 +53,4 @@ def get_project(pid, dbm):
 
 
 def get_all_projects(dbm):
-    return dbm.load_all_rows_in_view('datawinners_views/' + 'all_projects')
+    return dbm.load_all_rows_in_view('all_projects')
