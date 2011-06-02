@@ -125,7 +125,7 @@ DW.charCount = function() {
         sms_number++;
         sms_number_text = " (" + sms_number + ")";
     }
-    $('#char-count').html((current_len) + ' / ' + max_len + sms_number_text + ' characters remaining');
+    $('#char-count').html((current_len) + ' / ' + max_len + sms_number_text + ' characters used');
 
 };
 
