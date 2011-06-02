@@ -27,12 +27,13 @@ def questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'GET':
         pid = request.GET["pid"]
+        previous_link = '/project/profile/edit?pid=' + pid
         project = models.get_project(pid, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
                                   {"existing_questions": existing_questions, "questionnaire_code": form_model.form_code,
-                                   'project_id': pid}, context_instance=RequestContext(request))
+                                   'project_id': pid, "previous":previous_link}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
