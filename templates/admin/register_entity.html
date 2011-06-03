@@ -7,6 +7,12 @@
 {{ block.super }}
 {% endblock %}
 
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet" />
+{% endblock %}
+
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
 {% endblock %}
@@ -32,13 +38,18 @@
                         </li>
                         <li>
                         <span>
-                                <label>Short Name</label>
-                            </span>
+                            <label>Short Name</label>
+                        </span>
                         <span>
-                                <input id="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
+                            <span class="auto_gen_checkbox">
+                                <input id="autogen" name="autogen" type="checkbox" checked=true />
+                                <label>Autogenerate</label>
                             </span>
-                            <span><input id="autogen" type="checkbox" checked="true">Autogenerate</input></span>
+                            <input id="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
+                        </span>
+
                         </li>
+
                         <li>
                         <span>
                                 <label>* Name</label>

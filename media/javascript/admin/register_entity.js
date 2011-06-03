@@ -3,16 +3,18 @@ DW.viewModel = {};
 $(document).ready(function(){
     var validator = $('#question_form').validate();
 
-    $('#autogen').unbind('change').change(function(){
+    $('#autogen').unbind('change').change(function(event){
+
         if($('#autogen').attr('checked') != true){
-            $('#short_name').attr('disabled', '');
             $('#short_name').addClass('required');
+            $('#short_name').attr('disabled', '');
+
         }
         else{
-            $('#short_name').attr('disabled', 'disabled');
-            $('#short_name').val("");
+            $('#short_name').removeClass('error');
             $('#short_name').removeClass('required');
-            DW.viewModel.message.s=ko.observable("")
+            $('#short_name').val("");
+            $('#short_name').attr('disabled', 'disabled');
         }
     })
 
