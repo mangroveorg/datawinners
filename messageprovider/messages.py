@@ -12,7 +12,6 @@ DEFAULT_EXCEPTION_MESSAGE = "An exception has occurred"
 
 exception_messages = {
 
-
     ex.EntityTypeAlreadyDefined: {
         DEFAULT: "Entity identified by %s is already defined"},
 
@@ -48,6 +47,11 @@ exception_messages = {
         DEFAULT: "This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
     },
 
+    ex.SMSParserInvalidFormatException: {
+        DEFAULT: "Invalid message format.",
+        SMS: "Invalid message format. Please submit the message in the format: <Questionnaire Code><SPACE>+<Question Code><SPACE><Answer>"
+    },
+    
     ex.NoQuestionsSubmittedException: {
         DEFAULT: "Please submit atleast one valid question code"
     }
