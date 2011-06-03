@@ -2,10 +2,11 @@
 {% block page_title %}Add a new subject type{% endblock %}
 
 {% load dw_tabs %}
-{% block main_navigation %}
+{% block body %}
 {% activetab "main_nav" "subjects" %}
 {{ block.super }}
 {% endblock %}
+
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
 {% endblock %}

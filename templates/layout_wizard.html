@@ -1,7 +1,12 @@
 {% extends 'layout_application.html' %}
 
  {% block header %}
-    {% include 'header_application.html' %}
+    <div id="container_header_application">
+    <div class="container_24" id="header_application">
+        {% include 'header_wizard.html' %}
+        {% include 'main_navigation.html' %}
+    </div>
+</div>
  {% endblock %}
 {% block main_content %}
     <div id="container_content">

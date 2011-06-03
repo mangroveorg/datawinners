@@ -1,0 +1,25 @@
+{% load dw_tabs %}
+{% block main_navigation %}
+    <div id="main_tab" class="grid_24">
+        <ul>
+            <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="#">Dashboard</a>
+            </li>
+            <li  class ="{% ifactivetab 'main_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="#">Projects</a>
+            </li>
+            <li  class ="{% ifactivetab 'main_nav' 'collectors' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="#">Collectors</a>
+            </li>
+            <li class ="{% ifactivetab 'main_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="#">Subjects</a>
+            </li>
+            <li class ="{% ifactivetab 'main_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="#">Data</a>
+            </li>
+            <li class ="{% ifactivetab 'main_nav' 'guide' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="#">Guide</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
