@@ -5,14 +5,13 @@ from datawinners import initializer
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.datastore.datarecord import register
 from mangrove.datastore.entity import  define_type, create_entity
 from pytz import UTC
-from mangrove.datastore.reporter import REPORTER_ENTITY_TYPE
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
+from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry):
@@ -41,6 +40,14 @@ def load_manager_for_default_test_account():
     DEFAULT_USER = "tester150411@gmail.com"
     user = User.objects.get(username=DEFAULT_USER)
     return get_database_manager_for_user(user)
+
+
+def register(manager, entity_type, data, location,short_code):
+    e = create_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
+               short_code=short_code)
+    e.add_data(data=data)
+    return e
+
 
 
 def load_data():
@@ -239,7 +246,7 @@ def load_data():
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
                                                               (NAME_FIELD, "Shweta", first_name_type)], location=[],
-             source="sms", short_code="REP1")
+             short_code="REP1")
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
                                                               (NAME_FIELD, "David", first_name_type)], location=[],
-             source="sms", short_code="REP2")
+             short_code="REP2")     

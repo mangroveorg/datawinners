@@ -85,7 +85,7 @@
     } ,
     {
         "pk": 1,
-        "model": "accountmanagement.organizationsettings",
+        "model": "accountmanagement.organizationsetting",
         "fields": {
             "organization": 1,
             "document_store": "hni_testorg_slx364903",
@@ -94,7 +94,7 @@
     } ,
     {
         "pk": 2,
-        "model": "accountmanagement.organizationsettings",
+        "model": "accountmanagement.organizationsetting",
         "fields": {
             "organization": 2,
             "document_store": "hni_testorg_coj409579",
@@ -158,6 +158,28 @@
             ],
             "password": "sha1$8c72d$7bca3757c08d7e047c4bfa91bc79a26af06ff1c4",
             "email": "tester@gmail.com",
+            "date_joined": "2011-04-17 04:54:47"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "datawinner",
+            "first_name": "datawinner",
+            "last_name": "HNI",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2011-04-17 04:54:47",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$a1ba4$cd5c092fdc9d03a12c7e5ec153f147df6efe5a2a",
+            "email": "datawinner@gmail.com",
             "date_joined": "2011-04-17 04:54:47"
         }
     }

@@ -1,11 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.conf.urls.defaults import patterns, include
+from django.conf.urls.defaults import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 import settings
+from django.contrib import admin
 
 urlpatterns = patterns('',
     (r'', include('datawinners.accountmanagement.urls')),
@@ -25,5 +26,5 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 )

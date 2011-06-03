@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.contrib.messages.api import success
 from mangrove.form_model.form_model import NAME_FIELD
 from mangrove.utils.types import is_empty
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE, \
