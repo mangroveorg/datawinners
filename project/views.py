@@ -32,7 +32,7 @@ def questionnaire(request):
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
-                                  {"existing_questions": existing_questions, "questionnaire_code": form_model.form_code,
+                                  {"existing_questions": repr(existing_questions), "questionnaire_code": form_model.form_code,
                                    'project_id': pid, "previous":previous_link}, context_instance=RequestContext(request))
 
 
@@ -96,8 +96,8 @@ def save_questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
         questionnaire_code = request.POST['questionnaire-code']
-        question_set = json.loads(request.POST['question-set'])
-
+        json_string = request.POST['question-set']
+        question_set = json.loads(json_string)
         pid = request.POST['pid']
         project = models.get_project(pid, dbm=manager)
         form_model = manager.get(project.qid, FormModel)
