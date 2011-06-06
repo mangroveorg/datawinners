@@ -8,13 +8,13 @@ class ReporterRegistrationForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=30,
+    first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
                             error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- ",
-                             required=True, label="* First Name")
-    last_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=30,
+                              label="* First Name")
+    last_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
                            error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- ",
-                            required=True, label="* Last Name")
-    telephone_number = CharField(required=True, label="* Telephone Number")
+                           label="* Last Name")
+    telephone_number = RegexField(required=True, regex="^\d+(-\d+)*$", max_length=15, label="* Telephone Number", error_message="Please enter a valid phone number")
     commune = CharField(max_length=30, required=True, label="* Commune")
     geo_code = CharField(max_length=30, required=False, label="Geo Code")
 
