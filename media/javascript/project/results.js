@@ -53,7 +53,7 @@ $(document).ready(function(){
 
     //$('#total_rows').val() is the total number of results which needs to be sent for every pagination click(total_rows).val(), don't take that out
     $("#pagination").pagination($('#total_rows').val().trim(),{
-        items_per_page:4,
+        items_per_page:10,
         num_display_entries : 5,
         num_edge_entries:2,
         callback : function(page_number) {

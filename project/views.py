@@ -19,7 +19,7 @@ from mangrove.transport.submissions import get_submissions_made_for_questionnair
 from django.contrib import messages
 from mangrove.utils.types import is_string
 
-PAGE_SIZE = 4
+PAGE_SIZE = 10
 
 
 @login_required(login_url='/login')
