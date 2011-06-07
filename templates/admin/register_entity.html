@@ -45,7 +45,7 @@
                                 <input id="autogen" name="autogen" type="checkbox" checked=true />
                                 <label>Autogenerate</label>
                             </span>
-                            <input id="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
+                            <input id="short_name" name="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
                         </span>
 
                         </li>
@@ -55,7 +55,7 @@
                                 <label>* Name</label>
                             </span>
                         <span>
-                                <input name="name" type="text" class="required" data-bind="value: message.n"/>
+                                <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
                             </span>
                         </li>
                         <li>
@@ -63,15 +63,15 @@
                                 <label>Location</label>
                             </span>
                             <span>
-                                <input name="location" type="text" data-bind="value: message.l"/>
+                                <input id="location" name="location" type="text" data-bind="value: message.l"/>
                             </span>
                         </li>
                         <li>
                             <span>
-                                <label>Geo Code</label>
+                                <label>GPS</label>
                             </span>
                             <span>
-                                <input name="geo_code" type="text" data-bind="value: message.g"/>
+                                <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
                             </span>
                         </li>
                         <li>
@@ -79,7 +79,7 @@
                                 <label>Description</label>
                             </span>
                             <span>
-                                <input name="description" type="text" data-bind="value: message.d"/>
+                                <input id = "description" name="description" type="text" data-bind="value: message.d"/>
                             </span>
                         </li>
                         <li>
@@ -87,7 +87,7 @@
                                 <label>* Mobile Number</label>
                             </span>
                             <span>
-                                <input name="mobile_number" type="text" class="required" data-bind="value: message.m"/>
+                                <input id = "mobile_number" name="mobile_number" type="text" maxlength="15" data-bind="value: message.m"/>
                             </span>
                         </li>
                     </ul>

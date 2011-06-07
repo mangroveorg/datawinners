@@ -8,7 +8,7 @@ from datawinners.main.utils import get_db_manager_for, get_database_manager
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
-from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using
+from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 
 SMS = "sms"
 WEB = "web"
@@ -64,7 +64,7 @@ def submit(request):
                           destination=post.get('destination'))
         response = s.accept(request)
         if response.success:
-            message = get_success_msg_for_submission_using(response)
+            message = get_success_msg_for_registration_using(response, "Subject")
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id
