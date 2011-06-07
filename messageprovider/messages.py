@@ -62,5 +62,5 @@ VALIDATION_FAILURE_ERROR_MESSAGE = "Error. Invalid Submission. Refer to printed 
 
 success_messages = {
     SUBMISSION: "Thank you %s for your data record. We successfully received your submission.",
-    REGISTRATION: "Registration has been successful. The short code is %s."
+    REGISTRATION: "Registration successful. %s."
 }

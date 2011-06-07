@@ -30,5 +30,6 @@ def get_success_msg_for_submission_using(response):
     return success_messages[SUBMISSION] % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else success_messages[SUBMISSION] % ""
 
 
-def get_success_msg_for_registration_using(response):
-    return success_messages[REGISTRATION] % response.short_code
+def get_success_msg_for_registration_using(response, entity_type):
+    resp_string = "%s identification number: %s" % (entity_type, response.short_code)
+    return success_messages[REGISTRATION] % resp_string

@@ -17,6 +17,13 @@
 {% endblock %}
 
 {% block content %}
+    {% block messages %}
+        <div class=" error span-12 push-6 message-box">
+            {% for error in form_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+{% endblock %}
     <div class="application_register">
         {% if message %}
              <div id="flash-message" class="success">

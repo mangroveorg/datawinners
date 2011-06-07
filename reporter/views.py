@@ -1,11 +1,14 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using
 from datawinners.reporter.forms import ReporterRegistrationForm
+import helper
 
-from mangrove.errors.MangroveException import MangroveException
+from mangrove.errors.MangroveException import MangroveException, MultipleReportersForANumberException
 from mangrove.transport.submissions import SubmissionHandler, Request
 from mangrove.utils.types import is_empty
 
@@ -22,15 +25,18 @@ def register(request):
     if form.is_valid():
         form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
         try:
+            telephone_number = form_data.get("telephone_number")
+            if not helper.unique(get_database_manager(request), telephone_number):
+                raise MultipleReportersForANumberException(telephone_number)
             s = SubmissionHandler(dbm=get_database_manager(request))
             response = s.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
-            message = get_success_msg_for_registration_using(response)
+            message = get_success_msg_for_registration_using(response, "Reporter")
         except MangroveException as exception:
             message = exception.message
             success = False
 
-    return render_to_response('reporter/register.html', {'form': form, 'message': message, 'success': success},
+    return render_to_response('reporter/register.html', {'form': form, 'message': message, 'form_errors': form.non_field_errors(), 'success': success},
                               context_instance=RequestContext(request))
 
 

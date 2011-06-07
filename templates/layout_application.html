@@ -12,6 +12,7 @@
     </div>
 
     {% endblock %}
+
     {% block main_content %}
         <div id="container_content">
             <div id="page_title">
@@ -22,7 +23,8 @@
 
                 {% block navigation %} {% endblock %}
                 <div class="grid_23 content">
-                    {% block content %} {% endblock %}
+                    {% block content %} {% block messages %}{% endblock %} {% endblock %}
+
                 </div>
 
             </div>
