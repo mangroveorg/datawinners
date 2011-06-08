@@ -55,7 +55,7 @@ def _get_data(form_data):
     if commune is  not None:
         data[mapper['commune']] = commune
 
-    data[mapper['Name']] = " ".join([form_data.get('first_name'), form_data.get('last_name')])
+    data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = 'REG'
     data['T'] = 'Reporter'
     return data
