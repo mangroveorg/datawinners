@@ -185,3 +185,9 @@ def project_results(request, questionnaire_code=None):
                                   context_instance=RequestContext(request)
         )
     return HttpResponse("No submissions present for this project")
+
+@login_required(login_url='/login')
+def project_data(request):
+     return render_to_response('project/data_analysis.html',
+                                  context_instance=RequestContext(request)
+        )

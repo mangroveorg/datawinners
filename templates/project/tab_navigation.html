@@ -6,18 +6,41 @@
             <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
               <a href="#">Overview</a>
             </li>
+            <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Subjects</a>
+            </li>
             <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
               <a href="#">Questionnaire</a>
             </li>
-            <li class="{% ifactivetab 'tab_nav' 'collectors' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="#">Collectors</a>
+            <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Data Senders</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'messages_reminders' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Messages & Reminders</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'training' %}active{% else %}inactive{% endifactivetab %}">
               <a href="#">Training</a>
             </li>
-            <li class="{% ifactivetab 'tab_nav' 'place_things' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="#">Place & Things</a>
+            <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Data</a>
+            </li>
+            <li class="{% ifactivetab 'tab_nav' 'settings' %}active{% else %}inactive{% endifactivetab %}">
+              <a href="#">Settings</a>
             </li>
         </ul>
     </div>
+{% endblock %}
+
+{% block secondary_navigation %}
+       <ul class="secondary_tab">
+        <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
+          <a href="#">Summary</a>
+        </li>
+        <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
+          <a href="#">Analysis</a>
+        </li>
+        <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
+          <a href="#">Activity_log</a>
+        </li>
+    </ul>
 {% endblock %}

@@ -23,7 +23,10 @@
 
                 {% block navigation %} {% endblock %}
                 <div class="grid_23 content">
-                    {% block content %} {% block messages %}{% endblock %} {% endblock %}
+                    {% block content %}
+                        {% block secondary_navigation %} {% endblock %}
+                        {% block messages %}{% endblock %}
+                    {% endblock %}
 
                 </div>
 

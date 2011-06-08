@@ -7,7 +7,7 @@ $font_family:"Arail";
         float:left;
         li{
             float:left;
-            padding:7px 44px 8px 44px;
+            padding:7px 17px 8px;
             position:relative;
             margin-top:10px;
             background:url('/media/images/tab_navigation_pipe.gif') no-repeat top right;
@@ -31,4 +31,35 @@ $font_family:"Arail";
         }
     }
 
+}
+.secondary_tab{
+    position:relative;
+    top:-20px;
+    left:-35px;
+    margin-left:15px;
+    float:left;
+    width:950px;
+    background:#CCC;
+    li{
+        float:left;
+        padding:3px 20px 4px;
+        position:relative;
+        margin-top:5px;
+        a{
+            color:#000;
+            text-decoration:none;
+            font-size:14px;
+        }
+    }
+    li.active{
+        background:#CCCCCC;
+        margin-top:0px;
+        padding-top:15px;
+        top:1px;
+        border:1px solid #ccc;
+        border-bottom:1px solid #fff;
+        a{
+            color:#000000;
+        }
+    }
 }

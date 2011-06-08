@@ -1,0 +1,24 @@
+{% extends 'project/tab_navigation.html' %}
+{% block page_title %} Projects {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "data" %}
+{{ block.super }}
+{% endblock %}
+
+{% block body %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+    {% block secondary_navigation %}
+    {% activetab "secondary_tab" "analysis" %}
+    {{ block.super }}
+    {% endblock %}
+    <div class="">
+
+    </div>
+{% endblock %}

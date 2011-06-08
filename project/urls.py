@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns
 from django.views.generic.simple import direct_to_template
 
-from datawinners.project.views import questionnaire, save_questionnaire, create_profile, project_listing, project_overview, edit_profile, project_results
+from datawinners.project.views import questionnaire, save_questionnaire, create_profile, project_listing, project_overview, edit_profile, project_results, project_data
 
 urlpatterns = patterns('',
     (r'^project/questionnaire$', questionnaire),
@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     (r'^project/all$', project_listing),
     (r'^project/overview$', project_overview),
     (r'^project/results/(?P<questionnaire_code>.+?)/$', project_results),
-)
+    (r'^project/data$',project_data)
+    )

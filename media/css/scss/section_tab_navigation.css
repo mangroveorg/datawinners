@@ -4,7 +4,7 @@
   float: left; }
   .tab_navigation ul li {
     float: left;
-    padding: 7px 44px 8px 44px;
+    padding: 7px 17px 8px;
     position: relative;
     margin-top: 10px;
     background: url("/media/images/tab_navigation_pipe.gif") no-repeat top right; }
@@ -21,4 +21,31 @@
     border: 1px solid #ccc;
     border-bottom: 1px solid #fff; }
     .tab_navigation ul li.active a {
+      color: #000000; }
+
+.secondary_tab {
+  position: relative;
+  top: -20px;
+  left: -35px;
+  margin-left: 15px;
+  float: left;
+  width: 950px;
+  background: #CCC; }
+  .secondary_tab li {
+    float: left;
+    padding: 3px 20px 4px;
+    position: relative;
+    margin-top: 5px; }
+    .secondary_tab li a {
+      color: #000;
+      text-decoration: none;
+      font-size: 14px; }
+  .secondary_tab li.active {
+    background: #CCCCCC;
+    margin-top: 0px;
+    padding-top: 15px;
+    top: 1px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #fff; }
+    .secondary_tab li.active a {
       color: #000000; }
