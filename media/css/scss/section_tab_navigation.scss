@@ -39,14 +39,14 @@ $font_family:"Arail";
     margin-left:15px;
     float:left;
     width:950px;
-    background:#CCC;
+    background:#f0f0f0;
     li{
         float:left;
         padding:3px 20px 4px;
         position:relative;
         margin-top:5px;
         a{
-            color:#000;
+            color:#0070ac;
             text-decoration:none;
             font-size:14px;
         }
@@ -54,12 +54,11 @@ $font_family:"Arail";
     li.active{
         background:#CCCCCC;
         margin-top:0px;
-        padding-top:15px;
+        padding-top:5px;
         top:1px;
         border:1px solid #ccc;
-        border-bottom:1px solid #fff;
         a{
-            color:#000000;
+            color:#000;
         }
     }
 }

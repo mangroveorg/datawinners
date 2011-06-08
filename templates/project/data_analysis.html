@@ -12,13 +12,85 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_data_analysis.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet" />
+    <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
+{% endblock %}
 
 {% block content %}
     {% block secondary_navigation %}
-    {% activetab "secondary_tab" "analysis" %}
+    {% activetab "secondary_tab_nav" "analysis" %}
     {{ block.super }}
     {% endblock %}
-    <div class="">
-
+    <div class="grid_23">
+        <ul class="links">
+            <li><a href="#">export</a> </li>
+            <li><a href="#">print</a> </li>
+            <li><a href="#" class="null_border">e-mail</a> </li>
+        </ul>
     </div>
+    <div class="heading_block grid_23 alpha">
+        <h3 class="grid_10">Analysis</h3>
+        <div class="date_range_box">
+            <label>Show data for:</label>
+            <select><option>----Select A date ------</option></select>
+        </div>
+    </div>
+    <div class="view_data_block grid_23 alpha">
+        <div class="grid_12 show_data_block">
+            <label>View Data By: {{ entity_type }}</label>
+        </div>
+        <div class="view_style_block">
+            <label>View Style:</label>
+            <ul>
+                <li><a href="#">List</a></li>
+                <li><a href="#">Chart</a></li>
+                <li><a href="#">Map</a></li>
+            </ul>
+        </div>
+    </div>
+    <table id="data_analysis" class="tablesorter">
+        <thead>
+        <tr>
+            {% for each in header_list %}
+            <th>{{ each }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="aggregation_block">
+            <td></td>
+            {% for each in type_list %}
+            <td>
+                <select>
+                    {% for choice in each %}
+                        <option>{{ choice }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            {% endfor %}
+        </tr>
+        {% for each in data_list %}
+        <tr>
+            <td> {{ each.entity_name }} </td>
+            {% for value in each.values %}
+            <td>{{ value }}</td>
+            {% endfor %}
+        </tr>
+           {% endfor %}
+            
+        </tbody>
+    </table>
 {% endblock %}

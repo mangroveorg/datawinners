@@ -1,0 +1,65 @@
+.links {
+  float: right; }
+  .links li {
+    float: left; }
+    .links li a {
+      border-right: 1px solid #ccc;
+      padding-right: 5px;
+      padding-left: 5px; }
+
+.heading_block {
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 5px;
+  margin-top: 30px; }
+  .heading_block .date_range_box {
+    float: right; }
+    .heading_block .date_range_box label, .heading_block .date_range_box select {
+      font-weight: normal;
+      float: left;
+      margin-left: 10px; }
+
+.view_data_block {
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 5px;
+  margin: 30px 0 30px 0; }
+  .view_data_block .show_data_block label, .view_data_block .show_data_block select {
+    float: left;
+    font-weight: normal; }
+  .view_data_block .show_data_block select {
+    margin-left: 10px; }
+  .view_data_block .view_style_block {
+    float: right; }
+    .view_data_block .view_style_block label, .view_data_block .view_style_block ul {
+      font-weight: normal;
+      float: left;
+      margin-left: 10px; }
+    .view_data_block .view_style_block ul {
+      background: #e6f2fc;
+      border: 1px solid #e6f2fc;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px; }
+      .view_data_block .view_style_block ul li {
+        float: left; }
+        .view_data_block .view_style_block ul li a {
+          padding: 10px; }
+
+#data_analysis_wrapper #data_analysis_filter input {
+  width: 200px;
+  margin-bottom: 10px; }
+#data_analysis_wrapper #data_analysis th {
+  height: 40px;
+  color: #FFFFFF; }
+#data_analysis_wrapper #data_analysis tr, #data_analysis_wrapper #data_analysis td {
+  background: none; }
+#data_analysis_wrapper #data_analysis .aggregation_block {
+  background: #d3d3d3; }
+  #data_analysis_wrapper #data_analysis .aggregation_block select {
+    border: 0;
+    background: #d3d3d3;
+    width: 100%; }
+#data_analysis_wrapper .dataTables_scrollHeadInner thead {
+  background-color: #525252;
+  background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+  background: -moz-linear-gradient(top, #525252, #262626); }
+  #data_analysis_wrapper .dataTables_scrollHeadInner thead th {
+    color: #FFF; }

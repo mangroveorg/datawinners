@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     (r'^project/all$', project_listing),
     (r'^project/overview$', project_overview),
     (r'^project/results/(?P<questionnaire_code>.+?)/$', project_results),
-    (r'^project/data$',project_data)
+    (r'^project/data/(?P<questionnaire_code>.+?)/$',project_data)
     )

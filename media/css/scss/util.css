@@ -35,6 +35,10 @@
 .margin_bottom_10 {
   margin-bottom: 10px; }
 
+/* Border Styles */
+.null_border {
+  border: 0px !important; }
+
 /*Text alignments*/
 .text_align_right {
   text-align: right; }

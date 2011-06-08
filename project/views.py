@@ -11,6 +11,7 @@ from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
 import helper
 from datawinners.project import models
+from mangrove.datastore.data import fetch
 from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
@@ -18,9 +19,14 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_questionnaire
 from django.contrib import messages
 from mangrove.utils.types import is_string
+from mangrove.datastore import data
 
 PAGE_SIZE = 10
-
+NUMBER_TYPE_OPTIONS=["Latest", "Sum", "Count", "Min", "Max", "Average"]
+MULTI_CHOICE_TYPE_OPTIONS=["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
+DATE_TYPE_OPTIONS=["Latest"]
+GEO_TYPE_OPTIONS=["Latest"]
+TEXT_TYPE_OPTIONS=["Latest", "Most Frequent"]
 
 @login_required(login_url='/login')
 def questionnaire(request):
@@ -187,7 +193,14 @@ def project_results(request, questionnaire_code=None):
     return HttpResponse("No submissions present for this project")
 
 @login_required(login_url='/login')
-def project_data(request):
-     return render_to_response('project/data_analysis.html',
+def project_data(request, questionnaire_code=None):
+    manager = get_database_manager(request)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    data_list = fetch(manager, form_model.entity_type, aggregates={"*": data.reduce_functions.LATEST})
+    data_list =[{"entity_name":"cid006", "values":[200, 'Dr. Flintheart', 500, "commit suicide", "yes" ]}, {"entity_name":"cid005", "values":[100, 'Dr. Prabhu', 700, "kill you", "yes"]}, {"entity_name":"cid007", "values":[800, 'Dr. Shweta', 700, "buy my own", "yes"]}, {"entity_name":"cid005", "values":[20, 'Dr. Aroj', 300, "cry my eyes out", "yes"]}]
+    header_list = [form_model.entity_type[0] + " Name", "How many beds are present in the clinic", "What is the name of your director", "How many medicines do you need?", "What will you do if I dont supply medicines?", "Will you commit suicide after using datawinner?"]
+    type_list = [NUMBER_TYPE_OPTIONS, TEXT_TYPE_OPTIONS, NUMBER_TYPE_OPTIONS, DATE_TYPE_OPTIONS, MULTI_CHOICE_TYPE_OPTIONS]
+#    print data_list
+    return render_to_response('project/data_analysis.html',{"entity_type":form_model.entity_type[0], "data_list": data_list, "header_list": header_list, "type_list": type_list},
                                   context_instance=RequestContext(request)
         )
