@@ -16,7 +16,7 @@ from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
-from mangrove.transport.submissions import get_submissions_made_for_questionnaire
+from mangrove.transport.submissions import get_submissions_made_for_form
 from django.contrib import messages
 from mangrove.utils.types import is_string
 from mangrove.datastore import data
@@ -151,14 +151,14 @@ def project_overview(request):
 
 
 def get_number_of_rows_in_result(dbm, questionnaire_code):
-    submissions_count = get_submissions_made_for_questionnaire(dbm, questionnaire_code, count_only=True)
+    submissions_count = get_submissions_made_for_form(dbm, questionnaire_code, count_only=True)
     if submissions_count:
         return submissions_count[0]
     return None
 
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
-    submissions = get_submissions_made_for_questionnaire(dbm, questionnaire_code, page_number=current_page,
+    submissions = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
                                                          page_size=PAGE_SIZE, count_only=False)
     submissions = helper.get_submissions(questions, submissions)
     return submissions

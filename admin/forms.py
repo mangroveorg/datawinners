@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.forms.fields import CharField, RegexField
+from django.forms.fields import  RegexField
 from django.forms.forms import Form
 
 

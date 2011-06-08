@@ -4,7 +4,7 @@ from datawinners.messageprovider.messages import success_messages, REGISTRATION,
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
-from mangrove.transport.submissions import Response
+from mangrove.transport.player.player import Response
 
 
 class TestGetExceptionMessageHandler(unittest.TestCase):

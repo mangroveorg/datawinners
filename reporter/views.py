@@ -9,12 +9,14 @@ from datawinners.reporter.forms import ReporterRegistrationForm
 import helper
 
 from mangrove.errors.MangroveException import MangroveException, MultipleReportersForANumberException
-from mangrove.transport.submissions import SubmissionHandler, Request
+from mangrove.transport.player.player import WebPlayer, Request
+from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import is_empty
 
 
 @login_required(login_url='/login')
 def register(request):
+    dbm = get_database_manager(request)
     if request.method == 'GET':
         form = ReporterRegistrationForm()
         return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
@@ -26,10 +28,11 @@ def register(request):
         form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
         try:
             telephone_number = form_data.get("telephone_number")
-            if not helper.unique(get_database_manager(request), telephone_number):
+            if not helper.unique(dbm, telephone_number):
                 raise MultipleReportersForANumberException(telephone_number)
-            s = SubmissionHandler(dbm=get_database_manager(request))
-            response = s.accept(
+
+            web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+            response = web_player.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
             message = get_success_msg_for_registration_using(response, "Reporter")
         except MangroveException as exception:

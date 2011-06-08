@@ -6,7 +6,8 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners.main.utils import get_db_manager_for, get_database_manager
 from mangrove.errors.MangroveException import MangroveException
-from mangrove.transport.submissions import SubmissionHandler, Request
+from mangrove.transport.player.player import SMSPlayer, WebPlayer, Request
+from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import is_empty
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 
@@ -22,8 +23,9 @@ def sms(request):
     _from = request.POST["from_msisdn"]
     _to = request.POST["to_msisdn"]
     try:
-        s = SubmissionHandler(dbm=get_db_manager_for(_to))
-        response = s.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
+        dbm=get_db_manager_for(_to)
+        sms_player = SMSPlayer(dbm,SubmissionHandler(dbm))
+        response = sms_player.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
         if response.success:
             message = get_success_msg_for_submission_using(response)
         else:
@@ -54,15 +56,16 @@ def _get_submission(post):
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
 def submit(request):
+    dbm = get_database_manager(request)
     post = _get_submission(request.POST)
     message = ''
     success = True
     try:
-        s = SubmissionHandler(dbm=get_database_manager(request))
+        web_player = WebPlayer(dbm,SubmissionHandler(dbm))
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
         request = Request(transport=post.get('transport'), message=message, source=post.get('source'),
                           destination=post.get('destination'))
-        response = s.accept(request)
+        response = web_player.accept(request)
         if response.success:
             message = get_success_msg_for_registration_using(response, "Subject")
         else:
