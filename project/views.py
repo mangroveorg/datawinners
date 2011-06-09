@@ -11,7 +11,6 @@ from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
 import helper
 from datawinners.project import models
-from mangrove.datastore.data import fetch
 from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
@@ -38,8 +37,10 @@ def questionnaire(request):
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
-                                  {"existing_questions": repr(existing_questions), "questionnaire_code": form_model.form_code,
-                                   'project_id': pid, "previous":previous_link}, context_instance=RequestContext(request))
+                                  {"existing_questions": repr(existing_questions),
+                                   "questionnaire_code": form_model.form_code,
+                                   'project_id': pid, "previous": previous_link},
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -145,6 +146,9 @@ def project_overview(request):
     number_of_questions = len(questionnaire.fields)
     result_link = '/project/results/%s' % questionnaire.form_code
     project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
+    data_link = '/project/data/%s' % questionnaire.form_code
+    project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link,
+                            data_link=data_link)
     return render_to_response('project/overview.html',
                               {'project': project_overview, 'entity_type': project['entity_type']},
                               context_instance=RequestContext(request))
@@ -159,7 +163,7 @@ def get_number_of_rows_in_result(dbm, questionnaire_code):
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
     submissions = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
-                                                         page_size=PAGE_SIZE, count_only=False)
+                                                page_size=PAGE_SIZE, count_only=False)
     submissions = helper.get_submissions(questions, submissions)
     return submissions
 
@@ -196,11 +200,25 @@ def project_results(request, questionnaire_code=None):
 def project_data(request, questionnaire_code=None):
     manager = get_database_manager(request)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    data_list = fetch(manager, form_model.entity_type, aggregates={"*": data.reduce_functions.LATEST})
-    data_list =[{"entity_name":"cid006", "values":[200, 'Dr. Flintheart', 500, "commit suicide", "yes" ]}, {"entity_name":"cid005", "values":[100, 'Dr. Prabhu', 700, "kill you", "yes"]}, {"entity_name":"cid007", "values":[800, 'Dr. Shweta', 700, "buy my own", "yes"]}, {"entity_name":"cid005", "values":[20, 'Dr. Aroj', 300, "cry my eyes out", "yes"]}]
-    header_list = [form_model.entity_type[0] + " Name", "How many beds are present in the clinic", "What is the name of your director", "How many medicines do you need?", "What will you do if I dont supply medicines?", "Will you commit suicide after using datawinner?"]
-    type_list = [NUMBER_TYPE_OPTIONS, TEXT_TYPE_OPTIONS, NUMBER_TYPE_OPTIONS, DATE_TYPE_OPTIONS, MULTI_CHOICE_TYPE_OPTIONS]
-#    print data_list
-    return render_to_response('project/data_analysis.html',{"entity_type":form_model.entity_type[0], "data_list": data_list, "header_list": header_list, "type_list": type_list},
+    data_dictionary = {}
+    if request.method == "GET":
+        data_dictionary = data.fetch(manager, entity_type=form_model.entity_type,
+                                     aggregates={"*": data.reduce_functions.LATEST},
+                                     filter={'form_code': questionnaire_code})
+        data_list, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        return render_to_response('project/data_analysis.html',
+                                  {"entity_type": form_model.entity_type[0], "data_list": data_list,
+                                   "header_list": header_list, "type_list": type_list},
+                                  context_instance=RequestContext(request))
+    if request.method == "POST":
+        header_list = helper.get_headers(form_model.fields)
+        post_list = json.loads(request.POST.get("aggregation-types"))
+        aggregates = helper.get_aggregate_dictionary(header_list[1:], post_list)
+        aggregates.update({form_model.fields[0].name: data.reduce_functions.LATEST})
+        data_dictionary = data.fetch(manager, entity_type=form_model.entity_type, aggregates=aggregates,
+                                     filter={'form_code': questionnaire_code})
+        data_list, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        return render_to_response('project/data_analysis_table.html',
+                                  {"entity_type": form_model.entity_type[0], "data_list": data_list},
                                   context_instance=RequestContext(request)
         )

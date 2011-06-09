@@ -10,6 +10,7 @@ from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField
 from mangrove.form_model.form_model import FormModel
+from mangrove.datastore import data
 
 
 class TestHelper(unittest.TestCase):
@@ -311,3 +312,49 @@ class TestHelper(unittest.TestCase):
         self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=CODE, slug=SLUG,
                                                         primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, location_question.ddtype)
+
+    def test_should_create_header_list(self):
+        ddtype = Mock(spec=DataDictType)
+        question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
+                              language="eng", entity_question_flag=True, ddtype=ddtype)
+        question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
+                              defaultValue="some default value", language="eng", ddtype=ddtype)
+        actual_list = helper.get_headers([question1, question2])
+        expected_list = ["What is associated entity", "What is your name"]
+        self.assertListEqual(expected_list, actual_list)
+
+    def test_should_create_value_list(self):
+        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta',
+                                             'What is associated entity?': 'cid002'},
+                           'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif',
+                                             'What is associated entity?': 'cid001'}}
+        header_list = ["What is associated entity?", "What is your name?", "What is age of father?"]
+        actual_list = helper.get_values(data_dictionary, header_list)
+        expected_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
+                         {"entity_name": "cid001", "values": ['asif', 35]}]
+        self.assertListEqual(expected_list, actual_list)
+
+    def test_should_create_type_list(self):
+        ddtype = Mock(spec=DataDictType)
+        question1 = IntegerField(label="number_question", code="ID", name="How many beds",
+                                 language="eng", ddtype=ddtype)
+        question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
+                              defaultValue="some default value", language="eng", ddtype=ddtype)
+        question3 = SelectField(label="multiple_choice_question", code="Q2",
+                                options=[("red", 1), ("yellow", 2), ('green', 3)], name="What is your favourite colour",
+                                ddtype=ddtype)
+        question4 = DateField("What is date", "Q4", "date_question","mm.yyyy", ddtype)
+        actual_list = helper.get_type_list([question1, question2, question3, question4])
+        choice_type = copy(helper.MULTI_CHOICE_TYPE_OPTIONS)
+        choice_type.extend(
+            ["sum(red)", "sum(yellow)", "sum(green)", "percent(red)", "percent(yellow)", "percent(green)"])
+        expected_list = [helper.NUMBER_TYPE_OPTIONS, helper.TEXT_TYPE_OPTIONS, choice_type, helper.DATE_TYPE_OPTIONS]
+        self.assertListEqual(expected_list, actual_list)
+
+    def test_should_return_aggregates_dictionary(self):
+        header_list = ["field1", "field2"]
+        post_data = ["Latest", "Sum"]
+        expected_dictionary = {"field1":data.reduce_functions.LATEST, "field2":data.reduce_functions.SUM}
+        actual_dict = helper.get_aggregate_dictionary(header_list, post_data)
+        self.assertEquals(expected_dictionary, actual_dict)
+        

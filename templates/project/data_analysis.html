@@ -21,12 +21,14 @@
     {{ block.super }}
     <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet" />
     <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
+
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -67,7 +69,7 @@
             <td></td>
             {% for each in type_list %}
             <td>
-                <select>
+                <select class="aggregation_type">
                     {% for choice in each %}
                         <option>{{ choice }}</option>
                     {% endfor %}
@@ -81,17 +83,7 @@
             {% endfor %}
         </tr>
         </thead>
-        <tbody>
-
-        {% for each in data_list %}
-        <tr>
-            <td> {{ each.entity_name }} </td>
-            {% for value in each.values %}
-            <td>{{ value }}</td>
-            {% endfor %}
-        </tr>
-           {% endfor %}
-            
-        </tbody>
+        {% include 'project/data_analysis_table.html' %}
     </table>
+    <div id="message_label"></div>
 {% endblock %}
