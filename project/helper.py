@@ -1,13 +1,19 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from copy import copy
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
 import models
 
+NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
+MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
+DATE_TYPE_OPTIONS = ["Latest"]
+GEO_TYPE_OPTIONS = ["Latest"]
+TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
@@ -127,3 +133,41 @@ def generate_questionnaire_code(dbm):
         except FormModelDoesNotExistsException:
             break
     return code
+
+
+def get_type_list(fields):
+    type_dictionary = dict(IntegerField=NUMBER_TYPE_OPTIONS, TextField=TEXT_TYPE_OPTIONS, DateField=DATE_TYPE_OPTIONS,
+                           GeoCodeField=GEO_TYPE_OPTIONS)
+    type_list = []
+    for field in fields:
+        field_type = field.__class__.__name__
+        if field_type == "SelectField":
+            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
+            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
+                                field.options])
+            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
+                                field.options])
+            type_list.append(choice_type)
+        else:
+            type_list.append(type_dictionary.get(field_type))
+    return type_list
+
+
+def get_headers(field_list):
+    assert is_sequence(field_list)
+    return [each.name for each in field_list]
+
+
+def get_values(data_dictionary, header_list):
+    """
+       data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
+       header_list = ["What is associated entity", "What is your name", "What is age of father?"]
+       expected_list = [{"entity_name":"cid002", "values":['shweta', 55 ]}, {"entity_name":"cid001", "values":['asif', 35]}]
+    """
+    value_list = []
+    for key, values in data_dictionary.items():
+        current_dict = dict()
+        current_dict["entity_name"] = values.get(header_list[0])
+        current_dict["values"] = [values.get(each) for each in header_list[1:]]
+        value_list.append(current_dict)
+    return value_list
