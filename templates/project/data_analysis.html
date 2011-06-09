@@ -63,13 +63,6 @@
     </div>
     <table id="data_analysis" class="tablesorter">
         <thead>
-        <tr>
-            {% for each in header_list %}
-            <th>{{ each }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
         <tr class="aggregation_block">
             <td></td>
             {% for each in type_list %}
@@ -82,6 +75,14 @@
             </td>
             {% endfor %}
         </tr>
+        <tr class="data_header">
+            {% for each in header_list %}
+            <th>{{ each }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+
         {% for each in data_list %}
         <tr>
             <td> {{ each.entity_name }} </td>

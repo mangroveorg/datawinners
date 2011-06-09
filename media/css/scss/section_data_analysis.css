@@ -43,6 +43,24 @@
         .view_data_block .view_style_block ul li a {
           padding: 10px; }
 
+.aggregation_block {
+  background: none; }
+  .aggregation_block select {
+    border: 0;
+    background: #FFFFFF;
+    width: 100%;
+    position: relative;
+    top: 100px; }
+  .aggregation_block td {
+    height: 0px;
+    border: 0; }
+
+.data_header {
+  height: 100px;
+  background-color: #525252;
+  background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+  background: -moz-linear-gradient(top, #525252, #262626); }
+
 #data_analysis_wrapper #data_analysis_filter input {
   width: 200px;
   margin-bottom: 10px; }
@@ -51,15 +69,5 @@
   color: #FFFFFF; }
 #data_analysis_wrapper #data_analysis tr, #data_analysis_wrapper #data_analysis td {
   background: none; }
-#data_analysis_wrapper #data_analysis .aggregation_block {
-  background: #d3d3d3; }
-  #data_analysis_wrapper #data_analysis .aggregation_block select {
-    border: 0;
-    background: #d3d3d3;
-    width: 100%; }
-#data_analysis_wrapper .dataTables_scrollHeadInner thead {
-  background-color: #525252;
-  background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
-  background: -moz-linear-gradient(top, #525252, #262626); }
-  #data_analysis_wrapper .dataTables_scrollHeadInner thead th {
-    color: #FFF; }
+#data_analysis_wrapper .dataTables_scrollHeadInner thead th {
+  color: #FFF; }
