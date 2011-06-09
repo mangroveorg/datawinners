@@ -8,7 +8,7 @@ from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_
 from mangrove.datastore.entity import  define_type, create_entity
 from pytz import UTC
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
-from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField
+from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
@@ -55,7 +55,7 @@ def load_data():
     initializer.run(manager)
 
     CLINIC_ENTITY_TYPE = ["Clinic"]
-    WATER_POINT_ENTITY_TYPE = ["Water Point"]
+    WATER_POINT_ENTITY_TYPE = ["Waterpoint"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
 
@@ -193,6 +193,7 @@ def load_data():
     age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
+    geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
 
     question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type,
@@ -211,10 +212,12 @@ def load_data():
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
                             ddtype=select_type)
+    question7 = GeoCodeField(name="What is the GPS code for clinic", code="GPS", label="What is the GPS code for clinic?",
+                             language="eng", ddtype=geo_code_type)
 
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli001", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6],
+                           fields=[question1, question2, question3, question4, question5, question6, question7],
                            entity_type=CLINIC_ENTITY_TYPE
     )
     qid = form_model.save()
@@ -228,7 +231,7 @@ def load_data():
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6],
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
                             entity_type=CLINIC_ENTITY_TYPE)
     qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
@@ -246,7 +249,7 @@ def load_data():
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
                                                               (NAME_FIELD, "Shweta", first_name_type)], location=[],
-             short_code="REP1")
+             short_code="rep1")
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
                                                               (NAME_FIELD, "David", first_name_type)], location=[],
-             short_code="REP2")     
+             short_code="rep2")
