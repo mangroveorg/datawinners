@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from datawinners import initializer
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
+from datawinners.submission.views import SMS
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.entity import  define_type, create_entity
 from pytz import UTC
@@ -11,7 +12,9 @@ from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObje
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
+from mangrove.transport.player.player import Request, SMSPlayer
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from mangrove.transport.submissions import SubmissionHandler
 
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry):
@@ -42,36 +45,25 @@ def load_manager_for_default_test_account():
     return get_database_manager_for_user(user)
 
 
-def register(manager, entity_type, data, location,short_code):
+def register(manager, entity_type, data, location, short_code):
     e = create_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-               short_code=short_code)
+                      short_code=short_code)
     e.add_data(data=data)
     return e
 
-
-
-def load_data():
-    manager = load_manager_for_default_test_account()
-    initializer.run(manager)
-
-    CLINIC_ENTITY_TYPE = ["Clinic"]
-    WATER_POINT_ENTITY_TYPE = ["Waterpoint"]
-    FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
-    MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
-
-    #  The Default Entity Types
-    create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
-
-    #Data Dict Types
+#Data Dict Types
+def load_datadict_types(manager):
     meds_type = create_data_dict(dbm=manager, name='Medicines', slug='meds', primitive_type='number',
                                  description='Number of medications')
     beds_type = create_data_dict(dbm=manager, name='Beds', slug='beds', primitive_type='number',
                                  description='Number of beds')
     director_type = create_data_dict(dbm=manager, name='Director', slug='dir', primitive_type='string',
                                      description='Name of director')
-    patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='number',
+    patients_type = create_data_dict(dbm=manager, name='Patients', slug='patients', primitive_type='geocode',
                                      description='Patient Count')
 
+
+def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="cid001",
                                geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
@@ -79,14 +71,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(
-            data=[("beds", 300, beds_type), ("meds", 20, meds_type), ("director", "Dr. Donald Duck", director_type),
-                  ("patients", 10, patients_type)],
-            event_time=FEB)
-        e.add_data(data=[("beds", 500, beds_type), ("meds", 20, meds_type), ("patients", 20, patients_type)],
-                   event_time=MARCH)
-
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="cid002",
                                geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
@@ -94,12 +78,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(data=[("beds", 100, beds_type), ("meds", 10, meds_type), ("director", "Dr. Scrooge", director_type),
-                         ("patients", 50, patients_type)], event_time=FEB)
-        e.add_data(data=[("beds", 200, beds_type), ("meds", 20, meds_type), ("patients", 20, patients_type)],
-                   event_time=MARCH)
-
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], short_code="cid003",
                                geometry={"type": "Point", "coordinates": [72.856164, 19.017615]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
@@ -107,13 +85,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(data=[("beds", 100, beds_type), ("meds", 10, meds_type), ("director", "Dr. Huey", director_type),
-                         ("patients", 50, patients_type)],
-                   event_time=FEB)
-        e.add_data(data=[("beds", 200, beds_type), ("meds", 20, meds_type), ("patients", 50, patients_type)],
-                   event_time=MARCH)
-
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], short_code="cid004",
                                geometry={"type": "Point", "coordinates": [77.594563, 12.971599]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
@@ -121,14 +92,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(data=[("beds", 100, beds_type), ("meds", 250, meds_type), ("director", "Dr. Dewey", director_type),
-                         ("patients", 50, patients_type)],
-                   event_time=FEB)
-        e.add_data(data=[("beds", 200, beds_type), ("meds", 400, meds_type), ("director", "Dr. Louie", director_type),
-                         ("patients", 20, patients_type)],
-                   event_time=MARCH)
-
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="cid005",
                                geometry={"type": "Point", "coordinates": [76.259625, 9.939248]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
@@ -136,10 +99,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Glomgold", director_type),
-                         ("patients", 12, patients_type)],
-                   event_time=MARCH)
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
                                short_code="cid006", geometry={"type": "Point", "coordinates": [78.18708, 26.227112]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
@@ -147,11 +106,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(
-            data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Flintheart", director_type),
-                  ("patients", 12, patients_type)],
-            event_time=MARCH)
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], short_code="cid007",
                                geometry={"type": "Point", "coordinates": [77.412615, 23.2599333]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
@@ -159,10 +113,9 @@ def load_data():
         e.save()
     except Exception:
         pass
-    else:
-        e.add_data(data=[("beds", 200, beds_type), ("meds", 50, meds_type), ("director", "Dr. Duck", director_type),
-                         ("patients", 12, patients_type)],
-                   event_time=MARCH)
+
+
+def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
                                geometry={"type": "Point", "coordinates": [72.566005, 23.0395677]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
@@ -170,7 +123,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="wp02",
                                geometry={"type": "Point", "coordinates": [69.66256, 23.251671]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
@@ -178,7 +130,6 @@ def load_data():
         e.save()
     except Exception:
         pass
-
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="wp03",
                                geometry={"type": "Point", "coordinates": [77.017838, 28.46385]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
@@ -187,6 +138,8 @@ def load_data():
     except Exception:
         pass
 
+
+def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
     # Entity id is a default type in the system.
     entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
@@ -194,7 +147,6 @@ def load_data():
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
-
     question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type,
                           length=TextConstraint(min=1, max=12))
@@ -214,7 +166,6 @@ def load_data():
                             ddtype=select_type)
     question7 = GeoCodeField(name="What is the GPS code for clinic", code="GPS", label="What is the GPS code for clinic?",
                              language="eng", ddtype=geo_code_type)
-
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli001", type='survey',
                            fields=[question1, question2, question3, question4, question5, question6, question7],
@@ -228,7 +179,6 @@ def load_data():
         project.save(manager)
     except Exception:
         pass
-
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
@@ -243,6 +193,41 @@ def load_data():
         pass
 
 
+def load_sms_data_for_cli001(manager):
+    sms_player = SMSPlayer(manager, SubmissionHandler(manager))
+    FROM_NUMBER = '1234567890'
+    FROM_NUMBER = '1234567890'
+    TO_NUMBER = '261333782943'
+    message1 = "cli001 +EID cid001 +NA Mr. Tessy +FA 58 +RD 17.05.2011 +BG b +SY ade +GC 79.2 23.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid002 +NA Mr. Adam +FA 62 +RD 17.04.2011 +BG a +SY ab +GC 74.2 23.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid003 +NA Ms. Beth +FA 75 +RD 17.05.2011 +BG b +SY bc +GC 81.2 29.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid004 +NA Thomas +FA 85 +RD 5.01.2011 +BG a +SY bd +GC 43.2 28.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid005 +NA Ms. Beth +FA 62 +RD 12.02.2011 +BG d +SY bc +GC 81.2 29.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid006 +NA Juannita +FA 86 +RD 5.02.2011 +BG c +SY ace +GC 41.2 29.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid001 +NA Amanda +FA 16 +RD 5.02.2011 +BG c +SY ace +GC 41.2 29.3"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+    message1 = "cli001 +EID cid002 +NA Amanda +FA 16 +RD 5.02.2011 +BG e"
+    response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+
+def load_data():
+    manager = load_manager_for_default_test_account()
+    initializer.run(manager)
+    CLINIC_ENTITY_TYPE = ["Clinic"]
+    WATER_POINT_ENTITY_TYPE = ["Water Point"]
+    FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
+    MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
+    create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
+    load_datadict_types(manager)
+    load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
+    load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
+    create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
+
     #Register Reporter
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
                                          primitive_type='string')
@@ -253,3 +238,4 @@ def load_data():
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
                                                               (NAME_FIELD, "David", first_name_type)], location=[],
              short_code="rep2")
+    load_sms_data_for_cli001(manager)
