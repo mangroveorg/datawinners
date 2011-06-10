@@ -126,7 +126,7 @@ def save_questionnaire(request):
 
 
 @login_required(login_url='/login')
-def project_listing(request):
+def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request))
     for row in rows:
@@ -134,7 +134,7 @@ def project_listing(request):
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link)
         project_list.append(project)
-    return render_to_response('project/all.html', {'projects': project_list}, context_instance=RequestContext(request))
+    return render_to_response('project/index.html', {'projects': project_list}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')

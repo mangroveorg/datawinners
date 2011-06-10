@@ -3,16 +3,16 @@
     <div id="main_tab" class="grid_24">
         <ul>
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="#">Dashboard</a>
+                <a href="{% url datawinners.accountmanagement.views.home %}">Dashboard</a>
             </li>
             <li  class ="{% ifactivetab 'main_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="#">Projects</a>
+                <a href="{% url datawinners.project.views.index %}">Projects</a>
             </li>
             <li  class ="{% ifactivetab 'main_nav' 'collectors' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="#">Collectors</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="#">Subjects</a>
+                <a href="{% url datawinners.subjects.views.index %}">Subjects</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="#">Data</a>
