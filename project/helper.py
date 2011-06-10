@@ -8,6 +8,7 @@ from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
 from mangrove.datastore import data
 import models
+from copy import copy
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]

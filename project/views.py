@@ -196,6 +196,15 @@ def project_results(request, questionnaire_code=None):
         )
     return HttpResponse("No submissions present for this project")
 
+
+def _format_data_for_presentation(data_dictionary, form_model):
+    header_list = helper.get_headers(form_model.fields)
+    data_list = helper.get_values(data_dictionary, header_list)
+    header_list[0] = form_model.entity_type[0] + " Name"
+    type_list = helper.get_type_list(form_model.fields[1:])
+    return data_list, header_list, type_list
+
+
 @login_required(login_url='/login')
 def project_data(request, questionnaire_code=None):
     manager = get_database_manager(request)
