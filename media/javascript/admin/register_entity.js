@@ -13,7 +13,9 @@ $(document).ready(function() {
         codes = codes.trim();
         if (codes == "")
             return true;
+        codes = codes.replace(/\s+/g, " ");
         lat_long = codes.split(' ');
+
         if (lat_long.length != 2)
             return false;
         return (lat_long[0] > -90 && lat_long[0] < 90)

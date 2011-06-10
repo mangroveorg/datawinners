@@ -21,6 +21,7 @@ class ReporterRegistrationForm(Form):
     def clean_geo_code(self):
         geo_code_string = self.cleaned_data['geo_code']
         geo_code_string = geo_code_string.strip()
+        geo_code_string = (' ').join(geo_code_string.split())
         if is_empty(geo_code_string):
             return geo_code_string
         lat_long = geo_code_string.split(' ')
