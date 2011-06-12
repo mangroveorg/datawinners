@@ -12,6 +12,7 @@ from datawinners.project.models import Project
 import helper
 from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument, SubmissionLogDocument
+from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
@@ -226,11 +227,9 @@ def project_data(request, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     data_dictionary = {}
     if request.method == "GET":
-        data_dictionary = data.fetch(manager, entity_type=form_model.entity_type,
-                                     aggregates={"*": data.reduce_functions.LATEST},
-                                     filter={'form_code': questionnaire_code})
+        data_dictionary = data.aggregate_by_form_code(manager, form_code=questionnaire_code,
+                                     aggregates={"*": data.reduce_functions.LATEST},aggregate_on=EntityAggregration())
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
-
         return render_to_response('project/data_analysis.html',
                 {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
                  "header_list": header_list, "type_list": type_list},
@@ -240,7 +239,6 @@ def project_data(request, questionnaire_code=None):
         post_list = json.loads(request.POST.get("aggregation-types"))
         aggregates = helper.get_aggregate_dictionary(header_list[1:], post_list)
         aggregates.update({form_model.fields[0].name: data.reduce_functions.LATEST})
-        data_dictionary = data.fetch(manager, entity_type=form_model.entity_type, aggregates=aggregates,
-                                     filter={'form_code': questionnaire_code})
+        data_dictionary = data.aggregate_by_form_code(manager, form_code=questionnaire_code,aggregates=aggregates,aggregate_on=EntityAggregration())
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)

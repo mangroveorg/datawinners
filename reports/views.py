@@ -5,6 +5,7 @@ from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from mangrove.datastore import data
 from datawinners.reports.forms import Report, ReportHierarchy
+from mangrove.datastore.data import TypeAggregration, LocationFilter
 from mangrove.datastore.entity import get_all_entity_types
 
 
@@ -22,10 +23,10 @@ def report(request):
             entity_type = form.cleaned_data['entity_type'].split(".")
             filter_criteria = form.cleaned_data['filter']
             aggregates_field = form.cleaned_data['aggregates_field']
-            filter = {'location': filter_criteria.split(",")} if filter_criteria else None
-            report_data = data.fetch(manager, entity_type=entity_type,
+            location = filter_criteria.split(",") if filter_criteria else None
+            report_data = data.aggregate_by_entity(manager, entity_type=entity_type,
                                      aggregates={aggregates_field: data.reduce_functions.LATEST},
-                                     filter=filter
+                                     filter=LocationFilter(location=location)
             )
             column_headers, values = tabulate_output(report_data, "ID")
             if not len(values):
@@ -66,10 +67,9 @@ def hierarchy_report(request):
             aggregates = {aggregates_field: reduce_function}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
             level = form.cleaned_data['level']
-            aggregate_on = {'type': aggregate_on_path, "level": level}
-            report_data = data.fetch(manager, entity_type=entity_type,
+            report_data = data.aggregate_by_entity(manager, entity_type=entity_type,
                                      aggregates=aggregates,
-                                     aggregate_on=aggregate_on,
+                                     aggregate_on=TypeAggregration(type=aggregate_on_path,level=level),
                                      )
             column_headers, values = tabulate_output(report_data, "Path")
     else:
