@@ -1,5 +1,17 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} Results for Questionnaire ( {{ project_code }} ) {% endblock %}
+{% block page_title %} Activity Log {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "data" %}
+{{ block.super }}
+{% endblock %}
+
+{% block body %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
@@ -15,6 +27,10 @@
     <link href="/media/css/scss/section_sms_results.scss" media="screen" rel="stylesheet" />
 {% endblock %}
 {% block content %}
+    {% block secondary_navigation %}
+    {% activetab "secondary_tab_nav" "activity_log" %}
+    {{ block.super }}
+    {% endblock %}
     <div id="sms_results">
         <h3>Results</h3>
         <div>
@@ -68,7 +84,10 @@
                                 Source
                             </th>
                             <th>
-                                Successful
+                                Submission Status
+                            </th>
+                            <th>
+                                Void
                             </th>
                             {% for question in results.questions %}
                                 <th>
@@ -89,9 +108,12 @@
                                     {{ answer.1 }}
                                 </td>
                                 <td>
-                                    <span title='{{ answer.3 }}'>{{ answer.2 }}</span>
+                                    <span title='{{ answer.4 }}'>{{ answer.2 }}</span>
                                 </td>
-                                {% for each in answer|slice:"4:" %}
+                                <td>
+                                    {{ answer.3 }}
+                                </td>
+                                {% for each in answer|slice:"5:" %}
                                     <td>
                                         {{ each }}
                                     </td>

@@ -176,17 +176,13 @@ def project_results(request, questionnaire_code=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
-        date_from = request.GET.get('date_from')
-        date_to = request.GET.get('date_to')
-        if request.GET.get('filters'):
-            filters = json.loads(request.GET.get('filters'))
-        contains = request.GET.get('contains')
         form_model = get_form_model_by_code(manager, questionnaire_code)
         questionnaire = (questionnaire_code, form_model.name)
         questions = helper.get_code_and_title(form_model.fields)
         rows = get_number_of_rows_in_result(manager, questionnaire_code)
         if rows:
             submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
+            print submissions
             results = {
                 'questionnaire': questionnaire,
                 'questions': questions,
@@ -199,12 +195,11 @@ def project_results(request, questionnaire_code=None):
                                       context_instance=RequestContext(request)
             )
     if request.method == "POST":
-        print "here"
         data_record_ids = json.loads(request.POST.get('id_list'))
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
             submission_log = manager._load_document(data_record.submission.get("submission_id"), SubmissionLogDocument)
-            submission_log.status = False
+            submission_log.voided = True
             manager._save_document(submission_log)
             manager.invalidate(each)
         return HttpResponse('Your records have been invalidated')
