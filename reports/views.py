@@ -24,7 +24,7 @@ def report(request):
             filter_criteria = form.cleaned_data['filter']
             aggregates_field = form.cleaned_data['aggregates_field']
             location = filter_criteria.split(",") if filter_criteria else None
-            report_data = data.aggregate_by_entity(manager, entity_type=entity_type,
+            report_data = data.aggregate(manager, entity_type=entity_type,
                                      aggregates={aggregates_field: data.reduce_functions.LATEST},
                                      filter=LocationFilter(location=location)
             )
@@ -67,7 +67,7 @@ def hierarchy_report(request):
             aggregates = {aggregates_field: reduce_function}
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
             level = form.cleaned_data['level']
-            report_data = data.aggregate_by_entity(manager, entity_type=entity_type,
+            report_data = data.aggregate(manager, entity_type=entity_type,
                                      aggregates=aggregates,
                                      aggregate_on=TypeAggregration(type=aggregate_on_path,level=level),
                                      )

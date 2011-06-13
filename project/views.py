@@ -227,7 +227,7 @@ def project_data(request, questionnaire_code=None):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     data_dictionary = {}
     if request.method == "GET":
-        data_dictionary = data.aggregate_by_form_code(manager, form_code=questionnaire_code,
+        data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
                                      aggregates={"*": data.reduce_functions.LATEST},aggregate_on=EntityAggregration())
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return render_to_response('project/data_analysis.html',
@@ -239,6 +239,10 @@ def project_data(request, questionnaire_code=None):
         post_list = json.loads(request.POST.get("aggregation-types"))
         aggregates = helper.get_aggregate_dictionary(header_list[1:], post_list)
         aggregates.update({form_model.fields[0].name: data.reduce_functions.LATEST})
-        data_dictionary = data.aggregate_by_form_code(manager, form_code=questionnaire_code,aggregates=aggregates,aggregate_on=EntityAggregration())
-        response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
-        return HttpResponse(response_string)
+
+        data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,aggregates=aggregates,aggregate_on=EntityAggregration())
+        data_list, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        return render_to_response('project/data_analysis_table.html',
+                                  {"entity_type": form_model.entity_type[0], "data_list": data_list},
+                                  context_instance=RequestContext(request)
+        )
