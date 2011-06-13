@@ -29,21 +29,30 @@
   left: -35px;
   margin-left: 15px;
   float: left;
+  height: 40px;
   width: 950px;
   background: #f0f0f0; }
   .secondary_tab li {
     float: left;
     padding: 3px 20px 4px;
     position: relative;
-    margin-top: 5px; }
+    margin-top: 7px; }
     .secondary_tab li a {
       color: #0070ac;
       text-decoration: none;
       font-size: 14px; }
   .secondary_tab li.active {
-    background: #CCCCCC;
-    margin-top: 0px;
-    padding-top: 5px;
+    background: #dfdfdf;
+    /* for non-css3 browsers */
+    background: -webkit-gradient(linear, left top, left bottom, from(#dfdfdf), to(#e7e7e7));
+    /* for webkit browsers */
+    background: -moz-linear-gradient(top, #dfdfdf, #e7e7e7);
+    /* for firefox 3.6+ */
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: 1px solid #dfdfdf;
+    margin-top: 3px;
+    padding-top: 3px;
     top: 1px;
     border: 1px solid #ccc; }
     .secondary_tab li.active a {

@@ -50,9 +50,31 @@
             -webkit-border-radius:10px;
             li{
                 float:left;
+                background:url(/media/images/list_chart_map.png) no-repeat top left;
+                padding:2px 10px 2px 23px;
                 a{
                     padding:10px;
+                    color:#000;
                 }
+            }
+            li.active{
+               background-color:#94d1ff;
+               border:1px solid #94d1ff;
+
+              -moz-border-radius:10px 0 0px 10px;
+              -webkit-border-radius:10px 0 0px 10px;
+            }
+            li.list{
+                background-position:6px 3px;
+                border-right:1px solid #CCC;
+            }
+            li.chart{
+                background-position:10px -27px;
+                border-right:1px solid #CCC;
+            }
+            li.map{
+                background-position:10px -67px;
+
             }
         }
     }
@@ -64,9 +86,13 @@
         border:0;
         background:#FFFFFF;
         width:100%;
-        position:relative;
-        top:100px;
+        position:relative !important;
+        top:125px;
+        z-index:1;
     }
+    span.customStyleSelectBox { position:relative; top: 100px; font-size:14px; background-color: #FFFFFF; color:#7c7c7c; padding:1px 7px; border:1px solid #e7dab0; -moz-border-radius: 5px; -webkit-border-radius: 5px;border-radius: 5px 5px; }
+    span.customStyleSelectBox.changed { background-color: #c0d5e9; border:1px solid #e3eff9; color:#FFF; }
+    span.customStyleSelectBoxInner {  background:url(/media/images/small_arrow.gif) no-repeat center right; }
     td{
         height:0px;
         border:0;
@@ -83,7 +109,13 @@
     background: -moz-linear-gradient(top,  #525252,  #262626);  //for firefox 3.6+
 }
 #data_analysis_wrapper{
+    .dataTables_scroll{
+        position:relative;
+        top:-60px;
+
+    }
     #data_analysis_filter{
+
         input{
             width:200px;
             margin-bottom:10px;
@@ -104,8 +136,20 @@
             th{
                 color:#FFF;
             }
+            .sorting{
+                background:url(/media/images/sort_arrow.png) no-repeat right 10px;
+            }
+            .sorting_desc{
+                background:url(/media/images/sort_icon_bottom.png) no-repeat right 18px;
+            }
+            .sorting_asc{
+                background:url(/media/images/sort_icon_top.png) no-repeat right 10px;
+            }
         }
     }
-
+    .dataTables_paginate,.dataTables_info{
+        position:relative;
+        top:-60px;
+    }
 
 }
