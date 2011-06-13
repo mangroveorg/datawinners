@@ -3,6 +3,7 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
 {% endblock %}
 {% block page_css %}
@@ -51,11 +52,15 @@
                     </fieldset>
                </form>
             </div>
+            <label>Actions</label><select id="action" ><option>Actions ....</option><option>Delete</option></select>
             <div id="results">
                 <input id="total_rows" type="hidden" value="{{ pages }}" />
                 <div>
                     <table>
                         <tr>
+                            <th>
+
+                            </th>
                             <th>
                                 Date Received
                             </th>
@@ -71,8 +76,11 @@
                                 </th>
                             {% endfor %}
                         </tr>
-                        {% for answer in results.submissions %}
+                        {% for answer, id in results.submissions %}
                             <tr>
+                                <td>
+                                    <input type="checkbox" class = "selected_submissions" value="{{ id }}" />
+                                </td>
                                 <td>
                                     {{ answer.0 }}
                                 </td>
@@ -97,5 +105,6 @@
             </div>
             <div id="pagination"></div>
         </div>
+        <div id = "success_message"></div>
     </div>
 {% endblock %}

@@ -359,3 +359,9 @@ class TestHelper(unittest.TestCase):
         actual_dict = helper.get_aggregate_dictionary(header_list, post_data)
         self.assertEquals(expected_dictionary, actual_dict)
         
+    def test_should_create_list_of_values(self):
+        data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
+                         {"entity_name": "cid001", "values": ['asif', 35]}]
+        actual_list = helper.convert_to_json(data_list)
+        expected_list = [["cid002", 'shweta', 55],["cid001", 'asif', 35]]
+        self.assertListEqual(expected_list, actual_list)

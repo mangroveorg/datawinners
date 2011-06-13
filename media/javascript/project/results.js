@@ -60,6 +60,21 @@ $(document).ready(function(){
             new DW.show_data(page_number + 1);
         }
     });
+
+   $('#action').change(function(){
+       var ids = [];
+       $(".selected_submissions:checked").each(function(){
+           ids.push($(this).val());
+       });
+       $.post(
+               window.location.pathname,
+               {'id_list': JSON.stringify(ids)},
+               function(response){
+                   $("#success_message").append(response);
+               }
+       );
+
+    })
     
 });
 

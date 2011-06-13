@@ -27,8 +27,13 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript">
+        var initial_data = JSON.parse({{data_list|safe}});
+    </script>
+    <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
+
+
 {% endblock %}
 
 {% block content %}
@@ -83,7 +88,6 @@
             {% endfor %}
         </tr>
         </thead>
-        {% include 'project/data_analysis_table.html' %}
     </table>
-    <div id="message_label"></div>
+    <div id="demo"></div>
 {% endblock %}

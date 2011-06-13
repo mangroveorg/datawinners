@@ -180,3 +180,20 @@ def get_aggregate_dictionary(header_list, post_data):
     for index, key in enumerate(header_list):
         aggregates[key] = post_data[index].strip().lower()
     return aggregates
+
+def convert_to_json(data_list):
+    """
+    data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
+                         {"entity_name": "cid001", "values": ['asif', 35]}]
+        expected_list = [["cid002", 'shweta', 55],["cid001", 'asif', 35]]
+    """
+    final_list = []
+    for each in data_list:
+        current_list = [each["entity_name"]]
+        current_list.extend(each["values"])
+        final_list.append(current_list)
+    return final_list
+
+
+def get_data_record_from_submissions(ids):
+    pass

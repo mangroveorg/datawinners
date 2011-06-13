@@ -11,6 +11,7 @@ from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
 import helper
 from datawinners.project import models
+from mangrove.datastore.documents import DataRecordDocument, SubmissionLogDocument
 from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
@@ -19,13 +20,14 @@ from mangrove.transport.submissions import get_submissions_made_for_form
 from django.contrib import messages
 from mangrove.utils.types import is_string
 from mangrove.datastore import data
+from mangrove.utils.json_codecs import encode_json
 
 PAGE_SIZE = 10
-NUMBER_TYPE_OPTIONS=["Latest", "Sum", "Count", "Min", "Max", "Average"]
-MULTI_CHOICE_TYPE_OPTIONS=["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
-DATE_TYPE_OPTIONS=["Latest"]
-GEO_TYPE_OPTIONS=["Latest"]
-TEXT_TYPE_OPTIONS=["Latest", "Most Frequent"]
+NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
+MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
+DATE_TYPE_OPTIONS = ["Latest"]
+GEO_TYPE_OPTIONS = ["Latest"]
+TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 @login_required(login_url='/login')
 def questionnaire(request):
@@ -37,9 +39,9 @@ def questionnaire(request):
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
-                                  {"existing_questions": repr(existing_questions),
-                                   "questionnaire_code": form_model.form_code,
-                                   'project_id': pid, "previous": previous_link},
+                {"existing_questions": repr(existing_questions),
+                 "questionnaire_code": form_model.form_code,
+                 'project_id': pid, "previous": previous_link},
                                   context_instance=RequestContext(request))
 
 
@@ -150,7 +152,7 @@ def project_overview(request):
     project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link,
                             data_link=data_link)
     return render_to_response('project/overview.html',
-                              {'project': project_overview, 'entity_type': project['entity_type']},
+            {'project': project_overview, 'entity_type': project['entity_type']},
                               context_instance=RequestContext(request))
 
 
@@ -162,38 +164,49 @@ def get_number_of_rows_in_result(dbm, questionnaire_code):
 
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
-    submissions = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
-                                                page_size=PAGE_SIZE, count_only=False)
+    submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
+                                                     page_size=PAGE_SIZE, count_only=False)
     submissions = helper.get_submissions(questions, submissions)
-    return submissions
+    return submissions, ids
 
 
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code=None):
-    current_page = int(request.GET.get('page_number') or 1)
-    date_from = request.GET.get('date_from')
-    date_to = request.GET.get('date_to')
-    if request.GET.get('filters'):
-        filters = json.loads(request.GET.get('filters'))
-    contains = request.GET.get('contains')
     manager = get_database_manager(request)
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-    questionnaire = (questionnaire_code, form_model.name)
-    questions = helper.get_code_and_title(form_model.fields)
-    rows = get_number_of_rows_in_result(manager, questionnaire_code)
-    if rows:
-        submissions = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
-        results = {
-            'questionnaire': questionnaire,
-            'questions': questions,
-            'submissions': submissions
-        }
+    if request.method == 'GET':
+        current_page = int(request.GET.get('page_number') or 1)
+        date_from = request.GET.get('date_from')
+        date_to = request.GET.get('date_to')
+        if request.GET.get('filters'):
+            filters = json.loads(request.GET.get('filters'))
+        contains = request.GET.get('contains')
+        form_model = get_form_model_by_code(manager, questionnaire_code)
+        questionnaire = (questionnaire_code, form_model.name)
+        questions = helper.get_code_and_title(form_model.fields)
+        rows = get_number_of_rows_in_result(manager, questionnaire_code)
+        if rows:
+            submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
+            results = {
+                'questionnaire': questionnaire,
+                'questions': questions,
+                'submissions': zip(submissions, ids)
+            }
 
-        return render_to_response('project/results.html',
-                                  {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
-                                   current_page: current_page},
-                                  context_instance=RequestContext(request)
-        )
+            return render_to_response('project/results.html',
+                    {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                     current_page: current_page},
+                                      context_instance=RequestContext(request)
+            )
+    if request.method == "POST":
+        print "here"
+        data_record_ids = json.loads(request.POST.get('id_list'))
+        for each in data_record_ids:
+            data_record = manager._load_document(each, DataRecordDocument)
+            submission_log = manager._load_document(data_record.submission.get("submission_id"), SubmissionLogDocument)
+            submission_log.status = False
+            manager._save_document(submission_log)
+            manager.invalidate(each)
+        return HttpResponse('Your records have been invalidated')
     return HttpResponse("No submissions present for this project")
 
 
@@ -202,7 +215,9 @@ def _format_data_for_presentation(data_dictionary, form_model):
     data_list = helper.get_values(data_dictionary, header_list)
     header_list[0] = form_model.entity_type[0] + " Name"
     type_list = helper.get_type_list(form_model.fields[1:])
-    return data_list, header_list, type_list
+    data_list = helper.convert_to_json(data_list)
+    response_string = encode_json(data_list)
+    return response_string, header_list, type_list
 
 
 @login_required(login_url='/login')
@@ -214,10 +229,11 @@ def project_data(request, questionnaire_code=None):
         data_dictionary = data.fetch(manager, entity_type=form_model.entity_type,
                                      aggregates={"*": data.reduce_functions.LATEST},
                                      filter={'form_code': questionnaire_code})
-        data_list, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+
         return render_to_response('project/data_analysis.html',
-                                  {"entity_type": form_model.entity_type[0], "data_list": data_list,
-                                   "header_list": header_list, "type_list": type_list},
+                {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
+                 "header_list": header_list, "type_list": type_list},
                                   context_instance=RequestContext(request))
     if request.method == "POST":
         header_list = helper.get_headers(form_model.fields)
@@ -226,8 +242,5 @@ def project_data(request, questionnaire_code=None):
         aggregates.update({form_model.fields[0].name: data.reduce_functions.LATEST})
         data_dictionary = data.fetch(manager, entity_type=form_model.entity_type, aggregates=aggregates,
                                      filter={'form_code': questionnaire_code})
-        data_list, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
-        return render_to_response('project/data_analysis_table.html',
-                                  {"entity_type": form_model.entity_type[0], "data_list": data_list},
-                                  context_instance=RequestContext(request)
-        )
+        response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        return HttpResponse(response_string)
