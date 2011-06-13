@@ -34,5 +34,33 @@
                 </ul>
             </form>
         </fieldset>
+        {% if data %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Short Name</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Contact info</th>
+                </tr>
+                {% for each in data %}
+                    <tr>
+                        <td>{{ each.id }}</td>
+                        <td>{{ each.name }}</td>
+                        <td>{{ each.short_name }}</td>
+                        <td>{{ each.type }}</td>
+                        {% if each.location %}
+                            <td>{{ each.location }}</td>
+                        {% else %}
+                            <td>--</td>
+                        {% endif %}
+                        <td>--</td>
+                        <td>--</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
     </div>
 {% endblock %}
