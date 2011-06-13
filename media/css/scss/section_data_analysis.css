@@ -101,7 +101,7 @@
 
 #data_analysis_wrapper .dataTables_scroll {
   position: relative;
-  top: -60px; }
+  top: -20px; }
 #data_analysis_wrapper #data_analysis_filter input {
   width: 200px;
   margin-bottom: 10px; }
@@ -120,4 +120,4 @@
   background: url(/media/images/sort_icon_top.png) no-repeat right 10px; }
 #data_analysis_wrapper .dataTables_paginate, #data_analysis_wrapper .dataTables_info {
   position: relative;
-  top: -60px; }
+  top: -20px; }

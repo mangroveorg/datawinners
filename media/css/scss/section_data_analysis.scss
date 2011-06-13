@@ -60,7 +60,6 @@
             li.active{
                background-color:#94d1ff;
                border:1px solid #94d1ff;
-
               -moz-border-radius:10px 0 0px 10px;
               -webkit-border-radius:10px 0 0px 10px;
             }
@@ -111,8 +110,7 @@
 #data_analysis_wrapper{
     .dataTables_scroll{
         position:relative;
-        top:-60px;
-
+        top:-20px;
     }
     #data_analysis_filter{
 
@@ -149,7 +147,7 @@
     }
     .dataTables_paginate,.dataTables_info{
         position:relative;
-        top:-60px;
+        top:-20px;
     }
 
 }
