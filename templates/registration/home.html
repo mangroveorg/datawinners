@@ -4,7 +4,7 @@
 {% block section_title %}Dashboard{% endblock %}
 
 {% load dw_tabs %}
-{% block main_navigation %}
+{% block body %}
 {% activetab "main_nav" "dashboard" %}
 {{ block.super }}
 {% endblock %}
@@ -20,7 +20,7 @@
         </div>
         <div class="margin_top_20">
             <a href="reporter/register">Register Reporter</a><br/>
-            <a href="{% url datawinners.project.views.project_listing %}">View all projects</a><br/>
+            <a href="{% url datawinners.project.views.index %}">View all projects</a><br/>
             <a href="{% url datawinners.project.views.create_profile %}">Create project</a><br/>
             <a href="{% url datawinners.admin.views.register_entity %}">Register Subjects</a>
         </div>

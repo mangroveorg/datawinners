@@ -27,6 +27,8 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         var initial_data = JSON.parse({{data_list|safe}});
@@ -62,9 +64,9 @@
         <div class="view_style_block">
             <label>View Style:</label>
             <ul>
-                <li><a href="#">List</a></li>
-                <li><a href="#">Chart</a></li>
-                <li><a href="#">Map</a></li>
+                <li class="active list"><a href="#">List</a></li>
+                <li class="chart"><a href="#">Chart</a></li>
+                <li class="map"><a href="#">Map</a></li>
             </ul>
         </div>
     </div>

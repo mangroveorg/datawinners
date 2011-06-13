@@ -19,6 +19,7 @@ $(document).ready(function() {
             "aaData": data
         };
     }
+    $('.dataTables_scrollHead select').customStyle();
     $(".aggregation_type").live("change", function(){
         var aggregation_selectBox_Array = $(".aggregation_type"), aggregationArray = new Array();
          aggregation_selectBox_Array.each(function(){

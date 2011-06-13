@@ -18,13 +18,6 @@ urlpatterns = patterns('',
     (r'', include('datawinners.smstester.urls')),
     (r'', include('datawinners.submission.urls')),
     (r'', include('datawinners.maps.urls')),
-    # Examples:
-    # url(r'^$', 'web.views.home', name='home'),
-    # url(r'^web/', include('web.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+    (r'', include('datawinners.subjects.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
