@@ -66,14 +66,17 @@ $(document).ready(function(){
        $(".selected_submissions:checked").each(function(){
            ids.push($(this).val());
        });
-       $.post(
-               window.location.pathname,
-               {'id_list': JSON.stringify(ids)},
-               function(response){
-                   $("#success_message").append(response);
-               }
-       );
-
+       var answer = confirm("Are you sure you want to delete the selected record/s?");
+       if(answer){
+           $.post(
+                   window.location.pathname,
+                   {'id_list': JSON.stringify(ids)},
+                   function(response){
+                       window.location.reload();
+                       $('#action').val(0);
+                   }
+           );
+       }
     })
     
 });
