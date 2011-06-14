@@ -21,6 +21,8 @@
     {{ block.super }}
     <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet" />
     <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
 
 {% endblock %}
 
@@ -28,6 +30,8 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
     <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
@@ -52,13 +56,15 @@
     </div>
     <div class="heading_block grid_23 alpha">
         <h3 class="grid_10">Analysis</h3>
+    </div>
+    <div class="heading_block grid_23 alpha">
         <div class="date_range_box">
             <label>Show data for:</label>
-            <select><option>----Select A date ------</option></select>
+            <input type="text" id="dateRangePicker" value="Select a date range" />
         </div>
     </div>
     <div class="view_data_block grid_23 alpha">
-        <div class="grid_12 show_data_block">
+        <div class="grid_12 show_data_block alpha">
             <label>View Data By: {{ entity_type }}</label>
         </div>
         <div class="view_style_block">

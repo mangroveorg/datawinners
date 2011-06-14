@@ -14,11 +14,10 @@
     padding-bottom:5px;
     margin-top:30px;
     .date_range_box{
-        float:right;
+        float:left;
         label, select{
             font-weight:normal;
             float:left;
-            margin-left:10px;
         }
     }
 }
@@ -149,5 +148,13 @@
         position:relative;
         top:-20px;
     }
-
+}
+#dateRangePicker{
+    width:220px;
+    margin-left:5px;
+    padding-left:5px;
+}
+.ui-daterangepickercontain .ui-daterangepicker {
+    font-size:11px;
+    
 }

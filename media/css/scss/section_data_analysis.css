@@ -12,11 +12,10 @@
   padding-bottom: 5px;
   margin-top: 30px; }
   .heading_block .date_range_box {
-    float: right; }
+    float: left; }
     .heading_block .date_range_box label, .heading_block .date_range_box select {
       font-weight: normal;
-      float: left;
-      margin-left: 10px; }
+      float: left; }
 
 .view_data_block {
   border-bottom: 1px solid #CCCCCC;
@@ -121,3 +120,11 @@
 #data_analysis_wrapper .dataTables_paginate, #data_analysis_wrapper .dataTables_info {
   position: relative;
   top: -20px; }
+
+#dateRangePicker {
+  width: 220px;
+  margin-left: 5px;
+  padding-left: 5px; }
+
+.ui-daterangepickercontain .ui-daterangepicker {
+  font-size: 11px; }
