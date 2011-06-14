@@ -169,7 +169,14 @@ def get_values(data_dictionary, header_list):
     for key, values in data_dictionary.items():
         current_dict = dict()
         current_dict["entity_name"] = values.get(header_list[0])
-        current_dict["values"] = [values.get(each) for each in header_list[1:]]
+        current_dict["values"] = list()
+        for each in header_list[1:]:
+            current_val = values.get(each)
+            if type(current_val)==list:
+                if type(current_val[0])!=str:
+                    current_val = [str(each) for each in current_val]
+                current_val = ",".join(current_val)
+            current_dict["values"].append(current_val)
         value_list.append(current_dict)
     return value_list
 

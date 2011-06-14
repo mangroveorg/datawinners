@@ -325,14 +325,14 @@ class TestHelper(unittest.TestCase):
         self.assertListEqual(expected_list, actual_list)
 
     def test_should_create_value_list(self):
-        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta',
+        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', "What colour do you choose?" :["red", "blue"],"what is your loc?" :[21.1,23.3],
                                              'What is associated entity?': 'cid002'},
-                           'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif',
+                           'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', "What colour do you choose?" :["red"],"what is your loc?" :[21.1],
                                              'What is associated entity?': 'cid001'}}
-        header_list = ["What is associated entity?", "What is your name?", "What is age of father?"]
+        header_list = ["What is associated entity?", "What is your name?", "What is age of father?", "What colour do you choose?", "what is your loc?"]
         actual_list = helper.get_values(data_dictionary, header_list)
-        expected_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
-                         {"entity_name": "cid001", "values": ['asif', 35]}]
+        expected_list = [{"entity_name": "cid002", "values": ['shweta', 55, "red,blue","21.1,23.3"]},
+                         {"entity_name": "cid001", "values": ['asif', 35, "red", "21.1"]}]
         self.assertListEqual(expected_list, actual_list)
 
     def test_should_create_type_list(self):

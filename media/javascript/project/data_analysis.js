@@ -1,4 +1,6 @@
 $(document).ready(function() {
+     $('.dataTables_scrollHead select').customStyle();
+    
     $('#data_analysis').dataTable( {
         "bRetrieve" : true,
         "sPaginationType": "full_numbers",
@@ -6,6 +8,8 @@ $(document).ready(function() {
         "sScrollXInner": "110%",
         "bScrollCollapse": true,
 		"aaData": initial_data
+
+
 
 	} );
     var newDataTable;
@@ -19,7 +23,6 @@ $(document).ready(function() {
             "aaData": data
         };
     }
-    $('.dataTables_scrollHead select').customStyle();
     $(".aggregation_type").live("change", function(){
         var aggregation_selectBox_Array = $(".aggregation_type"), aggregationArray = new Array();
          aggregation_selectBox_Array.each(function(){
@@ -30,6 +33,7 @@ $(document).ready(function() {
           url: window.location.pathname,
           data: {'aggregation-types':JSON.stringify(aggregationArray)},
           success:function(response) {
+                       console.log("response data"+response)
                        var response_data = JSON.parse(response);
                        dataBinding(response_data);
                        $('#data_analysis').dataTable( newDataTable );

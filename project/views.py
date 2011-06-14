@@ -199,7 +199,6 @@ def project_results(request, questionnaire_code=None):
                                       context_instance=RequestContext(request)
             )
     if request.method == "POST":
-        print "here"
         data_record_ids = json.loads(request.POST.get('id_list'))
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
@@ -239,10 +238,6 @@ def project_data(request, questionnaire_code=None):
         post_list = json.loads(request.POST.get("aggregation-types"))
         aggregates = helper.get_aggregate_dictionary(header_list[1:], post_list)
         aggregates.update({form_model.fields[0].name: data.reduce_functions.LATEST})
-
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,aggregates=aggregates,aggregate_on=EntityAggregration())
-        data_list, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
-        return render_to_response('project/data_analysis_table.html',
-                                  {"entity_type": form_model.entity_type[0], "data_list": data_list},
-                                  context_instance=RequestContext(request)
-        )
+        response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        return HttpResponse(response_string)
