@@ -94,3 +94,7 @@ table th {
 .delete_link {
   padding: 5px 0 10px 25px;
   background: url(/media/images/icons.png) no-repeat left -167px; }
+
+.float_right {
+    float: right;
+}

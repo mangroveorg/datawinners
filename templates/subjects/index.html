@@ -30,10 +30,12 @@
                     </li>
                     <li>
                         <input type="submit" value="Upload" class="button"/>
+                        <a class="float_right" href="{% url datawinners.admin.views.register_entity %}">Add a subject</a>
                     </li>
                 </ul>
             </form>
         </fieldset>
+
         {% if failure_data %}
             <h3>Errors in Import</h3>
             <table>

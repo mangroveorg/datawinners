@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -40,7 +41,7 @@ def tabulate_output(rows):
         tabulated_data.append(row.errors)
     return tabulated_data
 
-
+@login_required(login_url='/login')
 def index(request):
     failure_imports = None
     if request.method == 'POST':
