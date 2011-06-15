@@ -17,13 +17,13 @@ from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
-from mangrove.transport.submissions import get_submissions_made_for_form
+from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger
 from django.contrib import messages
 from mangrove.utils.types import is_string
 from mangrove.datastore import data
 from mangrove.utils.json_codecs import encode_json
 
-PAGE_SIZE = 10
+PAGE_SIZE = 4
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
 DATE_TYPE_OPTIONS = ["Latest"]
@@ -198,9 +198,7 @@ def project_results(request, questionnaire_code=None):
         data_record_ids = json.loads(request.POST.get('id_list'))
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
-            submission_log = manager._load_document(data_record.submission.get("submission_id"), SubmissionLogDocument)
-            submission_log.voided = True
-            manager._save_document(submission_log)
+            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
             manager.invalidate(each)
         return HttpResponse('Your records have been invalidated')
     return HttpResponse("No submissions present for this project")
