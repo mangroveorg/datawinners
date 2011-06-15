@@ -219,7 +219,7 @@ def load_data():
     manager = load_manager_for_default_test_account()
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = ["Clinic"]
-    WATER_POINT_ENTITY_TYPE = ["Water Point"]
+    WATER_POINT_ENTITY_TYPE = ["Waterpoint"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
     create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
