@@ -160,7 +160,7 @@ def project_overview(request):
 def get_number_of_rows_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_form(dbm, questionnaire_code, count_only=True)
     if submissions_count:
-        return submissions_count[0]
+        return submissions_count[0][0]
     return None
 
 
@@ -182,7 +182,6 @@ def project_results(request, questionnaire_code=None):
         rows = get_number_of_rows_in_result(manager, questionnaire_code)
         if rows:
             submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
-            print submissions
             results = {
                 'questionnaire': questionnaire,
                 'questions': questions,
