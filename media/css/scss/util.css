@@ -43,6 +43,9 @@
 .text_align_right {
   text-align: right; }
 
+.text_align_center {
+  text-align: center; }
+
 /* Text Styles */
 .bold {
   font-weight: bold; }
@@ -50,16 +53,17 @@
 /*Error and Success*/
 .error_message {
   color: #FF0000;
-  margin: 20px;
-  padding: 10px; }
+  padding: 5px; }
 
 .success_message {
   color: green;
-  margin: 20px;
-  padding: 10px; }
+  padding: 5px; }
 
 .error {
   color: #FF0000; }
+
+.success {
+  color: green; }
 
 input.error {
   border: 1px solid #FF0000 !important;

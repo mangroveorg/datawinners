@@ -1,3 +1,7 @@
+table {
+  width: 100%; }
+
+/* common for all data Page */
 .links {
   float: right; }
   .links li {

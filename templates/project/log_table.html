@@ -1,0 +1,50 @@
+<div id="message_text" class="success">{{ success_message }}</div>
+<table class="styled_table">
+    <thead>
+    <th>
+        <input type="checkbox" id="master_checkbox" value="master"/>
+    </th>
+    <th>
+        Date Received
+    </th>
+    <th>
+        Source
+    </th>
+    <th>
+        Submission Status
+    </th>
+    <th>
+        Void
+    </th>
+    {% for question in results.questions %}
+        <th>
+            <span style="cursor:default" title='{{ question.1 }}'>{{ question.0 }}</span>
+        </th>
+    {% endfor %}
+    </thead>
+    {% for answer, id in results.submissions %}
+        <tr>
+            <td class="text_align_center">
+                <input type="checkbox" class="selected_submissions" value="{{ id }}"/>
+            </td>
+            <td>
+                {{ answer.0 }}
+            </td>
+
+            <td>
+                {{ answer.1 }}
+            </td>
+            <td>
+                <span title='{{ answer.4 }}'>{{ answer.2 }}</span>
+            </td>
+            <td>
+                {{ answer.3 }}
+            </td>
+            {% for each in answer|slice:"5:" %}
+                <td>
+                    {{ each }}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
