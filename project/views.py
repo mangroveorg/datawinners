@@ -23,7 +23,7 @@ from mangrove.utils.types import is_string
 from mangrove.datastore import data
 from mangrove.utils.json_codecs import encode_json
 
-PAGE_SIZE = 10
+PAGE_SIZE = 4
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
 DATE_TYPE_OPTIONS = ["Latest"]
