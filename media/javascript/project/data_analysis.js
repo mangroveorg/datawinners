@@ -28,7 +28,6 @@ $(document).ready(function() {
           url: window.location.pathname,
           data: {'aggregation-types':JSON.stringify(aggregationArray)},
           success:function(response) {
-                       console.log("response data"+response)
                        var response_data = JSON.parse(response);
                        dataBinding(response_data, true, false);
 
