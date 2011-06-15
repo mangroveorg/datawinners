@@ -15,60 +15,51 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
-    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js" ></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/media/javascript/project/results.js"></script>
+
 {% endblock %}
 {% block page_css %}
     {{ block.super }}
     <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet" />
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
 {% endblock %}
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_sms_results.scss" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/section_data.scss" media="screen" rel="stylesheet" />
 {% endblock %}
 {% block content %}
     {% block secondary_navigation %}
     {% activetab "secondary_tab_nav" "activity_log" %}
     {{ block.super }}
     {% endblock %}
-    <div id="sms_results">
-        <h3>Results</h3>
+    <div class="grid_23">
+        <ul class="links">
+            <li><a href="#">export</a> </li>
+            <li><a href="#">print</a> </li>
+            <li><a href="#" class="null_border">e-mail</a> </li>
+        </ul>
+    </div>
+    <div class="heading_block grid_23 alpha">
+        <h3 class="grid_10">Results</h3>
+    </div>
+    <div class="heading_block grid_23 alpha">
+        <div class="date_range_box">
+            <label>Show data for:</label>
+            <input type="text" id="dateRangePicker" value="Click to select a date range" />
+        </div>
+    </div>
+    <div class="heading_block grid_23 alpha">
+        <label>Actions</label>
+        <select id="action" ><option>Actions ....</option><option>Delete</option></select>
+    </div>
+    <div id="sms_results" class="grid_23 alpha margin_top_20">
         <div>
-            <div>
-               <form id="question_form">
-                    <fieldset>
-                        <legend>Filter Data by:</legend>
-                        <ul>
-                            <li>
-                                <label>Date received between</label>
-                                    <input id="date_from" type="text"/>
-                                to
-                                    <input id="date_to" type="text"/>
-                            </li>
-                            <li class="margin_null">
-                                <h6>Answer to question</h6>
-                            </li>
-                             <li>
-                                <select class="question_filter">
-                                    <option>-------Select------</option>
-                                </select>
-                                is <input type="text" class="answer_filter"/>
-                            </li>
-                            <li>
-                                <a id="add_answer_filter" style="cursor:pointer">Add another</a>
-                            </li>
-                            <li>
-                                <label>Contains</label>
-                                <input id="contains_text" type="text"/>
-                            </li>
-                            <li>
-                                <button id="filter">Filter</button>
-                            </li>
-                         </ul>
-                    </fieldset>
-               </form>
-            </div>
-            <label>Actions</label><select id="action" ><option>Actions ....</option><option>Delete</option></select>
             <div id="results">
                 <input id="total_rows" type="hidden" value="{{ pages }}" />
                 <div>

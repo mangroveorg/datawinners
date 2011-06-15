@@ -16,6 +16,10 @@
     .heading_block .date_range_box label, .heading_block .date_range_box select {
       font-weight: normal;
       float: left; }
+  .heading_block label {
+    float: left;
+    margin-right: 10px;
+    font-weight: normal; }
 
 .view_data_block {
   border-bottom: 1px solid #CCCCCC;

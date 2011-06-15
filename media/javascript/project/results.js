@@ -1,8 +1,8 @@
 (function(){
     DW.show_data = function(page_number){
-        this.date_from = $('#date_from').val();
-        this.date_to = $('#date_to').val();
-        this.contains =$('#contains_text').val().trim();
+//        this.date_from = $('#date_from').val();
+//        this.date_to = $('#date_to').val();
+//        this.contains =$('#contains_text').val().trim();
         this.page_number = page_number;
         this._init();
         this._addAnswerFilter();
@@ -11,9 +11,9 @@
         _init : function(){
             $.get($(window).location,
                   {
-                      date_from: this.date_from,
-                      date_to: this.date_to,
-                      contains: this.contains,
+//                      date_from: this.date_from,
+//                      date_to: this.date_to,
+//                      contains: this.contains,
                       'filters': JSON.stringify(this._answerFilter(), null, 2),
                       page_number: this.page_number,
                       rand: Math.floor(Math.random()*10000000)
@@ -46,9 +46,11 @@
 
 $(document).ready(function(){
 
-    // For filtering results,right now its incomplete
-    $('#filter').unbind('click').click(function() {
-        new show_data(1);
+    $("#dateRangePicker").daterangepicker( { presetRanges: [
+        {text: 'Past 7 days', dateStart: 'last week', dateEnd: 'Today' },
+        {text: 'Past 30 days', dateStart: 'last month', dateEnd: 'Today' },
+        {text: 'Past year', dateStart: 'last year', dateEnd: 'Today'}],
+        earliestDate:'1/1/2011', latestDate:'12/21/2012'
     });
 
     //$('#total_rows').val() is the total number of results which needs to be sent for every pagination click(total_rows).val(), don't take that out

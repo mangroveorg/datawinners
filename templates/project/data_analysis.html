@@ -14,7 +14,7 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_data_analysis.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_data.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_css %}
@@ -65,7 +65,7 @@
     </div>
     <div class="view_data_block grid_23 alpha">
         <div class="grid_12 show_data_block alpha">
-            <label>View Data By: {{ entity_type }}</label>
+            <label>View Data By: <span class="bold">{{ entity_type }}</span></label>
         </div>
         <div class="view_style_block">
             <label>View Style:</label>

@@ -20,6 +20,11 @@
             float:left;
         }
     }
+    label{
+        float:left;
+        margin-right:10px;
+        font-weight:normal;
+    }
 }
 
 .view_data_block{
@@ -155,7 +160,7 @@
     padding-left:5px;
 }
 .ui-daterangepickercontain .ui-daterangepicker {
-    font-size:11px;
+    font-size:12px;
     .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-hover{
         border:1px solid #666666;
         background:#ccc;
@@ -167,6 +172,6 @@
          background-color:#525252;
          background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));  //for webkit browsers
          background: -moz-linear-gradient(top,  #525252,  #262626);  //for firefox 3.6+
-        border:1px solid #666666
+         border:1px solid #666666
     }
 }
