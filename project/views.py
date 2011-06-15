@@ -200,18 +200,14 @@ def project_results(request, questionnaire_code=None):
         data_record_ids = json.loads(request.POST.get('id_list'))
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
-            if data_record is None or data_record.void == True:
-                return HttpResponseServerError("The data has already been deleted")
-            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
             manager.invalidate(each)
-            current_page = request.POST.get('current_page')
-            rows, results = load_submissions(int(current_page), manager,questionnaire_code)
-            return render_to_response('project/log_table.html',
-                    {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, 'success_message':"The selected records have been deleted"},
-                                      context_instance=RequestContext(request)
-            )
+            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
+            
+        current_page = request.POST.get('current_page')
+        rows, results = load_submissions(int(current_page), manager, questionnaire_code)
+        return render_to_response('project/log_table.html',{'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, 'success_message':"The selected records have been deleted"},context_instance=RequestContext(request))
 
-        return HttpResponseRedirect('/project/results/'+questionnaire_code)
+
     return HttpResponse("No submissions present for this project")
 
 

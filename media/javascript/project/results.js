@@ -74,29 +74,33 @@ $(document).ready(function(){
    $('#action').change(function(){
        var ids = [];
        $(".selected_submissions:checked").each(function(){
-           ids.push($(this).val());
+           if($(this).val()!="None")
+                ids.push($(this).val());
        });
-       var answer = confirm("Are you sure you want to delete the selected record/s?");
-       if(answer){
-           $.ajax({
-          type: 'POST',
-          url: window.location.pathname,
-          data:  {'id_list': JSON.stringify(ids), 'current_page':DW.current_page},
-          success:function(response) {
-                       $('#submission_table').replaceWith(response)
-                       $('#action').val(0);
-
-         },
-         error: function(e) {
-             console.log($("#message_text"))
-             console.log(e.responseText)
-            $("#message_text").html("<span class='error_message'>" + e.responseText + "</span>");
+       if(ids.length==0){
+            $("#message_text").html("<span class='error_message'>" + "This data has already been deleted" + "</span>");
             $('#action').val(0);
-        }
-         });
        }
-       else $("action").val(0)
-    })
-    
+       else{
+            var answer = confirm("Are you sure you want to delete the selected record/s?");
+           if(answer){
+               $.ajax({
+                  type: 'POST',
+                  url: window.location.pathname,
+                  data:  {'id_list': JSON.stringify(ids), 'current_page':DW.current_page},
+                  success:function(response) {
+                               $('#submission_table').replaceWith(response);
+                               $('#action').val(0);
+
+                    },
+                 error: function(e) {
+                    $("#message_text").html("<span class='error_message'>" + e.responseText + "</span>");
+                    $('#action').val(0);
+                }
+             });
+           }
+           else $("action").val(0);
+        }
+   });
 });
 
