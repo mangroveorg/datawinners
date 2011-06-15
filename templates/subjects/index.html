@@ -34,7 +34,23 @@
                 </ul>
             </form>
         </fieldset>
-        {% if data %}
+        {% if failure_data %}
+            <h3>Errors in Import</h3>
+            <table>
+                <tr>
+                    <th>Row</th>
+                    <th>Error</th>
+                </tr>
+                {% for each in failure_data %}
+                    <tr>
+                        <td>{{ each.row }}</td>
+                        <td>{{ each.error }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        {% if all_subjects %}
+            <h3>All Subjects</h3>
             <table>
                 <tr>
                     <th>ID</th>
@@ -45,7 +61,7 @@
                     <th>Description</th>
                     <th>Contact info</th>
                 </tr>
-                {% for each in data %}
+                {% for each in all_subjects %}
                     <tr>
                         <td>{{ each.id }}</td>
                         <td>{{ each.name }}</td>

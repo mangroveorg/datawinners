@@ -16,7 +16,7 @@ def handle_uploaded_file(request):
     manager = get_database_manager(request)
     csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser())
     response = csv_player.accept(file)
-    return len([index for index in response if index.success]), len(response)
+    return response
 
 
 def laod_all_subjects(request):
@@ -34,17 +34,29 @@ def laod_all_subjects(request):
     return data
 
 
+def tabulate_output(rows):
+    tabulated_data = []
+    for row in rows:
+        tabulated_data.append(row.errors)
+    return tabulated_data
+
+
 def index(request):
-    data = laod_all_subjects(request)
+    failure_imports = None
     if request.method == 'POST':
         form = SubjectUploadForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                success, total = handle_uploaded_file(request)
+                response = handle_uploaded_file(request)
+                success = len([index for index in response if index.success])
+                total = len(response)
+                failure = [index for index in response if not index.success]
+                failure_imports = tabulate_output(failure)
                 messages.info(request, '%s of %s records uploaded' % (success, total))
             except CSVParserInvalidHeaderFormatException as e:
                 messages.error(request, e.message)
     else:
         form = SubjectUploadForm()
-    return render_to_response('subjects/index.html', {'form': form, 'data': data},
+    all_subjects = laod_all_subjects(request)
+    return render_to_response('subjects/index.html', {'form': form, 'all_subjects': all_subjects,'failure_data':failure_imports},
                               context_instance=RequestContext(request))
