@@ -4,7 +4,7 @@ function set_current_tab(){
       var wizard_slider = $("#step_wizard").slider({
                range: "max",
                min: 1,
-               max: 5,
+               max: 6,
                value: current_tab,
                disabled:true
       });

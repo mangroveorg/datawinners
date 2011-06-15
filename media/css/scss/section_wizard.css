@@ -34,13 +34,15 @@
   .wizard ul li {
     float: left;
     font-weight: bold;
-    padding: 10px 95px 0 0px; }
+    padding: 10px 65px 0 0px; }
     .wizard ul li.questionnaire {
-      padding-right: 153px; }
+      padding-right: 105px; }
+    .wizard ul li.subjects {
+      padding-right: 100px; }
     .wizard ul li.people {
-      padding-right: 160px; }
+      padding-right: 118px; }
     .wizard ul li.reminder {
-      padding-right: 110px; }
+      padding-right: 82px; }
     .wizard ul li.finish {
       padding-right: 0px; }
 

@@ -242,3 +242,11 @@ def project_data(request, questionnaire_code=None):
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,aggregates=aggregates,aggregate_on=EntityAggregration())
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)
+
+@login_required(login_url='/login')
+def subjects(request):
+    manager = get_database_manager(request)
+    reg_form = get_form_model_by_code(manager,'REG')
+
+    return render_to_response('project/subjects.html',{'fields':reg_form.fields},context_instance=RequestContext(request))
+

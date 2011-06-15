@@ -55,15 +55,18 @@ $slider_range:#FFFFFF;
         li{
             float:left;
             font-weight:bold;
-            padding:10px 95px 0 0px;
+            padding:10px 65px 0 0px;
             &.questionnaire{
-                padding-right:153px;
+                padding-right:105px;
+            }
+            &.subjects{
+                padding-right:100px;
             }
             &.people{
-                padding-right:160px;
+                padding-right:118px;
             }
             &.reminder{
-                padding-right:110px;
+                padding-right:82px;
             }
             &.finish{
                 padding-right:0px;
