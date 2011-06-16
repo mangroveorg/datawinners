@@ -7,8 +7,10 @@ from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
 from mangrove.datastore import data
+from mangrove.datastore import aggregrate as aggregate_module
 import models
 from copy import copy
+from datetime import datetime
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -188,6 +190,12 @@ def get_aggregate_dictionary(header_list, post_data):
         aggregates[key] = post_data[index].strip().lower()
     return aggregates
 
+def get_aggregate_list(header_list, post_data):
+    aggregates = []
+    for index, field_name in enumerate(header_list):
+        aggregates.append(aggregate_module.aggregation_factory(post_data[index].strip().lower(), field_name))
+    return aggregates
+
 def convert_to_json(data_list):
     """
     data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
@@ -204,3 +212,10 @@ def convert_to_json(data_list):
 
 def get_data_record_from_submissions(ids):
     pass
+
+def get_formatted_time_string(time_val):
+    try:
+        time_val = datetime.strptime(time_val, '%d-%m-%Y')
+    except :
+        return None
+    return time_val.strftime('%d-%m-%Y %H:%M:%S')

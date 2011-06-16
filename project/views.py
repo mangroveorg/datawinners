@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
-
+from datetime import datetime
 import json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
@@ -11,6 +11,7 @@ from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
 import helper
 from datawinners.project import models
+from mangrove.datastore.aggregrate import aggregate_by_form_code_python
 from mangrove.datastore.documents import DataRecordDocument, SubmissionLogDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types
@@ -20,7 +21,7 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger
 from django.contrib import messages
 from mangrove.utils.types import is_string
-from mangrove.datastore import data
+from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 
 PAGE_SIZE = 4
@@ -137,7 +138,8 @@ def index(request):
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link)
         project_list.append(project)
-    return render_to_response('project/index.html', {'projects': project_list}, context_instance=RequestContext(request))
+    return render_to_response('project/index.html', {'projects': project_list},
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -148,7 +150,6 @@ def project_overview(request):
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     result_link = '/project/results/%s' % questionnaire.form_code
-    project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link)
     data_link = '/project/data/%s' % questionnaire.form_code
     project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link,
                             data_link=data_link)
@@ -170,8 +171,8 @@ def get_submissions_for_display(current_page, dbm, questionnaire_code, questions
     submissions = helper.get_submissions(questions, submissions)
     return submissions, ids
 
-def load_submissions(current_page, manager, questionnaire_code):
 
+def load_submissions(current_page, manager, questionnaire_code):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model.fields)
@@ -186,36 +187,40 @@ def load_submissions(current_page, manager, questionnaire_code):
         }
     return rows, results
 
+
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
-            current_page = int(request.GET.get('page_number') or 1)
-            rows, results = load_submissions(current_page, manager, questionnaire_code)
-            return render_to_response('project/results.html',
-                    {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows},
-                                      context_instance=RequestContext(request)
-            )
+        current_page = int(request.GET.get('page_number') or 1)
+        rows, results = load_submissions(current_page, manager, questionnaire_code)
+        return render_to_response('project/results.html',
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows},
+                                  context_instance=RequestContext(request)
+        )
     if request.method == "POST":
         data_record_ids = json.loads(request.POST.get('id_list'))
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
             manager.invalidate(each)
             SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
-            
+
         current_page = request.POST.get('current_page')
         rows, results = load_submissions(int(current_page), manager, questionnaire_code)
-        return render_to_response('project/log_table.html',{'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, 'success_message':"The selected records have been deleted"},context_instance=RequestContext(request))
-
+        return render_to_response('project/log_table.html',
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                 'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
 
     return HttpResponse("No submissions present for this project")
 
 
 def _format_data_for_presentation(data_dictionary, form_model):
     header_list = helper.get_headers(form_model.fields)
+    type_list = helper.get_type_list(form_model.fields[1:])
+    if data_dictionary == {}:
+        return "{}", header_list, type_list
     data_list = helper.get_values(data_dictionary, header_list)
     header_list[0] = form_model.entity_type[0] + " Name"
-    type_list = helper.get_type_list(form_model.fields[1:])
     data_list = helper.convert_to_json(data_list)
     response_string = encode_json(data_list)
     return response_string, header_list, type_list
@@ -228,7 +233,8 @@ def project_data(request, questionnaire_code=None):
     data_dictionary = {}
     if request.method == "GET":
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
-                                     aggregates={"*": data.reduce_functions.LATEST},aggregate_on=EntityAggregration())
+                                                  aggregates={"*": data.reduce_functions.LATEST},
+                                                  aggregate_on=EntityAggregration())
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return render_to_response('project/data_analysis.html',
                 {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
@@ -237,16 +243,22 @@ def project_data(request, questionnaire_code=None):
     if request.method == "POST":
         header_list = helper.get_headers(form_model.fields)
         post_list = json.loads(request.POST.get("aggregation-types"))
-        aggregates = helper.get_aggregate_dictionary(header_list[1:], post_list)
-        aggregates.update({form_model.fields[0].name: data.reduce_functions.LATEST})
-        data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,aggregates=aggregates,aggregate_on=EntityAggregration())
+        start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip())
+        end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip())
+        aggregates = helper.get_aggregate_list(header_list[1:], post_list)
+        aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
+        data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
+                                                                         aggregates=aggregates, starttime=start_time,
+                                                                         endtime=end_time)
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)
+
 
 @login_required(login_url='/login')
 def subjects(request):
     manager = get_database_manager(request)
-    reg_form = get_form_model_by_code(manager,'REG')
+    reg_form = get_form_model_by_code(manager, 'REG')
 
-    return render_to_response('project/subjects.html',{'fields':reg_form.fields},context_instance=RequestContext(request))
+    return render_to_response('project/subjects.html', {'fields': reg_form.fields},
+                              context_instance=RequestContext(request))
 

@@ -12,6 +12,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, Date
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore import data
 from copy import copy
+from mangrove.datastore.aggregrate import Sum, Latest
 
 
 class TestHelper(unittest.TestCase):
@@ -358,10 +359,22 @@ class TestHelper(unittest.TestCase):
         expected_dictionary = {"field1":data.reduce_functions.LATEST, "field2":data.reduce_functions.SUM}
         actual_dict = helper.get_aggregate_dictionary(header_list, post_data)
         self.assertEquals(expected_dictionary, actual_dict)
-        
+
+    def test_should_return_aggregates_list(self):
+        header_list = ["field1", "field2"]
+        post_data = ["Latest", "Sum"]
+        expected_list = [Latest("field1"), Sum("field2")]
+        actual_list = helper.get_aggregate_list(header_list, post_data)
+        self.assertIsInstance(actual_list[0], Latest)
+        self.assertIsInstance(actual_list[1], Sum)
+
     def test_should_create_list_of_values(self):
         data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
                          {"entity_name": "cid001", "values": ['asif', 35]}]
         actual_list = helper.convert_to_json(data_list)
         expected_list = [["cid002", 'shweta', 55],["cid001", 'asif', 35]]
         self.assertListEqual(expected_list, actual_list)
+
+    def test_should_return_formatted_time_string(self):
+        expected_val = "01-01-2011 00:00:00"
+        self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011"))
