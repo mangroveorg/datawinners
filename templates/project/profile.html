@@ -2,10 +2,10 @@
 
 {% block page_title %} Setup the Project {% endblock %}
 {% block page_js %}
-     {{ block.super }}
+    {{ block.super }}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script>
-            $(document).ready(function(){
+        $(document).ready(function() {
             $("#tab_items .define").addClass("current");
             set_current_tab();
         })
@@ -17,9 +17,9 @@
     <p>Description about the step goes here</p>
 {% endblock %}
 {% block content %}
-<form action="" method="POST">
+    <form action="" method="POST">
     <div class="define_project">
-            {% csrf_token %}
+        {% csrf_token %}
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -59,7 +59,8 @@
 
 {% endblock %}
 {% block buttons %}
-        <a href="profile.html#" class="cancel">Cancel</a>
-        <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
+    <a href="profile.html#" class="cancel">Cancel</a>
+    <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
+    {{ block.super }}
 {% endblock %}
 </form>

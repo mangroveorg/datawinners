@@ -1,0 +1,27 @@
+.add_subjects_section{
+    border: 1px solid #CCCCCC;
+    height:120px;
+    background: #EEEEEE;
+    padding: 10px 6px 0 20px;
+    float:left;
+    > div{
+        h6{
+            font-size:12px;
+            border-bottom: 1px solid #CCCCCC;
+            margin-bottom: 10px;
+        }
+        p{
+            font-style: italic;
+            font-size:12px;
+            color:#666666;
+            margin-bottom: 10px;
+        }
+        input[type=button]{
+            float:right;
+        }
+    }
+    .import_list{
+        padding-right:20px;
+        margin-left:20px;
+    }
+}

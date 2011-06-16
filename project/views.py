@@ -36,7 +36,7 @@ def questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'GET':
         pid = request.GET["pid"]
-        previous_link = '/project/profile/edit?pid=' + pid
+        previous_link = '/project/subjects?pid=' + pid
         project = models.get_project(pid, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
@@ -69,7 +69,7 @@ def create_profile(request):
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
             return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
-        return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
+        return HttpResponseRedirect('/project/subjects?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
@@ -98,7 +98,7 @@ def edit_profile(request):
         entity_type = request.POST['entity_type']
         form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
         form_model.save()
-        return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
+        return HttpResponseRedirect('/project/subjects?pid=' + pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
@@ -256,9 +256,13 @@ def project_data(request, questionnaire_code=None):
 
 @login_required(login_url='/login')
 def subjects(request):
-    manager = get_database_manager(request)
-    reg_form = get_form_model_by_code(manager, 'REG')
-
-    return render_to_response('project/subjects.html', {'fields': reg_form.fields},
-                              context_instance=RequestContext(request))
+    pid = request.GET['pid']
+    if request.method == 'GET':
+        manager = get_database_manager(request)
+        reg_form = get_form_model_by_code(manager, 'REG')
+        previous_link = '/project/profile/edit?pid=' + pid
+        return render_to_response('project/subjects.html', {'fields': reg_form.fields,"previous": previous_link},
+                                  context_instance=RequestContext(request))
+    if request.method == 'POST':
+        return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
 
