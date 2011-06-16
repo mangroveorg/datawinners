@@ -15,6 +15,7 @@
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subjects.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -72,13 +73,68 @@
             <h6>Add Subjects Manually</h6>
 
             <p>Enter your Subjects individually after you have defined all Questions above.</p>
-            <input type="button" class="button_blue" value="Add Subject"/>
+            <input id='add_subject' type="button" class="button_blue" value="Add Subject"/>
         </div>
         <div class="grid_11  omega import_list">
             <h6>Import a List of subjects</h6>
 
             <p>Upload a Csv file (.csv) with your list of Subjects. !</p>
-            <input type="button" class="button_blue" value="Import List"/>
+            <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
+        </div>
+        <div class="add_subject_form">
+             <form id="question_form">
+                <fieldset>
+                    <h3 class="margin_bottom_10">Register a subject</h3>
+                    <ul>
+                        <li>
+                            <span>
+                                <label>* Type</label>
+                            </span>
+                            <span>
+                                <select id="id_entity_type" name="type">
+                                    {% for entity_type in entity_types %}
+                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <label>Short Name</label>
+                            <input id="short_name" name="short_name" type="text" disabled="disabled"/>
+                                <span class="auto_gen_checkbox">
+                                <input id="autogen" name="autogen" type="checkbox" checked=true />
+                                <label>Autogenerate</label>
+                            </span>
+
+                        </li>
+
+                        <li>
+                                <label>* Name</label>
+                                <input id= "entity_name" name="entity_name" type="text"/>
+                        </li>
+                        <li>
+                                <label>Location</label>
+                                <input id="location" name="location" type="text"/>
+                        </li>
+                        <li>
+                                <label>GPS</label>
+                                <input id = "geo_code" name="geo_code" type="text" />
+                        </li>
+                        <li>
+                                <label>Description</label>
+                                <input id = "description" name="description" type="text" />
+                        </li>
+                        <li>
+                                <label>* Mobile Number</label>
+                                <input id = "mobile_number" name="mobile_number" type="text" maxlength="15" />
+                        </li>
+                    </ul>
+                </fieldset>
+                <input type="button" value="Register" id="register_entity" class="button" />
+            </form>
+        </div>
+        <div class="import_subject_form">
+            {{ import_form }}
         </div>
     </div>
 {% endblock %}
@@ -88,9 +144,9 @@
         <div class="grid_5 previous_step">
             <a href={{ previous }}>Previous Step:</a>
             <a class="bold" href={{ previous }}>Define Project</a>
-         </div>
-         <a href="questionnaire.html#" class="cancel">Cancel</a>
+        </div>
+        <a href="questionnaire.html#" class="cancel">Cancel</a>
         <input id="submit-button" type="submit" value="Next Step: Questionnaire"/>
-    {{ block.super }}
+        {{ block.super }}
     </form>
 {% endblock %}

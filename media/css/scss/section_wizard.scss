@@ -28,14 +28,14 @@ $slider_range:#FFFFFF;
 
         }
         .ui-slider-range {
-            background-color:$slider_range;
+            background:$slider_range;
             -moz-border-radius:5px;
         }
         &.ui-corner-all{
             -moz-border-radius:5px;
         }
         &.ui-widget-content{
-            background-color:$slider_handle;
+            background:$slider_handle;
         }
     }
     .create_a_project{

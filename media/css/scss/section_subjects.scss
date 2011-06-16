@@ -25,3 +25,41 @@
         margin-left:20px;
     }
 }
+.add_subject_form {
+    ul{
+        float:left;
+        li{
+            margin-bottom:15px;
+            float:left;
+        label{
+           width:120px;
+           float:left;
+           label{
+            display:inline;
+           }
+           &.error{
+            font-size:11px;
+            font-weight:normal;
+            margin-left:120px;
+            width:auto;
+
+           }
+        }
+
+        .auto_gen_checkbox{
+            label{
+                float: none;
+                display:inline;
+            }
+        }
+        input[type=text]{
+            width:200px;
+        }
+
+        }
+    }
+}
+.ui-widget-overlay{
+    background: #000000;
+    opacity:0.8;
+}

@@ -261,8 +261,16 @@ def subjects(request):
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'REG')
         previous_link = '/project/profile/edit?pid=' + pid
-        return render_to_response('project/subjects.html', {'fields': reg_form.fields,"previous": previous_link},
+        entity_types = get_all_entity_types(manager)
+        removable = ""
+        for each in entity_types:
+            if each[0].lower() == 'reporter':
+                removable = each
+        entity_types.remove(removable)
+        return render_to_response('project/subjects.html',
+                {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types},
                                   context_instance=RequestContext(request))
+
     if request.method == 'POST':
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
 

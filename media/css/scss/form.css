@@ -78,3 +78,18 @@ select {
   font-family: "Arial";
   font-weight: bold;
   padding: 6px 23px 6px 22px; }
+
+.button_blue {
+  border: 1px solid #5087b4 !important;
+  color: #5087b4;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background: #999;
+  /* for non-css3 browsers */
+  background: -webkit-gradient(linear, left top, left bottom, from(#dfedf4), to(#cce3ee));
+  /* for webkit browsers */
+  background: -moz-linear-gradient(top, #dfedf4, #cce3ee);
+  /* for firefox 3.6+ */
+  font-family: "Arial";
+  font-weight: normal;
+  padding: 4px 15px 4px 15px; }

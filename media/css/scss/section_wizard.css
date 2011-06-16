@@ -13,12 +13,12 @@
     border: 0px;
     top: -8px; }
   .wizard #step_wizard .ui-slider-range {
-    background-color: white;
+    background: white;
     -moz-border-radius: 5px; }
   .wizard #step_wizard.ui-corner-all {
     -moz-border-radius: 5px; }
   .wizard #step_wizard.ui-widget-content {
-    background-color: #176aba; }
+    background: #176aba; }
 .wizard .create_a_project {
   display: inline-block;
   margin-left: 35px;
