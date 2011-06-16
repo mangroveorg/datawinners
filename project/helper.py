@@ -215,7 +215,7 @@ def get_data_record_from_submissions(ids):
 
 def get_formatted_time_string(time_val):
     try:
-        time_val = datetime.strptime(time_val, '%d-%m-%Y')
+        time_val = datetime.strptime(time_val, '%d-%m-%Y %H:%M:%S')
     except :
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')

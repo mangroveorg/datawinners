@@ -377,4 +377,4 @@ class TestHelper(unittest.TestCase):
 
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
-        self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011"))
+        self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))

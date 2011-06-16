@@ -243,8 +243,8 @@ def project_data(request, questionnaire_code=None):
     if request.method == "POST":
         header_list = helper.get_headers(form_model.fields)
         post_list = json.loads(request.POST.get("aggregation-types"))
-        start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip())
-        end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip())
+        start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip()+"00:00:00")
+        end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip()+"23:59:59")
         aggregates = helper.get_aggregate_list(header_list[1:], post_list)
         aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
         data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
