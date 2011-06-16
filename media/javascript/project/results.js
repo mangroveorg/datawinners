@@ -46,6 +46,8 @@
 
 $(document).ready(function(){
 
+    $.ajaxSetup({ cache: false });
+
     $("#dateRangePicker").daterangepicker( { presetRanges: [
         {text: 'Past 7 days', dateStart: 'last week', dateEnd: 'Today' },
         {text: 'Past 30 days', dateStart: 'last month', dateEnd: 'Today' },
@@ -86,10 +88,11 @@ $(document).ready(function(){
            if(answer){
                $.ajax({
                   type: 'POST',
-                  url: window.location.pathname,
+                  url: window.location.pathname + "?rand="+ new Date().getTime(),
                   data:  {'id_list': JSON.stringify(ids), 'current_page':DW.current_page},
                   success:function(response) {
-                               $('#submission_table').replaceWith(response);
+                               $('#submission_table').empty();
+                               $('#submission_table').append(response);
                                $('#action').val(0);
 
                     },
