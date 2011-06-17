@@ -65,49 +65,49 @@ def load_datadict_types(manager):
 
 def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="cid001",
-                               geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
+                               geometry={"type": "Point", "coordinates": [18.5204303, 73.8567437]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Pune'], short_code="cid002",
-                               geometry={"type": "Point", "coordinates": [73.8567437, 18.5204303]})
+                               geometry={"type": "Point", "coordinates": [18.5204303, 73.8567437]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MH', 'Mumbai'], short_code="cid003",
-                               geometry={"type": "Point", "coordinates": [72.856164, 19.017615]})
+                               geometry={"type": "Point", "coordinates": [19.017615, 72.856164]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Karnataka', 'Bangalore'], short_code="cid004",
-                               geometry={"type": "Point", "coordinates": [77.594563, 12.971599]})
+                               geometry={"type": "Point", "coordinates": [12.971599, 77.594563]})
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="cid005",
-                               geometry={"type": "Point", "coordinates": [76.259625, 9.939248]})
+                               geometry={"type": "Point", "coordinates": [9.939248, 76.259625]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
-                               short_code="cid006", geometry={"type": "Point", "coordinates": [78.18708, 26.227112]})
+                               short_code="cid006", geometry={"type": "Point", "coordinates": [26.227112, 78.18708]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Bhopal'], short_code="cid007",
-                               geometry={"type": "Point", "coordinates": [77.412615, 23.2599333]})
+                               geometry={"type": "Point", "coordinates": [23.2599333, 77.412615]})
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -117,21 +117,21 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
 
 def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
-                               geometry={"type": "Point", "coordinates": [72.566005, 23.0395677]})
+                               geometry={"type": "Point", "coordinates": [23.0395677, 72.566005]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="wp02",
-                               geometry={"type": "Point", "coordinates": [69.66256, 23.251671]})
+                               geometry={"type": "Point", "coordinates": [23.251671, 69.66256]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
     except Exception:
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="wp03",
-                               geometry={"type": "Point", "coordinates": [77.017838, 28.46385]})
+                               geometry={"type": "Point", "coordinates": [28.46385, 77.017838]})
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
