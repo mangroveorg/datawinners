@@ -1,9 +1,12 @@
 $(document).ready(function() {
   $('.dataTables_scrollHead select').customStyle();
-  $("#dateRangePicker").daterangepicker( { presetRanges: [
-    {text: 'Past 7 days', dateStart: 'last week', dateEnd: 'Today' },
-    {text: 'Past 30 days', dateStart: 'last month', dateEnd: 'Today' },
-    {text: 'Past year', dateStart: 'last year', dateEnd: 'Today'}],
+  $("#dateRangePicker").daterangepicker( {
+    presetRanges: [
+    {text: 'Current month', dateStart: function(){ return Date.parse('today').moveToFirstDayOfMonth();  }, dateEnd: 'today' },
+    {text: 'Last Month', dateStart: 'last month', dateEnd: 'today' },
+    {text: 'Year to date', dateStart: function(){ var x= Date.parse('today'); x.setMonth(0); x.setDate(1); return x; }, dateEnd: 'today' }
+    ],
+    presets: {dateRange: 'Date Range'},
     earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
     onClose:function(){submit_data()}
   });
