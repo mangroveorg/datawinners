@@ -204,15 +204,15 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cid003 +NA Ms. Beth +FA 75 +RD 17.05.2011 +BG b +SY bc +GPS 81.2 29.3"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cid004 +NA Thomas +FA 85 +RD 5.01.2011 +BG a +SY bd +GPS 43.2 28.3"
+    message1 = "cli001 +EID cid004 +NA Thomas +FA 85 +RD 05.01.2011 +BG a +SY bd +GPS 43.2 28.3"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cid005 +NA Ms. Beth +FA 62 +RD 12.02.2011 +BG d +SY bc +GPS 81.2 29.3"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cid006 +NA Juannita +FA 86 +RD 5.02.2011 +BG c +SY ace +GPS 41.2 29.3"
+    message1 = "cli001 +EID cid006 +NA Juannita +FA 86 +RD 05.02.2011 +BG c +SY ace +GPS 41.2 29.3"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cid001 +NA Amanda +FA 16 +RD 5.02.2011 +BG c +SY ace +GPS 41.2 29.3"
+    message1 = "cli001 +EID cid001 +NA Amanda +FA 16 +RD 05.02.2011 +BG c +SY ace +GPS 41.2 29.3"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cid002 +NA Amanda +FA 16 +RD 5.02.2011 +BG e"
+    message1 = "cli001 +EID cid002 +NA Amanda +FA 16 +RD 05.02.2011 +BG e"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
 def load_data():
