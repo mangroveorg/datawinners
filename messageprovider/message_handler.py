@@ -27,9 +27,18 @@ def get_submission_error_message_for(errors):
 
 def get_success_msg_for_submission_using(response):
     reporters = response.reporters
-    return success_messages[SUBMISSION] % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else success_messages[SUBMISSION] % ""
+    thanks = success_messages[SUBMISSION] % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else success_messages[SUBMISSION] % ""
+    stringified_dict = {k:_stringify(v) for k,v in response.processed_data.items()}
+    expanded_response = " ".join([": ".join(each) for each in stringified_dict.items()])
+    return thanks + expanded_response
 
 
 def get_success_msg_for_registration_using(response, entity_type):
     resp_string = "%s identification number: %s" % (entity_type, response.short_code)
     return success_messages[REGISTRATION] % resp_string
+
+
+def _stringify(item):
+    if type(item)==list:
+        return (',').join(item)
+    return str(item)
