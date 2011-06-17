@@ -7,18 +7,6 @@
 {#     The Meta tags added page level will be extended here. #}
     {% block page_meta %} {% endblock %}
 
-    {% load compress %}
-    {% compress js %}
-         {% include 'javascript.html' %}
-    {% endcompress %}
-
-    {% block uncompress %}{% endblock %}
-
-    {% load compress %}
-    {% compress js %}
-         {% block page_js %} {% endblock %}
-    {% endcompress %}
-
 {#     This block compress the CSS on the fly. #}
     {% load compress %}
     {% compress css %}
@@ -35,6 +23,17 @@
         {% block page_scss %} {% endblock %}
     {% endcompress %}
 
+    {% load compress %}
+    {% compress js %}
+         {% include 'javascript.html' %}
+    {% endcompress %}
+
+    {% block uncompress %}{% endblock %}
+
+    {% load compress %}
+    {% compress js %}
+         {% block page_js %} {% endblock %}
+    {% endcompress %}
 
 </head>
 <body>
