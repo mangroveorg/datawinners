@@ -8,6 +8,11 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+{% endblock %}
+
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
@@ -17,6 +22,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subjects.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $("#tab_items .subjects").addClass("current");
@@ -32,6 +38,7 @@
     <p>Description about the step goes here</p>
 {% endblock %}
 {% block content %}
+    <input id='post_url' type="hidden" value="{{ post_import }}"/>
     <div class="questionnare_content grid_23 alpha omega">
         <div id="message-label">
         </div>
@@ -82,7 +89,7 @@
             <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
         </div>
         <div class="add_subject_form">
-             <form id="question_form">
+            <form id="question_form">
                 <fieldset>
                     <h3 class="margin_bottom_10">Register a subject</h3>
                     <ul>
@@ -102,39 +109,59 @@
                             <label>Short Name</label>
                             <input id="short_name" name="short_name" type="text" disabled="disabled"/>
                                 <span class="auto_gen_checkbox">
-                                <input id="autogen" name="autogen" type="checkbox" checked=true />
+                                <input id="autogen" name="autogen" type="checkbox" checked=true/>
                                 <label>Autogenerate</label>
                             </span>
 
                         </li>
 
                         <li>
-                                <label>* Name</label>
-                                <input id= "entity_name" name="entity_name" type="text"/>
+                            <label>* Name</label>
+                            <input id="entity_name" name="entity_name" type="text"/>
                         </li>
                         <li>
-                                <label>Location</label>
-                                <input id="location" name="location" type="text"/>
+                            <label>Location</label>
+                            <input id="location" name="location" type="text"/>
                         </li>
                         <li>
-                                <label>GPS</label>
-                                <input id = "geo_code" name="geo_code" type="text" />
+                            <label>GPS</label>
+                            <input id="geo_code" name="geo_code" type="text"/>
                         </li>
                         <li>
-                                <label>Description</label>
-                                <input id = "description" name="description" type="text" />
+                            <label>Description</label>
+                            <input id="description" name="description" type="text"/>
                         </li>
                         <li>
-                                <label>* Mobile Number</label>
-                                <input id = "mobile_number" name="mobile_number" type="text" maxlength="15" />
+                            <label>* Mobile Number</label>
+                            <input id="mobile_number" name="mobile_number" type="text" maxlength="15"/>
                         </li>
                     </ul>
                 </fieldset>
-                <input type="button" value="Register" id="register_entity" class="button" />
+                <input type="button" value="Register" id="register_entity" class="button"/>
             </form>
         </div>
         <div class="import_subject_form">
-            {{ import_form }}
+            <div id="file-uploader">
+                <noscript>
+                    <p>Please enable JavaScript to use file uploader.</p>
+                    <!-- or put a simple form for upload here -->
+                </noscript>
+            </div>
+            {% if failure_data %}
+                <h3>Errors in Import</h3>
+                <table>
+                    <tr>
+                        <th>Row</th>
+                        <th>Error</th>
+                    </tr>
+                    {% for each in failure_data %}
+                        <tr>
+                            <td>{{ each.row }}</td>
+                            <td>{{ each.error }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

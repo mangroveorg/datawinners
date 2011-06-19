@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
-from datetime import datetime
 import json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
@@ -9,10 +8,11 @@ from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project
+from datawinners.subjects.forms import SubjectUploadForm
+from datawinners.subjects.views import import_subjects_from_project_wizard
 import helper
 from datawinners.project import models
-from mangrove.datastore.aggregrate import aggregate_by_form_code_python
-from mangrove.datastore.documents import DataRecordDocument, SubmissionLogDocument
+from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
@@ -23,6 +23,7 @@ from django.contrib import messages
 from mangrove.utils.types import is_string
 from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
+from django.core.urlresolvers import reverse
 
 PAGE_SIZE = 4
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
@@ -267,9 +268,10 @@ def subjects(request):
             if each[0].lower() == 'reporter':
                 removable = each
         entity_types.remove(removable)
+        import_subject_form = SubjectUploadForm()
         return render_to_response('project/subjects.html',
-                {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types},
-                                  context_instance=RequestContext(request))
+                {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
+                 'import_subject_form': import_subject_form,'post_import':reverse(import_subjects_from_project_wizard)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
