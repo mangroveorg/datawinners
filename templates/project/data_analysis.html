@@ -15,6 +15,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_data.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_data_analysis.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_css %}
@@ -32,7 +33,6 @@
     <script type="text/javascript" src="/media/javascript/custom_select_box.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/data_analysis.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         var initial_data = JSON.parse({{data_list|safe}});
@@ -77,26 +77,28 @@
             </ul>
         </div>
     </div>
-    <table id="data_analysis" class="tablesorter">
-        <thead>
-        <tr class="aggregation_block">
-            <td></td>
-            {% for each in type_list %}
-            <td>
-                <select class="aggregation_type">
-                    {% for choice in each %}
-                        <option>{{ choice }}</option>
-                    {% endfor %}
-                </select>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr class="data_header">
-            {% for each in header_list %}
-            <th>{{ each }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
+    <div class="grid_23 alpha omega data_block">
+        <table id="data_analysis" class="tablesorter">
+            <thead>
+            <tr class="aggregation_block">
+                <td></td>
+                {% for each in type_list %}
+                <td>
+                    <select class="aggregation_type">
+                        {% for choice in each %}
+                            <option>{{ choice }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr class="data_header">
+                {% for each in header_list %}
+                <th>{{ each }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
     </table>
+    </div>
     <div id="demo"></div>
 {% endblock %}

@@ -1,5 +1,13 @@
 table{
     width:100%;
+    margin:0;
+}
+
+
+#header_application{
+    margin:0 auto;
+    float:none;
+    width:960px;
 }
 
 /* common for all data Page */
@@ -88,6 +96,30 @@ table{
     }
 
 }
+.data_table{
+    float:left;
+    overflow:auto;
+    width:100%;
+    #data_analysis{
+        margin-top: -50px;
+        th{
+                height:40px;
+                color:#FFFFFF;
+        }
+        tr, td{
+                background:none;
+        }
+        float:left;
+        width:auto;
+        thead tr.data_header{
+            height:100px;
+            background-color:#525252;
+            background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));  //for webkit browsers
+            background: -moz-linear-gradient(top,  #525252,  #262626);  //for firefox 3.6+
+        }
+
+    }
+}
 .aggregation_block{
     background:none;
     select{
@@ -106,16 +138,8 @@ table{
         border:0;
     }
 }
-#data_table{
-    float:left;
-    width:920px;    
-}
-.data_header{
-    height:100px;
-    background-color:#525252;
-    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));  //for webkit browsers
-    background: -moz-linear-gradient(top,  #525252,  #262626);  //for firefox 3.6+
-}
+
+
 #data_analysis_wrapper{
     .dataTables_scroll{
         position:relative;
@@ -129,16 +153,10 @@ table{
         }
     }
     #data_analysis{
-        th{
-            height:40px;
-            color:#FFFFFF;
-        }
-        tr, td{
-            background:none;
-        }
+
 
     }
-    .dataTables_scrollHeadInner{
+    table{
         thead{
             th{
                 color:#FFF;
@@ -153,10 +171,6 @@ table{
                 background:url(/media/images/sort_icon_top.png) no-repeat right 10px;
             }
         }
-    }
-    .dataTables_paginate,.dataTables_info{
-        position:relative;
-        top:-20px;
     }
 }
 #dateRangePicker{
@@ -180,5 +194,11 @@ table{
          border:1px solid #666666
     }
 }
+
+#pagination{
+    margin-top:10px;
+}
+
+
 
 
