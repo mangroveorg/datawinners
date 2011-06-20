@@ -4,3 +4,18 @@
 {% activetab "settingsnav" "settings" %}
 {{ block.super }}
 {% endblock %}
+
+{% block nav_content %}
+<form method="post" action="/account/settings/edit/">
+Name : {{ organization_form.name }}
+Sector : {{ organization_form.sector }}
+Address Line 1: {{ organization_form.addressline1 }}
+Address Line 2: {{ organization_form.addressline2 }}
+City : {{ organization_form.city }}
+State : {{ organization_form.state }}
+Country : {{ organization_form.country }}
+ZipCode : {{ organization_form.zipcode }}
+Office Phone : {{ organization_form.office_phone }}
+<input type="Submit" value="Submit" >
+</form>
+{% endblock %}

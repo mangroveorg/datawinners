@@ -93,8 +93,10 @@ def _create_text_question(post_dict, ddtype):
 
 def _create_integer_question(post_dict, ddtype):
     max_range_from_post = post_dict["range_max"]
+    min_range_from_post = post_dict["range_min"]
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
-    range = NumericConstraint(min=post_dict["range_min"], max=max_range)
+    min_range = min_range_from_post if not is_empty(min_range_from_post) else None
+    range = NumericConstraint(min=min_range, max=max_range)
     return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                         range=range, ddtype=ddtype)
 

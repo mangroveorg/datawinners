@@ -12,6 +12,7 @@ from mangrove.errors.MangroveException import MangroveException, MultipleReporte
 from mangrove.transport.player.player import WebPlayer, Request
 from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import is_empty
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE
 
 
 @login_required(login_url='/login')
@@ -34,7 +35,7 @@ def register(request):
             web_player = WebPlayer(dbm,SubmissionHandler(dbm))
             response = web_player.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
-            message = get_success_msg_for_registration_using(response, "Reporter")
+            message = get_success_msg_for_registration_using(response, "Reporter", "web")
         except MangroveException as exception:
             message = exception.message
             success = False
@@ -59,6 +60,6 @@ def _get_data(form_data):
         data[mapper['commune']] = commune
 
     data[mapper['Name']] = form_data.get('first_name')
-    data['form_code'] = 'REG'
+    data['form_code'] = REGISTRATION_FORM_CODE
     data['T'] = 'Reporter'
     return data
