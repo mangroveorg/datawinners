@@ -46,7 +46,7 @@ $(document).ready(function() {
             'd': ko.observable(),
             'm': ko.observable(),
             'g': ko.observable(),
-            'form_code': 'REG'
+            'form_code': 'reg'
         },
         'transport': 'web',
         'source': 'web',
