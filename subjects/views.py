@@ -9,13 +9,14 @@ from django.views.decorators.http import require_http_methods
 from datawinners.main.utils import get_database_manager
 from datawinners.subjects.forms import SubjectUploadForm
 from django.contrib import messages
-from mangrove.datastore.entity import get_all_entities
+from mangrove.datastore.entity import get_all_entities, get_by_short_code
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
 from mangrove.transport.player.player import CsvPlayer, CsvParser
 from mangrove.transport.submissions import SubmissionHandler
 
 
-def _handle_uploaded_file(request,file=None):
+def _handle_uploaded_file(request, file=None):
     file = request.FILES['file'] if file is None else file.splitlines()
     manager = get_database_manager(request)
     csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser())
@@ -24,17 +25,22 @@ def _handle_uploaded_file(request,file=None):
 
 
 def _laod_all_subjects(request):
-    rows = get_all_entities(dbm=get_database_manager(request), include_docs=True)
+    manager = get_database_manager(request)
+    rows = get_all_entities(dbm=manager, include_docs=True)
     data = []
     for row in rows:
         type = row['doc']['aggregation_paths']['_type']
+        short_code = row['doc']['short_code']
+        e = get_by_short_code(dbm=manager, short_code=short_code, entity_type=type)
         type = '.'.join(type)
         if type != 'Reporter':
             id = row['id']
-            name = row['doc']['short_code']
-            short_code = row['doc']['short_code']
+            name = e.value(NAME_FIELD)
             location = row['doc']['geometry'].get('coordinates')
-            result_dict = dict(id=id, name=name, short_name=short_code, type=type, location=location)
+            mobile_number = e.value(MOBILE_NUMBER_FIELD)
+            description = e.value(DESCRIPTION_FIELD)
+            result_dict = dict(id=id, name=name, short_name=short_code, type=type, location=location,
+                               description=description, mobile_number=mobile_number)
             data.append(result_dict)
     return data
 
@@ -42,7 +48,7 @@ def _laod_all_subjects(request):
 def _tabulate_output(rows):
     tabulated_data = []
     for row in rows:
-        row[1].errors['row_num'] = row[0]+1
+        row[1].errors['row_num'] = row[0] + 1
         tabulated_data.append(row[1].errors)
     return tabulated_data
 
@@ -80,7 +86,7 @@ def import_subjects_from_project_wizard(request):
     error_message = None
     failure_imports = None
     try:
-        response = _handle_uploaded_file(request=request,file=request.raw_post_data)
+        response = _handle_uploaded_file(request=request, file=request.raw_post_data)
         successful_imports = len([index for index in response if index.success])
         total = len(response)
         failure = [index for index in enumerate(response) if not index[1].success]
