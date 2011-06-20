@@ -27,7 +27,10 @@ def sms(request):
         sms_player = SMSPlayer(dbm,SubmissionHandler(dbm))
         response = sms_player.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
         if response.success:
-            message = get_success_msg_for_submission_using(response)
+            if response.short_code:
+                message = get_success_msg_for_registration_using(response, "Subject", "sms")
+            else:
+                message = get_success_msg_for_submission_using(response)
         else:
             message = get_submission_error_message_for(response.errors)
     except MangroveException as exception:
@@ -67,7 +70,7 @@ def submit(request):
                           destination=post.get('destination'))
         response = web_player.accept(request)
         if response.success:
-            message = get_success_msg_for_registration_using(response, "Subject")
+            message = get_success_msg_for_registration_using(response, "Subject", "web")
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id
