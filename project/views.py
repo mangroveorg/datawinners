@@ -161,9 +161,7 @@ def project_overview(request):
 
 def get_number_of_rows_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_form(dbm, questionnaire_code, count_only=True)
-    if submissions_count:
-        return submissions_count[0][0]
-    return None
+    return submissions_count
 
 
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
@@ -195,6 +193,8 @@ def project_results(request, questionnaire_code=None):
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
         rows, results = load_submissions(current_page, manager, questionnaire_code)
+        if rows is None:
+            return HttpResponse("No submissions present for this project")
         return render_to_response('project/results.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows},
                                   context_instance=RequestContext(request)
@@ -212,7 +212,6 @@ def project_results(request, questionnaire_code=None):
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
 
-    return HttpResponse("No submissions present for this project")
 
 
 def _format_data_for_presentation(data_dictionary, form_model):
