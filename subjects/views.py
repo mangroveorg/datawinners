@@ -27,14 +27,15 @@ def _laod_all_subjects(request):
     rows = get_all_entities(dbm=get_database_manager(request), include_docs=True)
     data = []
     for row in rows:
-        id = row['id']
-        name = row['doc']['short_code']
-        short_code = row['doc']['short_code']
         type = row['doc']['aggregation_paths']['_type']
         type = '.'.join(type)
-        location = row['doc']['geometry'].get('coordinates')
-        result_dict = dict(id=id, name=name, short_name=short_code, type=type, location=location)
-        data.append(result_dict)
+        if type != 'Reporter':
+            id = row['id']
+            name = row['doc']['short_code']
+            short_code = row['doc']['short_code']
+            location = row['doc']['geometry'].get('coordinates')
+            result_dict = dict(id=id, name=name, short_name=short_code, type=type, location=location)
+            data.append(result_dict)
     return data
 
 
