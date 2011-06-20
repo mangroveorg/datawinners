@@ -75,6 +75,11 @@ $(document).ready(function(){
     });
    $('#action').change(function(){
        var ids = [];
+       if($(".selected_submissions:checked").length == 0){
+            $("#message_text").html("<span class='error_message'>" + "Please select atleast one undeleted record" + "</span>");
+            $('#action').val(0);
+       }
+       else{
        $(".selected_submissions:checked").each(function(){
            if($(this).val()!="None")
                 ids.push($(this).val());
@@ -104,6 +109,7 @@ $(document).ready(function(){
            }
            else $("action").val(0);
         }
+       }
    });
 });
 
