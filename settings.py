@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'compressor',
     'datawinners.main',
     'datawinners.project',
-    'account',
+    'datawinners.account',
 )
 
 COMPILER_FORMATS = {

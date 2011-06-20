@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
+from views import settings
 
-urlpatterns = patterns('account.views',
-                       (r'^account/$','settings'),
+urlpatterns = patterns('',
+                       (r'^account/$',settings),
                        )
