@@ -65,7 +65,7 @@ select {
   background: #FFFFFF; }
 
 .button {
-  border: 1px solid #D4972D;
+  border: 1px solid #D4972D !important;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   background: #999;

@@ -18,6 +18,7 @@ $(document).ready(function() {
         autoOpen: false,
         width: 500,
         modal: true,
+        title: 'Add a subject',
         close: function() {
             $('#message').remove();
             $('#question_form').each (function(){
@@ -37,6 +38,7 @@ $(document).ready(function() {
         autoOpen: false,
         width: 500,
         modal: true,
+        title: 'Import a List',
         close: function() {
             $('#message').remove();
             $('#error_tbody').html('');
@@ -95,4 +97,7 @@ $(document).ready(function() {
             }
         }
     });
+
+    $("#file_uploader input").addClass("button");
+
 });
