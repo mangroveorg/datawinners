@@ -1,6 +1,18 @@
 {% extends 'step_wizard.html' %}
 
 {% block page_title %} Setup the Project {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_define_project.scss" rel="stylesheet" />
+{% endblock %}
+
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>

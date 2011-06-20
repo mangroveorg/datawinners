@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block nav_content %}
-<form method="post" action="/account/settings/edit/">
+<form method="post" action="/account/" name="form">
+{% csrf_token %}
 Name : {{ organization_form.name }}
 Sector : {{ organization_form.sector }}
 Address Line 1: {{ organization_form.addressline1 }}
@@ -16,6 +17,7 @@ State : {{ organization_form.state }}
 Country : {{ organization_form.country }}
 ZipCode : {{ organization_form.zipcode }}
 Office Phone : {{ organization_form.office_phone }}
+{{ organization_form.org_id.as_hidden }}
 <input type="Submit" value="Submit" >
 </form>
 {% endblock %}
