@@ -9,15 +9,16 @@ import settings
 from django.contrib import admin
 
 urlpatterns = patterns('',
-    (r'', include('datawinners.accountmanagement.urls')),
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    (r'', include('datawinners.reporter.urls')),
-    (r'', include('datawinners.reports.urls')),
-    (r'', include('datawinners.admin.urls')),
-    (r'', include('datawinners.project.urls')),
-    (r'', include('datawinners.smstester.urls')),
-    (r'', include('datawinners.submission.urls')),
-    (r'', include('datawinners.maps.urls')),
-    (r'', include('datawinners.subjects.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-)
+                       (r'', include('datawinners.accountmanagement.urls')),
+                       (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+                       (r'', include('datawinners.reporter.urls')),
+                       (r'', include('datawinners.reports.urls')),
+                       (r'', include('datawinners.admin.urls')),
+                       (r'', include('datawinners.project.urls')),
+                       (r'', include('datawinners.smstester.urls')),
+                       (r'', include('datawinners.submission.urls')),
+                       (r'', include('datawinners.maps.urls')),
+                       (r'', include('datawinners.subjects.urls')),
+                       (r'', include('datawinners.account.urls')),
+                       url(r'^admin/', include(admin.site.urls)),
+                       )
