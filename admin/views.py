@@ -18,7 +18,8 @@ def create_entity(request):
         return render_to_response("admin/entity_management.html", {"form": EntityTypeForm()}, context_instance=RequestContext(request))
     form = EntityTypeForm(request.POST)
     if form.is_valid():
-        entity_name = form.cleaned_data["entity_type"].split(",")
+        entity_name = form.cleaned_data["entity_type"]
+        entity_name = [entity_name.lower()]
         try:
             manager = get_database_manager(request)
             define_type(manager, entity_name)

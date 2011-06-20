@@ -60,19 +60,19 @@ DW.question.prototype = {
     }
 };
 
-DW.current_code = "AA";
+DW.current_code = "aa";
 
 DW.generateQuestionCode = function() {
     var code = DW.current_code;
     var next_code = DW.current_code;
     var x,y = '';
-    if (next_code[1] < 'Z') {
+    if (next_code[1] < 'z') {
         y = String.fromCharCode(next_code[1].charCodeAt() + 1);
         x = next_code[0];
     }
     else {
         x = String.fromCharCode(next_code[0].charCodeAt() + 1);
-        y = 'A';
+        y = 'a';
     }
     next_code = x + y;
     DW.current_code = next_code;
