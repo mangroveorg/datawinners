@@ -63,3 +63,15 @@
     background: #000000;
     opacity:0.8;
 }
+#error_table{
+    display:none;
+    table{
+        width:100%;
+    }
+    th{
+        color:#000000;
+    }
+    td{
+        color:#FF0000;
+    }
+}

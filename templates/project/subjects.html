@@ -146,22 +146,22 @@
                     <p>Please enable JavaScript to use file uploader.</p>
                     <!-- or put a simple form for upload here -->
                 </noscript>
+                <h6>Upload a CSV or a XL file</h6>
+                <div id="file_uploader"></div>
             </div>
-            {% if failure_data %}
+            <div id='error_table'>
                 <h3>Errors in Import</h3>
                 <table>
-                    <tr>
+                    <thead>
+                        <th>Row Number</th>
                         <th>Row</th>
                         <th>Error</th>
-                    </tr>
-                    {% for each in failure_data %}
-                        <tr>
-                            <td>{{ each.row }}</td>
-                            <td>{{ each.error }}</td>
-                        </tr>
-                    {% endfor %}
+                    </thead>
+                    <tbody id='error_tbody'>
+
+                    </tbody>
                 </table>
-            {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -173,7 +173,7 @@
             <a class="bold" href={{ previous }}>Define Project</a>
         </div>
         <a href="questionnaire.html#" class="cancel">Cancel</a>
-        <input id="submit-button" type="submit" value="Next Step: Questionnaire"/>
+        <input id="submit-button" type="submit"value="Next Step: Questionnaire"/>
         {{ block.super }}
     </form>
 {% endblock %}

@@ -21,7 +21,7 @@ $(document).ready(function() {
                 && (lat_long[1] > -180 && lat_long[1] < 180);
     }, "Incorrect GPS coordinates. Please resubmit");
 
-    var validator = $('#question_form').validate({
+    DW.validator = $('#question_form').validate({
         messages:{
             geo_code:{
                 required:"Required information for registration. Please fill out at least one location field."

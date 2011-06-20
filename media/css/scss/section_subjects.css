@@ -43,3 +43,12 @@
 .ui-widget-overlay {
   background: #000000;
   opacity: 0.8; }
+
+#error_table {
+  display: none; }
+  #error_table table {
+    width: 100%; }
+  #error_table th {
+    color: #000000; }
+  #error_table td {
+    color: #FF0000; }

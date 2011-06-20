@@ -40,11 +40,13 @@
             <h3>Errors in Import</h3>
             <table>
                 <tr>
+                    <th>Row Number</th>
                     <th>Row</th>
                     <th>Error</th>
                 </tr>
                 {% for each in failure_data %}
                     <tr>
+                        <td>{{ each.row_num }}</td>
                         <td>{{ each.row }}</td>
                         <td>{{ each.error }}</td>
                     </tr>

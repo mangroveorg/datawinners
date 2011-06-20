@@ -17,16 +17,31 @@ $(document).ready(function() {
     $(".add_subject_form").dialog({
         autoOpen: false,
         width: 500,
-        modal: true});
-    $(".import_subject_form").dialog({
-        autoOpen: false,
-        width: 500,
-        modal: true});
+        modal: true,
+        close: function() {
+            $('#message').remove();
+            $('#question_form').each (function(){
+              this.reset();
+            });
+            DW.validator.resetForm();
+        }
+    });
+
     $("#add_subject").unbind('click').click(function() {
         $(".add_subject_form").dialog("open");
     });
     $("#import_subjects").unbind('click').click(function() {
         $(".import_subject_form").dialog("open");
+    });
+    $(".import_subject_form").dialog({
+        autoOpen: false,
+        width: 500,
+        modal: true,
+        close: function() {
+            $('#message').remove();
+            $('#error_tbody').html('');
+            $("#error_table").hide();
+        }
     });
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
@@ -58,16 +73,25 @@ $(document).ready(function() {
     );
     var uploader = new qq.FileUploader({
         // pass the dom node (ex. $(selector)[0] for jQuery users)
-        element: document.getElementById('file-uploader'),
+        element: document.getElementById('file_uploader'),
         // path to server-side upload script
         action: $('#post_url').val(),
-        onComplete: function(id, fileName, responseJSON){
+        onComplete: function(id, fileName, responseJSON) {
             $('#message').remove();
-            if (responseJSON.success == true){
-                $('<span id="message" class="success_message">'+ responseJSON.message +'</span>').insertAfter($('#file-uploader'));
+            if (responseJSON.success == true) {
+                $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
             }
-            else{
-                $('<span id="message" class="error_message">'+ responseJSON.message +'</span>').insertAfter($('#file-uploader'));
+            else {
+                $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
+                $.each(responseJSON.failure_imports, function(index, element) {
+                    var row = '';
+                    $.each(element.row, function(i, e) {
+                        row = row + " " + e + ","
+                    });
+                    $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + row + "</td><td>"
+                            + element.error + "</td></tr>")
+                    $("#error_table").show();
+                })
             }
         }
     });
