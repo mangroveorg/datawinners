@@ -1,9 +1,6 @@
-{% extends 'layout_application.html' %}
-{% block page_title %} Account {% endblock %}
-{% block section_title %} Settings {% endblock %}
-
+{% extends 'account/index.html' %}
 {% load dw_tabs %}
-
-{% block content %}
-Hello!
+{% block account_navigation %}
+{% activetab "settingsnav" "settings" %}
+{{ block.super }}
 {% endblock %}
