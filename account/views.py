@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -14,5 +14,5 @@ def settings(request):
         return render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        OrganizationForm.update(request.form, org_id)
-
+        organization_form = OrganizationForm(request.POST)
+        return HttpResponseRedirect('/account') if organization_form.update() else render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
