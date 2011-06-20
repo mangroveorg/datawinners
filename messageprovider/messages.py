@@ -61,6 +61,6 @@ exception_messages = {
 VALIDATION_FAILURE_ERROR_MESSAGE = "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
 
 success_messages = {
-    SUBMISSION: "Thank you %s for your data record. We successfully received your submission.",
+    SUBMISSION: "Thank you %s. We received : ",
     REGISTRATION: "Registration successful. %s."
 }

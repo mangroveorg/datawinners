@@ -23,10 +23,10 @@ $(document).ready(function() {
         width: 500,
         modal: true});
     $("#add_subject").unbind('click').click(function() {
-       $(".add_subject_form").dialog("open"); 
+        $(".add_subject_form").dialog("open");
     });
     $("#import_subjects").unbind('click').click(function() {
-       $(".import_subject_form").dialog("open");
+        $(".import_subject_form").dialog("open");
     });
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
@@ -56,4 +56,19 @@ $(document).ready(function() {
         }
     }
     );
+    var uploader = new qq.FileUploader({
+        // pass the dom node (ex. $(selector)[0] for jQuery users)
+        element: document.getElementById('file-uploader'),
+        // path to server-side upload script
+        action: $('#post_url').val(),
+        onComplete: function(id, fileName, responseJSON){
+            $('#message').remove();
+            if (responseJSON.success == true){
+                $('<span id="message" class="success_message">'+ responseJSON.message +'</span>').insertAfter($('#file-uploader'));
+            }
+            else{
+                $('<span id="message" class="error_message">'+ responseJSON.message +'</span>').insertAfter($('#file-uploader'));
+            }
+        }
+    });
 });

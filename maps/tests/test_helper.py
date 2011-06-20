@@ -11,7 +11,7 @@ class TestHelper(unittest.TestCase):
         self.dbm = Mock(spec=DatabaseManager)
 
     def test_should_create_location_geojson(self):
-        expected_geojson = '{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [1, 2]}, "type": "Feature"}, {"geometry": {"type": "Point", "coordinates": [1, 3]}, "type": "Feature"}]}'
+        expected_geojson = '{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [2, 1]}, "type": "Feature"}, {"geometry": {"type": "Point", "coordinates": [3, 1]}, "type": "Feature"}]}'
         entity1 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
                          geometry={'type': 'Point', 'coordinates': [1, 2]})
         entity2 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
@@ -20,7 +20,7 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(expected_geojson, helper.create_location_geojson(entity_list))
 
     def test_should_not_include_entities_without_location(self):
-        expected_geojson = '{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [1, 3]}, "type": "Feature"}]}'
+        expected_geojson = '{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [3, 1]}, "type": "Feature"}]}'
         entity1 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
                              geometry={})
         entity2 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
