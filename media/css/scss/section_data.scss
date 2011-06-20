@@ -4,29 +4,6 @@ table{
 }
 
 
-/*.container_24{*/
-    /*float: left;*/
-    /*margin: 0;*/
-    /*width: auto;*/
-    /*.content{*/
-        /*width:auto;*/
-        /*padding:0;*/
-        /*table td, table th{*/
-        /*}*/
-        /*> div, > ul{*/
-            /*width:100%;*/
-        /*}*/
-        /*> ul{*/
-            /*margin:0px;*/
-            /*left:0px;*/
-        /*}*/
-        /*.data_block{*/
-            /*width:auto;*/
-            /*table{*/
-            /*}*/
-        /*}*/
-    /*}*/
-/*}*/
 #header_application{
     margin:0 auto;
     float:none;
@@ -217,5 +194,11 @@ table{
          border:1px solid #666666
     }
 }
+
+#pagination{
+    margin-top:10px;
+}
+
+
 
 

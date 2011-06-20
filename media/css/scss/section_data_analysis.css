@@ -1,5 +1,23 @@
 table {
   width: auto !important;
+  min-width: 1374px;
   margin: 0; }
   table td {
-    min-width: 107px; }
+    min-width: 150px; }
+
+.container_24 {
+  float: left;
+  margin: 0;
+  width: auto; }
+  .container_24 .content {
+    width: auto;
+    padding: 0; }
+    .container_24 .content > div, .container_24 .content > ul {
+      width: 100%; }
+    .container_24 .content > ul {
+      margin: 0px;
+      left: 0px; }
+    .container_24 .content .data_block {
+      width: auto; }
+      .container_24 .content .data_block .data_table {
+        width: 1374px; }

@@ -1,7 +1,35 @@
 table{
     width:auto !important;
+    min-width:1374px;
     margin:0;
     td{
-        min-width:107px;
+        min-width:150px;
+    }
+}
+
+.container_24{
+    float: left;
+    margin: 0;
+    width: auto;
+    .content{
+        width:auto;
+        padding:0;
+        table td, table th{
+        }
+        > div, > ul{
+            width:100%;
+        }
+        > ul{
+            margin:0px;
+            left:0px;
+        }
+        .data_block{
+            .data_table{
+                width:1374px;
+            }
+            width:auto;
+            table{
+            }
+        }
     }
 }
