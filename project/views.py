@@ -121,7 +121,7 @@ def save_questionnaire(request):
             return HttpResponseServerError(e.message)
         else:
             try:
-                form_model.form_code = questionnaire_code
+                form_model.form_code = questionnaire_code.lower()
             except DataObjectAlreadyExists as e:
                 return HttpResponseServerError(e.message)
             form_model.name = project.name
@@ -260,7 +260,7 @@ def subjects(request):
     pid = request.GET['pid']
     if request.method == 'GET':
         manager = get_database_manager(request)
-        reg_form = get_form_model_by_code(manager, 'REG')
+        reg_form = get_form_model_by_code(manager, 'reg')
         previous_link = '/project/profile/edit?pid=' + pid
         entity_types = get_all_entity_types(manager)
         removable = ""

@@ -1,9 +1,25 @@
 DW.viewModel = {};
 
 $(document).ready(function() {
+    $('#autogen').unbind('change').change(function(event) {
+
+        if ($('#autogen').attr('checked') != true) {
+            $('#short_name').attr('disabled', '');
+
+        }
+        else {
+            $('#short_name').removeClass('error');
+            $("#short_name").parent().find('label.error').hide();
+            $('#short_name').val("");
+            DW.viewModel.message.s('')
+            $('#short_name').attr('disabled', 'disabled');
+        }
+    });
 
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
+            if (DW.viewModel.message.s())
+                DW.viewModel.message.s(DW.viewModel.message.s().toLowerCase());
             $.post($('#post_url').val(), {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel), null, 1)},
                     function(response) {
                         var d = JSON.parse(response);
