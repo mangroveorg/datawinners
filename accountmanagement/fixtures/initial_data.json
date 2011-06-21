@@ -32,7 +32,7 @@
         }
     },
     {
-        "pk": 1,
+        "pk": "SLX364903",
         "model": "accountmanagement.organization",
         "fields": {
             "sector": "PublicHealth",
@@ -49,7 +49,7 @@
         }
     },
     {
-        "pk": 2,
+        "pk": "COJ409579",
         "model": "accountmanagement.organization",
         "fields": {
             "sector": "PublicHealth",
@@ -87,7 +87,7 @@
         "pk": 1,
         "model": "accountmanagement.organizationsetting",
         "fields": {
-            "organization": 1,
+            "organization": "SLX364903",
             "document_store": "hni_testorg_slx364903",
             "sms_tel_number": "261333782943"
         }
@@ -96,7 +96,7 @@
         "pk": 2,
         "model": "accountmanagement.organizationsetting",
         "fields": {
-            "organization": 2,
+            "organization": "COJ409579",
             "document_store": "hni_testorg_coj409579",
             "sms_tel_number": "0123498765"
         }

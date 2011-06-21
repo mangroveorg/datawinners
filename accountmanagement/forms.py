@@ -3,8 +3,60 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django import forms
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
+from models import NGOUserProfile, Organization
+
+
+class OrganizationForm(ModelForm):
+    error_css_class = 'error'
+    required_css_class = 'required'
+
+    name = forms.CharField(required=True, label='* Organization name')
+    sector = forms.CharField(widget=(forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
+    addressline1 = forms.CharField(required=True, max_length=30, label='* Address Line 1')
+    addressline2 = forms.CharField(max_length=30, required=False, label='Address Line 2')
+    city = forms.CharField(max_length=30, required=True, label='* City')
+    state = forms.CharField(max_length=30, required=False, label='State / Province')
+    country = forms.CharField(max_length=30, required=True, label='* Country')
+    zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
+    office_phone = forms.CharField(max_length=30, required=False, label='Office Phone Number')
+    website = forms.URLField(required=False, label='Website Url')
+    
+    class Meta:
+        model = Organization
+
+
+    def update(self):
+        if self.is_valid():
+            self.save()
+        
+        return self
+            
+
+
+class UserProfileForm(RegistrationFormUniqueEmail):
+    error_css_class = 'error'
+    required_css_class = 'required'
+
+    title = forms.CharField(max_length=30, required=False)
+    first_name = forms.CharField(max_length=30, required=True, label='* First name')
+    last_name = forms.CharField(max_length=30, required=True, label='* Last name')
+    username = forms.CharField(max_length=30, required=False)
+
+    def clean(self):
+        self.convert_email_to_lowercase()
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                msg = "The two password fields didn't match."
+                self._errors['password1'] = self.error_class([msg])
+        return self.cleaned_data
+
+    def convert_email_to_lowercase(self):
+        email = self.cleaned_data.get('email')
+        if email is not None:
+            self.cleaned_data['email'] = email.lower()
 
 
 class RegistrationForm(RegistrationFormUniqueEmail):

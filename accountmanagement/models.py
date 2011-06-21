@@ -21,7 +21,7 @@ class Organization(models.Model):
     zipcode = models.TextField()
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
-    org_id = models.TextField()
+    org_id = models.TextField(primary_key=True)
 
 
 class NGOUserProfile(models.Model):
