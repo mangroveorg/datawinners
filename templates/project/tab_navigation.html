@@ -22,7 +22,7 @@
               <a href="#">Training</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="#">Data</a>
+              <a href={{ project.data_link }}>Data</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'settings' %}active{% else %}inactive{% endifactivetab %}">
               <a href="#">Settings</a>
@@ -37,10 +37,10 @@
           <a href="#">Summary</a>
         </li>
         <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="#">Analysis</a>
+          <a href={{ project.data_link }}>Analysis</a>
         </li>
         <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="#">Activity_log</a>
+          <a href={{ project.result_link }}>Activity_log</a>
         </li>
     </ul>
 {% endblock %}
