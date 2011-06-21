@@ -15,7 +15,10 @@
 {% block content %}
     <div class="span-18 box">
         <h5>Project Profile</h5>
-        <a href ={{ project.link }}>Edit</a>
+        <div class="grid_23 margin_20 margin_left_null">
+         <a class="button_blue " href ={{ project.link }} >Edit</a>
+        </div>
+       {% include 'maps/entity_map.html'  %}
         <ul>
             <li>
                <h5>Template</h5>
@@ -41,5 +44,5 @@
             </li>
         </ul>
     </div>
-    {% include 'maps/entity_map.html'  %}
+
 {% endblock %}
