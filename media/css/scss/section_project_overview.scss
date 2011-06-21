@@ -1,0 +1,46 @@
+.custom_model{
+    border:1px solid #c6c6c6;
+    background-color:#F2F2F2;
+    min-height:300px;
+    h4{
+       background-color:#525252;
+       background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));  //for webkit browsers
+       background: -moz-linear-gradient(top,  #525252,  #262626);  //for firefox 3.6+
+       color:#FFFFFF;
+       padding:10px;
+       font-size:14px;
+       font-weight:normal;
+    }
+    ul{
+        li{
+            float:left;
+            border-right:1px solid #c6c6c6;
+            padding:10px 20px 10px 20px;
+            height:200px;
+            width:190px;
+            margin-top:20px;
+            .sub_content{
+                margin-bottom:15px;
+            }
+            h5{
+                color:#c35c00;
+                margin-bottom:15px;
+                font-size:25px;
+            }
+            h6{
+                font-size:13px;
+            }
+        }
+        li.last{
+            padding-right:0px;
+            border:0;
+        }
+    }
+}
+#map{
+    margin-bottom:20px;
+}
+h3{
+    clear:both;
+    padding-top:55px;
+}

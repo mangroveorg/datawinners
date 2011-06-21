@@ -12,29 +12,77 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
     <div class="span-18 box">
-        <h5>Project Profile</h5>
-        <div class="grid_23 margin_20 margin_left_null">
-         <a class="button_blue " href ={{ project.link }} >Edit</a>
+
+        <div class="grid_23 margin_bottom_20 margin_top_20 alpha">
+           <a class="button_blue " href ={{ project.link }} >Edit this project</a>
         </div>
        {% include 'maps/entity_map.html'  %}
+        <h3 class="margin_top_20">Project Profile</h3>
+        <div class="custom_model grid_23 alpha omega">
+            <h4>Status: Complete</h4>
+            <ul>
+                <li>
+                    <h5>What</h5>
+                    <div class="sub_content">
+                        <h6>Template</h6>
+                        <p>No template</p>
+                    </div>
+                    <div class="sub_content">
+                        <h6>Questions</h6>
+                        <p>Questions: {{ project.what }} questions defined</p>
+                    </div>
+                </li>
+                <li>
+                    <h5>Who</h5>
+                    <div class="sub_content">
+                        <h6>Sender Group</h6>
+                        <p>No Data</p>
+                    </div>
+                    <div class="sub_content">
+                        <h6>Data sender Registration</h6>
+                        <p>No data</p>
+                    </div>
+                   <div class="sub_content">
+                        <h6>Languages</h6>
+                        <p>No language specified</p>
+                    </div>
+                </li>
+                <li>
+                    <h5>How</h5>
+                    <div class="sub_content">
+                        <h6>Cell Phone</h6>
+                         <p>{% for each in project.how %}
+                             {{ each }} |
+                             {% endfor %}
+                         </p>
+                    </div>
+                    <div class="sub_content">
+                        <h6>Computer</h6>
+                        <p>No Data</p>
+                    </div>
+                </li>
+                <li class="last">
+                    <h5>When</h5>
+                    <div class="sub_content">
+                        <h6>How often</h6>
+                        <p>No Data</p>
+                    </div>
+                    <div class="sub_content">
+                        <h6>Deadline</h6>
+                        <p>No Data</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
         <ul>
             <li>
-               <h5>Template</h5>
-                <p>No template</p>
-            </li>
-            <li>
-                <h5>What</h5>
-                <p>Questions: {{ project.what }} questions defined</p>
-            </li>
-            <li>
-                 <h5>How</h5>
-                 <p>{% for each in project.how %}
-                    {{ each }} |
-                 {% endfor %}</p>
-            </li>
-             <li>
                 <h5>View Submissions</h5>
                 <p><a href ={{ project.result_link }}>Click here</a></p>
             </li>
