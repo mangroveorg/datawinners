@@ -7,8 +7,8 @@
             {% if user.is_authenticated %}
                 <div class="grid_12 omega login text_align_right">
                     <span class="welcome">Welcome {{ user.first_name }}! </span>
-                    <span><a href="#">Your Profile</a></span>
-                    <span><a href="/account">Account</a></span>
+                    <span><a href="{% url account.views.edit_user %}">Your Profile</a></span>
+                    <span><a href="{% url account.views.settings %}">Account</a></span>
                     <span>  <a href="{% url django.contrib.auth.views.logout %}">Logout</a> </span>
                     <span><a href="#" class="padding_right_null">Help</a></span>
                 </div>
