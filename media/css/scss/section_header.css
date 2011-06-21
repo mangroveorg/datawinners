@@ -6,20 +6,12 @@
     font-weight: bold; }
   #header .logo .logo_winners {
     font-weight: normal; }
-#header .login {
-  text-align: right;
-  color: #FFFFFF;
-  font-size: 12px; }
-  #header .login span {
-    display: inline-block;
-    padding: 8px 15px 8px 15px;
-    background: url(/media/images/login_pipe.gif) no-repeat top right; }
-  #header .login .welcome {
+  #header .logo .welcome {
     font-weight: bold; }
-  #header .login a {
+  #header .logo a {
     color: #FFFFFF;
     text-decoration: none; }
-    #header .login a :hover {
+    #header .logo a :hover {
       text-decoration: underline; }
 
 #container_header_application #container_header_wizard {
@@ -29,8 +21,11 @@
     color: #CCCCCC; }
     #container_header_application #container_header_wizard #header .login span {
       display: inline-block;
-      padding: 1px 15px 2px;
-      margin-top: 4px; }
+      padding: 1px 15px 0px;
+      margin-top: 4px;
+      border-right: 1px solid #FFFFFF; }
+      #container_header_application #container_header_wizard #header .login span a {
+        color: #FFFFFF; }
   #container_header_application #container_header_wizard #header .logo {
     position: relative;
     top: 40px; }
