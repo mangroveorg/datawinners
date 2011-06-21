@@ -41,3 +41,22 @@ def new_user(request):
 
         print form.errors
         return render_to_response("account/new_user.html", {'profile_form' : form}, context_instance=RequestContext(request))
+
+
+@login_required
+def users(request):
+    if request.method == 'GET':
+        users = NGOUserProfile.objects.all()
+        return render_to_response("account/list_users.html", {'users' : users}, context_instance=RequestContext(request))
+
+
+@login_required
+def edit_user(request):
+    profile = request.user.get_profile()
+    form = UserProfileForm(title = profile.title, first_name = profile.user.first_name, last_name = profile.user.last_name,
+                           username = profile.user.username, office_phone = profile.office_phone, mobile_phone = profile.mobile_phone,skype = profile.skype)
+    return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
+    
+    
+        
+    
