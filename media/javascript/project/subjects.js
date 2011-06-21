@@ -3,6 +3,7 @@ $(document).ready(function() {
     $('.question_list ol > div:first').toggleClass("question_selected");
     $('.question_list ol > div:first').find(".selected_question_arrow").show();
     $("#question-detail-panel > div.answer1").show();
+
     $('.question_list ol > div').live("click", function() {
         $("#question-detail-panel > div").hide();
         $('.question_list ol > div').removeClass("question_selected")
