@@ -24,7 +24,14 @@
            <a class="button_blue " href ={{ project.link }} >Edit this project</a>
         </div>
        {% include 'maps/entity_map.html'  %}
-        <h3 class="margin_top_20">Project Profile</h3>
+        <div class="grid_23 title_block">
+            <h3 class="grid_4 alpha">Project Profile</h3>
+            <div class="grid_18 margin_top_5">
+                <a href="#">View</a>
+                <span>|</span>
+                <a href={{ project.link }}>edit profile</a>
+            </div>
+        </div>
         <div class="custom_model grid_23 alpha omega">
             <h4>Status: Complete</h4>
             <ul>
@@ -81,16 +88,7 @@
                 </li>
             </ul>
         </div>
-        <ul>
-            <li>
-                <h5>View Submissions</h5>
-                <p><a href ={{ project.result_link }}>Click here</a></p>
-            </li>
-            <li>
-                <h5>View Data</h5>
-                <p><a href ={{ project.data_link }}>Click here</a></p>
-            </li>
-        </ul>
+
     </div>
 
 {% endblock %}
