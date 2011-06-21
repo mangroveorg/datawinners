@@ -36,7 +36,7 @@ class OrganizationForm(ModelForm):
             
 
 
-class UserProfileForm(RegistrationFormUniqueEmail):
+class UserProfileForm(forms.Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
@@ -44,20 +44,9 @@ class UserProfileForm(RegistrationFormUniqueEmail):
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
     username = forms.CharField(max_length=30, required=False)
-
-    def clean(self):
-        self.convert_email_to_lowercase()
-        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
-            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                msg = "The two password fields didn't match."
-                self._errors['password1'] = self.error_class([msg])
-        return self.cleaned_data
-
-    def convert_email_to_lowercase(self):
-        email = self.cleaned_data.get('email')
-        if email is not None:
-            self.cleaned_data['email'] = email.lower()
-
+    office_phone = forms.CharField(max_length=30, required=False)
+    mobile_phone = forms.CharField(max_length=30, required=False)
+    skype = forms.CharField(max_length=30, required=False)
 
 class RegistrationForm(RegistrationFormUniqueEmail):
 

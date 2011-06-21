@@ -24,11 +24,14 @@ class Organization(models.Model):
     org_id = models.TextField(primary_key=True)
 
 
+
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     title = models.TextField()
     org_id = models.TextField()
-
+    office_phone = models.TextField(null=True, blank=True)
+    mobile_phone = models.TextField(null=True, blank=True)
+    skype = models.TextField(null=True)
 
 class OrganizationSetting(models.Model):
     organization = models.ForeignKey(Organization, unique=True)
