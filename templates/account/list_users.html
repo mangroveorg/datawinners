@@ -1,0 +1,12 @@
+{% extends 'account/index.html' %}
+{% load dw_tabs %}
+{% block account_navigation %}
+{% activetab "settingsnav" "users" %}
+{{ block.super }}
+{% endblock %}
+
+{% block nav_content %}
+{% for user in users %}
+{{ user.user.username }}
+{% endfor %}
+{% endblock %}
