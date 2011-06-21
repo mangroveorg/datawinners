@@ -218,8 +218,8 @@ def load_sms_data_for_cli001(manager):
 def load_data():
     manager = load_manager_for_default_test_account()
     initializer.run(manager)
-    CLINIC_ENTITY_TYPE = ["Clinic"]
-    WATER_POINT_ENTITY_TYPE = ["Waterpoint"]
+    CLINIC_ENTITY_TYPE = ["clinic"]
+    WATER_POINT_ENTITY_TYPE = ["waterpoint"]
     FEB = datetime.datetime(2011, 02, 01, tzinfo=UTC)
     MARCH = datetime.datetime(2011, 03, 01, tzinfo=UTC)
     create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
