@@ -5,7 +5,7 @@
                 <img src="/media/images/datawinner_logo.png"/>
             </div>
             {% if user.is_authenticated %}
-                <div class="grid_12 omega login">
+                <div class="grid_12 omega login text_align_right">
                     <span class="welcome">Welcome {{ user.first_name }}! </span>
                     <span><a href="#">Your Profile</a></span>
                     <span><a href="/account">Account</a></span>
@@ -13,7 +13,7 @@
                     <span><a href="#" class="padding_right_null">Help</a></span>
                 </div>
             {% else %}
-                <div class="grid_12 omega login">
+                <div class="grid_12 omega login text_align_right">
                     <span class="welcome">Welcome Guest!</span>
                     <span>  <a href="{% url django.contrib.auth.views.login %}">Sign in</a> </span>
                     <span>  <a href="{% url registration.views.register %}">Sign up</a> </span>

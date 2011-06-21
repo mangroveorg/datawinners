@@ -9,17 +9,7 @@
     .logo_winners{
         font-weight:normal;
     }
-  }
-
-  .login{
-    text-align:right;
-    color:#FFFFFF;
-    font-size:12px;
-    span{
-        display:inline-block;
-        padding:8px 15px 8px 15px;
-        background:url(/media/images/login_pipe.gif) no-repeat top right;
-    }
+  
     .welcome{
         font-weight:bold;
     }
@@ -42,8 +32,12 @@
             color:#CCCCCC;
             span{
                 display:inline-block;
-                padding:1px 15px 2px;
+                padding:1px 15px 0px;
                 margin-top:4px;
+                border-right:1px solid #FFFFFF;
+                a{
+                    color:#FFFFFF;
+                }
             }
         }
         .logo{
