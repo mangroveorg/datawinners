@@ -14,5 +14,7 @@ def settings(request):
         return render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        organization_form = OrganizationForm(request.POST)
-        return HttpResponseRedirect('/account') if organization_form.update() else render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
+        organization = Organization.objects.get(org_id=request.POST["org_id"])
+        organization_form = OrganizationForm(request.POST, instance = organization).update()
+
+        return HttpResponseRedirect('/account') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
