@@ -6,9 +6,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from accountmanagement.models import NGOUserProfile, Organization
-
-class AccountSignupForm(Mode
+from models import NGOUserProfile, Organization
 
 
 class OrganizationForm(ModelForm):
