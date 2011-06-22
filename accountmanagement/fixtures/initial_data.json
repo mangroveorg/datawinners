@@ -182,5 +182,29 @@
             "email": "datawinner@gmail.com",
             "date_joined": "2011-04-17 04:54:47"
         }
+    },
+    {
+        "pk": 1, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "NGO Admins", 
+            "permissions": []
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Project Managers", 
+            "permissions": []
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "Read Only Users", 
+            "permissions": []
+        }
     }
 ]

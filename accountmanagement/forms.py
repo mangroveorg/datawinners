@@ -48,6 +48,7 @@ class UserProfileForm(forms.Form):
     mobile_phone = forms.CharField(max_length=30, required=False)
     skype = forms.CharField(max_length=30, required=False)
 
+
 class RegistrationForm(RegistrationFormUniqueEmail):
 
     error_css_class = 'error'

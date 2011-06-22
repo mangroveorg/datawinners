@@ -3,11 +3,13 @@
 from django.conf import settings
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import Group
 
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import create_organization
+
 
 
 class RegistrationBackend(object):
@@ -86,6 +88,8 @@ class RegistrationBackend(object):
         #        new_user = User.objects.create_user(email,email,password)
         new_user.first_name = kwargs.get('first_name')
         new_user.last_name = kwargs.get('last_name')
+        group = Group.objects.filter(name = "NGO Admins")
+        new_user.groups.add(group[0])
         new_user.save()
         organization = create_organization(kwargs)
         signals.user_registered.send(sender=self.__class__,
