@@ -48,7 +48,7 @@ def _laod_all_subjects(request):
 def _tabulate_output(rows):
     tabulated_data = []
     for row in rows:
-        row[1].errors['row_num'] = row[0] + 1
+        row[1].errors['row_num'] = row[0] + 2
         if type(row[1].errors['error']) is list:
             row[1].errors['error'] = row[1].errors['error'][0]
         tabulated_data.append(row[1].errors)
@@ -70,6 +70,8 @@ def index(request):
                 messages.info(request, '%s of %s records uploaded' % (success, total))
             except CSVParserInvalidHeaderFormatException as e:
                 messages.error(request, e.message)
+            except Exception:
+                messages.error(request,'There was some unexpected error. Please check the CSV file again')
     else:
         form = SubjectUploadForm()
     all_subjects = _laod_all_subjects(request)
@@ -98,5 +100,7 @@ def import_subjects_from_project_wizard(request):
         success_message = '%s of %s records uploaded' % (successful_imports, total)
     except CSVParserInvalidHeaderFormatException as e:
         error_message = e.message
+    except Exception:
+        error_message = 'There was some unexpected error. Please check the CSV file again'
     return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
