@@ -9,13 +9,13 @@
 {% block account_navigation %}
 <ul id="settings_nav">
   <li>
-    <a href="#" class="{% ifactivetab "settingsnav" "settings" %}active{% else %}inactive{% endifactivetab %}">Application Settings</a>
+    <a href="{% url account.views.settings %}" class="{% ifactivetab "settingsnav" "settings" %}active{% else %}inactive{% endifactivetab %}">Application Settings</a>
   </li>
   <li>
-    <a href="#" class="{% ifactivetab "settingsnav" "users" %}active{% else %}inactive{% endifactivetab %}">Users</a>
+    <a href="{% url account.views.users %}" class="{% ifactivetab "settingsnav" "users" %}active{% else %}inactive{%endifactivetab%}">Users</a>
   </li>
   <li>
-    <a href="#" class="{% ifactivetab "settingsnav" "account" %}active{% else %}inactive{% endifactivetab %}">Your DataWinners Account</a>
+    <a href="{% url account.views.settings %}" class="{% ifactivetab "settingsnav" "account" %}active{% else %}inactive{% endifactivetab %}">Your DataWinners Account</a>
   </li>
 </ul>
 {% endblock %}

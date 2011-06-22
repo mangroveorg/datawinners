@@ -48,7 +48,7 @@ $(document).ready(function() {
     });
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
-            var message = {'form_code':'REG',
+            var message = {'form_code':'reg',
                 't':$('#id_entity_type').val(),
                 's':$('#short_name').val(),
                 'l':$('#location').val(),

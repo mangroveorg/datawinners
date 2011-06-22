@@ -39,7 +39,6 @@ def new_user(request):
             ngo_user_profile.save()
             return HttpResponseRedirect('/account')
 
-        print form.errors
         return render_to_response("account/new_user.html", {'profile_form' : form}, context_instance=RequestContext(request))
 
 
@@ -52,10 +51,30 @@ def users(request):
 
 @login_required
 def edit_user(request):
-    profile = request.user.get_profile()
-    form = UserProfileForm(title = profile.title, first_name = profile.user.first_name, last_name = profile.user.last_name,
-                           username = profile.user.username, office_phone = profile.office_phone, mobile_phone = profile.mobile_phone,skype = profile.skype)
-    return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
+    if request.method == 'GET':
+        profile = request.user.get_profile()
+        form = UserProfileForm(data = dict(title = profile.title, first_name = profile.user.first_name,
+                           last_name = profile.user.last_name,
+                           username = profile.user.username, office_phone = profile.office_phone,
+                           mobile_phone = profile.mobile_phone,skype = profile.skype))
+        return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(username = request.user.username)
+            user.first_name  = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.save()
+            ngo_user_profile = NGOUserProfile.objects.get(user = user)
+            ngo_user_profile.title = form.cleaned_data['title']
+            ngo_user_profile.office_phone = form.cleaned_data['office_phone']
+            ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
+            ngo_user_profile.skype = form.cleaned_data['skype']
+            ngo_user_profile.save()
+            return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
+
+
+
     
     
         
