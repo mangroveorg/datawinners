@@ -3,5 +3,17 @@
   margin-left: 370px; }
   .auto_gen_checkbox label {
     display: inline;
+    float: none;
     font-weight: normal;
     font-size: 12px; }
+
+.form_sub_set legend {
+  font-size: 14px;
+  font-weight: bold; }
+.form_sub_set li {
+  padding-left: 170px; }
+  .form_sub_set li label {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    font-size: 13px; }

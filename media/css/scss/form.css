@@ -15,6 +15,8 @@ form ul li {
   form ul li label {
     font-size: 14px;
     display: block;
+    float: left;
+    width: 170px;
     font-weight: bold; }
   form ul li ul li {
     margin-bottom: 0px; }

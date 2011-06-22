@@ -1,9 +1,10 @@
 table{
     width:auto !important;
-    min-width:1374px;
+    min-width:100%;
     margin:0;
+    border:1px solid #FFFFFF;
     td{
-        min-width:150px;
+        min-width:170px;
     }
 }
 
@@ -25,11 +26,32 @@ table{
         }
         .data_block{
             .data_table{
-                width:1374px;
+                width:100%%;
             }
             width:auto;
-            table{
-            }
         }
+    }
+}
+
+#header_application{
+    width:auto;
+    #header_wizard{
+        width:100%;
+        #header_wizard{
+            width:100%;
+
+        }
+    }
+}
+ #header{
+    width:100% !important;
+    .login{
+        float:right;
+    }
+}
+#main_tab{
+    width:100%;
+    .last{
+        padding-right:15px !important;
     }
 }

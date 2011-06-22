@@ -1,28 +1,5 @@
 $(document).ready(function() {
-  $("#dateRangePicker").daterangepicker( {
-    presetRanges: [
-    {text: 'Current month', dateStart: function(){ return Date.parse('today').moveToFirstDayOfMonth();  }, dateEnd: 'today' },
-    {text: 'Last Month', dateStart: 'last month', dateEnd: 'today' },
-    {text: 'Year to date', dateStart: function(){ var x= Date.parse('today'); x.setMonth(0); x.setDate(1); return x; }, dateEnd: 'today' }
-    ],
-    presets: {dateRange: 'Date Range'},
-    earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
-    onClose:function(){submit_data()}
-  });
-  function dataBinding(data, destroy, retrive){
-     $('#data_analysis').dataTable( {
-         "bDestroy":destroy,
-        "bRetrieve": retrive,
-        "sPaginationType": "full_numbers",
-//        "sScrollX": "100%",
-//        "sScrollXInner": "100%",
-//        "bScrollCollapse": true,
-        "aaData": data
-    });
-  }
-  dataBinding(initial_data, false, true);
-  $('#data_analysis select').customStyle();
-   function submit_data(){
+    DW.submit_data = function(){
        var aggregation_selectBox_Array = $(".aggregation_type"), aggregationArray = new Array();
          aggregation_selectBox_Array.each(function(){
          aggregationArray.push($(this).val())
@@ -42,16 +19,43 @@ $(document).ready(function() {
           data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':start_time, 'end_time': end_time},
           success:function(response) {
                        var response_data = JSON.parse(response);
-                       dataBinding(response_data, true, false);
-
+                       DW.dataBinding(response_data, true, false);
+                       DW.wrap_table();
          }});
-   }
-    $("#data_analysis").wrap("<div class='data_table'/>")
-    $(".aggregation_type").live("change", function(){
-        submit_data();
-  });
-    function hide_message() {
-        $('#dateErrorDiv label').delay(5000).fadeOut();
     }
+    DW.wrap_table = function(){
+         $("#data_analysis").wrap("<div class='data_table'/>")
+    }
+  $("#dateRangePicker").daterangepicker( {
+    presetRanges: [
+    {text: 'Current month', dateStart: function(){ return Date.parse('today').moveToFirstDayOfMonth();  }, dateEnd: 'today' },
+    {text: 'Last Month', dateStart: 'last month', dateEnd: 'today' },
+    {text: 'Year to date', dateStart: function(){ var x= Date.parse('today'); x.setMonth(0); x.setDate(1); return x; }, dateEnd: 'today' }
+    ],
+    presets: {dateRange: 'Date Range'},
+    earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
+    onClose:function(){submit_data()}
+  });
+  DW.dataBinding = function(data, destroy, retrive){
+     $('#data_analysis').dataTable( {
+         "bDestroy":destroy,
+        "bRetrieve": retrive,
+        "sPaginationType": "full_numbers",
+//        "sScrollX": "100%",
+//        "sScrollXInner": "100%",
+//        "bScrollCollapse": true,
+        "aaData": data
+    });
+  }
+  DW.dataBinding (initial_data, false, true);
+  DW.wrap_table();
+  $('#data_analysis select').customStyle();
+
+  $(".aggregation_type").live("change", function(){
+        DW.submit_data();
+  });
+  function hide_message() {
+        $('#dateErrorDiv label').delay(5000).fadeOut();
+  }
 
 } );
