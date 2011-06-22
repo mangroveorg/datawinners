@@ -8,8 +8,6 @@ from datawinners.accountmanagement.forms import OrganizationForm, UserProfileFor
 
 @login_required
 def settings(request):
-    print check_permission(request.user)
-    print request.user.groups.all()
     if not check_permission(request.user):
         return HttpResponseNotFound()
     
@@ -22,7 +20,7 @@ def settings(request):
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
-
+        
         return HttpResponseRedirect('/account') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
 
 
