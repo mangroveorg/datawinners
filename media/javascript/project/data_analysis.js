@@ -21,9 +21,11 @@ $(document).ready(function() {
     });
   }
   dataBinding(initial_data, false, true);
-  $('#data_analysis select').customStyle();
+  var aggregationArray = new Array();
+    $('#data_analysis select').customStyle();
    function submit_data(){
-       var aggregation_selectBox_Array = $(".aggregation_type"), aggregationArray = new Array();
+       var aggregation_selectBox_Array = $(".aggregation_type");
+         aggregationArray = new Array();
          aggregation_selectBox_Array.each(function(){
          aggregationArray.push($(this).val())
         });
@@ -36,20 +38,30 @@ $(document).ready(function() {
         }
         var start_time = time_range[0] || "";
         var end_time = time_range[1] || start_time;
-        $.ajax({
-          type: 'POST',
-          url: window.location.pathname,
-          data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':start_time, 'end_time': end_time},
-          success:function(response) {
-                       var response_data = JSON.parse(response);
-                       dataBinding(response_data, true, false);
-
-         }});
+        return [start_time , end_time]
    }
     $("#data_analysis").wrap("<div class='data_table'/>")
     $(".aggregation_type").live("change", function(){
-        submit_data();
+        var time_list = submit_data();
+        $.ajax({
+          type: 'POST',
+          url: window.location.pathname,
+          data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
+          success:function(response) {
+                       var response_data = JSON.parse(response);
+                       dataBinding(response_data, true, false);
+         }});
   });
+    $('#export_link').click(function(){
+        var time_list = submit_data();
+        var path = window.location.pathname;
+        var element_list = path.split("/");
+        $("#aggregation-types").attr("value", JSON.stringify(aggregationArray));
+        $("#questionnaire_code").attr("value", element_list[element_list.length-2]);
+        $("#start_time").attr("value", time_list[0]);
+        $("#end_time").attr("value", time_list[0]);
+        $('#export_form').submit();
+    });
     function hide_message() {
         $('#dateErrorDiv label').delay(5000).fadeOut();
     }

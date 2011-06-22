@@ -6,9 +6,9 @@ from mangrove.form_model.form_model import FormModel, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
-from mangrove.datastore import data
 from mangrove.datastore import aggregrate as aggregate_module
 import models
+import xlwt
 from copy import copy
 from datetime import datetime
 
@@ -121,8 +121,9 @@ def get_submissions(questions, submissions):
     assert is_sequence(submissions)
     for s in submissions:
         assert isinstance(s, dict) and s.get('values') is not None
-    formatted_list = [[each.get('created'), each.get('channel'), each.get('status'), each.get('voided'), each.get('error_message')] +
-                      [each.get('values').get(q[0].lower()) for q in questions] for each in submissions]
+    formatted_list = [
+    [each.get('created'), each.get('channel'), each.get('status'), each.get('voided'), each.get('error_message')] +
+    [each.get('values').get(q[0].lower()) for q in questions] for each in submissions]
     return [tuple(each) for each in formatted_list]
 
 
@@ -176,8 +177,8 @@ def get_values(data_dictionary, header_list):
         current_dict["values"] = list()
         for each in header_list[1:]:
             current_val = values.get(each)
-            if type(current_val)==list:
-                if type(current_val[0])!=str:
+            if type(current_val) == list:
+                if type(current_val[0]) != str:
                     current_val = [str(each) for each in current_val]
                 current_val = ",".join(current_val)
             current_dict["values"].append(current_val)
@@ -187,16 +188,18 @@ def get_values(data_dictionary, header_list):
 
 def get_aggregate_dictionary(header_list, post_data):
     aggregates = {}
-#    my_dictionary =
+    #    my_dictionary =
     for index, key in enumerate(header_list):
         aggregates[key] = post_data[index].strip().lower()
     return aggregates
+
 
 def get_aggregate_list(header_list, post_data):
     aggregates = []
     for index, field_name in enumerate(header_list):
         aggregates.append(aggregate_module.aggregation_factory(post_data[index].strip().lower(), field_name))
     return aggregates
+
 
 def convert_to_json(data_list):
     """
@@ -215,9 +218,19 @@ def convert_to_json(data_list):
 def get_data_record_from_submissions(ids):
     pass
 
+
 def get_formatted_time_string(time_val):
     try:
         time_val = datetime.strptime(time_val, '%d-%m-%Y %H:%M:%S')
-    except :
+    except:
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')
+
+
+def get_excel_sheet(raw_data, sheet_name):
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet(sheet_name)
+    for row_number, row  in enumerate(raw_data):
+        for col_number, val in enumerate(row):
+            ws.write(row_number, col_number, val)
+    return wb

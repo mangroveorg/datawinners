@@ -79,7 +79,8 @@ class TestHelper(unittest.TestCase):
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")],
-                          helper.get_code_and_title([question1, question2]))
+                                                                                            helper.get_code_and_title(
+                                                                                                [question1, question2]))
 
     def test_should_create_text_question_with_no_max_length(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
@@ -107,14 +108,15 @@ class TestHelper(unittest.TestCase):
     def test_should_return_tuple_list_of_submissions(self):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
         submissions = [
-                    {'values': {'q1': 'ans1', 'q2': 'ans2'}, 'channel': 'sms', 'status': True,'voided':False,
-                     'created': datetime(2011, 1, 1), 'error_message': 'error1'},
-                    {'values': {'q2': 'ans22'}, 'channel': 'sms', 'status': False, 'voided':True, 'created': datetime(2011, 1, 2),
-                     'error_message': 'error2'}
+                {'values': {'q1': 'ans1', 'q2': 'ans2'}, 'channel': 'sms', 'status': True, 'voided': False,
+                 'created': datetime(2011, 1, 1), 'error_message': 'error1'},
+                {'values': {'q2': 'ans22'}, 'channel': 'sms', 'status': False, 'voided': True,
+                 'created': datetime(2011, 1, 2),
+                 'error_message': 'error2'}
         ]
         required_submissions = [(datetime(2011, 1, 1), 'sms', True, False, 'error1', 'ans1', 'ans2',),
-                                (datetime(2011, 1, 2), 'sms', False, True, 'error2', None, 'ans22',),
-                                ]
+                (datetime(2011, 1, 2), 'sms', False, True, 'error2', None, 'ans22',),
+                                                                                                     ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
@@ -326,14 +328,18 @@ class TestHelper(unittest.TestCase):
         self.assertListEqual(expected_list, actual_list)
 
     def test_should_create_value_list(self):
-        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', "What colour do you choose?" :["red", "blue"],"what is your loc?" :[21.1,23.3],
+        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta',
+                                             "What colour do you choose?": ["red", "blue"],
+                                             "what is your loc?": [21.1, 23.3],
                                              'What is associated entity?': 'cid002'},
-                           'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', "What colour do you choose?" :["red"],"what is your loc?" :[21.1],
+                           'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif',
+                                             "What colour do you choose?": ["red"], "what is your loc?": [21.1],
                                              'What is associated entity?': 'cid001'}}
-        header_list = ["What is associated entity?", "What is your name?", "What is age of father?", "What colour do you choose?", "what is your loc?"]
+        header_list = ["What is associated entity?", "What is your name?", "What is age of father?",
+                       "What colour do you choose?", "what is your loc?"]
         actual_list = helper.get_values(data_dictionary, header_list)
-        expected_list = [{"entity_name": "cid002", "values": ['shweta', 55, "red,blue","21.1,23.3"]},
-                         {"entity_name": "cid001", "values": ['asif', 35, "red", "21.1"]}]
+        expected_list = [{"entity_name": "cid002", "values": ['shweta', 55, "red,blue", "21.1,23.3"]},
+                {"entity_name": "cid001", "values": ['asif', 35, "red", "21.1"]}]
         self.assertListEqual(expected_list, actual_list)
 
     def test_should_create_type_list(self):
@@ -345,7 +351,7 @@ class TestHelper(unittest.TestCase):
         question3 = SelectField(label="multiple_choice_question", code="Q2",
                                 options=[("red", 1), ("yellow", 2), ('green', 3)], name="What is your favourite colour",
                                 ddtype=ddtype)
-        question4 = DateField("What is date", "Q4", "date_question","mm.yyyy", ddtype)
+        question4 = DateField("What is date", "Q4", "date_question", "mm.yyyy", ddtype)
         actual_list = helper.get_type_list([question1, question2, question3, question4])
         choice_type = copy(helper.MULTI_CHOICE_TYPE_OPTIONS)
         choice_type.extend(
@@ -356,7 +362,7 @@ class TestHelper(unittest.TestCase):
     def test_should_return_aggregates_dictionary(self):
         header_list = ["field1", "field2"]
         post_data = ["Latest", "Sum"]
-        expected_dictionary = {"field1":data.reduce_functions.LATEST, "field2":data.reduce_functions.SUM}
+        expected_dictionary = {"field1": data.reduce_functions.LATEST, "field2": data.reduce_functions.SUM}
         actual_dict = helper.get_aggregate_dictionary(header_list, post_data)
         self.assertEquals(expected_dictionary, actual_dict)
 
@@ -370,11 +376,23 @@ class TestHelper(unittest.TestCase):
 
     def test_should_create_list_of_values(self):
         data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
-                         {"entity_name": "cid001", "values": ['asif', 35]}]
+                {"entity_name": "cid001", "values": ['asif', 35]}]
         actual_list = helper.convert_to_json(data_list)
-        expected_list = [["cid002", 'shweta', 55],["cid001", 'asif', 35]]
+        expected_list = [["cid002", 'shweta', 55], ["cid001", 'asif', 35]]
         self.assertListEqual(expected_list, actual_list)
 
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
+
+
+    def test_should_generate_excel_sheet(self):
+        raw_data = [["cid002", 'shweta', 55], ["cid001", 'asif', 35]]
+        header_list = ["field1", "field2", 'field3']
+        raw_data.insert(0,header_list)
+        sheet_name = 'test'
+        wb = helper.get_excel_sheet(raw_data, sheet_name)
+        self.assertEquals(3, len(wb.get_sheet(0).rows))
+        self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
+
+
