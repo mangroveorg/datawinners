@@ -49,7 +49,7 @@
     {% endblock %}
     <div class="grid_23">
         <ul class="links">
-            <li><a href="#">export</a> </li>
+            <li><a href="#" id="export_link">export</a> </li>
             <li><a href="#">print</a> </li>
             <li><a href="#" class="null_border">e-mail</a> </li>
         </ul>
@@ -57,6 +57,13 @@
     <div class="heading_block grid_23 alpha">
         <h3 class="grid_10">Analysis</h3>
     </div>
+    <form id = "export_form" action="/export" method='POST'>
+        {% csrf_token %}
+        <input id = "aggregation-types"  name='aggregation-types' type="hidden" value="aaa"/>
+        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" value='asas'/>
+        <input id='start_time' name='start_time' type="hidden" value="asada"/>
+        <input id='end_time' name='end_time'  type="hidden" value="asdadasdsa"/>
+    </form>
     <div class="heading_block grid_23 alpha">
         <div class="date_range_box">
             <label>Show data for:</label>

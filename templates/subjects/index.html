@@ -12,13 +12,6 @@
 {% load i18n %}
 {% block content %}
     <div>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
         <fieldset>
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -35,18 +28,24 @@
                 </ul>
             </form>
         </fieldset>
-
+       {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% if failure_data %}
             <h3>Errors in Import</h3>
-            <table>
-                <tr>
+            <table class="styled_table error_table">
+                <thead>
                     <th>Row Number</th>
                     <th>Row</th>
                     <th>Error</th>
-                </tr>
+                </thead>
                 {% for each in failure_data %}
                     <tr>
-                        <td>{{ each.row_num }}</td>
+                        <td class="text_align_center">{{ each.row_num }}</td>
                         <td>{{ each.row }}</td>
                         <td>{{ each.error }}</td>
                     </tr>
@@ -55,8 +54,8 @@
         {% endif %}
         {% if all_subjects %}
             <h3>All Subjects</h3>
-            <table>
-                <tr>
+            <table class="styled_table">
+                <thead>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Short Name</th>
@@ -64,7 +63,7 @@
                     <th>Location</th>
                     <th>Description</th>
                     <th>Contact info</th>
-                </tr>
+                </thead>
                 {% for each in all_subjects %}
                     <tr>
                         <td>{{ each.id }}</td>

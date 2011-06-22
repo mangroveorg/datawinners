@@ -24,6 +24,7 @@ from mangrove.utils.types import is_string
 from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
+import xlwt
 
 PAGE_SIZE = 4
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
@@ -218,12 +219,25 @@ def _format_data_for_presentation(data_dictionary, form_model):
     header_list = helper.get_headers(form_model.fields)
     type_list = helper.get_type_list(form_model.fields[1:])
     if data_dictionary == {}:
-        return "{}", header_list, type_list
+        return "[]", header_list, type_list
     data_list = helper.get_values(data_dictionary, header_list)
     header_list[0] = form_model.entity_type[0] + " Name"
     data_list = helper.convert_to_json(data_list)
     response_string = encode_json(data_list)
     return response_string, header_list, type_list
+
+
+def _load_data(form_model, manager, questionnaire_code, request):
+    header_list = helper.get_headers(form_model.fields)
+    post_list = json.loads(request.POST.get("aggregation-types"))
+    start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00")
+    end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59")
+    aggregates = helper.get_aggregate_list(header_list[1:], post_list)
+    aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
+    data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
+                                                                     aggregates=aggregates, starttime=start_time,
+                                                                     endtime=end_time)
+    return data_dictionary
 
 
 @login_required(login_url='/login')
@@ -241,17 +255,24 @@ def project_data(request, questionnaire_code=None):
                  "header_list": header_list, "type_list": type_list},
                                   context_instance=RequestContext(request))
     if request.method == "POST":
-        header_list = helper.get_headers(form_model.fields)
-        post_list = json.loads(request.POST.get("aggregation-types"))
-        start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip()+" 00:00:00")
-        end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip()+" 23:59:59")
-        aggregates = helper.get_aggregate_list(header_list[1:], post_list)
-        aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
-        data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
-                                                                         aggregates=aggregates, starttime=start_time,
-                                                                         endtime=end_time)
+        data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)
+
+def export(request):
+    questionnaire_code = request.POST.get("questionnaire_code")
+    manager = get_database_manager(request)
+    form_model = get_form_model_by_code(manager, questionnaire_code)
+    data_dictionary = {}
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=file.xls'
+    data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
+    response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+    raw_data_list = json.loads(response_string)
+    raw_data_list.insert(0,header_list)
+    wb = helper.get_excel_sheet(raw_data_list,'data_analysis')
+    wb.save(response)
+    return response
 
 
 @login_required(login_url='/login')

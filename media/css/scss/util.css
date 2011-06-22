@@ -80,16 +80,15 @@ input.error {
 
 /*Table Styles Temp*/
 table {
-  margin-bottom: 10px; }
-
-table td, table th {
-  border: 1px solid #ccc;
-  padding: 6px; }
-
-table th {
-  color: #000;
-  font-weight: bold;
-  padding: 10px; }
+  margin-bottom: 10px;
+  width: 100%; }
+  table td, table th {
+    border: 1px solid #ccc;
+    padding: 6px; }
+  table th {
+    color: #000;
+    font-weight: bold;
+    padding: 10px; }
 
 /* Inline and block */
 .inline {
