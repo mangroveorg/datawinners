@@ -50,8 +50,9 @@
     #main_tab{
         text-align:right;
         ul{
+            float:right;
             position:relative;
-            left:475px;
+            /*left:475px;*/
             top:-30px;
             li{
                 padding:10px;
@@ -75,8 +76,9 @@
                     }
 
                 }
-
-
+            }
+            li.last{
+                padding-right:0;
             }
         }
 
