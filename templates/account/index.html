@@ -1,24 +1,28 @@
 {% extends 'layout_application.html' %}
-
+{% block page_js %}
+{{ block.super }}
+<script type="text/javascript" src="/media/javascript/tabify.js"></script>
+{% endblock %}
 {% block page_title %} Account {% endblock %}
 {% block section_title %} Settings {% endblock %}
 
-{% load dw_tabs %}
-
 {% block content %}
 {% block account_navigation %}
+<div id = "tabs">
 <ul id="settings_nav">
   <li>
-    <a href="{% url account.views.settings %}" class="{% ifactivetab "settings_nav" "settings" %}active{% else %}inactive{% endifactivetab %}">Application Settings</a>
+    <a href="#tabs-1">Application Settings</a>
   </li>
   <li>
-    <a href="{% url account.views.users %}" class="{% ifactivetab "settings_nav" "users" %}active{% else %}inactive{%endifactivetab%}">Users</a>
+    <a href="#tabs-2">Users</a>
   </li>
   <li>
-    <a href="{% url account.views.settings %}" class="{% ifactivetab "settings_nav" "account" %}active{% else %}inactive{% endifactivetab %}">Your DataWinners Account</a>
+    <a href="#tabs-3">Your DataWinners Account</a>
   </li>
 </ul>
-{% endblock %}
 {% block nav_content %}
 {% endblock %}
+</div>
+{% endblock %}
+
 {% endblock %}

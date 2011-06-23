@@ -1,11 +1,6 @@
 {% extends 'account/index.html' %}
-{% load dw_tabs %}
-{% block account_navigation %}
-{% activetab "settings_nav" "settings" %}
-{{ block.super }}
-{% endblock %}
-
 {% block nav_content %}
+<div id="tabs-1">
 {% block layout_scss %}
   {% include 'application_scss.html' %}
   <link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
@@ -96,6 +91,7 @@
 
     </form>
 
+</div>
 </div>
 </div>
 {% endblock %}
