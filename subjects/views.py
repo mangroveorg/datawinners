@@ -48,10 +48,13 @@ def _laod_all_subjects(request):
 
 def _tabulate_output(rows):
     tabulated_data = []
+    errors = ''
     for row in rows:
         row[1].errors['row_num'] = row[0] + 2
         if type(row[1].errors['error']) is list:
-            row[1].errors['error'] = row[1].errors['error'][0]
+            for error in row[1].errors['error']:
+                errors = errors+' '+error
+            row[1].errors['error'] = errors
         tabulated_data.append(row[1].errors)
     return tabulated_data
 
