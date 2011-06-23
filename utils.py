@@ -20,5 +20,9 @@ def get_excel_sheet(raw_data, sheet_name):
     for row_number, row  in enumerate(raw_data):
         row = clean(row)
         for col_number, val in enumerate(row):
-            ws.write(row_number, col_number, val)
+            cell_style=xlwt.Style.default_style
+            if isinstance(val, datetime):
+                cell_style = xlwt.easyxf(num_format_str='dd-mm-yyyy hh:mm:ss')
+            ws.write(row_number, col_number, val, style=cell_style)
     return wb
+
