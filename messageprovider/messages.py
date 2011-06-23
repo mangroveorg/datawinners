@@ -54,6 +54,10 @@ exception_messages = {
     
     ex.NoQuestionsSubmittedException: {
         DEFAULT: "Please submit atleast one valid question code"
+    },
+
+    ex.MultipleSubmissionsForSameCodeException:{
+        DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
     }
 
 }
