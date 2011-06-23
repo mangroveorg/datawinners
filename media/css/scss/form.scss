@@ -96,6 +96,7 @@ input[type=button]{
 }
 a{
     color:$link_color;
+    outline:none;
 }
 textarea{
     width:$text_box_width;
