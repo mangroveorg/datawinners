@@ -35,18 +35,17 @@ GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 @login_required(login_url='/login')
-def questionnaire(request):
+def questionnaire(request,project_id=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
-        pid = request.GET["pid"]
-        previous_link = '/project/subjects?pid=' + pid
-        project = models.get_project(pid, manager)
+        previous_link = '/project/subjects/%s' % project_id
+        project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions),
                  "questionnaire_code": form_model.form_code,
-                 'project_id': pid, "previous": previous_link},
+                 'project_id': project_id, "previous": previous_link},
                                   context_instance=RequestContext(request))
 
 
@@ -72,20 +71,20 @@ def create_profile(request):
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
             return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
-        return HttpResponseRedirect('/project/subjects?pid=' + pid)
+        return HttpResponseRedirect('/project/subjects/%s' % pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
 
-def edit_profile(request):
+def edit_profile(request,project_id=None):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
     if request.method == 'GET':
-        project = models.get_project(request.GET['pid'], dbm=manager)
+        project = models.get_project(project_id, dbm=manager)
         form = ProjectProfile(data=project, entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
-    project = models.get_project(request.GET['pid'], dbm=manager)
+    project = models.get_project(project_id, dbm=manager)
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
         project.update(manager, form.cleaned_data)
@@ -101,7 +100,7 @@ def edit_profile(request):
         entity_type = request.POST['entity_type']
         form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
         form_model.save()
-        return HttpResponseRedirect('/project/subjects?pid=' + pid)
+        return HttpResponseRedirect('/project/subjects/%s' % pid)
     else:
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
@@ -137,7 +136,7 @@ def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request))
     for row in rows:
-        link = "/project/overview?pid=" + row['value']['_id']
+        link = "/project/overview/%s" % row['value']['_id']
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link)
         project_list.append(project)
@@ -146,10 +145,10 @@ def index(request):
 
 
 @login_required(login_url='/login')
-def project_overview(request):
+def project_overview(request,project_id=None):
     manager = get_database_manager(request)
-    project = models.get_project(request.GET["pid"], dbm=manager)
-    link = '/project/profile/edit?pid=' + request.GET["pid"]
+    project = models.get_project(project_id, dbm=manager)
+    link = '/project/profile/edit/%s' % project_id
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     result_link = '/project/results/%s' % questionnaire.form_code
@@ -257,11 +256,11 @@ def project_data(request, questionnaire_code=None):
                  "header_list": header_list, "type_list": type_list},
                                   context_instance=RequestContext(request))
     if request.method == "POST":
-        form_model = get_form_model_by_code(manager, questionnaire_code)
         data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)
 
+@login_required(login_url='/login')
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
@@ -280,7 +279,7 @@ def create_excel_response(raw_data_list):
     wb.save(response)
     return response
 
-
+@login_required(login_url='/login')
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
@@ -297,12 +296,12 @@ def export_log(request):
 
 
 @login_required(login_url='/login')
-def subjects(request):
-    pid = request.GET['pid']
+def subjects(request,project_id=None):
+    pid = project_id
     if request.method == 'GET':
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'reg')
-        previous_link = '/project/profile/edit?pid=' + pid
+        previous_link = '/project/profile/edit/%s' % pid
         entity_types = get_all_entity_types(manager)
         removable = ""
         for each in entity_types:
@@ -315,5 +314,5 @@ def subjects(request):
                  'import_subject_form': import_subject_form,'post_import':reverse(import_subjects_from_project_wizard)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        return HttpResponseRedirect('/project/questionnaire?pid=' + pid)
+        return HttpResponseRedirect('/project/questionnaire/%s' % pid)
 

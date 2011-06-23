@@ -32,14 +32,14 @@ def _laod_all_subjects(request):
     for row in rows:
         type = row['doc']['aggregation_paths']['_type']
         short_code = row['doc']['short_code']
-        e = get_by_short_code(dbm=manager, short_code=short_code, entity_type=type)
+        entity = get_by_short_code(dbm=manager, short_code=short_code, entity_type=type)
         type = '.'.join(type)
         if type.lower() != 'reporter':
             id = row['id']
-            name = e.value(NAME_FIELD)
+            name = entity.value(NAME_FIELD)
             location = row['doc']['geometry'].get('coordinates')
-            mobile_number = e.value(MOBILE_NUMBER_FIELD)
-            description = e.value(DESCRIPTION_FIELD)
+            mobile_number = entity.value(MOBILE_NUMBER_FIELD)
+            description = entity.value(DESCRIPTION_FIELD)
             result_dict = dict(id=id, name=name, short_name=short_code, type=type, location=location,
                                description=description, mobile_number=mobile_number)
             data.append(result_dict)
