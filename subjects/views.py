@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from _csv import Error
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import json
@@ -33,7 +34,7 @@ def _laod_all_subjects(request):
         short_code = row['doc']['short_code']
         e = get_by_short_code(dbm=manager, short_code=short_code, entity_type=type)
         type = '.'.join(type)
-        if type != 'Reporter':
+        if type.lower() != 'reporter':
             id = row['id']
             name = e.value(NAME_FIELD)
             location = row['doc']['geometry'].get('coordinates')
@@ -70,8 +71,9 @@ def index(request):
                 messages.info(request, '%s of %s records uploaded' % (success, total))
             except CSVParserInvalidHeaderFormatException as e:
                 messages.error(request, e.message)
-            except Exception:
-                messages.error(request,'There was some unexpected error. Please check the CSV file again')
+            except Error:
+                messages.error(request, 'We could not import your list of Subjects. ! \
+                   You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) ﬁle!')
     else:
         form = SubjectUploadForm()
     all_subjects = _laod_all_subjects(request)
@@ -100,7 +102,8 @@ def import_subjects_from_project_wizard(request):
         success_message = '%s of %s records uploaded' % (successful_imports, total)
     except CSVParserInvalidHeaderFormatException as e:
         error_message = e.message
-    except Exception:
-        error_message = 'There was some unexpected error. Please check the CSV file again'
+    except Error:
+        error_message = 'We could not import your list of Subjects. ! \
+                    You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) ﬁle!'
     return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
