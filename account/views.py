@@ -39,17 +39,21 @@ def new_user(request):
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         form = UserProfileForm(request.POST)
+
         if form.is_valid():
-            user = User.objects.create_user(form.cleaned_data['username'],form.cleaned_data['username'],'test123')
-            user.first_name  = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            group = Group.objects.filter(name = "Project Managers")
-            user.groups.add(group[0])
-            user.save()
-            ngo_user_profile = NGOUserProfile(user = user, title = form.cleaned_data['title'], office_phone = form.cleaned_data['office_phone'],
-                                              mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
-            ngo_user_profile.save()
-            return HttpResponseRedirect('/account/#tabs-2')
+            if User.objects.filter(username = form.cleaned_data['username']).count() > 0:
+                form.errors['username'] = "Username already exists"
+            if not form.errors:
+                user = User.objects.create_user(form.cleaned_data['username'],form.cleaned_data['username'],'test123')
+                user.first_name  = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                group = Group.objects.filter(name = "Project Managers")
+                user.groups.add(group[0])
+                user.save()
+                ngo_user_profile = NGOUserProfile(user = user, title = form.cleaned_data['title'], office_phone = form.cleaned_data['office_phone'],
+                                                  mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
+                ngo_user_profile.save()
+                return HttpResponseRedirect('/account/#tabs-2')
         
         
         profile = request.user.get_profile()
