@@ -36,7 +36,17 @@ $(document).ready(function() {
                 presets: {dateRange: 'Date Range'},
                 earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
                 onClose:function() {
-                    DW.submit_data()
+                   var time_list = DW.submit_data();
+                    $.ajax({
+                    type: 'POST',
+                    url: window.location.pathname,
+                    data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
+                    success:function(response) {
+                        var response_data = JSON.parse(response);
+                        DW.dataBinding(response_data, true, false);
+                        DW.wrap_table();
+                    }});
+
                 }
             });
     DW.dataBinding = function(data, destroy, retrive) {
