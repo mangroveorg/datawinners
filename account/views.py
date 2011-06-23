@@ -25,7 +25,8 @@ def settings(request):
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
         profile_form = UserProfileForm()
-        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form}, context_instance=RequestContext(request))
+        users = NGOUserProfile.objects.all()
+        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users}, context_instance=RequestContext(request))
     
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
@@ -67,9 +68,6 @@ def users(request):
 @login_required
 @is_admin
 def edit_user(request):
-    if not check_permission(request.user):
-        return HttpResponseNotFound()
-    
     if request.method == 'GET':
         profile = request.user.get_profile()
         form = UserProfileForm(data = dict(title = profile.title, first_name = profile.user.first_name,
