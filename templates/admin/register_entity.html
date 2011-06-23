@@ -59,22 +59,25 @@
                                 <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
                             </span>
                         </li>
-                        <li>
-                            <span>
-                                <label>Location</label>
-                            </span>
-                            <span>
-                                <input id="location" name="location" type="text" data-bind="value: message.l"/>
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <label>GPS</label>
-                            </span>
-                            <span>
-                                <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
-                            </span>
-                        </li>
+                        <fieldset class="form_sub_set">
+                            <legend>Location</legend>
+                            <li>
+                                <span>
+                                    <label>Location Name</label>
+                                </span>
+                                <span>
+                                    <input id="location" name="location" type="text" data-bind="value: message.l"/>
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                    <label>GPS</label>
+                                </span>
+                                <span>
+                                    <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
+                                </span>
+                            </li>
+                        </fieldset>
                         <li>
                             <span>
                                 <label>Description</label>

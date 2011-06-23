@@ -1,6 +1,7 @@
 form fieldset legend {
   font-size: 20px; }
 form ul li {
+  overflow: hidden;
   margin-bottom: 20px; }
   form ul li input[type=text], form ul li input[type=password] {
     width: 350px;
@@ -15,13 +16,19 @@ form ul li {
   form ul li label {
     font-size: 14px;
     display: block;
+    float: left;
+    width: 170px;
+    margin-right: 10px;
     font-weight: bold; }
-  form ul li ul li {
-    margin-bottom: 0px; }
-    form ul li ul li label {
-      font-size: 12px;
-      display: inline;
-      font-weight: normal; }
+  form ul li ul {
+    float: left; }
+    form ul li ul li {
+      margin-bottom: 0px; }
+      form ul li ul li label {
+        font-size: 12px;
+        display: inline;
+        font-weight: normal;
+        width: auto; }
 
 .application_register form fieldset legend {
   font-size: 20px; }

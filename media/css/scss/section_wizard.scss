@@ -7,13 +7,11 @@ $slider_range:#FFFFFF;
         .content_wrapper{
             padding:0 0px 0 0;
             margin:10px;
-        }
-        .wizard{
+            .step_number{
+                margin-bottom:20px;
+             }
         }
     }
-
-
-
 }
 .wizard{
     #step_wizard{
@@ -72,8 +70,6 @@ $slider_range:#FFFFFF;
                 padding-right:0px;
             }
         }
-       
-
     }
 }
 

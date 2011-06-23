@@ -1,9 +1,8 @@
 table {
   width: auto !important;
-  min-width: 1374px;
-  margin: 0; }
-  table td {
-    min-width: 150px; }
+  min-width: 100%;
+  margin: 0;
+  border: 1px solid #FFFFFF; }
 
 .container_24 {
   float: left;
@@ -20,4 +19,23 @@ table {
     .container_24 .content .data_block {
       width: auto; }
       .container_24 .content .data_block .data_table {
-        width: 1374px; }
+        width: 100%; }
+        .container_24 .content .data_block .data_table table td {
+          min-width: 170px; }
+
+#header_application {
+  width: auto; }
+  #header_application #header_wizard {
+    width: 100%; }
+    #header_application #header_wizard #header_wizard {
+      width: 100%; }
+
+#header {
+  width: 100% !important; }
+  #header .login {
+    float: right; }
+
+#main_tab {
+  width: 100%; }
+  #main_tab .last {
+    padding-right: 15px !important; }

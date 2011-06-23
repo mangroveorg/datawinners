@@ -3,7 +3,25 @@
     margin-left:370px;
     label{
         display:inline;
+        float:none;
         font-weight:normal;
         font-size:12px;
+    }
+}
+.form_sub_set{
+    legend{
+        font-size:14px;
+        font-weight:bold;
+    }
+    li{
+        padding-left:170px;
+        input{
+        }
+        label{
+            display:block;
+            width:100%;
+            font-weight:bold;
+            font-size:13px;
+        }
     }
 }

@@ -1,5 +1,6 @@
 {% extends 'layout_application.html' %}
 {% load dw_tabs %}
+
 {% block navigation %}
     <div class="grid_24 tab_navigation">
         <ul>
@@ -37,10 +38,10 @@
           <a href="#">Summary</a>
         </li>
         <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
-          <a href={{ project.data_link }}>Analysis</a>
+          <a href="{{ project.data_link }}">Analysis</a>
         </li>
         <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-          <a href={{ project.result_link }}>Activity_log</a>
+          <a href="{{ project.result_link }}">Activity_log</a>
         </li>
     </ul>
 {% endblock %}

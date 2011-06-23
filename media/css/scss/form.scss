@@ -10,6 +10,7 @@ form{
             }
         }
     ul li{
+        overflow:hidden;
         margin-bottom:20px;
         input[type=text], input[type=password]{
             width:$text_box_width;
@@ -27,14 +28,22 @@ form{
         label{
             font-size:14px;
             display:block;
+            float:left;
+            width:170px;
+            margin-right:10px;
             font-weight:bold;
         }
-        ul li{
-            margin-bottom:0px;
-            label{
-                font-size:12px;
-                display:inline;
-                font-weight:normal;
+        ul
+        {
+            float:left;
+            li{
+                margin-bottom:0px;
+                label{
+                    font-size:12px;
+                    display:inline;
+                    font-weight:normal;
+                    width:auto;
+                }
             }
         }
     }

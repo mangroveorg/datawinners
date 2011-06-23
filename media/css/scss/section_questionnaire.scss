@@ -18,6 +18,7 @@
             label{
                 font-weight:normal;
                 font-size:13px;
+                width:125px;
             }
             input{
                 width:90px;
@@ -32,7 +33,6 @@
 
         }
         .step_number{
-            margin-bottom:10px;
             margin-left:30px;
         }
         .questionnaire_code{
@@ -72,6 +72,7 @@
                 ul li{
                     label{
                         font-size:16px;
+                        float:none;
                     }
                 }
                 .add_link{
