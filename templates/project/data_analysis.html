@@ -57,7 +57,7 @@
     <div class="heading_block grid_23 alpha">
         <h3 class="grid_10">Analysis</h3>
     </div>
-    <form id = "export_form" action="/export" method='POST'>
+    <form id = "export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
         <input id = "aggregation-types"  name='aggregation-types' type="hidden" value="aaa"/>
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" value='asas'/>

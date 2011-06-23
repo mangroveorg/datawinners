@@ -73,7 +73,7 @@ $(document).ready(function(){
             DW.current_page = page_number + 1
         }
     });
-   $('#action').change(function(){
+    $('#action').change(function(){
        var ids = [];
        if($(".selected_submissions:checked").length == 0){
             $("#message_text").html("<span class='error_message'>" + "Please select atleast one undeleted record" + "</span>");
@@ -111,5 +111,8 @@ $(document).ready(function(){
         }
        }
    });
+
+    $('#export_link').click(function(){$('#export_form').submit()})
+
 });
 

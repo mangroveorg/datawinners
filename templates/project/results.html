@@ -39,8 +39,11 @@
     {{ block.super }}
     {% endblock %}
     <div class="grid_23">
+    <form id = "export_form" method="post" action="/project/export/log">
+    {% csrf_token %}
+    </form>
         <ul class="links">
-            <li><a href="#">export</a> </li>
+            <li><a id = "export_link" href="#">export</a> </li>
             <li><a href="#">print</a> </li>
             <li><a href="#" class="null_border">e-mail</a> </li>
         </ul>
