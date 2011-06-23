@@ -6,17 +6,26 @@ from django.template.context import RequestContext
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm
 
+def is_admin(f):
+
+    def wrapper(*args, **kw):
+        user = args[0].user
+        if not user.groups.filter(name = "NGO Admins").count() > 0:
+            return HttpResponseNotFound()
+        
+        return f(*args, **kw)
+    return wrapper
+
 @login_required
+@is_admin
 def settings(request):
-    if not check_permission(request.user):
-        return HttpResponseNotFound()
     
     if request.method == 'GET':
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
         return render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
-
+    
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
@@ -25,10 +34,9 @@ def settings(request):
 
 
 @login_required
+@is_admin
 def new_user(request):
-    if not check_permission(request.user):
-        return HttpResponseNotFound()
-    
+
     if request.method == 'GET':
         profile_form = UserProfileForm()
         return render_to_response("account/new_user.html", {'profile_form' : profile_form}, context_instance=RequestContext(request))
@@ -51,6 +59,7 @@ def new_user(request):
 
 
 @login_required
+@is_admin
 def users(request):
     if not check_permission(request.user):
         return HttpResponseNotFound()
@@ -61,6 +70,7 @@ def users(request):
 
 
 @login_required
+@is_admin
 def edit_user(request):
     if not check_permission(request.user):
         return HttpResponseNotFound()
@@ -87,9 +97,3 @@ def edit_user(request):
             ngo_user_profile.save()
             return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
 
-
-
-def check_permission(user):
-    if user.groups.filter(name = "NGO Admins").count() > 0:
-        return True
-    return False
