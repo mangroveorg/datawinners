@@ -25,18 +25,14 @@
                 <fieldset>
                     <ul>
                         <li>
-                            <span>
-                                <label>* Type</label>
+                        <span>
+                                <label>* Name</label>
                             </span>
-                            <span>
-                                <select id="id_entity_type" name="type" data-bind="value: message.t">
-                                    {% for entity_type in entity_types %}
-                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
-                                    {% endfor %}
-                                </select>
-                                <a href="{% url datawinners.admin.views.create_entity %}">Add a new subject type</a>
+                        <span>
+                                <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
                             </span>
                         </li>
+
                         <li>
                         <span>
                             <label>Short Name</label>
@@ -52,11 +48,16 @@
                         </li>
 
                         <li>
-                        <span>
-                                <label>* Name</label>
+                            <span>
+                                <label>* Type</label>
                             </span>
-                        <span>
-                                <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
+                            <span>
+                                <select id="id_entity_type" name="type" data-bind="value: message.t">
+                                    {% for entity_type in entity_types %}
+                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                                <a href="{% url datawinners.admin.views.create_entity %}">Add a new subject type</a>
                             </span>
                         </li>
                         <li>
