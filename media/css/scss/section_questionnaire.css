@@ -10,7 +10,8 @@
 /*The content styles for wizard based pages*/
 .wizard_content .content_wrapper .questionnaire_code label {
   font-weight: normal;
-  font-size: 13px; }
+  font-size: 13px;
+  width: 125px; }
 .wizard_content .content_wrapper .questionnaire_code input {
   width: 90px;
   height: 15px;
@@ -48,7 +49,8 @@
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel #code {
       width: 100px; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel ul li label {
-      font-size: 16px; }
+      font-size: 16px;
+      float: none; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .add_link {
       display: block; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question_type {

@@ -3,8 +3,6 @@ table {
   min-width: 100%;
   margin: 0;
   border: 1px solid #FFFFFF; }
-  table td {
-    min-width: 170px; }
 
 .container_24 {
   float: left;
@@ -21,7 +19,9 @@ table {
     .container_24 .content .data_block {
       width: auto; }
       .container_24 .content .data_block .data_table {
-        width: 100%%; }
+        width: 100%; }
+        .container_24 .content .data_block .data_table table td {
+          min-width: 170px; }
 
 #header_application {
   width: auto; }
