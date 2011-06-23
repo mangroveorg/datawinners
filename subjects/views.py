@@ -77,6 +77,8 @@ def index(request):
             except Error:
                 messages.error(request, 'We could not import your list of Subjects. ! \
                    You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) ﬁle!')
+            except Exception:
+                messages.error(request,'Some unexpected error happened. Please check the CSV file and import again.')
     else:
         form = SubjectUploadForm()
     all_subjects = _laod_all_subjects(request)
@@ -108,5 +110,7 @@ def import_subjects_from_project_wizard(request):
     except Error:
         error_message = 'We could not import your list of Subjects. ! \
                     You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) ﬁle!'
+    except Exception:
+        error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
     return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
