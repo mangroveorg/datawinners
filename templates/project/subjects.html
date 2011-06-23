@@ -93,16 +93,8 @@
                 <fieldset>
                     <ul>
                         <li>
-                            <span>
-                                <label>* Type</label>
-                            </span>
-                            <span>
-                                <select id="id_entity_type" name="type">
-                                    {% for entity_type in entity_types %}
-                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
-                                    {% endfor %}
-                                </select>
-                            </span>
+                            <label>* Name</label>
+                            <input id="entity_name" name="entity_name" type="text"/>
                         </li>
                         <li>
                             <label>Short Name</label>
@@ -113,10 +105,17 @@
                             </span>
 
                         </li>
-
                         <li>
-                            <label>* Name</label>
-                            <input id="entity_name" name="entity_name" type="text"/>
+                            <span>
+                                <label>* Type</label>
+                            </span>
+                            <span>
+                                <select id="id_entity_type" name="type">
+                                    {% for entity_type in entity_types %}
+                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
                         </li>
                         <li>
                             <label>Location</label>
