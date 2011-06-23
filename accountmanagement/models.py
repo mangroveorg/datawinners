@@ -1,12 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.contrib import admin
-from django.contrib.auth.admin import GroupAdmin, UserAdmin
-from django.contrib.auth.models import Group, User
-from django.contrib.sites.models import Site
+from django.contrib.auth.models import  User
 from django.db import models
 from django.template.defaultfilters import slugify
-from registration.models import RegistrationProfile
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
 
@@ -24,7 +20,6 @@ class Organization(models.Model):
     org_id = models.TextField(primary_key=True)
 
 
-
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     title = models.TextField()
@@ -33,14 +28,14 @@ class NGOUserProfile(models.Model):
     mobile_phone = models.TextField(null=True, blank=True)
     skype = models.TextField(null=True)
 
+
 class OrganizationSetting(models.Model):
     organization = models.ForeignKey(Organization, unique=True)
     document_store = models.TextField()
     sms_tel_number = models.TextField(unique=True, null=True)
+
     def __unicode__(self):
         return self.organization.name
-
-
 
 
 def create_organization(org_details):

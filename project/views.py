@@ -24,7 +24,6 @@ from mangrove.utils.types import is_string
 from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
-import xlwt
 import datawinners.utils as utils
 
 PAGE_SIZE = 4
@@ -35,7 +34,7 @@ GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 @login_required(login_url='/login')
-def questionnaire(request,project_id=None):
+def questionnaire(request, project_id=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
         previous_link = '/project/subjects/%s' % project_id
@@ -76,7 +75,7 @@ def create_profile(request):
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
 
-def edit_profile(request,project_id=None):
+def edit_profile(request, project_id=None):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
     if request.method == 'GET':
@@ -145,7 +144,7 @@ def index(request):
 
 
 @login_required(login_url='/login')
-def project_overview(request,project_id=None):
+def project_overview(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, dbm=manager)
     link = '/project/profile/edit/%s' % project_id
@@ -168,10 +167,10 @@ def get_number_of_rows_in_result(dbm, questionnaire_code):
 def get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination):
     if pagination:
         submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
-                                                     page_size=PAGE_SIZE, count_only=False)
+                                                         page_size=PAGE_SIZE, count_only=False)
     else:
         submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
-                                                     page_size=None, count_only=False)
+                                                         page_size=None, count_only=False)
     submissions = helper.get_submissions(questions, submissions)
     return submissions, ids
 
@@ -182,9 +181,10 @@ def load_submissions(current_page, manager, questionnaire_code, pagination=True)
     questions = helper.get_code_and_title(form_model.fields)
     rows = get_number_of_rows_in_result(manager, questionnaire_code)
     results = {'questionnaire': questionnaire,
-                'questions': questions}
+               'questions': questions}
     if rows:
-        submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions), pagination)
+        submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions),
+                                                       pagination)
         results.update(submissions=zip(submissions, ids))
     return rows, results
 
@@ -199,7 +199,8 @@ def project_results(request, questionnaire_code=None):
         if rows is None:
             error_message = "No submissions present for this project"
         return render_to_response('project/results.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, 'error_message': error_message},
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                 'error_message': error_message},
                                   context_instance=RequestContext(request)
         )
     if request.method == "POST":
@@ -214,7 +215,6 @@ def project_results(request, questionnaire_code=None):
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
-
 
 
 def _format_data_for_presentation(data_dictionary, form_model):
@@ -260,6 +260,7 @@ def project_data(request, questionnaire_code=None):
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)
 
+
 @login_required(login_url='/login')
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
@@ -268,7 +269,7 @@ def export_data(request):
     data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list = json.loads(response_string)
-    raw_data_list.insert(0,header_list)
+    raw_data_list.insert(0, header_list)
     return create_excel_response(raw_data_list)
 
 
@@ -279,6 +280,7 @@ def create_excel_response(raw_data_list):
     wb.save(response)
     return response
 
+
 @login_required(login_url='/login')
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
@@ -286,17 +288,16 @@ def export_log(request):
     rows, results = load_submissions(1, manager, questionnaire_code, pagination=False)
     header_list = ["Date Receieved", "Submission status", "Void"]
     header_list.extend([each[1] for each in results['questions']])
-    raw_data_list=[header_list]
+    raw_data_list = [header_list]
     if rows:
         submissions, ids = zip(*results['submissions'])
         raw_data_list.extend([list(each) for each in submissions])
-    
+
     return create_excel_response(raw_data_list)
 
 
-
 @login_required(login_url='/login')
-def subjects(request,project_id=None):
+def subjects(request, project_id=None):
     pid = project_id
     if request.method == 'GET':
         manager = get_database_manager(request)
@@ -311,7 +312,8 @@ def subjects(request,project_id=None):
         import_subject_form = SubjectUploadForm()
         return render_to_response('project/subjects.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
-                 'import_subject_form': import_subject_form,'post_import':reverse(import_subjects_from_project_wizard)}, context_instance=RequestContext(request))
+                 'import_subject_form': import_subject_form,
+                 'post_import': reverse(import_subjects_from_project_wizard)}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         return HttpResponseRedirect('/project/questionnaire/%s' % pid)

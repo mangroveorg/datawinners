@@ -6,7 +6,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from models import NGOUserProfile, Organization
+from models import  Organization
 
 
 class OrganizationForm(ModelForm):
@@ -14,7 +14,8 @@ class OrganizationForm(ModelForm):
     required_css_class = 'required'
 
     name = forms.CharField(required=True, label='* Organization name')
-    sector = forms.CharField(widget=(forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
+    sector = forms.CharField(widget=(
+        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
     addressline1 = forms.CharField(required=True, max_length=30, label='* Address Line 1')
     addressline2 = forms.CharField(max_length=30, required=False, label='Address Line 2')
     city = forms.CharField(max_length=30, required=True, label='* City')
@@ -23,7 +24,7 @@ class OrganizationForm(ModelForm):
     zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
     office_phone = forms.CharField(max_length=30, required=False, label='Office Phone Number')
     website = forms.URLField(required=False, label='Website Url')
-    
+
     class Meta:
         model = Organization
 
@@ -31,9 +32,8 @@ class OrganizationForm(ModelForm):
     def update(self):
         if self.is_valid():
             self.save()
-        
+
         return self
-            
 
 
 class UserProfileForm(forms.Form):
@@ -50,7 +50,6 @@ class UserProfileForm(forms.Form):
 
 
 class RegistrationForm(RegistrationFormUniqueEmail):
-
     error_css_class = 'error'
     required_css_class = 'required'
 
@@ -59,7 +58,8 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
 
     organization_name = forms.CharField(required=True, label='* Organization name')
-    organization_sector = forms.CharField(widget=(forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
+    organization_sector = forms.CharField(widget=(
+        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
     organization_addressline1 = forms.CharField(required=True, max_length=30, label='* Address Line 1')
     organization_addressline2 = forms.CharField(max_length=30, required=False, label='Address Line 2')
     organization_city = forms.CharField(max_length=30, required=True, label='* City')

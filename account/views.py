@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import  HttpResponseRedirect, HttpResponseNotFound
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
@@ -12,7 +12,7 @@ def is_admin(f):
         user = args[0].user
         if not user.groups.filter(name = "NGO Admins").count() > 0:
             return HttpResponseNotFound()
-        
+
         return f(*args, **kw)
     return wrapper
 
@@ -26,7 +26,7 @@ def settings(request):
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
         return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'1'}, context_instance=RequestContext(request))
-    
+
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
@@ -54,8 +54,8 @@ def new_user(request):
                                                   mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
                 ngo_user_profile.save()
                 return HttpResponseRedirect('/account/#tabs-2')
-        
-        
+
+
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
