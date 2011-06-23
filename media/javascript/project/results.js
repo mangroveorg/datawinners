@@ -112,7 +112,11 @@ $(document).ready(function(){
        }
    });
 
-    $('#export_link').click(function(){$('#export_form').submit()})
+    $('#export_link').click(function(){
+        var path = window.location.pathname;
+        var element_list = path.split("/");
+        $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
+        $('#export_form').submit()})
 
 });
 

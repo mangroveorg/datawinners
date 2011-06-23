@@ -1,4 +1,5 @@
 <div id="message_text" class="success">{{ success_message }}</div>
+
 <table class="styled_table">
     <thead>
     <th>
@@ -22,6 +23,8 @@
         </th>
     {% endfor %}
     </thead>
+
+    <tbody>
     {% for answer, id in results.submissions %}
         <tr>
             <td class="text_align_center">
@@ -47,4 +50,8 @@
             {% endfor %}
         </tr>
     {% endfor %}
+    </tbody>
 </table>
+{% if error_message %}
+    <div class="error"><label>{{ error_message }}</label></div>
+{% endif %}

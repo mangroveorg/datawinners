@@ -41,6 +41,7 @@
     <div class="grid_23">
     <form id = "export_form" method="post" action="/project/export/log">
     {% csrf_token %}
+        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
     </form>
         <ul class="links">
             <li><a id = "export_link" href="#">export</a> </li>
