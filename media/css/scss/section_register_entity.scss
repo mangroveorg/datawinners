@@ -14,13 +14,14 @@
         font-weight:bold;
     }
     li{
-        padding-left:170px;
+        padding-bottom:10px;
         input{
+            width:200px !important;
         }
         label{
             display:block;
             width:100%;
-            font-weight:bold;
+            font-weight:normal;
             font-size:13px;
         }
     }

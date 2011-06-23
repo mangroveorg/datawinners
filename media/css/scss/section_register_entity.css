@@ -11,9 +11,11 @@
   font-size: 14px;
   font-weight: bold; }
 .form_sub_set li {
-  padding-left: 170px; }
+  padding-bottom: 10px; }
+  .form_sub_set li input {
+    width: 200px !important; }
   .form_sub_set li label {
     display: block;
     width: 100%;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 13px; }
