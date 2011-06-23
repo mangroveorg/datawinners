@@ -33,6 +33,10 @@ form{
             margin-right:10px;
             font-weight:bold;
         }
+        label.error{
+            float:none;
+            margin-left:180px;
+        }
         ul
         {
             float:left;
@@ -44,7 +48,15 @@ form{
                     font-weight:normal;
                     width:auto;
                 }
+                label.error{
+                    margin-left:0px;
+                }
             }
+        }
+        ul.errorlist{
+            float:none;
+            margin-left:180px;
+            color:#FF0000;
         }
     }
 }

@@ -20,6 +20,9 @@ form ul li {
     width: 170px;
     margin-right: 10px;
     font-weight: bold; }
+  form ul li label.error {
+    float: none;
+    margin-left: 180px; }
   form ul li ul {
     float: left; }
     form ul li ul li {
@@ -29,6 +32,12 @@ form ul li {
         display: inline;
         font-weight: normal;
         width: auto; }
+      form ul li ul li label.error {
+        margin-left: 0px; }
+  form ul li ul.errorlist {
+    float: none;
+    margin-left: 180px;
+    color: #FF0000; }
 
 .application_register form fieldset legend {
   font-size: 20px; }
