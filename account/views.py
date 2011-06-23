@@ -30,7 +30,7 @@ def settings(request):
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
-        return HttpResponseRedirect('/account/#tabs-1') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'1'}, context_instance=RequestContext(request))
+        return HttpResponseRedirect('/account/#tabs-1') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'0'}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -60,7 +60,7 @@ def new_user(request):
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
         users = NGOUserProfile.objects.all()
-        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : form,  'users' : users, 'current_page': '2'}, context_instance=RequestContext(request))
+        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : form,  'users' : users, 'current_page': '1', 'add_user':'yes'}, context_instance=RequestContext(request))
 
 
 @login_required

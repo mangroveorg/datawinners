@@ -62,7 +62,8 @@ input[type=button] {
   border: 0px; }
 
 a {
-  color: #0070ac; }
+  color: #0070ac;
+  outline: none; }
 
 textarea {
   width: 350px;
