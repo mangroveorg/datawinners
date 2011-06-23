@@ -43,7 +43,7 @@ class UserProfileForm(forms.Form):
     title = forms.CharField(max_length=30, required=False)
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
-    username = forms.CharField(max_length=30, required=False, label="* Email")
+    username = forms.CharField(max_length=30, required=True, label="* Email")
     office_phone = forms.CharField(max_length=30, required=False, label="Office Phone")
     mobile_phone = forms.CharField(max_length=30, required=False, label="Mobile Phone")
     skype = forms.CharField(max_length=30, required=False, label="Skype")

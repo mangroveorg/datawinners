@@ -16,7 +16,7 @@ exception_messages = {
         DEFAULT: "Entity identified by %s is already defined"},
 
     ex.EntityQuestionCodeNotSubmitted: {
-        DEFAULT: "You have not created a question asking the collector for the subject he is reporting on"
+        DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
     },
 
     ex.FormModelDoesNotExistsException: {

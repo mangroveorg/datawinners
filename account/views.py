@@ -19,26 +19,23 @@ def is_admin(f):
 @login_required
 @is_admin
 def settings(request):
-    
+    profile_form = UserProfileForm()
+    users = NGOUserProfile.objects.all()
     if request.method == 'GET':
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
-        profile_form = UserProfileForm()
-        users = NGOUserProfile.objects.all()
-        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users}, context_instance=RequestContext(request))
+        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'1'}, context_instance=RequestContext(request))
     
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
-        
-        return HttpResponseRedirect('/account') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
+        return HttpResponseRedirect('/account/#tabs-1') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'1'}, context_instance=RequestContext(request))
 
 
 @login_required
 @is_admin
 def new_user(request):
-
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         form = UserProfileForm(request.POST)
@@ -50,11 +47,16 @@ def new_user(request):
             user.groups.add(group[0])
             user.save()
             ngo_user_profile = NGOUserProfile(user = user, title = form.cleaned_data['title'], office_phone = form.cleaned_data['office_phone'],
-                           mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
+                                              mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
             ngo_user_profile.save()
-            return HttpResponseRedirect('/account')
-
-        return render_to_response("account/new_user.html", {'profile_form' : form}, context_instance=RequestContext(request))
+            return HttpResponseRedirect('/account/#tabs-2')
+        
+        
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        organization_form = OrganizationForm(instance = organization)
+        users = NGOUserProfile.objects.all()
+        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : form,  'users' : users, 'current_page': '2'}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -71,9 +73,9 @@ def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()
         form = UserProfileForm(data = dict(title = profile.title, first_name = profile.user.first_name,
-                           last_name = profile.user.last_name,
-                           username = profile.user.username, office_phone = profile.office_phone,
-                           mobile_phone = profile.mobile_phone,skype = profile.skype))
+                                           last_name = profile.user.last_name,
+                                           username = profile.user.username, office_phone = profile.office_phone,
+                                           mobile_phone = profile.mobile_phone,skype = profile.skype))
         return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
