@@ -9,5 +9,5 @@ class TestHomeView(unittest.TestCase):
 
     def test_home_view_should_redirect_if_not_logged_in(self):
         c = Client()
-        response = c.post('/home')
+        response = c.post('/home/')
         self.assertEquals(response.status_code, 302)
