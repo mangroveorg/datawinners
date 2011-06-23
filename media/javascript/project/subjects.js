@@ -94,10 +94,13 @@ $(document).ready(function() {
         action: $('#post_url').val(),
         onComplete: function(id, fileName, responseJSON) {
             $('#message').remove();
+            $('#error_tbody').html('');
+            $("#error_table").hide();
             if (responseJSON.success == true) {
                 $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
             }
             else {
+                $("#error_table").show();
                 $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
                 $.each(responseJSON.failure_imports, function(index, element) {
                     var row = '';
@@ -106,8 +109,8 @@ $(document).ready(function() {
                     });
                     $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + row + "</td><td>"
                             + element.error + "</td></tr>")
-                    $("#error_table").show();
-                })
+                });
+                $("#error_table").show();
             }
         }
     });

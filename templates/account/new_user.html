@@ -1,20 +1,72 @@
 {% extends 'account/index.html' %}
-{% load dw_tabs %}
-{% block account_navigation %}
-{% activetab "settings_nav" "users" %}
-{{ block.super }}
-{% endblock %}
-
 {% block nav_content %}
+<div id="tabs-2">
+{% block layout_scss %}
+  {% include 'application_scss.html' %}
+  <link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
+{% endblock %}
+<div class="span-18 box">
+<div class = "form-5px">
 <form method="post" action="" name="form">
 {% csrf_token %}
-Title : {{ profile_form.title }}
-First Name : {{ profile_form.first_name }}
-Last Name: {{ profile_form.last_name }}
-Email: {{ profile_form.username }}
-Office Phone : {{ profile_form.office_phone }}
-Mobile Phone : {{ profile_form.mobile_phone }}
-Skype : {{ profile_form.skype }}
-<input type="Submit" value="Submit" >
+                        <ul class="administrative">
+                            <li>
+                                <h3 class="title">Point of Contact / Account Administrator</h3>
+                            </li>
+                             <li class="{{ form.title.css_classes  }} form-row-10px">
+                                {{ profile_form.title.label_tag }}
+                                {{ profile_form.title }}
+
+                                {{ profile_form.title.errors }}
+
+                             </li>
+                            <li class="{{ form.first_name.css_classes  }} form-row-10px">
+                                {{ profile_form.first_name.label_tag }}
+                                {{ profile_form.first_name }}
+
+                                {{ profile_form.first_name.errors }}
+
+                            </li>
+
+                            <li class="{{ form.last_name.css_classes  }} form-row-10px">
+                                {{ profile_form.last_name.label_tag }}
+                                {{ profile_form.last_name }}
+
+                                {{ profile_form.last_name.errors }}
+
+                            </li>
+                            <li class="{{ form.email.css_classes  }} form-row-10px">
+                                {{ profile_form.email.label_tag }}
+                                {{ profile_form.email }}
+
+                                {{ profile_form.email.errors }}
+
+                            </li>
+                            <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+                                {{ profile_form.office_phone.label_tag }}
+                                {{ profile_form.office_phone }}
+
+                                {{ profile_form.office_phone.errors }}
+
+                            </li>
+                            <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
+                                {{ profile_form.mobile_phone.label_tag }}
+                                {{ profile_form.mobile_phone }}
+
+                                {{ profile_form.mobile_phone.errors }}
+
+                            </li>
+                            <li class="{{ form.skype.css_classes  }} form-row-10px">
+                                {{ profile_form.skype.label_tag }}
+                                {{ profile_form.skype }}
+
+                                {{ profile_form.skype.errors }}
+
+                            </li>
+                            <li class="margin_top_20">
+                                <input type="submit" value="Register" class="button" />
+                            </li>
+                        </ul>
 </form>
+</div>
 {% endblock %}
