@@ -1,8 +1,6 @@
 table{
-    width:auto !important;
-    min-width:100%;
+    width:auto;
     margin:0;
-    border:1px solid #FFFFFF;
 }
 
 .container_24{
@@ -25,6 +23,8 @@ table{
             .data_table{
                 width:100%;
                 table{
+                    min-width:100%;
+                    border:1px solid #FFFFFF;
                     td{
                          min-width:170px;
                     }

@@ -1,5 +1,6 @@
 {% extends 'layout_application.html' %}
 {% block page_title %}Register a subject{% endblock %}
+{% block section_title %} Register a subject {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -22,7 +23,6 @@
         <input id='post_url' type="hidden" value="{{ post_url }}" />
             <form id="question_form">
                 <fieldset>
-                    <h3 class="margin_bottom_10">Register a subject</h3>
                     <ul>
                         <li>
                             <span>
@@ -59,25 +59,28 @@
                                 <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
                             </span>
                         </li>
-                        <fieldset class="form_sub_set">
-                            <legend>Location</legend>
-                            <li>
-                                <span>
-                                    <label>Location Name</label>
-                                </span>
-                                <span>
-                                    <input id="location" name="location" type="text" data-bind="value: message.l"/>
-                                </span>
-                            </li>
-                            <li>
-                                <span>
-                                    <label>GPS</label>
-                                </span>
-                                <span>
-                                    <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
-                                </span>
-                            </li>
-                        </fieldset>
+                        <li>
+                            <label>Location</label>
+                            <ul class="form_sub_set">
+
+                                <li>
+                                    <span>
+                                        <label>Location Name</label>
+                                    </span>
+                                    <span>
+                                        <input id="location" name="location" type="text" data-bind="value: message.l"/>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        <label>GPS</label>
+                                    </span>
+                                    <span>
+                                        <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
                         <li>
                             <span>
                                 <label>Description</label>

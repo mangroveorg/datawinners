@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    var screen_width = $(window).width() - 50;
     DW.submit_data = function() {
         var aggregation_selectBox_Array = $(".aggregation_type");
         aggregationArray = new Array();
@@ -17,7 +18,7 @@ $(document).ready(function() {
         return [start_time , end_time]
     }
     DW.wrap_table = function() {
-        $("#data_analysis").wrap("<div class='data_table'/>")
+        $("#data_analysis").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
     }
     $("#dateRangePicker").daterangepicker({
                 presetRanges: [

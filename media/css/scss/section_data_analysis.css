@@ -1,8 +1,6 @@
 table {
-  width: auto !important;
-  min-width: 100%;
-  margin: 0;
-  border: 1px solid #FFFFFF; }
+  width: auto;
+  margin: 0; }
 
 .container_24 {
   float: left;
@@ -20,8 +18,11 @@ table {
       width: auto; }
       .container_24 .content .data_block .data_table {
         width: 100%; }
-        .container_24 .content .data_block .data_table table td {
-          min-width: 170px; }
+        .container_24 .content .data_block .data_table table {
+          min-width: 100%;
+          border: 1px solid #FFFFFF; }
+          .container_24 .content .data_block .data_table table td {
+            min-width: 170px; }
 
 #header_application {
   width: auto; }
