@@ -15,7 +15,7 @@ urlpatterns = patterns('',
                        url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, {'set_password_form': PasswordSetForm}, name='auth_password_reset_confirm'),
                        ('', include('registration.backends.default.urls')),
                        (r'^registration_complete$', registration_complete),
-                       (r'^home$', home),
+                       (r'^home/$', home),
                        url(r'^admin/', include(admin.site.urls)),
 
 )
