@@ -72,7 +72,7 @@ $(document).ready(function() {
     }
 
     $('#export_link').click(function() {
-        var time_list = submit_data();
+        var time_list = DW.submit_data();
         var path = window.location.pathname;
         var element_list = path.split("/");
         $("#aggregation-types").attr("value", JSON.stringify(aggregationArray));

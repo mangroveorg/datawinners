@@ -25,6 +25,7 @@ from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import xlwt
+import datawinners.utils as utils
 
 PAGE_SIZE = 4
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
@@ -165,39 +166,41 @@ def get_number_of_rows_in_result(dbm, questionnaire_code):
     return submissions_count
 
 
-def get_submissions_for_display(current_page, dbm, questionnaire_code, questions):
-    submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
+def get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination):
+    if pagination:
+        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
                                                      page_size=PAGE_SIZE, count_only=False)
+    else:
+        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
+                                                     page_size=None, count_only=False)
     submissions = helper.get_submissions(questions, submissions)
     return submissions, ids
 
 
-def load_submissions(current_page, manager, questionnaire_code):
+def load_submissions(current_page, manager, questionnaire_code, pagination=True):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model.fields)
     rows = get_number_of_rows_in_result(manager, questionnaire_code)
-    results = {}
+    results = {'questionnaire': questionnaire,
+                'questions': questions}
     if rows:
-        submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions))
-        results = {
-            'questionnaire': questionnaire,
-            'questions': questions,
-            'submissions': zip(submissions, ids)
-        }
+        submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions), pagination)
+        results.update(submissions=zip(submissions, ids))
     return rows, results
 
 
 @login_required(login_url='/login')
 def project_results(request, questionnaire_code=None):
     manager = get_database_manager(request)
+    error_message = ""
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
         rows, results = load_submissions(current_page, manager, questionnaire_code)
         if rows is None:
-            return HttpResponse("No submissions present for this project")
+            error_message = "No submissions present for this project"
         return render_to_response('project/results.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows},
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows, 'error_message': error_message},
                                   context_instance=RequestContext(request)
         )
     if request.method == "POST":
@@ -244,7 +247,6 @@ def _load_data(form_model, manager, questionnaire_code, request):
 def project_data(request, questionnaire_code=None):
     manager = get_database_manager(request)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    data_dictionary = {}
     if request.method == "GET":
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
                                                   aggregates={"*": data.reduce_functions.LATEST},
@@ -255,24 +257,43 @@ def project_data(request, questionnaire_code=None):
                  "header_list": header_list, "type_list": type_list},
                                   context_instance=RequestContext(request))
     if request.method == "POST":
+        form_model = get_form_model_by_code(manager, questionnaire_code)
         data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return HttpResponse(response_string)
 
-def export(request):
+def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    data_dictionary = {}
-    response = HttpResponse(mimetype="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=file.xls'
     data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list = json.loads(response_string)
     raw_data_list.insert(0,header_list)
-    wb = helper.get_excel_sheet(raw_data_list,'data_analysis')
+    return create_excel_response(raw_data_list)
+
+
+def create_excel_response(raw_data_list):
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=file.xls'
+    wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
     return response
+
+
+def export_log(request):
+    questionnaire_code = request.POST.get("questionnaire_code")
+    manager = get_database_manager(request)
+    rows, results = load_submissions(1, manager, questionnaire_code, pagination=False)
+    header_list = ["Date Receieved", "Source", "Submission status", "Void"]
+    header_list.extend([each[1] for each in results['questions']])
+    raw_data_list=[header_list]
+    if rows:
+        submissions, ids = zip(*results['submissions'])
+        raw_data_list.extend([list(each) for each in submissions])
+    
+    return create_excel_response(raw_data_list)
+
 
 
 @login_required(login_url='/login')

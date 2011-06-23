@@ -384,15 +384,3 @@ class TestHelper(unittest.TestCase):
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
-
-
-    def test_should_generate_excel_sheet(self):
-        raw_data = [["cid002", 'shweta', 55], ["cid001", 'asif', 35]]
-        header_list = ["field1", "field2", 'field3']
-        raw_data.insert(0,header_list)
-        sheet_name = 'test'
-        wb = helper.get_excel_sheet(raw_data, sheet_name)
-        self.assertEquals(3, len(wb.get_sheet(0).rows))
-        self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
-
-
