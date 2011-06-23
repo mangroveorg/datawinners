@@ -9,9 +9,6 @@
         Date Received
     </th>
     <th>
-        Source
-    </th>
-    <th>
         Submission Status
     </th>
     <th>
@@ -33,17 +30,13 @@
             <td>
                 {{ answer.0 }}
             </td>
-
             <td>
-                {{ answer.1 }}
+                <span title='{{ answer.3 }}'>{{ answer.1 }}</span>
             </td>
             <td>
-                <span title='{{ answer.4 }}'>{{ answer.2 }}</span>
+                {{ answer.2 }}
             </td>
-            <td>
-                {{ answer.3 }}
-            </td>
-            {% for each in answer|slice:"5:" %}
+            {% for each in answer|slice:"4:" %}
                 <td>
                     {{ each }}
                 </td>

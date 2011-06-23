@@ -114,8 +114,8 @@ class TestHelper(unittest.TestCase):
                  'created': datetime(2011, 1, 2),
                  'error_message': 'error2'}
         ]
-        required_submissions = [(datetime(2011, 1, 1), 'sms', True, False, 'error1', 'ans1', 'ans2',),
-                (datetime(2011, 1, 2), 'sms', False, True, 'error2', None, 'ans22',),
+        required_submissions = [(datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
+                (datetime(2011, 1, 2),  False, True, 'error2', None, 'ans22',),
                                                                                                      ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
