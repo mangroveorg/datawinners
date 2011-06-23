@@ -103,11 +103,7 @@ $(document).ready(function() {
                 $("#error_table").show();
                 $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
                 $.each(responseJSON.failure_imports, function(index, element) {
-                    var row = '';
-                    $.each(element.row, function(i, e) {
-                        row = row + " " + e + ","
-                    });
-                    $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + row + "</td><td>"
+                    $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
                             + element.error + "</td></tr>")
                 });
                 $("#error_table").show();
