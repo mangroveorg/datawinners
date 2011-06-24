@@ -2,6 +2,7 @@
 
 import json
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -30,7 +31,7 @@ def dashboard(request):
     project_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=4)
     for row in rows:
-        link = "/project/overview?pid=" + row['value']['_id']
+        link = reverse("project-overview",args=(row['value']['_id'],))
 
         form_model = manager.get(row['value']['qid'], FormModel)
         questionnaire_code = form_model.form_code
