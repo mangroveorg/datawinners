@@ -1,0 +1,90 @@
+{% extends 'account/index.html' %}
+{% block page_title %} Account {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "settings" %}
+{{ block.super }}
+{% endblock %}
+{% block layout_scss %}
+{% include 'application_scss.html' %}
+<link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
+{% endblock %}
+{% block content%}
+<div class="span-18 box">
+  <div class = "form-5px">
+
+    <form method="post" action="/account/" name="form">
+      {% csrf_token %}
+
+      <ul class="organization">
+        <li class="{{ form.organization_name.css_classes }} form-row-10px">
+          {{ organization_form.name.label_tag }}
+          {{ organization_form.name }}
+          
+          {{ organization_form.name.errors }}
+        </li>
+        <li class="{{ form.organization_sector.css_classes  }} form-row-10px">
+          {{ organization_form.sector.label_tag }}
+          {{ organization_form.sector }}
+          
+          {{ organization_form.sector.errors }}
+        </li>
+        <li class="{{ form.organization_addressline1.css_classes  }} form-row-10px">
+          {{ organization_form.addressline1.label_tag }}
+          {{ organization_form.addressline1 }}
+          
+          {{ organization_form.addressline1.errors }}
+        </li>
+        <li class="{{ form.organization_addressline2.css_classes  }} form-row-10px">
+          {{ organization_form.addressline2.label_tag }}
+          {{ organization_form.addressline2 }}
+          
+          {{ organization_form.addressline2.errors }}
+        </li>
+        <li class="{{ form.organization_city.css_classes  }} form-row-10px">
+          {{ organization_form.city.label_tag }}
+          {{ organization_form.city }}
+
+          {{ organization_form.city.errors }}
+        </li>
+        <li class="{{ form.organization_state.css_classes  }} form-row-10px">
+          {{ organization_form.state.label_tag }}
+          {{ organization_form.state }}
+          
+          {{ organization_form.state.errors }}
+        </li>
+        <li class="{{ form.organization_country.css_classes  }} form-row-10px">
+          {{ organization_form.country.label_tag }}
+          {{ organization_form.country }}
+          
+          {{ organization_form.country.errors }}
+        </li>
+        <li class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
+          {{ organization_form.zipcode.label_tag }}
+          {{ organization_form.zipcode }}
+          
+          {{ organization_form.zipcode.errors }}
+        </li>
+        <li class="{{ form.organization_office_phone.css_classes  }} form-row-10px">
+          {{ organization_form.office_phone.label_tag }}
+          {{ organization_form.office_phone }}
+          
+          {{ organization_form.office_phone.errors }}
+        </li>
+        <li class="{{ form.organization_website.css_classes  }} form-row-10px">
+          {{ organization_form.website.label_tag }}
+          {{ organization_form.website }}
+          
+          {{ organization_form.website.errors }}
+        </li>
+        {{ organization_form.org_id.as_hidden }}
+        <li class="margin_top_20">
+          <input type="submit" value="Edit" class="button" />
+        </li>
+      </ul>
+    </form>
+    
+  </div>
+</div>
+{% endblock %}

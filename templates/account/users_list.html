@@ -1,0 +1,50 @@
+{% extends 'account/index.html' %}
+{% block page_title %} Account {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "users" %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<a id = "add_users" href="/account/user/new/" class="sub-menu-nav" style="background:
+                                                   -moz-linear-gradient(center
+                                                   top , #FEEA89,
+                                                   #FFD857) repeat
+                                                   scroll 0 0
+                                                   transparent"> Add
+  new users </a>
+<div id="users_list">
+    <table>
+      <th>
+        First Name
+      </th>
+      <th>
+        Last Name
+      </th>
+      <th>
+        Email
+      </th>
+      <th>
+        Projects
+      </th>
+      {% for user in users %}
+      <tr>
+        <td>
+          {{ user.user.first_name }}
+        </td>
+        <td>
+          {{ user.user.last_name }}
+        </td>
+        <td>
+          {{ user.user.username }}
+        </td>
+        <td>
+          -
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}
