@@ -1,32 +1,21 @@
 {% extends 'layout_application.html' %}
-{% block page_js %}
-{{ block.super }}
-<script type="text/javascript"
-        src="/media/javascript/tabify.js"></script>
-<script type="text/javascript" src="/media/javascript/add_users.js"></script>
-{% endblock %}
 {% block page_title %} Account {% endblock %}
 {% block section_title %} Settings {% endblock %}
 
-{% block content %}
-{% block account_navigation %}
-<span id="page-state" style="display:none;">{{ current_page }}</span>
-<span id="add-user-form" style="display:none;">{{ add_user }}</span>
-<div id = "tabs">
-  <ul id="settings_nav">
-    <li>
-      <a href="#tabs-1">Application Settings</a>
+{% load dw_tabs %}
+{% block navigation %}
+<div class="grid_24 tab_navigation">
+  <ul>
+    <li class="{% ifactivetab 'tab_nav' 'settings' %}active{% else %}inactive{% endifactivetab %}">
+      <a href="/account/">Application Settings</a>
     </li>
-    <li>
-      <a href="#tabs-2">Users</a>
+    <li class="{% ifactivetab 'tab_nav' 'users' %}active{% else %}inactive{% endifactivetab %}">
+      <a href="/account/users">Users</a>
     </li>
-    <li>
-      <a href="">Your DataWinners Account</a>
+    <li class="{% ifactivetab 'tab_nav' 'account' %}active{% else %}inactive{% endifactivetab %}">
+      <a href="#">Your DataWinners Account</a>
     </li>
   </ul>
-  {% block nav_content %}
-  {% endblock %}
 </div>
 {% endblock %}
 
-{% endblock %}

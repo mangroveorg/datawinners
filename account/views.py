@@ -19,23 +19,25 @@ def is_admin(f):
 @login_required
 @is_admin
 def settings(request):
-    profile_form = UserProfileForm()
-    users = NGOUserProfile.objects.all()
     if request.method == 'GET':
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         organization_form = OrganizationForm(instance = organization)
-        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'1'}, context_instance=RequestContext(request))
+        return render_to_response("account/org_settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
-        return HttpResponseRedirect('/account/#tabs-1') if not organization_form.errors  else render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : profile_form, 'users' : users, 'current_page':'0'}, context_instance=RequestContext(request))
-
-
+        return HttpResponseRedirect('/home') if not organization_form.errors  else render_to_response("account/org_settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
+    
+    
 @login_required
 @is_admin
 def new_user(request):
+    if request.method == 'GET':
+        profile_form = UserProfileForm()
+        return render_to_response("account/add_user.html", {'profile_form' : profile_form}, context_instance=RequestContext(request))
+
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
         form = UserProfileForm(request.POST)
@@ -53,14 +55,10 @@ def new_user(request):
                 ngo_user_profile = NGOUserProfile(user = user, title = form.cleaned_data['title'], office_phone = form.cleaned_data['office_phone'],
                                                   mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
                 ngo_user_profile.save()
-                return HttpResponseRedirect('/account/#tabs-2')
+                return HttpResponseRedirect('/account/users')
 
 
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
-        organization_form = OrganizationForm(instance = organization)
-        users = NGOUserProfile.objects.all()
-        return render_to_response("account/settings.html", {'organization_form' : organization_form, 'profile_form' : form,  'users' : users, 'current_page': '1', 'add_user':'yes'}, context_instance=RequestContext(request))
+        return render_to_response("account/add_user.html", {'profile_form' : form}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -68,7 +66,7 @@ def new_user(request):
 def users(request):
     if request.method == 'GET':
         users = NGOUserProfile.objects.all()
-        return render_to_response("account/list_users.html", {'users' : users}, context_instance=RequestContext(request))
+        return render_to_response("account/users_list.html", {'users' : users}, context_instance=RequestContext(request))
 
 
 @login_required
