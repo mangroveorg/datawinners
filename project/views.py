@@ -33,8 +33,16 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-class Project_state:
+class ProjectSummary:
     title = ''
+    project_id=''
+    questionnaire_code=''
+    state=''
+    data_link = ''
+    log_link = ''
+    link = ''
+
+class ProjectLinks:
     data_link = ''
     log_link = ''
     link = ''
@@ -44,7 +52,7 @@ class Project_state:
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
-        previous_link = '/project/subjects/%s' % project_id
+        previous_link = reverse(subjects,args=[project_id])
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
@@ -160,13 +168,12 @@ def project_overview(request, project_id=None):
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_overview = dict(what=number_of_questions, how=project['devices'])
-    project_state=Project_state()
-    project_state.title = project.name
-    project_state.data_link = '/project/data/%s' % questionnaire.form_code
-    project_state.log_link = '/project/results/%s' % questionnaire.form_code
-    project_state.link = link
+    project_links=ProjectLinks()
+    project_links.data_link = reverse(project_data,args=[project_id,questionnaire.form_code])
+    project_links.log_link = reverse(project_results,args=[project_id,questionnaire.form_code])
+    project_links.link = link
     return render_to_response('project/overview.html',
-            {'project': project_overview, 'entity_type': project['entity_type'], 'project_state': project_state},
+            {'project': project_overview, 'entity_type': project['entity_type'], 'project_links': project_links},
                               context_instance=RequestContext(request))
 
 
@@ -201,9 +208,12 @@ def load_submissions(current_page, manager, questionnaire_code, pagination=True)
 
 
 @login_required(login_url='/login')
-def project_results(request, questionnaire_code=None):
+def project_results(request,project_id=None,questionnaire_code=None):
     manager = get_database_manager(request)
     error_message = ""
+    project_links = ProjectLinks()
+    project_links.data_link = reverse(project_data,args=[project_id,questionnaire_code])
+    project_links.log_link = reverse(project_results,args=[project_id,questionnaire_code])
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
         rows, results = load_submissions(current_page, manager, questionnaire_code)
@@ -211,7 +221,7 @@ def project_results(request, questionnaire_code=None):
             error_message = "No submissions present for this project"
         return render_to_response('project/results.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
-                 'error_message': error_message},
+                 'error_message': error_message, 'project_links':project_links},
                                   context_instance=RequestContext(request)
         )
     if request.method == "POST":
@@ -254,9 +264,12 @@ def _load_data(form_model, manager, questionnaire_code, request):
 
 
 @login_required(login_url='/login')
-def project_data(request, questionnaire_code=None):
+def project_data(request,project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
     form_model = get_form_model_by_code(manager, questionnaire_code)
+    project_links = ProjectLinks()
+    project_links.data_link = reverse(project_data,args=[project_id,questionnaire_code])
+    project_links.log_link = reverse(project_results,args=[project_id,questionnaire_code])
     if request.method == "GET":
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
                                                   aggregates={"*": data.reduce_functions.LATEST},
@@ -264,7 +277,7 @@ def project_data(request, questionnaire_code=None):
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return render_to_response('project/data_analysis.html',
                 {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
-                 "header_list": header_list, "type_list": type_list},
+                 "header_list": header_list, "type_list": type_list, 'project_links':project_links},
                                   context_instance=RequestContext(request))
     if request.method == "POST":
         data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
