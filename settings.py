@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'datawinners.main',
     'datawinners.project',
     'datawinners.account',
+    'datawinners.dashboard',
 )
 
 COMPILER_FORMATS = {
