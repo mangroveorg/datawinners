@@ -38,9 +38,6 @@ class ProjectSummary:
     project_id=''
     questionnaire_code=''
     state=''
-    data_link = ''
-    log_link = ''
-    link = ''
 
 class ProjectLinks:
     data_link = ''
@@ -51,15 +48,17 @@ class ProjectLinks:
 @login_required(login_url='/login')
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request)
+    project_summary = ProjectSummary()
     if request.method == 'GET':
         previous_link = reverse(subjects,args=[project_id])
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
+        project_summary.title = project.name
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions),
                  "questionnaire_code": form_model.form_code,
-                 'project_id': project_id, "previous": previous_link},
+                 'project_id': project_id, "previous": previous_link, 'project_summary': project_summary},
                                   context_instance=RequestContext(request))
 
 
@@ -67,9 +66,11 @@ def questionnaire(request, project_id=None):
 def create_profile(request):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
+    project_summary = ProjectSummary()
+    project_summary.title = 'New Project'
     if request.method == 'GET':
         form = ProjectProfile(entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project_summary':project_summary}, context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
@@ -84,21 +85,22 @@ def create_profile(request):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
-        return HttpResponseRedirect('/project/subjects/%s' % pid)
+            return render_to_response('project/profile.html', {'form': form, 'project_summary':project_summary}, context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse(subjects,args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project_summary':project_summary}, context_instance=RequestContext(request))
 
 
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
-    if request.method == 'GET':
-        project = models.get_project(project_id, dbm=manager)
-        form = ProjectProfile(data=project, entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
-
+    project_summary = ProjectSummary()
     project = models.get_project(project_id, dbm=manager)
+    project_summary.title = project.name
+    if request.method == 'GET':
+        form = ProjectProfile(data=project, entity_list=entity_list)
+        return render_to_response('project/profile.html', {'form': form, 'project_summary':project_summary}, context_instance=RequestContext(request))
+
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
         project.update(manager, form.cleaned_data)
@@ -108,15 +110,15 @@ def edit_profile(request, project_id=None):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+            return render_to_response('project/profile.html', {'form': form, 'project_summary':project_summary}, context_instance=RequestContext(request))
         project = models.get_project(pid, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         entity_type = request.POST['entity_type']
         form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
         form_model.save()
-        return HttpResponseRedirect('/project/subjects/%s' % pid)
+        return HttpResponseRedirect(reverse(subjects,args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project_summary':project_summary}, context_instance=RequestContext(request))
 
 
 def save_questionnaire(request):
@@ -322,13 +324,15 @@ def export_log(request):
 
 @login_required(login_url='/login')
 def subjects(request, project_id=None):
-    pid = project_id
+    project_summary = ProjectSummary()
     if request.method == 'GET':
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'reg')
-        previous_link = '/project/profile/edit/%s' % pid
+        previous_link = '/project/profile/edit/%s' % project_id
         entity_types = get_all_entity_types(manager)
         removable = ""
+        project = models.get_project(project_id, manager)
+        project_summary.title = project.name
         for each in entity_types:
             if each[0].lower() == 'reporter':
                 removable = each
@@ -337,8 +341,8 @@ def subjects(request, project_id=None):
         return render_to_response('project/subjects.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
                  'import_subject_form': import_subject_form,
-                 'post_import': reverse(import_subjects_from_project_wizard)}, context_instance=RequestContext(request))
+                 'post_import': reverse(import_subjects_from_project_wizard), 'project_summary':project_summary}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        return HttpResponseRedirect('/project/questionnaire/%s' % pid)
+        return HttpResponseRedirect(reverse(questionnaire,args=[project_id]))
 
