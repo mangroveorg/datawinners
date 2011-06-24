@@ -33,6 +33,13 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
+class Project_state:
+    title = ''
+    data_link = ''
+    log_link = ''
+    link = ''
+
+
 @login_required(login_url='/login')
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request)
@@ -152,12 +159,14 @@ def project_overview(request, project_id=None):
     link = '/project/profile/edit/%s' % project_id
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
-    result_link = '/project/results/%s' % questionnaire.form_code
-    data_link = '/project/data/%s' % questionnaire.form_code
-    project_overview = dict(what=number_of_questions, how=project['devices'], link=link, result_link=result_link,
-                            data_link=data_link)
+    project_overview = dict(what=number_of_questions, how=project['devices'])
+    project_state=Project_state()
+    project_state.title = project.name
+    project_state.data_link = '/project/data/%s' % questionnaire.form_code
+    project_state.log_link = '/project/results/%s' % questionnaire.form_code
+    project_state.link = link
     return render_to_response('project/overview.html',
-            {'project': project_overview, 'entity_type': project['entity_type']},
+            {'project': project_overview, 'entity_type': project['entity_type'], 'project_state': project_state},
                               context_instance=RequestContext(request))
 
 
