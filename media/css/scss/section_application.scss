@@ -34,21 +34,26 @@
     }
     #page_title{
        height:40px;
-       padding:15px 0 30px 0;
+       padding:15px 0 0px 0;
        width:950px;
        border-radius:1px solid red;
        margin:0 auto;
        .project_title{
             font-size:22px;
+            &:first-letter{
+         text-transform:uppercase;
+       }
        }
        .project_detail{
-       .project_status{
-            margin-right:5px;
-       }
-        a{
-            border-left:1px solid #666666;
-            padding-left:7px;
-        }
+           padding-bottom:10px;
+           float:left;
+           .project_status{
+                margin-right:5px;
+           }
+            a{
+                border-left:1px solid #666666;
+                padding-left:7px;
+            }
        }
     }
 }
