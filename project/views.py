@@ -116,13 +116,15 @@ def save_questionnaire(request):
         try:
             form_model = helper.update_questionnaire_with_questions(form_model, question_set, manager)
         except QuestionCodeAlreadyExistsException as e:
-            return HttpResponseServerError(e.message)
+            return HttpResponseServerError(e)
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponseServerError(e.message)
         else:
             try:
                 form_model.form_code = questionnaire_code.lower()
             except DataObjectAlreadyExists as e:
+                if e.message.find("Form")>=0:
+                    return HttpResponseServerError("Questionnaire with this code already exists")
                 return HttpResponseServerError(e.message)
             form_model.name = project.name
             form_model.entity_id = project.entity_type
@@ -231,10 +233,10 @@ def _format_data_for_presentation(data_dictionary, form_model):
 
 def _load_data(form_model, manager, questionnaire_code, request):
     header_list = helper.get_headers(form_model.fields)
-    post_list = json.loads(request.POST.get("aggregation-types"))
+    aggregation_type_list = json.loads(request.POST.get("aggregation-types"))
     start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00")
     end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59")
-    aggregates = helper.get_aggregate_list(header_list[1:], post_list)
+    aggregates = helper.get_aggregate_list(header_list[1:], aggregation_type_list)
     aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
     data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
                                                                      aggregates=aggregates, starttime=start_time,
@@ -285,11 +287,11 @@ def create_excel_response(raw_data_list):
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
-    rows, results = load_submissions(1, manager, questionnaire_code, pagination=False)
+    row_count, results = load_submissions(1, manager, questionnaire_code, pagination=False)
     header_list = ["Date Receieved", "Submission status", "Void"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
-    if rows:
+    if row_count:
         submissions, ids = zip(*results['submissions'])
         raw_data_list.extend([list(each) for each in submissions])
 

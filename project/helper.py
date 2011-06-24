@@ -215,10 +215,6 @@ def convert_to_json(data_list):
     return final_list
 
 
-def get_data_record_from_submissions(ids):
-    pass
-
-
 def get_formatted_time_string(time_val):
     try:
         time_val = datetime.strptime(time_val, '%d-%m-%Y %H:%M:%S')
