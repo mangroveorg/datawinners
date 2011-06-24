@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datetime import date, datetime, timedelta 
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from mock import patch
 from datawinners import initializer
