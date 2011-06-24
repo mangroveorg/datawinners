@@ -29,11 +29,17 @@
       padding: 20px 40px 20px 40px; }
   #container_content #page_title, #container_wizard #page_title {
     height: 40px;
-    padding-top: 15px;
+    padding: 15px 0 30px 0;
     width: 950px;
     border-radius: 1px solid red;
-    margin: 0 auto;
-    font-size: 22px; }
+    margin: 0 auto; }
+    #container_content #page_title .project_title, #container_wizard #page_title .project_title {
+      font-size: 22px; }
+    #container_content #page_title .project_detail .project_status, #container_wizard #page_title .project_detail .project_status {
+      margin-right: 5px; }
+    #container_content #page_title .project_detail a, #container_wizard #page_title .project_detail a {
+      border-left: 1px solid #666666;
+      padding-left: 7px; }
 
 table.styled_table {
   width: 100%;
