@@ -55,6 +55,13 @@
                                 {{ form.commune }}
                                 {{ form.commune.errors }}
                             </li>
+                            <li class="{{ form.level2.css_classes }} form-row-10px">
+                                {{ form.level2.label_tag }}
+                                {{ form.level2 }}
+                                <div>
+                                    {{ form.level2.errors }}
+                                </div>
+                            </li>
                             <li class="{{ form.geo_code.css_classes }} form-row-10px">
                                 {{ form.geo_code.label_tag }}
                                 {{ form.geo_code }}

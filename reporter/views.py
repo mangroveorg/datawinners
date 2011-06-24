@@ -3,6 +3,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using
 from datawinners.reporter.forms import ReporterRegistrationForm
@@ -19,8 +20,13 @@ from mangrove.form_model.form_model import REGISTRATION_FORM_CODE
 def register(request):
     dbm = get_database_manager(request)
     if request.method == 'GET':
+        location = LocationTree()
         form = ReporterRegistrationForm()
         return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
+
+
+
+
     form = ReporterRegistrationForm(request.POST)
     message = None
     success = True
