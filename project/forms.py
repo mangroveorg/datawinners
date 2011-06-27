@@ -30,23 +30,23 @@ class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
                             ('public information', 'Public information: I want to send information'))
     DEVICE_CHOICES = (('sms', 'SMS'), ('smartphone', 'Smart Phone'), ('web', 'Web'))
-    SUBJECT_TYPE_CHOICES = (('activity_report','Work performed by the data sender(eg. monthly activity report)'),('other','Other Subject'))
+    SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender(eg. monthly activity report)'),('no','Other Subject'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
-    project_type = ChoiceField(label='Project Type', required=True, widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
-    activity_report = ChoiceField(label="What is this questionnaire about?", widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES)
-    entity_type = ChoiceField(label="Other Subjects", required=True)
+    project_type = ChoiceField(label='Project Type', widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
+    activity_report = ChoiceField(label="What is this questionnaire about?", widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=('no','Other Subject'))
+    entity_type = ChoiceField(label="Other Subjects")
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[2], required=False)
 
-    def __init__(self, entity_list, *args, **kwargs):
+    def __init__(self, entity_list,  *args, **kwargs):
         assert isinstance(entity_list, list)
         super(ProjectProfile, self).__init__(*args, **kwargs)
         entity_list = entity_list
         self.fields['entity_type'].choices = [(t[-1], t[-1]) for t in entity_list]
 
     def clean(self):
-        if self.cleaned_data.get("activity_report") == 'activity_report':
+        if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
         return self.cleaned_data

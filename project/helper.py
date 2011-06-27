@@ -85,7 +85,7 @@ def load_questionnaire(dbm, questionnaire_id):
 
 def update_questionnaire_with_questions(form_model, question_set, dbm):
     form_model.delete_all_fields()
-    if form_model._is_activity_report():
+    if form_model.entity_defaults_to_reporter():
         form_model.add_field(create_entity_id_question(dbm))
     for question in question_set:
         form_model.add_field(create_question(question, dbm))
@@ -245,3 +245,7 @@ def get_excel_sheet(raw_data, sheet_name):
         for col_number, val in enumerate(row):
             ws.write(row_number, col_number, val)
     return wb
+
+def hide_entity_question(fields):
+    cleaned_fields = [each for each in fields if not each.is_entity_field]
+    return cleaned_fields
