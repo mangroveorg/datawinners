@@ -2,7 +2,7 @@
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, get_form_model_by_code
+from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
@@ -54,15 +54,27 @@ def create_question(post_dict, dbm):
         return _create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
 
 
-def create_questionnaire(post, dbm):
+def create_entity_id_question(dbm):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
     entity_id_question = TextField(name="What are you reporting on?", code="eid",
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    length=TextConstraint(min=1, max=12))
+    return entity_id_question
+
+
+def create_questionnaire(post, dbm):
+
+    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period", primitive_type="date",
+                                                    description="activity reporting period")
+    entity_id_question = create_entity_id_question(dbm)
+    activity_report_question = DateField(name="What is the reporting period for the activity?", code="rpd", label="Period being reported on", ddtype=reporting_period_dict_type, date_format="dd.mm.yyyy")
     entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
-    return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=[entity_id_question],
+    fields = [entity_id_question]
+    if entity_type == [REPORTER]:
+        fields = [entity_id_question, activity_report_question]
+    return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
                      form_code=generate_questionnaire_code(dbm), type='survey')
 
 
@@ -72,6 +84,8 @@ def load_questionnaire(dbm, questionnaire_id):
 
 def update_questionnaire_with_questions(form_model, question_set, dbm):
     form_model.delete_all_fields()
+    if form_model._is_activity_report():
+        form_model.add_field(create_entity_id_question(dbm))
     for question in question_set:
         form_model.add_field(create_question(question, dbm))
     return form_model

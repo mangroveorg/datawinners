@@ -27,7 +27,7 @@
 {% block step_number %}
     <h3>Step1:
         Define Project</h3>
-    <p>Description about the step goes here</p>
+    <p>Fill out the following information to create your project</p>
 {% endblock %}
 {% block content %}
     <form action="" method="POST">
@@ -41,20 +41,27 @@
             </ul>
         {% endif %}
         <ul>
+            <h5>Background</h5>
             <li class="{{ form.name.css_classes  }} form-row-10px">
                 {{ form.name.label_tag }}
                 {{ form.name }}
                 {{ form.name.errors }}
+            </li>
+            <li class="{{ form.project_type.css_classes  }} form-row-10px">
+                {{ form.project_type.label_tag }}
+                {{ form.project_type }}
+                {{ form.project_type.errors }}
             </li>
             <li class="{{ form.goals.css_classes  }} form-row-10px first">
                 {{ form.goals.label_tag }}
                 {{ form.goals }}
                 {{ form.goals.errors }}
             </li>
-            <li class="{{ form.project_type.css_classes  }} form-row-10px">
-                {{ form.project_type.label_tag }}
-                {{ form.project_type }}
-                {{ form.project_type.errors }}
+            <h5>Subjects and Questionnaire</h5>
+            <li class="{{ form.activity_report.css_classes  }} form-row-10px">
+                {{ form.activity_report.label_tag }}
+                {{ form.activity_report }}
+                {{ form.activity_report.errors }}
             </li>
             <li class="{{ form.entity_type.css_classes  }} form-row-10px">
                 {{ form.entity_type.label_tag }}

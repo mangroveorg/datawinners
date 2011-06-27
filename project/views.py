@@ -40,26 +40,41 @@ def questionnaire(request, project_id=None):
         previous_link = '/project/subjects/%s' % project_id
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
-        existing_questions = json.dumps(form_model.fields, default=field_to_json)
+        fields = form_model.fields
+        if form_model._is_activity_report():
+            fields = form_model.fields[1:]
+        existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions),
                  "questionnaire_code": form_model.form_code,
                  'project_id': project_id, "previous": previous_link},
                                   context_instance=RequestContext(request))
 
+def remove_reporter(entity_types):
+    for each in entity_types:
+        if each[0].lower() == 'reporter':
+            removable = each
+    entity_types.remove(removable)
+    return entity_types
+
 
 @login_required(login_url='/login')
 def create_profile(request):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
+    entity_list = remove_reporter(entity_list)
     if request.method == 'GET':
         form = ProjectProfile(entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form}, context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
+#        if form.activity_report == 'activity report':
+#            entity_type = ['reporter']
+#        else:
+        entity_type=form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
-                          project_type=form.cleaned_data['project_type'], entity_type=form.cleaned_data['entity_type'],
+                          project_type=form.cleaned_data['project_type'], entity_type=entity_type,
                           devices=form.cleaned_data['devices'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
