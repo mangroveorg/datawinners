@@ -166,7 +166,7 @@ def save_questionnaire(request):
             form_model.name = project.name
             form_model.entity_id = project.entity_type
             form_model.save()
-            return HttpResponse("Your questionnaire has been saved")
+            return HttpResponseRedirect(reverse(finish, args=[pid]))
 
 
 @login_required(login_url='/login')
@@ -362,9 +362,15 @@ def subjects(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
 
+
+@login_required(login_url='/login')
 def activate_project(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     project.state = PROJECT_ACTIVE_STATUS
     project.save(manager)
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
+
+@login_required(login_url='/login')
+def finish(request, project_id=None):
+    return render_to_response('project/finish_and_test.html', context_instance=RequestContext(request))
