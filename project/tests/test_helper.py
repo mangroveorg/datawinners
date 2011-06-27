@@ -243,7 +243,7 @@ class TestHelper(unittest.TestCase):
             get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
             form_model = helper.create_questionnaire(post, dbm)
 
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=NAME, slug=SLUG,
+        self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
                                                         primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
@@ -253,6 +253,20 @@ class TestHelper(unittest.TestCase):
 
         patcher.stop()
 
+    def test_should_update_questionnaire(self):
+        dbm = Mock(spec=DatabaseManager)
+        ddtype = Mock(spec=DataDictType)
+        question1 = TextField(label="name", code="na", name="What is your name",
+                              language="eng", ddtype=ddtype)
+        question2 = TextField(label="address", code="add", name="What is your address",
+                              defaultValue="some default value", language="eng", ddtype=ddtype)
+        post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [],
+                "is_entity_question": False,
+                "range_min": 0, "range_max": 100}
+        form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1,question2], entity_type=["reporter"], type="survey")
+        form_model2 = helper.update_questionnaire_with_questions(form_model, [post], dbm)
+        self.assertEquals(2, len(form_model2.fields))
+        
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
         models_mock = patcher.start()

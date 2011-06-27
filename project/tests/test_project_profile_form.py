@@ -10,7 +10,7 @@ class TestProjectProfile(unittest.TestCase):
         pass
 
     def test_creates_project_profile_form(self):
-        base_form = {'name': 'Test Project', 'goals': 'Test Goals', 'project_type': 'survey', 'entity_type': 'Reporter',
+        base_form = {'name': 'Test Project', 'goals': 'Test Goals', 'project_type': 'survey', 'entity_type': 'Reporter', 'activity_report':'activity_report',
                      'devices': ['sms']
         }
         form = ProjectProfile(data=base_form, entity_list=[['Reporter']])
@@ -18,12 +18,12 @@ class TestProjectProfile(unittest.TestCase):
         self.assertEquals(form.cleaned_data['name'], 'Test Project')
         self.assertEquals(form.cleaned_data['goals'], 'Test Goals')
         self.assertEquals(form.cleaned_data['project_type'], 'survey')
-        self.assertEquals(form.cleaned_data['entity_type'], 'Reporter')
+        self.assertEquals(form.cleaned_data['entity_type'], 'reporter')
         self.assertEquals(form.cleaned_data['devices'], ['sms'])
 
     def test_field_goals_not_required(self):
         base_form = {'name': 'Test Project', 'project_type': 'survey', 'entity_type': 'Reporter',
-                     'devices': ['sms']
+                     'devices': ['sms'], 'activity_report':'activity_report'
         }
         form = ProjectProfile(data=base_form, entity_list=[['Reporter']])
         assert form.is_valid()

@@ -5,7 +5,7 @@
     <div class="grid_24 tab_navigation">
         <ul>
             <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="#">Overview</a>
+              <a href="{{ project_links.overview_link }}">Overview</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
               <a href="#">Subjects</a>
