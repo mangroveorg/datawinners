@@ -1,20 +1,20 @@
 {% extends 'account/index.html' %}
 {% load dw_tabs %}
 {% block account_navigation %}
-{% activetab "settings_nav" "users" %}
-{{ block.super }}
+    {% activetab "settings_nav" "users" %}
+    {{ block.super }}
 {% endblock %}
-    
+
 {% block nav_content %}
-<form method="post" action="" name="form">
-{% csrf_token %}
-Title : {{ form.title }}
-First Name : {{ form.first_name }}
-Last Name: {{ form.last_name }}
-Email: {{ form.username }}
-Office Phone : {{ form.office_phone }}
-Mobile Phone : {{ form.mobile_phone }}
-Skype : {{ form.skype }}    
-<input type="Submit" value="Submit" >
-</form>
+    <form method="post" action="" name="form">
+        {% csrf_token %}
+        Title : {{ form.title }}
+        First Name : {{ form.first_name }}
+        Last Name: {{ form.last_name }}
+        Email: {{ form.username }}
+        Office Phone : {{ form.office_phone }}
+        Mobile Phone : {{ form.mobile_phone }}
+        Skype : {{ form.skype }}
+        <input type="Submit" value="Submit">
+    </form>
 {% endblock %}

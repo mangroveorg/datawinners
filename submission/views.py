@@ -23,8 +23,8 @@ def sms(request):
     _from = request.POST["from_msisdn"]
     _to = request.POST["to_msisdn"]
     try:
-        dbm=get_db_manager_for(_to)
-        sms_player = SMSPlayer(dbm,SubmissionHandler(dbm))
+        dbm = get_db_manager_for(_to)
+        sms_player = SMSPlayer(dbm, SubmissionHandler(dbm))
         response = sms_player.accept(Request(transport=SMS, message=_message, source=_from, destination=_to))
         if response.success:
             if response.short_code:
@@ -64,7 +64,7 @@ def submit(request):
     message = ''
     success = True
     try:
-        web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+        web_player = WebPlayer(dbm, SubmissionHandler(dbm))
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
         request = Request(transport=post.get('transport'), message=message, source=post.get('source'),
                           destination=post.get('destination'))

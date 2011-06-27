@@ -4,13 +4,13 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_define_project.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_define_project.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}

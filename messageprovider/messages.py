@@ -51,12 +51,12 @@ exception_messages = {
         DEFAULT: "Invalid message format.",
         SMS: "Invalid message format. Please submit the message in the format: <Questionnaire Code><SPACE>+<Question Code><SPACE><Answer>"
     },
-    
+
     ex.NoQuestionsSubmittedException: {
         DEFAULT: "Please submit atleast one valid question code"
     },
 
-    ex.MultipleSubmissionsForSameCodeException:{
+    ex.MultipleSubmissionsForSameCodeException: {
         DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
     }
 

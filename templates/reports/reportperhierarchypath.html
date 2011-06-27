@@ -1,57 +1,57 @@
 {% extends 'layout.html' %}
 {% block page_title %} Report on Clinic Data {% endblock %}
 {% block content %}
-<div class="span-18 box">
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div class="span-8 last">
-            <div class="span-8">
-                <div class="{{ form.entity_type.css_classes  }} form-row-10px">
-                            {{ form.entity_type.label_tag }}
-                            {{ form.entity_type }}
-                            {{ form.entity_type.errors }}
-                </div>
-                <div class="{{ form.aggregate_on_path.css_classes  }} form-row-10px">
-                    {{ form.aggregate_on_path.label_tag }}
-                    {{ form.aggregate_on_path }}
-                    {{ form.aggregate_on_path.errors }}
-                </div>
-                <div class="{{ form.aggregates_field.css_classes  }} form-row-10px">
-                    {{ form.aggregates_field.label_tag }}
-                    {{ form.aggregates_field }}
-                    {{ form.aggregates_field.errors }}
-                </div>
-                <div class="{{ form.reduce.css_classes  }} form-row-10px">
-                    {{ form.reduce.label_tag }}
-                    {{ form.reduce }}
-                    {{ form.reduce.errors }}
-                </div>
-                <div class="{{ form.level.css_classes  }} form-row-10px">
-                    {{ form.level.label_tag }}
-                    {{ form.level }}
-                    {{ form.level.errors }}
-                </div>
-
+    <div class="span-18 box">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="span-8 last">
                 <div class="span-8">
-                    <input type="submit" value="Report"/>
+                    <div class="{{ form.entity_type.css_classes  }} form-row-10px">
+                        {{ form.entity_type.label_tag }}
+                        {{ form.entity_type }}
+                        {{ form.entity_type.errors }}
+                    </div>
+                    <div class="{{ form.aggregate_on_path.css_classes  }} form-row-10px">
+                        {{ form.aggregate_on_path.label_tag }}
+                        {{ form.aggregate_on_path }}
+                        {{ form.aggregate_on_path.errors }}
+                    </div>
+                    <div class="{{ form.aggregates_field.css_classes  }} form-row-10px">
+                        {{ form.aggregates_field.label_tag }}
+                        {{ form.aggregates_field }}
+                        {{ form.aggregates_field.errors }}
+                    </div>
+                    <div class="{{ form.reduce.css_classes  }} form-row-10px">
+                        {{ form.reduce.label_tag }}
+                        {{ form.reduce }}
+                        {{ form.reduce.errors }}
+                    </div>
+                    <div class="{{ form.level.css_classes  }} form-row-10px">
+                        {{ form.level.label_tag }}
+                        {{ form.level }}
+                        {{ form.level.errors }}
+                    </div>
+
+                    <div class="span-8">
+                        <input type="submit" value="Report"/>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
 
-    <table>
-        <tr>
-            {% for header in column_headers%}
-            <th>{{ header}}</th>
+        <table>
+            <tr>
+                {% for header in column_headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in column_values %}
+                <tr>
+                    {% for data in row %}
+                        <td>{{ data }}</td>
+                    {% endfor %}
+                </tr>
             {% endfor %}
-        </tr>
-        {% for row in column_values%}
-        <tr>
-            {% for data in row %}
-            <td>{{ data }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+        </table>
+    </div>
 {% endblock %}

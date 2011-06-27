@@ -4,6 +4,6 @@ from datawinners.subjects.views import index, import_subjects_from_project_wizar
 
 
 urlpatterns = patterns('',
-    (r'^subjects/$', index),
-    (r'^import/$', import_subjects_from_project_wizard),
-)
+        (r'^subjects/$', index),
+        (r'^import/$', import_subjects_from_project_wizard),
+                       )

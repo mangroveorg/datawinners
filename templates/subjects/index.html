@@ -23,12 +23,13 @@
                     </li>
                     <li>
                         <input type="submit" value="Upload" class="button"/>
-                        <a class="float_right" href="{% url datawinners.admin.views.register_entity %}">Add a subject</a>
+                        <a class="float_right" href="{% url datawinners.admin.views.register_entity %}">Add a
+                            subject</a>
                     </li>
                 </ul>
             </form>
         </fieldset>
-       {% if messages %}
+        {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
                     <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -39,9 +40,9 @@
             <h3>Errors in Import</h3>
             <table class="styled_table error_table">
                 <thead>
-                    <th>Row Number</th>
-                    <th>Row</th>
-                    <th>Error</th>
+                <th>Row Number</th>
+                <th>Row</th>
+                <th>Error</th>
                 </thead>
                 {% for each in failure_data %}
                     <tr>
@@ -56,13 +57,13 @@
             <h3>All Subjects</h3>
             <table class="styled_table">
                 <thead>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Short Name</th>
-                    <th>Type</th>
-                    <th>Location</th>
-                    <th>Description</th>
-                    <th>Contact info</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Short Name</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Contact info</th>
                 </thead>
                 {% for each in all_subjects %}
                     <tr>

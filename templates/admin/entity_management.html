@@ -3,37 +3,37 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "subjects" %}
-{{ block.super }}
+    {% activetab "main_nav" "subjects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
 {% endblock %}
-{% block content%}
-    <div class="application_register" >
+{% block content %}
+    <div class="application_register">
         {% if message %}
-             <div id="flash-message" class="success">
-                 {{ message }}
-             </div>
+            <div id="flash-message" class="success">
+                {{ message }}
+            </div>
         {% endif %}
-            <form id="entity_creation_form" action="" method="POST">
-                {% csrf_token %}
-                    <ul>
-                            <li>
-                                <h3 class="title">Add a new subject type</h3>
-                            </li>
-                            <li class="{{ form.entity_type.css_classes }} form-row-10px">
-                                {{ form.entity_type.label_tag }}
-                                {{ form.entity_type}}
-                                <div>
-                                    {{ form.entity_type.errors }}
-                                </div>
-                            </li>
-                            <li>
-                            <input type="submit" value="Add" class = "button"/>
-                            </li>
-                    </ul>
-            </form>
+        <form id="entity_creation_form" action="" method="POST">
+            {% csrf_token %}
+            <ul>
+                <li>
+                    <h3 class="title">Add a new subject type</h3>
+                </li>
+                <li class="{{ form.entity_type.css_classes }} form-row-10px">
+                    {{ form.entity_type.label_tag }}
+                    {{ form.entity_type }}
+                    <div>
+                        {{ form.entity_type.errors }}
+                    </div>
+                </li>
+                <li>
+                    <input type="submit" value="Add" class="button"/>
+                </li>
+            </ul>
+        </form>
     </div>
 {% endblock %}

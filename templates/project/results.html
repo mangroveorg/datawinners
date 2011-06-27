@@ -3,19 +3,19 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "data" %}
-{{ block.super }}
+    {% activetab "tab_nav" "data" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_pagination/jquery.pagination.js"></script>
-    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js" ></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
     <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
     <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
@@ -24,30 +24,30 @@
 {% endblock %}
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet" />
-    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
-    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/css/plugins/jquery_pagination/pagination.css" media="screen" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
 {% endblock %}
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_sms_results.scss" media="screen" rel="stylesheet" />
-    <link href="/media/css/scss/section_data.scss" media="screen" rel="stylesheet" />
-    <link href="/media/css/scss/section_data_full_width.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_sms_results.scss" media="screen" rel="stylesheet"/>
+    <link href="/media/css/scss/section_data.scss" media="screen" rel="stylesheet"/>
+    <link href="/media/css/scss/section_data_full_width.scss" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
     {% block secondary_navigation %}
-    {% activetab "secondary_tab_nav" "activity_log" %}
-    {{ block.super }}
+        {% activetab "secondary_tab_nav" "activity_log" %}
+        {{ block.super }}
     {% endblock %}
     <div class="grid_23">
-    <form id = "export_form" method="post" action="/project/export/log">
-    {% csrf_token %}
-        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
-    </form>
+        <form id="export_form" method="post" action="/project/export/log">
+            {% csrf_token %}
+            <input id="questionnaire_code" name='questionnaire_code' type="hidden"/>
+        </form>
         <ul class="links">
-            <li><a id = "export_link" href="#">export</a> </li>
-            <li><a href="#">print</a> </li>
-            <li><a href="#" class="null_border">e-mail</a> </li>
+            <li><a id="export_link" href="#">export</a></li>
+            <li><a href="#">print</a></li>
+            <li><a href="#" class="null_border">e-mail</a></li>
         </ul>
     </div>
     <div class="heading_block grid_23 alpha">
@@ -56,17 +56,20 @@
     <div class="heading_block grid_23 alpha">
         <div class="date_range_box">
             <label>Show data for:</label>
-            <input type="text" id="dateRangePicker" value="Click to select a date range" />
+            <input type="text" id="dateRangePicker" value="Click to select a date range"/>
         </div>
     </div>
     <div class="heading_block grid_23 alpha">
         <label>Actions</label>
-        <select id="action" ><option>Actions ....</option><option>Delete</option></select>
+        <select id="action">
+            <option>Actions ....</option>
+            <option>Delete</option>
+        </select>
     </div>
     <div id="sms_results" class="grid_23 alpha margin_top_20">
         <div>
             <div id="results">
-                <input id="total_rows" type="hidden" value={{ pages }} />
+                <input id="total_rows" type="hidden" value={{ pages }}/>
 
                 <div id="submission_table">
                     {% include 'project/log_table.html' %}

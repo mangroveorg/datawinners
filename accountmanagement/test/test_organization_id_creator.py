@@ -5,7 +5,6 @@ from datawinners.accountmanagement.organization_id_creator import  OrganizationI
 
 
 class TestOrganizationIdCreator(unittest.TestCase):
-
     def test_creation_of_organization_id(self):
         id_creator = OrganizationIdCreator()
         id1 = id_creator.generateId()

@@ -56,13 +56,14 @@ class TestProjectModel(unittest.TestCase):
 
     def test_should_update_questionnaire(self):
         ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
-                                          primitive_type='string')
+                              primitive_type='string')
         question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
                               language="eng", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
                               defaultValue="some default value", language="eng", length=TextConstraint(5, 10),
                               ddtype=ddtype)
-        form_model = FormModel(self.dbm, name=self.project1.name, form_code="abc", fields=[question1, question2], entity_type=["Clinic"])
+        form_model = FormModel(self.dbm, name=self.project1.name, form_code="abc", fields=[question1, question2],
+                               entity_type=["Clinic"])
         qid = form_model.save()
         self.project1.qid = qid
         self.project1.name = "New Name"

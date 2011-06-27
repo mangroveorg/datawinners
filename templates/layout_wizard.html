@@ -1,13 +1,13 @@
 {% extends 'layout_application.html' %}
 
- {% block header %}
+{% block header %}
     <div id="container_header_application">
-    <div class="container_24" id="header_application">
-        {% include 'header_wizard.html' %}
-        {% include 'main_navigation.html' %}
+        <div class="container_24" id="header_application">
+            {% include 'header_wizard.html' %}
+            {% include 'main_navigation.html' %}
+        </div>
     </div>
-</div>
- {% endblock %}
+{% endblock %}
 {% block main_content %}
     <div id="container_content">
         <div class="container_24">
@@ -19,19 +19,19 @@
 
                 <div class="content_wrapper grid_24 alpha omega">
                     <div class="step_number">
-                         {% block step_number %}{% endblock %}
+                        {% block step_number %}{% endblock %}
                     </div>
                     {% block content %} {% endblock %}
                 </div>
             </div>
 
             <div class="grid_24 buttons">
-                 <div class="text_align_right buttons">
-                     {% block buttons %}
-                         <input id="submit_button_right" type="button"/>
-                     {% endblock %}
+                <div class="text_align_right buttons">
+                    {% block buttons %}
+                        <input id="submit_button_right" type="button"/>
+                    {% endblock %}
 
-                 </div>
+                </div>
             </div>
 
         </div>

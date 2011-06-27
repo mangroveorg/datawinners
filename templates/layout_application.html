@@ -5,7 +5,7 @@
 
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -15,12 +15,12 @@
 
 {% block body %}
     {% block header %}
-    <div id="container_header_application">
-        <div class="container_24" id="header_application">
-            {% include 'header_wizard.html' %}
-            {% include 'main_navigation.html' %}
+        <div id="container_header_application">
+            <div class="container_24" id="header_application">
+                {% include 'header_wizard.html' %}
+                {% include 'main_navigation.html' %}
+            </div>
         </div>
-    </div>
 
     {% endblock %}
 
@@ -32,7 +32,7 @@
                     <div class="project_detail">
                         <span class="project_status">Project status: {{ project.state }}</span>
                         {% if  project.state  == 'Draft' %}
-                        <a href="{{ project_links.activate_project_link }}">Activate Project</a>
+                            <a href="{{ project_links.activate_project_link }}">Activate Project</a>
                         {% endif %}
                     </div>
                 {% endblock %}

@@ -5,45 +5,46 @@
 {% block content %}
     <div class="span-18 box">
         {% if message %}
-             <div id="flash-message" class="success">
-                 {{ message }}
-             </div>
+            <div id="flash-message" class="success">
+                {{ message }}
+            </div>
         {% endif %}
-        <fieldset><legend>Send SMS</legend>
-             <form id="smstester_form" action="" method="POST">
-                    {% csrf_token %}
-                    <div class="span-16 form-5px">
-                        <div class="span-7 column border">
+        <fieldset>
+            <legend>Send SMS</legend>
+            <form id="smstester_form" action="" method="POST">
+                {% csrf_token %}
+                <div class="span-16 form-5px">
+                    <div class="span-7 column border">
+                        <div>
+                            <h3 class="title">Send SMS<br/><br/></h3>
+                        </div>
+                        <div class="{{ form.from_number.css_classes }} form-row-10px">
+                            {{ form.from_number.label_tag }}<br/>
+                            {{ form.from_number }}
                             <div>
-                                <h3 class="title">Send SMS<br/><br/></h3>
-                            </div>
-                            <div class="{{ form.from_number.css_classes }} form-row-10px">
-                                {{ form.from_number.label_tag }}<br/>
-                                {{ form.from_number }}
-                                <div>
-                                    {{ form.from_number.errors }}
-                                </div>
-                            </div>
-                            <div class="{{ form.to_number.css_classes }} form-row-10px">
-                                {{ form.to_number.label_tag }}<br/>
-                                {{ form.to_number }}
-                                <div>
-                                    {{ form.to_number.errors }}
-                                </div>
-                            </div>
-                            <div class="{{ form.message.css_classes }} form-row-10px">
-                                {{ form.message.label_tag }}<br/>
-                                {{ form.message }}
-                                <div>
-                                    {{ form.message.errors }}
-                                </div>
-                            </div>
-                            <div>
-                                <input type="submit" value="Send SMS" />
+                                {{ form.from_number.errors }}
                             </div>
                         </div>
+                        <div class="{{ form.to_number.css_classes }} form-row-10px">
+                            {{ form.to_number.label_tag }}<br/>
+                            {{ form.to_number }}
+                            <div>
+                                {{ form.to_number.errors }}
+                            </div>
+                        </div>
+                        <div class="{{ form.message.css_classes }} form-row-10px">
+                            {{ form.message.label_tag }}<br/>
+                            {{ form.message }}
+                            <div>
+                                {{ form.message.errors }}
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="Send SMS"/>
+                        </div>
                     </div>
-             </form>
+                </div>
+            </form>
         </fieldset>
     </div>
 {% endblock %}

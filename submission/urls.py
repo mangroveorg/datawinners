@@ -5,6 +5,6 @@ from datawinners.submission.views import sms
 from datawinners.submission.views import submit
 
 urlpatterns = patterns('',
-    (r'^submission$', sms),
-    (r'^submit$', submit),
-)
+        (r'^submission$', sms),
+        (r'^submit$', submit),
+                       )

@@ -3,29 +3,30 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "overview" %}
-{{ block.super }}
+    {% activetab "tab_nav" "overview" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
     <div class="span-18 box">
 
         <div class="grid_23 margin_bottom_20 margin_top_20 alpha">
-           <a class="button_blue " href ={{ project_profile_link }} >Edit this project</a>
+            <a class="button_blue " href={{ project_profile_link }}>Edit this project</a>
         </div>
-       {% include 'maps/entity_map.html'  %}
+        {% include 'maps/entity_map.html' %}
         <div class="grid_23 title_block">
             <h3 class="grid_4 alpha">Project Profile</h3>
+
             <div class="grid_18 margin_top_5">
                 <a href="#">View</a>
                 <span>|</span>
@@ -37,27 +38,34 @@
             <ul>
                 <li>
                     <h5>What</h5>
+
                     <div class="sub_content">
                         <h6>Template</h6>
+
                         <p>No template</p>
                     </div>
                     <div class="sub_content">
                         <h6>Questions</h6>
+
                         <p>{{ number_of_questions }} questions defined</p>
                     </div>
                 </li>
                 <li>
                     <h5>Who</h5>
+
                     <div class="sub_content">
                         <h6>Sender Group</h6>
+
                         <p>No Data</p>
                     </div>
                     <div class="sub_content">
                         <h6>Data sender Registration</h6>
+
                         <p>No data</p>
                     </div>
-                   <div class="sub_content">
+                    <div class="sub_content">
                         <h6>Languages</h6>
+
                         <p>No language specified</p>
                     </div>
                 </li>
@@ -65,24 +73,28 @@
                     <h5>How</h5>
                     <div class="sub_content">
                         <h6>Cell Phone</h6>
-                         <p>{% for each in project.devices %}
-                             {{ each }} |
-                             {% endfor %}
-                         </p>
+                        <p>{% for each in project.devices %}
+                            {{ each }} |
+                        {% endfor %}
+                        </p>
                     </div>
                     <div class="sub_content">
                         <h6>Computer</h6>
+
                         <p>No Data</p>
                     </div>
                 </li>
                 <li class="last">
                     <h5>When</h5>
+
                     <div class="sub_content">
                         <h6>How often</h6>
+
                         <p>No Data</p>
                     </div>
                     <div class="sub_content">
                         <h6>Deadline</h6>
+
                         <p>No Data</p>
                     </div>
                 </li>

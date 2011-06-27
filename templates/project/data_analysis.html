@@ -3,27 +3,27 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "data" %}
-{{ block.super }}
+    {% activetab "tab_nav" "data" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_data.scss" rel="stylesheet" />
-    <link href="/media/css/scss/section_data_full_width.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_data.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_data_full_width.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet" />
-    <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
-    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
-    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet"/>
+    <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet"/>
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet"/>
 
 {% endblock %}
 
@@ -44,30 +44,31 @@
 
 {% block content %}
     {% block secondary_navigation %}
-    {% activetab "secondary_tab_nav" "analysis" %}
-    {{ block.super }}
+        {% activetab "secondary_tab_nav" "analysis" %}
+        {{ block.super }}
     {% endblock %}
     <div class="grid_23">
         <ul class="links">
-            <li><a href="#" id="export_link">export</a> </li>
-            <li><a href="#">print</a> </li>
-            <li><a href="#" class="null_border">e-mail</a> </li>
+            <li><a href="#" id="export_link">export</a></li>
+            <li><a href="#">print</a></li>
+            <li><a href="#" class="null_border">e-mail</a></li>
         </ul>
     </div>
     <div class="heading_block grid_23 alpha">
         <h3 class="grid_10">Analysis</h3>
     </div>
-    <form id = "export_form" action="/project/export/data" method='POST'>
+    <form id="export_form" action="/project/export/data" method='POST'>
         {% csrf_token %}
-        <input id = "aggregation-types"  name='aggregation-types' type="hidden" />
-        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
+        <input id="aggregation-types" name='aggregation-types' type="hidden"/>
+        <input id="questionnaire_code" name='questionnaire_code' type="hidden"/>
         <input id='start_time' name='start_time' type="hidden"/>
-        <input id='end_time' name='end_time'  type="hidden" />
+        <input id='end_time' name='end_time' type="hidden"/>
     </form>
     <div class="heading_block grid_23 alpha">
         <div class="date_range_box">
             <label>Show data for:</label>
             <input type="text" id="dateRangePicker" value="Click to select a date range"/>
+
             <div id="dateErrorDiv"><label class=error id="dateError"></label></div>
         </div>
     </div>
@@ -90,22 +91,22 @@
             <tr class="aggregation_block">
                 <td></td>
                 {% for each in type_list %}
-                <td>
-                    <select class="aggregation_type">
-                        {% for choice in each %}
-                            <option>{{ choice }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
+                    <td>
+                        <select class="aggregation_type">
+                            {% for choice in each %}
+                                <option>{{ choice }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                 {% endfor %}
             </tr>
             <tr class="data_header">
                 {% for each in header_list %}
-                <th>{{ each }}</th>
+                    <th>{{ each }}</th>
                 {% endfor %}
             </tr>
             </thead>
-    </table>
+        </table>
     </div>
     <div id="demo"></div>
 {% endblock %}

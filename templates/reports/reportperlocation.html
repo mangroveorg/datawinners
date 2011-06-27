@@ -3,38 +3,38 @@
 {% block content %}
     <div class="span-18 box">
         <form action="" method="POST">
-                {% csrf_token %}
-                <div class="span-8 last">
-                    <div class="span-8">
-                        <div class="{{ form.entity_type.css_classes  }} form-row-10px">
-                            {{ form.entity_type.label_tag }}
-                            {{ form.entity_type }}
-                            {{ form.entity_type.errors }}
-                        </div>
-                        <div class="{{ form.filter.css_classes  }} form-row-10px">
-                            {{ form.filter.label_tag }}
-                            {{ form.filter }}
-                            {{ form.filter.errors }}
-                        </div>
-                        <div class="{{ form.aggregates_field.css_classes  }} form-row-10px">
-                            {{ form.aggregates_field.label_tag }}
-                            {{ form.aggregates_field }}
-                            {{ form.aggregates_field.errors }}
-                        </div>
+            {% csrf_token %}
+            <div class="span-8 last">
+                <div class="span-8">
+                    <div class="{{ form.entity_type.css_classes  }} form-row-10px">
+                        {{ form.entity_type.label_tag }}
+                        {{ form.entity_type }}
+                        {{ form.entity_type.errors }}
+                    </div>
+                    <div class="{{ form.filter.css_classes  }} form-row-10px">
+                        {{ form.filter.label_tag }}
+                        {{ form.filter }}
+                        {{ form.filter.errors }}
+                    </div>
+                    <div class="{{ form.aggregates_field.css_classes  }} form-row-10px">
+                        {{ form.aggregates_field.label_tag }}
+                        {{ form.aggregates_field }}
+                        {{ form.aggregates_field.errors }}
+                    </div>
 
-                        <div class="span-8">
-                            <input type="submit" value="Report"/>
-                        </div>
+                    <div class="span-8">
+                        <input type="submit" value="Report"/>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
         <table>
             <tr>
-                {% for header in column_headers%}
-                    <th>{{ header}}</th>
+                {% for header in column_headers %}
+                    <th>{{ header }}</th>
                 {% endfor %}
             </tr>
-            {% for row in column_values%}
+            {% for row in column_values %}
                 <tr>
                     {% for data in row %}
                         <td>{{ data }}</td>
@@ -43,7 +43,7 @@
             {% endfor %}
         </table>
         {% if error_message %}
-        <div class="error">{{ error_message }}</div>
+            <div class="error">{{ error_message }}</div>
         {% endif %}
     </div>
 {% endblock %}

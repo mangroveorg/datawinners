@@ -5,7 +5,6 @@ import mangrove
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         manager = load_manager_for_default_test_account()
         print ("Database %s") % (manager.database_name,)

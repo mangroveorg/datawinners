@@ -27,14 +27,14 @@ def register(request):
     form_errors = []
     form_errors.extend(form.non_field_errors())
     if form.is_valid():
-        form_errors=[]
+        form_errors = []
         form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
         try:
             telephone_number = form_data.get("telephone_number")
             if not helper.unique(dbm, telephone_number):
                 raise MultipleReportersForANumberException(telephone_number)
 
-            web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+            web_player = WebPlayer(dbm, SubmissionHandler(dbm))
             response = web_player.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
             message = get_success_msg_for_registration_using(response, "Reporter", "web")
@@ -42,7 +42,8 @@ def register(request):
             form_errors.append(exception.message)
             success = False
 
-    return render_to_response('reporter/register.html', {'form': form, 'message': message, 'form_errors': form_errors , 'success': success},
+    return render_to_response('reporter/register.html',
+            {'form': form, 'message': message, 'form_errors': form_errors, 'success': success},
                               context_instance=RequestContext(request))
 
 

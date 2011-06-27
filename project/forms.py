@@ -27,7 +27,7 @@ class MyRadioSelect(forms.RadioSelect):
 
 class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
-                            ('public information', 'Public information: I want to send information'))
+                                ('public information', 'Public information: I want to send information'))
     DEVICE_CHOICES = (('sms', 'SMS'), ('smartphone', 'Smart Phone'), ('web', 'Web'))
     id = CharField(required=False)
     name = CharField(required=True)
