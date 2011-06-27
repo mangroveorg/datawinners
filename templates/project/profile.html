@@ -41,7 +41,8 @@
             </ul>
         {% endif %}
         <ul>
-            <h5>Background</h5>
+            <fieldset>
+                <legend>Background</legend>
             <li class="{{ form.name.css_classes  }} form-row-10px">
                 {{ form.name.label_tag }}
                 {{ form.name }}
@@ -57,7 +58,9 @@
                 {{ form.goals }}
                 {{ form.goals.errors }}
             </li>
-            <h5>Subjects and Questionnaire</h5>
+            </fieldset>
+            <fieldset>
+                <legend>Subjects and Questionnaire</legend>
             <li class="{{ form.activity_report.css_classes  }} form-row-10px">
                 {{ form.activity_report.label_tag }}
                 {{ form.activity_report }}
@@ -73,7 +76,9 @@
                 {{ form.devices }}
                 {{ form.devices.errors }}
             </li>
+            </fieldset>
         </ul>
+
     </div>
 
 
