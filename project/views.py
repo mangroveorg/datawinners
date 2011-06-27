@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
-from datawinners.project.models import Project
+from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
 from datawinners.subjects.forms import SubjectUploadForm
 from datawinners.subjects.views import import_subjects_from_project_wizard
 import helper
@@ -36,12 +36,16 @@ TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 class ProjectLinks(object):
     data_analysis_link = ''
     submission_log_link = ''
+    overview_link = ''
+    activate_project_link = ''
 
 
 def _make_project_links(project_id, questionnaire_code):
     project_links = ProjectLinks()
     project_links.data_analysis_link = reverse(project_data, args=[project_id, questionnaire_code])
     project_links.submission_log_link = reverse(project_results, args=[project_id, questionnaire_code])
+    project_links.overview_link = reverse(project_overview, args=[project_id])
+    project_links.activate_project_link = reverse(activate_project, args=[project_id])
     return project_links
 
 
@@ -343,3 +347,9 @@ def subjects(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
 
+def activate_project(request, project_id=None):
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    project.state = PROJECT_ACTIVE_STATUS
+    project.save(manager)
+    return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
