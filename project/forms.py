@@ -35,7 +35,7 @@ class ProjectProfile(Form):
     name = CharField(required=True, label="Name this Project")
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
     project_type = ChoiceField(label='Project Type', required=True, widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
-    activity_report = ChoiceField(label="What is this questionnaire about?", widget=MyRadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=SUBJECT_TYPE_CHOICES[0])
+    activity_report = ChoiceField(label="What is this questionnaire about?", widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES)
     entity_type = ChoiceField(label="Other Subjects", required=True)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[2], required=False)
