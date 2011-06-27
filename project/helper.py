@@ -11,6 +11,7 @@ import models
 import xlwt
 from copy import copy
 from datetime import datetime
+from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -57,7 +58,7 @@ def create_question(post_dict, dbm):
 def create_entity_id_question(dbm):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
-    entity_id_question = TextField(name="What are you reporting on?", code="eid",
+    entity_id_question = TextField(name="What are you reporting on?", code=ENTITY_QUESTION_DISPLAY_CODE,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    length=TextConstraint(min=1, max=12))
@@ -136,7 +137,7 @@ def get_submissions(questions, submissions):
     for s in submissions:
         assert isinstance(s, dict) and s.get('values') is not None
     formatted_list = [
-    [each.get('created'), each.get('status'), each.get('voided'), each.get('error_message')] +
+    [each.get('destination'), each.get('source'), each.get('created'), each.get('status'), each.get('voided'), each.get('error_message')] +
     [each.get('values').get(q[0].lower()) for q in questions] for each in submissions]
     return [tuple(each) for each in formatted_list]
 

@@ -30,7 +30,7 @@ class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
                             ('public information', 'Public information: I want to send information'))
     DEVICE_CHOICES = (('sms', 'SMS'), ('smartphone', 'Smart Phone'), ('web', 'Web'))
-    SUBJECT_TYPE_CHOICES = (('activity_report','Work performed by the data sender(eg. monthly activity report'),('other','Other Subject'))
+    SUBJECT_TYPE_CHOICES = (('activity_report','Work performed by the data sender(eg. monthly activity report)'),('other','Other Subject'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)

@@ -215,7 +215,10 @@ def _get_submissions_for_display(current_page, dbm, questionnaire_code, question
 def _load_submissions(current_page, manager, questionnaire_code, pagination=True):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
-    questions = helper.get_code_and_title(form_model.fields)
+    fields = form_model.fields
+    if form_model._is_activity_report():
+        fields = form_model.fields[1:]
+    questions = helper.get_code_and_title(fields)
     rows = _get_number_of_rows_in_result(manager, questionnaire_code)
     results = {'questionnaire': questionnaire,
                'questions': questions}
@@ -329,7 +332,7 @@ def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
     row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False)
-    header_list = ["Date Receieved", "Submission status", "Void"]
+    header_list = ["From", "To", "Date Receieved", "Submission status", "Void"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
     if row_count:
