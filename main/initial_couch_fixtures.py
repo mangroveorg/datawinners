@@ -7,11 +7,11 @@ from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from datawinners.submission.views import SMS
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.datastore.entity import  define_type, create_entity
+from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
 from pytz import UTC
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.transport.player.player import Request, SMSPlayer
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
@@ -31,8 +31,18 @@ class DateTimeMocker(object):
         self.datetime_patcher.stop()
 
 
+def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
+    try:
+        entity = create_entity(manager, entity_type, location, aggregation_paths, short_code, geometry)
+    except DataObjectAlreadyExists as e:
+        entity = get_by_short_code(manager, short_code, entity_type)
+        entity.delete()
+        entity = create_entity(manager, entity_type, location, aggregation_paths, short_code, geometry)
+    finally:
+        return entity
+
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None, description=None):
-    e = create_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
+    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
                          short_code=short_code, geometry=geometry)
     name_type = create_data_dict(manager, name='Name Type', slug='Name', primitive_type='string')
     mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
@@ -66,7 +76,7 @@ def load_manager_for_default_test_account():
 
 
 def register(manager, entity_type, data, location, short_code):
-    e = create_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
+    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
                       short_code=short_code)
     e.add_data(data=data)
     return e
@@ -201,9 +211,13 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                            fields=[question1, question2, question3, question4, question5, question6, question7],
                            entity_type=CLINIC_ENTITY_TYPE
     )
-    qid = form_model.save()
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli001").delete()
+        qid = form_model.save()
     project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"])
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no')
     project.qid = qid
     try:
         project.save(manager)
@@ -213,9 +227,13 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                             form_code="cli002", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
                             entity_type=CLINIC_ENTITY_TYPE)
-    qid2 = form_model2.save()
+    try:
+        qid2 = form_model2.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli002").delete()
+        qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"])
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no')
     project2.qid = qid2
     try:
         project2.save(manager)

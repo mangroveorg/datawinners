@@ -57,14 +57,15 @@ def questionnaire(request, project_id=None):
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         fields = form_model.fields
-        if form_model._is_activity_report():
-            fields = form_model.fields[1:]
+        if form_model.entity_defaults_to_reporter():
+            fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
 
-def remove_reporter(entity_types):
+def _remove_reporter(entity_types):
+    removable = None
     for each in entity_types:
         if each[0].lower() == 'reporter':
             removable = each
@@ -76,10 +77,10 @@ def remove_reporter(entity_types):
 def create_profile(request):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
-    entity_list = remove_reporter(entity_list)
+    entity_list = _remove_reporter(entity_list)
     project_summary = dict(name='New Project')
     if request.method == 'GET':
-        form = ProjectProfile(entity_list=entity_list)
+        form = ProjectProfile(entity_list=entity_list,initial={'activity_report':'no'})
         return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
                                   context_instance=RequestContext(request))
 
@@ -91,7 +92,7 @@ def create_profile(request):
         entity_type=form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
-                          devices=form.cleaned_data['devices'])
+                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
             pid = project.save(manager)
@@ -166,7 +167,7 @@ def save_questionnaire(request):
             form_model.name = project.name
             form_model.entity_id = project.entity_type
             form_model.save()
-            return HttpResponse("Your questionnaire has been saved")
+            return HttpResponseRedirect(reverse(finish, args=[pid]))
 
 
 @login_required(login_url='/login')
@@ -215,7 +216,10 @@ def _get_submissions_for_display(current_page, dbm, questionnaire_code, question
 def _load_submissions(current_page, manager, questionnaire_code, pagination=True):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
-    questions = helper.get_code_and_title(form_model.fields)
+    fields = form_model.fields
+    if form_model.entity_defaults_to_reporter():
+        fields = form_model.fields[1:]
+    questions = helper.get_code_and_title(fields)
     rows = _get_number_of_rows_in_result(manager, questionnaire_code)
     results = {'questionnaire': questionnaire,
                'questions': questions}
@@ -329,7 +333,7 @@ def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
     row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False)
-    header_list = ["Date Receieved", "Submission status", "Void"]
+    header_list = ["From", "To", "Date Receieved", "Submission status", "Void"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
     if row_count:
@@ -362,9 +366,15 @@ def subjects(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
 
+
+@login_required(login_url='/login')
 def activate_project(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     project.state = PROJECT_ACTIVE_STATUS
     project.save(manager)
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
+
+@login_required(login_url='/login')
+def finish(request, project_id=None):
+    return render_to_response('project/finish_and_test.html', context_instance=RequestContext(request))

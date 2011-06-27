@@ -261,8 +261,9 @@ $(document).ready(function() {
 
         $.post('/project/questionnaire/save', post_data,
                 function(response) {
-                    $("#message-label").html("<label class='success_message'>" + response + "</label>");
-                    hide_message();
+                   var path = window.location.pathname;
+                   var element_list = path.split("/");
+                   window.location.href = '/project/finish/' + element_list[element_list.length-2];
                 }).error(function(e) {
             $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
         });

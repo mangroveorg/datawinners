@@ -6,6 +6,12 @@
         <input type="checkbox" id="master_checkbox" value="master"/>
     </th>
     <th>
+        To
+    </th>
+    <th>
+        From
+    </th>
+    <th>
         Date Received
     </th>
     <th>
@@ -31,12 +37,18 @@
                 {{ answer.0 }}
             </td>
             <td>
-                <span title='{{ answer.3 }}'>{{ answer.1 }}</span>
+                {{ answer.1 }}
             </td>
             <td>
                 {{ answer.2 }}
             </td>
-            {% for each in answer|slice:"4:" %}
+            <td>
+                <span title='{{ answer.5 }}'>{{ answer.3 }}</span>
+            </td>
+            <td>
+                {{ answer.4 }}
+            </td>
+            {% for each in answer|slice:"6:" %}
                 <td>
                     {{ each }}
                 </td>
