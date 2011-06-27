@@ -33,38 +33,40 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-
 class ProjectLinks(object):
     data_analysis_link = ''
     submission_log_link = ''
 
 
-def _make_project_links(project_id,questionnaire_code):
+def _make_project_links(project_id, questionnaire_code):
     project_links = ProjectLinks()
-    project_links.data_analysis_link = reverse(project_data,args=[project_id,questionnaire_code])
-    project_links.submission_log_link = reverse(project_results,args=[project_id,questionnaire_code])
+    project_links.data_analysis_link = reverse(project_data, args=[project_id, questionnaire_code])
+    project_links.submission_log_link = reverse(project_results, args=[project_id, questionnaire_code])
     return project_links
+
 
 @login_required(login_url='/login')
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
-        previous_link = reverse(subjects,args=[project_id])
+        previous_link = reverse(subjects, args=[project_id])
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         existing_questions = json.dumps(form_model.fields, default=field_to_json)
         return render_to_response('project/questionnaire.html',
-                {"existing_questions": repr(existing_questions), 'questionnaire_code':form_model.form_code, "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
+                {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
+                 "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
 def create_profile(request):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
-    project_summary=dict(name='New Project')
+    project_summary = dict(name='New Project')
     if request.method == 'GET':
         form = ProjectProfile(entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project':project_summary}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
+                                  context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
@@ -79,19 +81,23 @@ def create_profile(request):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project':project_summary}, context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(subjects,args=[pid]))
+            return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
+                                      context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse(subjects, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project':project_summary}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
+                                  context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login')
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
     project = models.get_project(project_id, dbm=manager)
     if request.method == 'GET':
         form = ProjectProfile(data=project, entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project':project}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project': project},
+                                  context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
@@ -102,17 +108,20 @@ def edit_profile(request, project_id=None):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project':project}, context_instance=RequestContext(request))
+            return render_to_response('project/profile.html', {'form': form, 'project': project},
+                                      context_instance=RequestContext(request))
         project = models.get_project(pid, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         entity_type = request.POST['entity_type']
         form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
         form_model.save()
-        return HttpResponseRedirect(reverse(subjects,args=[pid]))
+        return HttpResponseRedirect(reverse(subjects, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project':project}, context_instance=RequestContext(request))
+        return render_to_response('project/profile.html', {'form': form, 'project': project},
+                                  context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login')
 def save_questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
@@ -132,7 +141,7 @@ def save_questionnaire(request):
             try:
                 form_model.form_code = questionnaire_code.lower()
             except DataObjectAlreadyExists as e:
-                if e.message.find("Form")>=0:
+                if e.message.find("Form") >= 0:
                     return HttpResponseServerError("Questionnaire with this code already exists")
                 return HttpResponseServerError(e.message)
             form_model.name = project.name
@@ -158,22 +167,22 @@ def index(request):
 def project_overview(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, dbm=manager)
-    link = reverse(edit_profile,args=[project_id])
+    link = reverse(edit_profile, args=[project_id])
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project_id, questionnaire.form_code)
     return render_to_response('project/overview.html',
-                              {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
-                               , 'project_profile_link': link, 'number_of_questions': number_of_questions},
+            {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
+             , 'project_profile_link': link, 'number_of_questions': number_of_questions},
                               context_instance=RequestContext(request))
 
 
-def get_number_of_rows_in_result(dbm, questionnaire_code):
+def _get_number_of_rows_in_result(dbm, questionnaire_code):
     submissions_count = get_submissions_made_for_form(dbm, questionnaire_code, count_only=True)
     return submissions_count
 
 
-def get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination):
+def _get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination):
     if pagination:
         submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, page_number=current_page,
                                                          page_size=PAGE_SIZE, count_only=False)
@@ -184,34 +193,34 @@ def get_submissions_for_display(current_page, dbm, questionnaire_code, questions
     return submissions, ids
 
 
-def load_submissions(current_page, manager, questionnaire_code, pagination=True):
+def _load_submissions(current_page, manager, questionnaire_code, pagination=True):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     questionnaire = (questionnaire_code, form_model.name)
     questions = helper.get_code_and_title(form_model.fields)
-    rows = get_number_of_rows_in_result(manager, questionnaire_code)
+    rows = _get_number_of_rows_in_result(manager, questionnaire_code)
     results = {'questionnaire': questionnaire,
                'questions': questions}
     if rows:
-        submissions, ids = get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions),
-                                                       pagination)
+        submissions, ids = _get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions),
+                                                        pagination)
         results.update(submissions=zip(submissions, ids))
     return rows, results
 
 
 @login_required(login_url='/login')
-def project_results(request,project_id=None,questionnaire_code=None):
+def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
     error_message = ""
     project = models.get_project(project_id, dbm=manager)
-    project_links = _make_project_links(project_id,questionnaire_code)
+    project_links = _make_project_links(project_id, questionnaire_code)
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
-        rows, results = load_submissions(current_page, manager, questionnaire_code)
+        rows, results = _load_submissions(current_page, manager, questionnaire_code)
         if rows is None:
             error_message = "No submissions present for this project"
         return render_to_response('project/results.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
-                 'error_message': error_message, 'project_links':project_links,'project':project},
+                 'error_message': error_message, 'project_links': project_links, 'project': project},
                                   context_instance=RequestContext(request)
         )
     if request.method == "POST":
@@ -222,7 +231,7 @@ def project_results(request,project_id=None,questionnaire_code=None):
             SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
 
         current_page = request.POST.get('current_page')
-        rows, results = load_submissions(int(current_page), manager, questionnaire_code)
+        rows, results = _load_submissions(int(current_page), manager, questionnaire_code)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
@@ -254,11 +263,11 @@ def _load_data(form_model, manager, questionnaire_code, request):
 
 
 @login_required(login_url='/login')
-def project_data(request,project_id=None, questionnaire_code=None):
+def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, dbm=manager)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    project_links = _make_project_links(project_id,questionnaire_code)
+    project_links = _make_project_links(project_id, questionnaire_code)
 
     if request.method == "GET":
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
@@ -267,7 +276,8 @@ def project_data(request,project_id=None, questionnaire_code=None):
         response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
         return render_to_response('project/data_analysis.html',
                 {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
-                 "header_list": header_list, "type_list": type_list, 'project_links':project_links, 'project':project},
+                 "header_list": header_list, "type_list": type_list, 'project_links': project_links, 'project': project}
+                                  ,
                                   context_instance=RequestContext(request))
     if request.method == "POST":
         data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
@@ -284,10 +294,10 @@ def export_data(request):
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list = json.loads(response_string)
     raw_data_list.insert(0, header_list)
-    return create_excel_response(raw_data_list)
+    return _create_excel_response(raw_data_list)
 
 
-def create_excel_response(raw_data_list):
+def _create_excel_response(raw_data_list):
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=file.xls'
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
@@ -299,7 +309,7 @@ def create_excel_response(raw_data_list):
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
-    row_count, results = load_submissions(1, manager, questionnaire_code, pagination=False)
+    row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False)
     header_list = ["Date Receieved", "Submission status", "Void"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
@@ -307,7 +317,7 @@ def export_log(request):
         submissions, ids = zip(*results['submissions'])
         raw_data_list.extend([list(each) for each in submissions])
 
-    return create_excel_response(raw_data_list)
+    return _create_excel_response(raw_data_list)
 
 
 @login_required(login_url='/login')
@@ -327,8 +337,9 @@ def subjects(request, project_id=None):
         return render_to_response('project/subjects.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
                  'import_subject_form': import_subject_form,
-                 'post_import': reverse(import_subjects_from_project_wizard), 'project':project}, context_instance=RequestContext(request))
+                 'post_import': reverse(import_subjects_from_project_wizard), 'project': project},
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        return HttpResponseRedirect(reverse(questionnaire,args=[project_id]))
+        return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
 
