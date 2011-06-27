@@ -115,8 +115,8 @@ class TestHelper(unittest.TestCase):
                  'error_message': 'error2'}
         ]
         required_submissions = [(datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-                (datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
-                                                                                              ]
+                (datetime(2011, 1, 2),  False, True, 'error2', None, 'ans22',),
+                                                                                                     ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):

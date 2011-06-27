@@ -1,4 +1,4 @@
-from couchdb.mapping import  TextField, ListField
+from couchdb.mapping import  TextField, ListField, IntegerField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -17,8 +17,7 @@ class Project(DocumentBase):
     qid = TextField()
     state = TextField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 state=PROJECT_DRAFT_STATUS):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=PROJECT_DRAFT_STATUS):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []

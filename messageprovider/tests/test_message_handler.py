@@ -51,14 +51,13 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
     def test_should_format_success_message_for_submission_with_reporter_name(self):
         expected_message = success_messages[SUBMISSION] % "rep1" + "age: 12 name: tester choice: red"
-        response = Response(reporters=[{"name": "rep1"}], success=True, errors={},
-                            processed_data={'name': 'tester', 'age': 12, 'choice': ['red']})
+        response = Response(reporters=[{"name": "rep1"}], success=True, errors={}, processed_data={'name':'tester','age':12,'choice':['red']})
         message = get_success_msg_for_submission_using(response)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
         expected_message = success_messages[SUBMISSION] % "" + "name: tester"
-        response = Response(reporters=[], success=True, errors={}, processed_data={"name": "tester"})
+        response = Response(reporters=[], success=True, errors={}, processed_data={"name":"tester"})
         message = get_success_msg_for_submission_using(response)
         self.assertEqual(expected_message, message)
 

@@ -4,105 +4,103 @@
 
 {% load dw_tabs %}
 {% block body %}
-    {% activetab "main_nav" "subjects" %}
-    {{ block.super }}
+{% activetab "main_nav" "subjects" %}
+{{ block.super }}
 {% endblock %}
 
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
 {% endblock %}
-{% block content %}
+{% block content%}
     <div class="span-18 box">
-        <input id='post_url' type="hidden" value="{{ post_url }}"/>
-        <form id="question_form">
-            <fieldset>
-                <ul>
-                    <li>
+        <input id='post_url' type="hidden" value="{{ post_url }}" />
+            <form id="question_form">
+                <fieldset>
+                    <ul>
+                        <li>
                         <span>
                                 <label>* Name</label>
                             </span>
                         <span>
-                                <input id="entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
+                                <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n"/>
                             </span>
-                    </li>
+                        </li>
 
-                    <li>
+                        <li>
                         <span>
                             <label>Unique Identification Number(ID)</label>
                         </span>
                         <span>
                             <span class="auto_gen_checkbox">
-                                <input id="autogen" name="autogen" type="checkbox" checked=true/>
+                                <input id="autogen" name="autogen" type="checkbox" checked=true />
                                 <label>Autogenerate</label>
                             </span>
-                            <input id="short_name" name="short_name" type="text" data-bind="value: message.s"
-                                   disabled="disabled"/>
+                            <input id="short_name" name="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
                         </span>
 
-                    </li>
+                        </li>
 
-                    <li>
-                        <span>
+                        <li>
+                            <span>
                                 <label>* Type</label>
                             </span>
-                        <span>
-                            <select id="id_entity_type" name="type" data-bind="value: message.t">
-                                {% for entity_type in entity_types %}
-                                    <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
-                                {% endfor %}
-                            </select>
-                            <a href="{% url datawinners.admin.views.create_entity %}">Add a new subject type</a>
-                        </span>
-                    </li>
-                    <li>
-                        <label>Location</label>
-                        <ul class="form_sub_set">
+                            <span>
+                                <select id="id_entity_type" name="type" data-bind="value: message.t">
+                                    {% for entity_type in entity_types %}
+                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                                <a href="{% url datawinners.admin.views.create_entity %}">Add a new subject type</a>
+                            </span>
+                        </li>
+                        <li>
+                            <label>Location</label>
+                            <ul class="form_sub_set">
 
-                            <li>
+                                <li>
                                     <span>
                                         <label>Location Name</label>
                                     </span>
                                     <span>
                                         <input id="location" name="location" type="text" data-bind="value: message.l"/>
                                     </span>
-                            </li>
-                            <li>
+                                </li>
+                                <li>
                                     <span>
                                         <label>GPS</label>
                                     </span>
                                     <span>
-                                        <input id="geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
+                                        <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
                                     </span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <span>
                                 <label>Description</label>
                             </span>
                             <span>
-                                <input id="description" name="description" type="text" data-bind="value: message.d"/>
+                                <input id = "description" name="description" type="text" data-bind="value: message.d"/>
                             </span>
-                    </li>
-                    <li>
+                        </li>
+                        <li>
                             <span>
                                 <label>Mobile Number</label>
                             </span>
                             <span>
-                                <input id="mobile_number" name="mobile_number" type="text" maxlength="15"
-                                       data-bind="value: message.m"/>
+                                <input id = "mobile_number" name="mobile_number" type="text" maxlength="15" data-bind="value: message.m"/>
                             </span>
-                    </li>
-                </ul>
-            </fieldset>
-            <input type="button" value="Register" id="register_entity" class="button"/>
-        </form>
+                        </li>
+                    </ul>
+                </fieldset>
+                <input type="button" value="Register" id="register_entity" class="button" />
+            </form>
     </div>
 {% endblock %}

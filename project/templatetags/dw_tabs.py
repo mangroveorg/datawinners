@@ -28,6 +28,7 @@ def is_active_tab(context, namespace, name):
 
 
 class ActiveTabNode(template.Node):
+
     def __init__(self, name, namespace=None):
         if namespace is None:
             namespace = DEFAULT_NAMESPACE
@@ -85,7 +86,6 @@ def activetab(parser, token):
         namespace = bits[0]
         name = bits[1]
     return ActiveTabNode(name, namespace)
-
 activetab = register.tag('activetab', activetab)
 
 

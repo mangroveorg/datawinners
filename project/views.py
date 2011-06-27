@@ -347,7 +347,6 @@ def subjects(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
 
-
 def activate_project(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)

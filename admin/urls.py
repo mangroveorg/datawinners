@@ -5,6 +5,6 @@ from datawinners.admin.views import register_entity
 from datawinners.admin.views import create_entity
 
 urlpatterns = patterns('',
-        (r'^admin/entity_management', create_entity),
-        (r'^admin/register/entity', register_entity),
-                       )
+    (r'^admin/entity_management', create_entity),
+    (r'^admin/register/entity', register_entity),
+)

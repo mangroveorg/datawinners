@@ -4,16 +4,16 @@ from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import OrganizationSetting
 
 class OrganizationSettingAdmin(admin.ModelAdmin):
-    list_display = ('organization_name', 'organization_id')
+    list_display = ('organization_name','organization_id')
     fields = ('sms_tel_number',)
 
-    def organization_name(self, obj):
+    def organization_name(self,obj):
         return obj.organization.name;
 
-    def organization_id(self, obj):
+    def organization_id(self,obj):
         return obj.organization.org_id
 
 
-admin.site.register(OrganizationSetting, OrganizationSettingAdmin)
+admin.site.register(OrganizationSetting,OrganizationSettingAdmin)
 admin.site.unregister(Group)
 admin.site.unregister(User)

@@ -14,5 +14,4 @@ def registration_complete(request, user=None):
 def home(request):
     profile = request.user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    return render_to_response('registration/home.html', {'organization': organization},
-                              context_instance=RequestContext(request))
+    return render_to_response('registration/home.html', {'organization': organization}, context_instance=RequestContext(request))

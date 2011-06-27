@@ -3,44 +3,44 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-    {% activetab "tab_nav" "users" %}
-    {{ block.super }}
+{% activetab "tab_nav" "users" %}
+{{ block.super }}
 {% endblock %}
 
 {% block content %}
-    <div class="text_align_right margin_bottom_20">
-        <a href="/account/user/new/" class="button">Add Users</a>
-    </div>
-    <div id="users_list">
-        <table>
-            <th>
-                First Name
-            </th>
-            <th>
-                Last Name
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Projects
-            </th>
-            {% for user in users %}
-                <tr>
-                    <td>
-                        {{ user.user.first_name }}
-                    </td>
-                    <td>
-                        {{ user.user.last_name }}
-                    </td>
-                    <td>
-                        {{ user.user.username }}
-                    </td>
-                    <td>
-                        -
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+<div class="text_align_right margin_bottom_20">
+  <a href= "/account/user/new/" class="button">Add Users</a>
+</div>
+<div id="users_list">
+    <table>
+      <th>
+        First Name
+      </th>
+      <th>
+        Last Name
+      </th>
+      <th>
+        Email
+      </th>
+      <th>
+        Projects
+      </th>
+      {% for user in users %}
+      <tr>
+        <td>
+          {{ user.user.first_name }}
+        </td>
+        <td>
+          {{ user.user.last_name }}
+        </td>
+        <td>
+          {{ user.user.username }}
+        </td>
+        <td>
+          -
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}

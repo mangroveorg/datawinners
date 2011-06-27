@@ -12,8 +12,8 @@
 
 {% load dw_tabs %}
 {% block main_navigation %}
-    {% activetab "main_nav" "collectors" %}
-    {{ block.super }}
+{% activetab "main_nav" "collectors" %}
+{{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -23,54 +23,54 @@
                 {{ error }}
             {% endfor %}
         </div>
-    {% endblock %}
+{% endblock %}
     <div class="application_register">
         {% if message %}
-            <div id="flash-message" class="success">
-                {{ message }}
-            </div>
+             <div id="flash-message" class="success">
+                 {{ message }}
+             </div>
         {% endif %}
 
         <fieldset>
-            <form id="registration_form" action="" method="POST">
-                {% csrf_token %}
-                <ul class="span-7 column border">
-                    <li>
-                        <h3 class="title">Register a Reporter (Field Staff)</h3>
-                    </li>
-                    <li class="{{ form.first_name.css_classes }} form-row-10px">
-                        {{ form.first_name.label_tag }}
-                        {{ form.first_name }}
-                        <div>
-                            {{ form.first_name.errors }}
-                        </div>
-                    </li>
-                    <li class="{{ form.telephone_number.css_classes }} form-row-10px">
-                        {{ form.telephone_number.label_tag }}
-                        {{ form.telephone_number }}
-                        <div>
-                            {{ form.telephone_number.errors }}
-                        </div>
-                    </li>
-                    <li class="{{ form.commune.css_classes }} form-row-10px">
-                        {{ form.commune.label_tag }}
-                        {{ form.commune }}
-                        <div>
-                            {{ form.commune.errors }}
-                        </div>
-                    </li>
-                    <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                        {{ form.geo_code.label_tag }}
-                        {{ form.geo_code }}
-                        <div>
-                            {{ form.geo_code.errors }}
-                        </div>
-                    </li>
-                    <li>
-                        <input type="submit" value="Register" class="button margin_top_20"/>
-                    </li>
-                </ul>
-            </form>
+             <form id="registration_form" action="" method="POST">
+                    {% csrf_token %}
+                        <ul class="span-7 column border">
+                            <li>
+                                <h3 class="title">Register a Reporter (Field Staff)</h3>
+                            </li>
+                            <li class="{{ form.first_name.css_classes }} form-row-10px">
+                                {{ form.first_name.label_tag }}
+                                {{ form.first_name }}
+                                <div>
+                                    {{ form.first_name.errors }}
+                                </div>
+                            </li>
+                            <li class="{{ form.telephone_number.css_classes }} form-row-10px">
+                                {{ form.telephone_number.label_tag }}
+                                {{ form.telephone_number }}
+                                <div>
+                                    {{ form.telephone_number.errors }}
+                                </div>
+                            </li>
+                            <li class="{{ form.commune.css_classes }} form-row-10px">
+                                {{ form.commune.label_tag }}
+                                {{ form.commune }}
+                                <div>
+                                    {{ form.commune.errors }}
+                                </div>
+                            </li>
+                            <li class="{{ form.geo_code.css_classes }} form-row-10px">
+                                {{ form.geo_code.label_tag }}
+                                {{ form.geo_code }}
+                                <div>
+                                    {{ form.geo_code.errors }}
+                                </div>
+                            </li>
+                            <li>
+                                <input type="submit" value="Register" class="button margin_top_20" />
+                            </li>
+                        </ul>
+             </form>
         </fieldset>
     </div>
 {% endblock %}

@@ -6,6 +6,7 @@ import time
 
 
 class OrganizationIdCreator(object):
+
     def get_random_three_digit_string(self):
         return''.join(random.choice(string.ascii_uppercase) for x in range(3))
 

@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.form_model.form_model import NAME_FIELD
 from mangrove.utils.types import is_empty
-from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE,\
+from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE, \
     success_messages, SUBMISSION, REGISTRATION
 
 
@@ -33,8 +33,7 @@ def get_expanded_response(response_dict):
 
 def get_success_msg_for_submission_using(response):
     reporters = response.reporters
-    thanks = success_messages[SUBMISSION] % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else
-    success_messages[SUBMISSION] % ""
+    thanks = success_messages[SUBMISSION] % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else success_messages[SUBMISSION] % ""
     expanded_response = get_expanded_response(response.processed_data)
     return thanks + expanded_response
 
@@ -42,12 +41,12 @@ def get_success_msg_for_submission_using(response):
 def get_success_msg_for_registration_using(response, entity_type, source):
     resp_string = "%s identification number: %s" % (entity_type, response.short_code)
     thanks = success_messages[REGISTRATION] % resp_string
-    if source == "sms":
-        return thanks + "We received : " + get_expanded_response(response.processed_data)
+    if source=="sms":
+        return thanks + "We received : "  + get_expanded_response(response.processed_data)
     return thanks
 
 
 def _stringify(item):
-    if type(item) == list:
+    if type(item)==list:
         return (',').join(item)
     return str(item)

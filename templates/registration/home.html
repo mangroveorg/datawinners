@@ -5,21 +5,18 @@
 
 {% load dw_tabs %}
 {% block body %}
-    {% activetab "main_nav" "dashboard" %}
-    {{ block.super }}
+{% activetab "main_nav" "dashboard" %}
+{{ block.super }}
 {% endblock %}
 
 {% load i18n %}
 {% block content %}
     <div>
-        <div class="box">
+        <div class="box" >
             <p>Welcome {{ user.get_profile.title }} {{ user.first_name }} {{ user.last_name }}</p>
-
-            <p>Organization ID : {{ organization.org_id }}</p>
-
-            <p>Organization Name : {{ organization.name }}</p>
-
-            <p>Organization Office Phone : {{ organization.office_phone }}</p>
+            <p>Organization ID : {{organization.org_id}}</p>
+            <p>Organization Name : {{organization.name}}</p>
+            <p>Organization Office Phone : {{organization.office_phone}}</p>
         </div>
         <div class="margin_top_20">
             <a href="/reporter/register">Register Reporter</a><br/>

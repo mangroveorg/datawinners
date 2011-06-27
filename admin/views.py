@@ -15,8 +15,7 @@ from datawinners.submission.views import submit
 def create_entity(request):
     message = ""
     if request.method == 'GET':
-        return render_to_response("admin/entity_management.html", {"form": EntityTypeForm()},
-                                  context_instance=RequestContext(request))
+        return render_to_response("admin/entity_management.html", {"form": EntityTypeForm()}, context_instance=RequestContext(request))
     form = EntityTypeForm(request.POST)
     if form.is_valid():
         entity_name = form.cleaned_data["entity_type"]
@@ -28,8 +27,7 @@ def create_entity(request):
             message = type_already_defined.message
         else:
             message = "Entity definition successful"
-    return render_to_response("admin/entity_management.html", {"form": form, 'message': message},
-                              context_instance=RequestContext(request))
+    return render_to_response("admin/entity_management.html", {"form": form, 'message': message}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -41,5 +39,4 @@ def register_entity(request):
         if each[0].lower() == 'reporter':
             removable = each
     entity_types.remove(removable)
-    return render_to_response("admin/register_entity.html", {"post_url": reverse(submit), "entity_types": entity_types},
-                              context_instance=RequestContext(request))
+    return render_to_response("admin/register_entity.html", {"post_url": reverse(submit), "entity_types": entity_types}, context_instance=RequestContext(request))

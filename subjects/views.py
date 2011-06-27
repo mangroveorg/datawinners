@@ -53,7 +53,7 @@ def _tabulate_output(rows):
         row[1].errors['row_num'] = row[0] + 2
         if type(row[1].errors['error']) is list:
             for error in row[1].errors['error']:
-                errors = errors + ' ' + error
+                errors = errors+' '+error
             row[1].errors['error'] = errors
         tabulated_data.append(row[1].errors)
     return tabulated_data
@@ -78,7 +78,7 @@ def index(request):
                 messages.error(request, 'We could not import your list of Subjects. ! \
                    You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) ﬁle!')
             except Exception:
-                messages.error(request, 'Some unexpected error happened. Please check the CSV file and import again.')
+                messages.error(request,'Some unexpected error happened. Please check the CSV file and import again.')
     else:
         form = SubjectUploadForm()
     all_subjects = _laod_all_subjects(request)

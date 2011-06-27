@@ -1,8 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
 
-from datawinners.project.views import questionnaire, save_questionnaire, create_profile, index, project_overview,\
-    edit_profile, project_results, project_data, subjects, export_data, export_log, activate_project
+from datawinners.project.views import questionnaire, save_questionnaire, create_profile, index, project_overview, \
+                    edit_profile, project_results, project_data, subjects, export_data, export_log, activate_project
 
 urlpatterns = patterns('',
         (r'^project/questionnaire/(?P<project_id>.+?)/$', questionnaire),

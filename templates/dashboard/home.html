@@ -4,36 +4,36 @@
 
 {% load dw_tabs %}
 {% block body %}
-    {% activetab "main_nav" "dashboard" %}
-    {{ block.super }}
+{% activetab "main_nav" "dashboard" %}
+{{ block.super }}
 {% endblock %}
 
 {% block content %}
     <h1>Your projects <a href="{% url datawinners.project.views.index %}">view all projects</a></h1>
     <div id="accordion">
-        {% for project in projects %}
-            <h3>{{ project.name|capfirst }}</h3>
-            <div>
-                {% if project.submissions|length > 0 %}
-                    <table>
-                        {% for submission in project.submissions %}
-                            <tr>
-                                <td>{{ submission.created }}</td>
-                                <td>{{ submission.reporter }}</td>
-                                <td>{{ submission.error_message }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                {% else %}
-                    <strong>No submissions present for this project</strong><br/>
-                {% endif %}
-                <a href="{{ project.link }}">go to this project</a>
-            </div>
-        {% endfor %}
+    {% for project in projects %}
+        <h3>{{ project.name|capfirst }}</h3>
+        <div>
+            {% if project.submissions|length > 0 %}
+                <table>
+                {% for submission in project.submissions %}
+                    <tr>
+                        <td>{{ submission.created }}</td>
+                        <td>{{ submission.reporter }}</td>
+                        <td>{{ submission.error_message }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            {% else %}
+                <strong>No submissions present for this project</strong><br />
+            {% endif %}
+            <a href="{{ project.link }}">go to this project</a>
+        </div>
+    {% endfor %}
     </div>
     <script>
         $(function() {
-            $("#accordion").accordion({ autoHeight: false });
+            $( "#accordion" ).accordion({ autoHeight: false });
         });
     </script>
 {% endblock %}

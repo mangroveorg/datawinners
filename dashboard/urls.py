@@ -4,5 +4,5 @@ from django.conf.urls.defaults import patterns
 from datawinners.dashboard.views import dashboard
 
 urlpatterns = patterns('',
-        (r'^dashboard/$', dashboard),
-                       )
+    (r'^dashboard/$', dashboard),
+    )

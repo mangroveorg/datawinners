@@ -3,17 +3,16 @@
     <link rel="stylesheet" href="/media/javascript/OpenLayers-2.10/theme/default/style.css" media="screen">
 {% endblock %}
 {% block uncompress %}
-    <script type="text/javascript"
-            src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAnZmg29Q_0mZtvu5BH_VryhQDJx2ZFZ13J5-7A8c7wY9BG1mVIBS00VTjqRswD0o94QcdaRuT2OGGKw&amp;hl=en"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAnZmg29Q_0mZtvu5BH_VryhQDJx2ZFZ13J5-7A8c7wY9BG1mVIBS00VTjqRswD0o94QcdaRuT2OGGKw&amp;hl=en"></script>
 {% endblock %}
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/OpenLayers.js"></script>
-    {#    <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/canvas.js"></script>#}
+{#    <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/canvas.js"></script>#}
     <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script>
-        $(document).ready(function() {
-            init('{{ entity_type  }}');
-        });
+    $(document).ready(function(){
+        init('{{ entity_type  }}' );
+    });
 
     </script>
 
@@ -21,5 +20,5 @@
 
 
 {% block content %}
-    <div id="map" style="height:400px; margin-top:20px;" class="grid_23"></div>
+    <div id="map" style="height:400px; margin-top:20px;" class="grid_23"> </div>
 {% endblock %}

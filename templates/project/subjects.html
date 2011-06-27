@@ -145,15 +145,14 @@
                     <!-- or put a simple form for upload here -->
                 </noscript>
                 <h6>Upload a CSV or a XL file</h6>
-
                 <div id="file_uploader"></div>
             </div>
             <div id='error_table'>
                 <table>
                     <thead>
-                    <th>Row Number</th>
-                    <th>Row</th>
-                    <th>Error</th>
+                        <th>Row Number</th>
+                        <th>Row</th>
+                        <th>Error</th>
                     </thead>
                     <tbody id='error_tbody'>
 
@@ -171,7 +170,7 @@
             <a class="bold" href={{ previous }}>Define Project</a>
         </div>
         <a href="questionnaire.html#" class="cancel">Cancel</a>
-        <input id="submit-button" type="submit" value="Next Step: Questionnaire"/>
+        <input id="submit-button" type="submit"value="Next Step: Questionnaire"/>
         {{ block.super }}
     </form>
 {% endblock %}
