@@ -28,6 +28,13 @@
         <div id="container_content">
             <div id="page_title">
                 {% block section_title %}
+                    <h2 class="project_title">{{ project.name }}</h2>
+                    <div class="project_detail">
+                        <span class="project_status">Project status: {{ project.state }}</span>
+                        {% if  project.state  == 'Draft' %}
+                        <a href="{{ project_links.activate_project_link }}">Activate Project</a>
+                        {% endif %}
+                    </div>
                 {% endblock %}
             </div>
             <div class="container_24">

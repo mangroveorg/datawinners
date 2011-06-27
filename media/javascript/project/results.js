@@ -47,6 +47,9 @@
 $(document).ready(function(){
 
     $.ajaxSetup({ cache: false });
+    var screen_width = $(window).width() - 50;
+    console.log($("#data_record"))
+     $("#data_record").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
 
     $("#dateRangePicker").daterangepicker( { presetRanges: [
         {text: 'Past 7 days', dateStart: 'last week', dateEnd: 'Today' },
@@ -116,7 +119,8 @@ $(document).ready(function(){
         var path = window.location.pathname;
         var element_list = path.split("/");
         $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
-        $('#export_form').submit()})
+        $('#export_form').submit()
+    });
 
 });
 
