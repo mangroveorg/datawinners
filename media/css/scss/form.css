@@ -18,21 +18,10 @@ form ul li {
     display: block;
     float: left;
     width: 170px;
-    margin-right: 10px;
+    argin-right: 10px;
     font-weight: bold; }
-  form ul li span.error_arrow, form ul li #questionnaire-code-error {
-    background: url(/media/images/arrow_error.png) no-repeat left 7px;
-    position: absolute; }
-    form ul li span.error_arrow label, form ul li #questionnaire-code-error label {
-      float: none;
-      color: #FFFFFF;
-      display: inline-block !important;
-      background: #c20303;
-      padding: 3px 10px 3px 10px;
-      border: 1px solid #00000;
-      -moz-border-radius: 5px;
-      -webkit-moz-border-radius: 5px;
-      width: auto; }
+  form ul li input {
+    float: left; }
   form ul li #questionnaire-code-error {
     background: url(/media/images/arrow_error.png) no-repeat left 7px; }
     form ul li #questionnaire-code-error label {
@@ -66,6 +55,24 @@ form ul li {
       border: 1px solid #00000;
       -moz-border-radius: 5px;
       -webkit-moz-border-radius: 5px; }
+
+span.error_arrow, #questionnaire-code-error {
+  background: url(/media/images/arrow_error.png) no-repeat left 7px;
+  float: left; }
+  span.error_arrow label, #questionnaire-code-error label {
+    float: none;
+    color: #FFFFFF;
+    display: inline-block !important;
+    background: #c20303;
+    padding: 3px 10px 3px 10px;
+    border: 1px solid #00000;
+    -moz-border-radius: 5px;
+    -webkit-moz-border-radius: 5px;
+    width: auto;
+    margin-left: 10px !important;
+    font-size: 12px;
+    font-weight: normal;
+    max-width: 200px; }
 
 .message-box {
   background: #fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 4px;

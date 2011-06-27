@@ -20,7 +20,7 @@
   margin-bottom: 10px; }
 .wizard_content .content_wrapper .step_number {
   margin-left: 30px; }
-.wizard_content .content_wrapper .questionnaire_code > label {
+.wizard_content .content_wrapper .questionnaire_code li > label {
   display: inline;
   margin-left: 30px; }
 .wizard_content .content_wrapper .questionnare_header {
@@ -56,6 +56,8 @@
       font-weight: normal;
       width: auto;
       margin-left: 10px; }
+    .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question {
+      width: 1200px; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .add_link {
       display: block; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question_type {

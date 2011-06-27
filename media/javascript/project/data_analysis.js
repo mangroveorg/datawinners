@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var screen_width = $(window).width() - 50;
     DW.submit_data = function() {
+        $("#dateErrorDiv").hide();
         var aggregation_selectBox_Array = $(".aggregation_type");
         aggregationArray = new Array();
         aggregation_selectBox_Array.each(function() {
@@ -9,10 +10,14 @@ $(document).ready(function() {
         var time_range = $("#dateRangePicker").val().split("/");
         if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
-            hide_message();
+            $("#dateErrorDiv").show()
             time_range[0] = "";
             time_range[1] = "";
         }
+
+
+
+
         var start_time = time_range[0] || "";
         var end_time = time_range[1] || start_time;
         return [start_time , end_time]
@@ -77,9 +82,7 @@ $(document).ready(function() {
                         DW.wrap_table();
                     }});
     });
-    function hide_message() {
-        $('#dateErrorDiv label').delay(5000).fadeOut();
-    }
+
 
     $('#export_link').click(function() {
         var time_list = DW.submit_data();

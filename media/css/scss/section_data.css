@@ -26,6 +26,8 @@ table {
     .heading_block .date_range_box label, .heading_block .date_range_box select {
       font-weight: normal;
       float: left; }
+    .heading_block .date_range_box input {
+      float: left; }
   .heading_block label {
     float: left;
     margin-right: 10px;
