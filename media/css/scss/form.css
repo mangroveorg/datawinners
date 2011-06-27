@@ -20,9 +20,23 @@ form ul li {
     width: 170px;
     margin-right: 10px;
     font-weight: bold; }
-  form ul li label.error {
-    float: none;
-    margin-left: 180px; }
+  form ul li span.error_arrow, form ul li #questionnaire-code-error {
+    background: url(/media/images/arrow_error.png) no-repeat left 7px;
+    position: absolute; }
+    form ul li span.error_arrow label, form ul li #questionnaire-code-error label {
+      float: none;
+      color: #FFFFFF;
+      display: inline-block !important;
+      background: #c20303;
+      padding: 3px 10px 3px 10px;
+      border: 1px solid #00000;
+      -moz-border-radius: 5px;
+      -webkit-moz-border-radius: 5px;
+      width: auto; }
+  form ul li #questionnaire-code-error {
+    background: url(/media/images/arrow_error.png) no-repeat left 7px; }
+    form ul li #questionnaire-code-error label {
+      margin-left: 11px; }
   form ul li ul {
     float: left; }
     form ul li ul li {
@@ -35,9 +49,30 @@ form ul li {
       form ul li ul li label.error {
         margin-left: 0px; }
   form ul li ul.errorlist {
+    position: absolute;
     float: none;
-    margin-left: 180px;
-    color: #FF0000; }
+    color: #FFFFFF;
+    display: inline;
+    background: url(/media/images/arrow_error.png) no-repeat left 10px;
+    margin-top: -5px;
+    padding: 3px 10px 3px 10px;
+    border: 1px solid #00000;
+    -moz-border-radius: 5px;
+    -webkit-moz-border-radius: 5px;
+    opacity: 0.8; }
+    form ul li ul.errorlist li {
+      background: #c20303;
+      padding: 3px 10px 3px 10px;
+      border: 1px solid #00000;
+      -moz-border-radius: 5px;
+      -webkit-moz-border-radius: 5px; }
+
+.message-box {
+  background: #fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 4px;
+  color: #000000;
+  margin: 10px;
+  padding: 7px 10px 7px 40px;
+  border: 1px solid #FF0000; }
 
 .application_register form fieldset legend {
   font-size: 20px; }

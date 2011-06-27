@@ -36,7 +36,7 @@
             margin-left:30px;
         }
         .questionnaire_code{
-            label{
+            > label{
                 display:inline;
                 margin-left:30px;
             }
@@ -73,6 +73,12 @@
                     label{
                         font-size:16px;
                         float:none;
+                    }
+                    label.error{
+                        font-size:14px;
+                        font-weight:normal;
+                        width:auto;
+                        margin-left:10px;
                     }
                 }
                 .add_link{

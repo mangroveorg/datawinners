@@ -214,8 +214,15 @@ $(document).ready(function() {
                     choice_text:{
                         required: "#choice_text:visible"
                     }
+                },
+                wrapper: "span",
+                errorPlacement: function(error, element) {
+                    offset = element.offset();
+                    error.insertAfter(element)
+                    error.addClass('error_arrow');  // add a class to the wrapper
 
                 }
+
             });
 
     $("#submit-button").click(function() {
