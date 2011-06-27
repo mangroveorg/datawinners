@@ -8,32 +8,67 @@
 {{ block.super }}
 {% endblock %}
 
-{% block content %}
-    <h1>Your projects <a href="{% url datawinners.project.views.index %}">view all projects</a></h1>
-    <div id="accordion">
-    {% for project in projects %}
-        <h3>{{ project.name|capfirst }}</h3>
-        <div>
-            {% if project.submissions|length > 0 %}
-                <table>
-                {% for submission in project.submissions %}
-                    <tr>
-                        <td>{{ submission.created }}</td>
-                        <td>{{ submission.reporter }}</td>
-                        <td>{{ submission.error_message }}</td>
-                    </tr>
-                {% endfor %}
-                </table>
-            {% else %}
-                <strong>No submissions present for this project</strong><br />
-            {% endif %}
-            <a href="{{ project.link }}">go to this project</a>
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block navigation %}
+    <div class="grid_24 margin_bottom_10">
+        <div class="grid_11 margin_left_null">
+            <a href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
         </div>
-    {% endfor %}
+        <div class="grid_11 push_2 margin_right_null text_align_right">
+            <a href="#">Need help?</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </div>
+
+    <div id="how_to">
+        <h3>How to use Datawinners</h3>
+        <div>
+
+        </div>
+    </div>
+
+    <div class="grid_17 margin_left_null">
+        <h1>Your projects <a href="{% url datawinners.project.views.index %}">view all projects</a></h1>
+        <div id="projects">
+        {% for project in projects %}
+            <h3>{{ project.name|capfirst }}</h3>
+            <div>
+                {{ project.form }}<hr />
+                {% if project.submissions|length > 0 %}
+                    <table>
+                    {% for submission in project.submissions %}
+                        <tr>
+                            <td>{{ submission.created }}</td>
+                            <td>{{ submission.reporter }}</td>
+                            <td>{{ submission.message }}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    <strong>No submissions present for this project</strong><br />
+                {% endif %}
+                <a href="{{ project.link }}">go to this project</a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="grid_5 push_1 margin_right_null">
+        Nb SMS
     </div>
     <script>
         $(function() {
-            $( "#accordion" ).accordion({ autoHeight: false });
+            $( "#how_to" ).accordion({ collapsible: true, active: false });
+            $( "#projects" ).accordion({ autoHeight: false });
         });
     </script>
 {% endblock %}
