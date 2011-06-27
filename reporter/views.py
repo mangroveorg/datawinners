@@ -30,9 +30,10 @@ def register(request):
         form_errors=[]
         form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
         try:
-            telephone_number = form_data.get("telephone_number")
-            if not helper.unique(dbm, telephone_number):
-                raise MultipleReportersForANumberException(telephone_number)
+            entered_telephone_number = form_data.get("telephone_number")
+            tel_number = _get_telephone_number(entered_telephone_number)
+            if not helper.unique(dbm, tel_number):
+                raise MultipleReportersForANumberException(entered_telephone_number)
 
             web_player = WebPlayer(dbm,SubmissionHandler(dbm))
             response = web_player.accept(
@@ -55,7 +56,7 @@ def _get_data(form_data):
     commune = form_data.get('commune')
 
     if telephone_number is not None:
-        data[mapper['telephone_number']] = telephone_number
+        data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
     if geo_code is not None:
         data[mapper['geo_code']] = geo_code
     if commune is  not None:
@@ -65,3 +66,6 @@ def _get_data(form_data):
     data['form_code'] = REGISTRATION_FORM_CODE
     data['T'] = 'Reporter'
     return data
+
+def _get_telephone_number(number_as_given):
+    return "".join([num for num in number_as_given if num.isdigit()])

@@ -1,0 +1,28 @@
+{% extends 'step_wizard.html' %}
+
+{% block page_title %} Finish & Test {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $("#tab_items .finish").addClass("current");
+            set_current_tab();
+        });
+     </script>
+{% endblock %}
+
+{% block step_number %}
+    <h3>Step2: Finish and Test</h3>
+    <p>Description about the step goes here</p>
+{% endblock %}
+{% block content %}
+<h4>Finish</h4>
+
+{% endblock %}
