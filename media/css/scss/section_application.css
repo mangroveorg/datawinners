@@ -32,14 +32,16 @@
     padding: 15px 0 0px 0;
     width: 950px;
     border-radius: 1px solid red;
-    margin: 0 auto; }
+    margin: 0 auto;
+    font-size: 22px; }
     #container_content #page_title .project_title, #container_wizard #page_title .project_title {
       font-size: 22px; }
       #container_content #page_title .project_title:first-letter, #container_wizard #page_title .project_title:first-letter {
         text-transform: uppercase; }
     #container_content #page_title .project_detail, #container_wizard #page_title .project_detail {
       padding-bottom: 10px;
-      float: left; }
+      float: left;
+      font-size: 12px; }
       #container_content #page_title .project_detail .project_status, #container_wizard #page_title .project_detail .project_status {
         margin-right: 5px; }
       #container_content #page_title .project_detail a, #container_wizard #page_title .project_detail a {
