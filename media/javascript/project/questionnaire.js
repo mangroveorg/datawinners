@@ -74,10 +74,10 @@ DW.question.prototype = {
                       if(this.range_min() == "" && this.range_max() == "")
                         return DW.instruction_template.number;
                       if(this.range_min()=="")
-                        return $.sprintf(DW.instruction_template.max_number, this.range_max(), this.range_max()-1);
+                        return $.sprintf(DW.instruction_template.max_number, this.range_max());
                       if(this.range_max()=="")
-                        return $.sprintf(DW.instruction_template.min_number, this.range_min(), this.range_min()+1);
-                      return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max(), this.range_min()+1);
+                        return $.sprintf(DW.instruction_template.min_number, this.range_min());
+                      return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
                   }
                   if(this.type()=="date")
                     return $.sprintf(DW.instruction_template.date, this.date_format(), DW.instruction_template[this.date_format()]);

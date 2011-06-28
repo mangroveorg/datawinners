@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block step_number %}
-    <h3>Step1:
+    <h3>Step 1:
         Define Project</h3>
     <p>Fill out the following information to create your project</p>
 {% endblock %}
@@ -83,9 +83,10 @@
 
 
 {% endblock %}
+{% block previous %}
+{% endblock %}
 {% block buttons %}
-    <a href="#" class="cancel">Cancel</a>
-    <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
     {{ block.super }}
+    <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
 {% endblock %}
 </form>
