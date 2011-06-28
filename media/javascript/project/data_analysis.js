@@ -91,7 +91,7 @@ $(document).ready(function() {
         $("#aggregation-types").attr("value", JSON.stringify(aggregationArray));
         $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
         $("#start_time").attr("value", time_list[0]);
-        $("#end_time").attr("value", time_list[0]);
+        $("#end_time").attr("value", time_list[1]);
         $('#export_form').submit();
     });
 });
