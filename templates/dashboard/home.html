@@ -8,11 +8,6 @@
 {{ block.super }}
 {% endblock %}
 
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
-{% endblock %}
-
 {% block navigation %}
     <div class="grid_24 margin_bottom_10">
         <div class="grid_11 margin_left_null">
@@ -27,13 +22,14 @@
 {% block content %}
     <div>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
     </div>
 
     <div id="how_to">
         <h3>How to use Datawinners</h3>
         <div>
-
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.
         </div>
     </div>
 
@@ -41,9 +37,12 @@
         <h1>Your projects <a href="{% url datawinners.project.views.index %}">view all projects</a></h1>
         <div id="projects">
         {% for project in projects %}
-            <h3>{{ project.name|capfirst }}</h3>
+            <div class="project_header">
+                {{ project.name|capfirst }} -
+                {{ project.success }} successful |
+                {{ project.errors }} error{{ project.errors|pluralize }}
+            </div>
             <div>
-                {{ project.form }}<hr />
                 {% if project.submissions|length > 0 %}
                     <table>
                     {% for submission in project.submissions %}
@@ -68,7 +67,7 @@
     <script>
         $(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: false });
-            $( "#projects" ).accordion({ autoHeight: false });
+            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false });
         });
     </script>
 {% endblock %}
