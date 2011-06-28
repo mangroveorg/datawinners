@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime, timedelta
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from mock import patch
 from datawinners import initializer
 from datawinners.main.utils import get_database_manager_for_user
@@ -72,6 +72,8 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
 def load_manager_for_default_test_account():
     DEFAULT_USER = "tester150411@gmail.com"
     user = User.objects.get(username=DEFAULT_USER)
+    group = Group.objects.filter(name = "NGO Admins")
+    user.groups.add(group[0])
     return get_database_manager_for_user(user)
 
 
