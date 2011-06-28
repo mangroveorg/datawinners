@@ -8,19 +8,22 @@ $(document).ready(function() {
             aggregationArray.push($(this).val())
         });
         var time_range = $("#dateRangePicker").val().split("/");
+        if(time_range[0] == ""){
+            time_range[0]='01-01-1996';
+            time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
+            return time_range;
+        }
         if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
-            $("#dateErrorDiv").show()
+            $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
         }
-        var start_time = time_range[0];
-        var end_time = time_range[1];
-        return [start_time , end_time]
-    }
+        return time_range;
+    };
     DW.wrap_table = function() {
         $("#data_analysis").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
-    }
+    };
     $("#dateRangePicker").daterangepicker({
                 presetRanges: [
                     {text: 'Current month', dateStart: function() {
