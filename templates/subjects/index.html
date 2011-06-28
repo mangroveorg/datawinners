@@ -9,21 +9,26 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+{% endblock %}
+
 {% load i18n %}
 {% block content %}
     <div>
         <fieldset>
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <ul>
-                    <li class="{{ form.file.css_classes }} form-row-10px">
+                <ul class="import_subjects">
+                    <li class="{{ form.file.css_classes }} browse_subjects">
                         {{ form.file.label_tag }}
                         {{ form.file }}
                         {{ form.file.errors }}
                     </li>
-                    <li>
+                    <li class="add_subjects">
                         <input type="submit" value="Upload" class="button"/>
-                        <a class="float_right" href="{% url datawinners.admin.views.register_entity %}">Add a subject</a>
+                        <a class="float_right add_subject_link" href="{% url datawinners.admin.views.register_entity %}">Add a subject</a>
                     </li>
                 </ul>
             </form>

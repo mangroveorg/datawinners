@@ -122,3 +122,17 @@
         color:#FF0000;
     }
 }
+.import_subjects{
+    .browse_subjects{
+        label{
+            float:none;
+        }
+    }
+    .add_subjects{
+        .add_subject_link{
+            position:relative;
+            top:10px;
+            margin-left:10px;
+        }
+    }
+}
