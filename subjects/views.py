@@ -46,7 +46,7 @@ def _laod_all_subjects(request):
     return data
 
 
-def _tabulate_output(rows):
+def _tabulate_failures(rows):
     tabulated_data = []
     errors = ''
     for row in rows:
@@ -70,7 +70,7 @@ def index(request):
                 success = len([index for index in response if index.success])
                 total = len(response)
                 failure = [index for index in enumerate(response) if not index[1].success]
-                failure_imports = _tabulate_output(failure)
+                failure_imports = _tabulate_failures(failure)
                 messages.info(request, '%s of %s records uploaded' % (success, total))
             except CSVParserInvalidHeaderFormatException as e:
                 messages.error(request, e.message)
@@ -101,7 +101,7 @@ def import_subjects_from_project_wizard(request):
         successful_imports = len([index for index in response if index.success])
         total = len(response)
         failure = [index for index in enumerate(response) if not index[1].success]
-        failure_imports = _tabulate_output(failure)
+        failure_imports = _tabulate_failures(failure)
         if total == successful_imports:
             success = True
         success_message = '%s of %s records uploaded' % (successful_imports, total)
