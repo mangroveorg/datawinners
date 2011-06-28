@@ -30,7 +30,7 @@ $(document).ready(function() {
                     {text: 'Current month', dateStart: function() {
                         return Date.parse('today').moveToFirstDayOfMonth();
                     }, dateEnd: 'today' },
-                    {text: 'Last Month', dateStart: 'last month', dateEnd: 'today' },
+                    {text: 'Last Month', dateStart: function(){return Date.parse('last month').moveToFirstDayOfMonth();}, dateEnd: function(){return Date.parse('last month').moveToLastDayOfMonth();} },
                     {text: 'Year to date', dateStart: function() {
                         var x = Date.parse('today');
                         x.setMonth(0);
