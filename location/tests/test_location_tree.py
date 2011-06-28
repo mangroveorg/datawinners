@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from datawinners.location.LocationTree import LocationTree
+from datawinners.location.LocationTree import LocationTree, get_locations_for_country
 
 
 class TestLocationTree(unittest.TestCase):
@@ -24,9 +24,11 @@ class TestLocationTree(unittest.TestCase):
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):
-        self.assertEqual("Ambatomanjaka",self.tree.get_location_for_geocode(lat=-18.777180,long=46.854321 ))
+        self.assertEqual("Ambatomanjaka", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321))
         self.assertFalse(self.tree.exists("XYZ"))
 
+    def test_should_get_filtered_list_lowest_levels(self):
+        self.assertEqual(["Zazafotsy, Fianarantsoa","Zoma Bealoka, Antananarivo"], get_locations_for_country(country="Madagascar", start_with="z"))
 
 
 

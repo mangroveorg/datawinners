@@ -1,12 +1,22 @@
 {% extends 'layout_application.html' %}
 
 {% block page_title %} Register Reporter {% endblock %}
+{% block section_title %} Register a Reporter (Field Staff){% endblock %}
 {% block page_js %}
+    {{ block.super }}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/reporter_register.js"></script>
 {% endblock %}
 
 {% block page_scss %}
+    {{ block.super }}
     <link rel="stylesheet" href="/media/css/scss/section_register.scss" media="screen">
+{% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
 {% endblock %}
 
 
@@ -37,9 +47,6 @@
              <form id="registration_form" action="" method="POST">
                     {% csrf_token %}
                         <ul class="span-7 column border">
-                            <li>
-                                <h3 class="title">Register a Reporter (Field Staff)</h3>
-                            </li>
                             <li class="{{ form.first_name.css_classes }} form-row-10px">
                                 {{ form.first_name.label_tag }}
                                 {{ form.first_name }}
@@ -55,13 +62,7 @@
                                 {{ form.commune }}
                                 {{ form.commune.errors }}
                             </li>
-                            <li class="{{ form.level2.css_classes }} form-row-10px">
-                                {{ form.level2.label_tag }}
-                                {{ form.level2 }}
-                                <div>
-                                    {{ form.level2.errors }}
-                                </div>
-                            </li>
+                            
                             <li class="{{ form.geo_code.css_classes }} form-row-10px">
                                 {{ form.geo_code.label_tag }}
                                 {{ form.geo_code }}
@@ -70,6 +71,7 @@
                             <li>
                                 <input type="submit" value="Register" class="button margin_top_20" />
                             </li>
+
                         </ul>
              </form>
         </fieldset>

@@ -25,6 +25,7 @@ class LocationLevel(models.Model):
     objects = models.GeoManager()
 
 
+
 # Auto-generated `LayerMapping` dictionary for MDG4Borders model
 location_level_mapping = {
     'id_0' : 'ID_0',
