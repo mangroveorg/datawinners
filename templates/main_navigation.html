@@ -8,8 +8,8 @@
             <li  class ="{% ifactivetab 'main_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="{% url datawinners.project.views.index %}">Projects</a>
             </li>
-            <li  class ="{% ifactivetab 'main_nav' 'collectors' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="#">Collectors</a>
+            <li  class ="{% ifactivetab 'main_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
+                <a href="{% url datawinners.datasenders.views.index %}">Data Senders</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="{% url datawinners.subjects.views.index %}">Subjects</a>
