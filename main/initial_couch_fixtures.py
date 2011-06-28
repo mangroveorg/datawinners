@@ -296,6 +296,7 @@ def load_sms_data_for_cli001(manager):
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
+    # Total number of identical records = 3
     message1 = "cli001 +EID cid001 +NA Mr. Tessy +FA 58 +RD 28.02.2011 +BG c +SY ade +GPS 79.2 20.34567"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cid002 +NA Mr. Adam +FA 62 +RD 15.02.2011 +BG a +SY ab +GPS 74.2678 23.3567"
@@ -304,6 +305,7 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(MARCH)
+    # Total number of identical records = 4
     message1 = "cli001 +EID cid004 +NA Jannita +FA 90 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cid005 +NA Aanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
@@ -336,6 +338,7 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(DEC_2010)
+    # Total number of identical records = 4
     message1 = "cli001 +EID cli25 +FA 47 +RD 15.12.2010 +BG d +SY ace +GPS -58.3452 19.3345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli23 +NA De'melo +FA 38 +RD 27.12.2010 +BG c +SY ba +GPS 81.672 92.33456"
@@ -346,13 +349,14 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(NOV_2010)
+    # Total number of identical records = 3
     message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 07.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli20 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = 'cli001 +EID cli8 +NA Kanda (",) +FA 34 +RD 27.11.2010 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 07.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
+    message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 17.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli20 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
@@ -360,60 +364,64 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(PREV_MONTH)
+    # Total number of identical records = 4
     message1 = "cli001 +EID cli9 +NA Demelo +FA 38 +RD 17.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 05.01.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
+    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 05.05.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli11 +NA Aàntra +FA 98 +RD 12.02.2011 +BG a +GPS -45.234 89.32345"
+    message1 = "cli001 +EID cli11 +NA Aàntra +FA 98 +RD 12.05.2011 +BG a +GPS -45.234 89.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli12 +NA ànnita +FA 37 +RD 05.12.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 37 +RD 05.05.2011 +BG d +SY cbe +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli9 +NA Demelo +FA 38 +RD 17.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 05.01.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
+    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 02.05.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli11 +NA Aàntra +FA 95 +RD 12.02.2011 +BG a +GPS -45.234 89.32345"
+    message1 = "cli001 +EID cli11 +NA Aàntra +FA 95 +RD 12.05.2011 +BG a +GPS -45.234 89.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli12 +NA ànnita +FA 35 +RD 05.12.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 35 +RD 09.05.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli9 +NA Demelo +FA 32 +RD 17.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
+    message1 = "cli001 +EID cli9 +NA Demelo +FA 32 +RD 27.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli10 +NA Zorro +FA 43 +RD 05.01.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
+    message1 = "cli001 +EID cli10 +NA Zorro +FA 43 +RD 05.05.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli11 +NA Aàntra +FA 91 +RD 12.02.2011 +BG a +GPS -45.234 89.32345"
+    message1 = "cli001 +EID cli11 +NA Aàntra +FA 91 +RD 12.05.2011 +BG a +GPS -45.234 89.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli12 +NA ànnita +FA 45 +RD 05.12.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 45 +RD 15.05.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(THIS_MONTH)
-    message1 = "cli001 +EID cli13 +NA Dmanda +FA 69 +RD 05.02.2011 +BG c +SY ce +GPS 40.2 69.3123"
+    # Total number of identical records = 4
+    message1 = "cli001 +EID cli13 +NA Dmanda +FA 69 +RD 05.06.2011 +BG c +SY ce +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli14 +NA Vamand +FA 36 +RD 05.02.2011 +BG a +SY ace +GPS 58.3452 115.3345"
+    message1 = "cli001 +EID cli14 +NA Vamand +FA 36 +RD 03.06.2011 +BG a +SY ace +GPS 58.3452 115.3345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli15 +NA M!lo +FA 88 +RD 17.05.2011 +SY ba +GPS 19.672 92.33456"
+    message1 = "cli001 +EID cli15 +NA M!lo +FA 88 +RD 02.06.2011 +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli16 +NA K!llo +FA 88 +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli13 +NA Dmanda +FA 89 +RD 05.02.2011 +BG c +SY ce +GPS 40.2 69.3123"
+    message1 = "cli001 +EID cli13 +NA Dmanda +FA 89 +RD 04.06.2011 +BG c +SY ce +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli14 +NA Vamand +FA 56 +RD 05.02.2011 +BG a +SY ace +GPS 58.3452 115.3345"
+    message1 = "cli001 +EID cli14 +NA Vamand +FA 56 +RD 01.06.2011 +BG a +SY ace +GPS 58.3452 115.3345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli15 +NA M!lo +FA 45 +RD 17.05.2011 +SY ba +GPS 19.672 92.33456"
+    message1 = "cli001 +EID cli15 +NA M!lo +FA 45 +RD 07.06.2011 +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli16 +NA K!llo +FA 28 +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+
     datetime_mocker.end_mock()
 
-    message1 = "cli001 +EID cli17 +NA Catty +FA 78 +RD 05.01.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
+    # Total number of identical records = 3
+    message1 = "cli001 +EID cli17 +NA Catty +FA 78 +RD 15.06.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli18 +NA àntra +FA 28 +RD 12.02.2011 +BG a +SY adb +GPS -45.234 169.32345"
+    message1 = "cli001 +EID cli18 +NA àntra +FA 28 +RD 12.06.2011 +BG a +SY adb +GPS -45.234 169.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli19 +NA Tinnita +FA 37 +BG d +SY ace +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
-    message1 = "cli001 +EID cli17 +NA Catty +FA 98 +RD 05.01.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
+    message1 = "cli001 +EID cli17 +NA Catty +FA 98 +RD 25.06.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli18 +NA àntra +FA 58 +RD 12.02.2011 +BG a +SY adb +GPS -45.234 169.32345"
+    message1 = "cli001 +EID cli18 +NA àntra +FA 58 +RD 22.06.2011 +BG a +SY adb +GPS -45.234 169.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli19 +NA Tinnita +FA 27 +BG d +SY ace +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
