@@ -14,12 +14,8 @@ $(document).ready(function() {
             time_range[0] = "";
             time_range[1] = "";
         }
-
-
-
-
-        var start_time = time_range[0] || "";
-        var end_time = time_range[1] || start_time;
+        var start_time = time_range[0];
+        var end_time = time_range[1];
         return [start_time , end_time]
     }
     DW.wrap_table = function() {
@@ -40,19 +36,7 @@ $(document).ready(function() {
                 ],
                 presets: {dateRange: 'Date Range'},
                 earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
-                onClose:function() {
-                   var time_list = DW.submit_data();
-                    $.ajax({
-                    type: 'POST',
-                    url: window.location.pathname,
-                    data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
-                    success:function(response) {
-                        var response_data = JSON.parse(response);
-                        DW.dataBinding(response_data, true, false);
-                        DW.wrap_table();
-                    }});
-
-                }
+               
             });
     DW.dataBinding = function(data, destroy, retrive) {
         $('#data_analysis').dataTable({
@@ -93,5 +77,18 @@ $(document).ready(function() {
         $("#start_time").attr("value", time_list[0]);
         $("#end_time").attr("value", time_list[1]);
         $('#export_form').submit();
+    });
+
+    $('#time_submit').click(function(){
+        var time_list = DW.submit_data();
+        $.ajax({
+            type: 'POST',
+            url: window.location.pathname,
+            data: {'aggregation-types':JSON.stringify(aggregationArray), 'start_time':time_list[0], 'end_time': time_list[1]},
+            success:function(response) {
+                var response_data = JSON.parse(response);
+                DW.dataBinding(response_data, true, false);
+                DW.wrap_table();
+            }});
     });
 });
