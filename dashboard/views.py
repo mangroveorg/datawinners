@@ -26,7 +26,6 @@ def get_submissions(dbm, form_code, questions_num):
             reporter = reporter[0]["name"]
             if row.value["status"]:
                 if len(row.value["values"]) < questions_num:
-                    #actually partial data not considered to be an error
                     message = "Error : Partial data received"
                 else:
                     message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
@@ -35,13 +34,11 @@ def get_submissions(dbm, form_code, questions_num):
             submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter)
             submission_list.append(submission)
 
-        rows = dbm.load_all_rows_in_view('submission_status', startkey=[form_code], endkey=[form_code, {}],
-                                         group=True, reduce=True)
+        rows = dbm.load_all_rows_in_view('submissionlog', startkey=[form_code], endkey=[form_code, {}],
+                                         group=True, group_level=1, reduce=True)
         for row in rows:
-            if row['key'][1]:
-                submission_success = row['value']
-            else:
-                submission_errors = row['value']
+            submission_success = row["value"]["success"]
+            submission_errors = row["value"]["count"] - row["value"]["success"]
 
     return submission_list, submission_success, submission_errors
 
