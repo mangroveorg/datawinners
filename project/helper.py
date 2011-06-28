@@ -19,6 +19,7 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
+
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
         #  Check if is existing
@@ -233,7 +234,7 @@ def convert_to_json(data_list):
 def get_formatted_time_string(time_val):
     try:
         time_val = datetime.strptime(time_val, '%d-%m-%Y %H:%M:%S')
-    except:
+    except Exception:
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')
 
