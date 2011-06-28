@@ -64,20 +64,14 @@ def questionnaire(request, project_id=None):
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
 
-def _remove_reporter(entity_types):
-    removable = None
-    for each in entity_types:
-        if each[0].lower() == 'reporter':
-            removable = each
-    entity_types.remove(removable)
-    return entity_types
+
 
 
 @login_required(login_url='/login')
 def create_profile(request):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
-    entity_list = _remove_reporter(entity_list)
+    entity_list = helper.remove_reporter(entity_list)
     project_summary = dict(name='New Project')
     if request.method == 'GET':
         form = ProjectProfile(entity_list=entity_list,initial={'activity_report':'no'})

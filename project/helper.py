@@ -250,3 +250,12 @@ def get_excel_sheet(raw_data, sheet_name):
 def hide_entity_question(fields):
     cleaned_fields = [each for each in fields if not each.is_entity_field]
     return cleaned_fields
+
+def remove_reporter(entity_type_list):
+    removable = None
+    for each in entity_type_list:
+        if each[0].lower() == 'reporter':
+            removable = each
+    entity_type_list.remove(removable)
+    entity_type_list.sort()
+    return entity_type_list

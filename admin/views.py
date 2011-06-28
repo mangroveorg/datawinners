@@ -9,6 +9,7 @@ from datawinners.main.utils import get_database_manager
 from mangrove.datastore.entity import define_type, get_all_entity_types
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined
 from datawinners.submission.views import submit
+from datawinners.project import helper as project_helper
 
 
 @login_required(login_url='/login')
@@ -30,17 +31,10 @@ def create_entity(request):
     return render_to_response("admin/entity_management.html", {"form": form, 'message': message}, context_instance=RequestContext(request))
 
 
-def remove_reporter(entity_types):
-    for each in entity_types:
-        if each[0].lower() == 'reporter':
-            removable = each
-    entity_types.remove(removable)
-    return entity_types
-
 @login_required(login_url='/login')
 def register_entity(request):
     db_manager = get_database_manager(request)
     entity_types = get_all_entity_types(db_manager)
     removable = ""
-    remove_reporter(entity_types)
+    project_helper.remove_reporter(entity_types)
     return render_to_response("admin/register_entity.html", {"post_url": reverse(submit), "entity_types": entity_types}, context_instance=RequestContext(request))
