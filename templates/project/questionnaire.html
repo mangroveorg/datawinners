@@ -54,7 +54,7 @@
 
 
 {% block step_number %}
-    <h3>Step2: Questionnaire</h3>
+    <h3>Step 3: Questionnaire</h3>
     <p>Description about the step goes here</p>
 {% endblock %}
 {% block content %}
@@ -192,11 +192,6 @@
 </form>
 {% endblock %}
 {% block buttons %}
-        <div class="grid_5 previous_step">
-            <a href={{ previous }}>Previous Step:</a>
-            <a class="bold" href={{ previous }}>Define Subject</a>
-        </div>
-        <a href="questionnaire.html#" class="cancel">Cancel</a>
-        <input id="submit-button" type="button" value="Next Step: People"/>
-        {{ block.super }}
+     {{ block.super }}
+    <input id="submit-button" type="button" value="Next Step: People"/>
 {% endblock %}

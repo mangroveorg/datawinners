@@ -163,14 +163,6 @@
     </div>
 {% endblock %}
 {% block buttons %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div class="grid_5 previous_step">
-            <a href={{ previous }}>Previous Step:</a>
-            <a class="bold" href={{ previous }}>Define Project</a>
-        </div>
-        <a href="questionnaire.html#" class="cancel">Cancel</a>
+    {{ block.super }}
         <input id="submit-button" type="submit"value="Next Step: Questionnaire"/>
-        {{ block.super }}
-    </form>
 {% endblock %}

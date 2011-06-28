@@ -27,9 +27,18 @@
 
             <div class="grid_24 buttons">
                  <div class="text_align_right buttons">
-                     {% block buttons %}
-                         <input id="submit_button_right" type="button"/>
-                     {% endblock %}
+                   <form action="" method="POST">
+                       {% csrf_token %}
+                      {% block previous %}
+                      <div class="grid_5 previous_step">
+                          <a href={{ previous }}>Previous Step:</a>
+                          <a class="bold" href={{ previous }}>Define Project</a>
+                      </div>
+                      {% endblock %}
+                      <a href="#" class="cancel">Cancel</a>
+                     {% block buttons %} {% endblock %}
+                   <input id="submit_button_right" type="button"/>
+                   </form>
 
                  </div>
             </div>
