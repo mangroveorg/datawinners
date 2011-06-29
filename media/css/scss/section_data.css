@@ -17,6 +17,9 @@ table {
       padding-right: 5px;
       padding-left: 5px; }
 
+#container_header_application #main_tab .logo img {
+  margin-left: 15px; }
+
 .heading_block {
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 5px;
@@ -142,7 +145,7 @@ table {
 
 #dateRangePicker {
   width: 220px;
-  margin-left: 5px;
+  margin: 0 10px 0 5px;
   padding-left: 5px; }
 
 .ui-daterangepickercontain .ui-daterangepicker {
