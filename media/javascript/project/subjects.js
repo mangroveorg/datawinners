@@ -100,8 +100,11 @@ $(document).ready(function() {
                 $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
             }
             else {
-                $("#error_table").show();
-                $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
+                $('<span id="message" class="error_message">' + responseJSON.error_message + '</span>').insertAfter($('#file-uploader'));
+                if(responseJSON.failure_imports.length > 0)
+                {
+                    $("#error_table").show();
+                }
                 $.each(responseJSON.failure_imports, function(index, element) {
                     $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
                             + element.error + "</td></tr>")
