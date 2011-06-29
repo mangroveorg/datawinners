@@ -13,7 +13,11 @@
 {% block content%}
 <div class="span-18 box">
   <div class = "form-5px">
-
+        {% if message %}
+             <div id="flash-message" class="success">
+                 {{ message }}
+             </div>
+        {% endif %}
     <form method="post" action="/account/" name="form">
       {% csrf_token %}
 
@@ -80,7 +84,7 @@
         </li>
         {{ organization_form.org_id.as_hidden }}
         <li class="margin_top_20">
-          <input type="submit" value="Edit" class="button" />
+          <input type="submit" value="Update" class="button" />
         </li>
       </ul>
     </form>

@@ -29,7 +29,8 @@ def settings(request):
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
-        return HttpResponseRedirect('/home') if not organization_form.errors  else render_to_response("account/org_settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
+        message = "" if organization_form.errors else 'Settings have been updated successfully'
+        return render_to_response("account/org_settings.html", {'organization_form' : organization_form, 'message':message}, context_instance=RequestContext(request))
     
     
 @login_required
