@@ -25,10 +25,7 @@ def get_submissions(dbm, form_code, questions_num):
             reporter = find_reporter(dbm, row.value["source"])
             reporter = reporter[0]["name"]
             if row.value["status"]:
-                if len(row.value["values"]) < questions_num:
-                    message = "Error : Partial data received"
-                else:
-                    message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
+                message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
             else:
                 message = row.value["error_message"]
             submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter)
