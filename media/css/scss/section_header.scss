@@ -26,7 +26,7 @@
 #container_header_application{
     #container_header_wizard{
         background:none;
-        height:60px;
+        height:30px;
     #header{
         .login{
             color:#CCCCCC;
@@ -40,20 +40,22 @@
                 }
             }
         }
-        .logo{
-            position:relative;
-            top:40px;
-        }
     }
 
     }
     #main_tab{
         text-align:right;
+        float:left;
+        .logo{
+            padding-top:10px;
+            margin-right:28px;
+            img{
+                float:left;
+            }
+        }
         ul{
             float:right;
             position:relative;
-            /*left:475px;*/
-            top:-30px;
             li{
                 padding:10px;
                 float:left;

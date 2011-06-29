@@ -1,11 +1,9 @@
 <div id="container_header_wizard" >
     <div class="container_24" id="header_wizard">
         <div id="header" class="grid_24">
-            <div class="grid_12 alpha logo">
-                <img src="/media/images/datawinner_logo.png"/>
-            </div>
+
             {% if user.is_authenticated %}
-                <div class="grid_12 omega login text_align_right">
+                <div class="grid_24 omega login text_align_right">
                     <span class="welcome">Welcome {{ user.first_name }}! </span>
                     <span><a href="{% url account.views.edit_user %}">Your Profile</a></span>
                     <span><a href="{% url account.views.settings %}">Account</a></span>
@@ -13,7 +11,7 @@
                     <span><a href="#" class="padding_right_null">Help</a></span>
                 </div>
             {% else %}
-                <div class="grid_12 omega login text_align_right">
+                <div class="grid_24 omega login text_align_right">
                     <span class="welcome">Welcome Guest!</span>
                     <span>  <a href="{% url django.contrib.auth.views.login %}">Sign in</a> </span>
                     <span>  <a href="{% url registration.views.register %}">Sign up</a> </span>

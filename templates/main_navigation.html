@@ -1,6 +1,9 @@
 {% load dw_tabs %}
 {% block main_navigation %}
-    <div id="main_tab" class="grid_24">
+    <div id="main_tab">
+        <div class="grid_11 alpha logo">
+                <img src="/media/images/datawinner_logo.png"/>
+        </div>
         <ul>
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="{% url datawinners.accountmanagement.views.home %}">Dashboard</a>
