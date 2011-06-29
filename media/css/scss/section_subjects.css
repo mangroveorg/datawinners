@@ -34,6 +34,11 @@
         font-weight: normal;
         margin-left: 120px;
         width: auto; }
+    .add_subject_form ul li .location_section {
+      margin-left: 120px; }
+      .add_subject_form ul li .location_section label {
+        display: block;
+        float: none; }
     .add_subject_form ul li .auto_gen_checkbox label {
       float: none;
       display: inline; }
