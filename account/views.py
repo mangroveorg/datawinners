@@ -87,6 +87,7 @@ def edit_user(request):
         return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
+        message = ""
         if form.is_valid():
             user = User.objects.get(username = request.user.username)
             user.first_name  = form.cleaned_data['first_name']
@@ -98,5 +99,6 @@ def edit_user(request):
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
             ngo_user_profile.skype = form.cleaned_data['skype']
             ngo_user_profile.save()
-            return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
+            message = 'Profile has been updated successfully'
+        return render_to_response("account/edit_profile.html", {'form' : form, 'message':message}, context_instance=RequestContext(request))
 

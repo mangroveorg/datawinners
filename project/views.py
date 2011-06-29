@@ -80,9 +80,6 @@ def create_profile(request):
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
-#        if form.activity_report == 'activity report':
-#            entity_type = ['reporter']
-#        else:
         entity_type=form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
@@ -107,6 +104,7 @@ def create_profile(request):
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request)
     entity_list = get_all_entity_types(manager)
+    entity_list = helper.remove_reporter(entity_list)
     project = models.get_project(project_id, dbm=manager)
     if request.method == 'GET':
         form = ProjectProfile(data=project, entity_list=entity_list)
