@@ -56,14 +56,20 @@ def _get_data(form_data):
     data = dict()
     telephone_number = form_data.get('telephone_number')
     geo_code = form_data.get('geo_code')
-    commune = form_data.get('location')
+    display_location = form_data.get('location')
+
+    lowest_level_location,high_level_location= tuple(display_location.split(','))
+
+    tree = LocationTree()
+    location_hierarchy = tree.get_hierarchy_path(lowest_level_location)
 
     if telephone_number is not None:
         data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
     if geo_code is not None:
         data[mapper['geo_code']] = geo_code
-    if commune is  not None:
-        data[mapper['location']] = commune
+    if location_hierarchy is  not None:
+    #TODO change this when we decide how we will process location
+        data[mapper['location']] = str(location_hierarchy)
 
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
