@@ -71,7 +71,8 @@ def new_user(request):
 @is_admin
 def users(request):
     if request.method == 'GET':
-        users = NGOUserProfile.objects.all()
+        org_id = request.user.get_profile().org_id
+        users = NGOUserProfile.objects.filter(org_id = org_id)
         return render_to_response("account/users_list.html", {'users' : users}, context_instance=RequestContext(request))
 
 
