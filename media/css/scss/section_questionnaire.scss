@@ -4,11 +4,14 @@
     .inline{
         input{
             width:40px;
+            float:none;
         }
     }
 }
 #range_max, #range_min{
     width:60px;
+    float:none;
+    margin-bottom:10px;
 }
 
 /*The content styles for wizard based pages*/
