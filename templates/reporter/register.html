@@ -57,10 +57,12 @@
                                 {{ form.telephone_number }}
                                 {{ form.telephone_number.errors }}
                             </li>
-                            <li class="{{ form.commune.css_classes }} form-row-10px">
-                                {{ form.commune.label_tag }}
-                                {{ form.commune }}
-                                {{ form.commune.errors }}
+                            <li class="{{ form.location.css_classes }} form-row-10px">
+                                {{ form.location.label_tag }}
+                                {{ form.location }}
+                                <div>
+                                    {{ form.location.errors }}
+                                </div>
                             </li>
                             
                             <li class="{{ form.geo_code.css_classes }} form-row-10px">

@@ -24,9 +24,6 @@ def register(request):
         form = ReporterRegistrationForm()
         return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
 
-
-
-
     form = ReporterRegistrationForm(request.POST)
     message = None
     success = True
@@ -55,18 +52,18 @@ def register(request):
 
 def _get_data(form_data):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form  model
-    mapper = {'telephone_number': 'M', 'geo_code': 'G', 'Name': 'N', 'commune': 'L'}
+    mapper = {'telephone_number': 'M', 'geo_code': 'G', 'Name': 'N', 'location': 'L'}
     data = dict()
     telephone_number = form_data.get('telephone_number')
     geo_code = form_data.get('geo_code')
-    commune = form_data.get('commune')
+    commune = form_data.get('location')
 
     if telephone_number is not None:
         data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
     if geo_code is not None:
         data[mapper['geo_code']] = geo_code
     if commune is  not None:
-        data[mapper['commune']] = commune
+        data[mapper['location']] = commune
 
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE

@@ -4,6 +4,7 @@ from networkx import *
 from datawinners.location.models import LocationLevel
 
 ROOT = "root"
+FILTER_LIMIT = 10
 
 
 def _get_lowest_level(row):
@@ -33,7 +34,7 @@ def _get_places(lowest_level_field_name, place):
 def get_locations_for_country(country, start_with):
     lowest_level_field_name = _get_lowest_level_field_name(country)
     startswith_field = lowest_level_field_name + "__istartswith"
-    results = eval("LocationLevel.objects.filter(%s='%s')[:10]" % (startswith_field,start_with))
+    results = LocationLevel.objects.filter(**{startswith_field:start_with})[:FILTER_LIMIT]
     formatted_results=[]
     for place in results:
         level_1_place, lowest_level_place = _get_places(lowest_level_field_name, place)

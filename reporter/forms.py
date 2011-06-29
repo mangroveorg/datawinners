@@ -9,16 +9,6 @@ from django import forms
 
 
 class ReporterRegistrationForm(Form):
-    def __init__(self, *args, **kwargs):
-        super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
-        location_tree = LocationTree()
-        countries = location_tree.countries
-        self.fields['commune'] = forms.ChoiceField(choices=[(country, country) for country in countries])
-        if len(countries) == 1:
-            level_2_places = location_tree.get_next_level(countries[0])
-            print level_2_places
-            self.fields['level2'] = forms.ChoiceField(
-                choices=[(level2, level2) for level2 in level_2_places])
 
     error_css_class = 'error'
     required_css_class = 'required'
@@ -30,6 +20,7 @@ class ReporterRegistrationForm(Form):
     telephone_number = RegexField(required=True, regex="^\d+(-\d+)*$", max_length=15, label="* Mobile Number",
                                   error_message="Please enter a valid phone number")
     geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
+    location = CharField(max_length=30, required=False, label="Enter location")
 
 
     def clean_geo_code(self):
@@ -46,7 +37,7 @@ class ReporterRegistrationForm(Form):
         return geo_code_string
 
     def clean(self):
-        a = self.cleaned_data.get("commune")
+        a = self.cleaned_data.get("location")
         b = self.cleaned_data.get("geo_code")
         if not (bool(a) or bool(b)):
             raise ValidationError(
