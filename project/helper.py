@@ -19,6 +19,7 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
+
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
         #  Check if is existing
@@ -103,7 +104,7 @@ def _create_text_question(post_dict, ddtype):
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     length = TextConstraint(min=min_length, max=max_length)
     return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                     entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype)
+                     entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype, instruction=post_dict.get("instruction"))
 
 
 def _create_integer_question(post_dict, ddtype):
@@ -113,22 +114,22 @@ def _create_integer_question(post_dict, ddtype):
     min_range = min_range_from_post if not is_empty(min_range_from_post) else None
     range = NumericConstraint(min=min_range, max=max_range)
     return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                        range=range, ddtype=ddtype)
+                        range=range, ddtype=ddtype, instruction=post_dict.get("instruction"))
 
 
 def _create_date_question(post_dict, ddtype):
     return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                     date_format=post_dict.get('date_format'), ddtype=ddtype)
+                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"))
 
 
 def _create_geo_code_question(post_dict, ddtype):
-    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype)
+    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype, instruction=post_dict.get("instruction"))
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
     options = [choice.get("text") for choice in post_dict["choices"]]
     return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                       options=options, single_select_flag=single_select_flag, ddtype=ddtype)
+                       options=options, single_select_flag=single_select_flag, ddtype=ddtype, instruction=post_dict.get("instruction"))
 
 
 def get_submissions(questions, submissions):
@@ -233,7 +234,7 @@ def convert_to_json(data_list):
 def get_formatted_time_string(time_val):
     try:
         time_val = datetime.strptime(time_val, '%d-%m-%Y %H:%M:%S')
-    except:
+    except Exception:
         return None
     return time_val.strftime('%d-%m-%Y %H:%M:%S')
 
@@ -249,3 +250,12 @@ def get_excel_sheet(raw_data, sheet_name):
 def hide_entity_question(fields):
     cleaned_fields = [each for each in fields if not each.is_entity_field]
     return cleaned_fields
+
+def remove_reporter(entity_type_list):
+    removable = None
+    for each in entity_type_list:
+        if each[0].lower() == 'reporter':
+            removable = each
+    entity_type_list.remove(removable)
+    entity_type_list.sort()
+    return entity_type_list

@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
@@ -43,10 +44,11 @@ def new_user(request):
         form = UserProfileForm(request.POST)
 
         if form.is_valid():
-            if User.objects.filter(username = form.cleaned_data['username']).count() > 0:
+            username = form.cleaned_data['username']
+            if User.objects.filter(username =username).count() > 0:
                 form.errors['username'] = "Username already exists"
             if not form.errors:
-                user = User.objects.create_user(form.cleaned_data['username'],form.cleaned_data['username'],'test123')
+                user = User.objects.create_user(username, username,'test123')
                 user.first_name  = form.cleaned_data['first_name']
                 user.last_name = form.cleaned_data['last_name']
                 group = Group.objects.filter(name = "Project Managers")
@@ -55,6 +57,9 @@ def new_user(request):
                 ngo_user_profile = NGOUserProfile(user = user, title = form.cleaned_data['title'], office_phone = form.cleaned_data['office_phone'],
                                                   mobile_phone = form.cleaned_data['mobile_phone'], skype = form.cleaned_data['skype'], org_id = org_id)
                 ngo_user_profile.save()
+                reset_form = PasswordResetForm({"email": username})
+                reset_form.is_valid()
+                reset_form.save(from_email="maheshkl@thoughtworks.com")
                 return HttpResponseRedirect('/account/users')
 
 

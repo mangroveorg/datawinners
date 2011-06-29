@@ -1,6 +1,7 @@
 var viewModel =
     {
         questions : ko.observableArray([]),
+
         addQuestion : function(){
         var question = new DW.question();
             question.display = ko.dependentObservable(function(){
@@ -82,5 +83,6 @@ var viewModel =
             }
             return test_code;
         }
+
 
     };
