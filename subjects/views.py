@@ -33,14 +33,6 @@ def _handle_uploaded_file(request, file, extension):
     return response
 
 
-def _handle_uploaded_file1(request, file=None):
-    file = request.FILES['file'] if file is None else file.splitlines()
-    manager = get_database_manager(request)
-    csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser())
-    response = csv_player.accept(file)
-    return response
-
-
 def _laod_all_subjects(request):
     manager = get_database_manager(request)
     rows = get_all_entities(dbm=manager, include_docs=True)
@@ -74,33 +66,42 @@ def _tabulate_failures(rows):
         tabulated_data.append(row[1].errors)
     return tabulated_data
 
-
+@csrf_view_exempt
+@csrf_response_exempt
 @login_required(login_url='/login')
 def index(request):
-    failure_imports = None
     if request.method == 'POST':
-        form = SubjectUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            try:
-                response = _handle_uploaded_file1(request)
-                success = len([index for index in response if index.success])
-                total = len(response)
-                failure = [index for index in enumerate(response) if not index[1].success]
-                failure_imports = _tabulate_failures(failure)
-                messages.info(request, '%s of %s records uploaded' % (success, total))
-            except CSVParserInvalidHeaderFormatException as e:
-                messages.error(request, e.message)
-            except Error:
-                messages.error(request, 'We could not import your list of Subjects. ! \
-                   You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) ﬁle!')
-            except Exception:
-                messages.error(request, 'Some unexpected error happened. Please check the CSV file and import again.')
-    else:
-        form = SubjectUploadForm()
+        success = False
+        success_message = ''
+        error_message = None
+        failure_imports = None
+        try:
+            file_name = request.GET.get('qqfile')
+            base_name, extension = os.path.splitext(file_name)
+            response = _handle_uploaded_file(request=request, file=request.raw_post_data, extension=extension)
+            successful_imports = len([index for index in response if index.success])
+            total = len(response)
+            failure = [i for i in enumerate(response) if not i[1].success]
+            failure_imports = _tabulate_failures(failure)
+            if total == successful_imports:
+                success = True
+            success_message = '%s of %s records uploaded' % (successful_imports, total)
+        except CSVParserInvalidHeaderFormatException as e:
+            error_message = e.message
+        except XlsParserInvalidHeaderFormatException as e:
+            error_message = e.message
+        except InvalidFileFormatException:
+            error_message = 'We could not import your list of Subjects. ! \
+                        You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!'
+        except Exception:
+            error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
+        all_subjects = _laod_all_subjects(request)
+        return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
+                                    'failure_imports': failure_imports, 'all_subjects':all_subjects}))
+
     all_subjects = _laod_all_subjects(request)
-    return render_to_response('subjects/index.html',
-            {'form': form, 'all_subjects': all_subjects, 'failure_data': failure_imports},
-                              context_instance=RequestContext(request))
+    return render_to_response('subjects/index.html', {'all_subjects': all_subjects}, context_instance=RequestContext(request))
+
 
 
 @csrf_view_exempt
