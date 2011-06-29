@@ -16,12 +16,7 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#tab_items .define").addClass("current");
-            set_current_tab();
-        })
-    </script>
+    <script type="text/javascript" src="/media/javascript/project/project_profile.js"></script>
 {% endblock %}
 
 {% block step_number %}
