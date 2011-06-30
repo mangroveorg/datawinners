@@ -3,3 +3,8 @@
     // which could pollute the global namespace and make path for conflicting between the variable/function/method names, which would make debugging tough.
     var DW = {};
 
+    $(document).ready(function(){
+          $.addwatermarks();
+    })
+
+

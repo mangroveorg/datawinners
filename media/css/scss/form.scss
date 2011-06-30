@@ -36,6 +36,15 @@ form{
         input{
             float:left;
         }
+        span[wmwrap = true]{
+            float:left;
+            top:3px;
+            label{
+              top:3px;
+              font-weight:normal;
+              width:auto;
+            }
+        }
          #questionnaire-code-error{
             background: url(/media/images/arrow_error.png) no-repeat left 7px;
             label{
