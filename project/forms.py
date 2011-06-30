@@ -36,7 +36,7 @@ class ProjectProfile(Form):
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
     project_type = ChoiceField(label='Project Type', widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
     activity_report = ChoiceField(label="What is this questionnaire about?", widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=('no','Other Subject'))
-    entity_type = ChoiceField(label="Other Subjects")
+    entity_type = ChoiceField(label="Other Subjects", required=False)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[2], required=False)
 
@@ -51,4 +51,7 @@ class ProjectProfile(Form):
     def clean(self):
         if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
+        if self.cleaned_data['entity_type'] == REPORTER:
+            self._errors['entity_type'] = ""
+                    
         return self.cleaned_data

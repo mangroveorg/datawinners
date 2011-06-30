@@ -9,66 +9,70 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+{% endblock %}
+
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
 {% endblock %}
 
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/subjects/index.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+{% endblock %}
+
 {% load i18n %}
 {% block content %}
     <div>
-        <fieldset>
-            <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <ul class="import_subjects">
-                    <li class="{{ form.file.css_classes }} browse_subjects">
-                        {{ form.file.label_tag }}
-                        {{ form.file }}
-                        {{ form.file.errors }}
-                    </li>
-                    <li class="add_subjects">
-                        <input type="submit" value="Upload" class="button"/>
-                        <a class="float_right add_subject_link" href="{% url datawinners.admin.views.register_entity %}">Add a subject</a>
-                    </li>
-                </ul>
-            </form>
-        </fieldset>
-       {% if messages %}
+        {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
                     <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
-        {% if failure_data %}
-            <h3>Errors in Import</h3>
-            <table class="styled_table error_table">
-                <thead>
+        <div class="import_subject_form">
+            <div id="file-uploader">
+                <noscript>
+                    <p>Please enable JavaScript to use file uploader.</p>
+                    <!-- or put a simple form for upload here -->
+                </noscript>
+                <h6>Upload a CSV or a XL file</h6>
+
+                <div id="file_uploader" class=""></div>
+                <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.admin.views.register_entity %}">Add a subject</a>
+            </div>
+            <div id='error_table'>
+                <table class="styled_table">
+                    <thead>
                     <th>Row Number</th>
                     <th>Row</th>
                     <th>Error</th>
-                </thead>
-                {% for each in failure_data %}
-                    <tr>
-                        <td class="text_align_center">{{ each.row_num }}</td>
-                        <td>{{ each.row }}</td>
-                        <td>{{ each.error }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% endif %}
+                    </thead>
+                    <tbody id='error_tbody'>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
         {% if all_subjects %}
             <h3>All Subjects</h3>
-            <table class="styled_table">
+            <table id='all_subjects_table' class="styled_table">
                 <thead>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Short Name</th>
-                    <th>Type</th>
-                    <th>Location</th>
-                    <th>Description</th>
-                    <th>Contact info</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Short Name</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Contact info</th>
                 </thead>
+                <tbody id='all_subjects'>
                 {% for each in all_subjects %}
                     <tr>
                         <td>{{ each.id }}</td>
@@ -96,6 +100,7 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         {% endif %}
     </div>

@@ -29,7 +29,8 @@ def settings(request):
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance = organization).update()
-        return HttpResponseRedirect('/home') if not organization_form.errors  else render_to_response("account/org_settings.html", {'organization_form' : organization_form}, context_instance=RequestContext(request))
+        message = "" if organization_form.errors else 'Settings have been updated successfully'
+        return render_to_response("account/org_settings.html", {'organization_form' : organization_form, 'message':message}, context_instance=RequestContext(request))
     
     
 @login_required
@@ -70,7 +71,8 @@ def new_user(request):
 @is_admin
 def users(request):
     if request.method == 'GET':
-        users = NGOUserProfile.objects.all()
+        org_id = request.user.get_profile().org_id
+        users = NGOUserProfile.objects.filter(org_id = org_id)
         return render_to_response("account/users_list.html", {'users' : users}, context_instance=RequestContext(request))
 
 
@@ -86,6 +88,7 @@ def edit_user(request):
         return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
+        message = ""
         if form.is_valid():
             user = User.objects.get(username = request.user.username)
             user.first_name  = form.cleaned_data['first_name']
@@ -97,5 +100,6 @@ def edit_user(request):
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
             ngo_user_profile.skype = form.cleaned_data['skype']
             ngo_user_profile.save()
-            return render_to_response("account/edit_profile.html", {'form' : form}, context_instance=RequestContext(request))
+            message = 'Profile has been updated successfully'
+        return render_to_response("account/edit_profile.html", {'form' : form, 'message':message}, context_instance=RequestContext(request))
 

@@ -50,7 +50,7 @@ $(document).ready(function() {
     });
     $(".import_subject_form").dialog({
         autoOpen: false,
-        width: 500,
+        width: "auto",
         modal: true,
         title: 'Import a List',
         close: function() {
@@ -100,8 +100,12 @@ $(document).ready(function() {
                 $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
             }
             else {
-                $('<span id="message" class="error_message">' + responseJSON.error_message + '</span>').insertAfter($('#file-uploader'));
-                if(responseJSON.failure_imports.length > 0)
+                $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
+                if (responseJSON.error_message)
+                {
+                    $('<span id="message" class="error_message">' + responseJSON.error_message + '</span>').insertAfter($('#file-uploader'));
+                }
+                if(responseJSON.failure_imports > 0)
                 {
                     $("#error_table").show();
                 }

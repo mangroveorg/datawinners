@@ -119,6 +119,24 @@
                                 {{ form.email.errors }}
 
                             </li>
+                            <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+                                {{ form.office_phone.label_tag }}
+                                {{ form.office_phone }}
+
+                                {{ form.office_phone.errors }}
+                            </li>
+                            <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
+                                {{ form.mobile_phone.label_tag }}
+                                {{ form.mobile_phone }}
+
+                                {{ form.mobile_phone.errors }}
+                            </li>
+                            <li class="{{ form.skype.css_classes  }} form-row-10px">
+                                {{ form.skype.label_tag }}
+                                {{ form.skype }}
+
+                                {{ form.skype.errors }}
+                            </li>
                             <li class="{{ form.password1.css_classes  }} form-row-10px">
                                 {{ form.password1.label_tag }}
                                 {{ form.password1 }}
