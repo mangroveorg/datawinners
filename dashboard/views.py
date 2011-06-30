@@ -28,7 +28,8 @@ def get_submissions(dbm, form_code, questions_num):
                 message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
             else:
                 message = row.value["error_message"]
-            submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter)
+            submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter,
+                              status=row.value["status"])
             submission_list.append(submission)
 
         rows = dbm.load_all_rows_in_view('submissionlog', startkey=[form_code], endkey=[form_code, {}],

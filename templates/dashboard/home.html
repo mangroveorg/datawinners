@@ -20,11 +20,6 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-    </div>
-
     <div id="how_to">
         <h3>How to use Datawinners</h3>
         <div>
@@ -48,6 +43,7 @@
                     {% for submission in project.submissions %}
                         <tr>
                             <td>{{ submission.created }}</td>
+                            <td>{{ submission.status }}</td>
                             <td>{{ submission.reporter }}</td>
                             <td>{{ submission.message }}</td>
                         </tr>
@@ -62,12 +58,12 @@
         </div>
     </div>
     <div class="grid_5 push_1 margin_right_null">
-        Nb SMS
+        
     </div>
     <script>
         $(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: false });
-            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false });
+            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false, collapsible: true, });
         });
     </script>
 {% endblock %}
