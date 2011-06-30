@@ -17,7 +17,7 @@ def is_admin(f):
         return f(*args, **kw)
     return wrapper
 
-@login_required
+@login_required(login_url='/login')
 @is_admin
 def settings(request):
     if request.method == 'GET':
@@ -32,8 +32,8 @@ def settings(request):
         message = "" if organization_form.errors else 'Settings have been updated successfully'
         return render_to_response("account/org_settings.html", {'organization_form' : organization_form, 'message':message}, context_instance=RequestContext(request))
     
-    
-@login_required
+
+@login_required(login_url='/login')
 @is_admin
 def new_user(request):
     if request.method == 'GET':
@@ -45,9 +45,7 @@ def new_user(request):
         form = UserProfileForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            if User.objects.filter(username =username).count() > 0:
-                form.errors['username'] = "Username already exists"
+
             if not form.errors:
                 user = User.objects.create_user(username, username,'test123')
                 user.first_name  = form.cleaned_data['first_name']
@@ -66,8 +64,7 @@ def new_user(request):
 
         return render_to_response("account/add_user.html", {'profile_form' : form}, context_instance=RequestContext(request))
 
-
-@login_required
+@login_required(login_url='/login')
 @is_admin
 def users(request):
     if request.method == 'GET':
@@ -76,7 +73,7 @@ def users(request):
         return render_to_response("account/users_list.html", {'users' : users}, context_instance=RequestContext(request))
 
 
-@login_required
+@login_required(login_url='/login')
 @is_admin
 def edit_user(request):
     if request.method == 'GET':

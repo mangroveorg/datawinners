@@ -51,7 +51,7 @@ class ProjectProfile(Form):
     def clean(self):
         if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
-        if self.cleaned_data['entity_type'] == REPORTER:
-            self._errors['entity_type'] = ""
+        if self.cleaned_data['entity_type'] == REPORTER and self.errors.get('entity_type') is not None:
+            self.errors['entity_type'] = ""
                     
         return self.cleaned_data
