@@ -48,7 +48,6 @@ $(document).ready(function(){
 
     $.ajaxSetup({ cache: false });
     var screen_width = $(window).width() - 50;
-    console.log($("#data_record"))
      $("#data_record").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
 
     $("#dateRangePicker").daterangepicker( { presetRanges: [
