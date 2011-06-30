@@ -93,5 +93,10 @@ class LocationTree(object):
                 break;
         return i - 1
 
+    def get_location_hierarchy_for_geocode(self, lat, long):
+        location=self.get_location_for_geocode(lat,long)
+        return self.get_hierarchy_path(location)
+
+
 
   

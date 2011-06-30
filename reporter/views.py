@@ -50,18 +50,32 @@ def register(request):
                               context_instance=RequestContext(request))
 
 
+def _get_location_heirarchy_from_location_name(display_location):
+    if is_empty(display_location):
+        return None
+    lowest_level_location, high_level_location = tuple(display_location.split(','))
+    tree = LocationTree()
+    location_hierarchy = tree.get_hierarchy_path(lowest_level_location)
+    return location_hierarchy
+
+
+def _get_location_hierarchy(display_location,geo_code):
+    location_hierarchy = _get_location_heirarchy_from_location_name(display_location)
+    if location_hierarchy is None and geo_code is not None:
+        lat_string,long_string=tuple(geo_code.split())
+        tree=LocationTree()
+        location_hierarchy=tree.get_location_hierarchy_for_geocode(lat=float(lat_string),long=float(long_string))
+    return location_hierarchy
+
+
 def _get_data(form_data):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form  model
     mapper = {'telephone_number': 'M', 'geo_code': 'G', 'Name': 'N', 'location': 'L'}
     data = dict()
     telephone_number = form_data.get('telephone_number')
     geo_code = form_data.get('geo_code')
-    display_location = form_data.get('location')
-
-    lowest_level_location,high_level_location= tuple(display_location.split(','))
-
-    tree = LocationTree()
-    location_hierarchy = tree.get_hierarchy_path(lowest_level_location)
+    display_location=form_data.get('location')
+    location_hierarchy = _get_location_hierarchy(display_location,geo_code)
 
     if telephone_number is not None:
         data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
