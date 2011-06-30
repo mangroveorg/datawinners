@@ -74,7 +74,7 @@ def create_profile(request):
     entity_list = helper.remove_reporter(entity_list)
     project_summary = dict(name='New Project')
     if request.method == 'GET':
-        form = ProjectProfile(entity_list=entity_list,initial={'activity_report':'no'})
+        form = ProjectProfile(entity_list=entity_list,initial={'activity_report':'yes'})
         return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
                                   context_instance=RequestContext(request))
 
@@ -124,7 +124,7 @@ def edit_profile(request, project_id=None):
                                       context_instance=RequestContext(request))
         project = models.get_project(pid, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
-        entity_type = request.POST['entity_type']
+        entity_type = form.cleaned_data['entity_type']
         form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
         form_model.save()
         return HttpResponseRedirect(reverse(subjects, args=[pid]))
