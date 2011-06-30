@@ -33,7 +33,8 @@
     width: 950px;
     border-radius: 1px solid red;
     margin: 0 auto;
-    font-size: 22px; }
+    font-size: 22px;
+    font-weight: bold; }
     #container_content #page_title .project_title, #container_wizard #page_title .project_title {
       font-size: 22px; }
       #container_content #page_title .project_title:first-letter, #container_wizard #page_title .project_title:first-letter {

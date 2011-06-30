@@ -24,6 +24,7 @@ form{
             width:$text_box_width;
             height:100px;
             border-color:$border_color;
+            font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
         }
         label{
             font-size:14px;
@@ -35,6 +36,7 @@ form{
         }
         input{
             float:left;
+            font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
         }
         span[wmwrap = true]{
             float:left;
@@ -110,7 +112,7 @@ form{
         }
 .message-box{
         background:#fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 4px;
-        color:#000000;
+        color:#000000 !important;
         margin:10px;
         padding:7px 10px 7px 40px;
         border:1px solid #FF0000;
@@ -193,4 +195,29 @@ select{
     font-family: "Arial";
     font-weight: normal;
     padding: 4px 15px 4px 15px;
+}
+
+/* File up loader */
+#file-uploader{
+    width:360px;
+    margin:10px 20px 20px 0;
+    h6{
+        float:left;
+        margin:10px 20px 0 0;
+    }
+    .file_uploader{
+        float:left;
+    }
+    .qq-upload-button{
+        border: 1px solid #D4972D;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        background: #999; /* for non-css3 browsers */
+        background: -webkit-gradient(linear, left top, left bottom, from(#FEEA89), to(#FFD857)); /* for webkit browsers */
+        background: -moz-linear-gradient(top,  #FEEA89,  #FFD857); /* for firefox 3.6+ */
+        color: #6F451D;
+        font-family: "Arial";
+        font-weight: bold;
+        padding: 6px 12px 6px 11px;
+    }
 }
