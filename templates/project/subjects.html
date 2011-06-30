@@ -51,7 +51,7 @@
                         {% for each in fields %}
                             <div class="question{{ forloop.counter }}">
                                 <li>
-                                    <a>{{ each.name }}</a>
+                                    <a>{{each.label.eng}} {{each.code}}</a>
                                     <span class="selected_question_arrow"></span>
                                 </li>
                             </div>
