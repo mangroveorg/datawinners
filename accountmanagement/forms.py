@@ -39,6 +39,7 @@ class OrganizationForm(ModelForm):
 
 
 class UserProfileForm(forms.Form):
+
     error_css_class = 'error'
     required_css_class = 'required'
 
@@ -50,10 +51,11 @@ class UserProfileForm(forms.Form):
     mobile_phone = forms.CharField(max_length=30, required=False, label="Mobile Phone")
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
+
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if User.objects.filter(username =username).count() > 0:
-            raise ValidationError("Username already exists")
+            raise ValidationError("This email address is already in use. Please supply a different email address")
         return self.cleaned_data
 
 class RegistrationForm(RegistrationFormUniqueEmail):
