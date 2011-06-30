@@ -26,10 +26,10 @@ $(document).ready(function() {
     DW.validator = $('#question_form').validate({
         messages:{
             geo_code:{
-                required:"Required information for registration. Please fill out at least one location field."
+                required:"Please fill out at least one location field."
             },
             location:{
-                required:"Required information for registration. Please fill out at least one location field"
+                required:"Please fill out at least one location field"
             }
 
         },

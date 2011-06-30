@@ -82,6 +82,9 @@ var viewModel =
                 }
             }
             return test_code;
+        },
+        choiceCanBeDeleted: function(){
+            return viewModel.selectedQuestion().choices().length > 1
         }
 
 
