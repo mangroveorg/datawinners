@@ -96,7 +96,8 @@ table {
 
 /* List styles */
 .alpha_list li {
-  list-style-type: upper-alpha; }
+  list-style-type: upper-alpha;
+  overflow: visible; }
 
 /* Links with BG images */
 .add_link {
