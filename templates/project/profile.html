@@ -29,11 +29,11 @@
     <div class="define_project">
         {% csrf_token %}
         {% if messages %}
-            <ul class="messages">
+            <div class="message-box">
                 {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    <span>{{ message }}</span>
                 {% endfor %}
-            </ul>
+            </div>
         {% endif %}
         <ul>
             <fieldset>
