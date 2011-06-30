@@ -3,4 +3,5 @@
   .login_button div {
     position: relative;
     top: 13px;
-    left: 7px; }
+    left: 7px;
+    float: left; }
