@@ -24,6 +24,7 @@ form{
             width:$text_box_width;
             height:100px;
             border-color:$border_color;
+            font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
         }
         label{
             font-size:14px;
@@ -35,6 +36,7 @@ form{
         }
         input{
             float:left;
+            font: 15px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
         }
         span[wmwrap = true]{
             float:left;
