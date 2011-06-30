@@ -64,29 +64,6 @@
     .ui-widget-content .ui-widget-header .ui-dialog-title {
       font-size: 18px; }
 
-#file-uploader {
-  width: 360px;
-  margin: 20px auto; }
-  #file-uploader h6 {
-    float: left;
-    margin: 10px 20px 0 0; }
-  #file-uploader .file_uploader {
-    float: left; }
-  #file-uploader .qq-upload-button {
-    border: 1px solid #D4972D;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    background: #999;
-    /* for non-css3 browsers */
-    background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
-    /* for webkit browsers */
-    background: -moz-linear-gradient(top, #feea89, #ffd857);
-    /* for firefox 3.6+ */
-    color: #6F451D;
-    font-family: "Arial";
-    font-weight: bold;
-    padding: 6px 12px 6px 11px; }
-
 #error_table {
   display: none; }
   #error_table table {
