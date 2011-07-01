@@ -63,46 +63,7 @@
         </div>
         {% if all_subjects %}
             <h3>All Subjects</h3>
-            <table id='all_subjects_table' class="styled_table">
-                <thead>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Short Name</th>
-                <th>Type</th>
-                <th>Location</th>
-                <th>Description</th>
-                <th>Contact info</th>
-                </thead>
-                <tbody id='all_subjects'>
-                {% for each in all_subjects %}
-                    <tr>
-                        <td>{{ each.id }}</td>
-                        {% if each.name %}
-                            <td>{{ each.name }}</td>
-                        {% else %}
-                            <td>--</td>
-                        {% endif %}
-                        <td>{{ each.short_name }}</td>
-                        <td>{{ each.type }}</td>
-                        {% if each.location %}
-                            <td>{{ each.location }}</td>
-                        {% else %}
-                            <td>--</td>
-                        {% endif %}
-                        {% if each.description %}
-                            <td>{{ each.description }}</td>
-                        {% else %}
-                            <td>--</td>
-                        {% endif %}
-                        {% if each.mobile_number %}
-                            <td>{{ each.mobile_number }}</td>
-                        {% else %}
-                            <td>--</td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {% include 'subject_table.html' %}
         {% endif %}
     </div>
 {% endblock %}
