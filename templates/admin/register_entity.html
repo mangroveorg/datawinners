@@ -20,70 +20,7 @@
 {% endblock %}
 {% block content%}
     <div class="span-18 box">
-        <input id='post_url' type="hidden" value="{{ post_url }}" />
-            <form id="question_form">
-                <fieldset>
-                    <ul>
-                        <li>
-                        <div>
-                                <label>* Name</label>
-                                <input id= "entity_name" name="entity_name" type="text" data-bind="value: message.n" />
-                        </div>
-                        </li>
 
-                        <li>
-                        <div>
-                            <label>Unique Identification Number(ID)</label>
-                            <input id="short_name" name="short_name" type="text" data-bind="value: message.s" disabled="disabled"/>
-                            <span class="auto_gen_checkbox">
-                                <input id="autogen" name="autogen" type="checkbox" checked=true />
-                                <label>Autogenerate</label>
-                            </span>
-                        </div>
-
-                        </li>
-
-                        <li>
-                            <div>
-                                <label>* Type</label>
-                                <select id="id_entity_type" name="type" data-bind="value: message.t">
-                                    {% for entity_type in entity_types %}
-                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
-                                    {% endfor %}
-                                </select>
-                                <a href="{% url datawinners.admin.views.create_entity %}">Add a new subject type</a>
-                            </div>
-                        </li>
-                        <li>
-                            <label>Location</label>
-                            <ul class="form_sub_set">
-
-                                <li>
-                                        <label>Location Name</label>
-                                        <input id="location" name="location" type="text" data-bind="value: message.l"/>
-                                </li>
-                                <li>
-                                        <label>GPS</label>
-                                        <input id = "geo_code" name="geo_code" type="text" data-bind="value: message.g"/>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div>
-                                <label>Description</label>
-                                <input id = "description" name="description" type="text" data-bind="value: message.d"/>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <label>Mobile Number</label>
-
-                                <input id = "mobile_number" name="mobile_number" type="text" maxlength="15" data-bind="value: message.m"/>
-                            </div>
-                        </li>
-                    </ul>
-                </fieldset>
-                <input type="button" value="Add" id="register_entity" class="button" />
-            </form>
+            {% include 'subject_form.html' %}
     </div>
 {% endblock %}

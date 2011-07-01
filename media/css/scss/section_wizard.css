@@ -38,11 +38,11 @@
     font-weight: bold;
     padding: 10px 65px 0 0px; }
     .wizard ul li.questionnaire {
-      padding-right: 105px; }
+      padding-right: 90px; }
     .wizard ul li.subjects {
       padding-right: 100px; }
-    .wizard ul li.people {
-      padding-right: 76px; }
+    .wizard ul li.datasenders {
+      padding-right: 75px; }
     .wizard ul li.reminder {
       padding-right: 82px; }
     .wizard ul li.finish {

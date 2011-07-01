@@ -1,8 +1,9 @@
 {% extends 'layout_application.html' %}
 
-{% block page_title %} Register Reporter {% endblock %}
+{% block page_title %} Add DataSenders {% endblock %}
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
 {% endblock %}
 
 {% block page_scss %}
@@ -17,54 +18,7 @@
 {% endblock %}
 
 {% block content %}
-    {% block messages %}
-        {% if form_errors %}
-        <div class=" error span-12 push-6 message-box">
-            {% for error in form_errors %}
-                {{ error }}
-            {% endfor %}
-        </div>
-        {% endif %}
-{% endblock %}
-    <div class="application_register">
-        {% if message %}
-             <div id="flash-message" class="success">
-                 {{ message }}
-             </div>
-        {% endif %}
-
-        <fieldset>
-             <form id="registration_form" action="" method="POST">
-                    {% csrf_token %}
-                        <ul class="span-7 column border">
-                            <li>
-                                <h3 class="title">Register a Reporter (Field Staff)</h3>
-                            </li>
-                            <li class="{{ form.first_name.css_classes }} form-row-10px">
-                                {{ form.first_name.label_tag }}
-                                {{ form.first_name }}
-                                {{ form.first_name.errors }}
-                            </li>
-                            <li class="{{ form.telephone_number.css_classes }} form-row-10px">
-                                {{ form.telephone_number.label_tag }}
-                                {{ form.telephone_number }}
-                                {{ form.telephone_number.errors }}
-                            </li>
-                            <li class="{{ form.commune.css_classes }} form-row-10px">
-                                {{ form.commune.label_tag }}
-                                {{ form.commune }}
-                                {{ form.commune.errors }}
-                            </li>
-                            <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                                {{ form.geo_code.label_tag }}
-                                {{ form.geo_code }}
-                                {{ form.geo_code.errors }}
-                            </li>
-                            <li>
-                                <input type="submit" value="Register" class="button margin_top_20" />
-                            </li>
-                        </ul>
-             </form>
-        </fieldset>
-    </div>
+   <div id="add_data_sender_form" class="">
+    {% include "datasender_form.html" %}
+   </div>
 {% endblock %}

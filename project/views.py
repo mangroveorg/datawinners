@@ -8,6 +8,7 @@ from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
+from datawinners.reporter.forms import ReporterRegistrationForm
 from datawinners.subjects.forms import SubjectUploadForm
 from datawinners.subjects.views import import_subjects_from_project_wizard
 import helper
@@ -342,21 +343,40 @@ def subjects(request, project_id=None):
         reg_form = get_form_model_by_code(manager, 'reg')
         previous_link = '/project/profile/edit/%s' % project_id
         entity_types = get_all_entity_types(manager)
-        removable = ""
         project = models.get_project(project_id, manager)
-        for each in entity_types:
-            if each[0].lower() == 'reporter':
-                removable = each
-        entity_types.remove(removable)
+        helper.remove_reporter(entity_types)
         import_subject_form = SubjectUploadForm()
         return render_to_response('project/subjects.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
                  'import_subject_form': import_subject_form,
-                 'post_import': reverse(import_subjects_from_project_wizard), 'project': project},
+                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
+
+@login_required(login_url='/login')
+def datasenders(request, project_id=None):
+    if request.method == 'GET':
+        manager = get_database_manager(request)
+        reg_form = get_form_model_by_code(manager, 'reg')
+        previous_link = '/project/questionnaire/%s' % project_id
+        project = models.get_project(project_id, manager)
+        import_reporter_form = ReporterRegistrationForm()
+        for field in reg_form.fields:
+            temp = field.label.get("eng")
+            temp = temp.replace("subject", "data sender")
+            field.label.update(eng=temp)
+        return render_to_response('project/datasenders.html',
+                {'fields': reg_form.fields[1:], "previous": previous_link,
+                 'form': import_reporter_form,
+                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
+                                  context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+
+        return HttpResponseRedirect(reverse(datasenders, args=[project_id]))
+    pass
 
 
 @login_required(login_url='/login')

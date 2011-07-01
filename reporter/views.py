@@ -15,19 +15,14 @@ from mangrove.utils.types import is_empty
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE
 
 
-@login_required(login_url='/login')
-def register(request):
-    dbm = get_database_manager(request)
-    if request.method == 'GET':
-        form = ReporterRegistrationForm()
-        return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
+def _validate_post_data(dbm, request):
     form = ReporterRegistrationForm(request.POST)
     message = None
     success = True
     form_errors = []
     form_errors.extend(form.non_field_errors())
     if form.is_valid():
-        form_errors=[]
+        form_errors = []
         form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
         try:
             entered_telephone_number = form_data.get("telephone_number")
@@ -35,18 +30,34 @@ def register(request):
             if not helper.unique(dbm, tel_number):
                 raise MultipleReportersForANumberException(entered_telephone_number)
 
-            web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+            web_player = WebPlayer(dbm, SubmissionHandler(dbm))
             response = web_player.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
             message = get_success_msg_for_registration_using(response, "Reporter", "web")
         except MangroveException as exception:
             form_errors.append(exception.message)
             success = False
+    return form, form_errors, message, success
+
+
+@login_required(login_url='/login')
+def register(request):
+    dbm = get_database_manager(request)
+    if request.method == 'GET':
+        form = ReporterRegistrationForm()
+        return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
+    form, form_errors, message, success = _validate_post_data(dbm, request)
 
     return render_to_response('reporter/register.html', {'form': form, 'message': message, 'form_errors': form_errors , 'success': success},
                               context_instance=RequestContext(request))
 
-
+@login_required(login_url='/login')
+def register_through_ajax(request):
+    dbm = get_database_manager(request)
+    form, form_errors, message, success = _validate_post_data(dbm, request)
+    response =  render_to_response('datasender_form.html', {'form': form, 'message': message, 'form_errors': form_errors , 'success': success},
+                              context_instance=RequestContext(request))
+    return response
 def _get_data(form_data):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form  model
     mapper = {'telephone_number': 'M', 'geo_code': 'G', 'Name': 'N', 'commune': 'L'}
