@@ -6,8 +6,6 @@
     font-weight: bold; }
   #header .logo .logo_winners {
     font-weight: normal; }
-  #header .logo .welcome {
-    font-weight: bold; }
   #header .logo a {
     color: #FFFFFF;
     text-decoration: none; }
@@ -18,14 +16,18 @@
   background: none;
   height: 30px; }
   #container_header_application #container_header_wizard #header .login {
-    color: #CCCCCC; }
+    margin-top: 5px;
+    color: #CCCCCC;
+    font-size: 12px; }
     #container_header_application #container_header_wizard #header .login span {
-      display: inline-block;
+      display: inline;
       padding: 1px 15px 0px;
       margin-top: 4px;
-      border-right: 1px solid #FFFFFF; }
+      border-right: 1px solid #474747; }
       #container_header_application #container_header_wizard #header .login span a {
-        color: #FFFFFF; }
+        color: #C1C1C1; }
+    #container_header_application #container_header_wizard #header .login .welcome {
+      font-weight: bold; }
 #container_header_application #main_tab {
   text-align: right;
   float: left; }
