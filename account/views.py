@@ -45,7 +45,7 @@ def new_user(request):
         form = UserProfileForm(request.POST)
 
         if form.is_valid():
-
+            username = form.cleaned_data.get('username')
             if not form.errors:
                 user = User.objects.create_user(username, username,'test123')
                 user.first_name  = form.cleaned_data['first_name']

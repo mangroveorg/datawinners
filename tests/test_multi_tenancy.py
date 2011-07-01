@@ -1,16 +1,18 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from unittest.case import SkipTest
 import couchdb
 import django
-from django.db.backends.sqlite3.creation import DatabaseCreation
+from django.db.backends.postgresql_psycopg2.base import DatabaseCreation
 from django.test import Client
 from django.test.utils import setup_test_environment, teardown_test_environment
-from  datawinners import settings
+from datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
 
 
+@SkipTest
 class TestMultiTenancy(unittest.TestCase):
     def setUp(self):
         setup_test_environment()

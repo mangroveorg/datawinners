@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
     $(".add_subject_form").dialog({
         autoOpen: false,
-        width: 500,
+        width: 575,
         modal: true,
         title: 'Add a subject',
         close: function() {

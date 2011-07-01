@@ -80,7 +80,7 @@
             <h6>Add Subjects Manually</h6>
 
             <p>Enter your subjects individually !</p>
-            <input id='add_subject' type="button" class="button_blue" value="Add Subject"/>
+            <input id='add_subject' type="button" class="button_blue" value="Add Subjects Manually"/>
         </div>
         <div class="grid_11  omega import_list">
             <h6>Import a List of Subjects</h6>
@@ -116,6 +116,7 @@
                                     {% endfor %}
                                 </select>
                             </span>
+                            <a href="{% url datawinners.admin.views.create_entity %}">Add a new subject type</a>
                         </li>
                         <li>
                             <label>Location</label>
@@ -140,7 +141,7 @@
                         </li>
                     </ul>
                 </fieldset>
-                <input type="button" value="Register" id="register_entity" class="button"/>
+                <input type="button" value="Add" id="register_entity" class="button"/>
             </form>
         </div>
         <div class="import_subject_form">

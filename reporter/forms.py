@@ -3,19 +3,24 @@
 from django.core.exceptions import ValidationError
 from django.forms.fields import CharField, RegexField
 from django.forms.forms import Form
+from datawinners.location.LocationTree import LocationTree
 from mangrove.utils.types import is_empty
+from django import forms
 
 
 class ReporterRegistrationForm(Form):
+
     error_css_class = 'error'
     required_css_class = 'required'
 
     first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
-                            error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- ",
-                              label="* Name")
-    telephone_number = RegexField(required=True, regex="^\d+(-\d+)*$", max_length=15, label="* Mobile Number", error_message="Please enter a valid phone number")
-    commune = CharField(max_length=30, required=False, label="Location")
+                            error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
+                            ,
+                            label="* Name")
+    telephone_number = RegexField(required=True, regex="^\d+(-\d+)*$", max_length=15, label="* Mobile Number",
+                                  error_message="Please enter a valid phone number")
     geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
+    location = CharField(max_length=30, required=False, label="Enter location")
 
 
     def clean_geo_code(self):
@@ -32,8 +37,9 @@ class ReporterRegistrationForm(Form):
         return geo_code_string
 
     def clean(self):
-        a = self.cleaned_data.get("commune")
+        a = self.cleaned_data.get("location")
         b = self.cleaned_data.get("geo_code")
         if not (bool(a) or bool(b)):
-            raise ValidationError("Required information for registration. Please fill out at least one location field correctly.")
+            raise ValidationError(
+                "Required information for registration. Please fill out at least one location field correctly.")
         return self.cleaned_data

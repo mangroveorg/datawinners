@@ -172,9 +172,9 @@ DW.charCount = function() {
         $("#char-count").css("color", "red")
         max_len = max_len+160;
         sms_number++;
-        sms_number_text = " (" + sms_number + ")";
+        sms_number_text = "(" + sms_number + " sms required)";
     }
-    $('#char-count').html((current_len) + ' / ' + max_len + sms_number_text + ' characters used');
+    $('#char-count').html((current_len) + ' / ' + max_len + ' characters used' + sms_number_text);
 
 };
 

@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'datawinners.accountmanagement',
     'registration',
     'django.contrib.admin',
@@ -141,6 +142,7 @@ INSTALLED_APPS = (
     'datawinners.project',
     'datawinners.account',
     'datawinners.dashboard',
+    'datawinners.location',
 )
 
 COMPILER_FORMATS = {
