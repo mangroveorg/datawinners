@@ -59,7 +59,8 @@ def create_question(post_dict, dbm):
 def create_entity_id_question(dbm):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
-    entity_id_question = TextField(name="What are you reporting on?", code=ENTITY_QUESTION_DISPLAY_CODE,
+    name = "Which subject are you reporting on?"
+    entity_id_question = TextField(name=name, code=ENTITY_QUESTION_DISPLAY_CODE,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    length=TextConstraint(min=1, max=12))
@@ -70,9 +71,9 @@ def create_questionnaire(post, dbm):
 
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period", primitive_type="date",
                                                     description="activity reporting period")
+    entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
     entity_id_question = create_entity_id_question(dbm)
     activity_report_question = DateField(name="What is the reporting period for the activity?", code="rpd", label="Period being reported on", ddtype=reporting_period_dict_type, date_format="dd.mm.yyyy")
-    entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
     fields = [entity_id_question]
     if entity_type == [REPORTER]:
         fields = [entity_id_question, activity_report_question]

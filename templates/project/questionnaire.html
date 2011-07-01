@@ -29,7 +29,7 @@
         <li>
         <p>
             <input id="choice_text" name="choice_text" type="text" data-bind="value: text"/>
-            <a href="questionnaire.html#" class='delete delete_link' data-bind="click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+            <a href="questionnaire.html#" class='delete delete_link' data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
         </p>
         </li>
     </script>
@@ -116,7 +116,7 @@
                                 </div>
                                 <div><input type="radio" name="type" value="geocode"
                                             data-bind="checked: selectedQuestion().type"
-                                            class="required"/> Geo Code
+                                            class="required"/> GPS Coordinates
                                 </div>
                             </li>
 
