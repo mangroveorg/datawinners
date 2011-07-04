@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 
 from datawinners.project.views import questionnaire, save_questionnaire, create_profile, index, project_overview, \
-                    edit_profile, project_results, project_data, subjects, export_data, export_log, activate_project, finish
+                    edit_profile, project_results, project_data, subjects, datasenders, export_data, export_log, activate_project, finish
 
 urlpatterns = patterns('',
         (r'^project/questionnaire/(?P<project_id>.+?)/$', questionnaire),
@@ -14,6 +14,7 @@ urlpatterns = patterns('',
         (r'^project/(?P<project_id>.+?)/results/(?P<questionnaire_code>.+?)/$', project_results),
         (r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>.+?)/$', project_data),
         (r'^project/subjects/(?P<project_id>.+?)/$', subjects),
+        (r'^project/datasenders/(?P<project_id>.+?)/$', datasenders),
         (r'^project/activate/(?P<project_id>.+?)/$', activate_project),
         (r'^project/finish/(?P<project_id>.+?)/$', finish),
         (r'^project/export/data$', export_data),

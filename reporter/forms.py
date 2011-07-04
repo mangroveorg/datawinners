@@ -9,7 +9,6 @@ from django import forms
 
 
 class ReporterRegistrationForm(Form):
-
     error_css_class = 'error'
     required_css_class = 'required'
 
@@ -40,6 +39,5 @@ class ReporterRegistrationForm(Form):
         a = self.cleaned_data.get("location")
         b = self.cleaned_data.get("geo_code")
         if not (bool(a) or bool(b)):
-            raise ValidationError(
-                "Required information for registration. Please fill out at least one location field correctly.")
+            raise ValidationError("Required information for registration. Please fill out at least one location field correctly.")
         return self.cleaned_data
