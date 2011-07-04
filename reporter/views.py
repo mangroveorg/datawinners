@@ -89,10 +89,8 @@ def _get_telephone_number(number_as_given):
 def register(request):
     dbm = get_database_manager(request)
     if request.method == 'GET':
-        location = LocationTree()
         form = ReporterRegistrationForm()
         return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
-    form, form_errors, message, success = _validate_post_data(dbm, request)
 
 @login_required(login_url='/login')
 def register_through_ajax(request):

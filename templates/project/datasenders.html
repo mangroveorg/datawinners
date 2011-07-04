@@ -11,6 +11,7 @@
 {% block page_css %}
     {{ block.super }}
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
 {% endblock %}
 
 {% block page_scss %}
@@ -21,10 +22,12 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datasender.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
+
 
     <script type="text/javascript">
         $(document).ready(function() {

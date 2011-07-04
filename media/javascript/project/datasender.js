@@ -6,11 +6,15 @@ $(document).ready(function(){
        modal: true,
        title: 'Add a data sender',
        close: function() {
-           $('#message').remove();
-           $('#question_form').each (function(){
-             this.reset();
-           });
-//           DW.validator.resetForm();
+
+           $('.errorlist').remove();
+           $('#error_messages').remove();
+           $("#id_first_name").parent().removeClass("error");
+           $("#id_telephone_number").parent().removeClass("error");
+           $("#id_location").parent().removeClass("error");
+           $("#id_geo_code").parent().removeClass("error");
+           $("#flash-message").remove();
+           $('#registration_form')[0].reset();
        }
    });
 
