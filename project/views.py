@@ -25,10 +25,6 @@ from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
-import logging
-logging.basicConfig( level=logging.DEBUG,format = '%(asctime)s %(levelname)s %(message)s',
-filename = '/tmp/myapp.log',
-filemode = 'w')
 
 PAGE_SIZE = 4
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
@@ -257,20 +253,14 @@ def project_results(request, project_id=None, questionnaire_code=None):
 
 
 def _format_data_for_presentation(data_dictionary, form_model):
-    logging.debug("_format_data_for_presentation")
     header_list = helper.get_headers(form_model.fields)
-    logging.debug("headers %s" % (header_list,))
     type_list = helper.get_type_list(form_model.fields[1:])
-    logging.debug("type_list %s" % (type_list,))
     if data_dictionary == {}:
         return "[]", header_list, type_list
     data_list = helper.get_values(data_dictionary, header_list)
-    logging.debug("data_list1 %s" % (data_list,))
     header_list[0] = form_model.entity_type[0] + " Name"
     data_list = helper.convert_to_json(data_list)
-    logging.debug("data_list2 %s" % (data_list,))
     response_string = encode_json(data_list)
-    logging.debug("encoded json %s" % (response_string,))
     return response_string, header_list, type_list
 
 
@@ -310,32 +300,23 @@ def project_data(request, project_id=None, questionnaire_code=None):
         return HttpResponse(response_string)
 
 
-
-
 @login_required(login_url='/login')
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    logging.debug("load ing data")
     data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
-    logging.debug("loaded ...%s " % (data_dictionary,))
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
-    logging.debug("format end")
     raw_data_list = json.loads(response_string)
-    logging.debug("json loaded %s " % (raw_data_list,))
     raw_data_list.insert(0, header_list)
     return _create_excel_response(raw_data_list)
 
 
 def _create_excel_response(raw_data_list):
-    logging.debug("start xls response %s" % (raw_data_list,))
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=file.xls'
-    logging.debug("wb")
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
-    logging.debug("saved")
     return response
 
 
