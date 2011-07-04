@@ -312,7 +312,7 @@ $(document).ready(function() {
                 function(response) {
                    var path = window.location.pathname;
                    var element_list = path.split("/");
-                   window.location.href = '/project/finish/' + element_list[element_list.length-2];
+                   window.location.href = '/project/datasenders/' + element_list[element_list.length-2];
                 }).error(function(e) {
             $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
         });

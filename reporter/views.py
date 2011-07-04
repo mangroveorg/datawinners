@@ -16,14 +16,7 @@ from mangrove.utils.types import is_empty
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE
 
 
-@login_required(login_url='/login')
-def register(request):
-    dbm = get_database_manager(request)
-    if request.method == 'GET':
-        location = LocationTree()
-        form = ReporterRegistrationForm()
-        return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
-
+def _validate_post_data(dbm, request):
     form = ReporterRegistrationForm(request.POST)
     message = None
     success = True
@@ -45,9 +38,8 @@ def register(request):
         except MangroveException as exception:
             form_errors.append(exception.message)
             success = False
+    return form, form_errors, message, success
 
-    return render_to_response('reporter/register.html', {'form': form, 'message': message, 'form_errors': form_errors , 'success': success},
-                              context_instance=RequestContext(request))
 
 
 def _get_location_heirarchy_from_location_name(display_location):
@@ -92,3 +84,20 @@ def _get_data(form_data):
 
 def _get_telephone_number(number_as_given):
     return "".join([num for num in number_as_given if num.isdigit()])
+
+@login_required(login_url='/login')
+def register(request):
+    dbm = get_database_manager(request)
+    if request.method == 'GET':
+        location = LocationTree()
+        form = ReporterRegistrationForm()
+        return render_to_response('reporter/register.html', {'form': form}, context_instance=RequestContext(request))
+    form, form_errors, message, success = _validate_post_data(dbm, request)
+
+@login_required(login_url='/login')
+def register_through_ajax(request):
+    dbm = get_database_manager(request)
+    form, form_errors, message, success = _validate_post_data(dbm, request)
+    response =  render_to_response('datasender_form.html', {'form': form, 'message': message, 'form_errors': form_errors , 'success': success},
+                              context_instance=RequestContext(request))
+    return response

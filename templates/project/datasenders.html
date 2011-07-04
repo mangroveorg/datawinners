@@ -1,6 +1,6 @@
 {% extends 'step_wizard.html' %}
 
-{% block page_title %} Subjects {% endblock %}
+{% block page_title %} Data Senders {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -21,14 +21,14 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/datasender.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#tab_items .subjects").addClass("current");
+            $("#tab_items .datasenders").addClass("current");
             set_current_tab();
         })
     </script>
@@ -37,35 +37,36 @@
 
 
 {% block step_number %}
-    <h3>Step3: Subjects</h3>
+    <h3>Step5: Data Senders</h3>
     <p>Description about the step goes here</p>
 {% endblock %}
 {% block content %}
+    <input id='post_url' type="hidden" value="{{ post_url }}"/>
 
     {% include 'entity_question_panel.html' %}
 
-    <h4 class="inline">Add Subjects now</h4>
+    <h4 class="inline">Add DataSenders now</h4>
     <span>(Optional)!</span>
     <div class="add_subjects_section alpha omega">
         <div class="grid_11 alpha omega">
-            <h6>Add Subjects Manually</h6>
+            <h6>Add DataSenders Manually</h6>
 
-            <p>Enter your subjects individually !</p>
-            <input id='add_subject' type="button" class="button_blue" value="Add Subjects Manually"/>
+            <p>Enter your datasenders individually !</p>
+            <input id='add_datasenders' type="button" class="button_blue" value="Add DataSenders Manually"/>
         </div>
         <div class="grid_11  omega import_list">
-            <h6>Import a List of Subjects</h6>
+            <h6>Import a List of DataSenders</h6>
 
-            <p>Upload an excel (.xls or .xlsx) or csv file (.csv) of your Subjects !</p>
+            <p>Upload an excel (.xls or .xlsx) or csv file (.csv) of your Datasenders !</p>
             <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
         </div>
-        <div class="add_subject_form">
-            {% include 'subject_form.html' %}
+        <div id="add_data_sender_form" class="add_datasender_form">
+            {% include 'datasender_form.html' %}
         </div>
         {% include 'project/import_section_in_wizard.html' %}
     </div>
 {% endblock %}
 {% block buttons %}
     {{ block.super }}
-        <input id="submit-button" type="submit"value="Next Step: Questionnaire"/>
+        <input id="submit-button" type="submit"value="Next Step: Review and Test"/>
 {% endblock %}
