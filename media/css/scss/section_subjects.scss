@@ -46,7 +46,9 @@
            }
         }
         .location_section{
-            margin-left:120px;
+            li{
+                float:none;
+            }
             label{
                 display:block;
                 float:none;
