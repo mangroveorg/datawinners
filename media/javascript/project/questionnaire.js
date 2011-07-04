@@ -202,14 +202,17 @@ $(document).ready(function() {
 
     $('.question_list ol div .delete_link').live("click", function(event){
         event.stopPropagation();
-        $('.question_list ol > div:first').toggleClass("question_selected");
-
-    })
+        if($('#question_form').valid()){
+            $('.question_list ol > div:first').toggleClass("question_selected");
+        }
+    });
     $('.question_list ol > div').live("click", function(){
         var selected = $(this).index()+1;
         var selected_div = $('.question_list ol').find("div:nth-child("+selected+")");
-            selected_div.toggleClass("question_selected");
-            selected_div.find(".selected_question_arrow").show();
+            if($('#question_form').valid()){
+                selected_div.toggleClass("question_selected");
+                selected_div.find(".selected_question_arrow").show();
+            }
     });
 
 
