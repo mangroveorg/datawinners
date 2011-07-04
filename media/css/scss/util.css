@@ -44,6 +44,10 @@
 .margin_top_5 {
   margin-top: 5px; }
 
+/* Float styling */
+.float_left {
+  float: left; }
+
 /* Border Styles */
 .null_border {
   border: 0px !important; }

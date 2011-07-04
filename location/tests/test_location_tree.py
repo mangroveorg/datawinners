@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
+from unittest.case import SkipTest
 from datawinners.location.LocationTree import LocationTree, get_locations_for_country
 
 
+@SkipTest
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
         self.tree = LocationTree()
