@@ -304,7 +304,7 @@ $(document).ready(function() {
         $("#questionnaire-code-error").html("");
 
         if (!$('#question_form').valid()) {
-            $("#message-label").html("<label class='error_message'> This questionnaire has an error.</label> ");
+            $("#message-label").show().html("<label class='error_message'> This questionnaire has an error.</label> ");
             hide_message();
             return;
         }
@@ -317,7 +317,7 @@ $(document).ready(function() {
                    var element_list = path.split("/");
                    window.location.href = '/project/datasenders/' + element_list[element_list.length-2];
                 }).error(function(e) {
-            $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
+            $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
 
