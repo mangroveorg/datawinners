@@ -145,7 +145,12 @@ DW.charCount = function() {
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':
-                constraints_len = constraints_len + current_question.range_max().toString().length;
+                if (current_question.range_max()){
+                    constraints_len = constraints_len + current_question.range_max().toString().length;
+                    break;
+                }
+                if (current_question.range_min())
+                    constraints_len = constraints_len + current_question.range_min().toString().length;
                 break;
             case 'text':
                 if (current_question.max_length()) {
@@ -166,10 +171,10 @@ DW.charCount = function() {
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
     if (current_len <= max_len) {
-        $("#char-count").css("color", "#666666")
+        $("#char-count").css("color", "#666666");
     }
     if (current_len > max_len) {
-        $("#char-count").css("color", "red")
+        $("#char-count").css("color", "red");
         max_len = max_len+160;
         sms_number++;
         sms_number_text = "(" + sms_number + " sms required)";
