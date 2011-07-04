@@ -97,6 +97,11 @@ class LocationTree(object):
         location=self.get_location_for_geocode(lat,long)
         return self.get_hierarchy_path(location)
 
+    def get_centroid(self, location):
+        row = LocationLevel.objects.filter(name_4=location).centroid(model_att='c')
+        point = row[0].c
+        return point.x,point.y
+
 
 
   
