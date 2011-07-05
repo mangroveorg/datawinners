@@ -1,5 +1,5 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} Activity Log {% endblock %}
+{% block page_title %} All Data records {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -32,6 +32,7 @@
     {{ block.super }}
     <link href="/media/css/scss/section_sms_results.scss" media="screen" rel="stylesheet" />
     <link href="/media/css/scss/section_data.scss" media="screen" rel="stylesheet" />
+    <link href="/media/css/scss/section_data_full_width.scss" rel="stylesheet" />
 {% endblock %}
 {% block content %}
     {% block secondary_navigation %}
@@ -42,6 +43,7 @@
     <form id = "export_form" method="post" action="/project/export/log">
     {% csrf_token %}
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
+        <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
         <ul class="links">
             <li><a id = "export_link" href="#">export</a> </li>

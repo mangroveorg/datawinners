@@ -20,9 +20,12 @@
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/subjects.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $("#tab_items .subjects").addClass("current");
@@ -38,139 +41,31 @@
     <p>Description about the step goes here</p>
 {% endblock %}
 {% block content %}
-    <input id='post_url' type="hidden" value="{{ post_import }}"/>
-    <div class="questionnare_content grid_23 alpha omega">
-        <div id="message-label">
-        </div>
-        <div>
-            <div id="questions-panel" class="grid_8 alpha">
-                <h4>Questions</h4>
 
-                <div class="question_list">
-                    <ol>
-                        {% for each in fields %}
-                            <div class="question{{ forloop.counter }}">
-                                <li>
-                                    <a>{{ each.name }}</a>
-                                    <span class="selected_question_arrow"></span>
-                                </li>
-                            </div>
-                        {% endfor %}
-                    </ol>
-                </div>
-            </div>
+    {% include 'entity_question_panel.html' %}
 
-            <div id="question-detail-panel">
-                {% for each in fields %}
-                    <div class="answer{{ forloop.counter }}">
-                        <h4>Question: </h4>
-                        <span>{{ each.label.eng }}</span>
-                        <h4>Code: </h4>
-                        <span>{{ each.code }}</span>
-                        <span class="selected_question_arrow"></span>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    <h4 class="inline">Add Subjects</h4>
-    <span>(Optional, you can fill in this later)!</span>
+    <h4 class="inline">Add Subjects now</h4>
+    <span>(Optional)!</span>
     <div class="add_subjects_section alpha omega">
         <div class="grid_11 alpha omega">
             <h6>Add Subjects Manually</h6>
 
-            <p>Enter your Subjects individually after you have defined all Questions above.</p>
-            <input id='add_subject' type="button" class="button_blue" value="Add Subject"/>
+            <p>Enter your subjects individually !</p>
+            <input id='add_subject' type="button" class="button_blue" value="Add Subjects Manually"/>
         </div>
         <div class="grid_11  omega import_list">
-            <h6>Import a List of subjects</h6>
+            <h6>Import a List of Subjects</h6>
 
-            <p>Upload a Csv file (.csv) with your list of Subjects. !</p>
+            <p>Upload an excel (.xls or .xlsx) or csv file (.csv) of your Subjects !</p>
             <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
         </div>
         <div class="add_subject_form">
-            <form id="question_form">
-                <fieldset>
-                    <ul>
-                        <li>
-                            <label>* Name</label>
-                            <input id="entity_name" name="entity_name" type="text"/>
-                        </li>
-                        <li>
-                            <label>Unique Identification Number(ID)</label>
-                            <input id="short_name" name="short_name" type="text" disabled="disabled"/>
-                                <span class="auto_gen_checkbox">
-                                <input id="autogen" name="autogen" type="checkbox" checked=true/>
-                                <label>Autogenerate</label>
-                            </span>
-
-                        </li>
-                        <li>
-                            <span>
-                                <label>* Type</label>
-                            </span>
-                            <span>
-                                <select id="id_entity_type" name="type">
-                                    {% for entity_type in entity_types %}
-                                        <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
-                                    {% endfor %}
-                                </select>
-                            </span>
-                        </li>
-                        <li>
-                            <label>Location</label>
-                            <input id="location" name="location" type="text"/>
-                        </li>
-                        <li>
-                            <label>GPS</label>
-                            <input id="geo_code" name="geo_code" type="text"/>
-                        </li>
-                        <li>
-                            <label>Description</label>
-                            <input id="description" name="description" type="text"/>
-                        </li>
-                        <li>
-                            <label>Mobile Number</label>
-                            <input id="mobile_number" name="mobile_number" type="text" maxlength="15"/>
-                        </li>
-                    </ul>
-                </fieldset>
-                <input type="button" value="Register" id="register_entity" class="button"/>
-            </form>
+            {% include 'subject_form.html' %}
         </div>
-        <div class="import_subject_form">
-            <div id="file-uploader">
-                <noscript>
-                    <p>Please enable JavaScript to use file uploader.</p>
-                    <!-- or put a simple form for upload here -->
-                </noscript>
-                <h6>Upload a CSV or a XL file</h6>
-                <div id="file_uploader"></div>
-            </div>
-            <div id='error_table'>
-                <table>
-                    <thead>
-                        <th>Row Number</th>
-                        <th>Row</th>
-                        <th>Error</th>
-                    </thead>
-                    <tbody id='error_tbody'>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {% include 'project/import_section_in_wizard.html' %}
     </div>
 {% endblock %}
 {% block buttons %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div class="grid_5 previous_step">
-            <a href={{ previous }}>Previous Step:</a>
-            <a class="bold" href={{ previous }}>Define Project</a>
-        </div>
-        <a href="questionnaire.html#" class="cancel">Cancel</a>
+    {{ block.super }}
         <input id="submit-button" type="submit"value="Next Step: Questionnaire"/>
-        {{ block.super }}
-    </form>
 {% endblock %}

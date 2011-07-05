@@ -1,17 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datetime import date, datetime, timedelta 
-from django.contrib.auth.models import User
+from datetime import datetime, timedelta
+from django.contrib.auth.models import User, Group
 from mock import patch
 from datawinners import initializer
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from datawinners.submission.views import SMS
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.datastore.entity import  define_type, create_entity
+from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
 from pytz import UTC
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericConstraint, TextConstraint
 from mangrove.transport.player.player import Request, SMSPlayer
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
@@ -31,8 +31,18 @@ class DateTimeMocker(object):
         self.datetime_patcher.stop()
 
 
+def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
+    try:
+        entity = create_entity(manager, entity_type, location, aggregation_paths, short_code, geometry)
+    except DataObjectAlreadyExists as e:
+        entity = get_by_short_code(manager, short_code, entity_type)
+        entity.delete()
+        entity = create_entity(manager, entity_type, location, aggregation_paths, short_code, geometry)
+    finally:
+        return entity
+
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None, description=None):
-    e = create_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
+    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
                          short_code=short_code, geometry=geometry)
     name_type = create_data_dict(manager, name='Name Type', slug='Name', primitive_type='string')
     mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
@@ -62,11 +72,13 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
 def load_manager_for_default_test_account():
     DEFAULT_USER = "tester150411@gmail.com"
     user = User.objects.get(username=DEFAULT_USER)
+    group = Group.objects.filter(name = "NGO Admins")
+    user.groups.add(group[0])
     return get_database_manager_for_user(user)
 
 
 def register(manager, entity_type, data, location, short_code):
-    e = create_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
+    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
                       short_code=short_code)
     e.add_data(data=data)
     return e
@@ -201,9 +213,13 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                            fields=[question1, question2, question3, question4, question5, question6, question7],
                            entity_type=CLINIC_ENTITY_TYPE
     )
-    qid = form_model.save()
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli001").delete()
+        qid = form_model.save()
     project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"])
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no')
     project.qid = qid
     try:
         project.save(manager)
@@ -213,9 +229,13 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                             form_code="cli002", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
                             entity_type=CLINIC_ENTITY_TYPE)
-    qid2 = form_model2.save()
+    try:
+        qid2 = form_model2.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli002").delete()
+        qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"])
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no')
     project2.qid = qid2
     try:
         project2.save(manager)
@@ -276,6 +296,7 @@ def load_sms_data_for_cli001(manager):
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
+    # Total number of identical records = 3
     message1 = "cli001 +EID cid001 +NA Mr. Tessy +FA 58 +RD 28.02.2011 +BG c +SY ade +GPS 79.2 20.34567"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cid002 +NA Mr. Adam +FA 62 +RD 15.02.2011 +BG a +SY ab +GPS 74.2678 23.3567"
@@ -284,6 +305,7 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(MARCH)
+    # Total number of identical records = 4
     message1 = "cli001 +EID cid004 +NA Jannita +FA 90 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cid005 +NA Aanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
@@ -316,6 +338,7 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(DEC_2010)
+    # Total number of identical records = 4
     message1 = "cli001 +EID cli25 +FA 47 +RD 15.12.2010 +BG d +SY ace +GPS -58.3452 19.3345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli23 +NA De'melo +FA 38 +RD 27.12.2010 +BG c +SY ba +GPS 81.672 92.33456"
@@ -326,13 +349,14 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(NOV_2010)
+    # Total number of identical records = 3
     message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 07.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli20 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = 'cli001 +EID cli8 +NA Kanda (",) +FA 34 +RD 27.11.2010 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 07.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
+    message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 17.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli20 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
@@ -340,60 +364,64 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(PREV_MONTH)
+    # Total number of identical records = 4
     message1 = "cli001 +EID cli9 +NA Demelo +FA 38 +RD 17.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 05.01.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
+    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 05.05.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli11 +NA Aàntra +FA 98 +RD 12.02.2011 +BG a +GPS -45.234 89.32345"
+    message1 = "cli001 +EID cli11 +NA Aàntra +FA 98 +RD 12.05.2011 +BG a +GPS -45.234 89.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli12 +NA ànnita +FA 37 +RD 05.12.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 37 +RD 05.05.2011 +BG d +SY cbe +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli9 +NA Demelo +FA 38 +RD 17.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 05.01.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
+    message1 = "cli001 +EID cli10 +NA Zorro +FA 48 +RD 02.05.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli11 +NA Aàntra +FA 95 +RD 12.02.2011 +BG a +GPS -45.234 89.32345"
+    message1 = "cli001 +EID cli11 +NA Aàntra +FA 95 +RD 12.05.2011 +BG a +GPS -45.234 89.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli12 +NA ànnita +FA 35 +RD 05.12.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 35 +RD 09.05.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli9 +NA Demelo +FA 32 +RD 17.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
+    message1 = "cli001 +EID cli9 +NA Demelo +FA 32 +RD 27.05.2011 +BG c +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli10 +NA Zorro +FA 43 +RD 05.01.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
+    message1 = "cli001 +EID cli10 +NA Zorro +FA 43 +RD 05.05.2011 +BG b +SY cd +GPS 23.23452 -28.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli11 +NA Aàntra +FA 91 +RD 12.02.2011 +BG a +GPS -45.234 89.32345"
+    message1 = "cli001 +EID cli11 +NA Aàntra +FA 91 +RD 12.05.2011 +BG a +GPS -45.234 89.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli12 +NA ànnita +FA 45 +RD 05.12.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 45 +RD 15.05.2010 +BG d +SY cbe +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
     datetime_mocker.set_date_time_now(THIS_MONTH)
-    message1 = "cli001 +EID cli13 +NA Dmanda +FA 69 +RD 05.02.2011 +BG c +SY ce +GPS 40.2 69.3123"
+    # Total number of identical records = 4
+    message1 = "cli001 +EID cli13 +NA Dmanda +FA 69 +RD 05.06.2011 +BG c +SY ce +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli14 +NA Vamand +FA 36 +RD 05.02.2011 +BG a +SY ace +GPS 58.3452 115.3345"
+    message1 = "cli001 +EID cli14 +NA Vamand +FA 36 +RD 03.06.2011 +BG a +SY ace +GPS 58.3452 115.3345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli15 +NA M!lo +FA 88 +RD 17.05.2011 +SY ba +GPS 19.672 92.33456"
+    message1 = "cli001 +EID cli15 +NA M!lo +FA 88 +RD 02.06.2011 +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli16 +NA K!llo +FA 88 +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli13 +NA Dmanda +FA 89 +RD 05.02.2011 +BG c +SY ce +GPS 40.2 69.3123"
+    message1 = "cli001 +EID cli13 +NA Dmanda +FA 89 +RD 04.06.2011 +BG c +SY ce +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli14 +NA Vamand +FA 56 +RD 05.02.2011 +BG a +SY ace +GPS 58.3452 115.3345"
+    message1 = "cli001 +EID cli14 +NA Vamand +FA 56 +RD 01.06.2011 +BG a +SY ace +GPS 58.3452 115.3345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli15 +NA M!lo +FA 45 +RD 17.05.2011 +SY ba +GPS 19.672 92.33456"
+    message1 = "cli001 +EID cli15 +NA M!lo +FA 45 +RD 07.06.2011 +SY ba +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli16 +NA K!llo +FA 28 +GPS 19.672 92.33456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
+
     datetime_mocker.end_mock()
 
-    message1 = "cli001 +EID cli17 +NA Catty +FA 78 +RD 05.01.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
+    # Total number of identical records = 3
+    message1 = "cli001 +EID cli17 +NA Catty +FA 78 +RD 15.06.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli18 +NA àntra +FA 28 +RD 12.02.2011 +BG a +SY adb +GPS -45.234 169.32345"
+    message1 = "cli001 +EID cli18 +NA àntra +FA 28 +RD 12.06.2011 +BG a +SY adb +GPS -45.234 169.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli19 +NA Tinnita +FA 37 +BG d +SY ace +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
 
-    message1 = "cli001 +EID cli17 +NA Catty +FA 98 +RD 05.01.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
+    message1 = "cli001 +EID cli17 +NA Catty +FA 98 +RD 25.06.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-    message1 = "cli001 +EID cli18 +NA àntra +FA 58 +RD 12.02.2011 +BG a +SY adb +GPS -45.234 169.32345"
+    message1 = "cli001 +EID cli18 +NA àntra +FA 58 +RD 22.06.2011 +BG a +SY adb +GPS -45.234 169.32345"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "cli001 +EID cli19 +NA Tinnita +FA 27 +BG d +SY ace +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))

@@ -19,25 +19,30 @@
     padding-right: 20px;
     margin-left: 20px; }
 
-.add_subject_form ul {
+.add_subject_form ul, .add_datasender_form ul {
   float: left; }
-  .add_subject_form ul li {
+  .add_subject_form ul li, .add_datasender_form ul li {
     margin-bottom: 15px;
     float: left; }
-    .add_subject_form ul li label {
+    .add_subject_form ul li label, .add_datasender_form ul li label {
       width: 120px;
       float: left; }
-      .add_subject_form ul li label label {
+      .add_subject_form ul li label label, .add_datasender_form ul li label label {
         display: inline; }
-      .add_subject_form ul li label.error {
+      .add_subject_form ul li label.error, .add_datasender_form ul li label.error {
         font-size: 11px;
         font-weight: normal;
         margin-left: 120px;
         width: auto; }
-    .add_subject_form ul li .auto_gen_checkbox label {
+    .add_subject_form ul li .location_section, .add_datasender_form ul li .location_section {
+      margin-left: 120px; }
+      .add_subject_form ul li .location_section label, .add_datasender_form ul li .location_section label {
+        display: block;
+        float: none; }
+    .add_subject_form ul li .auto_gen_checkbox label, .add_datasender_form ul li .auto_gen_checkbox label {
       float: none;
       display: inline; }
-    .add_subject_form ul li input[type=text] {
+    .add_subject_form ul li input[type=text], .add_datasender_form ul li input[type=text] {
       width: 200px; }
 
 #question-detail-panel > div span {
@@ -59,29 +64,6 @@
     .ui-widget-content .ui-widget-header .ui-dialog-title {
       font-size: 18px; }
 
-#file-uploader {
-  width: 360px;
-  margin: 20px auto; }
-  #file-uploader h6 {
-    float: left;
-    margin: 10px 20px 0 0; }
-  #file-uploader .file_uploader {
-    float: left; }
-  #file-uploader .qq-upload-button {
-    border: 1px solid #D4972D;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    background: #999;
-    /* for non-css3 browsers */
-    background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
-    /* for webkit browsers */
-    background: -moz-linear-gradient(top, #feea89, #ffd857);
-    /* for firefox 3.6+ */
-    color: #6F451D;
-    font-family: "Arial";
-    font-weight: bold;
-    padding: 6px 12px 6px 11px; }
-
 #error_table {
   display: none; }
   #error_table table {
@@ -91,3 +73,14 @@
     text-align: center; }
   #error_table td {
     color: #FF0000; }
+
+.import_subjects .browse_subjects label {
+  float: none; }
+.import_subjects .add_subjects .add_subject_link {
+  position: relative;
+  top: 10px;
+  margin-left: 10px; }
+
+.ui-widget-content a {
+  color: #0070AC;
+  font-size: 12px; }

@@ -966,13 +966,13 @@
 			 */
 			this.oLanguage = {
 				"sProcessing": "Processing...",
-				"sLengthMenu": "Show _MENU_ entries",
+				"sLengthMenu": "Show _MENU_ Data records",
 				"sZeroRecords": "No matching records found",
 				"sEmptyTable": "No data available in table",
 				"sLoadingRecords": "Loading...",
-				"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
-				"sInfoEmpty": "Showing 0 to 0 of 0 entries",
-				"sInfoFiltered": "(filtered from _MAX_ total entries)",
+				"sInfo": "Showing _START_ to _END_ of _TOTAL_ Data records",
+				"sInfoEmpty": "Showing 0 to 0 of 0 Data records",
+				"sInfoFiltered": "(filtered from _MAX_ total Data records)",
 				"sInfoPostFix": "",
 				"sSearch": "Search:",
 				"sUrl": "",

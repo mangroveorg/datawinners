@@ -1,0 +1,34 @@
+<div class="questionnare_content grid_23 alpha omega">
+    <div id="message-label">
+    </div>
+    <div>
+        <div id="questions-panel" class="grid_8 alpha">
+            <h4>Questions</h4>
+
+            <div class="question_list">
+                <ol>
+                    {% for each in fields %}
+                        <div class="question{{ forloop.counter }}">
+                            <li>
+                                <a>{{ each.label.eng }} {{ each.code }}</a>
+                                <span class="selected_question_arrow"></span>
+                            </li>
+                        </div>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+
+        <div id="question-detail-panel">
+            {% for each in fields %}
+                <div class="answer{{ forloop.counter }}">
+                    <h4>Question: </h4>
+                    <span>{{ each.label.eng }}</span>
+                    <h4>Code: </h4>
+                    <span>{{ each.code }}</span>
+                    <span class="selected_question_arrow"></span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

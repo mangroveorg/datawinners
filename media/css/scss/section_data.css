@@ -17,6 +17,9 @@ table {
       padding-right: 5px;
       padding-left: 5px; }
 
+#container_header_application #main_tab .logo img {
+  margin-left: 15px; }
+
 .heading_block {
   border-bottom: 1px solid #CCCCCC;
   padding-bottom: 5px;
@@ -25,6 +28,8 @@ table {
     float: left; }
     .heading_block .date_range_box label, .heading_block .date_range_box select {
       font-weight: normal;
+      float: left; }
+    .heading_block .date_range_box input {
       float: left; }
   .heading_block label {
     float: left;
@@ -134,13 +139,13 @@ table {
 #data_analysis_wrapper table thead .sorting {
   background: url(/media/images/sort_arrow.png) no-repeat right 10px; }
 #data_analysis_wrapper table thead .sorting_desc {
-  background: url(/media/images/sort_icon_bottom.png) no-repeat right 18px; }
+  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 10px; }
 #data_analysis_wrapper table thead .sorting_asc {
-  background: url(/media/images/sort_icon_top.png) no-repeat right 10px; }
+  background: url(/media/images/sort_arrow_active_top.png) no-repeat right 10px; }
 
 #dateRangePicker {
   width: 220px;
-  margin-left: 5px;
+  margin: 0 10px 0 5px;
   padding-left: 5px; }
 
 .ui-daterangepickercontain .ui-daterangepicker {

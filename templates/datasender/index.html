@@ -1,0 +1,64 @@
+{% extends 'layout_application.html' %}
+{% block page_title %}Data Senders{% endblock %}
+
+{% block section_title %}Data Senders{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "data_senders" %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+
+{% endblock %}
+
+{% load i18n %}
+{% block content %}
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="import_subject_form">
+            <div id="file-uploader">
+                <noscript>
+                    <p>Please enable JavaScript to use file uploader.</p>
+                    <!-- or put a simple form for upload here -->
+                </noscript>
+                <h6>Upload a CSV or a XL file</h6>
+
+                <div id="file_uploader"></div>
+            </div>
+            <div id='error_table'>
+                <table>
+                    <thead>
+                    <th>Row Number</th>
+                    <th>Row</th>
+                    <th>Error</th>
+                    </thead>
+                    <tbody id='error_tbody'>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if all_subjects %}
+            <h3>All Data Senders</h3>
+            {% include 'subject_table.html' %}
+
+        {% endif %}
+    </div>
+{% endblock %}

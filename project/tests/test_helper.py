@@ -109,13 +109,13 @@ class TestHelper(unittest.TestCase):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
         submissions = [
                 {'values': {'q1': 'ans1', 'q2': 'ans2'}, 'channel': 'sms', 'status': True, 'voided': False,
-                 'created': datetime(2011, 1, 1), 'error_message': 'error1'},
+                 'created': datetime(2011, 1, 1), 'error_message': 'error1', 'destination':'2616', 'source':'1234'},
                 {'values': {'q2': 'ans22'}, 'channel': 'sms', 'status': False, 'voided': True,
                  'created': datetime(2011, 1, 2),
-                 'error_message': 'error2'}
+                 'error_message': 'error2', 'destination':'2616', 'source':'1234'}
         ]
-        required_submissions = [(datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-                (datetime(2011, 1, 2),  False, True, 'error2', None, 'ans22',),
+        required_submissions = [('2616','1234',datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
+                ('2616','1234', datetime(2011, 1, 2),  False, True, 'error2', None, 'ans22',),
                                                                                                      ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
@@ -243,7 +243,7 @@ class TestHelper(unittest.TestCase):
             get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
             form_model = helper.create_questionnaire(post, dbm)
 
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=NAME, slug=SLUG,
+        self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
                                                         primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
@@ -253,6 +253,20 @@ class TestHelper(unittest.TestCase):
 
         patcher.stop()
 
+    def test_should_update_questionnaire(self):
+        dbm = Mock(spec=DatabaseManager)
+        ddtype = Mock(spec=DataDictType)
+        question1 = TextField(label="name", code="na", name="What is your name",
+                              language="eng", ddtype=ddtype)
+        question2 = TextField(label="address", code="add", name="What is your address",
+                              defaultValue="some default value", language="eng", ddtype=ddtype)
+        post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [],
+                "is_entity_question": False,
+                "range_min": 0, "range_max": 100}
+        form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1,question2], entity_type=["reporter"], type="survey")
+        form_model2 = helper.update_questionnaire_with_questions(form_model, [post], dbm)
+        self.assertEquals(2, len(form_model2.fields))
+        
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
         models_mock = patcher.start()
@@ -384,3 +398,12 @@ class TestHelper(unittest.TestCase):
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
+
+    def test_should_remove_default_entity_field(self):
+        ddtype = Mock(spec=DataDictType)
+        question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
+                              language="eng", entity_question_flag=True, ddtype=ddtype)
+        question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
+                              defaultValue="some default value", language="eng", ddtype=ddtype)
+        cleaned_list = helper.hide_entity_question([question1, question2])
+        self.assertEquals([question2], cleaned_list)

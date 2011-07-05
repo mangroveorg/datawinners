@@ -1,20 +1,24 @@
-from couchdb.mapping import  TextField, ListField
+from couchdb.mapping import  TextField, ListField, IntegerField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import  is_string
 
+PROJECT_DRAFT_STATUS = 'Inactive'
+PROJECT_ACTIVE_STATUS = 'Active'
 
 class Project(DocumentBase):
     name = TextField()
     goals = TextField()
     project_type = TextField()
     entity_type = TextField()
+    activity_report = TextField()
     devices = ListField(TextField())
     qid = TextField()
+    state = TextField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=PROJECT_DRAFT_STATUS, activity_report=None):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -23,6 +27,8 @@ class Project(DocumentBase):
         self.project_type = project_type
         self.entity_type = entity_type
         self.devices = devices
+        self.state = state
+        self.activity_report = activity_report
 
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('all_projects', key=self.name)

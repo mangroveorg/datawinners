@@ -1,20 +1,68 @@
 {% extends 'account/index.html' %}
+{% block page_title %} Profile {% endblock %}
+
 {% load dw_tabs %}
-{% block account_navigation %}
-{% activetab "settings_nav" "users" %}
+{% block navigation %}
+{% activetab "tab_nav" "account" %}
 {{ block.super }}
+{% endblock %}{% block layout_scss %}
+{% include 'application_scss.html' %}
+<link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
 {% endblock %}
-    
-{% block nav_content %}
-<form method="post" action="" name="form">
-{% csrf_token %}
-Title : {{ form.title }}
-First Name : {{ form.first_name }}
-Last Name: {{ form.last_name }}
-Email: {{ form.username }}
-Office Phone : {{ form.office_phone }}
-Mobile Phone : {{ form.mobile_phone }}
-Skype : {{ form.skype }}    
-<input type="Submit" value="Submit" >
-</form>
-{% endblock %}
+{% block content%}
+    <div class="span-18 box">
+      <div class = "form-5px">
+          {% if message %}
+             <div id="flash-message" class="success">
+                 {{ message }}
+             </div>
+        {% endif %}
+        <form method="post" action="" name="form">
+          {% csrf_token %}
+
+          <ul class="organization">
+            <li class="{{ form.title.css_classes }} form-row-10px">
+              {{ form.title.label_tag }}
+              {{ form.title }}
+              {{ form.title.errors }}
+            </li>
+            <li class="{{ form.first_name.css_classes  }} form-row-10px">
+              {{ form.first_name.label_tag }}
+              {{ form.first_name }}
+              {{ form.first_name.errors }}
+            </li>
+            <li class="{{ form.last_name.css_classes  }} form-row-10px">
+              {{ form.last_name.label_tag }}
+              {{ form.last_name }}
+              {{ form.last_name.errors }}
+            </li>
+              <li class="{{ form.username.css_classes  }} form-row-10px">
+              {{ form.username.label_tag }}
+              {{ form.username }}
+              {{ form.username.errors }}
+            </li>
+              <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+              {{ form.office_phone.label_tag }}
+              {{ form.office_phone }}
+              {{ form.office_phone.errors }}
+            </li>
+              <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
+              {{ form.mobile_phone.label_tag }}
+              {{ form.mobile_phone }}
+              {{ form.mobile_phone.errors }}
+            </li>
+              <li class="{{ form.skype.css_classes  }} form-row-10px">
+              {{ form.skype.label_tag }}
+              {{ form.skype }}
+              {{ form.skype.errors }}
+            </li>
+             <li class="margin_top_20">
+                <input type="submit" value="Update" class="button" />
+            </li>
+
+          </ul>
+        </form>
+
+      </div>
+    </div>
+    {% endblock %}

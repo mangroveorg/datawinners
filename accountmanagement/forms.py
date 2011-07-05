@@ -3,10 +3,12 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
 from models import  Organization
+from django.contrib.auth.models import User
 
 
 class OrganizationForm(ModelForm):
@@ -37,6 +39,7 @@ class OrganizationForm(ModelForm):
 
 
 class UserProfileForm(forms.Form):
+
     error_css_class = 'error'
     required_css_class = 'required'
 
@@ -49,6 +52,12 @@ class UserProfileForm(forms.Form):
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username =username).count() > 0:
+            raise ValidationError("This email address is already in use. Please supply a different email address")
+        return self.cleaned_data.get('username')
+
 class RegistrationForm(RegistrationFormUniqueEmail):
     error_css_class = 'error'
     required_css_class = 'required'
@@ -56,6 +65,9 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     title = forms.CharField(max_length=30, required=False)
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
+    office_phone = forms.CharField(max_length=30, required=False, label="Office Phone")
+    mobile_phone = forms.CharField(max_length=30, required=False, label="Mobile Phone")
+    skype = forms.CharField(max_length=30, required=False, label="Skype")
 
     organization_name = forms.CharField(required=True, label='* Organization name')
     organization_sector = forms.CharField(widget=(

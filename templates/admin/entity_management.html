@@ -6,6 +6,9 @@
 {% activetab "main_nav" "subjects" %}
 {{ block.super }}
 {% endblock %}
+{% block page_css %}
+     <link href="/media/css/scss/section_entity_management.scss" rel="stylesheet"/>
+{% endblock %}
 
 {% block page_js %}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
@@ -32,7 +35,9 @@
                             </li>
                             <li>
                             <input type="submit" value="Add" class = "button"/>
+                            <a href="javascript:history.back()" class="go_back">Go Back</a>
                             </li>
+
                     </ul>
             </form>
     </div>

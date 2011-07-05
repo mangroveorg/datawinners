@@ -24,6 +24,10 @@ table {
           .container_24 .content .data_block .data_table table td {
             min-width: 170px; }
 
+#page_title {
+  /*float:left;*/
+  margin: 0 0 0 15px !important; }
+
 #header_application {
   width: auto; }
   #header_application #header_wizard {
