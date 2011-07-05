@@ -49,4 +49,4 @@ def get_success_msg_for_registration_using(response, entity_type, source):
 def _stringify(item):
     if type(item)==list:
         return (',').join(item)
-    return str(item)
+    return unicode(item)

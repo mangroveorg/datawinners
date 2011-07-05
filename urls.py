@@ -23,5 +23,6 @@ urlpatterns = patterns('',
                        (r'', include('datawinners.datasenders.urls')),
                        (r'', include('datawinners.dashboard.urls')),
                        (r'', include('datawinners.location.urls')),
+                       (r'', include('datawinners.alldata.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        )

@@ -5,7 +5,7 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import  is_string
 
-PROJECT_DRAFT_STATUS = 'Draft'
+PROJECT_DRAFT_STATUS = 'Inactive'
 PROJECT_ACTIVE_STATUS = 'Active'
 
 class Project(DocumentBase):
