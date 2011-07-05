@@ -312,12 +312,13 @@ def export_data(request):
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list = json.loads(response_string)
     raw_data_list.insert(0, header_list)
-    return _create_excel_response(raw_data_list)
+    file_name = request.POST.get(u"project_name")+'_analysis'
+    return _create_excel_response(raw_data_list, file_name)
 
 
-def _create_excel_response(raw_data_list):
+def _create_excel_response(raw_data_list,file_name):
     response = HttpResponse(mimetype="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=file.xls'
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"'%(file_name,)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
     return response
@@ -335,7 +336,8 @@ def export_log(request):
         submissions, ids = zip(*results['submissions'])
         raw_data_list.extend([list(each) for each in submissions])
 
-    return _create_excel_response(raw_data_list)
+    file_name = request.POST.get(u"project_name")+'_log'
+    return _create_excel_response(raw_data_list,file_name)
 
 
 @login_required(login_url='/login')
