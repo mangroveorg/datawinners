@@ -43,6 +43,7 @@
     <form id = "export_form" method="post" action="/project/export/log">
     {% csrf_token %}
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
+        <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
         <ul class="links">
             <li><a id = "export_link" href="#">export</a> </li>
