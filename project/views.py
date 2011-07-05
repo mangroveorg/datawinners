@@ -168,9 +168,11 @@ def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request))
     for row in rows:
-        link = reverse(project_overview, args=[row['value']['_id']])
+        project_id = row['value']['_id']
+        link = reverse(project_overview, args=[project_id])
+        activate_link = reverse(activate_project, args=[project_id])
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
-                       link=link)
+                       link=link, activate_link=activate_link, state=row['value']['state'])
         project_list.append(project)
     return render_to_response('project/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))
@@ -310,12 +312,13 @@ def export_data(request):
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list = json.loads(response_string)
     raw_data_list.insert(0, header_list)
-    return _create_excel_response(raw_data_list)
+    file_name = request.POST.get(u"project_name")+'_analysis'
+    return _create_excel_response(raw_data_list, file_name)
 
 
-def _create_excel_response(raw_data_list):
+def _create_excel_response(raw_data_list,file_name):
     response = HttpResponse(mimetype="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=file.xls'
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"'%(file_name,)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
     return response
@@ -333,7 +336,8 @@ def export_log(request):
         submissions, ids = zip(*results['submissions'])
         raw_data_list.extend([list(each) for each in submissions])
 
-    return _create_excel_response(raw_data_list)
+    file_name = request.POST.get(u"project_name")+'_log'
+    return _create_excel_response(raw_data_list,file_name)
 
 
 @login_required(login_url='/login')
