@@ -31,7 +31,7 @@
                     <h2 class="project_title">{{ project.name }}</h2>
                     <div class="project_detail">
                         <span class="project_status">Project status: {{ project.state }}</span>
-                        {% if  project.state  == 'Draft' %}
+                        {% if  project.state  == 'Inactive' %}
                         <a href="{{ project_links.activate_project_link }}">Activate Project</a>
                         {% endif %}
                     </div>
