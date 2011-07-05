@@ -20,5 +20,5 @@ def index(request):
                                     'failure_imports': failure_imports, 'all_subjects':all_subjects}))
 
     all_subjects = import_module.load_all_reporters(request)
-    return render_to_response('subjects/index.html', {'all_subjects': all_subjects}, context_instance=RequestContext(request))
+    return render_to_response('datasender/index.html', {'all_subjects': all_subjects}, context_instance=RequestContext(request))
 
