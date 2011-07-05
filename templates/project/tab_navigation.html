@@ -3,7 +3,11 @@
 
 {% block navigation %}
     <div class="grid_24 tab_navigation">
-        <ul>
+        {% if project.state == 'Active' %}
+            <ul>
+            {% else %}
+            <ul class="inactive_tab">
+        {% endif %}
             <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.overview_link }}">Overview</a>
             </li>

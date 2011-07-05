@@ -30,8 +30,35 @@ $font_family:"Arail";
             }
         }
     }
-
+    ul.inactive_tab{
+        background:url('/media/images/disabled_tab_bg.png') repeat-x left 10px scroll;
+        li{
+            float:left;
+            padding:7px 17px 7px;
+            position:relative;
+            margin-top:10px;
+            background:url('/media/images/disabled_pipe.png') no-repeat top right;
+            a{
+                color:#FFFFFF;
+                text-decoration:none;
+                font-size:14px;
+                font-weight:bold;
+            }
+        }
+        li.active{
+            background:#FFFFFF;
+            margin-top:0px;
+            padding-top:15px;
+            top:1px;
+            border:1px solid #ccc;
+            border-bottom:1px solid #fff;
+            a{
+                color:#000000;
+            }
+        }
+    }
 }
+
 .secondary_tab{
     position:relative;
     top:-20px;
