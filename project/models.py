@@ -1,4 +1,6 @@
-from couchdb.mapping import  TextField, ListField, IntegerField
+# vim: ai ts=4 sts=4 et sw= encoding=utf-8
+
+from couchdb.mapping import  TextField, ListField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
