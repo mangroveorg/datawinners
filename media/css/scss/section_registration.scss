@@ -16,22 +16,26 @@
     }
 }
 .right_hand_section {
-  border: 1px solid #cccccc;
-  min-height:400px;
+  border: 1px solid #ececec;
+  min-height:520px;
   padding:10px;
 }
 
 .left_hand_section {
-    border: 1px solid #cccccc;
-    margin-right: 20px;
+    border: 1px solid #ececec;
+    margin-right: 25px;
     }
 
 #container_content .content {
-  padding: 10px; }
+  padding: 20px; }
 
-.signin_form{
-    width:400px;
+.signin_form, .reset_form{
     margin:50px 0 50px 70px;
+}
+.reset_form{
+    label{
+        width:90px;
+    }
 }
 $text_box_width: 200px;
 $select_box_width:150px;

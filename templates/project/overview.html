@@ -1,5 +1,5 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} Projects {% endblock %}
+{% block page_title %} Projects - Overview {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -21,7 +21,7 @@
     <div class="span-18 box">
 
         <div class="grid_23 margin_bottom_20 margin_top_20 alpha">
-           <a class="button_blue " href ={{ project_links.link }} >Edit this project</a>
+           <a class="button_blue " href ={{ project_profile_link }} >Edit this project</a>
         </div>
        {% include 'maps/entity_map.html'  %}
         <div class="grid_23 title_block">
@@ -29,7 +29,7 @@
             <div class="grid_18 margin_top_5">
                 <a href="#">View</a>
                 <span>|</span>
-                <a href={{ project_links.link }}>edit profile</a>
+                <a href={{ project_profile_link }}>edit profile</a>
             </div>
         </div>
         <div class="custom_model grid_23 alpha omega">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="sub_content">
                         <h6>Questions</h6>
-                        <p>{{ project.what }} questions defined</p>
+                        <p>{{ number_of_questions }} questions defined</p>
                     </div>
                 </li>
                 <li>
@@ -65,7 +65,7 @@
                     <h5>How</h5>
                     <div class="sub_content">
                         <h6>Cell Phone</h6>
-                         <p>{% for each in project.how %}
+                         <p>{% for each in project.devices %}
                              {{ each }} |
                              {% endfor %}
                          </p>

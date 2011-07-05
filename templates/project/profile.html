@@ -1,6 +1,6 @@
 {% extends 'step_wizard.html' %}
 
-{% block page_title %} Setup the Project {% endblock %}
+{% block page_title %} Define Project {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -16,45 +16,50 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#tab_items .define").addClass("current");
-            set_current_tab();
-        })
-    </script>
+    <script type="text/javascript" src="/media/javascript/project/project_profile.js"></script>
 {% endblock %}
 
 {% block step_number %}
-    <h3>Step1:
+    <h3>Step 1:
         Define Project</h3>
-    <p>Description about the step goes here</p>
+    <p>Fill out the following information to create your project</p>
 {% endblock %}
 {% block content %}
     <form action="" method="POST">
     <div class="define_project">
         {% csrf_token %}
         {% if messages %}
-            <ul class="messages">
+            <div class="message-box">
                 {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    <span>{{ message }}</span>
                 {% endfor %}
-            </ul>
+            </div>
         {% endif %}
         <ul>
+            <fieldset>
+                <legend>Background</legend>
             <li class="{{ form.name.css_classes  }} form-row-10px">
                 {{ form.name.label_tag }}
                 {{ form.name }}
                 {{ form.name.errors }}
+            </li>
+            <li class="{{ form.project_type.css_classes  }} form-row-10px">
+                {{ form.project_type.label_tag }}
+                {{ form.project_type }}
+                {{ form.project_type.errors }}
             </li>
             <li class="{{ form.goals.css_classes  }} form-row-10px first">
                 {{ form.goals.label_tag }}
                 {{ form.goals }}
                 {{ form.goals.errors }}
             </li>
-            <li class="{{ form.project_type.css_classes  }} form-row-10px">
-                {{ form.project_type.label_tag }}
-                {{ form.project_type }}
-                {{ form.project_type.errors }}
+            </fieldset>
+            <fieldset>
+                <legend>Subjects and Questionnaire</legend>
+            <li class="{{ form.activity_report.css_classes  }} form-row-10px">
+                {{ form.activity_report.label_tag }}
+                {{ form.activity_report }}
+                {{ form.activity_report.errors }}
             </li>
             <li class="{{ form.entity_type.css_classes  }} form-row-10px">
                 {{ form.entity_type.label_tag }}
@@ -66,14 +71,17 @@
                 {{ form.devices }}
                 {{ form.devices.errors }}
             </li>
+            </fieldset>
         </ul>
+
     </div>
 
 
 {% endblock %}
+{% block previous %}
+{% endblock %}
 {% block buttons %}
-    <a href="#" class="cancel">Cancel</a>
-    <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
     {{ block.super }}
+    <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
 {% endblock %}
 </form>

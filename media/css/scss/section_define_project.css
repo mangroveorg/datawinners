@@ -1,3 +1,14 @@
 #container_content .wizard_content .content_wrapper {
   padding-left: 30px;
   width: 900px; }
+
+fieldset {
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  width: 750px;
+  padding: 20px;
+  margin-bottom: 20px; }
+  fieldset legend {
+    color: #C35C00;
+    font-weight: bold; }

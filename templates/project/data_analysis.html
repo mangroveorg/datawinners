@@ -1,5 +1,5 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} Projects {% endblock %}
+{% block page_title %}  Data Analysis{% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -15,7 +15,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_data.scss" rel="stylesheet" />
-    <link href="/media/css/scss/section_data_analysis.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_data_full_width.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_css %}
@@ -68,7 +68,8 @@
         <div class="date_range_box">
             <label>Show data for:</label>
             <input type="text" id="dateRangePicker" value="Click to select a date range"/>
-            <div id="dateErrorDiv"><label class=error id="dateError"></label></div>
+            <input type="button" class="button_blue" id="time_submit" value="Submit"/>
+            <span id="dateErrorDiv" class="error_arrow"></span>
         </div>
     </div>
     <div class="view_data_block grid_23 alpha">

@@ -10,9 +10,6 @@
         font-weight:normal;
     }
   
-    .welcome{
-        font-weight:bold;
-    }
     a{
         color:#FFFFFF;
         text-decoration:none;
@@ -26,34 +23,41 @@
 #container_header_application{
     #container_header_wizard{
         background:none;
-        height:60px;
+        height:30px;
     #header{
         .login{
+            margin-top:5px;
             color:#CCCCCC;
+            font-size:12px;
             span{
-                display:inline-block;
+                display:inline;
                 padding:1px 15px 0px;
                 margin-top:4px;
-                border-right:1px solid #FFFFFF;
+                border-right:1px solid #474747;
                 a{
-                    color:#FFFFFF;
+                    color:#C1C1C1;
                 }
             }
-        }
-        .logo{
-            position:relative;
-            top:40px;
+            .welcome{
+                    font-weight:bold;
+            }
         }
     }
 
     }
     #main_tab{
         text-align:right;
+        float:left;
+        .logo{
+            padding-top:10px;
+            margin-right:6px;
+            img{
+                float:left;
+            }
+        }
         ul{
             float:right;
             position:relative;
-            /*left:475px;*/
-            top:-30px;
             li{
                 padding:10px;
                 float:left;

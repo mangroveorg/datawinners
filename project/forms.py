@@ -4,6 +4,7 @@ from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import RadioFieldRenderer, RadioInput
 from django import forms
+from mangrove.form_model.form_model import REPORTER
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
@@ -29,16 +30,28 @@ class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
                             ('public information', 'Public information: I want to send information'))
     DEVICE_CHOICES = (('sms', 'SMS'), ('smartphone', 'Smart Phone'), ('web', 'Web'))
+    SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender(eg. monthly activity report)'),('no','Other Subject'))
     id = CharField(required=False)
-    name = CharField(required=True)
-    goals = CharField(max_length=300, widget=forms.Textarea, label='Project Background And Goals', required=False)
-    project_type = ChoiceField(label='Project Type', required=True, widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
-    entity_type = ChoiceField(label="Subjects", required=True)
+    name = CharField(required=True, label="Name this Project")
+    goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
+    project_type = ChoiceField(label='Project Type', widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
+    activity_report = ChoiceField(label="What is this questionnaire about?", widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=('no','Other Subject'))
+    entity_type = ChoiceField(label="Other Subjects", required=False)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[2], required=False)
 
-    def __init__(self, entity_list, *args, **kwargs):
+    def __init__(self, entity_list,  *args, **kwargs):
         assert isinstance(entity_list, list)
         super(ProjectProfile, self).__init__(*args, **kwargs)
         entity_list = entity_list
         self.fields['entity_type'].choices = [(t[-1], t[-1]) for t in entity_list]
+        self.fields['name'].widget.attrs['watermark'] = "Insert a Project name"
+        self.fields['goals'].widget.attrs['watermark'] = "Describe what your team hopes to achieve by collecting this data"
+
+    def clean(self):
+        if self.cleaned_data.get("activity_report") == 'yes':
+            self.cleaned_data['entity_type'] = REPORTER
+        if self.cleaned_data['entity_type'] == REPORTER and self.errors.get('entity_type') is not None:
+            self.errors['entity_type'] = ""
+                    
+        return self.cleaned_data

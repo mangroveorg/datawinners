@@ -13,7 +13,7 @@
                     <div class="form-5px">
                         <ul class="organization">
                             <li>
-                                <h3 class="title">Your Organization<br/></h3>
+                                <h3 class="highlighted_title">Your Organization<br/></h3>
                             </li>
                             <li class="{{ form.organization_name.css_classes }} form-row-10px">
                                 {{ form.organization_name.label_tag }}
@@ -88,7 +88,7 @@
                         </ul>
                         <ul class="administrative">
                             <li>
-                                <h3 class="title">Point of Contact / Account Administrator</h3>
+                                <h3 class="highlighted_title">Point of Contact / Account Administrator</h3>
                             </li>
                              <li class="{{ form.title.css_classes  }} form-row-10px">
                                 {{ form.title.label_tag }}
@@ -119,6 +119,24 @@
                                 {{ form.email.errors }}
 
                             </li>
+                            <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+                                {{ form.office_phone.label_tag }}
+                                {{ form.office_phone }}
+
+                                {{ form.office_phone.errors }}
+                            </li>
+                            <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
+                                {{ form.mobile_phone.label_tag }}
+                                {{ form.mobile_phone }}
+
+                                {{ form.mobile_phone.errors }}
+                            </li>
+                            <li class="{{ form.skype.css_classes  }} form-row-10px">
+                                {{ form.skype.label_tag }}
+                                {{ form.skype }}
+
+                                {{ form.skype.errors }}
+                            </li>
                             <li class="{{ form.password1.css_classes  }} form-row-10px">
                                 {{ form.password1.label_tag }}
                                 {{ form.password1 }}
@@ -135,7 +153,7 @@
                             </li>
                             <li class="margin_top_20">
                                 <input type="submit" value="Register" class="button" />
-                                <div class="span-8 last">Already registered? <a href="{% url django.contrib.auth.views.login %}">Login here!</a></div>
+                                <div class="grid_7 margin_top_10 last">Already registered? <a href="{% url django.contrib.auth.views.login %}">Login here!</a></div>
                             </li>
                         </ul>
                     </div>

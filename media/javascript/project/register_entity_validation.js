@@ -26,10 +26,10 @@ $(document).ready(function() {
     DW.validator = $('#question_form').validate({
         messages:{
             geo_code:{
-                required:"Required information for registration. Please fill out at least one location field."
+                required:"Please fill out at least one location field."
             },
             location:{
-                required:"Required information for registration. Please fill out at least one location field"
+                required:"Please fill out at least one location field"
             }
 
         },
@@ -56,8 +56,15 @@ $(document).ready(function() {
             short_name:{
                 required :true
             }
+        },
+        wrapper: "span",
+        errorPlacement: function(error, element) {
+                    offset = element.offset();
+                    error.insertAfter(element)
+                    error.addClass('error_arrow');  // add a class to the wrapper
+
         }
-    });
+});
 
 
 });

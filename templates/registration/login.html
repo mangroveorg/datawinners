@@ -9,6 +9,12 @@
         })
     </script>
 {% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_login.scss" rel="stylesheet" />
+{% endblock %}
+
 {% block messages %}
     {% if form.errors and not form.username.errors and not form.password.errors %}
         <div class=" error span-12 push-6 message-box">
@@ -35,9 +41,9 @@
                             {{ form.password }}
                             {{ form.password.errors }}
                         </li>
-                        <li>
+                        <li class="login_button">
                             <input type="submit" value="Login" class="button"/>
-                            <div>Not registered? <a href="/register">Create an account</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
+                            <div>Not registered? <a href="/register">Create an account</a> | <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></div>
                         </li>
                     </ul>
             </form>

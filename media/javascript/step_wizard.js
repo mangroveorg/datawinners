@@ -11,7 +11,11 @@
   }
 $(document).ready(function(){
    $(".cancel").bind("click", function(){
-       history.back();
+       var redirect = confirm("Please confirm to continue cancel" +
+               "\n(your previous steps are saved)")
+       if(redirect == true){
+            window.location.href = "/project/";
+       }
    })
 })
 

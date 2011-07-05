@@ -2,10 +2,13 @@
   display: inline;
   margin-top: 20px; }
   .max_char .inline input {
-    width: 40px; }
+    width: 40px;
+    float: none; }
 
 #range_max, #range_min {
-  width: 60px; }
+  width: 60px;
+  float: none;
+  margin-bottom: 10px; }
 
 /*The content styles for wizard based pages*/
 .wizard_content .content_wrapper .questionnaire_code label {
@@ -20,7 +23,7 @@
   margin-bottom: 10px; }
 .wizard_content .content_wrapper .step_number {
   margin-left: 30px; }
-.wizard_content .content_wrapper .questionnaire_code label {
+.wizard_content .content_wrapper .questionnaire_code li > label {
   display: inline;
   margin-left: 30px; }
 .wizard_content .content_wrapper .questionnare_header {
@@ -51,6 +54,13 @@
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel ul li label {
       font-size: 16px;
       float: none; }
+    .wizard_content .content_wrapper .questionnare_content #question-detail-panel ul li label.error {
+      font-size: 14px;
+      font-weight: normal;
+      width: auto;
+      margin-left: 10px; }
+    .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question {
+      width: 1200px; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .add_link {
       display: block; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question_type {

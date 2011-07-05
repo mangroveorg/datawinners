@@ -16,16 +16,34 @@ DW.question = function(question) {
             max : ""
         },
         range : {
-            min : 0,
+            min : "",
             max : ""
         },
-        date_format: "mm.yyyy"
+        date_format: "mm.yyyy",
+        instruction: "Answer must be a text"
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
     this.options = $.extend({}, defaults, question);
     this._init();
 };
+
+DW.instruction_template = {
+    "number" :"Answer must be a number.",
+    "min_number" :"Answer must be a number. The minimum is %d.",
+    "max_number" :"Answer must be a number. The maximum is %d.",
+    "range_number" :"Answer must be a number between %d-%d.",
+    "text":"Answer must be a word or phrase",
+    "max_text":"Answer must be a word or phrase %d characters maximum",
+    "date":"Answer must be a date in the following format %s. Example: %s",
+    "single_select":"Choose 1 answer from the above list. Example: a",
+    "multi_select":"Choose 1 or more answers from the above list. Example: a or ab ",
+    "gps":"Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547 ",
+    "dd.mm.yyyy": "25.12.2011",
+    "mm.dd.yyyy": "12.25.2011",
+    "mm.yyyy": "12.2011"
+
+}
 
 
 DW.question.prototype = {
@@ -34,7 +52,7 @@ DW.question.prototype = {
         this.range_min = ko.observable(q.range.min);
 
         //This condition required especially because in DB range_max is a mandatory field
-        this.range_max = ko.observable(q.range.max ? q.range.max : "");
+        this.range_max = ko.observable(q.range.max);
 
         this.min_length = ko.observable(q.length.min);
         this.max_length = ko.observable(q.length.max);
@@ -43,6 +61,37 @@ DW.question.prototype = {
         this.type = ko.observable(q.type);
         this.choices = ko.observableArray(q.choices);
         this.is_entity_question = ko.observable(q.entity_question_flag);
+        this.date_format = ko.observable(q.date_format);
+        this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
+        this.instruction = ko.dependentObservable({
+            read: function(){
+                  if(this.type()=="text"){
+                      if (this.max_length()!="")
+                          return $.sprintf(DW.instruction_template.max_text, this.max_length());
+                      return DW.instruction_template.text;
+                  }
+                  if (this.type()=="integer"){
+                      if(this.range_min() == "" && this.range_max() == "")
+                        return DW.instruction_template.number;
+                      if(this.range_min()=="")
+                        return $.sprintf(DW.instruction_template.max_number, this.range_max());
+                      if(this.range_max()=="")
+                        return $.sprintf(DW.instruction_template.min_number, this.range_min());
+                      return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
+                  }
+                  if(this.type()=="date")
+                    return $.sprintf(DW.instruction_template.date, this.date_format(), DW.instruction_template[this.date_format()]);
+                  if(this.type()=="geocode")
+                    return DW.instruction_template.gps;
+                  if(this.type()=="select1")
+                    return DW.instruction_template.single_select;
+                if(this.type()=="select")
+                    return DW.instruction_template.multi_select;
+
+                return "No instruction can be generated"
+            },
+            owner:this
+    });
         this.canBeDeleted = function() {
             return !this.is_entity_question();
         };
@@ -55,8 +104,8 @@ DW.question.prototype = {
                     },
                     owner: this
                 });
-        this.date_format = ko.observable(q.date_format);
-        this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
+
+
     }
 };
 
@@ -96,7 +145,12 @@ DW.charCount = function() {
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':
-                constraints_len = constraints_len + current_question.range_max().toString().length;
+                if (current_question.range_max()){
+                    constraints_len = constraints_len + current_question.range_max().toString().length;
+                    break;
+                }
+                if (current_question.range_min())
+                    constraints_len = constraints_len + current_question.range_min().toString().length;
                 break;
             case 'text':
                 if (current_question.max_length()) {
@@ -117,15 +171,15 @@ DW.charCount = function() {
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
     if (current_len <= max_len) {
-        $("#char-count").css("color", "#666666")
+        $("#char-count").css("color", "#666666");
     }
     if (current_len > max_len) {
-        $("#char-count").css("color", "red")
+        $("#char-count").css("color", "red");
         max_len = max_len+160;
         sms_number++;
-        sms_number_text = " (" + sms_number + ")";
+        sms_number_text = "(" + sms_number + " sms required)";
     }
-    $('#char-count').html((current_len) + ' / ' + max_len + sms_number_text + ' characters used');
+    $('#char-count').html((current_len) + ' / ' + max_len + ' characters used' + sms_number_text);
 
 };
 
@@ -153,14 +207,17 @@ $(document).ready(function() {
 
     $('.question_list ol div .delete_link').live("click", function(event){
         event.stopPropagation();
-        $('.question_list ol > div:first').toggleClass("question_selected");
-
-    })
+        if($('#question_form').valid()){
+            $('.question_list ol > div:first').toggleClass("question_selected");
+        }
+    });
     $('.question_list ol > div').live("click", function(){
         var selected = $(this).index()+1;
         var selected_div = $('.question_list ol').find("div:nth-child("+selected+")");
-            selected_div.toggleClass("question_selected");
-            selected_div.find(".selected_question_arrow").show();
+            if($('#question_form').valid()){
+                selected_div.toggleClass("question_selected");
+                selected_div.find(".selected_question_arrow").show();
+            }
     });
 
 
@@ -214,8 +271,15 @@ $(document).ready(function() {
                     choice_text:{
                         required: "#choice_text:visible"
                     }
+                },
+                wrapper: "span",
+                errorPlacement: function(error, element) {
+                    offset = element.offset();
+                    error.insertAfter(element)
+                    error.addClass('error_arrow');  // add a class to the wrapper
 
                 }
+
             });
 
     $("#submit-button").click(function() {
@@ -245,7 +309,7 @@ $(document).ready(function() {
         $("#questionnaire-code-error").html("");
 
         if (!$('#question_form').valid()) {
-            $("#message-label").html("<label class='error_message'> This questionnaire has an error.</label> ");
+            $("#message-label").show().html("<label class='error_message'> This questionnaire has an error.</label> ");
             hide_message();
             return;
         }
@@ -254,10 +318,11 @@ $(document).ready(function() {
 
         $.post('/project/questionnaire/save', post_data,
                 function(response) {
-                    $("#message-label").html("<label class='success_message'>" + response + "</label>");
-                    hide_message();
+                   var path = window.location.pathname;
+                   var element_list = path.split("/");
+                   window.location.href = '/project/datasenders/' + element_list[element_list.length-2];
                 }).error(function(e) {
-            $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
+            $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
 
@@ -267,7 +332,7 @@ $(document).ready(function() {
 
     $('input[name=type]:radio').change(
             function() {
-                viewModel.selectedQuestion().range_min(0);
+                viewModel.selectedQuestion().range_min("");
                 viewModel.selectedQuestion().range_max("");
                 viewModel.selectedQuestion().min_length(1);
                 viewModel.selectedQuestion().max_length("");

@@ -18,7 +18,7 @@
 
 {% block wizard %}
     <span class="create_a_project">Create a new project</span>
-    <h2>{{ project_summary.title }}</h2>
+    <h2>{{ project.name }}</h2>
     <div id="step_wizard">
 
     </div>
@@ -26,9 +26,9 @@
         <li class="define">Define Project</li>
         <li class="subjects">Subjects</li>
         <li class="questionnaire">Questionnaire</li>
-        <li class="people">People</li>
+        <li class="datasenders">Data Senders</li>
         <li class="reminder">Reminder</li>
-        <li class="finish">Finish & Test</li>
+        <li class="finish">Review & Test</li>
     </ul>
 {% endblock %}
 
