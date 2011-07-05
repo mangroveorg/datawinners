@@ -145,7 +145,12 @@ DW.charCount = function() {
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':
-                constraints_len = constraints_len + current_question.range_max().toString().length;
+                if (current_question.range_max()){
+                    constraints_len = constraints_len + current_question.range_max().toString().length;
+                    break;
+                }
+                if (current_question.range_min())
+                    constraints_len = constraints_len + current_question.range_min().toString().length;
                 break;
             case 'text':
                 if (current_question.max_length()) {
@@ -166,10 +171,10 @@ DW.charCount = function() {
     }
     var current_len = questionnaire_code_len + question_codes_len + constraints_len + selected_question_code_difference;
     if (current_len <= max_len) {
-        $("#char-count").css("color", "#666666")
+        $("#char-count").css("color", "#666666");
     }
     if (current_len > max_len) {
-        $("#char-count").css("color", "red")
+        $("#char-count").css("color", "red");
         max_len = max_len+160;
         sms_number++;
         sms_number_text = "(" + sms_number + " sms required)";
@@ -202,14 +207,17 @@ $(document).ready(function() {
 
     $('.question_list ol div .delete_link').live("click", function(event){
         event.stopPropagation();
-        $('.question_list ol > div:first').toggleClass("question_selected");
-
-    })
+        if($('#question_form').valid()){
+            $('.question_list ol > div:first').toggleClass("question_selected");
+        }
+    });
     $('.question_list ol > div').live("click", function(){
         var selected = $(this).index()+1;
         var selected_div = $('.question_list ol').find("div:nth-child("+selected+")");
-            selected_div.toggleClass("question_selected");
-            selected_div.find(".selected_question_arrow").show();
+            if($('#question_form').valid()){
+                selected_div.toggleClass("question_selected");
+                selected_div.find(".selected_question_arrow").show();
+            }
     });
 
 
@@ -301,7 +309,7 @@ $(document).ready(function() {
         $("#questionnaire-code-error").html("");
 
         if (!$('#question_form').valid()) {
-            $("#message-label").html("<label class='error_message'> This questionnaire has an error.</label> ");
+            $("#message-label").show().html("<label class='error_message'> This questionnaire has an error.</label> ");
             hide_message();
             return;
         }
@@ -312,9 +320,9 @@ $(document).ready(function() {
                 function(response) {
                    var path = window.location.pathname;
                    var element_list = path.split("/");
-                   window.location.href = '/project/finish/' + element_list[element_list.length-2];
+                   window.location.href = '/project/datasenders/' + element_list[element_list.length-2];
                 }).error(function(e) {
-            $("#message-label").html("<label class='error_message'>" + e.responseText + "</label>");
+            $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
         });
     });
 

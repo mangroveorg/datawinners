@@ -139,9 +139,9 @@ table {
 #data_analysis_wrapper table thead .sorting {
   background: url(/media/images/sort_arrow.png) no-repeat right 10px; }
 #data_analysis_wrapper table thead .sorting_desc {
-  background: url(/media/images/sort_icon_bottom.png) no-repeat right 18px; }
+  background: url(/media/images/sort_arrow_active_bottom.png) no-repeat right 10px; }
 #data_analysis_wrapper table thead .sorting_asc {
-  background: url(/media/images/sort_icon_top.png) no-repeat right 10px; }
+  background: url(/media/images/sort_arrow_active_top.png) no-repeat right 10px; }
 
 #dateRangePicker {
   width: 220px;

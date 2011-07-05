@@ -6,4 +6,4 @@ ADMINS = (
     ('TW', 'apgeorge@thoughtworks.com'),
 )
 
-COMPRESS = True
+COMPRESS = False

@@ -49,7 +49,9 @@ $(document).ready(function(){
     $.ajaxSetup({ cache: false });
     var screen_width = $(window).width() - 50;
      $("#data_record").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
-
+    DW.wrap_table = function() {
+        $("#data_analysis").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
+    };
     $("#dateRangePicker").daterangepicker( { presetRanges: [
         {text: 'Past 7 days', dateStart: 'last week', dateEnd: 'Today' },
         {text: 'Past 30 days', dateStart: 'last month', dateEnd: 'Today' },

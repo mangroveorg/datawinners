@@ -44,6 +44,10 @@
 .margin_top_5 {
   margin-top: 5px; }
 
+/* Float styling */
+.float_left {
+  float: left; }
+
 /* Border Styles */
 .null_border {
   border: 0px !important; }
@@ -94,6 +98,9 @@ table {
 .inline {
   display: inline; }
 
+.none {
+  display: none; }
+
 /* List styles */
 .alpha_list li {
   list-style-type: upper-alpha;
@@ -107,3 +114,7 @@ table {
 .delete_link {
   padding: 5px 0 10px 25px;
   background: url(/media/images/icons.png) no-repeat left -167px; }
+
+/* Titles */
+.highlighted_title {
+  color: #C35C00; }

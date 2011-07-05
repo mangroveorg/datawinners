@@ -10,9 +10,6 @@
         font-weight:normal;
     }
   
-    .welcome{
-        font-weight:bold;
-    }
     a{
         color:#FFFFFF;
         text-decoration:none;
@@ -29,15 +26,20 @@
         height:30px;
     #header{
         .login{
+            margin-top:5px;
             color:#CCCCCC;
+            font-size:12px;
             span{
-                display:inline-block;
+                display:inline;
                 padding:1px 15px 0px;
                 margin-top:4px;
-                border-right:1px solid #FFFFFF;
+                border-right:1px solid #474747;
                 a{
-                    color:#FFFFFF;
+                    color:#C1C1C1;
                 }
+            }
+            .welcome{
+                    font-weight:bold;
             }
         }
     }
