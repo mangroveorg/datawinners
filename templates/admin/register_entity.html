@@ -8,6 +8,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
+{% endblock %}
+
 
 {% block page_scss %}
     {{ block.super }}
@@ -15,6 +20,7 @@
 {% endblock %}
 
 {% block page_js %}
+    <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
 {% endblock %}

@@ -1,5 +1,12 @@
 $(document).ready(function() {
 
+     $("#location").autocomplete("/places", {
+        minChars: 0,
+        max: 12,
+        autoFill: true,
+        mustMatch: true,
+        matchContains: false,
+        scrollHeight: 220});
 
     $.validator.addMethod('regexrule', function(value, element, params) {
         var text = $('#' + element.id).val().trim();
