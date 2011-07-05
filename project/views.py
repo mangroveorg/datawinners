@@ -168,9 +168,11 @@ def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request))
     for row in rows:
-        link = reverse(project_overview, args=[row['value']['_id']])
+        project_id = row['value']['_id']
+        link = reverse(project_overview, args=[project_id])
+        activate_link = reverse(activate_project, args=[project_id])
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
-                       link=link)
+                       link=link, activate_link=activate_link, state=row['value']['state'])
         project_list.append(project)
     return render_to_response('project/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))

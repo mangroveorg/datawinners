@@ -4,8 +4,8 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -13,16 +13,25 @@
         <a href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
     </div>
     <table class="styled_table">
-    <thead>
-        <th> Name </th>
-        <th> Created On </th>
-        <th> Type </th>
-    </thead>
-        {% for project in projects%}
+        <thead>
+        <th> Name</th>
+        <th> Created On</th>
+        <th> Type</th>
+        <th> State</th>
+        <th> Actions</th>
+        </thead>
+        {% for project in projects %}
             <tr>
-                <td><a href={{ project.link }} class='project-id-class'>{{ project.name}}</a></td>
-                <td>{{ project.created}}</td>
-                <td>{{ project.type}}</td>
+                <td><a href={{ project.link }} class='project-id-class'>{{ project.name }}</a></td>
+                <td>{{ project.created }}</td>
+                <td>{{ project.type }}</td>
+                <td>{{ project.state }}</td>
+                <td>
+                    {% if  project.state  == 'Draft' %}
+                        <a href="{{ project.activate_link }}">Activate</a>
+
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </table>
