@@ -1,0 +1,9 @@
+.report_links{
+    a{
+        margin: 0 5px 0 5px;
+        &.disabled{
+            color:#CCCCCC;
+            cursor:text;
+        }
+    }
+}

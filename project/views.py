@@ -168,7 +168,7 @@ def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request))
     for row in rows:
-        link = "/project/overview/%s" % row['value']['_id']
+        link = reverse(project_overview, args=[row['value']['_id']])
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link)
         project_list.append(project)
