@@ -260,7 +260,7 @@ def _format_data_for_presentation(data_dictionary, form_model):
     type_list = helper.get_type_list(form_model.fields[1:])
     if data_dictionary == {}:
         return "[]", header_list, type_list
-    data_list = helper.get_values(data_dictionary, header_list)
+    data_list = helper.get_values(data_dictionary, header_list) 
     header_list[0] = form_model.entity_type[0] + " Name"
     data_list = helper.convert_to_json(data_list)
     response_string = encode_json(data_list)
