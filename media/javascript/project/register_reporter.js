@@ -3,7 +3,7 @@ $(document).ready(function() {
 //       event.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '/reporter/register_via_ajax/',
+            url: '/entity/datasender/create',
             data: $("#registration_form").serialize(),
             success:function(response) {
                 $("#add_data_sender_form").html(response);

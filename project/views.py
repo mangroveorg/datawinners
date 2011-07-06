@@ -8,7 +8,7 @@ from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
-from datawinners.reporter.forms import ReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.subjects.forms import SubjectUploadForm
 from datawinners.subjects.views import import_subjects_from_project_wizard
 import helper
@@ -260,7 +260,7 @@ def _format_data_for_presentation(data_dictionary, form_model):
     type_list = helper.get_type_list(form_model.fields[1:])
     if data_dictionary == {}:
         return "[]", header_list, type_list
-    data_list = helper.get_values(data_dictionary, header_list)
+    data_list = helper.get_values(data_dictionary, header_list) 
     header_list[0] = form_model.entity_type[0] + " Name"
     data_list = helper.convert_to_json(data_list)
     response_string = encode_json(data_list)
@@ -397,4 +397,6 @@ def finish(request, project_id=None):
 
 
 def subjects(request, project_id=None):
-    return render_to_response('project/subjects.html', context_instance=RequestContext(request))
+    manager = get_database_manager(request)
+    reg_form = get_form_model_by_code(manager, 'reg')
+    return render_to_response('project/subjects.html', {'fields': reg_form.fields}, context_instance=RequestContext(request))

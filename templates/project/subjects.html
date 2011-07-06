@@ -3,20 +3,39 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "subjects" %}
-{{ block.super }}
+    {% activetab "tab_nav" "subjects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-{#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
+    {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
 {% endblock %}
-
 {% block content %}
-    Hi!!!
+    {% block secondary_navigation_subjects %}
+    {% activetab "secondary_tab_nav" "datasenders" %}
+    {{ block.super }}
+    {% endblock %}
+
+    <table class="styled_table">
+        <thead>
+        <th>Question Number</th>
+        <th>Question</th>
+        <th>Code</th>
+        </thead>
+        <tbody>
+        {% for each in fields %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ each.label.eng }}</td>
+                <td>{{ each.code }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -22,10 +22,10 @@ def index(request):
         error_message, failure_imports, success, success_message = import_module.import_data(request)
         all_subjects = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
-                                    'failure_imports': failure_imports, 'all_subjects':all_subjects}))
+                                    'failure_imports': failure_imports, 'all_data':all_subjects}))
 
     all_subjects = import_module.load_all_subjects(request)
-    return render_to_response('subjects/index.html', {'all_subjects': all_subjects}, context_instance=RequestContext(request))
+    return render_to_response('subjects/index.html', {'all_data': all_subjects}, context_instance=RequestContext(request))
 
 
 
