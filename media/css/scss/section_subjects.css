@@ -19,31 +19,34 @@
     padding-right: 20px;
     margin-left: 20px; }
 
-.add_subject_form ul, .add_datasender_form ul {
+.add_subject_form ul {
   float: left; }
-  .add_subject_form ul li, .add_datasender_form ul li {
+  .add_subject_form ul li {
     margin-bottom: 15px;
     float: left; }
-    .add_subject_form ul li label, .add_datasender_form ul li label {
+    .add_subject_form ul li label {
       width: 120px;
       float: left; }
-      .add_subject_form ul li label label, .add_datasender_form ul li label label {
+      .add_subject_form ul li label label {
         display: inline; }
-      .add_subject_form ul li label.error, .add_datasender_form ul li label.error {
+      .add_subject_form ul li label.error {
         font-size: 11px;
         font-weight: normal;
         margin-left: 120px;
         width: auto; }
-    .add_subject_form ul li .location_section, .add_datasender_form ul li .location_section {
-      margin-left: 120px; }
-      .add_subject_form ul li .location_section label, .add_datasender_form ul li .location_section label {
-        display: block;
-        float: none; }
-    .add_subject_form ul li .auto_gen_checkbox label, .add_datasender_form ul li .auto_gen_checkbox label {
+    .add_subject_form ul li .location_section li {
+      float: none; }
+    .add_subject_form ul li .location_section label {
+      display: block;
+      float: none; }
+    .add_subject_form ul li .auto_gen_checkbox label {
       float: none;
       display: inline; }
-    .add_subject_form ul li input[type=text], .add_datasender_form ul li input[type=text] {
+    .add_subject_form ul li input[type=text] {
       width: 200px; }
+
+.add_datasender_form input[type=text] {
+  width: 200px !important; }
 
 #question-detail-panel > div span {
   margin-bottom: 20px;
@@ -76,7 +79,7 @@
 
 .import_subjects .browse_subjects label {
   float: none; }
-.import_subjects .add_subjects .add_subject_link {
+.import_subjects .add_subjects .add_subject_link, .import_subjects add_datasenders .add_subject_link {
   position: relative;
   top: 10px;
   margin-left: 10px; }
