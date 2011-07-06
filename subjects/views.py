@@ -20,7 +20,7 @@ from datawinners import import_data as import_module
 def index(request):
     if request.method == 'POST':
         error_message, failure_imports, success, success_message = import_module.import_data(request)
-        all_subjects = import_module.load_all_subjects()
+        all_subjects = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports, 'all_subjects':all_subjects}))
 

@@ -8,63 +8,63 @@ SMS = "sms"
 SUBMISSION = "submission"
 REGISTRATION = "registration"
 
-DEFAULT_EXCEPTION_MESSAGE = "An exception has occurred"
+DEFAULT_EXCEPTION_MESSAGE = u"An exception has occurred"
 
 exception_messages = {
 
     ex.EntityTypeAlreadyDefined: {
-        DEFAULT: "Entity identified by %s is already defined"},
+        DEFAULT: u"Entity identified by %s is already defined"},
 
     ex.EntityQuestionCodeNotSubmitted: {
-        DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+        DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
     },
 
     ex.FormModelDoesNotExistsException: {
-        DEFAULT: "Questionnaire ID %s doesnt exist.",
-        WEB: "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS",
-        SMS: "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS"
+        DEFAULT: u"Questionnaire ID %s doesnt exist.",
+        WEB: u"Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS",
+        SMS: u"Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS"
     },
 
     ex.DataObjectNotFound: {
-        DEFAULT: "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
+        DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
     },
 
     ex.NumberNotRegisteredException: {
-        DEFAULT: "This telephone number is not registered in our system.",
-        SMS: "This telephone number is not registered in our system. Please register or contact us at 033 20 426 89."
+        DEFAULT: u"This telephone number is not registered in our system.",
+        SMS: u"This telephone number is not registered in our system. Please register or contact us at 033 20 426 89."
     },
 
     ex.QuestionCodeAlreadyExistsException: {
-        DEFAULT: "Question Code Already Exists",
-        WEB: "Question Code %s provided already exists"
+        DEFAULT: u"Question Code Already Exists",
+        WEB: u"Question Code %s provided already exists"
     },
 
     ex.InvalidAnswerSubmissionException: {
-        DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
+        DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
     },
 
     ex.EntityTypeDoesNotExistsException: {
-        DEFAULT: "This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
+        DEFAULT: u"This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
     },
 
     ex.SMSParserInvalidFormatException: {
-        DEFAULT: "Invalid message format.",
-        SMS: "Invalid message format. Please submit the message in the format: <Questionnaire Code><SPACE>+<Question Code><SPACE><Answer>"
+        DEFAULT: u"Invalid message format.",
+        SMS: u"Invalid message format. Please submit the message in the format: <Questionnaire Code><SPACE>+<Question Code><SPACE><Answer>"
     },
     
     ex.NoQuestionsSubmittedException: {
-        DEFAULT: "Please submit atleast one valid question code"
+        DEFAULT: u"Please submit atleast one valid question code"
     },
 
     ex.MultipleSubmissionsForSameCodeException:{
-        DEFAULT: "Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
+        DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
     }
 
 }
 
-VALIDATION_FAILURE_ERROR_MESSAGE = "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
+VALIDATION_FAILURE_ERROR_MESSAGE = u"Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
 
 success_messages = {
-    SUBMISSION: "Thank you %s. We received : ",
-    REGISTRATION: "Registration successful. %s."
+    SUBMISSION: u"Thank you %s. We received : ",
+    REGISTRATION: u"Registration successful. %s."
 }
