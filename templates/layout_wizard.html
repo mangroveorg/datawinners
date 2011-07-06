@@ -32,7 +32,8 @@
                       {% block previous %}
                       <div class="grid_5 previous_step">
                           <a href={{ previous }}>Previous Step:</a>
-                          <a class="bold" href={{ previous }}>Define Project</a>
+                          {% block previous_step %} {% endblock %}
+                         
                       </div>
                       {% endblock %}
                       <a href="#" class="cancel">Cancel</a>

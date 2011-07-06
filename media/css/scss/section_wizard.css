@@ -36,13 +36,13 @@
   .wizard ul li {
     float: left;
     font-weight: bold;
-    padding: 10px 65px 0 0px; }
+    padding: 10px 115px 0 0px; }
     .wizard ul li.questionnaire {
-      padding-right: 90px; }
+      padding-right: 130px; }
     .wizard ul li.subjects {
-      padding-right: 100px; }
+      padding-right: 140px; }
     .wizard ul li.datasenders {
-      padding-right: 75px; }
+      padding-right: 90px; }
     .wizard ul li.reminder {
       padding-right: 82px; }
     .wizard ul li.finish {

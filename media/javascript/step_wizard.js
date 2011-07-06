@@ -4,7 +4,7 @@
       var wizard_slider = $("#step_wizard").slider({
                range: "max",
                min: 1,
-               max: 6,
+               max: 5,
                value: current_tab,
                disabled:true
       });
