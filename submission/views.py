@@ -54,6 +54,7 @@ def _get_submission(post):
     }
 
 
+#TODO This method has to be moved into a proper place since this is used for registering entities.
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
@@ -61,7 +62,6 @@ def _get_submission(post):
 def submit(request):
     dbm = get_database_manager(request)
     post = _get_submission(request.POST)
-    message = ''
     success = True
     try:
         web_player = WebPlayer(dbm,SubmissionHandler(dbm))
