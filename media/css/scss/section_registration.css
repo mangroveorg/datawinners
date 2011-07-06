@@ -38,5 +38,5 @@ form ul li label {
   float: left; }
 form ul li input[type=text], form ul li input[type=password] {
   width: 200px;
-  height: 15px;
+  height: 20px;
   border-color: #cccccc; }
