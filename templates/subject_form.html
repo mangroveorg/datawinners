@@ -5,14 +5,14 @@
         <ul>
             <li>
                 <label>* Name</label>
-                <input id="entity_name" name="entity_name" type="text"/>
+                <input id="entity_name" name="entity_name" type="text" watermark="Enter a subject name"/>
             </li>
             <li>
                 <label>Unique Identification Number(ID)</label>
                 <input id="short_name" name="short_name" type="text" disabled="disabled"/>
                 <span class="auto_gen_checkbox">
                     <input id="autogen" name="autogen" type="checkbox" checked=true/>
-                    <label>Autogenerate</label>
+                    <label>Let us generate an ID for you</label>
                 </span>
             </li>
             <li>
@@ -31,21 +31,21 @@
                 <ul class="location_section">
                     <li>
                         <label>Location Name:</label>
-                        <input id="location" name="location" type="text"/>
+                        <input id="location" name="location" type="text" watermark="Enter a region, district or commune"/>
                     </li>
                     <li>
                         <label>GPS</label>
-                        <input id="geo_code" name="geo_code" type="text"/>
+                        <input id="geo_code" name="geo_code" type="text" watermark="Enter latitude and longitude"/>
                     </li>
                 </ul>
             </li>
             <li>
                 <label>Description</label>
-                <input id="description" name="description" type="text"/>
+                <input id="description" name="description" type="text" watermark="Describe your subject in more details (optional)"/>
             </li>
             <li>
                 <label>Mobile Number</label>
-                <input id="mobile_number" name="mobile_number" type="text" maxlength="15"/>
+                <input id="mobile_number" name="mobile_number" type="text" maxlength="15" watermark="Enter the subject's Number"/>
             </li>
         </ul>
     </fieldset>
