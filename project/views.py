@@ -8,7 +8,7 @@ from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
-from datawinners.reporter.forms import ReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.subjects.forms import SubjectUploadForm
 from datawinners.subjects.views import import_subjects_from_project_wizard
 import helper

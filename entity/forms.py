@@ -1,12 +1,13 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
 from django.core.exceptions import ValidationError
-from django.forms.fields import CharField, RegexField
+from django.forms.fields import RegexField, CharField
 from django.forms.forms import Form
-from datawinners.location.LocationTree import LocationTree
 from mangrove.utils.types import is_empty
-from django import forms
 
+class EntityTypeForm(Form):
+    error_css_class = 'error'
+    required_css_class = 'required'
+
+    entity_type = RegexField(regex="^[A-Za-z0-9]+$", max_length=20, error_message="Only letters and numbers are valid", required=True, label="New Subject(eg clinic, waterpoint etc)")
 
 class ReporterRegistrationForm(Form):
     error_css_class = 'error'
@@ -41,3 +42,4 @@ class ReporterRegistrationForm(Form):
         if not (bool(a) or bool(b)):
             raise ValidationError("Required information for registration. Please fill out at least one location field correctly.")
         return self.cleaned_data
+
