@@ -13,12 +13,11 @@ import json
 @csrf_response_exempt
 @login_required(login_url='/login')
 def index(request):
+    all_data_senders = import_module.load_all_reporters(request)
     if request.method == 'POST':
         error_message, failure_imports, success, success_message = import_module.import_data(request, True)
-        all_subjects = import_module.load_all_reporters(request)
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
-                                    'failure_imports': failure_imports, 'all_subjects':all_subjects}))
+                                    'failure_imports': failure_imports, 'all_data':all_data_senders}))
 
-    all_subjects = import_module.load_all_reporters(request)
-    return render_to_response('datasender/index.html', {'all_subjects': all_subjects}, context_instance=RequestContext(request))
+    return render_to_response('datasender/index.html', {'all_data': all_data_senders}, context_instance=RequestContext(request))
 
