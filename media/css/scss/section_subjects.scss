@@ -25,7 +25,7 @@
         margin-left:20px;
     }
 }
-.add_subject_form, .add_datasender_form {
+.add_subject_form{
     ul{
         float:left;
         li{
@@ -66,6 +66,11 @@
         }
 
         }
+    }
+}
+.add_datasender_form{
+    input[type=text]{
+        width:200px !important;
     }
 }
 #question-detail-panel{

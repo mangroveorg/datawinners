@@ -6,6 +6,13 @@
     font-weight: normal;
     font-size: 12px; }
 
+.location_section li {
+  float: none;
+  margin-bottom: 20px; }
+.location_section label {
+  display: block;
+  float: none; }
+
 .form_sub_set legend {
   font-size: 14px;
   font-weight: bold; }
