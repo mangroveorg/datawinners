@@ -18,24 +18,8 @@
 {% endblock %}
 {% block content %}
     {% block secondary_navigation_datasenders %}
-    {% activetab "secondary_tab_nav" "criteria" %}
+    {% activetab "secondary_tab_nav" "datasenders" %}
     {{ block.super }}
     {% endblock %}
-
-    <table class="styled_table">
-        <thead>
-        <th>Question Number</th>
-        <th>Question</th>
-        <th>Code</th>
-        </thead>
-        <tbody>
-        {% for each in fields %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ each.label.eng }}</td>
-                <td>{{ each.code }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% include 'project/registered_entity_table.html' %}
 {% endblock %}

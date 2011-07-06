@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.import_data import load_all_subjects, load_all_reporters
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
@@ -47,6 +48,10 @@ def _make_project_links(project_id, questionnaire_code):
     project_links.submission_log_link = reverse(project_results, args=[project_id, questionnaire_code])
     project_links.overview_link = reverse(project_overview, args=[project_id])
     project_links.activate_project_link = reverse(activate_project, args=[project_id])
+    project_links.subjects_link = reverse(subjects, args=[project_id])
+    project_links.datasenders_link = reverse(datasenders, args=[project_id])
+    project_links.registered_datasenders_link = reverse(registered_datasenders, args=[project_id])
+    project_links.registered_subjects_link = reverse(registered_subjects, args=[project_id])
     return project_links
 
 
@@ -359,19 +364,24 @@ def subjects_wizard(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
 
+
+def _format_field_description_for_data_senders(reg_form):
+    for field in reg_form.fields:
+        temp = field.label.get("eng")
+        temp = temp.replace("subject", "data sender")
+        field.label.update(eng=temp)
+
+
 @login_required(login_url='/login')
-def datasenders(request, project_id=None):
+def datasenders_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'reg')
         previous_link = reverse(questionnaire, args=[project_id])
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
-        for field in reg_form.fields:
-            temp = field.label.get("eng")
-            temp = temp.replace("subject", "data sender")
-            field.label.update(eng=temp)
-        return render_to_response('project/datasenders.html',
+        _format_field_description_for_data_senders(reg_form)
+        return render_to_response('project/datasenders_wizard.html',
                 {'fields': reg_form.fields[1:], "previous": previous_link,
                  'form': import_reporter_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
@@ -395,8 +405,40 @@ def activate_project(request, project_id=None):
 def finish(request, project_id=None):
     return render_to_response('project/finish_and_test.html', context_instance=RequestContext(request))
 
-
+@login_required(login_url='/login')
 def subjects(request, project_id=None):
     manager = get_database_manager(request)
     reg_form = get_form_model_by_code(manager, 'reg')
-    return render_to_response('project/subjects.html', {'fields': reg_form.fields}, context_instance=RequestContext(request))
+    project = models.get_project(project_id, manager)
+    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    project_links = _make_project_links(project_id,questionnaire.form_code)
+    return render_to_response('project/subjects.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def registered_subjects(request, project_id=None):
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    project_links = _make_project_links(project_id,questionnaire.form_code)
+    all_data = load_all_subjects(request)
+    return render_to_response('project/registered_subjects.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def registered_datasenders(request, project_id=None):
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    project_links = _make_project_links(project_id,questionnaire.form_code)
+    all_data = load_all_reporters(request)
+    return render_to_response('project/registered_datasenders.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def datasenders(request, project_id=None):
+    manager = get_database_manager(request)
+    reg_form = get_form_model_by_code(manager, 'reg')
+    project = models.get_project(project_id, manager)
+    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    project_links = _make_project_links(project_id,questionnaire.form_code)
+    _format_field_description_for_data_senders(reg_form)
+    return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+

@@ -12,13 +12,13 @@
               <a href="{{ project_links.overview_link }}">Overview</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="#">Subjects</a>
+              <a href="{{ project_links.subjects_link }}">Subjects</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
               <a href="#">Questionnaire</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="#">Data Senders</a>
+              <a href="{{ project_links.datasenders_link }}">Data Senders</a>
             </li>
             <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
               <a href={{ project_links.data_analysis_link }}>Data</a>
@@ -43,11 +43,22 @@
 
 {% block secondary_navigation_subjects %}
        <ul class="secondary_tab">
-        <li class="{% ifactivetab 'secondary_tab_nav' 'datasenders' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.data_analysis_link }}">Registered Data Senders</a>
+        <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+          <a href="{{ project_links.registered_subjects_link }}">Registered Subjects</a>
         </li>
         <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.data_analysis_link }}">Registered Criteria</a>
+          <a href="{{ project_links.subjects_link }}">Registration Criteria</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block secondary_navigation_datasenders %}
+       <ul class="secondary_tab">
+        <li class="{% ifactivetab 'secondary_tab_nav' 'datasenders' %}active{% else %}inactive{% endifactivetab %}">
+          <a href="{{ project_links.registered_datasenders_link }}">Registered Data Senders</a>
+        </li>
+        <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
+          <a href="{{ project_links.datasenders_link }}">Registration Criteria</a>
         </li>
     </ul>
 {% endblock %}
