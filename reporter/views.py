@@ -75,7 +75,7 @@ def _get_data(form_data):
         data[mapper['geo_code']] = geo_code
     if location_hierarchy is  not None:
     #TODO change this when we decide how we will process location
-        data[mapper['location']] = str(location_hierarchy)
+        data[mapper['location']] = location_hierarchy
 
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE

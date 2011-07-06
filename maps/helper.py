@@ -32,13 +32,12 @@ def _get_geo_json_from_location_path(location_path):
 
 
 def create_location_geojson(entity_list):
-    if is_string(entity_list):
-        entity_list=json.loads(entity_list)
+
     location_list=[]
     for entity in entity_list:
+
         geometry = entity.geometry
         location_path=entity.location_path
-
         if geometry:
             geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, geometry)
         elif location_path:
