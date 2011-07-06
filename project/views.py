@@ -397,4 +397,6 @@ def finish(request, project_id=None):
 
 
 def subjects(request, project_id=None):
-    return render_to_response('project/subjects.html', context_instance=RequestContext(request))
+    manager = get_database_manager(request)
+    reg_form = get_form_model_by_code(manager, 'reg')
+    return render_to_response('project/subjects.html', {'fields': reg_form.fields}, context_instance=RequestContext(request))
