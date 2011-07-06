@@ -54,7 +54,7 @@ def _make_project_links(project_id, questionnaire_code):
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
-        previous_link = reverse(subjects, args=[project_id])
+        previous_link = reverse(subjects_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         fields = form_model.fields
@@ -95,7 +95,7 @@ def create_profile(request):
             messages.error(request, e.message)
             return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
                                       context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(subjects, args=[pid]))
+        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
         return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
                                   context_instance=RequestContext(request))
@@ -128,7 +128,7 @@ def edit_profile(request, project_id=None):
         entity_type = form.cleaned_data['entity_type']
         form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
         form_model.save()
-        return HttpResponseRedirect(reverse(subjects, args=[pid]))
+        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
         return render_to_response('project/profile.html', {'form': form, 'project': project},
                                   context_instance=RequestContext(request))
@@ -341,16 +341,16 @@ def export_log(request):
 
 
 @login_required(login_url='/login')
-def subjects(request, project_id=None):
+def subjects_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'reg')
-        previous_link = '/project/profile/edit/%s' % project_id
+        previous_link = reverse(edit_profile, args=[project_id])
         entity_types = get_all_entity_types(manager)
         project = models.get_project(project_id, manager)
         helper.remove_reporter(entity_types)
         import_subject_form = SubjectUploadForm()
-        return render_to_response('project/subjects.html',
+        return render_to_response('project/subjects_wizard.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
                  'import_subject_form': import_subject_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
@@ -364,7 +364,7 @@ def datasenders(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'reg')
-        previous_link = '/project/questionnaire/%s' % project_id
+        previous_link = reverse(questionnaire, args=[project_id])
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
         for field in reg_form.fields:
@@ -394,3 +394,7 @@ def activate_project(request, project_id=None):
 @login_required(login_url='/login')
 def finish(request, project_id=None):
     return render_to_response('project/finish_and_test.html', context_instance=RequestContext(request))
+
+
+def subjects(request, project_id=None):
+    return render_to_response('project/subjects.html', context_instance=RequestContext(request))
