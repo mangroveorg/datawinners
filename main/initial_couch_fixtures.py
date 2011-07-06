@@ -32,6 +32,7 @@ class DateTimeMocker(object):
 
 
 def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
+    entity = None
     try:
         entity = create_entity(manager, entity_type, location, aggregation_paths, short_code, geometry)
     except DataObjectAlreadyExists as e:
@@ -254,7 +255,6 @@ def load_sms_data_for_cli001(manager):
     sms_player = SMSPlayer(manager, SubmissionHandler(manager))
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '261333782943'
-
     message1 = "reg +t  clinic +n  Clinic in Analalava  +l  Analalava  +g  -14.6333  47.7667  +d This is a Clinic in Analalava +m 987654321"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "reg +t  clinic +n  Clinic in Andapa  +l  Andapa  +g  -14.65  49.6167  +d This is a Clinic in Andapa  +m 87654322"
@@ -293,7 +293,6 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
     message1 = "reg +t  clinic +n  Clinic in Mysore  +l  Mysore  +g  12.3 76.65  +d This is a Clinic in Mysore  +m 87654384"
     response = sms_player.accept(Request(transport=SMS, message=message1, source=FROM_NUMBER, destination=TO_NUMBER))
-
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
@@ -437,15 +436,14 @@ def load_data():
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
-
     #Register Reporter
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
                                          primitive_type='string')
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
-                                                              (NAME_FIELD, "Shweta", first_name_type)], location=[26.227112, 78.18708],
+                                                              (NAME_FIELD, "Shweta", first_name_type)], location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep1")
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
-                                                              (NAME_FIELD, "David", first_name_type)], location=[26.227112, 78.18708],
+                                                              (NAME_FIELD, "David", first_name_type)], location=[u'Madagascar', u'Fianarantsoa', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2")
     load_sms_data_for_cli001(manager)
