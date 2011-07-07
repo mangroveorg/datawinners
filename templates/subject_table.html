@@ -5,6 +5,7 @@
     <th>Short Name</th>
     <th>Type</th>
     <th>Location</th>
+    <th>Geocode</th>
     <th>Description</th>
     <th>Contact info</th>
     </thead>
@@ -21,6 +22,11 @@
             <td>{{ each.type }}</td>
             {% if each.location %}
                 <td>{{ each.location }}</td>
+            {% else %}
+                <td>--</td>
+            {% endif %}
+            {% if each.geocode %}
+                <td>{{ each.geocode }}</td>
             {% else %}
                 <td>--</td>
             {% endif %}

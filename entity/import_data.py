@@ -24,10 +24,15 @@ def tabulate_failures(rows):
 def _tabulate_data(entity, row, short_code, type):
     id = row['id']
     name = entity.value(NAME_FIELD)
-    location = row['doc']['geometry'].get('coordinates')
+    geocode = row['doc']['geometry'].get('coordinates')
+    location = entity.location_path
+    print "row = "
+    print row
+    print "entity"
+    print entity
     mobile_number = entity.value(MOBILE_NUMBER_FIELD)
     description = entity.value(DESCRIPTION_FIELD)
-    return dict(id=id, name=name, short_name=short_code, type=type, location=location,
+    return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode, location=location,
                 description=description, mobile_number=mobile_number)
 
 
