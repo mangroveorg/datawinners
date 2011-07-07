@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from datawinners.import_data import load_all_subjects, load_all_reporters
+from datawinners.entity.import_data import load_all_subjects, load_all_reporters
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.subjects.forms import SubjectUploadForm
-from datawinners.subjects.views import import_subjects_from_project_wizard
+from datawinners.entity.forms import SubjectUploadForm
+from datawinners.entity.views import import_subjects_from_project_wizard
 import helper
 from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument
