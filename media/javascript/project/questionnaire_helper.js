@@ -36,7 +36,8 @@ DW.question = function(question) {
             max : ""
         },
         date_format: "mm.yyyy",
-        instruction: "Answer must be a text"
+        instruction: "Answer must be a text",
+        loaded: true
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -48,6 +49,7 @@ DW.question = function(question) {
 DW.question.prototype = {
     _init : function() {
         var q = this.options;
+        this.loaded = ko.observable(q.loaded);
         this.range_min = ko.observable(q.range.min);
 
         //This condition required especially because in DB range_max is a mandatory field
@@ -92,7 +94,10 @@ DW.question.prototype = {
             owner:this
     });
         this.canBeDeleted = function() {
-            return !this.is_entity_question();
+            return (!this.is_entity_question());
+        };
+        this.isenabled = function(){
+          return !this.loaded();
         };
         this.isAChoiceTypeQuestion = ko.dependentObservable({
                     read:function() {

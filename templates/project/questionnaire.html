@@ -32,13 +32,13 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script>
         $(document).ready(function() {
-            $("#questions-panel .add_question .add_link").click(function() {
-                $(".new_question").show();
-                $(".existing_question").hide();
-            })
+//
+//            $("#questions-panel .add_question .add_link").click(function() {
+//                $(".new_question").show();
+//                $(".existing_question").hide();
+//            });
         })
     </script>
-
     <script type="text/html" id="choice-template">
         <li>
             <p class="grid_17">
@@ -55,11 +55,10 @@
              <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
                  <li>
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
-                    <div data-bind="visible: question.canBeDeleted()" class="delete">
+                     <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
                          <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
                     </div>
                  </li>
-
             </div>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
@@ -100,144 +99,31 @@
                     </div>
 
                     <div id="question-detail-panel">
-                        <div class="new_question">
-                            <ul>
-                                <li class="question">
-                                    <label>Question</label>
-                                    <input id="question_title" name="question_title" type="text" class="required"
-                                           data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true "/>
-                                </li>
-                                <li>
-                                    <label>Code</label>
-                                    <input id="code" name="code" type="text" class="required"
-                                           data-bind="value: selectedQuestion().code, valueUpdate: 'keyup'"/>
-                                </li>
-                                <li class="question_type margin_null"
-                                    data-bind="visible: !selectedQuestion().is_entity_question()">
-                                    <label>Type</label>
-
-                                    <div><input type="radio" name="type" value="text"
-                                                data-bind="checked: selectedQuestion().type" class="required"/> Word or
-                                        Phrase
-                                    </div>
-                                    <div><input type="radio" name="type" value="integer"
-                                                data-bind="checked: selectedQuestion().type" class="required"/> Number
-                                    </div>
-                                    <div><input type="radio" name="type" value="date"
-                                                data-bind="checked: selectedQuestion().type" class="required"/> Date
-                                    </div>
-                                    <div><input type="radio" name="type" value="choice"
-                                                data-bind="checked: selectedQuestion().isAChoiceTypeQuestion"
-                                                class="choice-question-checkbox required"/> List of Choices
-                                    </div>
-                                    <div><input type="radio" name="type" value="geocode"
-                                                data-bind="checked: selectedQuestion().type"
-                                                class="required"/> GPS Coordinates
-                                    </div>
-                                </li>
-
-                                <li data-bind="visible: viewModel.showDateFormats()">
-                                    <div class="margin_top_20">
-                                        <p>
-                                            <label>Select Date Format</label>
-                                        </p>
-
-                                        <p>
-                                            <input type="radio" name="date_format" value="mm.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
-                                            month.year (mm.yyyy)<br/>
-                                            <input type="radio" name="date_format" value="dd.mm.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
-                                            date.month.year (dd.mm.yyyy)<br/>
-                                            <input type="radio" name="date_format" value="mm.dd.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
-                                            month.date.year (mm.dd.yyyy)<br/>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li data-bind="visible: viewModel.showAddChoice()">
-                                    <div class="margin_top_20">
-                                        <ol class="alpha_list"
-                                            data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
-
-                                        </ol>
-                                        <a href="questionnaire_wizard.html#" class="add_link"
-                                           data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">Add
-                                            Answer Choice</a>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="answers_possible" value="select1"
-                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'"/>
-                                        only one answer<br/>
-                                        <input type="radio" name="answers_possible" value="select"
-                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'"/>
-                                        multiple answers are permitted<br/>
-                                    </div>
-                                </li>
-                                <li data-bind="visible: viewModel.showAddRange()">
-                                    <div class="margin_top_20">
-                                        <p>
-                                            Min:
-                                            <input name="range_min" type="text" id="range_min"
-                                                   data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup'"/>
-                                        </p>
-
-                                        <p>
-                                            Max:
-                                            <input name="range_max" type="text" id="range_max"
-                                                   data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup'"/>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
-                                    <div class="margin_top_20">
-                                        <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                                               data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'"/>
-                                        No, answer has no character limit<br/>
-
-                                        <div class="max_char">
-                                            <input type="radio" name="text_length" value="length_limited"
-                                                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'"/>
-                                            <span class="inline">
-                                                Yes, maximum number of characters should be
-                                                <input name="max_length" type="text" id="max_length"
-                                                       data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup'"/>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="margin_top_20">
-                                        <label>Instructions</label>
-                                        <span id="question_instruction"
-                                              data-bind="text: selectedQuestion().instruction"></span>
-                                    </div>
-                                </li>
-                            </ul>
+                        <div id="not_wizard">
+                                {% include 'project/question_detail_panel.html' %}
                         </div>
-                        <div class="existing_question">
-                            <ul>
-                                <li class="question">
-                                    <label>Question</label>
-                                    <input id="question_title" name="question_title" type="text" class="required"
-                                           disabled="disabled"
-                                           data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true "/>
-                                </li>
-                                <li>
-                                    <label>Code</label>
-                                    <input id="code" name="code" type="text" class="required" disabled="disabled"
-                                           data-bind="value: selectedQuestion().code, valueUpdate: 'keyup'"/>
-                                </li>
-
-                                <li>
-                                    <div class="margin_top_20">
-                                        <label>Instructions</label>
-                                        <span id="question_instruction"
-                                              data-bind="text: selectedQuestion().instruction"></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+{#                        <div class="existing_question">#}
+{#                            <ul>#}
+{#                                <li class="question">#}
+{#                                    <label>Question</label>#}
+{#                                    <input id="question_title_disabled" name="question_title" type="text" class="required"#}
+{#                                           data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: viewModel.isEnabled() "/>#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <label>Code</label>#}
+{#                                    <input id="code_disabled" name="code" type="text" class="required"#}
+{#                                           data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>#}
+{#                                </li>#}
+{##}
+{#                                <li>#}
+{#                                    <div class="margin_top_20">#}
+{#                                        <label>Instructions</label>#}
+{#                                        <span id="question_instruction"#}
+{#                                              data-bind="text: selectedQuestion().instruction"></span>#}
+{#                                    </div>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </div>#}
 
                         <div id='char-count'>
                         </div>

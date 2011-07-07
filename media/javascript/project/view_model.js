@@ -7,6 +7,7 @@ var viewModel =
         question.display = ko.dependentObservable(function() {
             return this.title() + ' ' + this.code();
         }, question);
+        question.loaded(false);
         var test_code = DW.generateQuestionCode();
 //            question.options.code =
         question.code(viewModel.check_unique_code(test_code))
@@ -90,5 +91,11 @@ var viewModel =
     },
     choiceCanBeDeleted: function() {
         return viewModel.selectedQuestion().choices().length > 1
+    },
+    isEnabled: function(){
+        if($("#not_wizard"))
+            return viewModel.selectedQuestion().isenabled();
+        else
+            return true;
     }
 };
