@@ -22,20 +22,6 @@
     {{ block.super }}
     {% endblock %}
 
-    <table class="styled_table">
-        <thead>
-        <th>Question Number</th>
-        <th>Question</th>
-        <th>Code</th>
-        </thead>
-        <tbody>
-        {% for each in fields %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ each.label.eng }}</td>
-                <td>{{ each.code }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include 'project/question_table.html' %}
+
 {% endblock %}
