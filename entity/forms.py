@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.forms.fields import RegexField, CharField
+from django.forms.fields import RegexField, CharField, FileField
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
 
@@ -43,3 +43,8 @@ class ReporterRegistrationForm(Form):
             raise ValidationError("Required information for registration. Please fill out at least one location field correctly.")
         return self.cleaned_data
 
+
+class SubjectUploadForm(Form):
+    error_css_class = 'error'
+    required_css_class = 'required'
+    file = FileField(label='Import Subjects')

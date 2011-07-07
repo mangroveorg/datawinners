@@ -19,6 +19,8 @@ from mangrove.form_model.form_model import REGISTRATION_FORM_CODE
 from mangrove.transport.player.player import Request, WebPlayer
 from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import is_empty
+from datawinners.entity import import_data as import_module
+
 
 def _validate_post_data(dbm, request):
     form = ReporterRegistrationForm(request.POST)
@@ -27,7 +29,7 @@ def _validate_post_data(dbm, request):
     form_errors = []
     form_errors.extend(form.non_field_errors())
     if form.is_valid():
-        form_errors=[]
+        form_errors = []
         form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
         try:
             entered_telephone_number = form_data.get("telephone_number")
@@ -35,7 +37,7 @@ def _validate_post_data(dbm, request):
             if not helper.unique(dbm, tel_number):
                 raise MultipleReportersForANumberException(entered_telephone_number)
 
-            web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+            web_player = WebPlayer(dbm, SubmissionHandler(dbm))
             response = web_player.accept(
                 Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
             message = get_success_msg_for_registration_using(response, "Reporter", "web")
@@ -43,7 +45,6 @@ def _validate_post_data(dbm, request):
             form_errors.append(exception.message)
             success = False
     return form, form_errors, message, success
-
 
 
 def _get_location_heirarchy_from_location_name(display_location):
@@ -55,12 +56,12 @@ def _get_location_heirarchy_from_location_name(display_location):
     return location_hierarchy
 
 
-def _get_location_hierarchy(display_location,geo_code):
+def _get_location_hierarchy(display_location, geo_code):
     location_hierarchy = _get_location_heirarchy_from_location_name(display_location)
     if location_hierarchy is None and geo_code is not None:
-        lat_string,long_string=tuple(geo_code.split())
-        tree=LocationTree()
-        location_hierarchy=tree.get_location_hierarchy_for_geocode(lat=float(lat_string),long=float(long_string))
+        lat_string, long_string = tuple(geo_code.split())
+        tree = LocationTree()
+        location_hierarchy = tree.get_location_hierarchy_for_geocode(lat=float(lat_string), long=float(long_string))
     return location_hierarchy
 
 
@@ -70,8 +71,8 @@ def _get_data(form_data):
     data = dict()
     telephone_number = form_data.get('telephone_number')
     geo_code = form_data.get('geo_code')
-    display_location=form_data.get('location')
-    location_hierarchy = _get_location_hierarchy(display_location,geo_code)
+    display_location = form_data.get('location')
+    location_hierarchy = _get_location_hierarchy(display_location, geo_code)
 
     if telephone_number is not None:
         data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
@@ -86,8 +87,10 @@ def _get_data(form_data):
     data['T'] = 'Reporter'
     return data
 
+
 def _get_telephone_number(number_as_given):
     return "".join([num for num in number_as_given if num.isdigit()])
+
 
 def _get_submission_data(post, key):
     if post.get(key):
@@ -116,14 +119,15 @@ def submit(request):
     post = _get_submission(request.POST)
     success = True
     try:
-        web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+        web_player = WebPlayer(dbm, SubmissionHandler(dbm))
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
-        display_location=message.get(mapper['location'])
-        geo_code =  message.get(mapper['geo_code'])
-        location_hierarchy = _get_location_hierarchy(display_location,geo_code)
+        display_location = message.get(mapper['location'])
+        geo_code = message.get(mapper['geo_code'])
+        location_hierarchy = _get_location_hierarchy(display_location, geo_code)
         if location_hierarchy is  not None:
             message[mapper['location']] = location_hierarchy
-        request = Request(transport=post.get('transport'), message=message, source=post.get('source'),destination=post.get('destination'))
+        request = Request(transport=post.get('transport'), message=message, source=post.get('source'),
+                          destination=post.get('destination'))
         response = web_player.accept(request)
         if response.success:
             message = get_success_msg_for_registration_using(response, "Subject", "web")
@@ -140,18 +144,22 @@ def submit(request):
 def create_datasender(request):
     if request.method == 'GET':
         form = ReporterRegistrationForm()
-        return render_to_response('entity/create_datasender.html', {'form': form}, context_instance=RequestContext(request))
+        return render_to_response('entity/create_datasender.html', {'form': form},
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request)
         form, form_errors, message, success = _validate_post_data(dbm, request)
-        response =  render_to_response('datasender_form.html', {'form': form, 'message': message, 'form_errors': form_errors , 'success': success},
-                              context_instance=RequestContext(request))
+        response = render_to_response('datasender_form.html',
+                {'form': form, 'message': message, 'form_errors': form_errors, 'success': success},
+                                      context_instance=RequestContext(request))
         return response
+
 
 def create_type(request):
     message = ""
     if request.method == 'GET':
-        return render_to_response("entity/create_type.html", {"form": EntityTypeForm()}, context_instance=RequestContext(request))
+        return render_to_response("entity/create_type.html", {"form": EntityTypeForm()},
+                                  context_instance=RequestContext(request))
     form = EntityTypeForm(request.POST)
     if form.is_valid():
         entity_name = form.cleaned_data["entity_type"]
@@ -163,10 +171,51 @@ def create_type(request):
             message = type_already_defined.message
         else:
             message = "Entity definition successful"
-    return render_to_response("entity/create_type.html", {"form": form, 'message': message}, context_instance=RequestContext(request))
+    return render_to_response("entity/create_type.html", {"form": form, 'message': message},
+                              context_instance=RequestContext(request))
+
 
 def create_subject(request):
     db_manager = get_database_manager(request)
     entity_types = get_all_entity_types(db_manager)
     project_helper.remove_reporter(entity_types)
-    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types}, context_instance=RequestContext(request))
+    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types},
+                              context_instance=RequestContext(request))
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+def all_subjects(request):
+    if request.method == 'POST':
+        error_message, failure_imports, success, success_message = import_module.import_data(request)
+        subjects_data = import_module.load_all_subjects(request)
+        return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
+                                        'failure_imports': failure_imports, 'all_data': subjects_data}))
+
+    subjects_data = import_module.load_all_subjects(request)
+    return render_to_response('entity/all_subjects.html', {'all_data': subjects_data},
+                              context_instance=RequestContext(request))
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+def all_datasenders(request):
+    all_data_senders = import_module.load_all_reporters(request)
+    if request.method == 'POST':
+        error_message, failure_imports, success, success_message = import_module.import_data(request, True)
+        return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
+                                    'failure_imports': failure_imports, 'all_data':all_data_senders}))
+
+    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders}, context_instance=RequestContext(request))
+
+
+
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+@login_required(login_url='/login')
+def import_subjects_from_project_wizard(request):
+    error_message, failure_imports, success, success_message = import_module.import_data(request)
+    return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
+                                    'failure_imports': failure_imports}))

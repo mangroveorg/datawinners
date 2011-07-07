@@ -1,78 +1,27 @@
-{% extends 'step_wizard.html' %}
-
-{% block page_title %} Data Senders {% endblock %}
+{% extends 'project/tab_navigation.html' %}
+{% block page_title %} Projects - Data Senders {% endblock %}
 
 {% load dw_tabs %}
+{% block navigation %}
+    {% activetab "tab_nav" "data_senders" %}
+    {{ block.super }}
+{% endblock %}
+
 {% block body %}
     {% activetab "main_nav" "projects" %}
     {{ block.super }}
 {% endblock %}
 
-{% block page_css %}
-    {{ block.super }}
-    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
-{% endblock %}
-
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
-    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
-{% endblock %}
-{% block page_js %}
-    {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/datasender.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#tab_items .datasenders").addClass("current");
-            set_current_tab();
-        })
-    </script>
-
-{% endblock %}
-
-
-{% block step_number %}
-    <h3>Step5: Data Senders</h3>
-    <p>Description about the step goes here</p>
+    {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
 {% endblock %}
 {% block content %}
-    <input id='post_url' type="hidden" value="{{ post_url }}"/>
-
-    {% include 'entity_question_panel.html' %}
-
-    <h4 class="inline">Add DataSenders now</h4>
-    <span>(Optional)!</span>
-    <div class="add_subjects_section alpha omega">
-        <div class="grid_11 alpha omega">
-            <h6>Add DataSenders Manually</h6>
-
-            <p>Enter your datasenders individually !</p>
-            <input id='add_datasenders' type="button" class="button_blue" value="Add DataSenders Manually"/>
-        </div>
-        <div class="grid_11  omega import_list">
-            <h6>Import a List of DataSenders</h6>
-
-            <p>Upload an excel (.xls or .xlsx) or csv file (.csv) of your Datasenders !</p>
-            <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
-        </div>
-        <div id="add_data_sender_form" class="add_datasender_form">
-            {% include 'datasender_form.html' %}
-        </div>
-        {% include 'project/import_section_in_wizard.html' %}
-    </div>
-{% endblock %}
-{% block buttons %}
+    {% block secondary_navigation_datasenders %}
+    {% activetab "secondary_tab_nav" "criteria" %}
     {{ block.super }}
-        <input id="submit-button" type="submit"value="Next Step: Review and Test"/>
-{% endblock %}
-{% block previous_step %}
-     <a class="bold" href={{ previous }}>Questionnaire</a>
+    {% endblock %}
+
+    {% include 'project/question_table.html' %}
+
 {% endblock %}

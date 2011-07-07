@@ -18,8 +18,10 @@
 {% endblock %}
 {% block content %}
     {% block secondary_navigation_subjects %}
-        {% activetab "secondary_tab_nav" "criteria" %}
-        {{ block.super }}
+    {% activetab "secondary_tab_nav" "subjects" %}
+    {{ block.super }}
     {% endblock %}
-    {% include 'project/question_table.html' %}
+
+    {% include 'project/registered_entity_table.html' %}
+
 {% endblock %}

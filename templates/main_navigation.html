@@ -1,7 +1,7 @@
 {% load dw_tabs %}
 {% block main_navigation %}
     <div id="main_tab">
-        <div class="grid_11 alpha logo">
+        <div class="grid_8 alpha logo">
                 <img src="/media/images/datawinner_logo.png"/>
         </div>
         <ul>
@@ -12,10 +12,10 @@
                 <a href="{% url datawinners.project.views.index %}">Projects</a>
             </li>
             <li  class ="{% ifactivetab 'main_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="{% url datawinners.datasenders.views.index %}">Data Senders</a>
+                <a href="{% url datawinners.entity.views.all_datasenders %}">Data Senders</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="{% url datawinners.subjects.views.index %}">Subjects</a>
+                <a href="{% url datawinners.entity.views.all_subjects %}">Subjects</a>
             </li>
             <li class ="{% ifactivetab 'main_nav' 'all_data' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="/alldata">All Data</a>

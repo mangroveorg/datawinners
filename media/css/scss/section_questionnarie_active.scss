@@ -1,0 +1,37 @@
+#question_form{
+    label{
+        display:block;
+        float:none;
+    }
+    input{
+        float:none;
+    }
+ .questionnaire_code{
+    label, input{
+        float:left;
+    }
+    input{
+        width:100px;
+    }
+ }
+ .new_question{
+    display:none;
+ }
+ #questions-panel{
+    border-right: 1px solid #ececec;
+    margin: 0px 20px 0 20px;
+    .question_list{
+        li{
+            margin-bottom:10px;
+        }
+    }
+ }
+ #question-detail-panel{
+    float:left;
+    width:555px;
+ }
+ #max_length{
+    width:50px;
+    float:none;
+ }
+}

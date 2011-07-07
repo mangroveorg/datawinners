@@ -1,9 +1,9 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} Projects - Subjects {% endblock %}
+{% block page_title %} Projects - Data Senders {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
-    {% activetab "tab_nav" "subjects" %}
+    {% activetab "tab_nav" "data_senders" %}
     {{ block.super }}
 {% endblock %}
 
@@ -17,9 +17,9 @@
     {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
 {% endblock %}
 {% block content %}
-    {% block secondary_navigation_subjects %}
-        {% activetab "secondary_tab_nav" "criteria" %}
-        {{ block.super }}
+    {% block secondary_navigation_datasenders %}
+    {% activetab "secondary_tab_nav" "datasenders" %}
+    {{ block.super }}
     {% endblock %}
-    {% include 'project/question_table.html' %}
+{% include 'project/registered_entity_table.html' %}
 {% endblock %}

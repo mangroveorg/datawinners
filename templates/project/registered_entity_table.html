@@ -1,0 +1,29 @@
+
+<table class="styled_table">
+    <thead>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Short Name</th>
+    <th>Type</th>
+    <th>Contact info</th>
+    </thead>
+    <tbody>
+    {% for each in all_data %}
+        <tr>
+            <td>{{ each.id }}</td>
+            {% if each.name %}
+                <td>{{ each.name }}</td>
+            {% else %}
+                <td>--</td>
+            {% endif %}
+            <td>{{ each.short_name }}</td>
+            <td>{{ each.type }}</td>
+            {% if each.mobile_number %}
+                <td>{{ each.mobile_number }}</td>
+            {% else %}
+                <td>--</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

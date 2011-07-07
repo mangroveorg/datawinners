@@ -43,7 +43,7 @@
                 <div id="file_uploader"></div>
             </div>
             <div id='error_table'>
-                <table>
+                <table class="styled_table">
                     <thead>
                     <th>Row Number</th>
                     <th>Row</th>
@@ -55,7 +55,7 @@
                 </table>
             </div>
         </div>
-        {% if all_subjects %}
+        {% if all_data %}
             <h3>All Data Senders</h3>
             {% include 'subject_table.html' %}
 

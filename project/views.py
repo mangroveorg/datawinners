@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.entity.import_data import load_all_subjects, load_all_reporters
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.subjects.forms import SubjectUploadForm
-from datawinners.subjects.views import import_subjects_from_project_wizard
+from datawinners.entity.forms import SubjectUploadForm
+from datawinners.entity.views import import_subjects_from_project_wizard
 import helper
 from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument
@@ -47,11 +48,15 @@ def _make_project_links(project_id, questionnaire_code):
     project_links.submission_log_link = reverse(project_results, args=[project_id, questionnaire_code])
     project_links.overview_link = reverse(project_overview, args=[project_id])
     project_links.activate_project_link = reverse(activate_project, args=[project_id])
+    project_links.subjects_link = reverse(subjects, args=[project_id])
+    project_links.datasenders_link = reverse(datasenders, args=[project_id])
+    project_links.registered_datasenders_link = reverse(registered_datasenders, args=[project_id])
+    project_links.registered_subjects_link = reverse(registered_subjects, args=[project_id])
     return project_links
 
 
 @login_required(login_url='/login')
-def questionnaire(request, project_id=None):
+def questionnaire_wizard(request, project_id=None):
     manager = get_database_manager(request)
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
@@ -61,11 +66,9 @@ def questionnaire(request, project_id=None):
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
-        return render_to_response('project/questionnaire.html',
+        return render_to_response('project/questionnaire_wizard.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
-
-
 
 
 @login_required(login_url='/login')
@@ -260,7 +263,7 @@ def _format_data_for_presentation(data_dictionary, form_model):
     type_list = helper.get_type_list(form_model.fields[1:])
     if data_dictionary == {}:
         return "[]", header_list, type_list
-    data_list = helper.get_values(data_dictionary, header_list)
+    data_list = helper.get_values(data_dictionary, header_list) 
     header_list[0] = form_model.entity_type[0] + " Name"
     data_list = helper.convert_to_json(data_list)
     response_string = encode_json(data_list)
@@ -357,21 +360,26 @@ def subjects_wizard(request, project_id=None):
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        return HttpResponseRedirect(reverse(questionnaire, args=[project_id]))
+        return HttpResponseRedirect(reverse(questionnaire_wizard, args=[project_id]))
+
+
+def _format_field_description_for_data_senders(reg_form):
+    for field in reg_form.fields:
+        temp = field.label.get("eng")
+        temp = temp.replace("subject", "data sender")
+        field.label.update(eng=temp)
+
 
 @login_required(login_url='/login')
-def datasenders(request, project_id=None):
+def datasenders_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
         reg_form = get_form_model_by_code(manager, 'reg')
-        previous_link = reverse(questionnaire, args=[project_id])
+        previous_link = reverse(questionnaire_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
-        for field in reg_form.fields:
-            temp = field.label.get("eng")
-            temp = temp.replace("subject", "data sender")
-            field.label.update(eng=temp)
-        return render_to_response('project/datasenders.html',
+        _format_field_description_for_data_senders(reg_form)
+        return render_to_response('project/datasenders_wizard.html',
                 {'fields': reg_form.fields[1:], "previous": previous_link,
                  'form': import_reporter_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
@@ -395,6 +403,59 @@ def activate_project(request, project_id=None):
 def finish(request, project_id=None):
     return render_to_response('project/finish_and_test.html', context_instance=RequestContext(request))
 
+def _get_project_and_project_link(manager, project_id):
+    project = models.get_project(project_id, manager)
+    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    project_links = _make_project_links(project_id, questionnaire.form_code)
+    return project, project_links
 
+@login_required(login_url='/login')
 def subjects(request, project_id=None):
-    return render_to_response('project/subjects.html', context_instance=RequestContext(request))
+    manager = get_database_manager(request)
+    project, project_links = _get_project_and_project_link(manager, project_id)
+    reg_form = get_form_model_by_code(manager, 'reg')
+    return render_to_response('project/subjects.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def registered_subjects(request, project_id=None):
+    manager = get_database_manager(request)
+    project, project_links = _get_project_and_project_link(manager, project_id)
+    all_data = load_all_subjects(request)
+    return render_to_response('project/registered_subjects.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def registered_datasenders(request, project_id=None):
+    manager = get_database_manager(request)
+    project, project_links = _get_project_and_project_link(manager, project_id)
+    all_data = load_all_reporters(request)
+    return render_to_response('project/registered_datasenders.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def datasenders(request, project_id=None):
+    manager = get_database_manager(request)
+    project, project_links = _get_project_and_project_link(manager, project_id)
+    reg_form = get_form_model_by_code(manager, 'reg')
+    _format_field_description_for_data_senders(reg_form)
+    return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+
+
+@login_required(login_url='/login')
+def questionnaire(request, project_id=None):
+#    manager = get_database_manager(request)
+#    project, project_links = _get_project_and_project_link(manager, project_id)
+#    reg_form = get_form_model_by_code(manager, 'reg')
+#    _format_field_description_for_data_senders(reg_form)
+#    return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+    manager = get_database_manager(request)
+    if request.method == 'GET':
+        previous_link = reverse(subjects_wizard, args=[project_id])
+        project = models.get_project(project_id, manager)
+        form_model = helper.load_questionnaire(manager, project.qid)
+        fields = form_model.fields
+        if form_model.entity_defaults_to_reporter():
+            fields = helper.hide_entity_question(form_model.fields)
+        existing_questions = json.dumps(fields, default=field_to_json)
+        return render_to_response('project/questionnaire.html',
+                {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
+                 "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
+

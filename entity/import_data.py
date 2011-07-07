@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 from datawinners.main.utils import get_database_manager
-from datawinners.subjects.SubjectException import InvalidFileFormatException
+from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, get_by_short_code
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
@@ -24,10 +24,15 @@ def tabulate_failures(rows):
 def _tabulate_data(entity, row, short_code, type):
     id = row['id']
     name = entity.value(NAME_FIELD)
-    location = row['doc']['geometry'].get('coordinates')
+    geocode = row['doc']['geometry'].get('coordinates')
+    location = entity.location_path
+    print "row = "
+    print row
+    print "entity"
+    print entity
     mobile_number = entity.value(MOBILE_NUMBER_FIELD)
     description = entity.value(DESCRIPTION_FIELD)
-    return dict(id=id, name=name, short_name=short_code, type=type, location=location,
+    return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode, location=location,
                 description=description, mobile_number=mobile_number)
 
 
