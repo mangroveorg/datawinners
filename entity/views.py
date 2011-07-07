@@ -1,12 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
+from django.views.decorators.http import require_http_methods
 from datawinners.entity import helper
 from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager
-from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using
-from datawinners.submission.views import submit
+from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 from mangrove.datastore.entity import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
@@ -84,6 +88,54 @@ def _get_data(form_data):
 
 def _get_telephone_number(number_as_given):
     return "".join([num for num in number_as_given if num.isdigit()])
+
+def _get_submission_data(post, key):
+    if post.get(key):
+        return post.get(key)
+    return None
+
+
+def _get_submission(post):
+    data = json.loads(post.get('data'))
+    return {
+        'transport': _get_submission_data(data, 'transport'),
+        'source': _get_submission_data(data, 'source'),
+        'destination': _get_submission_data(data, 'destination'),
+        'message': _get_submission_data(data, 'message')
+    }
+
+
+#TODO This method has to be moved into a proper place since this is used for registering entities.
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+@login_required(login_url='/login')
+def submit(request):
+    mapper = {'telephone_number': 'm', 'geo_code': 'g', 'Name': 'n', 'location': 'l'}
+    dbm = get_database_manager(request)
+    post = _get_submission(request.POST)
+    success = True
+    try:
+        web_player = WebPlayer(dbm,SubmissionHandler(dbm))
+        message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
+        display_location=message.get(mapper['location'])
+        geo_code =  message.get(mapper['geo_code'])
+        location_hierarchy = _get_location_hierarchy(display_location,geo_code)
+        if location_hierarchy is  not None:
+            message[mapper['location']] = location_hierarchy
+        request = Request(transport=post.get('transport'), message=message, source=post.get('source'),destination=post.get('destination'))
+        response = web_player.accept(request)
+        if response.success:
+            message = get_success_msg_for_registration_using(response, "Subject", "web")
+        else:
+            message = get_submission_error_message_for(response.errors)
+        entity_id = response.datarecord_id
+    except MangroveException as exception:
+        message = get_exception_message_for(exception=exception, channel="web")
+        success = False
+        entity_id = None
+    return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
+
 
 def create_datasender(request):
     if request.method == 'GET':
