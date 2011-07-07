@@ -1,0 +1,8 @@
+#question_form #questions-panel {
+  border-right: 1px solid #ececec;
+  margin: 0px 20px 0 20px; }
+#question_form #question-detail-panel {
+  float: left; }
+#question_form #max_length {
+  width: 50px;
+  float: none; }

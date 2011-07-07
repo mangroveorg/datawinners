@@ -1,14 +1,8 @@
-{% extends 'project/tab_navigation.html' %}
+{% extends 'step_wizard.html' %}
 
-{% block page_title %}Project - Questionnaire {% endblock %}
+{% block page_title %} Questionnaire {% endblock %}
 
 {% load dw_tabs %}
-
-{% block navigation %}
-    {% activetab "tab_nav" "questionnaire" %}
-    {{ block.super }}
-{% endblock %}
-
 {% block body %}
 {% activetab "main_nav" "projects" %}
 {{ block.super }}
@@ -16,9 +10,8 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnarie_active.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet" />
 {% endblock %}
-
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/view_model.js"></script>
@@ -74,7 +67,7 @@
          <li>
             <label>Questionnaire Code :</label>
             <input id='project-id' type='hidden' value={{ project.id }} />
-            <input id='questionnaire-code' class='required' disabled="disabled" value={{ questionnaire_code }} />
+            <input id='questionnaire-code' class='required' value={{ questionnaire_code }} />
              <span id="questionnaire-code-error"/>
         </li>
     </ul>
@@ -206,4 +199,11 @@
     </div>
     </fieldset>
 </form>
+{% endblock %}
+{% block buttons %}
+     {{ block.super }}
+    <input id="submit-button" type="button" value="Next Step: Data Senders"/>
+{% endblock %}
+{% block previous_step %}
+     <a class="bold" href={{ previous }}>Subjects</a>
 {% endblock %}
