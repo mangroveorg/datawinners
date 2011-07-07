@@ -1,5 +1,4 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
 $(document).ready(function() {
     question_list.forEach(function(question) {
         var questions = new DW.question(question);
@@ -15,26 +14,26 @@ $(document).ready(function() {
     $('.delete').live("click", DW.charCount);
 
     //The Questionnarie left navigation toggle functions
-    $("#questions-panel .add_question .add_link").click(function(){
+    $("#questions-panel .add_question .add_link").click(function() {
         $('.question_list ol > div:last').toggleClass("question_selected");
         $('.question_list ol > div:last').find(".selected_question_arrow").show();
     });
     $('.question_list ol > div:first').toggleClass("question_selected");
     $('.question_list ol > div:first').find(".selected_question_arrow").show();
 
-    $('.question_list ol div .delete_link').live("click", function(event){
+    $('.question_list ol div .delete_link').live("click", function(event) {
         event.stopPropagation();
-        if($('#question_form').valid()){
+        if ($('#question_form').valid()) {
             $('.question_list ol > div:first').toggleClass("question_selected");
         }
     });
-    $('.question_list ol > div').live("click", function(){
-        var selected = $(this).index()+1;
-        var selected_div = $('.question_list ol').find("div:nth-child("+selected+")");
-            if($('#question_form').valid()){
-                selected_div.toggleClass("question_selected");
-                selected_div.find(".selected_question_arrow").show();
-            }
+    $('.question_list ol > div').live("click", function() {
+        var selected = $(this).index() + 1;
+        var selected_div = $('.question_list ol').find("div:nth-child(" + selected + ")");
+        if ($('#question_form').valid()) {
+            selected_div.toggleClass("question_selected");
+            selected_div.find(".selected_question_arrow").show();
+        }
     });
 
 
@@ -58,46 +57,46 @@ $(document).ready(function() {
     }, "Answer cannot be of length less than 1");
 
     $("#question_form").validate({
-                messages: {
-                    max_length:{
-                        digits: "Please enter positive numbers only"
-                    }
+        messages: {
+            max_length:{
+                digits: "Please enter positive numbers only"
+            }
 
-                },
-                rules: {
-                    question_title:{
-                        required: true
-                    },
-                    code:{
-                        required: true,
-                        spacerule: true,
-                        regexrule: true
-                    },
-                    type:{
-                        required: true
-                    },
-                    max_length:{
-                        digits:true
-                    },
-                    range_min:{
-                        number: true
-                    },
-                    range_max:{
-                        number: true
-                    },
-                    choice_text:{
-                        required: "#choice_text:visible"
-                    }
-                },
-                wrapper: "span",
-                errorPlacement: function(error, element) {
-                    offset = element.offset();
-                    error.insertAfter(element)
-                    error.addClass('error_arrow');  // add a class to the wrapper
+        },
+        rules: {
+            question_title:{
+                required: true
+            },
+            code:{
+                required: true,
+                spacerule: true,
+                regexrule: true
+            },
+            type:{
+                required: true
+            },
+            max_length:{
+                digits:true
+            },
+            range_min:{
+                number: true
+            },
+            range_max:{
+                number: true
+            },
+            choice_text:{
+                required: "#choice_text:visible"
+            }
+        },
+        wrapper: "span",
+        errorPlacement: function(error, element) {
+            offset = element.offset();
+            error.insertAfter(element)
+            error.addClass('error_arrow');  // add a class to the wrapper
 
-                }
+        }
 
-            });
+    });
 
     $("#submit-button").click(function() {
 
@@ -135,12 +134,12 @@ $(document).ready(function() {
 
         $.post('/project/questionnaire/save', post_data,
                 function(response) {
-                   var path = window.location.pathname;
-                   var element_list = path.split("/");
-                   window.location.href = '/project/wizard/datasenders/' + element_list[element_list.length-2];
+                    var path = window.location.pathname;
+                    var element_list = path.split("/");
+                    window.location.href = '/project/wizard/datasenders/' + element_list[element_list.length - 2];
                 }).error(function(e) {
-            $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
-        });
+                    $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
+                });
     });
 
     function hide_message() {

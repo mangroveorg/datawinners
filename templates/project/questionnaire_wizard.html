@@ -16,16 +16,17 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
-    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         var question_list = JSON.parse({{existing_questions|safe}});
         $(document).ready(function(){
             $("#tab_items .questionnaire").addClass("current");
             set_current_tab();
-        })
+        });
     </script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/html" id="choice-template">
         <li>
         <p class="grid_17">
