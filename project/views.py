@@ -20,6 +20,7 @@ from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.transport.player.player import Request
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger
 from django.contrib import messages
 from mangrove.utils.types import is_string
@@ -243,7 +244,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
             manager.invalidate(each)
-            SubmissionLogger(manager, request).void_data_record(data_record.submission.get("submission_id"))
+            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
 
         current_page = request.POST.get('current_page')
         rows, results = _load_submissions(int(current_page), manager, questionnaire_code)
