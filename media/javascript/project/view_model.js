@@ -93,8 +93,9 @@ var viewModel =
         return viewModel.selectedQuestion().choices().length > 1
     },
     isEnabled: function(){
-        if($("#not_wizard"))
+        if($("#not_wizard").length>0){
             return viewModel.selectedQuestion().isenabled();
+        }
         else
             return true;
     }

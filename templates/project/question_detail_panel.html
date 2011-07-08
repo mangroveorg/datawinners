@@ -18,17 +18,17 @@
                                         Phrase
                                     </div>
                                     <div><input type="radio" name="type" value="integer"
-                                                data-bind="checked: selectedQuestion().type" class="required"/> Number
+                                                data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()" class="required"/> Number
                                     </div>
                                     <div><input type="radio" name="type" value="date"
-                                                data-bind="checked: selectedQuestion().type" class="required"/> Date
+                                                data-bind="checked: selectedQuestion().type,enable: viewModel.isEnabled()" class="required"/> Date
                                     </div>
                                     <div><input type="radio" name="type" value="choice"
-                                                data-bind="checked: selectedQuestion().isAChoiceTypeQuestion"
+                                                data-bind="checked: selectedQuestion().isAChoiceTypeQuestion, enable: viewModel.isEnabled()"
                                                 class="choice-question-checkbox required"/> List of Choices
                                     </div>
                                     <div><input type="radio" name="type" value="geocode"
-                                                data-bind="checked: selectedQuestion().type"
+                                                data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"
                                                 class="required"/> GPS Coordinates
                                     </div>
                                 </li>
@@ -41,13 +41,13 @@
 
                                         <p>
                                             <input type="radio" name="date_format" value="mm.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
+                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                             month.year (mm.yyyy)<br/>
                                             <input type="radio" name="date_format" value="dd.mm.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
+                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                             date.month.year (dd.mm.yyyy)<br/>
                                             <input type="radio" name="date_format" value="mm.dd.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup'"/>
+                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                             month.date.year (mm.dd.yyyy)<br/>
                                         </p>
                                     </div>
@@ -64,10 +64,10 @@
                                     </div>
                                     <div>
                                         <input type="radio" name="answers_possible" value="select1"
-                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'"/>
+                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                         only one answer<br/>
                                         <input type="radio" name="answers_possible" value="select"
-                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup'"/>
+                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                         multiple answers are permitted<br/>
                                     </div>
                                 </li>
@@ -76,29 +76,29 @@
                                         <p>
                                             Min:
                                             <input name="range_min" type="text" id="range_min"
-                                                   data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup'"/>
+                                                   data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                         </p>
 
                                         <p>
                                             Max:
                                             <input name="range_max" type="text" id="range_max"
-                                                   data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup'"/>
+                                                   data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                         </p>
                                     </div>
                                 </li>
                                 <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
                                     <div class="margin_top_20">
                                         <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                                               data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'"/>
+                                               data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                         No, answer has no character limit<br/>
 
                                         <div class="max_char">
                                             <input type="radio" name="text_length" value="length_limited"
-                                                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup'"/>
+                                                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                             <span class="inline">
                                                 Yes, maximum number of characters should be
                                                 <input name="max_length" type="text" id="max_length"
-                                                       data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup'"/>
+                                                       data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                             </span>
                                         </div>
                                     </div>
