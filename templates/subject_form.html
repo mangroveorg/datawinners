@@ -26,7 +26,10 @@
                         {% endfor %}
                     </select>
                 </span>
-                <a href="{% url datawinners.entity.views.create_type %}">Add a new subject type</a>
+                <div>
+                    {%  include 'entity/create_type.html' %}
+
+                </div>
             </li>
             <li>
                 <label>Location</label>

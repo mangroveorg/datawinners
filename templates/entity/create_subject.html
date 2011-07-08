@@ -20,9 +20,13 @@
 {% endblock %}
 
 {% block page_js %}
+    {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+
 {% endblock %}
 {% block content%}
     <div class="add_entity_form">
