@@ -5,6 +5,7 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException, N
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.player.player import Response
+from mangrove.transport.submissions import SubmissionResponse
 
 
 class TestGetExceptionMessageHandler(unittest.TestCase):
@@ -43,6 +44,7 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
 
 class TestShouldTemplatizeMessage(unittest.TestCase):
+
     def test_should_format_error_message_with_question_codes(self):
         expected_message = "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for q1, q2"
         errors = {"q1": "Some error", "q2": "Some other error"}
@@ -51,18 +53,21 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
 
     def test_should_format_success_message_for_submission_with_reporter_name(self):
         expected_message = success_messages[SUBMISSION] % "rep1" + "age: 12 name: tester choice: red"
-        response = Response(reporters=[{"name": "rep1"}], success=True, errors={}, processed_data={'name':'tester','age':12,'choice':['red']})
+        submission_response = SubmissionResponse(success=True, submission_id=123, errors={}, processed_data={'name':'tester','age':12,'choice':['red']})
+        response = Response(reporters=[{"name": "rep1"}], submission_response=submission_response)
         message = get_success_msg_for_submission_using(response)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
         expected_message = success_messages[SUBMISSION] % "" + "name: tester"
-        response = Response(reporters=[], success=True, errors={}, processed_data={"name":"tester"})
+        submission_response = SubmissionResponse(success=True, submission_id=123, errors={}, processed_data={'name':'tester'})
+        response = Response(reporters=[], submission_response=submission_response)
         message = get_success_msg_for_submission_using(response)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_registration_with_short_code(self):
         expected_message = success_messages[REGISTRATION] % "Reporter identification number: REP1"
-        response = Response(reporters=[], success=True, errors={}, short_code="REP1")
+        submission_response = SubmissionResponse(success=True, submission_id=123, errors={}, processed_data={'name':'tester'}, short_code="REP1")
+        response = Response(reporters=[], submission_response=submission_response)
         message = get_success_msg_for_registration_using(response, "Reporter", "web")
         self.assertEqual(expected_message, message)
