@@ -14,6 +14,12 @@
         width:100px;
     }
  }
+ .alpha_list{
+     input{
+        float:left;
+    }
+ }
+
  .new_question{
     display:none;
  }
@@ -28,7 +34,7 @@
  }
  #question-detail-panel{
     float:left;
-    width:555px;
+    width:525px;
  }
  #max_length{
     width:50px;
