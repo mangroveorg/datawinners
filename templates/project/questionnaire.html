@@ -72,13 +72,13 @@
     <p>Description about the step goes here</p>
 {% endblock %}
 {% block content %}
-    {% csrf_token %}
     <form id="question_form">
+    {% csrf_token %}
         <fieldset>
             <ul class="questionnaire_code">
                 <li>
                     <label>Questionnaire Code :</label>
-                    <input id='project-id' type='hidden' value={{ project.id }}/>
+                    <input id='project-id' type='hidden' value="{{ project.id }}"/>
                     <input id='questionnaire-code' class='required' disabled="disabled" value="{{ questionnaire_code }}"/>
                     <span id="questionnaire-code-error"/>
                 </li>
@@ -109,7 +109,7 @@
                     </div>
                 </div>
                 <div class="text_align_right">
-                    <input type="submit" class="button_blue" value="submit" />
+                    <input id="submit-button" type="submit" class="button_blue" value="submit" />
                 </div>
             </div>
         </fieldset>
