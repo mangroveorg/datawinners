@@ -9,7 +9,7 @@
                       position: "top right",
                       opacity:0.6,
                       events: {
-                          def:     "click,blur",
+                          def:     "mouseover,mouseout",
                           input:   "focus,blur",
                           widget:  "focus mouseover,blur mouseout",
                           tooltip: "click,click"
