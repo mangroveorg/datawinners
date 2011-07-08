@@ -40,6 +40,7 @@ class ProjectLinks(object):
     submission_log_link = ''
     overview_link = ''
     activate_project_link = ''
+    questionnaire_link = ''
 
 
 def _make_project_links(project_id, questionnaire_code):
@@ -49,6 +50,7 @@ def _make_project_links(project_id, questionnaire_code):
     project_links.overview_link = reverse(project_overview, args=[project_id])
     project_links.activate_project_link = reverse(activate_project, args=[project_id])
     project_links.subjects_link = reverse(subjects, args=[project_id])
+    project_links.questionnaire_link = reverse(questionnaire, args=[project_id])
     project_links.datasenders_link = reverse(datasenders, args=[project_id])
     project_links.registered_datasenders_link = reverse(registered_datasenders, args=[project_id])
     project_links.registered_subjects_link = reverse(registered_subjects, args=[project_id])
