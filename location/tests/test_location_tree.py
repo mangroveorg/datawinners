@@ -26,7 +26,7 @@ class TestLocationTree(unittest.TestCase):
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):
-        self.assertEqual("Ambatomanjaka", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321))
+        self.assertEqual("ZAZAFOTSY", self.tree.get_location_for_geocode(lat=-22.12, long=46.21))
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):

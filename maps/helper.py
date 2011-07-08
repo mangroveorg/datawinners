@@ -35,7 +35,6 @@ def create_location_geojson(entity_list):
 
     location_list=[]
     for entity in entity_list:
-
         geometry = entity.geometry
         location_path=entity.location_path
         if geometry:

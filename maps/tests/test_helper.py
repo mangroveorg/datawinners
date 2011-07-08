@@ -20,8 +20,8 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(expected_geojson, helper.create_location_geojson(entity_list))
 
     def test_should_resolve_location_to_centriod(self):
-        expected_geojson = '{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [46.88506586909285, -18.813739584921834]}, "type": "Feature"}, {"geometry": {"type": "Point", "coordinates": [3, 1]}, "type": "Feature"}]}'
-        entity1 = Entity(self.dbm, entity_type="Water Point", location=['Madagascar', 'Antananarivo', 'Itasy', 'Miarinarivo', 'Ambatomanjaka'], short_code="WP002",
+        expected_geojson = '{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [48.41586788688784, -17.81401199347298]}, "type": "Feature"}, {"geometry": {"type": "Point", "coordinates": [3, 1]}, "type": "Feature"}]}'
+        entity1 = Entity(self.dbm, entity_type="Water Point", location=['Madagascar', 'TOAMASINA', 'ALAOTRA MANGORO', 'AMBATONDRAZAKA', 'AMBATONDRAZAKA'], short_code="WP002",
                              geometry={})
         entity2 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
                              geometry={'type': 'Point', 'coordinates': [1, 3]})
