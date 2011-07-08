@@ -18,11 +18,11 @@ class TestLocationTree(unittest.TestCase):
         self.assertEqual(6, len(self.tree.get_next_level('Madagascar')))
 
     def test_get_hierarchy_from_location(self):
-        self.assertEqual(self.tree.get_hierarchy_path('Amboahangibe'),
-            ['Madagascar', 'Antsiranana', 'Sava', 'Sambava', 'Amboahangibe'])
+        self.assertEqual(self.tree.get_hierarchy_path('Amboanjo'),
+            ['madagascar', 'fianarantsoa', 'vatovavy fitovinany', 'manakara atsimo', 'amboanjo'])
 
     def test_is_valid_location(self):
-        self.assertTrue(self.tree.exists("Amboahangibe"))
+        self.assertTrue(self.tree.exists("amboanjo"))
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):
@@ -30,15 +30,15 @@ class TestLocationTree(unittest.TestCase):
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):
-        self.assertEqual("Ambatomanjaka", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321))
+        self.assertEqual("ambatomanjaka", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321).lower())
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_location_hierarchy_for_geocode(self):
-        self.assertEqual(['Madagascar', 'Antananarivo', 'Itasy', 'Miarinarivo', 'Ambatomanjaka'], self.tree.get_location_hierarchy_for_geocode(lat=-18.777180, long=46.854321))
+        self.assertEqual(['madagascar', 'antananarivo', 'itasy', 'miarinarivo', 'ambatomanjaka'], self.tree.get_location_hierarchy_for_geocode(lat=-18.777180, long=46.854321))
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_filtered_list_lowest_levels(self):
-        self.assertEqual(["Zazafotsy, Fianarantsoa","Zoma Bealoka, Antananarivo"], get_locations_for_country(country="Madagascar", start_with="z"))
+        self.assertEqual(['ZOMA BEALOKA, ANTANANARIVO', 'ZAZAFOTSY, FIANARANTSOA'], get_locations_for_country(country="Madagascar", start_with="z"))
 
 
     def test_should_find_centriod_of_the_location(self):

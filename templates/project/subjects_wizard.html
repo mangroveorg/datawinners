@@ -27,7 +27,8 @@
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
     <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
-
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $("#tab_items .subjects").addClass("current");
@@ -64,7 +65,7 @@
         <div class="add_subject_form">
             {% include 'subject_form.html' %}
         </div>
-        {% include 'project/import_section_in_wizard.html' %}
+    {% include 'project/import_section_in_wizard.html' %}
     </div>
 {% endblock %}
 {% block buttons %}
