@@ -20,6 +20,7 @@ from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.transport.player.player import Request
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger
 from django.contrib import messages
 from mangrove.utils.types import is_string
@@ -35,23 +36,17 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-class ProjectLinks(object):
-    data_analysis_link = ''
-    submission_log_link = ''
-    overview_link = ''
-    activate_project_link = ''
-
-
 def _make_project_links(project_id, questionnaire_code):
-    project_links = ProjectLinks()
-    project_links.data_analysis_link = reverse(project_data, args=[project_id, questionnaire_code])
-    project_links.submission_log_link = reverse(project_results, args=[project_id, questionnaire_code])
-    project_links.overview_link = reverse(project_overview, args=[project_id])
-    project_links.activate_project_link = reverse(activate_project, args=[project_id])
-    project_links.subjects_link = reverse(subjects, args=[project_id])
-    project_links.datasenders_link = reverse(datasenders, args=[project_id])
-    project_links.registered_datasenders_link = reverse(registered_datasenders, args=[project_id])
-    project_links.registered_subjects_link = reverse(registered_subjects, args=[project_id])
+    project_links = {}
+    project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
+    project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
+    project_links['overview_link'] = reverse(project_overview, args=[project_id])
+    project_links['activate_project_link'] = reverse(activate_project, args=[project_id])
+    project_links['subjects_link'] = reverse(subjects, args=[project_id])
+    project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
+    project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
+    project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
+    project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
     return project_links
 
 
@@ -138,7 +133,7 @@ def edit_profile(request, project_id=None):
 
 
 @login_required(login_url='/login')
-def save_questionnaire(request):
+def save_questionnaire(request, project):
     manager = get_database_manager(request)
     if request.method == 'POST':
         questionnaire_code = request.POST['questionnaire-code']
@@ -441,11 +436,6 @@ def datasenders(request, project_id=None):
 
 @login_required(login_url='/login')
 def questionnaire(request, project_id=None):
-#    manager = get_database_manager(request)
-#    project, project_links = _get_project_and_project_link(manager, project_id)
-#    reg_form = get_form_model_by_code(manager, 'reg')
-#    _format_field_description_for_data_senders(reg_form)
-#    return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
     manager = get_database_manager(request)
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])

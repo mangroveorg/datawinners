@@ -14,7 +14,30 @@
 
 {% block page_scss %}
     {{ block.super }}
-    {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
+    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+{% endblock %}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#tab_items .subjects").addClass("current");
+            set_current_tab();
+        })
+    </script>
+
+{% endblock %}
+
+
+{% block step_number %}
+    <h3>Step3: Subjects</h3>
+    <p>Review the questions by clicking on each</p>
 {% endblock %}
 {% block content %}
     {% block secondary_navigation_subjects %}

@@ -156,10 +156,8 @@ def create_datasender(request):
 
 
 def create_type(request):
-    message = ""
-    if request.method == 'GET':
-        return render_to_response("entity/create_type.html", {"form": EntityTypeForm()},
-                                  context_instance=RequestContext(request))
+    message = "Entity definition successful"
+    success=True
     form = EntityTypeForm(request.POST)
     if form.is_valid():
         entity_name = form.cleaned_data["entity_type"]
@@ -169,11 +167,8 @@ def create_type(request):
             define_type(manager, entity_name)
         except EntityTypeAlreadyDefined as type_already_defined:
             message = type_already_defined.message
-        else:
-            message = "Entity definition successful"
-    return render_to_response("entity/create_type.html", {"form": form, 'message': message},
-                              context_instance=RequestContext(request))
-
+            success=False
+    return HttpResponse(json.dumps({'success': success, 'message': message}))
 
 def create_subject(request):
     db_manager = get_database_manager(request)

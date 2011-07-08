@@ -17,6 +17,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/project_profile.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
 {% endblock %}
 
 {% block step_number %}
@@ -66,6 +67,7 @@
                 {{ form.entity_type }}
                 {{ form.entity_type.errors }}
             </li>
+                {% include 'entity/create_type.html' %}
             <li class="{{ form.devices.css_classes  }} form-row-10px">
                 {{ form.devices.label_tag }}
                 {{ form.devices }}
