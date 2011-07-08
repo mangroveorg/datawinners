@@ -5,13 +5,15 @@
                                            data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: viewModel.isEnabled() "/>
                                 </li>
                                 <li>
-                                    <label>Code</label>
+                                    <label>Code <img src="/media/images/help_icon.png" class="help_icon"> <div class="tooltip"><p>This is a question code </p></div></label>
+
                                     <input id="code" name="code" type="text" class="required"
                                            data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                 </li>
                                 <li class="question_type margin_null"
                                     data-bind="visible: !selectedQuestion().is_entity_question()">
-                                    <label>Type</label>
+                                    <label>Answer Type <img src="/media/images/help_icon.png" class="help_icon"><div class="tooltip"><p>This is a answer type</p></div></label>
+
 
                                     <div><input type="radio" name="type" value="text"
                                                 data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()" class="required"/> Word or

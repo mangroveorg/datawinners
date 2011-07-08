@@ -118,3 +118,32 @@ table {
 /* Titles */
 .highlighted_title {
   color: #C35C00; }
+
+/* Help Icon */
+.help_icon {
+  margin-left: 5px; }
+
+div.tooltip {
+  display: none;
+  background: url(/media/images/help_arrow.png) no-repeat 4px bottom;
+  padding-left: 10px;
+  padding-bottom: 7px; }
+  div.tooltip p {
+    background: #000;
+    font-size: 12px;
+    height: auto;
+    width: auto;
+    max-width: 200px;
+    padding: 15px;
+    color: #fff;
+    border: 2px solid #FFD857;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px; }
+
+span.tooltip {
+  background: url(/media/images/help_arrow.png) no-repeat left bottom;
+  height: 20px; }
+
+.help_arrow {
+  background: url(/media/images/help_arrow.png) no-repeat left bottom; }

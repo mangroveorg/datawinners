@@ -5,6 +5,18 @@
 
     $(document).ready(function(){
           $.addwatermarks();
+          $(".help_icon").tooltip({
+                      position: "top right",
+                      opacity:0.6,
+                      events: {
+                          def:     "click,blur",
+                          input:   "focus,blur",
+                          widget:  "focus mouseover,blur mouseout",
+                          tooltip: "click,click"
+                      }
+
+          });
+
     })
 
 
