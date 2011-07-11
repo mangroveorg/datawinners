@@ -157,7 +157,7 @@ def save_questionnaire(request):
             form_model.name = project.name
             form_model.entity_id = project.entity_type
             form_model.save()
-            return HttpResponseRedirect(reverse(finish, args=[pid]))
+            return HttpResponse(json.dumps({"response": "ok"}))
 
 
 @login_required(login_url='/login')

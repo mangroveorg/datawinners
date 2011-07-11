@@ -110,12 +110,12 @@ $(document).ready(function() {
 
         $.post('/project/questionnaire/save', post_data,
                 function(response) {
-                    var path = window.location.pathname;
-                    var element_list = path.split("/");
-                    window.location.href = '/project/wizard/datasenders/' + element_list[element_list.length - 2];
+                    $("#message-label").show().html("<label class='success'>" + "The question has been saved." + "</label");
                 }).error(function(e) {
                     $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
                 });
+        redirect();
+        return false;
     });
 
     function hide_message() {
