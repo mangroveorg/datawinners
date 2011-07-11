@@ -2,11 +2,11 @@
 import mangrove.errors.MangroveException as ex
 
 
-DEFAULT = "default"
-WEB = "web"
-SMS = "sms"
-SUBMISSION = "submission"
-REGISTRATION = "registration"
+DEFAULT = u"default"
+WEB = u"web"
+SMS = u"sms"
+SUBMISSION = u"submission"
+REGISTRATION = u"registration"
 
 DEFAULT_EXCEPTION_MESSAGE = u"An exception has occurred"
 

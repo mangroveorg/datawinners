@@ -58,7 +58,7 @@ def new_user(request):
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
-                reset_form.save(from_email="maheshkl@thoughtworks.com")
+                reset_form.save()
                 return HttpResponseRedirect('/account/users')
 
 
