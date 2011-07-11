@@ -14,3 +14,13 @@ fieldset{
         font-weight:bold;
     }
 }
+
+#add_subject_type{
+    margin-left:170px;
+    label{
+        width:auto;
+    }
+    input[type=text]{
+        width:200px;
+    }
+}

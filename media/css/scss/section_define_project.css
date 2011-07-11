@@ -12,3 +12,10 @@ fieldset {
   fieldset legend {
     color: #C35C00;
     font-weight: bold; }
+
+#add_subject_type {
+  margin-left: 170px; }
+  #add_subject_type label {
+    width: auto; }
+  #add_subject_type input[type=text] {
+    width: 200px; }
