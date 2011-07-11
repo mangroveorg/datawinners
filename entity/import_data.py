@@ -60,7 +60,7 @@ def load_all_subjects(request):
     return data
 
 
-def load_all_reporters(request):
+def load_all_subjects_of_type(request, entity_type="reporter"):
     manager = get_database_manager(request)
     rows = get_all_entities(dbm=manager, include_docs=True)
     data = []
@@ -68,7 +68,7 @@ def load_all_reporters(request):
         type = _get_entity_type_from_row(row)
         entity, short_code = _get_entity_for_row(manager, row, type)
         type = '.'.join(type)
-        if type.lower() == 'reporter':
+        if type.lower() == entity_type:
             data.append(_tabulate_data(entity, row, short_code, type))
     return data
 

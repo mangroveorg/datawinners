@@ -77,8 +77,10 @@ def create_questionnaire(post, dbm):
     fields = [entity_id_question]
     if entity_type == [REPORTER]:
         fields = [entity_id_question, activity_report_question]
-    return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
+    form_model = FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
                      form_code=generate_questionnaire_code(dbm), type='survey')
+    form_model.deactivate()
+    return form_model
 
 
 def load_questionnaire(dbm, questionnaire_id):
@@ -218,7 +220,7 @@ def get_aggregate_list(header_list, post_data):
     return aggregates
 
 
-def convert_to_json(data_list):
+def to_report(data_list):
     """
     data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
                          {"entity_name": "cid001", "values": ['asif', 35]}]

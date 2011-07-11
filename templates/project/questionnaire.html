@@ -28,17 +28,9 @@
     <script type="text/javascript">
         var question_list = JSON.parse({{existing_questions|safe}});
     </script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script>
-        $(document).ready(function() {
-//
-//            $("#questions-panel .add_question .add_link").click(function() {
-//                $(".new_question").show();
-//                $(".existing_question").hide();
-//            });
-        })
-    </script>
     <script type="text/html" id="choice-template">
         <li>
             <p class="grid_17">

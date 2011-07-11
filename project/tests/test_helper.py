@@ -250,7 +250,7 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(1, len(form_model.fields))
         self.assertEqual(True, form_model.fields[0].is_entity_field)
         self.assertEqual(["Water Point"], form_model.entity_type)
-
+        self.assertFalse(form_model.is_active())
         patcher.stop()
 
     def test_should_update_questionnaire(self):
@@ -383,7 +383,6 @@ class TestHelper(unittest.TestCase):
     def test_should_return_aggregates_list(self):
         header_list = ["field1", "field2"]
         post_data = ["Latest", "Sum"]
-        expected_list = [Latest("field1"), Sum("field2")]
         actual_list = helper.get_aggregate_list(header_list, post_data)
         self.assertIsInstance(actual_list[0], Latest)
         self.assertIsInstance(actual_list[1], Sum)
@@ -391,7 +390,7 @@ class TestHelper(unittest.TestCase):
     def test_should_create_list_of_values(self):
         data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
                 {"entity_name": "cid001", "values": ['asif', 35]}]
-        actual_list = helper.convert_to_json(data_list)
+        actual_list = helper.to_report(data_list)
         expected_list = [["cid002", 'shweta', 55], ["cid001", 'asif', 35]]
         self.assertListEqual(expected_list, actual_list)
 
