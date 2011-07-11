@@ -7,7 +7,7 @@ class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    entity_type = RegexField(regex="^[A-Za-z0-9]+$", max_length=20, error_message="Only letters and numbers are valid", required=True, label="New Subject(eg clinic, waterpoint etc)")
+    entity_type_create = RegexField(regex="^[A-Za-z0-9]+$", max_length=20, error_message="Only letters and numbers are valid", required=True, label="New Subject(eg clinic, waterpoint etc)")
 
 class ReporterRegistrationForm(Form):
     error_css_class = 'error'

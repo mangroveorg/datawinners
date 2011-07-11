@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from datawinners.entity.import_data import load_all_subjects, load_all_reporters
+from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
@@ -417,14 +417,14 @@ def subjects(request, project_id=None):
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data = load_all_subjects(request)
+    all_data = load_all_subjects_of_type(request, project.entity_type)
     return render_to_response('project/registered_subjects.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data = load_all_reporters(request)
+    all_data = load_all_subjects_of_type(request)
     return render_to_response('project/registered_datasenders.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
