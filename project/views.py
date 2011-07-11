@@ -452,7 +452,9 @@ def questionnaire(request, project_id=None):
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
+        project_links = _make_project_links(project, form_model.form_code)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
+                 "previous": previous_link, 'project': project, 'project_links': project_links},
+                                  context_instance=RequestContext(request))
 
