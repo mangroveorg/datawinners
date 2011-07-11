@@ -132,7 +132,7 @@ def edit_profile(request, project_id=None):
 
 
 @login_required(login_url='/login')
-def save_questionnaire(request, project):
+def save_questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
         questionnaire_code = request.POST['questionnaire-code']
