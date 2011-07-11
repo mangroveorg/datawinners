@@ -25,7 +25,7 @@ def _tabulate_data(entity, row, short_code, type):
     id = row['id']
     name = entity.value(NAME_FIELD)
     geocode = row['doc']['geometry'].get('coordinates')
-    location = entity.location_path
+    location = entity.location_path if entity.location_path is not None else []
     print "row = "
     print row
     print "entity"
