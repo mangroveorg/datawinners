@@ -243,7 +243,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
         for each in data_record_ids:
             data_record = manager._load_document(each, DataRecordDocument)
             manager.invalidate(each)
-            SubmissionLogger(manager, request).void_data_record(data_record.submission.get("submission_id"))
+            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
 
         current_page = request.POST.get('current_page')
         rows, results = _load_submissions(int(current_page), manager, questionnaire_code)
