@@ -33,7 +33,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(get_project(self.project1_id, self.dbm)['_id'], self.project1_id)
 
     def test_should_update_project(self):
-        self.project1.update(self.dbm, dict(name='Test1', devices=['web', 'sms'], goals="New goals"))
+        self.project1.update(dict(name='Test1', devices=['web', 'sms'], goals="New goals"))
         self.project1.save(self.dbm)
         self.assertEquals(self.project1.name, 'test1')
         self.assertEquals(self.project1.goals, 'New goals')
@@ -50,7 +50,7 @@ class TestProjectModel(unittest.TestCase):
             project.save(self.dbm)
 
     def test_should_check_for_unique_name_while_update_project(self):
-        self.project1.update(self.dbm, dict(name='Test2', devices=['web', 'sms'], goals="New goals"))
+        self.project1.update(dict(name='Test2', devices=['web', 'sms'], goals="New goals"))
         with self.assertRaises(DataObjectAlreadyExists):
             self.project1.save(self.dbm)
 

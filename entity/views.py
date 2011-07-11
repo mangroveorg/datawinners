@@ -160,7 +160,7 @@ def create_type(request):
     success=True
     form = EntityTypeForm(request.POST)
     if form.is_valid():
-        entity_name = form.cleaned_data["entity_type"]
+        entity_name = form.cleaned_data["entity_type_create"]
         entity_name = [entity_name.lower()]
         try:
             manager = get_database_manager(request)
@@ -196,7 +196,7 @@ def all_subjects(request):
 @csrf_response_exempt
 @login_required(login_url='/login')
 def all_datasenders(request):
-    all_data_senders = import_module.load_all_reporters(request)
+    all_data_senders = import_module.load_all_subjects_of_type(request)
     if request.method == 'POST':
         error_message, failure_imports, success, success_message = import_module.import_data(request, True)
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,

@@ -7,7 +7,7 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import  is_string
 
-PROJECT_DRAFT_STATUS = 'Inactive'
+PROJECT_INACTIVE_STATUS = 'Inactive'
 PROJECT_ACTIVE_STATUS = 'Active'
 
 class Project(DocumentBase):
@@ -20,7 +20,7 @@ class Project(DocumentBase):
     qid = TextField()
     state = TextField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=PROJECT_DRAFT_STATUS, activity_report=None):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=PROJECT_INACTIVE_STATUS, activity_report=None):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -42,7 +42,7 @@ class Project(DocumentBase):
         self._check_if_project_name_unique(dbm)
         return dbm._save_document(self)
 
-    def update(self, dbm, value_dict):
+    def update(self, value_dict):
         attribute_list = [item[0] for item in (self.items())]
         for key in value_dict:
             if key in attribute_list:
