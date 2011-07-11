@@ -35,17 +35,22 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-def _make_project_links(project_id, questionnaire_code):
+def _make_project_links(project, questionnaire_code):
+    project_id = project.id
     project_links = {}
-    project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
-    project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
     project_links['overview_link'] = reverse(project_overview, args=[project_id])
     project_links['activate_project_link'] = reverse(activate_project, args=[project_id])
-    project_links['subjects_link'] = reverse(subjects, args=[project_id])
-    project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
-    project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
-    project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
-    project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
+    if project.state == PROJECT_ACTIVE_STATUS:
+        project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
+        project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
+
+        project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
+
+        project_links['subjects_link'] = reverse(subjects, args=[project_id])
+        project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
+
+        project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
+        project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
     return project_links
 
 
@@ -182,7 +187,7 @@ def project_overview(request, project_id=None):
     link = reverse(edit_profile, args=[project_id])
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
-    project_links = _make_project_links(project_id, questionnaire.form_code)
+    project_links = _make_project_links(project, questionnaire.form_code)
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
              , 'project_profile_link': link, 'number_of_questions': number_of_questions},
@@ -227,7 +232,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
     error_message = ""
     project = models.get_project(project_id, dbm=manager)
-    project_links = _make_project_links(project_id, questionnaire_code)
+    project_links = _make_project_links(project, questionnaire_code)
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
         rows, results = _load_submissions(current_page, manager, questionnaire_code)
@@ -282,7 +287,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, dbm=manager)
     form_model = get_form_model_by_code(manager, questionnaire_code)
-    project_links = _make_project_links(project_id, questionnaire_code)
+    project_links = _make_project_links(project, questionnaire_code)
 
     if request.method == "GET":
         data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
@@ -403,7 +408,7 @@ def finish(request, project_id=None):
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)
     questionnaire = helper.load_questionnaire(manager, project.qid)
-    project_links = _make_project_links(project_id, questionnaire.form_code)
+    project_links = _make_project_links(project, questionnaire.form_code)
     return project, project_links
 
 @login_required(login_url='/login')
