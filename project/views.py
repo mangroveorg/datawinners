@@ -111,7 +111,7 @@ def edit_profile(request, project_id=None):
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
-        project.update(manager, form.cleaned_data)
+        project.update(form.cleaned_data)
         project.update_questionnaire(manager)
 
         try:
@@ -132,7 +132,7 @@ def edit_profile(request, project_id=None):
 
 
 @login_required(login_url='/login')
-def save_questionnaire(request, project):
+def save_questionnaire(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
         questionnaire_code = request.POST['questionnaire-code']
@@ -389,6 +389,9 @@ def datasenders_wizard(request, project_id=None):
 def activate_project(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
+    form_model = helper.load_questionnaire(manager, project.qid)
+    form_model.activate()
+    form_model.save()
     project.state = PROJECT_ACTIVE_STATUS
     project.save(manager)
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
@@ -399,7 +402,7 @@ def finish(request, project_id=None):
 
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)
-    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    questionnaire = helper.load_questionnaire(manager, project.qid)
     project_links = _make_project_links(project_id, questionnaire.form_code)
     return project, project_links
 
