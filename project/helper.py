@@ -220,7 +220,7 @@ def get_aggregate_list(header_list, post_data):
     return aggregates
 
 
-def convert_to_json(data_list):
+def to_report(data_list):
     """
     data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
                          {"entity_name": "cid001", "values": ['asif', 35]}]
