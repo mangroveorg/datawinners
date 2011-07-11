@@ -4,34 +4,123 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_finish.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_finish.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-     <script type="text/javascript">
-        $(document).ready(function(){
+    <script type="text/javascript">
+        $(document).ready(function() {
             $("#tab_items .finish").addClass("current");
             set_current_tab();
         });
-     </script>
+    </script>
+    <script type="text/javascript" src="/media/javascript/project/finish_and_test.js"></script>
 {% endblock %}
 
 {% block step_number %}
     <h3>Step 6: Review and Test</h3>
-    <p>Description about the step goes here</p>
+    <p class="italic">Congratulations! You have created your project. Review the specifications you made and test if you
+        can send in Data.</p>
+
 {% endblock %}
 
 {% block content %}
-    <div class="finish_content grid_23 alpha omega">
-        <h6>Your project has been successfully created.</h6>
+    <div class="grid_23 alpha omega" id='review_section'>
+        <h4>Review</h4>
+        <p class="italic margin_bottom_20">Verify the specifications of your project</p>
+        <div id='project_profile'>
+        <div class="header">
+            <h5 class="inline">Project Profile</h5>
+        <a href="{{project_links.edit_link}}">edit</a>
+        </div>
+            <div>
+
+            <ul>
+                <li>
+                    <label>Name:</label>
+                    <p>{{ project.name }}</p>
+                </li>
+                <li>
+                    <label>Project Type:</label>
+                    <p>{{ project.project_type }}</p>
+                </li>
+                <li><label>
+                    Project Description:</label>
+                    <p>{{ project.goals }}</p>
+                </li>
+                <li><label>
+                    Devices:</label>
+                    {% for each in project.devices %}<p>{{ each }}</p> {% endfor %}
+                </li>
+            </ul>
+
+        </div>
+        </div>
+        <div id='subjects'>
+            <div class="header">
+            <h5 class="inline">Subjects </h5>
+                <a href="{{project_links.subject_link}}">edit</a>
+            </div>
+            <div>
+            <ul>
+                <li><label>
+                    Type:</label>
+
+                    <p>{{ project.entity_type }}</p>
+                </li>
+                <li><label>
+                    Number of subjects :</label>
+
+                    <p>{{ number_of_subjects }}</p>
+                </li>
+
+            </ul>
+                </div>
+        </div>
+        <div id="questionnaire">
+            <div class='header'>
+            <h5 class="inline">Data Collection</h5>
+                <a href="{{project_links.questionnaire_link}}">edit</a>
+            </div>
+            <div>
+            <ol>
+                {% for question in fields %}
+                    <li>
+                        <p>{{ question.name }}</p>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+        </div>
+        <div id="data_senders">
+            <div class="header">
+            <h5 class="inline">Data Senders</h5>
+            <a href="{{project_links.data_senders_link}}">edit</a>
+            </div>
+            <div>
+            <ul>
+                <li><label>
+                    Number of data senders :</label>
+
+                    <p>{{ number_of_datasenders }}</p>
+                </li>
+
+            </ul>
+                </div>
+        </div>
     </div>
+{#    <div class="grid_11 alpha omega">#}
+{#        <h6>Test</h6>#}
+{#    </div>#}
+
+
 {% endblock %}
 
 {% block buttons %}

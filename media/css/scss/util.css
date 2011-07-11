@@ -63,6 +63,10 @@
 .bold {
   font-weight: bold; }
 
+.italic {
+  font-style: italic;
+  color: #CCCCCC; }
+
 /*Error and Success*/
 .error_message {
   color: #FF0000;
