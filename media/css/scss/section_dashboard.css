@@ -1,0 +1,73 @@
+p {
+  color: #666666 !important; }
+  p.intro {
+    font-size: 16px; }
+
+.dashboard_left {
+  border-right: 1px solid #CCCCCC;
+  min-height: 400px; }
+
+.dashboard_right {
+  margin-left: 10px; }
+
+#how_to {
+  width: 100% !important;
+  margin: 15px 0 15px 0; }
+  #how_to .ui-widget-content {
+    border: 1px solid #CCCCCC; }
+  #how_to h3 {
+    background: #F5F5F5 !important;
+    padding: 10px;
+    color: #000000 !important;
+    border: 1px solid #ccc !important; }
+    #how_to h3 .title {
+      background: url(/media/images/accordion_arrows.png) no-repeat left -13px;
+      padding-left: 15px; }
+  #how_to h3.ui-state-active .title {
+    background: url(/media/images/accordion_arrows.png) no-repeat left -52px;
+    padding-left: 15px; }
+
+#projects {
+  width: 680px !important;
+  float: left; }
+  #projects .project_header {
+    border-bottom: 1px solid #CCCCCC !important;
+    padding: 10px; }
+    #projects .project_header .header {
+      font-weight: normal;
+      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
+      padding-left: 15px; }
+    #projects .project_header .success_error {
+      font-size: 12px;
+      font-weight: normal;
+      color: #666666;
+      float: right; }
+  #projects .project_header.ui-state-active {
+    background-color: #525252 !important;
+    border: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;
+    background: -moz-linear-gradient(top, #525252, #262626) !important; }
+    #projects .project_header.ui-state-active .header {
+      color: #FFFFFF;
+      background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
+      padding-left: 15px; }
+    #projects .project_header.ui-state-active .success_error {
+      color: #FFFFFF; }
+  #projects .ui-accordion-content {
+    border: 0;
+    border-bottom: 1px solid #000000; }
+    #projects .ui-accordion-content table {
+      border: 0; }
+      #projects .ui-accordion-content table td {
+        border: 0;
+        border-bottom: 1px solid #CCCCCC; }
+  #projects .go_to_project {
+    float: right;
+    color: #0070ac;
+    font-weight: bold;
+    font-size: 12px; }
+
+.view_all_projects {
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 10px; }

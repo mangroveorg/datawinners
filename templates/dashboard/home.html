@@ -8,42 +8,47 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_dashboard.scss" rel="stylesheet" />
+{% endblock %}
+
 {% block navigation %}
     <div class="grid_24 margin_bottom_10">
         <div class="grid_11 margin_left_null">
             <a href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
         </div>
-        <div class="grid_11 push_2 margin_right_null text_align_right">
-            <a href="#">Need help?</a>
-        </div>
     </div>
 {% endblock %}
 
 {% block content %}
+    <p class="intro">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
     <div id="how_to">
-        <h3>How to use Datawinners</h3>
-        <div>
+        <h3><span class="title">How to use Datawinners</span></h3>
+        <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.
-        </div>
+        </p>
     </div>
 
-    <div class="grid_17 margin_left_null">
-        <h1>Your projects <a href="{% url datawinners.project.views.index %}">view all projects</a></h1>
+    <div class="grid_18 margin_left_null dashboard_left">
+        <h4 class="grid_16 omega alpha">Your projects</h4>
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
-                {{ project.name|capfirst }} -
-                {{ project.success }} successful |
-                {{ project.errors }} error{{ project.errors|pluralize }}
+                <span class="header">{{ project.name|capfirst }} </span>
+                <span class="success_error">{{ project.success }} successful |
+                {{ project.errors }} error{{ project.errors|pluralize }}</span>
             </div>
             <div>
+                <a class="go_to_project"href="{{ project.link }}">go to this project »</a>
                 {% if project.submissions|length > 0 %}
                     <table>
                     {% for submission in project.submissions %}
                         <tr>
                             <td>{{ submission.created }}</td>
-                            <td>{{ submission.status }}</td>
                             <td>{{ submission.reporter }}</td>
                             <td>{{ submission.message }}</td>
                         </tr>
@@ -52,13 +57,13 @@
                 {% else %}
                     <strong>No submissions present for this project</strong><br />
                 {% endif %}
-                <a href="{{ project.link }}">go to this project</a>
             </div>
         {% endfor %}
         </div>
+        <a class="grid_4  omega alpha view_all_projects" href="{% url datawinners.project.views.index %}">view all projects »</a>
     </div>
-    <div class="grid_5 push_1 margin_right_null">
-        
+    <div class="grid_4 alpha omega dashboard_right">
+        Right hand section
     </div>
     <script>
         $(function() {
