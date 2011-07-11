@@ -20,6 +20,10 @@ form{
         a{
             color:$link_color;
         }
+        a:hover{
+            text-decoration:underline;
+            color:$link_color;
+        }
         textarea{
             width:$text_box_width;
             height:100px;
@@ -224,4 +228,43 @@ select{
         font-weight: bold;
         padding: 6px 12px 6px 11px;
     }
+}
+
+/* UI Dialog */
+.ui-dialog-title{
+    color:#FFFFFF !important;
+}
+
+/* Accordian */
+.ui-accordion{
+    width:360px !important;
+    label{
+        width:300px;
+        font-weight:normal;
+        color:#666666;
+        font-style:italic;
+        font-size:11px;
+    }
+    .button_blue{
+        margin-left:10px;
+    }
+}
+.ui-accordion-header.ui-state-default {
+    background:none !important;
+    border:0 !important;
+    a{
+        font-size:12px !important;
+        font-weight:normal;
+    }
+}
+.ui-accordion-header.ui-state-active{
+    h3{
+        border:1px solid #ECECEC !important;
+    }
+    a{
+        color:#000000 !important;
+    }
+}
+.ui-accordion-icons .ui-accordion-header a{
+    padding-left:3px !important;
 }

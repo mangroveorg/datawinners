@@ -25,14 +25,10 @@
                             <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
                         {% endfor %}
                     </select>
+                     {%  include 'entity/create_type.html' %}
                 </span>
             </li>
-            <li class="add_new_subject">
-            <div>
-                {%  include 'entity/create_type.html' %}
 
-            </div>
-            </li>
             <li>
                 <label>Location</label>
                 <ul class="location_section">

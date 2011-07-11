@@ -1,5 +1,4 @@
 $(document).ready(function() {
-console.log("yes")
 $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
 
 

@@ -25,3 +25,8 @@
     width: 100%;
     font-weight: normal;
     font-size: 13px; }
+
+.add_entity_form #add_subject_type {
+  margin-left: 167px; }
+  .add_entity_form #add_subject_type input[type=text] {
+    width: 200px; }
