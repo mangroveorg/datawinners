@@ -9,9 +9,9 @@ $(document).ready(function() {
             $('#message').remove();
             $('#error_tbody').html('');
             $("#error_table").hide();
-            $("#data_sender_table tbody").html('');
+            $("#subject_table tbody").html('');
             $.each(responseJSON.all_data, function(index, element) {
-                $("#data_sender_table tbody").append("<tr><td>" + element.id + "</td><td>" + element.name + "</td><td>" + element.short_name + "</td><td>" + element.type + "</td><td>" + element.location + "</td><td>" + element.description + "</td><td>" + element.mobile_number + "</td></tr>")
+                $("#subject_table tbody").append("<tr><td>" + element.short_name + "</td><td>" + element.name + "</td><td>" + element.type + "</td><td>" + element.location + "</td><td>" + element.description + "</td><td>" + element.mobile_number + "</td></tr>")
             });
             if (responseJSON.success == true) {
                 $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
