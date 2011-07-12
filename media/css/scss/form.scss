@@ -21,7 +21,7 @@ form{
             color:$link_color;
         }
         a:hover{
-            text-decoration:underline;
+            text-decoration:underline !important;
             color:$link_color;
         }
         textarea{

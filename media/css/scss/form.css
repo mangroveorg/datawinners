@@ -10,7 +10,7 @@ form ul li {
   form ul li a {
     color: #0070ac; }
   form ul li a:hover {
-    text-decoration: underline;
+    text-decoration: underline !important;
     color: #0070ac; }
   form ul li textarea {
     width: 350px;
