@@ -260,10 +260,10 @@ def project_results(request, project_id=None, questionnaire_code=None):
 def _format_data_for_presentation(data_dictionary, form_model):
     header_list = helper.get_headers(form_model.fields)
     type_list = helper.get_type_list(form_model.fields[1:])
+    header_list[0] = form_model.entity_type[0] + " Code"
     if data_dictionary == {}:
         return "[]", header_list, type_list
     data_list = helper.get_values(data_dictionary, header_list) 
-    header_list[0] = form_model.entity_type[0] + " Name"
     data_list = helper.to_report(data_list)
     response_string = encode_json(data_list)
     return response_string, header_list, type_list
@@ -452,7 +452,9 @@ def questionnaire(request, project_id=None):
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
+        project_links = _make_project_links(project, form_model.form_code)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
+                 "previous": previous_link, 'project': project, 'project_links': project_links},
+                                  context_instance=RequestContext(request))
 
