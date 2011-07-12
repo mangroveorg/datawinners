@@ -14,3 +14,59 @@
         margin:20px 0 0 10px;
     }
 }
+#review_section{
+    margin-left:10px;
+ ul {
+    li{
+        float:left;
+        width:100%;
+        margin-bottom:10px;
+        label,p{
+            float:left;
+        }
+        label{
+            width:100px;
+            text-align:right;
+            margin-right:10px;
+            font-weight:normal;
+        }
+    }
+ }
+ h4{
+    border-bottom:1px solid #CCCCCC;
+ }
+ h5{
+    color:#000000;
+    background:none !important;
+    border:0;
+    font-size:14px;
+ }
+ .ui-accordion-content{
+    background:none;
+    border:0;
+    float:left;
+
+ }
+ .header{
+    border:0;
+    width:100%;
+    float:left;
+    background:none;
+    h5, a{
+        float:left;
+    }
+    a{
+        color:#0070ac;
+        font-size:12px;
+    }
+ }
+}
+
+/*li{*/
+        /*float:left;*/
+    /*label{*/
+    /*}*/
+    /*p{*/
+        /*float:left;*/
+    /*}*/
+/*}*/

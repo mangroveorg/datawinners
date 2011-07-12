@@ -385,8 +385,7 @@ def datasenders_wizard(request, project_id=None):
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
-
-        return HttpResponseRedirect(reverse(datasenders, args=[project_id]))
+        return HttpResponseRedirect(reverse(finish, args=[project_id]))
     pass
 
 
@@ -403,7 +402,12 @@ def activate_project(request, project_id=None):
 
 @login_required(login_url='/login')
 def finish(request, project_id=None):
-    return render_to_response('project/finish_and_test.html', context_instance=RequestContext(request))
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    form_model = helper.load_questionnaire(manager, project.qid)
+    registered_subjects = load_all_subjects_of_type(request, project.entity_type)
+    registered_datasenders = load_all_subjects_of_type(request)
+    return render_to_response('project/finish_and_test.html', {'project':project, 'fields': form_model.fields, 'number_of_datasenders': len(registered_datasenders), 'number_of_subjects': len(registered_subjects)}, context_instance=RequestContext(request))
 
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)
@@ -457,4 +461,5 @@ def questionnaire(request, project_id=None):
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links},
                                   context_instance=RequestContext(request))
+
 

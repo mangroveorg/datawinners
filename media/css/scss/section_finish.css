@@ -8,3 +8,45 @@
   margin-left: 30px; }
 .wizard_content .content_wrapper h6 {
   margin: 20px 0 0 10px; }
+
+#review_section ul li {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px; }
+  #review_section ul li label, #review_section ul li p {
+    float: left; }
+  #review_section ul li label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: normal; }
+#review_section h4 {
+  border-bottom: 1px solid #CCCCCC; }
+#review_section h5 {
+  color: #000000;
+  background: none !important;
+  border: 0;
+  font-size: 14px; }
+#review_section .ui-accordion-content {
+  background: none;
+  border: 0;
+  float: left; }
+#review_section .header {
+  border: 0;
+  width: 100%;
+  float: left;
+  background: none; }
+  #review_section .header h5, #review_section .header a {
+    float: left; }
+  #review_section .header a {
+    color: #0070ac;
+    font-size: 12px; }
+
+/*li{*/
+/*float:left;*/
+/*label{*/
+/*}*/
+/*p{*/
+/*float:left;*/
+/*}*/
+/*}*/
