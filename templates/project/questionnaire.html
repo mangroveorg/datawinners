@@ -64,6 +64,7 @@
     <p>Review the question by clicking on each</p>
 {% endblock %}
 {% block content %}
+    <div class="preview_block"><a href="#">Preview Web </a> | <a href="#"> Preview SMS</a></div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
@@ -100,7 +101,7 @@
                     <div>
                     </div>
                 </div>
-                <div class="text_align_right">
+                <div class="margin_top_10 float_left">
                     <input id="submit-button" type="submit" class="button_blue" value="submit" />
                 </div>
             </div>

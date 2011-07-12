@@ -156,15 +156,17 @@ def create_datasender(request):
 
 
 def create_type(request):
-    message = "Entity definition successful"
-    success=True
+    message = ""
+    success = False
     form = EntityTypeForm(request.POST)
     if form.is_valid():
-        entity_name = form.cleaned_data["entity_type_create"]
+        entity_name = form.cleaned_data["entity_type"]
         entity_name = [entity_name.lower()]
         try:
             manager = get_database_manager(request)
             define_type(manager, entity_name)
+            message = "Entity definition successful"
+            success=True
         except EntityTypeAlreadyDefined as type_already_defined:
             message = type_already_defined.message
             success=False
