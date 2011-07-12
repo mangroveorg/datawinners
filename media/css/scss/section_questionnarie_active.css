@@ -22,3 +22,6 @@
 #question_form #max_length {
   width: 50px;
   float: none; }
+
+.preview_block {
+  text-align: right; }
