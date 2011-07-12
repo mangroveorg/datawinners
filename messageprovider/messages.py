@@ -58,8 +58,10 @@ exception_messages = {
 
     ex.MultipleSubmissionsForSameCodeException:{
         DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
+    },
+    ex.InactiveFormModelException:{
+        DEFAULT: u"Error. You can not send us your answers for this questionnaire. The project is inactive. Please contact the administrator."
     }
-
 }
 
 VALIDATION_FAILURE_ERROR_MESSAGE = u"Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"

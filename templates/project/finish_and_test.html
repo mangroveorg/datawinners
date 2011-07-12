@@ -22,6 +22,7 @@
         });
     </script>
     <script type="text/javascript" src="/media/javascript/project/finish_and_test.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
 {% endblock %}
 
 {% block step_number %}
@@ -38,7 +39,7 @@
         <div id='project_profile'>
         <div class="header">
             <h5 class="inline">Project Profile</h5>
-        <a href="{{project_links.edit_link}}">edit</a>
+
         </div>
             <div>
 
@@ -60,13 +61,13 @@
                     {% for each in project.devices %}<p>{{ each }}</p> {% endfor %}
                 </li>
             </ul>
-
+            <a href="{{project_links.edit_link}}">edit</a>
         </div>
         </div>
         <div id='subjects'>
             <div class="header">
             <h5 class="inline">Subjects </h5>
-                <a href="{{project_links.subject_link}}">edit</a>
+
             </div>
             <div>
             <ul>
@@ -82,27 +83,30 @@
                 </li>
 
             </ul>
+                <a href="{{project_links.subject_link}}">edit</a>
                 </div>
         </div>
         <div id="questionnaire">
             <div class='header'>
             <h5 class="inline">Data Collection</h5>
-                <a href="{{project_links.questionnaire_link}}">edit</a>
+
             </div>
             <div>
+            <label>Questions: </label>
             <ol>
                 {% for question in fields %}
-                    <li>
+                <li>
                         <p>{{ question.name }}</p>
-                    </li>
-                {% endfor %}
+                </li>
+                  {% endfor %}
             </ol>
+            <a href="{{project_links.questionnaire_link}}">edit</a>
         </div>
         </div>
         <div id="data_senders">
             <div class="header">
             <h5 class="inline">Data Senders</h5>
-            <a href="{{project_links.data_senders_link}}">edit</a>
+
             </div>
             <div>
             <ul>
@@ -113,18 +117,47 @@
                 </li>
 
             </ul>
+                <a href="{{project_links.data_senders_link}}">edit</a>
                 </div>
         </div>
     </div>
-{#    <div class="grid_11 alpha omega">#}
-{#        <h6>Test</h6>#}
-{#    </div>#}
+    <div class="grid_23 alpha omega margin_top_20" id="test_section">
+        <h4>Test</h4>
+        <p class="italic margin_bottom_20">See if you can send in data for the questionnaire you just created.</p>
+        <a id="sms_tester">SMS Questionnaire</a>
+        <div class="sms_tester_form">
+            <h4>Test the SMS Questionnaire </h4>
+            <p class="italic margin_bottom_20">See if you can send in data with your questionnaire</p>
+            <ul>
+                <li>
+                    <h6>1. Send in your Data Record</h6>
+                    <p>You have 2 options</p>
+                    <ul>
+                        <li>
+                            <p>A. Use your own phone and send your answers to the following phone number: {{ to_number }}</p>
+                            <p>B. Enter you answers below</p>
+                            <input id ='from_msisdn' type='hidden' value ="{{ from_number }}">
+                            <input id ='to_msisdn' type='hidden' value ="{{ to_number }}">
+                            <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
+                            <div><input id="send_sms" type="button" value="Send SMS"/></div>
+                            
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h6 class="margin_top_20">2. See the data you received </h6>
+                    <p class="italic">Go directly to your <a href="#">Log page</a> to view the Data Record you just sent in</p>
+                </li>
+            </ul>
+        </div>
+
+    </div>
 
 
 {% endblock %}
 
 {% block buttons %}
     {{ block.super }}
-    <input id="submit-button" type="submit" value="Save Changes & Create Project"/>
+    <input id="submit-button" type="submit" value="Go to Project Overview"/>
 {% endblock %}
 </form>

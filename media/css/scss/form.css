@@ -199,7 +199,7 @@ select {
 /* Accordian */
 .ui-accordion {
   width: 360px !important; }
-  .ui-accordion label {
+  .ui-accordion label.example {
     width: 300px;
     font-weight: normal;
     color: #666666;

@@ -9,6 +9,7 @@ from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
+from datawinners.accountmanagement.models import Organization
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
@@ -407,7 +408,11 @@ def finish(request, project_id=None):
     form_model = helper.load_questionnaire(manager, project.qid)
     registered_subjects = load_all_subjects_of_type(request, project.entity_type)
     registered_datasenders = load_all_subjects_of_type(request)
-    return render_to_response('project/finish_and_test.html', {'project':project, 'fields': form_model.fields, 'number_of_datasenders': len(registered_datasenders), 'number_of_subjects': len(registered_subjects)}, context_instance=RequestContext(request))
+    profile = request.user.get_profile()
+    organization = Organization.objects.get(org_id=profile.org_id)
+    from_number = '1234567890'
+    to_number = organization.office_phone
+    return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number, 'project':project, 'fields': form_model.fields, 'number_of_datasenders': len(registered_datasenders), 'number_of_subjects': len(registered_subjects)}, context_instance=RequestContext(request))
 
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)

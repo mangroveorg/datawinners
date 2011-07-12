@@ -14,6 +14,17 @@
         margin:20px 0 0 10px;
     }
 }
+
+#test_section{
+    margin-left:10px;
+    h4{
+        border-bottom:1px solid #CCCCCC;
+    }
+    a{
+        color:#0070ac;
+        font-size:12px;
+    }
+}
 #review_section{
     margin-left:10px;
  ul {
@@ -45,7 +56,6 @@
     background:none;
     border:0;
     float:left;
-
  }
  .header{
     border:0;
@@ -55,11 +65,11 @@
     h5, a{
         float:left;
     }
-    a{
+ }
+ a{
         color:#0070ac;
         font-size:12px;
     }
- }
 }
 
 /*li{*/
