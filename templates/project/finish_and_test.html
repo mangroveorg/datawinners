@@ -140,13 +140,12 @@
                             <input id ='to_msisdn' type='hidden' value ="{{ to_number }}">
                             <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
                             <div><input id="send_sms" type="button" value="Send SMS"/></div>
-                            
                         </li>
                     </ul>
                 </li>
                 <li>
                     <h6 class="margin_top_20">2. See the data you received </h6>
-                    <p class="italic">Go directly to your <a href="#">Log page</a> to view the Data Record you just sent in</p>
+                    <p class="italic">Go directly to your <a href="{{project_links.log_link}}">Log page</a> to view the Data Record you just sent in</p>
                 </li>
             </ul>
         </div>
@@ -160,4 +159,6 @@
     {{ block.super }}
     <input id="submit-button" type="submit" value="Go to Project Overview"/>
 {% endblock %}
-</form>
+{% block previous_step %}
+     <a class="bold" href={{ previous }}>Data Senders</a>
+{% endblock %}
