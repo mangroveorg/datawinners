@@ -1,3 +1,30 @@
+body {
+  font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
+  background: #E8EFF6; }
+
 #print_page a {
   color: #0070ac;
   outline: none; }
+
+.preview_block {
+  text-align: right; }
+
+#questionnaire_preview {
+  margin-left: 20px; }
+  #questionnaire_preview .questionnaire_preview h6 {
+    font-size: 14px;
+    margin: 0; }
+  #questionnaire_preview .questionnaire_preview li {
+    margin-bottom: 10px;
+    width: 100%;
+    float: left; }
+  #questionnaire_preview .questionnaire_preview .answer {
+    margin-bottom: 5px; }
+  #questionnaire_preview .questionnaire_preview label {
+    float: left !important;
+    font-weight: normal; }
+  #questionnaire_preview .questionnaire_preview input[type=radio], #questionnaire_preview .questionnaire_preview input[type=checkbox] {
+    float: left !important; }
+  #questionnaire_preview .questionnaire_preview div {
+    width: 100%;
+    float: left; }
