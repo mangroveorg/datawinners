@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners.main.utils import get_db_manager_for
 from datawinners.submission.models import DatawinnerLog
-from mangrove.errors.MangroveException import MangroveException, SMSParserInvalidFormatException, SubmissionParseException, DataObjectNotFound, FormModelDoesNotExistsException
+from mangrove.errors.MangroveException import MangroveException, SMSParserInvalidFormatException, SubmissionParseException, DataObjectNotFound, FormModelDoesNotExistsException, NumberNotRegisteredException
 from mangrove.transport.player.player import SMSPlayer, Request, TransportInfo
 from mangrove.transport.submissions import SubmissionHandler
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, \
@@ -34,9 +34,14 @@ def sms(request):
         else:
             message = get_submission_error_message_for(response.errors)
 
-    except (SubmissionParseException,FormModelDoesNotExistsException) as exception:
+    except (SubmissionParseException,FormModelDoesNotExistsException,) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
-        log = DatawinnerLog(message = _message, from_number = _from, to_number = _to, form_code = exception.data[0])
+        log = DatawinnerLog(message = _message, from_number = _from, to_number = _to, form_code = exception.data[0],
+                            error = message)
+        log.save()
+    except NumberNotRegisteredException as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        log = DatawinnerLog(message = _message, from_number = _from, to_number = _to, form_code = None, error = message)
         log.save()
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
