@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>
+        {% block page_title %} {% endblock %}
+    </title>
+{#     The Meta tags added page level will be extended here. #}
+    {% block page_meta %} {% endblock %}
+
+{#     This block compiles and compress the SCSS to CSS on the fly. #}
+    {% load compress %}
+    {% compress css %}
+        {% block page_scss %} {% endblock %}
+    {% endcompress %}
+
+    {% load compress %}
+    {% compress js %}
+         {% block page_js %} {% endblock %}
+    {% endcompress %}
+
+</head>
+<body>
+   <div id="print_page"> {% block body %} {% endblock %}</div>
+</body>
+</html>

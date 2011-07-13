@@ -1,0 +1,11 @@
+$text_box_width: 350px;
+$select_box_width:150px;
+$border_color: #CCCCCC;
+$link_color:#0070ac;
+
+#print_page{
+    a{
+        color:$link_color;
+        outline:none;
+    }
+}
