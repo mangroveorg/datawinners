@@ -9,7 +9,7 @@ from datawinners.accountmanagement.organization_id_creator import OrganizationId
 class Organization(models.Model):
     name = models.TextField()
     sector = models.TextField()
-    addressline1 = models.TextField()
+    address = models.TextField()
     addressline2 = models.TextField(blank=True)
     city = models.TextField()
     state = models.TextField(blank=True)
@@ -41,8 +41,7 @@ class OrganizationSetting(models.Model):
 def create_organization(org_details):
     organization = Organization(name=org_details.get('organization_name'),
                                 sector=org_details.get('organization_sector'),
-                                addressline1=org_details.get('organization_addressline1'),
-                                addressline2=org_details.get('organization_addressline2'),
+                                address=org_details.get('organization_address'),
                                 city=org_details.get('organization_city'),
                                 state=org_details.get('organization_state'),
                                 country=org_details.get('organization_country'),
