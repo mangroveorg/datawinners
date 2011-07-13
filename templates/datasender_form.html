@@ -1,3 +1,4 @@
+
   {% block messages %}
       {% if form_errors %}
   <div id = "error_messages" class=" error span-12 push-6 message-box">
@@ -28,16 +29,26 @@
               {{ form.telephone_number }}
               {{ form.telephone_number.errors }}
           </li>
+
           <li class="{{ form.location.css_classes }} form-row-10px">
-              {{ form.location.label_tag }}
+              <label>Location</label>
+            <ul class="location_section">
+              <li>
+               {{ form.location.label_tag }}
               {{ form.location }}
               {{ form.location.errors }}
-          </li>
-          <li class="{{ form.geo_code.css_classes }} form-row-10px">
+              </li>
+                <li>
+                   <label>or</label>
+                </li>
+                <li class="{{ form.geo_code.css_classes }} form-row-10px">
               {{ form.geo_code.label_tag }}
               {{ form.geo_code }}
               {{ form.geo_code.errors }}
+                </li>
+            </ul>
           </li>
+
           <li>
               <input type="button" id="id_register_button" value="Add" class="button margin_top_20"/>
           </li>

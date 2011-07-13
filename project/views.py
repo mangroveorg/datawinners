@@ -334,7 +334,7 @@ def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
     row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False)
-    header_list = ["From", "To", "Date Receieved", "Submission status", "Void"]
+    header_list = ["From", "To", "Date Receieved", "Submission status", "Void","Errors"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
     if row_count:

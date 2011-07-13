@@ -6,3 +6,4 @@ class DatawinnerLog(models.Model):
     to_number = models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     form_code = models.CharField(max_length=20, blank=True, null=True)
+    error = models.CharField(max_length=500)

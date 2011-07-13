@@ -23,6 +23,7 @@
         <th> From </th>
         <th> To </th>
         <th> Message </th>
+        <th> Error </th>
     </thead>
         {% for log in logs%}
             <tr>
@@ -30,8 +31,10 @@
                 <td>{{ log.from_number}}</td>
                 <td>{{ log.to_number }}</td>
                 <td>{{ log.message }}</td>
+                <td>{{ log.error }}</td>
             </tr>
         {% endfor %}
     </table>
 </div>
+    <a href="/alldata/">View All Data</a>
 {% endblock %}
