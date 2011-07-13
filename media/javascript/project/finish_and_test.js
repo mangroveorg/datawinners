@@ -26,7 +26,7 @@ $("#data_senders").accordion({   alwaysOpen: false, active: false,collapsible: t
 
     $("#send_sms").unbind('click').click(function(){
         $.post('/submission',{'from_msisdn':$("#from_msisdn").val(), 'to_msisdn':$("#to_msisdn").val(), 'message':$("#id_message").val()}, function(response){
-                    $("#id_mes0sage").val(response);
+                    $("#id_message").val(response);
                 });
     });
 });

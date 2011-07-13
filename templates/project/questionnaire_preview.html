@@ -45,12 +45,12 @@
                             <div><input type="text" disabled="disabled" name="text" value="{{ question.constraint }}" /></div>
                         {% endif %}
                         {% if question.type == "select1"%}
-                            {% for option in question.options %}
+                            {% for option in question.constraint%}
                                 <div><input type="radio" disabled="disabled" name="select1"><label>{{ option }}</label></div>
                             {% endfor %}
                         {% endif %}
                         {% if question.type == "select"%}
-                            {% for option in question.options %}
+                            {% for option in question.constraint %}
                                 <div><input type="checkbox" disabled="disabled" name="select"><label>{{ option }}</label></div>
                             {% endfor %}
                         {% endif %}

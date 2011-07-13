@@ -403,18 +403,37 @@ def activate_project(request, project_id=None):
     project.save(manager)
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
+def _make_links_for_finish_page(project_id, form_model):
+    project_links={}
+    project_links['edit_link'] = reverse(edit_profile, args=[project_id])
+    project_links['subject_link'] = reverse(subjects_wizard, args=[project_id])
+    project_links['questionnaire_link'] = reverse(questionnaire_wizard, args=[project_id])
+    project_links['data_senders_link'] = reverse(datasenders_wizard, args=[project_id])
+    project_links['log_link'] = reverse(project_results, args=[project_id, form_model.form_code])
+    return project_links
+
 @login_required(login_url='/login')
 def finish(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     form_model = helper.load_questionnaire(manager, project.qid)
-    registered_subjects = load_all_subjects_of_type(request, project.entity_type)
-    registered_datasenders = load_all_subjects_of_type(request)
-    profile = request.user.get_profile()
-    organization = Organization.objects.get(org_id=profile.org_id)
-    from_number = '1234567890'
-    to_number = organization.office_phone
-    return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number, 'project':project, 'fields': form_model.fields, 'number_of_datasenders': len(registered_datasenders), 'number_of_subjects': len(registered_subjects)}, context_instance=RequestContext(request))
+    if request.method == 'GET':
+        form_model.set_test_mode()
+        form_model.save()
+        registered_subjects = load_all_subjects_of_type(request, project.entity_type)
+        registered_datasenders = load_all_subjects_of_type(request)
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        from_number = '1234567890'
+        to_number = organization.office_phone
+        previous_link = reverse(datasenders_wizard, args=[project_id])
+        return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number,
+                                                                   'project':project, 'fields': form_model.fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
+                                                                   'number_of_datasenders': len(registered_datasenders),
+                                                                   'number_of_subjects': len(registered_subjects), "previous": previous_link},
+                                                                    context_instance=RequestContext(request))
+    if request.method == 'POST':
+        return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)
