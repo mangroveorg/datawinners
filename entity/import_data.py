@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
+from datawinners import settings
 from datawinners.main.utils import get_database_manager
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, get_by_short_code
@@ -73,8 +74,8 @@ def load_all_subjects_of_type(request, entity_type="reporter"):
     return data
 
 
-def handle_uploaded_file(request, file, extension):
-    manager = get_database_manager(request)
+def _handle_uploaded_file(file_name,file,manager):
+    base_name, extension = os.path.splitext(file_name)
     if extension == '.csv':
         file = file.splitlines()
         csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser())
@@ -87,22 +88,21 @@ def handle_uploaded_file(request, file, extension):
     return response
 
 
-def import_data(request, reporter=False):
+def import_data(request,manager):
     success = False
-    success_message = ''
+    response_message = ''
     error_message = None
     failure_imports = None
     try:
         file_name = request.GET.get('qqfile')
-        base_name, extension = os.path.splitext(file_name)
-        response = handle_uploaded_file(request=request, file=request.raw_post_data, extension=extension)
+        response = _handle_uploaded_file(file_name=file_name,file=request.raw_post_data,manager=manager)
         successful_imports = len([index for index in response if index.success])
         total = len(response)
         failure = [i for i in enumerate(response) if not i[1].success]
         failure_imports = tabulate_failures(failure)
         if total == successful_imports:
             success = True
-        success_message = '%s of %s records uploaded' % (successful_imports, total)
+        response_message = '%s of %s records uploaded' % (successful_imports, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
@@ -110,4 +110,6 @@ def import_data(request, reporter=False):
                         You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!'
     except Exception:
         error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
-    return error_message, failure_imports, success, success_message
+        if settings.DEBUG:
+            raise
+    return error_message, failure_imports, success, response_message
