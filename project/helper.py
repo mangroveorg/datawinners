@@ -18,6 +18,7 @@ MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
 DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
+TEST_FLAG = 'TEST'
 
 
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
@@ -145,10 +146,12 @@ def get_submissions(questions, submissions):
     assert is_sequence(submissions)
     for s in submissions:
         assert isinstance(s, dict) and s.get('values') is not None
-    formatted_list = [
-    [each.get('destination'), each.get('source'), each.get('created'), each.get('status'), each.get('voided'),
-     each.get('error_message')] +
-    [each.get('values').get(q[0].lower()) for q in questions] for each in submissions]
+    formatted_list = []
+    for each in submissions:
+        submission_source = TEST_FLAG if each.get('test') else each.get('source')
+        formatted_list.append([each.get('destination'), submission_source,  each.get('created'), each.get('status'), each.get('voided'),
+     each.get('error_message')]+[each.get('values').get(q[0].lower()) for q in questions])
+
     return [tuple(each) for each in formatted_list]
 
 
