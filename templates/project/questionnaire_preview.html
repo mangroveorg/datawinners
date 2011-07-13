@@ -1,24 +1,13 @@
-{% extends 'project/tab_navigation.html' %}
+{% extends 'layout_print.html' %}
 
 {% block page_title %}Project - Questionnaire {% endblock %}
 
-{% load dw_tabs %}
-
-{% block navigation %}
-    {% activetab "tab_nav" "questionnaire" %}
-    {{ block.super }}
-{% endblock %}
-
-{% block body %}
-    {% activetab "main_nav" "projects" %}
-    {{ block.super }}
-{% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnarie_active.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_print.scss" rel="stylesheet"/>
 {% endblock %}
-
+{##}
 {% block page_js %}
     {{ block.super }}
     <script>
@@ -26,24 +15,21 @@
         $('.printBtn').bind('click',function() {
             var thePopup = window.open( '', "Customer Listing", "menubar=0,location=0,height=700,width=700" );
             $('#questionnaire_preview').clone().appendTo( thePopup.document.body );
+            thePopup.close();
             thePopup.print();
-//            window.print();
+
         });
-        })
+        });
 
     </script>
 {% endblock %}
 
 
-{% block step_number %}
-    <h3>Step 3: Questionnaire</h3>
-    <p>Review the question by clicking on each</p>
-{% endblock %}
-{% block content %}
-    <div class="preview_block"><a href="#">Go back</a> | <a href="#" class="printBtn">Print Preview</a></div>
+{% block body %}
+
     <div id="questionnaire_preview">
+            <div class="preview_block"><a href="#" class="printBtn">Print</a></div>
         <ol class="questionnaire_preview">
-{#        <div class="preview_block"><a href="#">Go back</a> | <a href="#" class="printBtn">Print Preview</a></div>#}
             {% for question in questions %}
                 <li>
                     <h6>{{ question.description }}<span> #{{ question.code }}</span></h6>

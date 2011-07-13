@@ -26,7 +26,8 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript">
-        var question_list = JSON.parse({{existing_questions|safe}});
+        var question_list = JSON.parse({{existing_questions|safe}}),
+            quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
@@ -64,7 +65,7 @@
     <p>Review the question by clicking on each</p>
 {% endblock %}
 {% block content %}
-    <div class="preview_block"><a href="{{ project_links.questionnaire_preview_link }}">Preview Web </a> | <a href="#"> Preview SMS</a></div>
+    <div class="preview_block"><a class="preview" href="#">Print Preview </a></div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
