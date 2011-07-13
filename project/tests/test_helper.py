@@ -8,7 +8,7 @@ from datawinners.project.models import Project
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore import data
 from copy import copy
@@ -486,4 +486,10 @@ class TestPreviewCreator(unittest.TestCase):
         field = DateField(name="What is the date?", code="dat", label="naam", ddtype=type, date_format="dd/mm/yyyy")
         preview = helper.get_preview_for_field(field)
         self.assertEqual("dd/mm/yyyy", preview["constraint"])
+
+    def test_should_return_blank_in_other_cases(self):
+        type = DataDictType(Mock(DatabaseManager), name="date type")
+        field = GeoCodeField(name="What is the place?", code="dat", label="naam", ddtype=type)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("", preview["constraint"])
 

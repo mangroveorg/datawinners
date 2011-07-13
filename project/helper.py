@@ -299,6 +299,8 @@ def _get_constraint(field):
                 return constraint_text
     elif type(field) is DateField:
         return field.date_format
+    else:
+        return ""
 
 
 def _get_options(field):
