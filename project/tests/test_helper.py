@@ -472,7 +472,7 @@ class TestPreviewCreator(unittest.TestCase):
                             options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select1", preview["type"])
-        self.assertEqual(["Red", "Green", "Blue"], preview["options"])
+        self.assertEqual(["Red", "Green", "Blue"], preview["constraint"])
 
     def test_should_return_choices_type_as_select(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")

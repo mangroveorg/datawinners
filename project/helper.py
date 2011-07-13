@@ -272,48 +272,60 @@ def remove_reporter(entity_type_list):
     return entity_type_list
 
 
+def _get_max_min(field):
+    constraint = field.constraint
+    min = constraint.min
+    max = constraint.max
+    return constraint, max, min
+
+
+def _get_text_constraint(max, min):
+    if min is not None and max is None:
+        constraint_text = "Minimum %s characters" % min
+        return constraint_text
+    if min is None and max is not None:
+        constraint_text = "Upto %s characters" % max
+        return constraint_text
+    else:
+        constraint_text = "Between %s - %s characters" % (min, max)
+        return constraint_text
+
+
+def _get_numeric_constraint(max, min):
+    if min is not None and max is None:
+        constraint_text = "Minimum %s" % min
+        return constraint_text
+    if min is None and max is not None:
+        constraint_text = "Upto %s" % max
+        return constraint_text
+    else:
+        constraint_text = "%s - %s" % (min, max)
+        return constraint_text
+
+
+def _get_options_constraint(field):
+    return [option["text"][field.language] for option in field.options]
+
+
+def _get_date_format_constraint(field):
+    return field.date_format
+
+
 def _get_constraint(field):
     if type(field) is TextField or type(field) is IntegerField:
-        constraint = field.constraint
-        min = constraint.min
-        max = constraint.max
+        constraint, max, min = _get_max_min(field)
         if type(constraint) is TextConstraint:
-            if min is not None and max is None:
-                constraint_text = "Minimum %s characters" % min
-                return constraint_text
-            if min is None and max is not None:
-                constraint_text = "Upto %s characters" % max
-                return constraint_text
-            else:
-                constraint_text = "Between %s - %s characters" % (min, max)
-                return constraint_text
+            return _get_text_constraint(max, min)
         if type(constraint) is NumericConstraint:
-            if min is not None and max is None:
-                constraint_text = "Minimum %s" % min
-                return constraint_text
-            if min is None and max is not None:
-                constraint_text = "Upto %s" % max
-                return constraint_text
-            else:
-                constraint_text = "%s - %s" % (min, max)
-                return constraint_text
+            return _get_numeric_constraint(max, min)
     elif type(field) is DateField:
-        return field.date_format
+        return _get_date_format_constraint(field)
+    if type(field) is SelectField:
+        return _get_options_constraint(field)
     else:
         return ""
-
-
-def _get_options(field):
-    if type(field) is SelectField:
-        return [option["text"][field.language] for option in field.options]
-    return []
-
-
-def _get_instructions(field):
-    return field.instruction
-
+    
 
 def get_preview_for_field(field):
-    question = {"description": field.name, "code": field.code, "type": field.type, "constraint": _get_constraint(field),
-                "options": _get_options(field), "instruction": field.instruction}
+    question = {"description": field.name, "code": field.code, "type": field.type, "constraint": _get_constraint(field),"instruction": field.instruction}
     return question
