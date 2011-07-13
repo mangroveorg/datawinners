@@ -468,7 +468,7 @@ class TestPreviewCreator(unittest.TestCase):
 
     def test_should_return_choices(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
-        field = SelectField(name="What's in a name?", code="nam", label="naam", ddtype=type,
+        field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
                             options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select1", preview["type"])
@@ -476,8 +476,14 @@ class TestPreviewCreator(unittest.TestCase):
 
     def test_should_return_choices_type_as_select(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
-        field = SelectField(name="What's in a name?", code="nam", label="naam", ddtype=type,
+        field = SelectField(name="What's the color?", code="nam", label="naam", ddtype=type,
                             options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select", preview["type"])
+
+    def test_should_return_date_format(self):
+        type = DataDictType(Mock(DatabaseManager), name="date type")
+        field = DateField(name="What is the date?", code="dat", label="naam", ddtype=type, date_format="dd/mm/yyyy")
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("dd/mm/yyyy", preview["constraint"])
 
