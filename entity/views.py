@@ -15,8 +15,8 @@ from mangrove.datastore.entity import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, MultipleReportersForANumberException
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE
-from mangrove.transport.player.player import Request, WebPlayer
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE,ENTITY_TYPE_FIELD_CODE
+from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
 from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import is_empty
 from datawinners.entity import import_data as import_module
@@ -39,7 +39,7 @@ def _validate_post_data(dbm, request):
 
             web_player = WebPlayer(dbm, SubmissionHandler(dbm))
             response = web_player.accept(
-                Request(transport='web', message=_get_data(form_data), source='web', destination='mangrove'))
+                Request(message=_get_data(form_data), transportInfo=TransportInfo(transport='web',source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "Reporter", "web")
         except MangroveException as exception:
             form_errors.append(exception.message)
@@ -67,7 +67,7 @@ def _get_location_hierarchy(display_location, geo_code):
 
 def _get_data(form_data):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form  model
-    mapper = {'telephone_number': 'M', 'geo_code': 'G', 'Name': 'N', 'location': 'L'}
+    mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE, 'location': LOCATION_TYPE_FIELD_CODE}
     data = dict()
     telephone_number = form_data.get('telephone_number')
     geo_code = form_data.get('geo_code')
@@ -84,7 +84,7 @@ def _get_data(form_data):
 
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
-    data['T'] = 'Reporter'
+    data[ENTITY_TYPE_FIELD_CODE] = 'Reporter'
     return data
 
 
@@ -114,7 +114,7 @@ def _get_submission(post):
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
 def submit(request):
-    mapper = {'telephone_number': 'm', 'geo_code': 'g', 'Name': 'n', 'location': 'l'}
+    mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE, 'location': LOCATION_TYPE_FIELD_CODE}
     dbm = get_database_manager(request)
     post = _get_submission(request.POST)
     success = True
