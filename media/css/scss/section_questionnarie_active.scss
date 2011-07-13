@@ -45,16 +45,27 @@
  .preview_block{
     text-align:right;
  }
+ #questionnaire_preview{
+  margin-left:20px;
  .questionnaire_preview{
+    li{
+        margin-bottom:15px;
+        width:100%;
+        float:left;
+    }
+    .answer{
+        margin-bottom:5px;
+    }
     label{
         float:left !important;
         font-weight:normal;
     }
     input[type=radio], input[type=checkbox]{
-    float:left !important;
+        float:left !important;
     }
     div{
         width:100%;
         float:left;
     }
+ }
  }
