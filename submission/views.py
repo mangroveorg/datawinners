@@ -39,7 +39,6 @@ def sms(request):
         log = DatawinnerLog(message = _message, from_number = _from, to_number = _to, form_code = exception.data[0])
         log.save()
     except MangroveException as exception:
-        print type(exception)
         message = get_exception_message_for(exception=exception, channel=SMS)
 
     return HttpResponse(message)
