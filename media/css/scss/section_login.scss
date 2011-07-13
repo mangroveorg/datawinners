@@ -1,9 +1,22 @@
 .login_button{
     width:450px;
-    div{
+    height:300px;
+    input{
+        float: right;
+    }
+}
+.login_button_div{
+    width:280px;
+    float:left
+}
+.login_links_div{
+        width:280px;
         position:relative;
         top:13px;
         left:7px;
         float:left;
+        span{
+            width:200px;
+            float: right;
+        }
     }
-}
