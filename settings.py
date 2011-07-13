@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'datawinners.dashboard',
     'datawinners.location',
     'datawinners.entity',
+    'datawinners.submission',
 )
 
 COMPILER_FORMATS = {
