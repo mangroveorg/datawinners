@@ -19,8 +19,9 @@ from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
-from mangrove.form_model.field import field_to_json
+from mangrove.form_model.field import field_to_json, IntegerField, TextField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.form_model.validation import NumericConstraint
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger
 from django.contrib import messages
 from mangrove.utils.types import is_string
@@ -52,6 +53,7 @@ def _make_project_links(project, questionnaire_code):
 
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
+        project_links['questionnaire_preview_link'] = reverse(questionnaire_preview, args=[project_id])
     return project_links
 
 
@@ -468,3 +470,24 @@ def questionnaire(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login')
+def questionnaire_preview(request, project_id=None):
+    manager = get_database_manager(request)
+    if request.method == 'GET':
+        previous_link = reverse(subjects_wizard, args=[project_id])
+        project = models.get_project(project_id, manager)
+        form_model = helper.load_questionnaire(manager, project.qid)
+        fields = form_model.fields
+        if form_model.entity_defaults_to_reporter():
+            fields = helper.hide_entity_question(form_model.fields)
+        project_links = _make_project_links(project, form_model.form_code)
+        questions = []
+        for field in fields:
+            question = helper.get_preview_for_field(field)
+            questions.append(question)
+        return render_to_response('project/questionnaire_preview.html',
+                {"questions": questions, 'questionnaire_code': form_model.form_code,
+                 "previous": previous_link, 'project': project, 'project_links': project_links},
+                                  context_instance=RequestContext(request))
+
+    

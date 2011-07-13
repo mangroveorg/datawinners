@@ -68,17 +68,19 @@ def create_entity_id_question(dbm):
 
 
 def create_questionnaire(post, dbm):
-
-    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period", primitive_type="date",
-                                                    description="activity reporting period")
+    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
+                                                         primitive_type="date",
+                                                         description="activity reporting period")
     entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
     entity_id_question = create_entity_id_question(dbm)
-    activity_report_question = DateField(name="What is the reporting period for the activity?", code="rpd", label="Period being reported on", ddtype=reporting_period_dict_type, date_format="dd.mm.yyyy")
+    activity_report_question = DateField(name="What is the reporting period for the activity?", code="rpd",
+                                         label="Period being reported on", ddtype=reporting_period_dict_type,
+                                         date_format="dd.mm.yyyy")
     fields = [entity_id_question]
     if entity_type == [REPORTER]:
         fields = [entity_id_question, activity_report_question]
     form_model = FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
-                     form_code=generate_questionnaire_code(dbm), type='survey')
+                           form_code=generate_questionnaire_code(dbm), type='survey')
     form_model.deactivate()
     return form_model
 
@@ -107,7 +109,8 @@ def _create_text_question(post_dict, ddtype):
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     length = TextConstraint(min=min_length, max=max_length)
     return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                     entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype, instruction=post_dict.get("instruction"))
+                     entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype,
+                     instruction=post_dict.get("instruction"))
 
 
 def _create_integer_question(post_dict, ddtype):
@@ -126,13 +129,15 @@ def _create_date_question(post_dict, ddtype):
 
 
 def _create_geo_code_question(post_dict, ddtype):
-    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype, instruction=post_dict.get("instruction"))
+    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype,
+                        instruction=post_dict.get("instruction"))
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
     options = [choice.get("text") for choice in post_dict["choices"]]
     return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                       options=options, single_select_flag=single_select_flag, ddtype=ddtype, instruction=post_dict.get("instruction"))
+                       options=options, single_select_flag=single_select_flag, ddtype=ddtype,
+                       instruction=post_dict.get("instruction"))
 
 
 def get_submissions(questions, submissions):
@@ -141,7 +146,8 @@ def get_submissions(questions, submissions):
     for s in submissions:
         assert isinstance(s, dict) and s.get('values') is not None
     formatted_list = [
-    [each.get('destination'), each.get('source'), each.get('created'), each.get('status'), each.get('voided'), each.get('error_message')] +
+    [each.get('destination'), each.get('source'), each.get('created'), each.get('status'), each.get('voided'),
+     each.get('error_message')] +
     [each.get('values').get(q[0].lower()) for q in questions] for each in submissions]
     return [tuple(each) for each in formatted_list]
 
@@ -250,9 +256,11 @@ def get_excel_sheet(raw_data, sheet_name):
             ws.write(row_number, col_number, val)
     return wb
 
+
 def hide_entity_question(fields):
     cleaned_fields = [each for each in fields if not each.is_entity_field]
     return cleaned_fields
+
 
 def remove_reporter(entity_type_list):
     removable = None
@@ -262,3 +270,47 @@ def remove_reporter(entity_type_list):
     entity_type_list.remove(removable)
     entity_type_list.sort()
     return entity_type_list
+
+
+def _get_constraint(field):
+    if type(field) is not TextField and type(field) is not IntegerField:
+        return ""
+    constraint = field.constraint
+    min = constraint.min
+    max = constraint.max
+    if type(constraint) is TextConstraint:
+        if min is not None and max is None:
+            constraint_text = "Minimum %s characters" % min
+            return constraint_text
+        if min is None and max is not None:
+            constraint_text = "Upto %s characters" % max
+            return constraint_text
+        else:
+            constraint_text = "Between %s - %s characters" % (min, max)
+            return constraint_text
+    if type(constraint) is NumericConstraint:
+        if min is not None and max is None:
+            constraint_text = "Minimum %s" % min
+            return constraint_text
+        if min is None and max is not None:
+            constraint_text = "Upto %s" % max
+            return constraint_text
+        else:
+            constraint_text = "%s - %s" % (min, max)
+            return constraint_text
+
+
+def _get_options(field):
+    if type(field) is SelectField:
+        return [option["text"][field.language] for option in field.options]
+    return []
+
+
+def _get_instructions(field):
+    return field.instruction
+
+
+def get_preview_for_field(field):
+    question = {"description": field.name, "code": field.code, "type": field.type, "constraint": _get_constraint(field),
+                "options": _get_options(field), "instruction": field.instruction}
+    return question

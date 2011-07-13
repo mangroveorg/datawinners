@@ -64,7 +64,7 @@
     <p>Review the question by clicking on each</p>
 {% endblock %}
 {% block content %}
-    <div class="preview_block"><a href="#">Preview Web </a> | <a href="#"> Preview SMS</a></div>
+    <div class="preview_block"><a href="{{ project_links.questionnaire_preview_link }}">Preview Web </a> | <a href="#"> Preview SMS</a></div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>

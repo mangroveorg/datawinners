@@ -25,3 +25,12 @@
 
 .preview_block {
   text-align: right; }
+
+.questionnaire_preview label {
+  float: left !important;
+  font-weight: normal; }
+.questionnaire_preview input[type=radio], .questionnaire_preview input[type=checkbox] {
+  float: left !important; }
+.questionnaire_preview div {
+  width: 100%;
+  float: left; }

@@ -2,11 +2,12 @@
 from django.conf.urls.defaults import patterns, url
 
 from datawinners.project.views import questionnaire_wizard, save_questionnaire, create_profile, index, project_overview, \
-                    edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire
+                    edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview
 
 urlpatterns = patterns('',
         (r'^project/wizard/questionnaire/(?P<project_id>.+?)/$', questionnaire_wizard),
         (r'^project/questionnaire/(?P<project_id>.+?)/$', questionnaire),
+        (r'^project/preview/questionnaire/(?P<project_id>.+?)/$', questionnaire_preview),
         (r'^project/wizard/create$', create_profile),
         (r'^project/wizard/edit/(?P<project_id>.+?)/$', edit_profile),
         (r'^project/questionnaire/save$', save_questionnaire),

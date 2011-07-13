@@ -13,6 +13,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.datastore import data
 from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
+from mangrove.form_model.validation import TextConstraint, NumericConstraint
 
 
 class TestHelper(unittest.TestCase):
@@ -48,10 +49,10 @@ class TestHelper(unittest.TestCase):
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
         self.assertIsInstance(q4, SelectField)
-        self.assertEquals(q1._to_json()["length"], {"min": 1, "max": 15})
-        self.assertEquals(q2._to_json()["range"], {"min": 0, "max": 100})
-        self.assertEquals(q3._to_json()["type"], "select")
-        self.assertEquals(q4._to_json()["type"], "select1")
+        self.assertEquals(q1._to_json_view()["length"], {"min": 1, "max": 15})
+        self.assertEquals(q2._to_json_view()["range"], {"min": 0, "max": 100})
+        self.assertEquals(q3._to_json_view()["type"], "select")
+        self.assertEquals(q4._to_json_view()["type"], "select1")
 
     def test_should_save_questionnaire_from_post(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
@@ -109,14 +110,14 @@ class TestHelper(unittest.TestCase):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
         submissions = [
                 {'values': {'q1': 'ans1', 'q2': 'ans2'}, 'channel': 'sms', 'status': True, 'voided': False,
-                 'created': datetime(2011, 1, 1), 'error_message': 'error1', 'destination':'2616', 'source':'1234'},
+                 'created': datetime(2011, 1, 1), 'error_message': 'error1', 'destination': '2616', 'source': '1234'},
                 {'values': {'q2': 'ans22'}, 'channel': 'sms', 'status': False, 'voided': True,
                  'created': datetime(2011, 1, 2),
-                 'error_message': 'error2', 'destination':'2616', 'source':'1234'}
+                 'error_message': 'error2', 'destination': '2616', 'source': '1234'}
         ]
-        required_submissions = [('2616','1234',datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-                ('2616','1234', datetime(2011, 1, 2),  False, True, 'error2', None, 'ans22',),
-                                                                                                     ]
+        required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
+                ('2616', '1234', datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
+                                                                                                              ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
@@ -244,7 +245,7 @@ class TestHelper(unittest.TestCase):
             form_model = helper.create_questionnaire(post, dbm)
 
         self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
-                                                        primitive_type=TYPE, description=LABEL)
+                                                         primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
         self.assertEqual(1, len(form_model.fields))
@@ -263,10 +264,11 @@ class TestHelper(unittest.TestCase):
         post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [],
                 "is_entity_question": False,
                 "range_min": 0, "range_max": 100}
-        form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1,question2], entity_type=["reporter"], type="survey")
+        form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1, question2],
+                               entity_type=["reporter"], type="survey")
         form_model2 = helper.update_questionnaire_with_questions(form_model, [post], dbm)
         self.assertEquals(2, len(form_model2.fields))
-        
+
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
         models_mock = patcher.start()
@@ -406,3 +408,76 @@ class TestHelper(unittest.TestCase):
                               defaultValue="some default value", language="eng", ddtype=ddtype)
         cleaned_list = helper.hide_entity_question([question1, question2])
         self.assertEquals([question2], cleaned_list)
+
+
+class TestPreviewCreator(unittest.TestCase):
+
+    def test_should_create_basic_fields_in_preview(self):
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, instruction="please write more tests")
+        preview = helper.get_preview_for_field(field)
+        self.assertEquals("What's in a name?", preview["description"])
+        self.assertEquals("nam", preview["code"])
+        self.assertEquals("text", preview["type"])
+        self.assertEquals("please write more tests", preview["instruction"])
+
+
+    def test_should_add_constraint_text_for_text_field_with_min(self):
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        constraint = TextConstraint(min=10)
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, length=constraint)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("Minimum 10 characters", preview["constraint"])
+
+    def test_should_add_constraint_text_for_text_field_with_max(self):
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        constraint = TextConstraint(max=100)
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, length=constraint)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("Upto 100 characters", preview["constraint"])
+
+    def test_should_add_constraint_text_for_text_field_with_max_and_min(self):
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        constraint = TextConstraint(min=10, max=100)
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, length=constraint)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("Between 10 - 100 characters", preview["constraint"])
+
+
+    def test_should_add_constraint_text_for_numeric_field_with_min(self):
+        type = DataDictType(Mock(DatabaseManager), name="age type")
+        constraint = NumericConstraint(min=10)
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("Minimum 10", preview["constraint"])
+        self.assertEqual("integer", preview["type"])
+
+    def test_should_add_constraint_text_for_numeric_field_with_max(self):
+        type = DataDictType(Mock(DatabaseManager), name="age type")
+        constraint = NumericConstraint(max=100)
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("Upto 100", preview["constraint"])
+
+    def test_should_add_constraint_text_for_numeric_field_with_max_and_min(self):
+        type = DataDictType(Mock(DatabaseManager), name="age type")
+        constraint = NumericConstraint(min=10, max=100)
+        field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("10 - 100", preview["constraint"])
+
+    def test_should_return_choices(self):
+        type = DataDictType(Mock(DatabaseManager), name="color type")
+        field = SelectField(name="What's in a name?", code="nam", label="naam", ddtype=type,
+                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("select1", preview["type"])
+        self.assertEqual(["Red", "Green", "Blue"], preview["options"])
+
+    def test_should_return_choices_type_as_select(self):
+        type = DataDictType(Mock(DatabaseManager), name="color type")
+        field = SelectField(name="What's in a name?", code="nam", label="naam", ddtype=type,
+                            options=[("Red", "a"), ("Green", "b"), ("Blue", "c")], single_select_flag=False)
+        preview = helper.get_preview_for_field(field)
+        self.assertEqual("select", preview["type"])
+

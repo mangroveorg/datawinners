@@ -1,0 +1,67 @@
+{% extends 'project/tab_navigation.html' %}
+
+{% block page_title %}Project - Questionnaire {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "questionnaire" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_questionnarie_active.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block step_number %}
+    <h3>Step 3: Questionnaire</h3>
+    <p>Review the question by clicking on each</p>
+{% endblock %}
+{% block content %}
+    <div class="preview_block"><a href="#">Print</a></div>
+    <div id="question_form">
+        <ol class="questionnaire_preview">
+            {% for question in questions %}
+                <li>
+                    <h6>{{ question.description }}<span>#{{ question.code }}</span></h6>
+                    {% if  question.instruction%}
+                        <p>
+                            <h6>Instructions:</h6><br/>
+                            {{ question.instruction }}
+                        </p>
+
+                    {% endif %}
+                    <div class="answer">
+                        {% if question.type != "select" and question.type != "select1"%}
+                            <div><input type="text" name="text" watermark="{{ question.constraint }}" /></div>
+                        {% endif %}
+                        {% if question.type == "select1"%}
+                            {% for option in question.options %}
+                                <div><input type="radio" name="select1"><label>{{ option }}</label></div>
+                            {% endfor %}
+                        {% endif %}
+                        {% if question.type == "select"%}
+                            {% for option in question.options %}
+                                <div><input type="checkbox" name="select"><label>{{ option }}</label></div>
+                            {% endfor %}
+                        {% endif %}
+                        <p>For Example:</p>
+
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+
+{% endblock %}
