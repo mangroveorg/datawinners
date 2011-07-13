@@ -1,0 +1,37 @@
+{% extends 'layout_application.html' %}
+{% block page_title %}All Data{% endblock %}
+
+{% block section_title %}Failed Submissions{% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "all_data" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_alldata.scss" rel="stylesheet" />
+{% endblock %}
+
+{% load i18n %}
+{% block content %}
+<div>
+   <table class="styled_table">
+    <thead>
+        <th> Project </th>
+        <th> From </th>
+        <th> To </th>
+        <th> Message </th>
+    </thead>
+        {% for log in logs%}
+            <tr>
+                <td>{{ log.form_code }}</td>
+                <td>{{ log.from_number}}</td>
+                <td>{{ log.to_number }}</td>
+                <td>{{ log.message }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

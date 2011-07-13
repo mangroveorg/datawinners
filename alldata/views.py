@@ -6,7 +6,7 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from datawinners.project.views import project_overview, project_data, project_results
 from mangrove.form_model.form_model import FormModel
-
+from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
 def index(request):
@@ -27,3 +27,8 @@ def index(request):
                        link=link, log=log, analysis=analysis)
         project_list.append(project)
     return render_to_response('alldata/index.html', {'projects': project_list}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def failed_submissions(request):
+    logs = DatawinnerLog.objects.all()
+    return render_to_response('alldata/failed_submissions.html', {'logs': logs}, context_instance=RequestContext(request))

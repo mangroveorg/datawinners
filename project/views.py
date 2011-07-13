@@ -260,6 +260,10 @@ def project_results(request, project_id=None, questionnaire_code=None):
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login')
+def project_results(request, project_id=None, questionnaire_code=None):
+    pass
+
 def _format_data_for_presentation(data_dictionary, form_model):
     header_list = helper.get_headers(form_model.fields)
     type_list = helper.get_type_list(form_model.fields[1:])
