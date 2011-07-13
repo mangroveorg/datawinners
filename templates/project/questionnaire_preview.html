@@ -14,7 +14,7 @@
     $(document).ready(function(){
         $('.printBtn').bind('click',function() {
             var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );
-            thePopup.close();
+//            thePopup.close();
             thePopup.print();
         });
     });
@@ -26,13 +26,26 @@
 
     <div id="questionnaire_preview">
             <div class="preview_block"><a href="#" class="printBtn">Print</a></div>
+        <ul class="questionnaire_title">
+            <li>
+              <p>Project Name:</p>
+              <h5>{{ project.name }}</h5>
+            </li>
+            <li>
+                <p>Questionnarie Code:</p>
+              <h5>{{ questionnaire_code }}</h5>
+            </li>
+            <li class="margin_top_10">
+                 <p>Example SMS: </p>
+                 <p class="content italic">{{ example_sms }}</p>
+            </li>
+        </ul>
         <ol class="questionnaire_preview">
             {% for question in questions %}
                 <li>
-                    <h6>{{ question.description }}<span> #{{ question.code }}</span></h6>
+                    <h6>{{ question.description }}<span> +{{ question.code }}</span></h6>
                     {% if  question.instruction%}
-                        <p>
-                            <h6>Instructions:</h6><br/>
+                        <p class="instructions italic">
                             {{ question.instruction }}
                         </p>
 

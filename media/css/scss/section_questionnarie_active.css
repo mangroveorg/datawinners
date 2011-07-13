@@ -49,3 +49,20 @@
 #print_page a {
   color: #0070ac;
   outline: none; }
+
+.questionnaire_title {
+  margin-bottom: 20px;
+  float: left; }
+  .questionnaire_title li {
+    width: 100%;
+    float: left; }
+    .questionnaire_title li p, .questionnaire_title li h5 {
+      float: left; }
+    .questionnaire_title li h5 {
+      margin: -5px 0  0 10px; }
+    .questionnaire_title li p.content {
+      margin-left: 10px; }
+
+p.instructions {
+  font-style: italic;
+  font-size: 12px; }

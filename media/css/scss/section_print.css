@@ -1,6 +1,12 @@
 body {
-  font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
-  background: #E8EFF6; }
+  font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+
+ul li {
+  list-style-type: none;
+  padding: 0; }
+
+p {
+  margin: 0; }
 
 #print_page a {
   color: #0070ac;
@@ -11,9 +17,14 @@ body {
 
 #questionnaire_preview {
   margin-left: 20px; }
+  #questionnaire_preview .printBtn {
+    display: none; }
   #questionnaire_preview .questionnaire_preview h6 {
     font-size: 14px;
     margin: 0; }
+  #questionnaire_preview .questionnaire_preview p.instructions {
+    font-style: italic;
+    font-size: 12px; }
   #questionnaire_preview .questionnaire_preview li {
     margin-bottom: 10px;
     width: 100%;
@@ -28,3 +39,18 @@ body {
   #questionnaire_preview .questionnaire_preview div {
     width: 100%;
     float: left; }
+
+.questionnaire_title {
+  margin-bottom: 20px;
+  float: left; }
+  .questionnaire_title li {
+    width: 100%;
+    float: left; }
+    .questionnaire_title li p, .questionnaire_title li h5 {
+      float: left; }
+    .questionnaire_title li h5 {
+      margin: 0px 0  0 10px;
+      font-size: 14px; }
+    .questionnaire_title li p.content {
+      margin-left: 10px;
+      font-style: italic; }
