@@ -20,8 +20,6 @@
 #review_section {
   float: left;
   margin: 0 0 20px 10px; }
-  #review_section > div {
-    margin-bottom: 15px; }
   #review_section ul li {
     float: left;
     width: 100%;
