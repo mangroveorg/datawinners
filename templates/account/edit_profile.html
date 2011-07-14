@@ -9,6 +9,12 @@
 {% include 'application_scss.html' %}
 <link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
 {% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/account/edit_profile.js"></script>
+{% endblock %}
+
 {% block content%}
     <div class="span-18 box">
       <div class = "form-5px">
@@ -36,10 +42,9 @@
               {{ form.last_name }}
               {{ form.last_name.errors }}
             </li>
-              <li class="{{ form.username.css_classes  }} form-row-10px">
+              <li class="form-row-10px">
               {{ form.username.label_tag }}
               {{ form.username }}
-              {{ form.username.errors }}
             </li>
               <li class="{{ form.office_phone.css_classes  }} form-row-10px">
               {{ form.office_phone.label_tag }}

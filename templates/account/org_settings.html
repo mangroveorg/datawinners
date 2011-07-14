@@ -34,17 +34,11 @@
           
           {{ organization_form.sector.errors }}
         </li>
-        <li class="{{ form.organization_addressline1.css_classes  }} form-row-10px">
-          {{ organization_form.addressline1.label_tag }}
-          {{ organization_form.addressline1 }}
+        <li class="{{ form.organization_address.css_classes  }} form-row-10px">
+          {{ organization_form.address.label_tag }}
+          {{ organization_form.address }}
           
-          {{ organization_form.addressline1.errors }}
-        </li>
-        <li class="{{ form.organization_addressline2.css_classes  }} form-row-10px">
-          {{ organization_form.addressline2.label_tag }}
-          {{ organization_form.addressline2 }}
-          
-          {{ organization_form.addressline2.errors }}
+          {{ organization_form.address.errors }}
         </li>
         <li class="{{ form.organization_city.css_classes  }} form-row-10px">
           {{ organization_form.city.label_tag }}
