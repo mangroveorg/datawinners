@@ -26,7 +26,11 @@
     }
 }
 #review_section{
-    margin-left:10px;
+    float:left;
+    margin:0 0 20px 10px;
+    >div{
+        margin-bottom:15px;
+    }
  ul {
     li{
         float:left;
@@ -46,12 +50,7 @@
  h4{
     border-bottom:1px solid #CCCCCC;
  }
- h5{
-    color:#000000;
-    background:none !important;
-    border:0;
-    font-size:14px;
- }
+
  .ui-accordion-content{
     background:none;
     border:0;
@@ -59,11 +58,46 @@
  }
  .header{
     border:0;
-    width:100%;
+    width:100% !important;
     float:left;
+    padding:10px 0 10px 0px;
+    font-weight:normal;
     background:none;
-    h5, a{
+    h5{
         float:left;
+        background:url(/media/images/accordion_arrows.png) no-repeat left -34px;
+        padding-left:15px;
+        margin-left:15px;
+        font-size:14px;
+        font-weight:normal;
+    }
+ }
+ .ui-accordion{
+    width:100% !important;
+    border-bottom:1px solid #CCCCCC;
+    float:left;
+ }
+ .ui-accordion .ui-accordion-content {
+    padding:20px 10px 0 10px;
+    ol{
+        margin:10px 0 10px 40px;
+    }
+ }
+ .ui-state-active{
+    background-color:#525252 !important;
+    border:0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;  //for webkit browsers
+    background: -moz-linear-gradient(top,  #525252,  #262626) !important;  //for firefox 3.6+
+
+    h5{
+         color:#FFFFFF;
+         background:url(/media/images/accordion_arrows.png) no-repeat left 5px;
+         padding-left:15px;
+         margin-left:15px;
+    }
+
+    .success_error{
+        color:#FFFFFF;
     }
  }
  a{
@@ -71,12 +105,30 @@
         font-size:12px;
     }
 }
-
-/*li{*/
-        /*float:left;*/
-    /*label{*/
-    /*}*/
-    /*p{*/
-        /*float:left;*/
-    /*}*/
-/*}*/
+.add_subjects_section{
+    border: 1px solid #CCCCCC;
+    height:120px;
+    background: #EEEEEE;
+    padding: 10px 6px 0 20px;
+    float:left;
+    > div{
+        h6{
+            font-size:12px;
+            border-bottom: 1px solid #CCCCCC;
+            margin-bottom: 10px;
+        }
+        p{
+            font-style: italic;
+            font-size:12px;
+            color:#666666;
+            margin-bottom: 10px;
+        }
+        input[type=button]{
+            float:right;
+        }
+    }
+    .import_list{
+        padding-right:20px;
+        margin-left:20px;
+    }
+}

@@ -106,9 +106,8 @@
         <div id="data_senders">
             <div class="header">
             <h5 class="inline">Data Senders</h5>
-
-            </div>
-            <div>
+        </div>
+        <div>
             <ul>
                 <li><label>
                     Number of data senders :</label>
@@ -117,14 +116,25 @@
                 </li>
 
             </ul>
-                <a href="{{project_links.data_senders_link}}">edit</a>
-                </div>
+            <a href="{{project_links.data_senders_link}}">edit</a>
+        </div>
         </div>
     </div>
-    <div class="grid_23 alpha omega margin_top_20" id="test_section">
-        <h4>Test</h4>
-        <p class="italic margin_bottom_20">See if you can send in data for the questionnaire you just created.</p>
-        <a id="sms_tester">SMS Questionnaire</a>
+       <div class="add_subjects_section alpha omega">
+        <div class="grid_11 alpha omega">
+            <h6>SMS Questionnaire</h6>
+
+            <p>Test your Questionnaire by this SMS tester</p>
+            <input id='sms_questionnaire' type="button" class="button_blue" value="SMS Questionnaire"/>
+        </div>
+        <div class="grid_11 omega import_list">
+            <h6>Preview Questionnaire</h6>
+
+            <p>Preview and print your questionnaire </p>
+            <input id='preview_questionnaire' type="button" class="button_blue" value="Preview"/>
+        </div>
+    </div>
+
         <div class="sms_tester_form">
             <h4>Test the SMS Questionnaire </h4>
             <p class="italic margin_bottom_20">See if you can send in data with your questionnaire</p>
@@ -150,7 +160,6 @@
             </ul>
         </div>
 
-    </div>
 
 
 {% endblock %}
