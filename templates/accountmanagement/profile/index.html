@@ -9,9 +9,6 @@
     <li class="{% ifactivetab 'tab_nav' 'profile' %}active{% else %}inactive{% endifactivetab %}">
       <a href="{% url datawinners.accountmanagement.views.edit_user %}">Contact Info</a>
     </li>
-    <li class="{% ifactivetab 'tab_nav' 'password' %}active{% else %}inactive{% endifactivetab %}">
-      <a href="{% url datawinners.accountmanagement.views.edit_password %}">Password</a>
-    </li>
   </ul>
 </div>
 {% endblock %}

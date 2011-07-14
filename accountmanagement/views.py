@@ -117,7 +117,3 @@ def edit_user(request):
             ngo_user_profile.save()
             message = 'Profile has been updated successfully'
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form' : form, 'message':message}, context_instance=RequestContext(request))
-
-@login_required(login_url='/login')
-def edit_password(request):
-    return render_to_response("accountmanagement/profile/edit_password.html", context_instance=RequestContext(request))

@@ -3,8 +3,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from datawinners.accountmanagement.forms import RegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm
 from django.contrib import admin
-from datawinners.accountmanagement.views import custom_login, edit_password
-from views import registration_complete, home, settings, new_user, edit_user, users
+from views import registration_complete, home, settings, new_user, edit_user, users, custom_login
 from django.contrib.auth import views as auth_views
 
 admin.autodiscover()
@@ -22,7 +21,5 @@ urlpatterns = patterns('',
                        (r'^account/$',settings),
                        (r'^account/user/new/$', new_user),
                        (r'^profile/$', edit_user),
-                       (r'^profile/password$', edit_password),
                        (r'^account/users/$', users),
-
 )
