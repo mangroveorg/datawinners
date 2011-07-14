@@ -29,7 +29,7 @@
                 <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name}}</a></td>
                 <td>{{ project.created}}</td>
                 <td>{{ project.type}}</td>
-                <td><span class="report_links"><a href="{{ project.summary }}" class="disabled">Summary</a>|<a href="{{ project.analysis }}">Analysis</a>|<a href="{{ project.log }}">log</a></span></td>
+                <td><span class="report_links"><a href="{{ project.summary }}" class="disabled">Summary</a>|<a href="{{ project.analysis }}" class="{{ disabled }}">Analysis</a>|<a href="{{ project.log }}" class="{{ disabled }}">log</a></span></td>
             </tr>
         {% endfor %}
     </table>
