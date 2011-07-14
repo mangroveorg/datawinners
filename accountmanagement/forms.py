@@ -57,6 +57,11 @@ class UserProfileForm(forms.Form):
             raise ValidationError("This email address is already in use. Please supply a different email address")
         return self.cleaned_data.get('username')
 
+class EditUserProfileForm(UserProfileForm):
+
+    def clean_username(self):
+        return self.cleaned_data.get('username')
+
 class RegistrationForm(RegistrationFormUniqueEmail):
     error_css_class = 'error'
     required_css_class = 'required'

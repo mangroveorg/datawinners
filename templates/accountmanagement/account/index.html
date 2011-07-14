@@ -12,9 +12,6 @@
     <li class="{% ifactivetab 'tab_nav' 'users' %}active{% else %}inactive{% endifactivetab %}">
       <a href="{% url datawinners.accountmanagement.views.users %}">Users</a>
     </li>
-    <li class="{% ifactivetab 'tab_nav' 'account' %}active{% else %}inactive{% endifactivetab %}">
-      <a href="{% url datawinners.accountmanagement.views.edit_user %}">Your DataWinners Account</a>
-    </li>
   </ul>
 </div>
 {% endblock %}
