@@ -192,7 +192,7 @@ def get_headers(field_list):
     return [each.name for each in field_list]
 
 
-def get_values(data_dictionary, header_list):
+def get_values(data_dictionary, header_list,entity_question_description):
     """
        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
        header_list = ["What is associated entity", "What is your name", "What is age of father?"]
@@ -201,7 +201,7 @@ def get_values(data_dictionary, header_list):
     value_list = []
     for key, values in data_dictionary.items():
         current_dict = dict()
-        current_dict["entity_name"] = values.get(header_list[0])
+        current_dict["entity_name"] = values.get(entity_question_description)
         current_dict["values"] = list()
         for each in header_list[1:]:
             current_val = values.get(each)
