@@ -97,3 +97,10 @@
   .add_subjects_section .import_list {
     padding-right: 20px;
     margin-left: 20px; }
+  .add_subjects_section .sms_questionnaire, .add_subjects_section .preview_questionnaire {
+    background: url(/media/images/mobile_icons.png) no-repeat left 4px;
+    padding: 10px 10px 10px 20px;
+    float: right; }
+  .add_subjects_section .preview_questionnaire {
+    background: url(/media/images/mobile_icons.png) no-repeat 0px -71px;
+    padding-left: 25px; }

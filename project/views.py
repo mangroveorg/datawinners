@@ -411,6 +411,7 @@ def _make_links_for_finish_page(project_id, form_model):
     project_links['questionnaire_link'] = reverse(questionnaire_wizard, args=[project_id])
     project_links['data_senders_link'] = reverse(datasenders_wizard, args=[project_id])
     project_links['log_link'] = reverse(project_results, args=[project_id, form_model.form_code])
+    project_links['questionnaire_preview_link'] = reverse(questionnaire_preview, args=[project_id])
     return project_links
 
 @login_required(login_url='/login')

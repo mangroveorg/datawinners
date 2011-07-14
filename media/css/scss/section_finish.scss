@@ -131,4 +131,13 @@
         padding-right:20px;
         margin-left:20px;
     }
+     .sms_questionnaire, .preview_questionnaire{
+        background:url(/media/images/mobile_icons.png) no-repeat left 4px;
+        padding:10px 10px 10px 20px;
+        float:right;
+     }
+     .preview_questionnaire{
+        background:url(/media/images/mobile_icons.png) no-repeat 0px -71px;
+        padding-left:25px;
+     }
 }

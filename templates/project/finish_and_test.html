@@ -11,14 +11,17 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_finish.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript">
+          var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
         $(document).ready(function() {
             $("#tab_items .finish").addClass("current");
             set_current_tab();
+
         });
     </script>
     <script type="text/javascript" src="/media/javascript/project/finish_and_test.js"></script>
@@ -125,13 +128,13 @@
             <h6>SMS Questionnaire</h6>
 
             <p>Test your Questionnaire by this SMS tester</p>
-            <input id='sms_tester' type="button" class="button_blue" value="SMS Questionnaire"/>
+            <a href="#" class="sms_questionnaire" id="sms_tester"> SMS Questionnaire</a>
         </div>
         <div class="grid_11 omega import_list">
-            <h6>Preview Questionnaire</h6>
+            <h6>Web Questionnaire</h6>
 
             <p>Preview and print your questionnaire </p>
-            <input id='preview_questionnaire' type="button" class="button_blue" value="Preview"/>
+            <a href="#" class="preview_questionnaire preview" > Web Questionnaire</a>
         </div>
     </div>
 
@@ -158,6 +161,9 @@
                     <p class="italic">Go directly to your <a href="{{project_links.log_link}}">Log page</a> to view the Data Record you just sent in</p>
                 </li>
             </ul>
+        </div>
+        <div class="questionnaire_preview">
+             Generating the questionnaire preview.
         </div>
 
 
