@@ -4,10 +4,10 @@ from django.conf.urls.defaults import patterns, include, url
 from datawinners.accountmanagement.forms import RegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm
 from django.contrib import admin
 from datawinners.accountmanagement.views import custom_login
+from views import registration_complete, home, settings, new_user, edit_user, users
+from django.contrib.auth import views as auth_views
 
 admin.autodiscover()
-from views import registration_complete, home
-from django.contrib.auth import views as auth_views
 
 
 urlpatterns = patterns('',
@@ -19,5 +19,9 @@ urlpatterns = patterns('',
                        (r'^registration_complete$', registration_complete),
                        (r'^home/$', home),
                        url(r'^admin/', include(admin.site.urls)),
+                       (r'^account/$',settings),
+                       (r'^account/user/new/$', new_user),
+                       (r'^account/user/edit/$', edit_user),
+                       (r'^account/users/$', users),
 
 )
