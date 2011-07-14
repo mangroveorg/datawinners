@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
+from datawinners import utils
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from datawinners.project.views import project_overview, project_data, project_results
@@ -9,6 +10,7 @@ from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
+@utils.is_new_user
 def index(request):
     project_list = []
     manager = get_database_manager(request)

@@ -2,7 +2,9 @@
 from django.conf.urls.defaults import patterns
 
 from datawinners.dashboard.views import dashboard
+from datawinners.dashboard.views import start
 
 urlpatterns = patterns('',
     (r'^dashboard/$', dashboard),
+    (r'^start/$', start),
     )

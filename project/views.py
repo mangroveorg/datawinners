@@ -169,6 +169,7 @@ def save_questionnaire(request):
 
 
 @login_required(login_url='/login')
+@utils.is_new_user
 def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request))

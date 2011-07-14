@@ -1,0 +1,20 @@
+{% extends 'layout_application.html' %}
+{% block page_title %} Start Page {% endblock %}
+{% block section_title %} {{ title }} {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" active_tab %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_dashboard.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    Once you have created projects, a list of your {{ text }} will appear here.
+
+    To get started with DataWinners, <a href="{% url datawinners.project.views.create_profile %}">create a new project.
+{% endblock %}

@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from datawinners import utils
 from datawinners.entity import helper
 from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager
@@ -183,6 +184,7 @@ def create_subject(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@utils.is_new_user
 def all_subjects(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
@@ -198,6 +200,7 @@ def all_subjects(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
+@utils.is_new_user
 def all_datasenders(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
