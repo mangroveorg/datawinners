@@ -17,7 +17,7 @@ import helper
 from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
-from mangrove.datastore.entity import get_all_entity_types
+from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model.field import field_to_json, IntegerField, TextField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
@@ -420,8 +420,8 @@ def finish(request, project_id=None):
     if request.method == 'GET':
         form_model.set_test_mode()
         form_model.save()
-        registered_subjects = load_all_subjects_of_type(request, project.entity_type)
-        registered_datasenders = load_all_subjects_of_type(request)
+        number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
+        number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         from_number = '1234567890'
@@ -429,8 +429,8 @@ def finish(request, project_id=None):
         previous_link = reverse(datasenders_wizard, args=[project_id])
         return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number,
                                                                    'project':project, 'fields': form_model.fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
-                                                                   'number_of_datasenders': len(registered_datasenders),
-                                                                   'number_of_subjects': len(registered_subjects), "previous": previous_link},
+                                                                   'number_of_datasenders': number_of_registered_datasenders,
+                                                                   'number_of_subjects': number_of_registered_subjects, "previous": previous_link},
                                                                     context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
