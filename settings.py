@@ -130,7 +130,6 @@ INSTALLED_APPS = (
     'compressor',
     'datawinners.main',
     'datawinners.project',
-    'datawinners.account',
     'datawinners.dashboard',
     'datawinners.location',
     'datawinners.entity',

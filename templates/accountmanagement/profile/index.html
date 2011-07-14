@@ -1,0 +1,15 @@
+{% extends 'layout_application.html' %}
+{% block page_title %} Your Profile {% endblock %}
+{% block section_title %} Your Profile {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+<div class="grid_24 tab_navigation">
+  <ul>
+    <li class="{% ifactivetab 'tab_nav' 'profile' %}active{% else %}inactive{% endifactivetab %}">
+      <a href="{% url datawinners.accountmanagement.views.edit_user %}">Contact Info</a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
+

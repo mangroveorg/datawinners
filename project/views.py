@@ -267,7 +267,9 @@ def _format_data_for_presentation(data_dictionary, form_model):
     header_list[0] = form_model.entity_type[0] + " Code"
     if data_dictionary == {}:
         return "[]", header_list, type_list
-    data_list = helper.get_values(data_dictionary, header_list) 
+
+    entity_question_description=form_model.entity_question.name
+    data_list = helper.get_values(data_dictionary, header_list,entity_question_description)
     data_list = helper.to_report(data_list)
     response_string = encode_json(data_list)
     return response_string, header_list, type_list

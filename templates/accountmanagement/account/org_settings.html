@@ -1,4 +1,4 @@
-{% extends 'account/index.html' %}
+{% extends 'accountmanagement/account/index.html' %}
 {% block page_title %} Account {% endblock %}
 
 {% load dw_tabs %}
@@ -78,7 +78,7 @@
         </li>
         {{ organization_form.org_id.as_hidden }}
         <li class="margin_top_20">
-          <input type="submit" value="Update" class="button" />
+          <input type="submit" value="Save Changes" class="button" />
         </li>
       </ul>
     </form>

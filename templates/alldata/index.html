@@ -11,28 +11,32 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_alldata.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_alldata.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% load i18n %}
 {% block content %}
-<div>
-   <table class="styled_table">
-    <thead>
-        <th> Name </th>
-        <th> Created On </th>
-        <th> Type </th>
-        <th> View Report </th>
-    </thead>
-        {% for project in projects%}
-            <tr>
-                <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name}}</a></td>
-                <td>{{ project.created}}</td>
-                <td>{{ project.type}}</td>
-                <td><span class="report_links"><a href="{{ project.summary }}" class="disabled">Summary</a>|<a href="{{ project.analysis }}" class="{{ disabled }}">Analysis</a>|<a href="{{ project.log }}" class="{{ disabled }}">log</a></span></td>
-            </tr>
-        {% endfor %}
-    </table>
-</div>
+    <div>
+        <table class="styled_table">
+            <thead>
+            <th> Name</th>
+            <th> Created On</th>
+            <th> Type</th>
+            <th> View Report</th>
+            </thead>
+            {% for project in projects %}
+                <tr>
+                    <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
+                    <td>{{ project.created }}</td>
+                    <td>{{ project.type }}</td>
+                    <td><span class="report_links"><a href="{{ project.summary }}"
+                                                      class="disabled">Summary</a>|<a href="{{ project.analysis }}"
+                                                                                      class="{{ project.disabled }}">Analysis</a>
+                            |<a
+                            href="{{ project.log }}" class="{{ project.disabled }}">log</a></span></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
     <a href="/allfailedsubmissions">View all failed submissions for HNI</a>
 {% endblock %}

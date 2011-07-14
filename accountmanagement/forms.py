@@ -57,6 +57,11 @@ class UserProfileForm(forms.Form):
             raise ValidationError("This email address is already in use. Please supply a different email address")
         return self.cleaned_data.get('username')
 
+class EditUserProfileForm(UserProfileForm):
+
+    def clean_username(self):
+        return self.cleaned_data.get('username')
+
 class RegistrationForm(RegistrationFormUniqueEmail):
     error_css_class = 'error'
     required_css_class = 'required'
@@ -75,7 +80,7 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     organization_city = forms.CharField(max_length=30, required=True, label='* City')
     organization_state = forms.CharField(max_length=30, required=False, label='State / Province')
     organization_country = forms.CharField(max_length=30, required=True, label='* Country')
-    organization_zipcode = forms.CharField(max_length=30, required=True, label='* vPostal / Zip Code')
+    organization_zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
     organization_office_phone = forms.CharField(max_length=30, required=False, label='Office Phone Number')
     organization_website = forms.URLField(required=False, label='Website Url')
     username = forms.CharField(max_length=30, required=False)

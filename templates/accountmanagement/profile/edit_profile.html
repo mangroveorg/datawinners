@@ -1,9 +1,9 @@
-{% extends 'account/index.html' %}
+{% extends 'accountmanagement/profile/index.html' %}
 {% block page_title %} Profile {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "account" %}
+{% activetab "tab_nav" "profile" %}
 {{ block.super }}
 {% endblock %}{% block layout_scss %}
 {% include 'application_scss.html' %}
@@ -23,7 +23,7 @@
                  {{ message }}
              </div>
         {% endif %}
-        <form method="post" action="" name="form">
+        <form method="post" action="" name="form" id='profile_form'>
           {% csrf_token %}
 
           <ul class="organization">
@@ -62,7 +62,7 @@
               {{ form.skype.errors }}
             </li>
              <li class="margin_top_20">
-                <input type="submit" value="Update" class="button" />
+                <input type="submit" value="Update" class="button" id='form_submit' />
             </li>
 
           </ul>
