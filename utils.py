@@ -1,6 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.http import HttpResponseRedirect
 import xlwt
 from datetime import datetime
+from datawinners.main.utils import get_database_manager
+from datawinners.project.models import get_all_projects
 
 def clean_date(date_val):
     new_date_val = date_val.replace(tzinfo=None)
@@ -26,3 +29,11 @@ def get_excel_sheet(raw_data, sheet_name):
             ws.write(row_number, col_number, val, style=cell_style)
     return wb
 
+def is_new_user(f):
+
+    def wrapper(*args, **kw):
+        if len(get_all_projects(get_database_manager(args[0]))) == 0:
+            return HttpResponseRedirect("/start?page=" + args[0].path)
+
+        return f(*args, **kw)
+    return wrapper

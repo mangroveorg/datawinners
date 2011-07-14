@@ -59,3 +59,17 @@ def dashboard(request):
 
     return render_to_response('dashboard/home.html',
                               {"projects": project_list}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def start(request):
+    text_dict = {'project': 'projects', 'datasenders': 'Data Senders',
+                 'subjects': 'Subjects', 'alldata': 'Data Records'}
+
+    tabs_dict = {'project': 'projects', 'datasenders': 'data_senders',
+                 'subjects': 'subjects', 'alldata': 'all_data'}
+    page = request.GET['page']
+    page = page.split('/')
+    url_tokens = [each for each in page if each !='']
+    text = text_dict[url_tokens[-1]]
+    return render_to_response('dashboard/start.html', {'text': text, 'title': text, 'active_tab': tabs_dict[url_tokens[-1]]},
+                              context_instance=RequestContext(request))

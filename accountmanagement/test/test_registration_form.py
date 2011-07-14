@@ -19,7 +19,7 @@ class TestRegistrationForm(unittest.TestCase):
                      'last_name': 'b',
                      'email': uppercase_email_id,
                      'password1': 'a', 'password2': 'a', 'organization_name': 'ad',
-                     'organization_addressline1': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
+                     'organization_address': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
                      'organization_zipcode': 'asd', 'organization_sector': 'Other'
         }
 

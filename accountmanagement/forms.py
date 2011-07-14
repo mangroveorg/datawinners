@@ -18,8 +18,7 @@ class OrganizationForm(ModelForm):
     name = forms.CharField(required=True, label='* Organization name')
     sector = forms.CharField(widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
-    addressline1 = forms.CharField(required=True, max_length=30, label='* Address Line 1')
-    addressline2 = forms.CharField(max_length=30, required=False, label='Address Line 2')
+    address = forms.CharField(required=True, max_length=30, label='* Address')
     city = forms.CharField(max_length=30, required=True, label='* City')
     state = forms.CharField(max_length=30, required=False, label='State / Province')
     country = forms.CharField(max_length=30, required=True, label='* Country')
