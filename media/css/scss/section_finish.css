@@ -29,10 +29,12 @@
     #review_section ul li label, #review_section ul li p {
       float: left; }
     #review_section ul li label {
-      width: 100px;
+      width: 175px;
       text-align: right;
       margin-right: 10px;
       font-weight: normal; }
+    #review_section ul li p {
+      font-weight: bold; }
   #review_section h4 {
     border-bottom: 1px solid #CCCCCC; }
   #review_section .ui-accordion-content {
