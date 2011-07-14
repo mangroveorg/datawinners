@@ -113,7 +113,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-LOGIN_REDIRECT_URL = ('/home')
+HOME_PAGE = '/dashboard'
+LOGIN_REDIRECT_URL = (HOME_PAGE)
 ACCOUNT_ACTIVATION_DAYS = 7
 
 INSTALLED_APPS = (

@@ -1,5 +1,7 @@
 
   {% block messages %}
+      <div id="message-label" class="message-box none">
+      </div>
       {% if form_errors %}
   <div id = "error_messages" class=" error span-12 push-6 message-box">
           {% for error in form_errors %}

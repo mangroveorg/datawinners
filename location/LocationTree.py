@@ -79,23 +79,29 @@ class LocationTree(object):
 
     def get_location_for_geocode(self, lat, long):
         point = Point(long, lat)
-        row = LocationLevel.objects.filter(geom__contains=point)[0]
+        rows = list(LocationLevel.objects.filter(geom__contains=point))
+        if not len(rows):
+            return None
+        row = rows[0]
         field = "name_%s" % (self._get_lowest_level(row))
         return getattr(row,field)
 
     def _get_lowest_level(self, row):
         i = 0
-        while(1):
+        while 1:
             try:
                 value = getattr(row, "name_%s" % (i,))
                 i += 1
             except AttributeError as e:
-                break;
+                break
         return i - 1
 
     def get_location_hierarchy_for_geocode(self, lat, long):
         location=self.get_location_for_geocode(lat,long)
-        return self.get_hierarchy_path(location)
+        if location:
+            return self.get_hierarchy_path(location)
+        else:
+            return []
 
     def get_centroid(self, location):
         row = LocationLevel.objects.filter(name_4=location).centroid(model_att='c')
