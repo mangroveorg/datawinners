@@ -1,9 +1,13 @@
-.organization, .administrative, .signin {
+.organization, .administrative{
   margin-bottom: 15px;
   padding: 10px;
   min-height:400px;
   }
 .signin{
+  margin-bottom: 15px;
+  padding: 10px;
+  min-height:250px;
+
     ul li{
 
         label{
@@ -17,22 +21,24 @@
 }
 .right_hand_section {
   border: 1px solid #ececec;
-  min-height:520px;
+  min-height:250px;
   padding:10px;
 }
 
 .left_hand_section {
-    border: 1px solid #ececec;
     margin-right: 25px;
     }
 
 #container_content .content {
-  padding: 20px; }
+  padding: 20px;
+  min-height: 300px !important;
+  }
 
-.signin_form, .reset_form{
-    margin:50px 0 50px 70px;
+.signin_form{
+        margin:50px 0 0px 70px;
 }
 .reset_form{
+    margin:50px 0 50px 70px;
     label{
         width:90px;
     }
@@ -62,6 +68,12 @@ form{
             height:20px;
             border-color:$border_color;
         }
+    }
+}
+.about_datawinners{
+    background: #feee96;
+    p{
+    margin-top: 10px;
     }
 }
 
