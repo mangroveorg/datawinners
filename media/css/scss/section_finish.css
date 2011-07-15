@@ -105,11 +105,13 @@
     background: url(/media/images/mobile_icons.png) no-repeat 0px -71px;
     padding-left: 25px; }
 
-.mobile {
+.mobile_block p {
+  font-size: 12px; }
+.mobile_block .mobile {
   background: url("/media/images/mobile.png") no-repeat left top;
-  height: 400px;
+  height: 360px;
   width: 200px; }
-  .mobile textarea {
+  .mobile_block .mobile textarea {
     height: 74px;
     margin-left: 36px;
     margin-top: 77px;

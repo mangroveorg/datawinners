@@ -141,10 +141,13 @@
         padding-left:25px;
      }
 }
-
+.mobile_block{
+p{
+    font-size:12px;
+}
 .mobile{
     background:url("/media/images/mobile.png") no-repeat left top;
-    height:400px;
+    height:360px;
     width:200px;
     textarea{
             height: 74px;
@@ -153,4 +156,5 @@
             width: 94px;
             font-size:12px;
     }
+}
 }
