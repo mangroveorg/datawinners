@@ -21,7 +21,7 @@ def _get_lowest_level(row):
 def _get_lowest_level_field_name(country):
     country_row = LocationLevel.objects.filter(name_0=country)[:1]
     level = _get_lowest_level(country_row[0])
-    lowest_level_field_name = "name_" + str(level)
+    lowest_level_field_name = u"name_" + unicode(level)
     return lowest_level_field_name
 
 

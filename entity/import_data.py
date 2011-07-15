@@ -23,7 +23,7 @@ def tabulate_failures(rows):
 
 
 def get_location_from(location):
-    return [loc.encode("ascii", "ignore") for loc in location]
+    return u",".join(location)
 
 
 def _tabulate_data(entity, row, short_code, type):

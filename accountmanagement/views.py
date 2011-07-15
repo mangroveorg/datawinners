@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from datawinners import settings
+import datawinners
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from django.contrib.auth.views import login
@@ -16,7 +16,7 @@ def registration_complete(request, user=None):
 
 def custom_login(request, template_name, authentication_form):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+        return HttpResponseRedirect(datawinners.settings.LOGIN_REDIRECT_URL)
     else:
         return login(request,template_name=template_name, authentication_form=authentication_form)
 
