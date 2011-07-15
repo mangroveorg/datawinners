@@ -14,6 +14,9 @@ $(document).ready(function() {
                     mustMatch: true,
                     matchContains: false,
                     scrollHeight: 220});
+            },
+            error: function(e){
+                $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
             }
 
         });

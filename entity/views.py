@@ -127,8 +127,8 @@ def submit(request):
         location_hierarchy = _get_location_hierarchy(display_location, geo_code)
         if location_hierarchy is  not None:
             message[mapper['location']] = location_hierarchy
-        request = Request(transport=post.get('transport'), message=message, source=post.get('source'),
-                          destination=post.get('destination'))
+        request = Request(message=message, transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
+                                                          destination=post.get('destination')))
         response = web_player.accept(request)
         if response.success:
             message = get_success_msg_for_registration_using(response, "Subject", "web")

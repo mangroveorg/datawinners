@@ -3,10 +3,10 @@
 from django.conf.urls.defaults import patterns, include, url
 from datawinners.accountmanagement.forms import RegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm
 from django.contrib import admin
-from views import registration_complete, home, settings, new_user, edit_user, users, custom_login
-from django.contrib.auth import views as auth_views
+from views import settings, new_user, edit_user, users, custom_login,registration_complete
 
 admin.autodiscover()
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = patterns('',
@@ -16,7 +16,6 @@ urlpatterns = patterns('',
                        url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, {'set_password_form': PasswordSetForm}, name='auth_password_reset_confirm'),
                        ('', include('registration.backends.default.urls')),
                        (r'^registration_complete$', registration_complete),
-                       (r'^home/$', home),
                        url(r'^admin/', include(admin.site.urls)),
                        (r'^account/$',settings),
                        (r'^account/user/new/$', new_user),

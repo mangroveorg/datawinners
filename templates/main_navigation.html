@@ -6,7 +6,7 @@
         </div>
         <ul>
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
-                <a href="{% url datawinners.accountmanagement.views.home %}">Dashboard</a>
+                <a href="{% url datawinners.dashboard.views.dashboard %}">Dashboard</a>
             </li>
             <li  class ="{% ifactivetab 'main_nav' 'projects' %}active{% else %}inactive{% endifactivetab %}">
                 <a href="{% url datawinners.project.views.index %}">Projects</a>
