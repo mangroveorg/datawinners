@@ -125,6 +125,18 @@ form{
             font-weight:normal !important;
         }
 }
+
+.success-message-box{
+        background:#E7FED5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
+        color:#000000 !important;
+        margin:10px;
+        padding:7px 10px 7px 50px;
+        border:1px solid #2a8634;
+        label{
+            color:#000000;
+            font-weight:normal !important;
+        }
+}
 .application_register{
     form{
         fieldset{
