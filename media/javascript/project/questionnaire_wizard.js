@@ -140,7 +140,6 @@ $(document).ready(function() {
             }
     )
 
-    $(document).ready(function(){
         $(".questionnaire_preview").dialog({
                 title: "Questionnaire Preview",
                 modal: true,
@@ -154,8 +153,24 @@ $(document).ready(function() {
                 }
               }
           );
+            $(".registration_preview").dialog({
+                title: "Registration Preview",
+                modal: true,
+                autoOpen: false,
+                height: 700,
+                width: 800,
+                closeText: 'hide',
+                open: function() {
+                  // Here I load the content. This is the content of your link.
+                  $(".registration_preview").load(registration_form_preview_link, function() {});
+                }
+              }
+          );
         $(".preview").bind("click", function(){
            $(".questionnaire_preview").dialog("open");
         })
-    })
+        $(".preview_registration_form").bind("click", function(){
+           $(".registration_preview").dialog("open");
+        })
+    preview_registration_form
 });

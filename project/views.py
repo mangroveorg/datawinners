@@ -21,6 +21,7 @@ from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
+from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
@@ -56,6 +57,7 @@ def _make_project_links(project, questionnaire_code):
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
         project_links['questionnaire_preview_link'] = reverse(questionnaire_preview, args=[project_id])
+        project_links['registration_preview_link'] = reverse(registration_form_preview, args=[project_id])
     return project_links
 
 
@@ -523,4 +525,22 @@ def questionnaire_preview(request, project_id=None):
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
                                   context_instance=RequestContext(request))
 
-    
+
+@login_required(login_url='/login')
+def registration_form_preview(request,project_id=None):
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    if request.method == "GET":
+        previous_link = reverse(subjects_wizard, args=[project_id])
+        registration_questionnaire = form_model.get_form_model_by_code(manager, "reg")
+        fields = registration_questionnaire.fields
+        project_links = _make_project_links(project, registration_questionnaire.form_code)
+        questions = []
+        for field in fields:
+            question = helper.get_preview_for_field(field)
+            questions.append(question)
+        example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+        return render_to_response('project/questionnaire_preview.html',
+                {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
+                 "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
+                                  context_instance=RequestContext(request))

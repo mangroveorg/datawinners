@@ -289,9 +289,10 @@ def _get_text_constraint(max, min):
     if min is None and max is not None:
         constraint_text = "Upto %s characters" % max
         return constraint_text
-    else:
+    elif min is not None and max is not None:
         constraint_text = "Between %s - %s characters" % (min, max)
         return constraint_text
+    return ""
 
 
 def _get_numeric_constraint(max, min):
@@ -301,9 +302,10 @@ def _get_numeric_constraint(max, min):
     if min is None and max is not None:
         constraint_text = "Upto %s" % max
         return constraint_text
-    else:
+    elif min is not None and max is not None:
         constraint_text = "%s - %s" % (min, max)
         return constraint_text
+    return ""
 
 
 def _get_options_constraint(field):

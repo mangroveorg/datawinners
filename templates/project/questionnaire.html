@@ -29,6 +29,7 @@
     <script type="text/javascript">
         var question_list = JSON.parse({{existing_questions|safe}}),
             quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
+            registration_form_preview_link = "{{ project_links.registration_preview_link }}"
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
@@ -67,6 +68,7 @@
 {% endblock %}
 {% block content %}
     <div class="preview_block"><a class="preview" href="#"> Preview </a></div>
+    <div class="preview_block"><a class="preview_registration_form" href="#"> Preview Registration Form </a></div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
@@ -109,6 +111,9 @@
         </fieldset>
     </form>
     <div class="questionnaire_preview">
+        Generating the questionnaire preview.
+    </div>
+    <div class="registration_preview">
         Generating the questionnaire preview.
     </div>
 {% endblock %}
