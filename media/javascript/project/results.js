@@ -134,5 +134,28 @@ $(document).ready(function(){
         $('#export_form').submit()
     });
 
+    $('#time_filter').click(function() {
+        var time_range = $("#dateRangePicker").val().split("/");
+        if (time_range[0] == "") {
+            time_range[0] = '01-01-1996';
+            time_range[1] = Date.parse('today').toString('dd-MM-yyyy');
+        }
+        else if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
+            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
+            $("#dateErrorDiv").show();
+            time_range[0] = "";
+            time_range[1] = "";
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/project/datarecords/filter',
+            data: {'questionnaire_code': 'cli001', 'start_time':time_range[0], 'end_time': time_range[1]},
+            success:function(response) {
+                if (response) {
+                    $('#results').html(response);
+                }
+            }
+        });
+    });
 });
 
