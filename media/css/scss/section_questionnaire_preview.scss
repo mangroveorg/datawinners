@@ -5,13 +5,19 @@
  #questionnaire_preview{
   margin-left:20px;
  .questionnaire_preview{
-    li{
+    > li{
         margin-bottom:15px;
         width:100%;
         float:left;
     }
     .answer{
         margin-bottom:5px;
+            .multiple_select{
+            li{
+                list-style-type:upper-alpha;
+            }
+            margin-left:20px;
+        }
     }
     label{
         float:left !important;

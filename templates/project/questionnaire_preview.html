@@ -55,14 +55,18 @@
                             <div><input type="text" disabled="disabled" name="text" value="{{ question.constraint }}" /></div>
                         {% endif %}
                         {% if question.type == "select1"%}
+                            <ol class="multiple_select">
                             {% for option in question.constraint%}
-                                <div><input type="radio" disabled="disabled" name="select1"><label>{{ option }}</label></div>
+                              <li><label>{{ option }}</label></li>
                             {% endfor %}
+                            </ol>
                         {% endif %}
                         {% if question.type == "select"%}
+                            <ol class="multiple_select">
                             {% for option in question.constraint %}
-                                <div><input type="checkbox" disabled="disabled" name="select"><label>{{ option }}</label></div>
+                                <li><label>{{ option }}</label></li>
                             {% endfor %}
+                            </ol>
                         {% endif %}
                     </div>
                 </li>

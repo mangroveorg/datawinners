@@ -3,12 +3,16 @@
 
 #questionnaire_preview {
   margin-left: 20px; }
-  #questionnaire_preview .questionnaire_preview li {
+  #questionnaire_preview .questionnaire_preview > li {
     margin-bottom: 15px;
     width: 100%;
     float: left; }
   #questionnaire_preview .questionnaire_preview .answer {
     margin-bottom: 5px; }
+    #questionnaire_preview .questionnaire_preview .answer .multiple_select {
+      margin-left: 20px; }
+      #questionnaire_preview .questionnaire_preview .answer .multiple_select li {
+        list-style-type: upper-alpha; }
   #questionnaire_preview .questionnaire_preview label {
     float: left !important;
     font-weight: normal; }
