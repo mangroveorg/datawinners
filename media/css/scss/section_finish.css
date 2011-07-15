@@ -77,30 +77,41 @@
     color: #0070ac;
     font-size: 12px; }
 
-.add_subjects_section {
+.SMS_tester_section {
   border: 1px solid #CCCCCC;
   height: 120px;
   background: #EEEEEE;
   padding: 10px 6px 0 20px;
   float: left; }
-  .add_subjects_section > div h6 {
+  .SMS_tester_section > div h6 {
     font-size: 12px;
     border-bottom: 1px solid #CCCCCC;
     margin-bottom: 10px; }
-  .add_subjects_section > div p {
+  .SMS_tester_section > div p {
     font-style: italic;
     font-size: 12px;
     color: #666666;
     margin-bottom: 10px; }
-  .add_subjects_section > div input[type=button] {
+  .SMS_tester_section > div input[type=button] {
     float: right; }
-  .add_subjects_section .import_list {
+  .SMS_tester_section .import_list {
     padding-right: 20px;
     margin-left: 20px; }
-  .add_subjects_section .sms_questionnaire, .add_subjects_section .preview_questionnaire {
+  .SMS_tester_section .sms_questionnaire, .SMS_tester_section .preview_questionnaire {
     background: url(/media/images/mobile_icons.png) no-repeat left 4px;
     padding: 10px 10px 10px 20px;
     float: right; }
-  .add_subjects_section .preview_questionnaire {
+  .SMS_tester_section .preview_questionnaire {
     background: url(/media/images/mobile_icons.png) no-repeat 0px -71px;
     padding-left: 25px; }
+
+.mobile {
+  background: url("/media/images/mobile.png") no-repeat left top;
+  height: 400px;
+  width: 200px; }
+  .mobile textarea {
+    height: 74px;
+    margin-left: 36px;
+    margin-top: 77px;
+    width: 94px;
+    font-size: 12px; }

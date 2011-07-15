@@ -44,6 +44,12 @@
 .margin_top_5 {
   margin-top: 5px; }
 
+.margin_left_10 {
+  margin-left: 10px; }
+
+.margin_left_20 {
+  margin-left: 20px; }
+
 /* Float styling */
 .float_left {
   float: left; }

@@ -123,7 +123,7 @@
         </div>
         </div>
     </div>
-       <div class="add_subjects_section alpha omega">
+       <div class="SMS_tester_section alpha omega">
         <div class="grid_11 alpha omega">
             <h6>SMS Questionnaire</h6>
 
@@ -144,17 +144,18 @@
             <ul>
                 <li>
                     <h6>1. Send in your Data Record</h6>
-                    <p>You have 2 options</p>
-                    <ul>
-                        <li>
+
+                    <div class="margin_left_20">
+                            <p>You have 2 options</p>
                             <p>A. Use your own phone and send your answers to the following phone number: {{ to_number }}</p>
                             <p>B. Enter you answers below</p>
                             <input id ='from_msisdn' type='hidden' value ="{{ from_number }}">
                             <input id ='to_msisdn' type='hidden' value ="{{ to_number }}">
-                            <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
+                            <div class="mobile">
+                                <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
+                            </div>
                             <div><input id="send_sms" type="button" class="button" value="Send SMS"/></div>
-                        </li>
-                    </ul>
+                    </div>
                 </li>
                 <li>
                     <h6 class="margin_top_20">2. See the data you received </h6>

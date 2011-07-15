@@ -105,7 +105,7 @@
         font-size:12px;
     }
 }
-.add_subjects_section{
+.SMS_tester_section{
     border: 1px solid #CCCCCC;
     height:120px;
     background: #EEEEEE;
@@ -140,4 +140,17 @@
         background:url(/media/images/mobile_icons.png) no-repeat 0px -71px;
         padding-left:25px;
      }
+}
+
+.mobile{
+    background:url("/media/images/mobile.png") no-repeat left top;
+    height:400px;
+    width:200px;
+    textarea{
+            height: 74px;
+            margin-left: 36px;
+            margin-top: 77px;
+            width: 94px;
+            font-size:12px;
+    }
 }
