@@ -23,7 +23,7 @@ from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
@@ -362,7 +362,7 @@ def export_log(request):
 def subjects_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
-        reg_form = get_form_model_by_code(manager, 'reg')
+        reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(edit_profile, args=[project_id])
         entity_types = get_all_entity_types(manager)
         project = models.get_project(project_id, manager)
@@ -389,7 +389,7 @@ def _format_field_description_for_data_senders(reg_form):
 def datasenders_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
-        reg_form = get_form_model_by_code(manager, 'reg')
+        reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(questionnaire_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
@@ -459,7 +459,7 @@ def _get_project_and_project_link(manager, project_id):
 def subjects(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    reg_form = get_form_model_by_code(manager, 'reg')
+    reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     return render_to_response('project/subjects.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
@@ -480,7 +480,7 @@ def registered_datasenders(request, project_id=None):
 def datasenders(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    reg_form = get_form_model_by_code(manager, 'reg')
+    reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     _format_field_description_for_data_senders(reg_form)
     return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
@@ -532,7 +532,7 @@ def registration_form_preview(request,project_id=None):
     project = models.get_project(project_id, manager)
     if request.method == "GET":
         previous_link = reverse(subjects_wizard, args=[project_id])
-        registration_questionnaire = form_model.get_form_model_by_code(manager, "reg")
+        registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         fields = registration_questionnaire.fields
         project_links = _make_project_links(project, registration_questionnaire.form_code)
         questions = []

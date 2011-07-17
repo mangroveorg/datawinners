@@ -43,6 +43,16 @@ def create_views(dbm):
             reduce = (funcs['reduce'] if 'reduce' in funcs else None)
             database_manager.create_view(view_name=v, map=map, reduce=reduce)
 
+def sync_views(dbm):
+    '''Updates or Creates a standard set of views in the database'''
+    global view_js
+    database_manager = dbm
+    for v in view_js.keys():
+        funcs = view_js[v]
+        map = (funcs['map'] if 'map' in funcs else None)
+        reduce = (funcs['reduce'] if 'reduce' in funcs else None)
+        database_manager.create_view(v, map, reduce)
+
 
 def exists_view(aggregation, database_manager):
     entity_type_views = database_manager._load_document('_design/datawinners_views')

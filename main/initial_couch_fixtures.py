@@ -9,6 +9,7 @@ from datawinners.submission.views import SMS
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
 from pytz import UTC
+from mangrove.datastore.views import sync_views
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
@@ -32,15 +33,12 @@ class DateTimeMocker(object):
 
 
 def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
-    entity = None
     try:
-        entity = create_entity(manager, entity_type, short_code, location, aggregation_paths, geometry)
-    except DataObjectAlreadyExists as e:
         entity = get_by_short_code(manager, short_code, entity_type)
         entity.delete()
-        entity = create_entity(manager, entity_type, location, aggregation_paths, short_code, geometry)
-    finally:
-        return entity
+    except DataObjectNotFound:
+        pass
+    return create_entity(manager, entity_type, short_code, location, aggregation_paths, geometry)
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None, description=None):
     e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
