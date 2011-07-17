@@ -2,10 +2,12 @@
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User, Group
 from mock import patch
-from datawinners import initializer
+from datawinners import initializer, settings
+from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project
 from datawinners.submission.views import SMS
+from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
 from pytz import UTC
@@ -447,3 +449,12 @@ def load_data():
                                                               (NAME_FIELD, "David", first_name_type)], location=[u'Madagascar', u'Fianarantsoa', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2")
     load_sms_data_for_cli001(manager)
+
+
+def load_all_managers():
+    managers = []
+    for org in OrganizationSetting.objects.all():
+        db = org.document_store
+        manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+        managers.append(manager)
+    return managers
