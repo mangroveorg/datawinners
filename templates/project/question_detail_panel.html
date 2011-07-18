@@ -61,7 +61,7 @@
 
                                         </ol>
                                         <a href="questionnaire_wizard.html#" class="add_link"
-                                           data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup'">Add
+                                           data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup', visible:viewModel.isEnabled()">Add
                                             Answer Choice</a>
                                     </div>
                                     <div>
