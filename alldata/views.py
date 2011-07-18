@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from datawinners import utils
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
+from datawinners.project.models import ProjectState
 from datawinners.project.views import project_overview, project_data, project_results
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
@@ -24,7 +25,7 @@ def index(request):
         questionnaire = manager.get(project['qid'], FormModel)
         questionnaire_code=questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
-        if project.state == models.PROJECT_ACTIVE_STATUS:
+        if project.state == ProjectState.ACTIVE:
             disabled=""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log=reverse(project_results, args=[project_id, questionnaire_code])

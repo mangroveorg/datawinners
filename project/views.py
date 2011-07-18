@@ -10,7 +10,7 @@ from django.template.context import RequestContext
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
-from datawinners.project.models import Project, PROJECT_ACTIVE_STATUS
+from datawinners.project.models import Project, ProjectState
 from datawinners.accountmanagement.models import Organization
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -45,10 +45,12 @@ def _make_project_links(project, questionnaire_code):
     project_links = {}
     project_links['overview_link'] = reverse(project_overview, args=[project_id])
     project_links['activate_project_link'] = reverse(activate_project, args=[project_id])
-    if project.state == PROJECT_ACTIVE_STATUS:
+
+    if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
         project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
         project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
 
+    if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
@@ -410,21 +412,16 @@ def datasenders_wizard(request, project_id=None):
 def activate_project(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
-    form_model = helper.load_questionnaire(manager, project.qid)
-    form_model.activate()
-    form_model.save()
-    project.state = PROJECT_ACTIVE_STATUS
-    project.save(manager)
+    project.activate(manager)
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 def _make_links_for_finish_page(project_id, form_model):
-    project_links={}
-    project_links['edit_link'] = reverse(edit_profile, args=[project_id])
-    project_links['subject_link'] = reverse(subjects_wizard, args=[project_id])
-    project_links['questionnaire_link'] = reverse(questionnaire_wizard, args=[project_id])
-    project_links['data_senders_link'] = reverse(datasenders_wizard, args=[project_id])
-    project_links['log_link'] = reverse(project_results, args=[project_id, form_model.form_code])
-    project_links['questionnaire_preview_link'] = reverse(questionnaire_preview, args=[project_id])
+    project_links= {'edit_link': reverse(edit_profile, args=[project_id]),
+                    'subject_link': reverse(subjects_wizard, args=[project_id]),
+                    'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
+                    'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
+                    'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
+                    'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id])}
     return project_links
 
 @login_required(login_url='/login')
@@ -433,8 +430,7 @@ def finish(request, project_id=None):
     project = models.get_project(project_id, manager)
     form_model = helper.load_questionnaire(manager, project.qid)
     if request.method == 'GET':
-        form_model.set_test_mode()
-        form_model.save()
+        project.to_test_mode(manager)
         number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
         number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
         profile = request.user.get_profile()

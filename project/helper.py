@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
+from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
@@ -80,10 +81,8 @@ def create_questionnaire(post, dbm):
     fields = [entity_id_question]
     if entity_type == [REPORTER]:
         fields = [entity_id_question, activity_report_question]
-    form_model = FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
-                           form_code=generate_questionnaire_code(dbm), type='survey')
-    form_model.deactivate()
-    return form_model
+    return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
+                           form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE)
 
 
 def load_questionnaire(dbm, questionnaire_id):
