@@ -19,7 +19,7 @@ def _get_lowest_level(row):
 
 
 def _get_lowest_level_field_name(country):
-    country_row = LocationLevel.objects.filter(name_0=country)[:1]
+    country_row = LocationLevel.objects.filter(name_0__iexact=country)[:1]
     level = _get_lowest_level(country_row[0])
     lowest_level_field_name = u"name_" + unicode(level)
     return lowest_level_field_name
@@ -68,6 +68,13 @@ class LocationTree(object):
     def nodes(self):
         return self.tree.nodes()
 
+    def name_to_code(self, location_name):
+        pass
+
+    def code_to_name(self, location_code):
+        location = LocationLevel.objects.filter()
+        pass
+    
     def get_next_level(self, parent):
         return self.tree.neighbors(parent)
 
@@ -104,7 +111,7 @@ class LocationTree(object):
             return []
 
     def get_centroid(self, location):
-        row = LocationLevel.objects.filter(name_4=location).centroid(model_att='c')
+        row = LocationLevel.objects.filter(name_4__iexact=location).centroid(model_att='c')
         point = row[0].c
         return point.x,point.y
 
