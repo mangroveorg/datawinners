@@ -28,7 +28,7 @@
     #container_content .wizard_content .content_wrapper, #container_wizard .wizard_content .content_wrapper {
       padding: 20px 40px 20px 40px; }
   #container_content #page_title, #container_wizard #page_title {
-    height: 40px;
+    min-height: 40px;
     padding: 15px 0 0px 0;
     width: 950px;
     border-radius: 1px solid red;
@@ -41,7 +41,6 @@
         text-transform: uppercase; }
     #container_content #page_title .project_detail, #container_wizard #page_title .project_detail {
       padding-bottom: 10px;
-      float: left;
       font-size: 12px; }
       #container_content #page_title .project_detail .project_status, #container_wizard #page_title .project_detail .project_status {
         margin-right: 5px; }

@@ -30,7 +30,8 @@
       font-weight: bold; }
 #container_header_application #main_tab {
   text-align: right;
-  float: left; }
+  float: left;
+  width: 100%; }
   #container_header_application #main_tab .logo {
     padding-top: 10px;
     margin-right: 6px; }
@@ -38,7 +39,8 @@
       float: left; }
   #container_header_application #main_tab ul {
     float: right;
-    position: relative; }
+    position: relative;
+    display: inline; }
     #container_header_application #main_tab ul li {
       padding: 10px 34px 10px 10px;
       float: left; }
@@ -49,10 +51,11 @@
       #container_header_application #main_tab ul li.active a {
         -moz-border-radius: 15px;
         -webkit-border-radius: 15px;
+        border-radius: 15px;
         border: 1px solid #000000;
         color: #FFFFFF;
         padding: 5px 18px 5px;
-        background: #999;
+        background: #3d3d3d;
         /* for non-css3 browsers */
         background: -webkit-gradient(linear, left top, left bottom, from(#1c1c1c), to(#3d3d3d));
         /* for webkit browsers */

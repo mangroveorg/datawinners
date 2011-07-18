@@ -63,12 +63,11 @@
         <a class="grid_4  omega alpha view_all_projects" href="{% url datawinners.project.views.index %}">view all projects »</a>
     </div>
     <div class="grid_4 alpha omega dashboard_right">
-        Right hand section
     </div>
     <script>
         $(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: false });
-            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false, collapsible: true, });
+            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false, collapsible: true });
         });
     </script>
 {% endblock %}

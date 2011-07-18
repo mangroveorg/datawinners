@@ -1,0 +1,15 @@
+
+#main_tab ul li{
+    padding-right:29px !important;
+}
+
+#main_tab ul li.last{
+    padding-right:0px !important;
+}
+
+#how_to .ui-widget-content{
+    height:auto !important;
+}
+a.button{
+    border:1px solid red;
+}

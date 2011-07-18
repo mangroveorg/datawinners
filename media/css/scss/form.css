@@ -152,7 +152,7 @@ select {
   border: 1px solid #D4972D !important;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  background: #999;
+  background: #FFD857;
   /* for non-css3 browsers */
   background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
   /* for webkit browsers */
@@ -168,13 +168,12 @@ select {
   color: #5087b4;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  background: #999;
+  background: #cce3ee;
   /* for non-css3 browsers */
   background: -webkit-gradient(linear, left top, left bottom, from(#dfedf4), to(#cce3ee));
   /* for webkit browsers */
   background: -moz-linear-gradient(top, #dfedf4, #cce3ee);
   /* for firefox 3.6+ */
-  font-family: "Arial";
   font-weight: normal;
   padding: 4px 15px 4px 15px; }
 
@@ -191,7 +190,7 @@ select {
     border: 1px solid #D4972D;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    background: #999;
+    background: #FFD857;
     /* for non-css3 browsers */
     background: -webkit-gradient(linear, left top, left bottom, from(#feea89), to(#ffd857));
     /* for webkit browsers */
@@ -242,7 +241,7 @@ select {
   background: #FFFFFF; }
   .ui-widget-content .ui-widget-header {
     border: none !important;
-    background-color: #525252;
+    background-color: #3d3d3d;
     background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
     background: -moz-linear-gradient(top, #525252, #262626); }
     .ui-widget-content .ui-widget-header .ui-dialog-title {

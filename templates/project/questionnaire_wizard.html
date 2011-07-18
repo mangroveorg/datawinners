@@ -19,7 +19,7 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript">
-        var question_list = JSON.parse({{existing_questions|safe}});
+        var question_list = $.parseJSON({{existing_questions|safe}});
         $(document).ready(function(){
             $("#tab_items .questionnaire").addClass("current");
             set_current_tab();

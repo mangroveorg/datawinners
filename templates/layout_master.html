@@ -23,6 +23,10 @@
         {% block page_scss %} {% endblock %}
     {% endcompress %}
 
+    <!--[if lt IE 9]>
+        <link href="/media/css/plugins/960gd/ie.css" rel="stylesheet" type="text/css" media="screen" />
+    <![endif]-->
+
     {% load compress %}
     {% compress js %}
          {% include 'javascript.html' %}

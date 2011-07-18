@@ -1,9 +1,9 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 $(document).ready(function() {
-    question_list.forEach(function(question) {
+    for(question in question_list){
         var questions = new DW.question(question);
         viewModel.loadQuestion(questions);
-    });
+    }
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
 
