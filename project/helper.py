@@ -198,18 +198,18 @@ def get_values(data_dictionary, header_list,entity_question_description):
        header_list = ["What is associated entity", "What is your name", "What is age of father?"]
        expected_list = [{"entity_name":"cid002", "values":['shweta', 55 ]}, {"entity_name":"cid001", "values":['asif', 35]}]
     """
-    value_list = []
+    value_list = [] 
     for key, values in data_dictionary.items():
         current_dict = dict()
-        current_dict["entity_name"] = values.get(entity_question_description)
-        current_dict["values"] = list()
+        current_dict[u"entity_name"] = values.get(entity_question_description)
+        current_dict[u"values"] = list()
         for each in header_list[1:]:
             current_val = values.get(each)
             if type(current_val) == list:
-                if type(current_val[0]) != str:
-                    current_val = [str(each) for each in current_val]
-                current_val = ",".join(current_val)
-            current_dict["values"].append(current_val)
+                if not is_string(current_val[0]):
+                    current_val = [unicode(each) for each in current_val]
+                current_val = u",".join(current_val)
+            current_dict[u"values"].append(current_val)
         value_list.append(current_dict)
     return value_list
 
@@ -289,9 +289,10 @@ def _get_text_constraint(max, min):
     if min is None and max is not None:
         constraint_text = "Upto %s characters" % max
         return constraint_text
-    else:
+    elif min is not None and max is not None:
         constraint_text = "Between %s - %s characters" % (min, max)
         return constraint_text
+    return ""
 
 
 def _get_numeric_constraint(max, min):
@@ -301,9 +302,10 @@ def _get_numeric_constraint(max, min):
     if min is None and max is not None:
         constraint_text = "Upto %s" % max
         return constraint_text
-    else:
+    elif min is not None and max is not None:
         constraint_text = "%s - %s" % (min, max)
         return constraint_text
+    return ""
 
 
 def _get_options_constraint(field):

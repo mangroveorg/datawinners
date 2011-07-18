@@ -8,6 +8,7 @@ from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatExcept
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
 from mangrove.transport.player.player import CsvPlayer, CsvParser, XlsPlayer, XlsParser
 from mangrove.transport.submissions import SubmissionHandler
+from mangrove.utils.types import sequence_to_str
 
 def tabulate_failures(rows):
     tabulated_data = []
@@ -22,15 +23,11 @@ def tabulate_failures(rows):
     return tabulated_data
 
 
-def get_location_from(location):
-    return [loc.encode("ascii", "ignore") for loc in location]
-
-
 def _tabulate_data(entity, row, short_code, type):
     id = row['id']
     name = entity.value(NAME_FIELD)
     geocode = row['doc']['geometry'].get('coordinates')
-    location = get_location_from(entity.location_path)
+    location = sequence_to_str(entity.location_path)
     mobile_number = entity.value(MOBILE_NUMBER_FIELD)
     description = entity.value(DESCRIPTION_FIELD)
     return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode, location=location,

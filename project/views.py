@@ -21,8 +21,9 @@ from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
+from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
@@ -56,6 +57,8 @@ def _make_project_links(project, questionnaire_code):
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
         project_links['questionnaire_preview_link'] = reverse(questionnaire_preview, args=[project_id])
+        project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview, args=[project_id])
+        project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
     return project_links
 
 
@@ -264,7 +267,7 @@ def filter_project_results(request):
         questionnaire_code = request.POST['questionnaire_code']
         start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00"))
         end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59"))
-        rows, results = _load_submissions(1, manager,questionnaire_code, False, start_time_epoch, end_time_epoch)
+        rows, results = _load_submissions(1, manager,questionnaire_code, True, start_time_epoch, end_time_epoch)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
                  'success_message': ""}, context_instance=RequestContext(request))
@@ -360,7 +363,7 @@ def export_log(request):
 def subjects_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
-        reg_form = get_form_model_by_code(manager, 'reg')
+        reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(edit_profile, args=[project_id])
         entity_types = get_all_entity_types(manager)
         project = models.get_project(project_id, manager)
@@ -387,7 +390,7 @@ def _format_field_description_for_data_senders(reg_form):
 def datasenders_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request)
-        reg_form = get_form_model_by_code(manager, 'reg')
+        reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(questionnaire_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
@@ -457,7 +460,7 @@ def _get_project_and_project_link(manager, project_id):
 def subjects(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    reg_form = get_form_model_by_code(manager, 'reg')
+    reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     return render_to_response('project/subjects.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
@@ -478,7 +481,7 @@ def registered_datasenders(request, project_id=None):
 def datasenders(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    reg_form = get_form_model_by_code(manager, 'reg')
+    reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     _format_field_description_for_data_senders(reg_form)
     return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
@@ -523,4 +526,44 @@ def questionnaire_preview(request, project_id=None):
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
                                   context_instance=RequestContext(request))
 
-    
+
+def _get_registration_form(manager, project, project_id):
+    previous_link = reverse(subjects_wizard, args=[project_id])
+    registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    fields = registration_questionnaire.fields
+    project_links = _make_project_links(project, registration_questionnaire.form_code)
+    questions = []
+    for field in fields:
+        question = helper.get_preview_for_field(field)
+        questions.append(question)
+    return fields, previous_link, project_links, questions, registration_questionnaire
+
+
+@login_required(login_url='/login')
+def subject_registration_form_preview(request,project_id=None):
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    if request.method == "GET":
+        fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
+                                                                                                             project,
+                                                                                                             project_id)
+        example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+        return render_to_response('project/questionnaire_preview.html',
+                {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
+                 "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
+                                  context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def sender_registration_form_preview(request,project_id=None):
+    manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    if request.method == "GET":
+        fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
+                                                                                                             project,
+                                                                                                             project_id)
+        sender_questions = [question for question in questions if question["code"]!="t"]
+        example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+        return render_to_response('project/questionnaire_preview.html',
+                {"questions": sender_questions, 'questionnaire_code': registration_questionnaire.form_code,
+                 "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
+                                  context_instance=RequestContext(request))

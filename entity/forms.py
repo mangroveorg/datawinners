@@ -25,9 +25,9 @@ class ReporterRegistrationForm(Form):
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['watermark'] = "Enter Data Sender's name"
-        self.fields['telephone_number'].widget.attrs['watermark'] = "Enter Data Sender's number"
+        self.fields['telephone_number'].widget.attrs['watermark'] = "Enter Data Sender's number eg: "
         self.fields['location'].widget.attrs['watermark'] = "Enter region, district or commune"
-        self.fields['geo_code'].widget.attrs['watermark'] = "Enter latitude and longitude"
+        self.fields['geo_code'].widget.attrs['watermark'] = "Enter latitude and longitude eg: 120.67889 84.34567"
 
     def clean_geo_code(self):
         geo_code_string = self.cleaned_data['geo_code']
