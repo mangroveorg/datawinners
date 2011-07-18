@@ -16,7 +16,6 @@ $("#add_type").live("click", function(){
                 else{
                     $('#id_entity_type').val(new_type.toLowerCase());
                     $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
-                    $("#type_message").html("<label>" + data.message+ "</label>");
                 }
             });
 });
