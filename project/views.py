@@ -267,7 +267,7 @@ def filter_project_results(request):
         questionnaire_code = request.POST['questionnaire_code']
         start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00"))
         end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59"))
-        rows, results = _load_submissions(1, manager,questionnaire_code, False, start_time_epoch, end_time_epoch)
+        rows, results = _load_submissions(1, manager,questionnaire_code, True, start_time_epoch, end_time_epoch)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
                  'success_message': ""}, context_instance=RequestContext(request))
