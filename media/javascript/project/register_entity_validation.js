@@ -64,7 +64,7 @@ $(document).ready(function() {
                 required :true
             }
         },
-        wrapper: "span",
+        wrapper: "label",
         errorPlacement: function(error, element) {
                     offset = element.offset();
                     error.insertAfter(element)

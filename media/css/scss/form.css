@@ -68,10 +68,10 @@ form ul li {
       -moz-border-radius: 5px;
       -webkit-moz-border-radius: 5px; }
 
-span.error_arrow, #questionnaire-code-error {
+span.error_arrow, #questionnaire-code-error, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 7px;
-  float: left; }
-  span.error_arrow label, #questionnaire-code-error label {
+  float: left !important; }
+  span.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
     float: none;
     color: #FFFFFF;
     display: inline-block !important;

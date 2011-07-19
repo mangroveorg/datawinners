@@ -95,9 +95,9 @@ form{
         }
     }
 }
- span.error_arrow, #questionnaire-code-error{
+ span.error_arrow, #questionnaire-code-error, label.error_arrow{
             background: url(/media/images/arrow_error.png) no-repeat left 7px;
-            float:left;
+            float:left !important;
             label{
                 float:none;
                 color:#FFFFFF;
