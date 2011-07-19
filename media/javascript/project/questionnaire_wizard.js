@@ -1,7 +1,7 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 $(document).ready(function() {
-    for(question in question_list){
-        var questions = new DW.question(question);
+    for(index in question_list){
+        var questions = new DW.question(question_list[index]);
         viewModel.loadQuestion(questions);
     }
     viewModel.selectedQuestion(viewModel.questions()[0]);
