@@ -101,8 +101,9 @@
 </form>
 {% endblock %}
 {% block buttons %}
-     {{ block.super }}
-    <input id="submit-button" type="button" value="Next Step: Data Senders"/>
+    {{ block.super }}
+        <input id="submit-button" type="button" value="Next Step: Data Senders"/>
+        <input id="submit_button_right" type="button" value=" "/>
 {% endblock %}
 {% block previous_step %}
      <a class="bold" href={{ previous }}>Subjects</a>

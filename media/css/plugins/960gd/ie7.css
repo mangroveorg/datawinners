@@ -1,0 +1,13 @@
+#submit_button_right{
+    height:50px !important;
+}
+#submit-button{
+    padding:0px !important;
+}
+
+.mobile #id_message{
+    margin-left:16px;
+}
+.add_subject_form ul li{
+        float:none;
+    }

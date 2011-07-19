@@ -74,8 +74,10 @@ $slider_range:#FFFFFF;
 }
 
 .buttons{
+    width:100%;
+    float:left;
     .buttons{
-        margin:15px 0 15px 15px;
+        margin:15px 0 15px 0px;
         .previous_step{
             margin-top:8px;
         }
@@ -84,8 +86,8 @@ $slider_range:#FFFFFF;
             position:relative;
             left:-8px;
             top:0px;
-            height:50px;
-            padding:13px 13px 13px 13px;
+            height:49px;
+            padding:7px 6px 13px 22px;
             display:inline;
         }
         #submit-button{
@@ -93,11 +95,22 @@ $slider_range:#FFFFFF;
             font-family:"Arial";
             font-weight:bold;
             border:0px;
+            height:50px;
             background:url('/media/images/arrow_wizard.png') no-repeat top left;
-            padding:13px 6px 13px 22px;
+            padding:7px 6px 13px 22px;
         }
         .cancel{
             margin-right:10px;
+        }
+        .next_step{
+            float:right;
+            width:315px;
+            a{
+                margin-top:13px;
+            }
+            a, form{
+                float:right;
+            }
         }
     }
 }

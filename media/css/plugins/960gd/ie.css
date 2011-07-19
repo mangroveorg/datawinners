@@ -13,3 +13,7 @@
 a.button{
     border:1px solid red;
 }
+
+#submit_button_right{
+    height:59px !important;
+}
