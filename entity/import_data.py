@@ -12,8 +12,8 @@ from mangrove.utils.types import sequence_to_str
 
 def tabulate_failures(rows):
     tabulated_data = []
-    errors = ''
     for row in rows:
+        errors = ''
         row[1].errors['row_num'] = row[0] + 2
         if type(row[1].errors['error']) is list:
             for error in row[1].errors['error']:
