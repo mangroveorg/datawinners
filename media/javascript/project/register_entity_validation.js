@@ -28,7 +28,7 @@ $(document).ready(function() {
             return false;
         return (lat_long[0] > -90 && lat_long[0] < 90)
                 && (lat_long[1] > -180 && lat_long[1] < 180);
-    }, "Incorrect GPS coordinates. Please resubmit");
+    }, "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315");
 
     DW.validator = $('#question_form').validate({
         messages:{
