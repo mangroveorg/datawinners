@@ -23,7 +23,8 @@ class OrganizationForm(ModelForm):
     state = forms.CharField(max_length=30, required=False, label='State / Province')
     country = forms.CharField(max_length=30, required=True, label='* Country')
     zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
-    office_phone = forms.CharField(max_length=30, required=False, label='Office Phone Number')
+    office_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Office Phone Number",
+                                  error_message="Please enter a valid phone number")
     website = forms.URLField(required=False, label='Website Url')
 
     class Meta:
@@ -46,8 +47,10 @@ class UserProfileForm(forms.Form):
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
     username = forms.CharField(max_length=30, required=True, label="* Email")
-    office_phone = forms.CharField(max_length=30, required=False, label="Office Phone")
-    mobile_phone = forms.CharField(max_length=30, required=False, label="Mobile Phone")
+    office_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Office Phone",
+                                  error_message="Please enter a valid phone number")
+    mobile_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Mobile Phone",
+                                  error_message="Please enter a valid phone number")
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
 
@@ -69,8 +72,10 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     title = forms.CharField(max_length=30, required=False)
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
-    office_phone = forms.CharField(max_length=30, required=False, label="Office Phone")
-    mobile_phone = forms.CharField(max_length=30, required=False, label="Mobile Phone")
+    office_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Office Phone",
+                                  error_message="Please enter a valid phone number")
+    mobile_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Mobile Phone",
+                                  error_message="Please enter a valid phone number")
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
     organization_name = forms.CharField(required=True, label='* Organization Name')
@@ -81,7 +86,8 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     organization_state = forms.CharField(max_length=30, required=False, label='State / Province')
     organization_country = forms.CharField(max_length=30, required=True, label='* Country')
     organization_zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
-    organization_office_phone = forms.CharField(max_length=30, required=False, label='Office Phone Number')
+    organization_office_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Office Phone Number",
+                                  error_message="Please enter a valid phone number")
     organization_website = forms.URLField(required=False, label='Website Url')
     username = forms.CharField(max_length=30, required=False)
 
