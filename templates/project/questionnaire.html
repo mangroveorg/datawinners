@@ -27,7 +27,7 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript">
-        var question_list = JSON.parse({{existing_questions|safe}}),
+        var question_list = $.parseJSON({{existing_questions|safe}}),
             quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}",
             subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}",
             sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
