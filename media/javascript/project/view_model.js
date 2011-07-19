@@ -90,7 +90,7 @@ var viewModel =
         return test_code;
     },
     choiceCanBeDeleted: function() {
-        return viewModel.selectedQuestion().choices().length > 1
+        return viewModel.selectedQuestion().choices().length > 1 && viewModel.isEnabled()
     },
     isEnabled: function(){
         if($("#not_wizard").length>0){

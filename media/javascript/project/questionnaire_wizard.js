@@ -130,7 +130,7 @@ $(document).ready(function() {
                 viewModel.selectedQuestion().max_length("");
                 viewModel.selectedQuestion().length_limiter("length_unlimited");
                 viewModel.selectedQuestion().choices([
-                    {text:"", val:'a'}
+                    {text:"default", val:'a'}
                 ]);
             }
     );

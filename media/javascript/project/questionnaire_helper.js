@@ -23,7 +23,7 @@ DW.question = function(question) {
         code : "code",
         type : "text",
         choices :[
-            {text:"", val:""}
+            {text:"default", val:""}
         ],
         entity_question_flag : false,
         length_limiter : "length_unlimited",

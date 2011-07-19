@@ -7,8 +7,12 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import  is_string
 
-PROJECT_INACTIVE_STATUS = 'Inactive'
-PROJECT_ACTIVE_STATUS = 'Active'
+
+
+class ProjectState(object):
+    INACTIVE = 'Inactive'
+    ACTIVE = 'Active'
+    TEST = 'Test'
 
 class Project(DocumentBase):
     name = TextField()
@@ -20,7 +24,7 @@ class Project(DocumentBase):
     qid = TextField()
     state = TextField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=PROJECT_INACTIVE_STATUS, activity_report=None):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -55,6 +59,26 @@ class Project(DocumentBase):
         form_model.entity_type = self.entity_type
         form_model.save()
 
+    def activate(self, dbm):
+        form_model = dbm.get(self.qid, FormModel)
+        form_model.activate()
+        form_model.save()
+        self.state = ProjectState.ACTIVE
+        self.save(dbm)
+
+    def deactivate(self, dbm):
+        form_model = dbm.get(self.qid, FormModel)
+        form_model.deactivate()
+        form_model.save()
+        self.state = ProjectState.INACTIVE
+        self.save(dbm)
+
+    def to_test_mode(self, dbm):
+        form_model = dbm.get(self.qid, FormModel)
+        form_model.set_test_mode()
+        form_model.save()
+        self.state = ProjectState.TEST
+        self.save(dbm)
 
 def get_project(pid, dbm):
     return dbm._load_document(pid, Project)
