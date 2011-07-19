@@ -6,7 +6,8 @@ from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, get_by_short_code
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
-from mangrove.transport.player.player import CsvPlayer, CsvParser, XlsPlayer, XlsParser
+from mangrove.transport.player.parser import CsvParser, XlsParser
+from mangrove.transport.player.player import CsvPlayer, XlsPlayer
 from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import sequence_to_str
 
