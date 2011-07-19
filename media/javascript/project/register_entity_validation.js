@@ -9,7 +9,7 @@ $(document).ready(function() {
         scrollHeight: 220});
 
     $.validator.addMethod('regexrule', function(value, element, params) {
-        var text = $('#' + element.id).val().trim();
+        var text = $.trim($('#' + element.id).val());
         if (text=="")
             return true;
         var re = new RegExp("^[^a-z]*$");
@@ -18,7 +18,7 @@ $(document).ready(function() {
 
     $.validator.addMethod('gpsrule', function(value, element, params) {
         var codes = $('#' + element.id).val();
-        codes = codes.trim();
+        codes = $.trim(codes);
         if (codes == "")
             return true;
         codes = codes.replace(/\s+/g, " ");
@@ -51,13 +51,13 @@ $(document).ready(function() {
             },
             geo_code:{
                 required:function(element) {
-                    return $("#location").val().trim() == "";
+                    return $.trim($("#location").val()) == "";
                 },
                 gpsrule: true
             },
             location:{
                 required:function(element) {
-                    return $("#geo_code").val().trim() == "";
+                    return $.trim($("#geo_code").val()) == "";
                 }
             },
             short_name:{
