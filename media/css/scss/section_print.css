@@ -54,3 +54,16 @@ p {
     .questionnaire_title li p.content {
       margin-left: 10px;
       font-style: italic; }
+
+body > div {
+  display: none; }
+body .ui-dialog {
+  display: block;
+  height: auto !important;
+  left: 0px !important;
+  width: 100% !important; }
+  body .ui-dialog .ui-dialog-titlebar, body .ui-dialog .preview_block {
+    display: none; }
+
+.ui-widget-content {
+  border: 0 !important; }

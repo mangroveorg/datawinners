@@ -13,8 +13,9 @@
     <script>
     $(document).ready(function(){
         $('.printBtn').bind('click',function() {
-            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );
-            thePopup.onload = function(){this.print(); this.close(); }
+{#            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );#}
+{#            thePopup.onload = function(){this.print(); this.close(); }#}
+            window.print();
         });
     });
     </script>

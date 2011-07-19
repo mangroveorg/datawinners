@@ -68,9 +68,10 @@
     <p>Review the question by clicking on each</p>
 {% endblock %}
 {% block content %}
-    <div class="preview_block"><a class="preview" href="#"> Preview </a></div>
-    <div class="preview_block"><a class="preview_subject_registration_form" href="#"> Preview Subject Registration Form </a></div>
-    <div class="preview_block"><a class="preview_sender_registration_form" href="#"> Preview Sender Registration Form </a></div>
+    <div class="preview_block"><a class="preview" href="#"> Preview Questionnaire </a> |
+    <a class="preview_subject_registration_form" href="#"> Preview Subject  </a> |
+    <a class="preview_sender_registration_form" href="#"> Preview Datasender  </a>
+    </div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>

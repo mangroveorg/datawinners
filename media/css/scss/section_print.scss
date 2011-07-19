@@ -80,3 +80,21 @@ p{
     }
 }
 
+body{
+    > div{
+        display:none;
+    }
+    .ui-dialog{
+        display:block;
+        height:auto !important;
+        left:0px !important;
+        width:100% !important;
+        .ui-dialog-titlebar, .preview_block {
+            display:none;
+        }
+    }
+}
+.ui-widget-content{
+    border:0 !important;
+}
+
