@@ -11,7 +11,6 @@ class LocationLevel(models.Model):
     objects = models.GeoManager()
 
 
-
 location_level_mapping = {
     'name_0' : 'NAME_0',
     'name_1' : 'NAME_1',

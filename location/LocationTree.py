@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from _collections import defaultdict
 from itertools import groupby
 from django.contrib.gis.geos.point import Point
 from django.db import connection
@@ -48,23 +49,41 @@ def get_locations_for_country(country, start_with):
 
 
 def get_location_groups_for_country(country, start_with):
-#    LocationLevel.objects.values('name_4').union
     cursor = connection.cursor()
     search_string = start_with.lower()
 
     data_dict = {}
     data_dict['like'] = psycopg2.Binary('%'+ search_string +'%')
 
-
-    sql = """select name_4  as NAME, 'LEVEL4' as LEVEL from location_locationlevel where name_4  ILIKE CAST(%(like)s as TEXT)
+    sql = """
+    select 'LEVEL4' as LEVEL, l.*
+  from location_locationlevel l
+where name_4  ILIKE CAST(%(like)s as TEXT)
                  union
-                 select name_3 as NAME, 'LEVEL3' as LEVEL from location_locationlevel where name_3 Ilike CAST(%(like)s as TEXT) ; """
+select 'LEVEL3' as LEVEL,  l.*
+  from location_locationlevel l
+where name_3  ILIKE CAST(%(like)s as TEXT)
+                union
+select 'LEVEL2' as LEVEL,  l.*
+  from location_locationlevel l
+where name_2  ILIKE CAST(%(like)s as TEXT)
+  union
+select 'LEVEL1' as LEVEL,  l.*
+  from location_locationlevel l
+where name_1  ILIKE CAST(%(like)s as TEXT)
+    """
 
-    cursor.execute(sql, data_dict )
-    rows = cursor.fetchall()
-    loc_dict = {}
-    group = groupby(rows, lambda row: row[1])
-    print list(group)
+
+    print list(LocationLevel.objects.raw(sql,params = data_dict))
+
+#    cursor.execute(sql, data_dict )
+#    rows = cursor.fetchall()
+#    location_dict = defaultdict(list)
+#    for location,level in rows:
+#        location_dict[level].append(location)
+#    return location_dict
+
+
 #    for key,vals in group:
 #        print key, list(vals)
 

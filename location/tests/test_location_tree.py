@@ -40,8 +40,8 @@ class TestLocationTree(unittest.TestCase):
         self.assertEqual(['ZOMA BEALOKA, ANTANANARIVO', 'ZAZAFOTSY, FIANARANTSOA'], get_locations_for_country(country="Madagascar", start_with="z"))
 
     def test_should_get_filtered_list_group_by_levels(self):
-        expected_location_group={"Commune":["SOASERANA,MANJA,MENABE,TOLIARY"]}
-        actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soa")
+        expected_location_group={"LEVEL4":["SOASERANA"]}
+        actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soas")
         self.assertEqual(expected_location_group, actual_location_groups)
 
     def test_should_find_centriod_of_the_location(self):
