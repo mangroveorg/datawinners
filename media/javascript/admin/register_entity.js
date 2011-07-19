@@ -24,6 +24,14 @@ $(document).ready(function() {
                         $('#message').remove();
                         if (d.success) {
                             $('<span id="message" class="success_message">' + d.message + '</span>').insertBefore($('#question_form'));
+                            $("#entity_name").val('');
+                            $("#location").val('');
+                            $("#geo_code").val('');
+                            $("#description").val('');
+                            $("#mobile_number").val('');
+                            $("#short_name").val('');
+                            $('#id_entity_type').val(0);
+
                             $('#message').delay(10000).fadeOut();
                         }
                         else {

@@ -7,8 +7,10 @@
   float: left; }
 #question_form .questionnaire_code input {
   width: 100px; }
-#question_form .alpha_list input {
-  float: left; }
+#question_form .alpha_list {
+  margin-left: 20px; }
+  #question_form .alpha_list input {
+    float: left; }
 #question_form .new_question {
   display: none; }
 #question_form #questions-panel {

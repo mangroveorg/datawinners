@@ -62,7 +62,7 @@ def dashboard(request):
 
 @login_required(login_url='/login')
 def start(request):
-    text_dict = {'project': 'projects', 'datasenders': 'Data Senders',
+    text_dict = {'project': 'Projects', 'datasenders': 'Data Senders',
                  'subjects': 'Subjects', 'alldata': 'Data Records'}
 
     tabs_dict = {'project': 'projects', 'datasenders': 'data_senders',

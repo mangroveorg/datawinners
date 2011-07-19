@@ -4,7 +4,7 @@ $(document).ready(function(){
        autoOpen: false,
        width: 575,
        modal: true,
-       title: 'Add a data sender',
+       title: 'Add A Data Sender',
        close: function() {
 
            $('.errorlist').remove();

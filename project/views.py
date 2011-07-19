@@ -33,7 +33,7 @@ from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 
-PAGE_SIZE = 4
+PAGE_SIZE = 10
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
 DATE_TYPE_OPTIONS = ["Latest"]
