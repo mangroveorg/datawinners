@@ -150,6 +150,7 @@ def create_datasender(request):
     if request.method == 'POST':
         dbm = get_database_manager(request)
         form, form_errors, message, success = _validate_post_data(dbm, request)
+        form = ReporterRegistrationForm()
         response = render_to_response('datasender_form.html',
                 {'form': form, 'message': message, 'form_errors': form_errors, 'success': success},
                                       context_instance=RequestContext(request))
