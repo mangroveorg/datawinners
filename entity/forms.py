@@ -37,9 +37,9 @@ class ReporterRegistrationForm(Form):
             return geo_code_string
         lat_long = geo_code_string.split(' ')
         if len(lat_long) != 2:
-            raise ValidationError("GPS coordinates must be in the format 'lat long'.")
+            raise ValidationError("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
         if not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
-            raise ValidationError("Incorrect GPS coordinates. Please resubmit.")
+            raise ValidationError("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
         return geo_code_string
 
     def clean(self):

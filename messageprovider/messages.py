@@ -49,13 +49,22 @@ exception_messages = {
 
     ex.SMSParserInvalidFormatException: {
         DEFAULT: u"Invalid message format.",
-        SMS: u"Invalid message format. Please submit the message in the format: <Questionnaire Code><SPACE>+<Question Code><SPACE><Answer>"
+        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
     },
-    
+    ex.SubmissionParseException: {
+        DEFAULT: u"Invalid message format.",
+        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
+    },
     ex.NoQuestionsSubmittedException: {
-        DEFAULT: u"Please submit atleast one valid question code"
-    },
+        DEFAULT: u"Please submit atleast one valid question code",
+        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
 
+    },
+    ex.NoQuestionsSubmittedException:{
+        DEFAULT: u"Invalid message format.",
+        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
+
+    },
     ex.MultipleSubmissionsForSameCodeException:{
         DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
     },
