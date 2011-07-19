@@ -1,10 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from unittest.case import SkipTest
-from datawinners.location.LocationTree import LocationTree, get_locations_for_country
+from datawinners.location.LocationTree import LocationTree, get_locations_for_country, get_location_groups_for_country
 
 
-@SkipTest
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
         self.tree = LocationTree()
@@ -40,6 +39,10 @@ class TestLocationTree(unittest.TestCase):
     def test_should_get_filtered_list_lowest_levels(self):
         self.assertEqual(['ZOMA BEALOKA, ANTANANARIVO', 'ZAZAFOTSY, FIANARANTSOA'], get_locations_for_country(country="Madagascar", start_with="z"))
 
+    def test_should_get_filtered_list_group_by_levels(self):
+        expected_location_group={"Commune":["SOASERANA,MANJA,MENABE,TOLIARY"]}
+        actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soa")
+        self.assertEqual(expected_location_group, actual_location_groups)
 
     def test_should_find_centriod_of_the_location(self):
         self.assertEqual((46.88506586909285, -18.813739584921834), self.tree.get_centroid(location='Ambatomanjaka'))
