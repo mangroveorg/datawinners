@@ -20,7 +20,7 @@ $(document).ready(function() {
                 DW.viewModel.message.s(DW.viewModel.message.s().toLowerCase());
             $.post($('#post_url').val(), {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel), null, 1)},
                     function(response) {
-                        var d = JSON.parse(response);
+                        var d = $.parseJSON(response);
                         $('#message').remove();
                         if (d.success) {
                             $('<span id="message" class="success_message">' + d.message + '</span>').insertBefore($('#question_form'));
