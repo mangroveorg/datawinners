@@ -75,6 +75,14 @@
                 {{ form.devices.errors }}
             </li>
             </fieldset>
+             <fieldset>
+                <legend>Data Senders</legend>
+            <li class="{{ form.sender_group.css_classes  }} form-row-10px">
+                {{ form.sender_group.label_tag }}
+                {{ form.sender_group }}
+                {{ form.sender_group.errors }}
+            </li>
+             </fieldset>
         </ul>
 
     </div>
