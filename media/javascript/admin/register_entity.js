@@ -23,7 +23,7 @@ $(document).ready(function() {
                         var d = $.parseJSON(response);
                         $('#message').remove();
                         if (d.success) {
-                            $('<span id="message" class="success_message">' + d.message + '</span>').insertBefore($('#question_form'));
+                            $('<span id="message" class="success-message-box">' + d.message + '</span>').insertBefore($('#question_form'));
                             $("#entity_name").val('');
                             $("#location").val('');
                             $("#geo_code").val('');

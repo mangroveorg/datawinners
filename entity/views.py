@@ -27,7 +27,7 @@ from datawinners.entity import import_data as import_module
 def _validate_post_data(dbm, request):
     form = ReporterRegistrationForm(request.POST)
     message = None
-    success = True
+    success = False
     form_errors = []
     form_errors.extend(form.non_field_errors())
     if form.is_valid():
@@ -43,6 +43,7 @@ def _validate_post_data(dbm, request):
             response = web_player.accept(
                 Request(message=_get_data(form_data), transportInfo=TransportInfo(transport='web',source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "Reporter", "web")
+            success = True
         except MangroveException as exception:
             form_errors.append(exception.message)
             success = False
@@ -144,6 +145,9 @@ def submit(request):
 
 
 def create_datasender(request):
+    """
+
+    """
     if request.method == 'GET':
         form = ReporterRegistrationForm()
         return render_to_response('entity/create_datasender.html', {'form': form},
@@ -151,7 +155,8 @@ def create_datasender(request):
     if request.method == 'POST':
         dbm = get_database_manager(request)
         form, form_errors, message, success = _validate_post_data(dbm, request)
-        form = ReporterRegistrationForm()
+        if success:
+            form = ReporterRegistrationForm()
         response = render_to_response('datasender_form.html',
                 {'form': form, 'message': message, 'form_errors': form_errors, 'success': success},
                                       context_instance=RequestContext(request))
