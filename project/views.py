@@ -383,6 +383,8 @@ def subjects_wizard(request, project_id=None):
 
 def _format_field_description_for_data_senders(reg_form):
     for field in reg_form.fields:
+        if field.code == 't':
+            continue
         temp = field.label.get("eng")
         temp = temp.replace("subject", "data sender")
         field.label.update(eng=temp)
@@ -482,7 +484,7 @@ def datasenders(request, project_id=None):
     project, project_links = _get_project_and_project_link(manager, project_id)
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     _format_field_description_for_data_senders(reg_form)
-    return render_to_response('project/datasenders.html', {'fields': reg_form.fields[1:], 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+    return render_to_response('project/datasenders.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
