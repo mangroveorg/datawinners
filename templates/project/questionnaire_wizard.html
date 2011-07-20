@@ -27,7 +27,6 @@
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_left_navigation.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/html" id="choice-template">
         <li>
@@ -41,13 +40,13 @@
         <div class="question_list">
             <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
+             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
                  <li>
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
                          <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
                     </div>
-                     <span class="selected_question_arrow"></span>
+                     <span class="selected_question_arrow" data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
                  </li>
 
             </div>

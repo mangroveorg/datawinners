@@ -118,10 +118,10 @@ table{
 
 /* Inline and block */
 .inline{
-    display:inline;
+    display:inline !important;
 }
 .none{
-    display: none;
+    display: none !important;
 }
 
 /* List styles */
