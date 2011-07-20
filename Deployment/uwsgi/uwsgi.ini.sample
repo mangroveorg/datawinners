@@ -1,0 +1,14 @@
+[uwsgi]
+socket = 127.0.0.1:9001
+master = true
+processes = 4
+chdir = /home/apgeorge/code/mangrove/src/datawinners
+pythonpath = /home/apgeorge/code/mangrove/src
+env = DJANGO_SETTINGS_MODULE=datawinners.settings
+module = django.core.handlers.wsgi:WSGIHandler()
+pidfile = /tmp/project-master.pid
+vacuum = true
+max-requests = 5000
+daemonize = /var/log/uwsgi.log
+home = /home/apgeorge/code/VEs/mangrove
+
