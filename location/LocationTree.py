@@ -53,35 +53,34 @@ def get_location_groups_for_country(country, start_with):
     search_string = start_with.lower()
 
     data_dict = {}
-    data_dict['like'] = psycopg2.Binary('%'+ search_string +'%')
-
+    data_dict['like'] = psycopg2.Binary(search_string +'%')
     sql = """
-    select 'LEVEL4' as LEVEL, l.*
+    select 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
 where name_4  ILIKE CAST(%(like)s as TEXT)
                  union
-select 'LEVEL3' as LEVEL,  l.*
+select 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
 where name_3  ILIKE CAST(%(like)s as TEXT)
                 union
-select 'LEVEL2' as LEVEL,  l.*
+select 'LEVEL2' as LEVEL,  name_2||','||name_1 as NAME
   from location_locationlevel l
 where name_2  ILIKE CAST(%(like)s as TEXT)
   union
-select 'LEVEL1' as LEVEL,  l.*
+select 'LEVEL1' as LEVEL,  name_1 as NAME
   from location_locationlevel l
 where name_1  ILIKE CAST(%(like)s as TEXT)
     """
 
 
-    print list(LocationLevel.objects.raw(sql,params = data_dict))
+#    print list(LocationLevel.objects.raw(sql,params = data_dict))
 
-#    cursor.execute(sql, data_dict )
-#    rows = cursor.fetchall()
-#    location_dict = defaultdict(list)
-#    for location,level in rows:
-#        location_dict[level].append(location)
-#    return location_dict
+    cursor.execute(sql, data_dict )
+    rows = cursor.fetchall()
+    location_dict = defaultdict(list)
+    for level, location in rows:
+        location_dict[level].append(location)
+    return location_dict
 
 
 #    for key,vals in group:
@@ -108,7 +107,7 @@ class LocationTree(object):
                 except AttributeError as e:
                     break
                 i += 1
-                path_list.append(value)
+                path_list.append(value.lower())
             self.tree.add_path(path_list)
 
     def nodes(self):
@@ -122,13 +121,13 @@ class LocationTree(object):
         pass
 
     def get_next_level(self, parent):
-        return self.tree.neighbors(parent)
+        return self.tree.neighbors(parent.lower())
 
     def get_hierarchy_path(self, location_name):
-        return nx.shortest_path(self.tree, ROOT, location_name)[1:]
+        return nx.shortest_path(self.tree, ROOT, location_name.lower())[1:]
 
     def exists(self, location):
-        return location in self.tree.nodes()
+        return location.lower() in self.tree.nodes()
 
     def get_location_for_geocode(self, lat, long):
         point = Point(long, lat)

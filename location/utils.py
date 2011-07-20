@@ -22,15 +22,4 @@ def load_from_madagascar_ocha_wgs84_shp_file(root_directory,verbose):
         location.name_0 = "Madagascar"
         location.save()
 
-def load_from_wgs_shp_file(root_directory,verbose):
-    for root, dirs, files in os.walk(root_directory):
-        files = glob.glob(root + '/lim_com*.shp')
-        for file in files:
-            try:
-                lm = LayerMapping(LocationLevel, file, madborder_mapping, transform=True, encoding='iso-8859-1')
-                lm.save(strict=True,verbose=verbose)
-            except LayerMapError:
-                continue
-    location_level = LocationLevel.objects.all()
-    for location in location_level:
 
