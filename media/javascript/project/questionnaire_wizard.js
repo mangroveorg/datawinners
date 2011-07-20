@@ -139,21 +139,4 @@ $(document).ready(function() {
                 viewModel.selectedQuestion().max_length("");
             }
     );
-
-        $(".questionnaire_preview").dialog({
-                title: "Questionnaire Preview",
-                modal: true,
-                autoOpen: false,
-                height: 700,
-                width: 800,
-                closeText: 'hide',
-                open: function() {
-                  // Here I load the content. This is the content of your link.
-                  $(".questionnaire_preview").load(quessionarie_preview_link, function() {});
-                }
-              }
-          );
-        $(".preview").bind("click", function(){
-           $(".questionnaire_preview").dialog("open");
-        });
 });
