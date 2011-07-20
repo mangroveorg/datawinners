@@ -23,3 +23,10 @@ def load_from_madagascar_ocha_wgs84_shp_file(root_directory,verbose):
         location.save()
 
 
+def map_location_groups_to_categories(input, country):
+    level_mapping = location_level_mapping[country.lower()]
+    categories = []
+    for level,location in input.items():
+        for loc in location:
+            categories.append({'category': (level_mapping[level.lower()]),'label':loc.decode()})
+    return categories

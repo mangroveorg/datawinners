@@ -30,3 +30,12 @@ madagascar_wgs84_mapping = {
     'geom' : 'MULTIPOLYGON',
 }
 
+
+location_level_mapping = {
+    "madagascar": {"level1": "Region",
+                   "level2": "District",
+                   "level3": "Commune",
+                   "level4": "Fokontany"
+                   }
+}
+
