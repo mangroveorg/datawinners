@@ -2,7 +2,8 @@ form fieldset legend {
   font-size: 20px; }
 form ul li {
   overflow: hidden;
-  margin-bottom: 20px; }
+  margin-bottom: 15px;
+  padding-bottom: 5px; }
   form ul li input[type=text], form ul li input[type=password] {
     width: 350px;
     height: 25px;

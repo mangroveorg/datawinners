@@ -16,9 +16,13 @@
     top: -8px; }
   .wizard #step_wizard .ui-slider-range {
     background: white;
-    -moz-border-radius: 5px; }
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; }
   .wizard #step_wizard.ui-corner-all {
-    -moz-border-radius: 5px; }
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; }
   .wizard #step_wizard.ui-widget-content {
     background: #176aba; }
 .wizard .create_a_project {
