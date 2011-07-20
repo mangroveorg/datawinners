@@ -11,7 +11,7 @@ class TestProjectProfile(unittest.TestCase):
 
     def test_creates_project_profile_form(self):
         base_form = {'name': 'Test Project', 'goals': 'Test Goals', 'project_type': 'survey', 'entity_type': 'Reporter', 'activity_report':'yes',
-                     'devices': ['sms']
+                     'devices': ['sms'], 'sender_group':'open'
         }
         form = ProjectProfile(data=base_form, entity_list=[['Reporter']])
         self.assertTrue(form.is_valid(), form.errors)
@@ -23,7 +23,7 @@ class TestProjectProfile(unittest.TestCase):
 
     def test_field_goals_not_required(self):
         base_form = {'name': 'Test Project', 'project_type': 'survey', 'entity_type': 'Reporter',
-                     'devices': ['sms'], 'activity_report':'no'
+                     'devices': ['sms'], 'activity_report':'no', 'sender_group':'open'
         }
         form = ProjectProfile(data=base_form, entity_list=[['Reporter']])
         assert form.is_valid()

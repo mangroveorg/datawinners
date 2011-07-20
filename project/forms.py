@@ -19,7 +19,11 @@ class MyRadioFieldRenderer(RadioFieldRenderer):
             attrs = self.attrs.copy()
             if choice[0] == 'public information':
                 attrs['disabled'] = 'disabled'
+            if choice[0] == 'close':
+                attrs['disabled'] = 'disabled'
             if choice[0] == 'survey':
+                attrs['checked'] = True
+            if choice[0] == 'open':
                 attrs['checked'] = True
             yield RadioInput(self.name, self.value, attrs, choice, i)
 
@@ -31,16 +35,18 @@ class MyRadioSelect(forms.RadioSelect):
 class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
                             ('public information', 'Public information: I want to send information'))
-    DEVICE_CHOICES = (('sms', 'SMS'), ('smartphone', 'Smart Phone'), ('web', 'Web'))
+    DEVICE_CHOICES = (('sms', 'SMS'),)
     SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender(eg. monthly activity report)'),('no','Other Subject'))
+    GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data on registration'),('close','Closed Data Sender Group. Only certain people can send in data'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
     project_type = ChoiceField(label='Project Type', widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
+    sender_group = ChoiceField(label='Open or Closed Group', widget=MyRadioSelect, choices=GROUP_TYPE_CHOICES)
     activity_report = ChoiceField(label="What is this questionnaire about?", widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=('no','Other Subject'))
     entity_type = ChoiceField(label="Other Subjects", required=False)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
-                                  initial=DEVICE_CHOICES[2], required=False)
+                                  initial=DEVICE_CHOICES[0], required=False)
 
     def __init__(self, entity_list,  *args, **kwargs):
         assert isinstance(entity_list, list)

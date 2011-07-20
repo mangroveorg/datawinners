@@ -1,6 +1,8 @@
 $(document).ready(function(){
     $("#tab_items .define").addClass("current");
     set_current_tab();
+    $("#id_devices_0").attr('disabled', true);
+
     if ($('#id_activity_report_0').attr('checked')==true) {
              $('#id_entity_type').attr('disabled', true);
     }

@@ -19,3 +19,6 @@ fieldset {
     width: auto; }
   #add_subject_type input[type=text] {
     width: 200px; }
+
+#id_entity_type {
+  min-width: 130px; }

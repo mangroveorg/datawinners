@@ -23,8 +23,9 @@ class Project(DocumentBase):
     devices = ListField(TextField())
     qid = TextField()
     state = TextField()
+    sender_group = TextField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -35,6 +36,7 @@ class Project(DocumentBase):
         self.devices = devices
         self.state = state
         self.activity_report = activity_report
+        self.sender_group = sender_group
 
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('all_projects', key=self.name)
