@@ -62,6 +62,7 @@ class ProjectProfile(Form):
         return self.cleaned_data.get('entity_type')
 
     def clean(self):
+        self.cleaned_data['devices'] = ['sms']
         if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
             if self.errors.get('entity_type') is not None:
