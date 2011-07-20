@@ -81,7 +81,7 @@
 
 .SMS_tester_section {
   border: 1px solid #CCCCCC;
-  height: 120px;
+  height: 150px;
   background: #EEEEEE;
   padding: 10px 6px 0 20px;
   float: left; }
@@ -99,13 +99,18 @@
   .SMS_tester_section .import_list {
     padding-right: 20px;
     margin-left: 20px; }
-  .SMS_tester_section .sms_questionnaire, .SMS_tester_section .preview_questionnaire {
+  .SMS_tester_section .sms_questionnaire {
     background: url(/media/images/mobile_icons.png) no-repeat left 4px;
-    padding: 10px 10px 10px 20px;
+    float: right;
+    padding: 10px 10px 10px 20px; }
+  .SMS_tester_section .preview_links {
     float: right; }
+    .SMS_tester_section .preview_links a {
+      padding: 10px 0px 10px 5px;
+      float: right; }
   .SMS_tester_section .preview_questionnaire {
     background: url(/media/images/mobile_icons.png) no-repeat 0px -71px;
-    padding-left: 25px; }
+    padding-left: 25px !important; }
 
 .mobile_block p {
   font-size: 12px; }

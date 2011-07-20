@@ -36,7 +36,7 @@ class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', 'Survey project: I want to collect data from the field'),
                             ('public information', 'Public information: I want to send information'))
     DEVICE_CHOICES = (('sms', 'SMS'),)
-    SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender(eg. monthly activity report)'),('no','Other Subject'))
+    SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender (eg. monthly activity report)'),('no','Other Subject'))
     GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data on registration'),('close','Closed Data Sender Group. Only certain people can send in data'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
@@ -62,6 +62,7 @@ class ProjectProfile(Form):
         return self.cleaned_data.get('entity_type')
 
     def clean(self):
+        self.cleaned_data['devices'] = ['sms']
         if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
             if self.errors.get('entity_type') is not None:

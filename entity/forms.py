@@ -20,7 +20,7 @@ class ReporterRegistrationForm(Form):
     telephone_number = RegexField(required=True, regex="^[^a-z]*$", max_length=15, label="* Mobile Number",
                                   error_message="Please enter a valid phone number")
     geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
-    location = CharField(max_length=30, required=False, label="Enter location")
+    location = CharField(max_length=100, required=False, label="Enter location")
 
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)

@@ -25,7 +25,7 @@ def index(request):
         questionnaire = manager.get(project['qid'], FormModel)
         questionnaire_code=questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
-        if project.state == ProjectState.ACTIVE:
+        if project.state != ProjectState.INACTIVE:
             disabled=""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log=reverse(project_results, args=[project_id, questionnaire_code])

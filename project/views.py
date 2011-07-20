@@ -96,7 +96,7 @@ def create_profile(request):
         entity_type=form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
-                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'])
+                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'], sender_group=form.cleaned_data['sender_group'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
             pid = project.save(manager)
@@ -186,6 +186,7 @@ def index(request):
         activate_link = reverse(activate_project, args=[project_id])
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link, activate_link=activate_link, state=row['value']['state'])
+        project["created"] = project["created"].strftime("%d %B, %Y")
         project_list.append(project)
     return render_to_response('project/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))
@@ -421,7 +422,10 @@ def _make_links_for_finish_page(project_id, form_model):
                     'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
                     'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
                     'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
-                    'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id])}
+                    'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
+                    'subject_registration_preview_link' : reverse(subject_registration_form_preview, args=[project_id]),
+                    'sender_registration_preview_link' : reverse(sender_registration_form_preview, args=[project_id])
+                    }
     return project_links
 
 @login_required(login_url='/login')

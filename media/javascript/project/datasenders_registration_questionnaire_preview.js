@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $(".sender_registration_preview").dialog({
-        title: "Sender Registration Preview",
+        title: "Data Sender Registration Preview",
         modal: true,
         autoOpen: false,
         height: 700,
