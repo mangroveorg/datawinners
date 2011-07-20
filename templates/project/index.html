@@ -27,7 +27,7 @@
                 <td>{{ project.type }}</td>
                 <td>{{ project.state }}</td>
                 <td>
-                    {% if  project.state  == 'Inactive' %}
+                    {% if  project.state  != 'Active' %}
                         <a href="{{ project.activate_link }}">Activate</a>
 
                     {% endif %}
