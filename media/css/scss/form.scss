@@ -4,11 +4,14 @@ $border_color: #CCCCCC;
 $link_color:#0070ac;
 
 form{
-        fieldset{
-            legend{
-                font-size:20px;
-            }
+     fieldset{
+        legend{
+            font-size:20px;
         }
+     }
+    .button{
+        margin-left:440px;
+    }
     ul li{
         overflow:hidden;
         margin-bottom:15px;

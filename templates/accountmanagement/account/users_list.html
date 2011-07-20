@@ -9,10 +9,11 @@
 
 {% block content %}
 <div class="text_align_right margin_bottom_20">
-  <a href= "/account/user/new/" class="button">Add Users</a>
+  <a href= "/account/user/new/">Add Users</a>
 </div>
 <div id="users_list">
-    <table>
+    <table  class="styled_table">
+    <thead>
       <th>
         First Name
       </th>
@@ -25,6 +26,7 @@
       <th>
         Projects
       </th>
+    </thead>
       {% for user in users %}
       <tr>
         <td>
