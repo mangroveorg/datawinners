@@ -20,10 +20,13 @@ location_level_mapping = {
     'geom' : 'MULTIPOLYGON',
 }
 
-madborder_mapping = {
-    'name_1': 'LIB_PROV',
-    'name_2': 'LIB_REG',
-    'name_3': 'LIB_DIST',
-    'name_4': 'LIB_COM',
-    'geom': 'MULTIPOLYGON',
-    }
+
+# Auto-generated `LayerMapping` dictionary for WorldBorders model
+madagascar_wgs84_mapping = {
+    'name_1' : 'LIB_REG',
+    'name_2' : 'LIB_DIST',
+    'name_3' : 'LIB_COM',
+    'name_4' : 'LIB_FKT',
+    'geom' : 'MULTIPOLYGON',
+}
+
