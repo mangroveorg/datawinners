@@ -400,7 +400,7 @@ def datasenders_wizard(request, project_id=None):
         import_reporter_form = ReporterRegistrationForm()
         _format_field_description_for_data_senders(reg_form)
         return render_to_response('project/datasenders_wizard.html',
-                {'fields': reg_form.fields[1:], "previous": previous_link,
+                {'fields': reg_form.fields, "previous": previous_link,
                  'form': import_reporter_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
                                   context_instance=RequestContext(request))
