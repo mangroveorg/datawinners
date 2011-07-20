@@ -125,6 +125,12 @@ table {
   padding: 5px 0 10px 25px;
   background: url(/media/images/icons.png) no-repeat left -167px; }
 
+.cancel {
+  float: right;
+  margin: 10px 20px 0 0;
+  background: url(/media/images/icons.png) no-repeat left -170px;
+  padding-left: 25px; }
+
 /* Titles */
 .highlighted_title {
   color: #C35C00; }
