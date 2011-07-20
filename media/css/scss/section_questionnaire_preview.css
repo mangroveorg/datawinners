@@ -14,7 +14,7 @@
       #questionnaire_preview .questionnaire_preview .answer .multiple_select li {
         list-style-type: upper-alpha; }
   #questionnaire_preview .questionnaire_preview label {
-    float: left !important;
+    /*float:left !important;*/
     font-weight: normal; }
   #questionnaire_preview .questionnaire_preview input[type=radio], #questionnaire_preview .questionnaire_preview input[type=checkbox] {
     float: left !important; }
