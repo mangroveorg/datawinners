@@ -18,6 +18,9 @@
     {{ block.super }}
     <script type="text/javascript">
           var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
+          var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
+          var sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
+
         $(document).ready(function() {
             $("#tab_items .finish").addClass("current");
             set_current_tab();
@@ -27,6 +30,9 @@
     <script type="text/javascript" src="/media/javascript/project/finish_and_test.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_preview.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/datasenders_registration_questionnaire_preview.js"></script>
+
 {% endblock %}
 
 {% block step_number %}
@@ -136,7 +142,11 @@
             <h6>Web Questionnaire</h6>
 
             <p>Preview and print your questionnaire </p>
-            <a href="#" class="preview_questionnaire preview" > Web Questionnaire</a>
+            <div class='preview_links'>
+                <a class="preview_sender_registration_form" href="#">Data Sender</a>
+                <a class="preview_subject_registration_form" href="#">Subject |</a>
+                <a href="#" class="preview_questionnaire preview" >Web |</a>
+            </div>
         </div>
     </div>
 
@@ -167,8 +177,12 @@
         <div class="questionnaire_preview">
              Generating the questionnaire preview.
         </div>
-
-
+        <div class="sender_registration_preview">
+            Generating the questionnaire preview.
+        </div>
+        <div class="subject_registration_preview">
+            Generating the questionnaire preview.
+        </div>
 
 {% endblock %}
 

@@ -421,7 +421,10 @@ def _make_links_for_finish_page(project_id, form_model):
                     'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
                     'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
                     'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
-                    'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id])}
+                    'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
+                    'subject_registration_preview_link' : reverse(subject_registration_form_preview, args=[project_id]),
+                    'sender_registration_preview_link' : reverse(sender_registration_form_preview, args=[project_id])
+                    }
     return project_links
 
 @login_required(login_url='/login')

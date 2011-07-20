@@ -108,7 +108,7 @@
 }
 .SMS_tester_section{
     border: 1px solid #CCCCCC;
-    height:120px;
+    height:150px;
     background: #EEEEEE;
     padding: 10px 6px 0 20px;
     float:left;
@@ -132,15 +132,22 @@
         padding-right:20px;
         margin-left:20px;
     }
-     .sms_questionnaire, .preview_questionnaire{
+    .sms_questionnaire{
         background:url(/media/images/mobile_icons.png) no-repeat left 4px;
-        padding:10px 10px 10px 20px;
         float:right;
-     }
-     .preview_questionnaire{
+        padding:10px 10px 10px 20px;
+    }
+    .preview_links{
+        float:right;
+        a{
+            padding: 10px 0px 10px 5px;
+            float:right;
+        }
+    }
+    .preview_questionnaire{
         background:url(/media/images/mobile_icons.png) no-repeat 0px -71px;
-        padding-left:25px;
-     }
+        padding-left: 25px !important;
+    }
 }
 .mobile_block{
 p{
