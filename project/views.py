@@ -255,7 +255,6 @@ def project_results(request, project_id=None, questionnaire_code=None):
             data_record = manager._load_document(each, DataRecordDocument)
             manager.invalidate(each)
             SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
-
         current_page = request.POST.get('current_page')
         rows, results = _load_submissions(int(current_page), manager, questionnaire_code)
         return render_to_response('project/log_table.html',
@@ -415,6 +414,15 @@ def activate_project(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     project.activate(manager)
+    form_model = helper.load_questionnaire(manager, project.qid)
+    oneDay = datetime.timedelta(days=1)
+    tomorrow = datetime.datetime.now() + oneDay
+    submissions, ids = get_submissions_made_for_form(manager, form_model.form_code, start_time=0, end_time=int(mktime(tomorrow.timetuple())) * 1000,
+                                                         page_size=None)
+    for each in ids:
+        data_record = manager._load_document(each, DataRecordDocument)
+        manager.invalidate(each)
+        SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 def _make_links_for_finish_page(project_id, form_model):
