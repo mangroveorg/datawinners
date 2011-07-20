@@ -68,10 +68,7 @@
     <p>Review the question by clicking on each</p>
 {% endblock %}
 {% block content %}
-    <div class="preview_block"><a class="preview" href="#"> Preview Questionnaire </a> |
-    <a class="preview_subject_registration_form" href="#"> Preview Subject  </a> |
-    <a class="preview_sender_registration_form" href="#"> Preview Datasender  </a>
-    </div>
+    <div class="preview_block"><a class="preview" href="#"> Preview Questionnaire </a></div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
@@ -80,7 +77,7 @@
                     <label>Questionnaire Code :</label>
                     <input id='project-id' type='hidden' value="{{ project.id }}"/>
                     <input id='questionnaire-code' class='required' disabled="disabled" value="{{ questionnaire_code }}"/>
-                    <span id="questionnaire-code-error"/>
+                    <span id="questionnaire-code-error"></span>
                 </li>
             </ul>
             <div class="questionnare_content grid_23 alpha omega">
@@ -114,12 +111,6 @@
         </fieldset>
     </form>
     <div class="questionnaire_preview">
-        Generating the questionnaire preview.
-    </div>
-    <div class="subject_registration_preview">
-        Generating the questionnaire preview.
-    </div>
-    <div class="sender_registration_preview">
         Generating the questionnaire preview.
     </div>
 {% endblock %}
