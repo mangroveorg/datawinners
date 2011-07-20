@@ -3,7 +3,7 @@ import unittest
 from unittest.case import SkipTest
 from datawinners.location.LocationTree import LocationTree, get_locations_for_country, get_location_groups_for_country
 
-
+@SkipTest
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
         self.tree = LocationTree()
