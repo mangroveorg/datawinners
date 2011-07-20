@@ -55,13 +55,8 @@ exception_messages = {
         DEFAULT: u"Invalid message format.",
         SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
     },
-    ex.NoQuestionsSubmittedException: {
-        DEFAULT: u"Please submit atleast one valid question code",
-        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
-
-    },
     ex.NoQuestionsSubmittedException:{
-        DEFAULT: u"Invalid message format.",
+        DEFAULT: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code",
         SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
 
     },
