@@ -64,6 +64,8 @@ body .ui-dialog {
   width: 100% !important; }
   body .ui-dialog .ui-dialog-titlebar, body .ui-dialog .preview_block {
     display: none; }
+  body .ui-dialog .ui-dialog-content {
+    overflow: visible !important; }
 
 .ui-widget-content {
   border: 0 !important; }

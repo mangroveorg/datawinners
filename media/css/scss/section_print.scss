@@ -92,6 +92,9 @@ body{
         .ui-dialog-titlebar, .preview_block {
             display:none;
         }
+        .ui-dialog-content{
+            overflow:visible !important;
+        }
     }
 }
 .ui-widget-content{
