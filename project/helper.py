@@ -331,5 +331,4 @@ def _get_constraint(field):
     
 
 def get_preview_for_field(field):
-    question = {"description": field.name, "code": field.code, "type": field.type, "constraint": _get_constraint(field),"instruction": field.instruction}
-    return question
+    return {"description": field.name, "code": field.code, "type": field.type, "constraint": _get_constraint(field),"instruction": field.instruction}
