@@ -22,7 +22,7 @@
         </thead>
         {% for project in projects %}
             <tr>
-                <td><a href={{ project.link }} class='project-id-class'>{{ project.name }}</a></td>
+                <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
                 <td>{{ project.created }}</td>
                 <td>{{ project.type }}</td>
                 <td>{{ project.state }}</td>
