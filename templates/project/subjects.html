@@ -15,23 +15,16 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
-    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
-
+    <script type="text/javascript" src="/media/javascript/project/subjects_when_project_active.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("#tab_items .subjects").addClass("current");
-            set_current_tab();
-        })
+            var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
     </script>
-
 {% endblock %}
 
 
@@ -44,5 +37,9 @@
         {% activetab "secondary_tab_nav" "criteria" %}
         {{ block.super }}
     {% endblock %}
+    <div class='preview_block'><a class="preview_subject_registration_form" href="#"> Preview Subject's questionnaire</a></div>
     {% include 'project/question_table.html' %}
+    <div class="subject_registration_preview">
+        Generating the questionnaire preview.
+    </div>
 {% endblock %}
