@@ -8,7 +8,7 @@ class OrganizationSettingAdmin(admin.ModelAdmin):
     fields = ('sms_tel_number',)
 
     def organization_name(self,obj):
-        return obj.organization.name;
+        return obj.organization.name
 
     def organization_id(self,obj):
         return obj.organization.org_id

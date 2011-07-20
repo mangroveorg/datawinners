@@ -42,9 +42,8 @@ TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
 def _make_project_links(project, questionnaire_code):
     project_id = project.id
-    project_links = {}
-    project_links['overview_link'] = reverse(project_overview, args=[project_id])
-    project_links['activate_project_link'] = reverse(activate_project, args=[project_id])
+    project_links = {'overview_link': reverse(project_overview, args=[project_id]),
+                     'activate_project_link': reverse(activate_project, args=[project_id])}
 
     if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
         project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])

@@ -3,14 +3,11 @@
 
 {% block navigation %}
     <div class="grid_24 tab_navigation">
-        {% if project.state == 'Inactive' %}
-            <ul class="inactive_tab">
-            {% else %}
             <ul>
-        {% endif %}
             <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.overview_link }}">Overview</a>
             </li>
+            {% if project.state == 'Active' %}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.subjects_link }}">Subjects</a>
             </li>
@@ -20,9 +17,12 @@
             <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.datasenders_link }}">Data Senders</a>
             </li>
+            {% endif %}
+            {% if project.state != 'Inactive' %}
             <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
               <a href={{ project_links.data_analysis_link }}>Data</a>
             </li>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}

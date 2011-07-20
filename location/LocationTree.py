@@ -9,12 +9,12 @@ FILTER_LIMIT = 10
 
 def _get_lowest_level(row):
     i = 0
-    while(1):
+    while 1:
         try:
             value = getattr(row, "name_%s" % (i,))
             i += 1
         except AttributeError as e:
-            break;
+            break
     return i - 1
 
 
@@ -55,12 +55,12 @@ class LocationTree(object):
         for row in rows:
             path_list = ['root']
             i = 0
-            while(1):
+            while 1:
                 field = "name_%s" % (i,)
                 try:
                     value = getattr(row,field)
                 except AttributeError as e:
-                    break;
+                    break
                 i += 1
                 path_list.append(value)
             self.tree.add_path(path_list)
