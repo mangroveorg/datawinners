@@ -8,13 +8,13 @@
               <a href="{{ project_links.overview_link }}">Overview</a>
             </li>
             {% if project.state == 'Active' %}
-            <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %} {% if project.state == 'Test' %}test_state{% endif %}">
+            <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.subjects_link }}">Subjects</a>
             </li>
-            <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %} {% if project.state == 'Test' %}test_state{% endif %}">
+            <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.questionnaire_link }}">Questionnaire</a>
             </li>
-            <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %} {% if project.state == 'Test' %}test_state{% endif %}">
+            <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
               <a href="{{ project_links.datasenders_link }}">Data Senders</a>
             </li>
             {% endif %}
