@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
+from django.core.exceptions import ValidationError
 from django.forms.forms import Form
 from django.forms.widgets import RadioFieldRenderer, RadioInput
 from django import forms
@@ -49,10 +50,15 @@ class ProjectProfile(Form):
         self.fields['name'].widget.attrs['watermark'] = "Enter a project name"
         self.fields['goals'].widget.attrs['watermark'] = "Describe what your team hopes to achieve by collecting this data"
 
+    def clean_entity_type(self):
+        if self.cleaned_data.get('entity_type') == "" and self.cleaned_data.get("activity_report") == 'no' :
+            raise ValidationError("This field is required")
+        return self.cleaned_data.get('entity_type')
+
     def clean(self):
         if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
-        if self.cleaned_data['entity_type'] == REPORTER and self.errors.get('entity_type') is not None:
-            self.errors['entity_type'] = ""
-                    
+            if self.errors.get('entity_type') is not None:
+                self.errors['entity_type'] = ""
+
         return self.cleaned_data
