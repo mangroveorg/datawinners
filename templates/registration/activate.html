@@ -1,17 +1,17 @@
-{% extends "layout.html" %}
+{% extends "layout_registration.html" %}
 
 {% block content %}
 <div class="span-18 box">
     <div class="span-9">
 {% if account %}
 
-<p>Account successfully activated</p>
+<p class="success-message-box">Account successfully activated</p>
 
 <p><a href="{% url auth_login %}">Log in</a></p>
 
 {% else %}
 
-<p>Account activation failed</p>
+<p class="message-box">Account activation failed</p>
 
 {% endif %}
 
