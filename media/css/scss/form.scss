@@ -179,6 +179,11 @@ a{
     color:$link_color;
     outline:none;
 }
+a:hover{
+    color:$link_color;
+    text-decoration:underline;
+    outline:none;
+}
 textarea{
     width:$text_box_width;
     height:100px;

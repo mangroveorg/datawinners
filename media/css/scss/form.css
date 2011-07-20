@@ -135,6 +135,11 @@ a {
   color: #0070ac;
   outline: none; }
 
+a:hover {
+  color: #0070ac;
+  text-decoration: underline;
+  outline: none; }
+
 textarea {
   width: 350px;
   height: 100px;
