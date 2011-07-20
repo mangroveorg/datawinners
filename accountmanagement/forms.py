@@ -70,6 +70,9 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False)
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict({'class': 'required'},
+                                                               maxlength=75)),
+                             label=_("Email address"), error_messages={'invalid': 'Enter a valid email address. Example:name@organization.com'})
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
     office_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Office Phone",

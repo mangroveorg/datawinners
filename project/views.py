@@ -96,7 +96,7 @@ def create_profile(request):
         entity_type=form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
-                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'])
+                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'], sender_group=form.cleaned_data['sender_group'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
             pid = project.save(manager)
