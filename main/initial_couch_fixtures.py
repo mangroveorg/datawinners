@@ -220,7 +220,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no')
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no',sender_group="open")
     project.qid = qid
     try:
         project.save(manager)
@@ -236,7 +236,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli002").delete()
         qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no')
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="open")
     project2.qid = qid2
     try:
         project2.save(manager)

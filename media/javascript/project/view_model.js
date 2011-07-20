@@ -28,8 +28,10 @@ var viewModel =
         return viewModel.questions().length > 2
     },
     removeQuestion: function(question) {
+        var index = $.inArray(question, viewModel.questions());
         viewModel.questions.remove(question);
-        viewModel.changeSelectedQuestion(viewModel.questions()[0]);
+        var next_index = (index) % viewModel.questions().length;
+        viewModel.changeSelectedQuestion(viewModel.questions()[next_index]);
 
     },
     removeIfQuestionIsSelectedQuestion: function(question) {

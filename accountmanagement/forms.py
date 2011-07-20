@@ -17,7 +17,7 @@ class OrganizationForm(ModelForm):
 
     name = forms.CharField(required=True, label='* Organization name')
     sector = forms.CharField(widget=(
-        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))))
+        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))), label='Organization Sector')
     address = forms.CharField(required=True, max_length=30, label='* Address')
     city = forms.CharField(max_length=30, required=True, label='* City')
     state = forms.CharField(max_length=30, required=False, label='State / Province')
@@ -72,7 +72,7 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     title = forms.CharField(max_length=30, required=False)
     email = forms.EmailField(widget=forms.TextInput(attrs=dict({'class': 'required'},
                                                                maxlength=75)),
-                             label=_("Email address"), error_messages={'invalid': 'Enter a valid email address. Example:name@organization.com'})
+                             label=_("* Email address"), error_messages={'invalid': 'Enter a valid email address. Example:name@organization.com'})
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
     office_phone = forms.RegexField(required=False, regex="^[^a-z]*$", max_length=15, label="Office Phone",
