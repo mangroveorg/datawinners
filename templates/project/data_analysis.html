@@ -48,6 +48,11 @@
     {{ block.super }}
     {% endblock %}
     <div class="grid_23">
+        {% if  project.state  == "Test"  %}
+        <div class="warning-message-box">
+           <p> This Project is not yet active. Data displayed is test data. <a href="{{ project_links.activate_project_link }}" class="activate_project">Click Here to Activate</a></p>
+        </div>
+        {% endif %}
         <ul class="links">
             <li><a href="#" id="export_link">export</a> </li>
             <li><a href="#">print</a> </li>

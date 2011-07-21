@@ -108,6 +108,17 @@ span.error_arrow, #questionnaire-code-error, label.error_arrow {
     color: #000000;
     font-weight: normal !important; }
 
+.warning-message-box {
+  position: relative;
+  left: -5px;
+  padding-left: 10px;
+  background: #e9f6ff;
+  border: 1px solid #a3c7ef;
+  margin: 10px 0 10px 0px; }
+  .warning-message-box p {
+    background: url("/media/images/icons.png") no-repeat left -75px;
+    padding: 10px 0 10px 35px; }
+
 .application_register form fieldset legend {
   font-size: 20px; }
 .application_register form ul li input[type=text], .application_register form ul li input[type=password] {
