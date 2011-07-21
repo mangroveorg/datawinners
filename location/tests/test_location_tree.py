@@ -3,7 +3,7 @@ import unittest
 from unittest.case import SkipTest
 from datawinners.location.LocationTree import LocationTree, get_locations_for_country, get_location_groups_for_country
 
-@SkipTest
+
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
         self.tree = LocationTree()
@@ -46,8 +46,9 @@ class TestLocationTree(unittest.TestCase):
         actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soas")
         self.assertEqual(expected_location_group, actual_location_groups)
 
-    @SkipTest
-    def test_should_find_centriod_of_the_location(self):
-        self.assertEqual((46.88506586909285, -18.813739584921834), self.tree.get_centroid(location='Ambatomanjaka'))
+        
+    def test_should_get_centroid_for_location_based_on_level_given(self):
+        self.assertEqual((46.90540972823169, -18.762105675278256), self.tree.get_centroid(location='Ambatomanjaka', level = '3'))
         self.assertFalse(self.tree.exists("XYZ"))
+
 

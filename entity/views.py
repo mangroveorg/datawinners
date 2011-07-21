@@ -53,7 +53,7 @@ def _validate_post_data(dbm, request):
 def _get_location_heirarchy_from_location_name(display_location):
     if is_empty(display_location):
         return None
-    lowest_level_location, high_level_location = tuple(display_location.split(','))
+    lowest_level_location = display_location.split(',')[0]
     tree = LocationTree()
     location_hierarchy = tree.get_hierarchy_path(lowest_level_location)
     return location_hierarchy
