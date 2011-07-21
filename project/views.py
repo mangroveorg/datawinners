@@ -11,7 +11,7 @@ from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
@@ -450,7 +450,8 @@ def finish(request, project_id=None):
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         from_number = '1234567890'
-        to_number = organization.office_phone
+        organization_settings = OrganizationSetting.objects.get(organization=organization)
+        to_number = organization_settings.sms_tel_number
         previous_link = reverse(datasenders_wizard, args=[project_id])
         return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number,
                                                                    'project':project, 'fields': form_model.fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
