@@ -98,6 +98,13 @@
                 }
                 .alpha_list{
                     margin-left:30px;
+                    input{
+                        float:none;
+                    }
+                    .error_arrow{
+                        float:none !important;
+                        background-position:0px 3px !important;
+                    }
                 }
                 #char-count{
                     border-top:1px solid #ccc;
