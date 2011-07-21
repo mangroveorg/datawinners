@@ -420,9 +420,10 @@ def activate_project(request, project_id=None):
     submissions, ids = get_submissions_made_for_form(manager, form_model.form_code, start_time=0, end_time=int(mktime(tomorrow.timetuple())) * 1000,
                                                          page_size=None)
     for each in ids:
-        data_record = manager._load_document(each, DataRecordDocument)
-        manager.invalidate(each)
-        SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
+        if each is not None:
+            data_record = manager._load_document(each, DataRecordDocument)
+            manager.invalidate(each)
+            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 def _make_links_for_finish_page(project_id, form_model):

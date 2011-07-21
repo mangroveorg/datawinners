@@ -1,64 +1,79 @@
 {% extends 'layout_application.html' %}
 {% load dw_tabs %}
 
-{% block navigation %}
-    <div class="grid_24 tab_navigation">
-            <ul>
-            <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="{{ project_links.overview_link }}">Overview</a>
-            </li>
-            {% if project.state == 'Active' %}
-            <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="{{ project_links.subjects_link }}">Subjects</a>
-            </li>
-            <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="{{ project_links.questionnaire_link }}">Questionnaire</a>
-            </li>
-            <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-              <a href="{{ project_links.datasenders_link }}">Data Senders</a>
-            </li>
-            {% endif %}
-            {% if project.state != 'Inactive' %}
-            <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
-              <a href={{ project_links.data_analysis_link }}>Data</a>
-            </li>
-            {% endif %}
-        </ul>
+{% block page_js %}
+    {{ block.super }}
+    <script src="/media/javascript/project/activate_project.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block section_title %}
+    <h2 class="project_title">{{ project.name }}</h2>
+    <div class="project_detail">
+        <span class="project_status">Project status: {{ project.state }}</span>
+        {% if  project.state  != 'Active' %}
+            <a href="{{ project_links.activate_project_link }}" class='activate_project'>Activate Project</a>
+        {% endif %}
     </div>
 {% endblock %}
 
-{% block secondary_navigation_data %}
-       <ul class="secondary_tab">
-        <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="#">Summary</a>
+{% block navigation %}
+<div class="grid_24 tab_navigation">
+    <ul>
+        <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.overview_link }}">Overview</a>
         </li>
-        <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.data_analysis_link }}">Analysis</a>
+        {% if project.state == 'Active' %}
+        <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.subjects_link }}">Subjects</a>
         </li>
-        <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.submission_log_link }}">All Data Records</a>
+        <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.questionnaire_link }}">Questionnaire</a>
         </li>
+        <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.datasenders_link }}">Data Senders</a>
+        </li>
+        {% endif %}
+        {% if project.state != 'Inactive' %}
+        <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
+            <a href={{ project_links.data_analysis_link }}>Data</a>
+        </li>
+        {% endif %}
     </ul>
+</div>
+{% endblock %}
+
+{% block secondary_navigation_data %}
+<ul class="secondary_tab">
+    <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="#">Summary</a>
+    </li>
+    <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.data_analysis_link }}">Analysis</a>
+    </li>
+    <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.submission_log_link }}">All Data Records</a>
+    </li>
+</ul>
 {% endblock %}
 
 {% block secondary_navigation_subjects %}
-       <ul class="secondary_tab">
-        <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.registered_subjects_link }}">Registered Subjects</a>
-        </li>
-        <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.subjects_link }}">Registration Questionnaire</a>
-        </li>
-    </ul>
+<ul class="secondary_tab">
+    <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.registered_subjects_link }}">Registered Subjects</a>
+    </li>
+    <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.subjects_link }}">Registration Questionnaire</a>
+    </li>
+</ul>
 {% endblock %}
 
 {% block secondary_navigation_datasenders %}
-       <ul class="secondary_tab">
-        <li class="{% ifactivetab 'secondary_tab_nav' 'datasenders' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.registered_datasenders_link }}">Registered Data Senders</a>
-        </li>
-        <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-          <a href="{{ project_links.datasenders_link }}">Registration Questionnaire</a>
-        </li>
-    </ul>
+<ul class="secondary_tab">
+    <li class="{% ifactivetab 'secondary_tab_nav' 'datasenders' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.registered_datasenders_link }}">Registered Data Senders</a>
+    </li>
+    <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.datasenders_link }}">Registration Questionnaire</a>
+    </li>
+</ul>
 {% endblock %}
