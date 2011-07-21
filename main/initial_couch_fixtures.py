@@ -5,7 +5,7 @@ from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.utils import get_database_manager_for_user
-from datawinners.project.models import Project
+from datawinners.project.models import Project, ProjectState
 from datawinners.submission.views import SMS
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
@@ -222,6 +222,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no',sender_group="open")
     project.qid = qid
+    project.state = ProjectState.ACTIVE
     try:
         project.save(manager)
     except Exception:
@@ -238,6 +239,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="open")
     project2.qid = qid2
+    project2.state = ProjectState.ACTIVE
     try:
         project2.save(manager)
     except Exception:

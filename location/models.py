@@ -11,7 +11,6 @@ class LocationLevel(models.Model):
     objects = models.GeoManager()
 
 
-
 location_level_mapping = {
     'name_0' : 'NAME_0',
     'name_1' : 'NAME_1',
@@ -21,10 +20,22 @@ location_level_mapping = {
     'geom' : 'MULTIPOLYGON',
 }
 
-madborder_mapping = {
-    'name_1': 'LIB_PROV',
-    'name_2': 'LIB_REG',
-    'name_3': 'LIB_DIST',
-    'name_4': 'LIB_COM',
-    'geom': 'MULTIPOLYGON',
-    }
+
+# Auto-generated `LayerMapping` dictionary for WorldBorders model
+madagascar_wgs84_mapping = {
+    'name_1' : 'LIB_REG',
+    'name_2' : 'LIB_DIST',
+    'name_3' : 'LIB_COM',
+    'name_4' : 'LIB_FKT',
+    'geom' : 'MULTIPOLYGON',
+}
+
+
+location_level_mapping = {
+    "madagascar": {"level1": "Region",
+                   "level2": "District",
+                   "level3": "Commune",
+                   "level4": "Fokontany"
+                   }
+}
+

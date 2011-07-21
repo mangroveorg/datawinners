@@ -1,0 +1,82 @@
+
+Below steps taken with minor modifications from,
+http://library.linode.com/web-servers/nginx/python-uwsgi/ubuntu-10.10-maverick
+
+
+Install uWSGI
+
+apt-get update
+apt-get upgrade
+apt-get install build-essential psmisc python-dev libxml2 libxml2-dev python-setuptools
+cd /opt/
+wget http://projects.unbit.it/downloads/uwsgi-0.9.8.2.tar.gz
+tar -zxvf uwsgi-0.9.8.2.tar.gz
+mv uwsgi-0.9.8.2/ uwsgi/
+cd uwsgi/
+python setup.py install
+adduser --system --no-create-home --disabled-login --disabled-password --group uwsgi
+chown -R uwsgi:uwsgi /opt/uwsgi
+touch /var/log/uwsgi.log
+chown uwsgi /var/log/uwsgi.log
+
+Compile nginx with uWSGI Support
+
+apt-get install libpcre3-dev build-essential libssl-dev
+cd /opt/
+wget http://nginx.org/download/nginx-1.0.5.tar.gz
+tar -zxvf nginx-1.0.5.tar.gz
+cd /opt/nginx-1.0.5/
+./configure --prefix=/opt/nginx --user=nginx --group=nginx --with-http_ssl_module
+make
+make install
+adduser --system --no-create-home --disabled-login --disabled-password --group nginx
+cp /opt/uwsgi/nginx/uwsgi_params /opt/nginx/conf/uwsgi_params
+wget -O init-deb.sh http://library.linode.com/assets/688-init-deb.sh
+mv init-deb.sh /etc/init.d/nginx
+chmod +x /etc/init.d/nginx
+/usr/sbin/update-rc.d -f nginx defaults
+/etc/init.d/nginx start
+
+Configure uWSGI
+
+cd /opt/
+wget -O init-deb.sh http://library.linode.com/assets/689-uwsgi-init-deb.sh
+mv /opt/init-deb.sh /etc/init.d/uwsgi
+chmod +x /etc/init.d/uwsgi
+
+Create an /etc/default/uwsgi.ini file with below,
+[uwsgi]
+socket = 127.0.0.1:9001
+master = true
+processes = 4
+chdir = /home/apgeorge/code/mangrove/src/datawinners
+pythonpath = /home/apgeorge/code/mangrove/src
+env = DJANGO_SETTINGS_MODULE=datawinners.settings
+module = django.core.handlers.wsgi:WSGIHandler()
+pidfile = /tmp/project-master.pid
+vacuum = true
+max-requests = 5000
+daemonize = /var/log/uwsgi.log
+home = /home/apgeorge/code/VEs/mangrove
+
+Edit, etc/init.d/uwsgi file, modify below to,
+#DAEMON_OPTS="-s 127.0.0.1:9001 -M 4 -t 30 -A 4 -p 4 -d /var/log/uwsgi.log --pythonpath $PYTHONPATH --module $MODULE"
+DAEMON_OPTS="--ini /etc/default/uwsgi.ini"
+
+/usr/sbin/update-rc.d -f uwsgi defaults
+/etc/init.d/uwsgi start
+
+Configure NGINX
+
+Add the below to the /opt/nginx/conf/nginx.conf file under the server section.
+location /media {
+		root   /home/apgeorge/code/mangrove/src/datawinners/media/;
+        }
+
+        location / {
+		include uwsgi_params;            
+		uwsgi_pass   127.0.0.1:9001;
+	    	index  index.html index.htm;
+        }
+
+/etc/init.d/nginx restart or /etc/init.d/nginx start

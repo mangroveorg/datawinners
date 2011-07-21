@@ -1,8 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from unittest.case import SkipTest
-from datawinners.location.LocationTree import LocationTree, get_locations_for_country
-
+from datawinners.location.LocationTree import LocationTree, get_locations_for_country, get_location_groups_for_country
 
 @SkipTest
 class TestLocationTree(unittest.TestCase):
@@ -15,11 +14,11 @@ class TestLocationTree(unittest.TestCase):
 
     def test_load_tree(self):
         self.assertEqual('Madagascar', self.tree.countries[0])
-        self.assertEqual(6, len(self.tree.get_next_level('Madagascar')))
+        self.assertEqual(22, len(self.tree.get_next_level('Madagascar')))
 
     def test_get_hierarchy_from_location(self):
         self.assertEqual(self.tree.get_hierarchy_path('Amboanjo'),
-            ['madagascar', 'fianarantsoa', 'vatovavy fitovinany', 'manakara atsimo', 'amboanjo'])
+            ['madagascar', 'vatovavy fitovinany', 'manakara atsimo', 'amboanjo'])
 
     def test_is_valid_location(self):
         self.assertTrue(self.tree.exists("amboanjo"))
@@ -30,17 +29,24 @@ class TestLocationTree(unittest.TestCase):
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):
-        self.assertEqual("ambatomanjaka", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321).lower())
+        self.assertEqual("fkt ambaribe", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321).lower())
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_location_hierarchy_for_geocode(self):
-        self.assertEqual(['madagascar', 'antananarivo', 'itasy', 'miarinarivo', 'ambatomanjaka'], self.tree.get_location_hierarchy_for_geocode(lat=-18.777180, long=46.854321))
+        self.assertEqual([u'madagascar', u'itasy', u'miarinarivo', u'ambatomanjaka', u'fkt ambaribe'], self.tree.get_location_hierarchy_for_geocode(lat=-18.777180, long=46.854321))
         self.assertFalse(self.tree.exists("XYZ"))
 
+    @SkipTest
+    #TODO: USe this test and the related piece of code when the functionality gets used
     def test_should_get_filtered_list_lowest_levels(self):
         self.assertEqual(['ZOMA BEALOKA, ANTANANARIVO', 'ZAZAFOTSY, FIANARANTSOA'], get_locations_for_country(country="Madagascar", start_with="z"))
 
+    def test_should_get_filtered_list_group_by_levels(self):
+        expected_location_group={u'LEVEL3':[u'SOASERANA,MANJA,MENABE', u'SOASERANA,BETIOKY ATSIMO,ATSIMO ANDREFANA']}
+        actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soas")
+        self.assertEqual(expected_location_group, actual_location_groups)
 
+    @SkipTest
     def test_should_find_centriod_of_the_location(self):
         self.assertEqual((46.88506586909285, -18.813739584921834), self.tree.get_centroid(location='Ambatomanjaka'))
         self.assertFalse(self.tree.exists("XYZ"))
