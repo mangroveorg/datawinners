@@ -8,6 +8,12 @@
     {{ block.super }}
 {% endblock %}
 
+
+{% block page_js %}
+    {{ block.super }}
+    <script src="/media/javascript/project/activate_project.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
     <div class="text_align_right margin_bottom_20">
         <a href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
@@ -28,7 +34,7 @@
                 <td>{{ project.state }}</td>
                 <td>
                     {% if  project.state  != 'Active' %}
-                        <a href="{{ project.activate_link }}">Activate</a>
+                        <a href="{{ project.activate_link }}" class="activate_project">Activate</a>
 
                     {% endif %}
                 </td>
