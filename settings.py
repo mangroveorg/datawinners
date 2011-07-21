@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'datawinners.location',
     'datawinners.entity',
     'datawinners.submission',
+    'django_extensions',
 )
 
 COMPILER_FORMATS = {

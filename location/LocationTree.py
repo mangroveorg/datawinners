@@ -156,8 +156,10 @@ class LocationTree(object):
         else:
             return []
 
-    def get_centroid(self, location):
-        row = LocationLevel.objects.filter(name_4__iexact=location).centroid(model_att='c')
+    def get_centroid(self, location, level):
+        column = 'name_%s' % level
+        exactly_matches = column + '__iexact'
+        row = LocationLevel.objects.filter(**{exactly_matches : location}).centroid(model_att='c')
         point = row[0].c
         return point.x, point.y
 

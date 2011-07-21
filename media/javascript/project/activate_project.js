@@ -1,7 +1,6 @@
 $(document).ready(function(){
    $(".activate_project").bind("click", function(){
-       var redirect = confirm("Are you sure?" +
-               "\nThis will activate the project and delete the submissions made if any");
+       var redirect = confirm("Warning: Activating the project will remove all existing test data (if any).");
        return redirect;
    })
 });

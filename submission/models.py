@@ -1,4 +1,5 @@
 from django.db import models
+from datawinners.messageprovider.message_handler import _get_response_message
 
 class DatawinnerLog(models.Model):
     message = models.CharField(max_length=100)
@@ -7,3 +8,12 @@ class DatawinnerLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     form_code = models.CharField(max_length=20, blank=True, null=True)
     error = models.CharField(max_length=500)
+
+
+#TODO: Move all message templating for responses here.
+class SMSResponse(object):
+    def __init__(self,response):
+        self.response = response
+
+    def text(self):
+        return _get_response_message(self.response)

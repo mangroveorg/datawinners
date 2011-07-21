@@ -150,16 +150,18 @@
         </div>
     </div>
 
-        <div class="sms_tester_form">
+         <div class="sms_tester_form">
             <h4>Test the SMS Questionnaire </h4>
-            <p class="italic margin_bottom_20">See if you can send in data with your questionnaire</p>
+            <p class="italic margin_bottom_20">Verify you can send in test answers</p>
             <ul>
                 <li>
-                    <h6>1. Send in your Data Record</h6>
+                    <h6>1. Send in your test answers.</h6>
+                    <p class="italic margin_bottom_20">Refer to the Web Questionnaire Preview for a sample SMS</p>
                     <div class="margin_left_20 mobile_block">
+                            <p>Note : When you activate this project, all the test data will be removed automatically.</p>
                             <p>You have 2 options</p>
-                            <p>A. Use your own phone and send your answers to the following phone number: {{ to_number }}</p>
-                            <p>B. Enter you answers below</p>
+                            <p>A. Click on the mobile phone screen and type your test answers.</p>
+                            <p>B. Register yourself as a Data Sender. Then sms your test answers to the telephone number provided by DataWinners.</p>
                             <input id ='from_msisdn' type='hidden' value ="{{ from_number }}">
                             <input id ='to_msisdn' type='hidden' value ="{{ to_number }}">
                             <div class="mobile">
@@ -170,7 +172,7 @@
                 </li>
                 <li>
                     <h6 class="margin_top_20">2. See the data you received </h6>
-                    <p class="italic">Go directly to your <a href="{{project_links.log_link}}">Log page</a> to view the Data Record you just sent in</p>
+                    <p class="italic">See if DataWinners received your SMS. (Go to <a href="{{project_links.log_link}}">All Data Records</a> page to view submission status)</p>
                 </li>
             </ul>
         </div>

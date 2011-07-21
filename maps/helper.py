@@ -6,7 +6,7 @@ from mangrove.utils.types import is_string
 
 def _get_lowest_administrative_boundary(location_path):
     lowest_admin_boundary = location_path[len(location_path) - 1] if len(location_path) > 0 else None
-    return lowest_admin_boundary
+    return lowest_admin_boundary, len(location_path)-1
 
 
 def _get_geo_json_for_entity_from_geo_code(entity, geometry):
@@ -15,19 +15,19 @@ def _get_geo_json_for_entity_from_geo_code(entity, geometry):
     return geometry_geo_json
 
 
-def _get_geo_json_from_location(lowest_admin_boundary):
+def _get_geo_json_from_location(lowest_admin_boundary, level):
     tree = LocationTree()
-    geo_code = tree.get_centroid(lowest_admin_boundary)
+    geo_code = tree.get_centroid(lowest_admin_boundary, level)
     geo_json_geometry = {"type": "Point", "coordinates": [geo_code[0], geo_code[1]]}
     geojson_feature = {"type": "Feature", "geometry": geo_json_geometry}
     return geojson_feature
 
 
 def _get_geo_json_from_location_path(location_path):
-    lowest_admin_boundary = _get_lowest_administrative_boundary(location_path)
+    lowest_admin_boundary, level = _get_lowest_administrative_boundary(location_path)
     geojson_feature=None
     if lowest_admin_boundary is not None:
-        geojson_feature = _get_geo_json_from_location(lowest_admin_boundary)
+        geojson_feature = _get_geo_json_from_location(lowest_admin_boundary, level)
     return geojson_feature
 
 

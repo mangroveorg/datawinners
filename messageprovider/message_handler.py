@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from mangrove.form_model.form_model import NAME_FIELD
-from mangrove.utils.types import is_empty
+from mangrove.utils.types import is_empty, is_sequence, sequence_to_str
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE, \
     success_messages, SUBMISSION, REGISTRATION
 
@@ -47,6 +47,21 @@ def get_success_msg_for_registration_using(response, entity_type, source):
 
 
 def _stringify(item):
-    if type(item)==list:
-        return (',').join(item)
+    if is_sequence(item):
+        return sequence_to_str(item)
     return unicode(item)
+
+
+def _get_response_message(response):
+    if response.success:
+        message = _get_success_message(response)
+    else:
+        message = get_submission_error_message_for(response.errors)
+    return message
+
+
+def _get_success_message(response):
+    if response.is_registration:
+        return get_success_msg_for_registration_using(response, "Subject", "sms")
+    else:
+        return get_success_msg_for_submission_using(response)
