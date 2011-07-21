@@ -1,5 +1,5 @@
 table {
-  width: 100%;
+  /*width:100%;*/
   margin: 0; }
 
 #header_application {
@@ -86,7 +86,7 @@ table {
   .data_table #data_analysis {
     margin-top: -50px;
     float: left;
-    width: auto; }
+    /*width:auto;*/ }
     .data_table #data_analysis th {
       height: 40px;
       color: #FFFFFF; }
