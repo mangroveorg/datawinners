@@ -10,6 +10,9 @@ from datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
+from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
+from mangrove.datastore.database import get_db_manager
+from mangrove.transport import reporter
 
 
 @SkipTest
@@ -67,6 +70,10 @@ class TestMultiTenancy(unittest.TestCase):
         except Exception:
             self.fail("Organization database %s not created" % (organization_db_name,))
         self.assertIsNotNone(org_db)
+
+        manager = get_db_manager(server=couch_server, database=organization_db_name)
+        test_reporter = reporter.find_reporter_entity(manager, TEST_REPORTER_MOBILE_NUMBER)
+        self.assertIsNotNone(test_reporter)
 
         #clean up the org db
         del couch_server[organization_db_name]

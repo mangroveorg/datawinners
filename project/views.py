@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import get_database_manager
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState
@@ -449,7 +450,7 @@ def finish(request, project_id=None):
         number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
-        from_number = '1234567890'
+        from_number = TEST_REPORTER_MOBILE_NUMBER
         organization_settings = OrganizationSetting.objects.get(organization=organization)
         to_number = organization_settings.sms_tel_number
         previous_link = reverse(datasenders_wizard, args=[project_id])
