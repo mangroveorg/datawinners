@@ -46,7 +46,7 @@
     .add_subject_form ul li .auto_gen_checkbox label {
       float: none;
       display: inline; }
-    .add_subject_form ul li input[type=text] {
+    .add_subject_form ul li input[type=text], .add_subject_form ul li textarea {
       width: 200px; }
 
 .add_datasender_form input[type=text] {

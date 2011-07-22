@@ -9,7 +9,7 @@
     }
     DW.show_data.prototype = {
         _init : function(){
-            $.get($(window).location,
+            $.get(window.location,
                   {
 //                      date_from: this.date_from,
 //                      date_to: this.date_to,
@@ -126,30 +126,37 @@ $(document).ready(function(){
         }
        }
    });
-
-    $('#export_link').click(function(){
-        var path = window.location.pathname;
-        var element_list = path.split("/");
-        $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
-        $('#export_form').submit()
-    });
-
-    $('#time_filter').click(function() {
+   DW.submit_data = function() {
         var time_range = $("#dateRangePicker").val().split("/");
-        if (time_range[0] == "") {
-            time_range[0] = '01-01-1996';
-            time_range[1] = Date.parse('today').toString('dd-MM-yyyy');
+        if(time_range[0] == ""){
+            time_range[0]='01-01-1996';
+            time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
+            return time_range;
         }
-        else if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
+        if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
             $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
             $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
         }
+        return time_range;
+   };
+    $('#export_link').click(function(){
+//        var path = window.location.pathname;
+//        var element_list = path.split("/");
+//        $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
+        var time_range = DW.submit_data()
+        $("#start_time").attr("value", time_range[0]);
+        $("#end_time").attr("value", time_range[1]);
+        $('#export_form').submit()
+    });
+
+    $('#time_filter').click(function() {
+        var time_range = DW.submit_data()
         $.ajax({
             type: 'POST',
             url: '/project/datarecords/filter',
-            data: {'questionnaire_code': 'cli001', 'start_time':time_range[0], 'end_time': time_range[1]},
+            data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':time_range[0], 'end_time': time_range[1]},
             success:function(response) {
                 if (response) {
                     $('#results').html(response);

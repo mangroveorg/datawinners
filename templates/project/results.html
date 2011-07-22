@@ -47,7 +47,9 @@
         {% endif %}
     <form id = "export_form" method="post" action="/project/export/log">
     {% csrf_token %}
-        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" />
+        <input id = "questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
+        <input id='start_time' name='start_time' type="hidden"/>
+        <input id='end_time' name='end_time'  type="hidden" />
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
         <ul class="links">
@@ -64,6 +66,7 @@
             <label>Show data for:</label>
             <input type="text" id="dateRangePicker" value="Click to select a date range" />
             <input type = "button" id = "time_filter" value = "Filter" class="button_blue"/>
+            <input id = "questionnaire_id"  type="hidden" value="{{ questionnaire_code }}" />
         </div>
     </div>
     <div class="heading_block grid_23 alpha">
@@ -73,7 +76,7 @@
     <div id="sms_results" class="grid_23 alpha margin_top_20">
         <div>
             <div id="results">
-                <input id="total_rows" type="hidden" value={{ pages }} />
+                <input id="total_rows" type="hidden" value="{{ pages }}" />
 
                 <div id="submission_table">
                     {% include 'project/log_table.html' %}

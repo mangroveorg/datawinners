@@ -1,10 +1,11 @@
 {% extends 'layout_registration.html' %}
+{% block page_title %}Activation Complete{% endblock %}
+{% block section_title %} Activation Complete {% endblock %}
 
 {% block content %}
     <div class="span-18 box">
         <div class="span-9">
-            <p class="success-message-box">You have successfully activated your account</p>
-            <p><a href="{% url auth_login %}">Log in</a></p>
+            <p class="success-message-box">You have successfully activated your account <a href="{% url auth_login %}">Sign in</a></p>
         </div>
     </div>
 {% endblock %}

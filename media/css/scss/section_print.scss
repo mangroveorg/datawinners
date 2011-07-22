@@ -28,35 +28,37 @@ p{
   .printBtn{
     display:none;
   }
- .questionnaire_preview{
-     h6{
-        font-size:14px;
-        margin:0;
-     }
-     p.instructions{
-        font-style:italic;
-        font-size:12px;
-     }
-    li{
-        margin-bottom:10px;
-        width:100%;
-        float:left;
-    }
-    .answer{
-        margin-bottom:5px;
-    }
-    label{
-        float:left !important;
-        font-weight:normal;
-    }
-    input[type=radio], input[type=checkbox]{
-        float:left !important;
-    }
-    div{
-        width:100%;
-        float:left;
-    }
+.questionnaire_preview{
+ h6{
+    font-size:14px;
+    margin:0;
  }
+ p.instructions{
+    font-style:italic;
+    font-size:12px;
+ }
+li{
+    margin-bottom:10px;
+    width:100%;
+    float:left;
+}
+.answer{
+    margin-bottom:5px;
+}
+label{
+    font-weight:normal;
+}
+input[type=radio], input[type=checkbox]{
+    float:left !important;
+}
+input[type=text]{
+    width:300px;
+}
+div{
+    width:100%;
+    float:left;
+}
+}
  }
 
 .questionnaire_title{

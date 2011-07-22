@@ -49,6 +49,7 @@ form{
             label{
               top:3px;
               font-weight:normal;
+              font-size:12px;
               width:auto;
             }
         }
@@ -177,7 +178,7 @@ form{
 }
 
 /*Form elements without form tag*/
-input[type=text]{
+input[type=text], textarea{
     width:$text_box_width;
     height:25px;
     border-color:$border_color;

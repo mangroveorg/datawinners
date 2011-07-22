@@ -34,6 +34,9 @@ from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 
+END_OF_DAY = " 23:59:59"
+START_OF_DAY = " 00:00:00"
+
 PAGE_SIZE = 10
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
@@ -291,8 +294,8 @@ def _format_data_for_presentation(data_dictionary, form_model):
 def _load_data(form_model, manager, questionnaire_code, request):
     header_list = helper.get_headers(form_model.fields)
     aggregation_type_list = json.loads(request.POST.get("aggregation-types"))
-    start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00")
-    end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59")
+    start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY)
+    end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY)
     aggregates = helper.get_aggregate_list(header_list[1:], aggregation_type_list)
     aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
     data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
@@ -349,7 +352,9 @@ def _create_excel_response(raw_data_list,file_name):
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
-    row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False)
+    start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00"))
+    end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59"))
+    row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False, start_time=start_time_epoch, end_time=end_time_epoch)
     header_list = ["From", "To", "Date Receieved", "Submission status", "Void","Errors"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
@@ -399,8 +404,9 @@ def datasenders_wizard(request, project_id=None):
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
         _format_field_description_for_data_senders(reg_form)
+        cleaned_up_fields = [reg_form.fields[1],reg_form.fields[3], reg_form.fields[4], reg_form.fields[6]]
         return render_to_response('project/datasenders_wizard.html',
-                {'fields': reg_form.fields, "previous": previous_link,
+                {'fields': cleaned_up_fields, "previous": previous_link,
                  'form': import_reporter_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
                                   context_instance=RequestContext(request))
@@ -454,8 +460,9 @@ def finish(request, project_id=None):
         organization_settings = OrganizationSetting.objects.get(organization=organization)
         to_number = organization_settings.sms_tel_number
         previous_link = reverse(datasenders_wizard, args=[project_id])
+        fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
         return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number,
-                                                                   'project':project, 'fields': form_model.fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
+                                                                   'project':project, 'fields': fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
                                                                    'number_of_datasenders': number_of_registered_datasenders,
                                                                    'number_of_subjects': number_of_registered_subjects, "previous": previous_link},
                                                                     context_instance=RequestContext(request))
@@ -564,6 +571,7 @@ def subject_registration_form_preview(request,project_id=None):
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
                                                                                                              project_id)
+
         example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
@@ -579,7 +587,8 @@ def sender_registration_form_preview(request,project_id=None):
                                                                                                              project,
                                                                                                              project_id)
         example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+        cleaned_up_questions = [questions[1], questions[3], questions[4], questions[6] ]
         return render_to_response('project/questionnaire_preview.html',
-                {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
+                {"questions":cleaned_up_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
                                   context_instance=RequestContext(request))
