@@ -44,7 +44,8 @@
 
 {% block content %}
     <div class="grid_23 alpha omega" id='review_section'>
-        <h4>Review</h4>
+        <h4>Review<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-4px;"></h4>
+        <div class="tooltip"><p>Review and verify summary of your project on this page.</p></div>
         <p class="italic margin_bottom_20">Verify the specifications of your project</p>
         <div id='project_profile'>
         <div class="header">
@@ -71,7 +72,8 @@
                     {% for each in project.devices %}<p>{{ each }}</p> {% endfor %}
                 </li>
             </ul>
-            <a href="{{project_links.edit_link}}">edit</a>
+            <a href="{{project_links.edit_link}}">edit</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Click "edit" to make any required changes. </p></div>
         </div>
         </div>
         <div id='subjects'>
@@ -93,7 +95,8 @@
                 </li>
 
             </ul>
-                <a href="{{project_links.subject_link}}">edit</a>
+                <a href="{{project_links.subject_link}}">edit</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Click "edit" to make any required changes. </p></div>
                 </div>
         </div>
         <div id="questionnaire">
@@ -109,7 +112,8 @@
                 </li>
                   {% endfor %}
             </ol>
-            <a href="{{project_links.questionnaire_link}}">edit</a>
+            <a href="{{project_links.questionnaire_link}}">edit</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Click "edit" to make any required changes. </p></div>
         </div>
         </div>
         <div id="data_senders">
@@ -125,10 +129,21 @@
                 </li>
 
             </ul>
-            <a href="{{project_links.data_senders_link}}">edit</a>
+            <a href="{{project_links.data_senders_link}}">edit</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Click "edit" to make any required changes. </p></div>
         </div>
         </div>
     </div>
+        <h4 class="inline">Test This Questionnaire<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-4px;"></h4>
+        <div class="tooltip"><p>
+            <strong>What is this?</strong><br />
+            The <strong>Test This Questionnaire</strong> feature allows you to simulate the collection of data to see how your
+            questionnaire works. After the test, you can view the data collected by selecting the "All Data" tab in the
+            top right hand corner of this page. Test This Questionnaire can provide you helpful information to edit
+            questions and answer options.<br /><br />
+            <strong>What do I need to do?</strong><br />
+            Choose either the Test Web Form or Test SMS and follow the on-screen instructions to complete the test.
+        </p></div>
        <div class="SMS_tester_section alpha omega">
         <div class="grid_11 alpha omega">
             <h6>SMS Questionnaire</h6>

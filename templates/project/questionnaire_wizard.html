@@ -57,7 +57,7 @@
 
 {% block step_number %}
     <h3>Step 3: Questionnaire</h3>
-    <p>Create your questionnaire by adding one question at a time</p>
+    <p>Define the questions you want your Data Senders to answer.</p>
 {% endblock %}
 {% block content %}
     {% csrf_token %}
@@ -67,6 +67,15 @@
          <li>
             <label>Questionnaire Code :</label>
             <input id='project-id' type='hidden' value={{ project.id }} />
+             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+             <div class="tooltip"><p>
+                 <strong>What is this?</strong><br />
+                 All questionnaires have a Unique Questionnaire Code. DataWinners uses this unique code to correctly
+                 identify your questionnaire. Use the recommended code or change it if you like.<br /><br />
+                 <strong>What do I need to do?</strong><br />
+                 Enter a 3 letter code (letters and numbers). This questionnaire code will appear on the printed version
+                 of your questionnaire. Your Data Senders will type in this code first when sending in their data.
+            </p></div>
             <input id='questionnaire-code' class='required' value={{ questionnaire_code }} />
              <span id="questionnaire-code-error"></span>
         </li>
@@ -89,7 +98,21 @@
 
             <div id="question-detail-panel">
                         {% include 'project/question_detail_panel.html' %}
-                <div id='char-count'>
+                <div class="grid_1 alpha omega">
+                    <img src="/media/images/help_icon.png" class="help_icon">
+                    <div class="tooltip"><p>
+                        <strong>What is this?</strong><br />
+                        <strong>1 SMS is limited to 160 characters.</strong><br />
+                        The Running Count tallies the questionnaire code, all question codes and
+                        the maximum lengths of all answers and keeps a running count of how many characters you have used out of 160.<br /><br />
+                        <strong>What do I need to do?</strong><br />
+                        Use this count to determine how many questions you can add to the questionnaire and still keep the response within 1 SMS (160 characters).
+                        Don't worry, you can go beyond 160 characters. However, more than one SMS will be required to answer all the questions in your questionnaire.
+                    </p></div>
+                </div>
+                <div class="grid_13 alpha omega">
+                    <div id='char-count'>
+                    </div>
                 </div>
             </div>
         </div>

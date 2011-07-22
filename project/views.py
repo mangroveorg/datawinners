@@ -379,7 +379,7 @@ def subjects_wizard(request, project_id=None):
         return render_to_response('project/subjects_wizard.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
                  'import_subject_form': import_subject_form,
-                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
+                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project, 'step': 'subjects'},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -408,7 +408,7 @@ def datasenders_wizard(request, project_id=None):
         return render_to_response('project/datasenders_wizard.html',
                 {'fields': cleaned_up_fields, "previous": previous_link,
                  'form': import_reporter_form,
-                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
+                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project, 'step': 'datasenders'},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':

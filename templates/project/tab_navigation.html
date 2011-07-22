@@ -11,9 +11,14 @@
     <div class="project_detail">
         <span class="project_status">Project status: {{ project.state }}</span>
         {% if  project.state  != 'Active' %}
-            <a href="{{ project_links.activate_project_link }}" class='activate_project'>Activate Project</a>
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
+        <div class="tooltip">
+            <p>Your project is inactive. You need to complete the Profile to activate it.</p>
+        </div>
+        <a href="{{ project_links.activate_project_link }}">Activate Project</a>
         {% endif %}
     </div>
+
 {% endblock %}
 
 {% block navigation %}
@@ -45,6 +50,16 @@
 {% block secondary_navigation_data %}
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
+        <div class="tooltip"><p>
+            View, analyze and export your collected Data. Create an alert to be aware when something important happens.<br />
+            There are 3 main areas:<br />
+            <strong>1. Summary</strong><br />Look at the summary of each individual question to get a first impression of your Data.<br />
+            <strong>2. Analysis</strong><br />View your Data as a list, chart or map. Choose the sum, minimum or average
+            of a specific answer or see what which one was the most frequent.<br />
+            <strong>3. All Data Records</strong><br />
+            View the list of all Data Records you have received from your Data Senders. Filter and export your list to Excel.
+        </p></div>
         <a href="#">Summary</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">

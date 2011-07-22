@@ -41,8 +41,26 @@
 
 
 {% block step_number %}
-    <h3>Step 4: Data Senders</h3>
+    <h3>Step4: Data Senders<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-3px;"></h3>
+    <div class="tooltip"><p>
+        <strong>What is this?</strong><br />
+        <strong>Data Senders</strong> are important because they are the people who send you answers to your
+        questionnaire. They are usually based in the field.<br /><br />
+        You can <strong>register Data Senders</strong> by entering some basic information (name, location,
+        telephone number) about each Data Sender.
+        DataWinners will use the Data Sender's telephone number as the <strong>Unique Identification Number</strong>.
+        By registering your Data Senders now they won't have to send you this information (example: name) each time
+        they respond to your questionnaire. DataWinners will recognize each Data Sender by his or her registered
+        telephone number.<br /><br />
+        <strong>What do I need to do?</strong><br />
+        Decide what information you want to collect for each Data Sender (first name, last name, location, mobile
+        phone number, etc.) You then have three ways to register this information: 1) Manually enter the details
+        using the <strong>online form</strong>, 2) <strong>import a list</strong> from Excel; or, 3) Print out the Data
+        Sender Registration Questionnaire, give it to your Data Senders and ask your <strong>Data Senders to register
+        themselves</strong>. Don’t worry, you can always edit this information later.
+    </p></div>
     <p>Register and manage approved Data Senders by editing the registration form below. You can also do this at a later time.</p>
+
 {% endblock %}
 {% block content %}
     <input id='post_url' type="hidden" value="{{ post_url }}"/>
@@ -53,14 +71,40 @@
     <span>(Optional)</span>
     <div class="add_subjects_section alpha omega">
         <div class="grid_11 alpha omega">
-            <h6>Add DataSenders Manually</h6>
+            <h6>Add DataSenders Manually<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-8px;"></h6>
+            <div class="tooltip"><p>
+                <strong>What is this?</strong><br />
+                Add Data Senders one-by-one using the online registration form<br /><br />
+                <strong>What do I need to do?</strong><br />
+                Click the blue "Add Data Senders manually" button
+            </p></div>
 
             <p>Enter your Data Senders individually</p>
             <input id='add_datasenders' type="button" class="button_blue" value="Add DataSenders Manually"/>
         </div>
         <div class="grid_11 omega import_list">
-            <h6>Import a List of DataSenders</h6>
-
+            <h6>Import a List of DataSenders<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-8px;"></h6>
+            <div class="tooltip"><p>
+                <strong>What is this?</strong><br />
+                Add a list of Data Senders all at once by importing an Excel (.xls) or a comma separated value (.csv) file
+                <br /><br />
+                <strong>What do I need to do?</strong><br />
+                Follow these five easy steps to import a list of Data Senders<br />
+                1) In cell A1, type form_code.  In cell B1, type T.  In cell C1 type N.  In cell D1 type M.
+                In cell E1 type S.  In cell F1 type L.  In cell G1 type G.  In cell H1 type D.<br />
+                2) In cell A2, type REG.  In cell B2, type Data Sender.  In cell C2, type the name of your Data Sender
+                (example:  John Smith).  In cell D2, type the mobile telephone number of the Data Sender.
+                In cell E2, type a unique ID code for the Data Sender. DataWinners will automatically generate a unique ID number if you leave this cell blank.
+                DataWinners will automatically generate a unique ID
+                number if you leave this cell blank. In cell F2, type the location of the Data Sender.
+                In cell G2 type the GPS coordinates of the Data Sender (Right click on cell G2, choose "Format Cells",
+                Choose "Text", then click "OK".  Then enter the GPS coordinates in the following format: 16.8665 47.53150.
+                Remember do not include a comma).  In cell F2 type a short description of the Data Sender.<br />
+                3. Repeat step #2 for each Data Sender starting in cell A3.  Every Data Sender thereafter will occupy a
+                new row (A4, A5, A6 etc.)<br />
+                4. Save the file as (.csv) or (.xls)<br />
+                5. Click on blue "Import List" button and follow instructions
+            </p></div>
             <p>Upload an excel (.xls) or csv file (.csv) of your Data Senders</p>
             <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
         </div>

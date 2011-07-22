@@ -13,24 +13,34 @@
     <link href="/media/css/scss/section_dashboard.scss" rel="stylesheet" />
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $( "#how_to" ).accordion({ collapsible: true, active: false });
+            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false, collapsible: true });
+        })
+    </script>
+{% endblock %}
+
 {% block navigation %}
     <div class="grid_24 margin_bottom_10">
         <div class="grid_11 margin_left_null">
-            <a href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
+            <a href="{% url datawinners.project.views.create_profile %}" class="button"style="margin-top:-2px;">Create a new project</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Follow the easy step-by-step process to create a new project.</p></div>
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <p class="intro">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
     <div id="how_to">
-        <h3><span class="title">How to use Datawinners</span></h3>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.
-        </p>
+        <h3><span class="title">How to use Datawinners</span><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Get more information on what you can do with DataWinners.</p></div>
+        </h3>
+         <p>
+            DataWinners is the do-it-yourself Data Collection and Communication tool you need to make better decisions.<br />
+            Click on the Create a New Project button to get started.
+         </p>
     </div>
 
     <div class="grid_18 margin_left_null dashboard_left">
@@ -64,10 +74,4 @@
     </div>
     <div class="grid_4 alpha omega dashboard_right">
     </div>
-    <script>
-        $(function() {
-            $( "#how_to" ).accordion({ collapsible: true, active: false });
-            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false, collapsible: true });
-        });
-    </script>
 {% endblock %}
