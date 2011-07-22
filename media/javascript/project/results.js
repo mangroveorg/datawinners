@@ -128,9 +128,9 @@ $(document).ready(function(){
    });
 
     $('#export_link').click(function(){
-        var path = window.location.pathname;
-        var element_list = path.split("/");
-        $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
+//        var path = window.location.pathname;
+//        var element_list = path.split("/");
+//        $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
         $('#export_form').submit()
     });
 
@@ -149,7 +149,7 @@ $(document).ready(function(){
         $.ajax({
             type: 'POST',
             url: '/project/datarecords/filter',
-            data: {'questionnaire_code': 'cli001', 'start_time':time_range[0], 'end_time': time_range[1]},
+            data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':time_range[0], 'end_time': time_range[1]},
             success:function(response) {
                 if (response) {
                     $('#results').html(response);
