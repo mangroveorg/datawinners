@@ -399,8 +399,9 @@ def datasenders_wizard(request, project_id=None):
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
         _format_field_description_for_data_senders(reg_form)
+        cleaned_up_fields = [reg_form.fields[1],reg_form.fields[3], reg_form.fields[4], reg_form.fields[6]]
         return render_to_response('project/datasenders_wizard.html',
-                {'fields': reg_form.fields, "previous": previous_link,
+                {'fields': cleaned_up_fields, "previous": previous_link,
                  'form': import_reporter_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project},
                                   context_instance=RequestContext(request))
@@ -565,6 +566,7 @@ def subject_registration_form_preview(request,project_id=None):
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
                                                                                                              project_id)
+
         example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
@@ -580,7 +582,8 @@ def sender_registration_form_preview(request,project_id=None):
                                                                                                              project,
                                                                                                              project_id)
         example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+        cleaned_up_questions = [questions[1], questions[3], questions[4], questions[6] ]
         return render_to_response('project/questionnaire_preview.html',
-                {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
+                {"questions":cleaned_up_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
                                   context_instance=RequestContext(request))

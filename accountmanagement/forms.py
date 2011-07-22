@@ -46,7 +46,7 @@ class UserProfileForm(forms.Form):
     title = forms.CharField(max_length=30, required=False)
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
-    username = forms.CharField(max_length=30, required=True, label="* Email")
+    username = forms.EmailField(max_length=30, required=True, label="* Email", error_messages={'invalid': 'Enter a valid email address. Example:name@organization.com'})
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*$", max_length=15, label="Office Phone",
                                   error_message="Please enter a valid phone number")
     mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*$", max_length=15, label="Mobile Phone",
