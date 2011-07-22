@@ -236,7 +236,7 @@ def _load_submissions(current_page, manager, questionnaire_code, pagination=True
         results.update(submissions=zip(submissions, ids))
     return rows, results
 
-
+#TODO- Refactoring needed for results and data related views.
 @login_required(login_url='/login')
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
@@ -270,8 +270,8 @@ def filter_project_results(request):
     manager = get_database_manager(request)
     if request.method == 'POST':
         questionnaire_code = request.POST['questionnaire_code']
-        start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00"))
-        end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59"))
+        start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY))
+        end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY))
         rows, results = _load_submissions(1, manager,questionnaire_code, True, start_time_epoch, end_time_epoch)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
@@ -352,8 +352,8 @@ def _create_excel_response(raw_data_list,file_name):
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
-    start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00"))
-    end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59"))
+    start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY))
+    end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY))
     row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False, start_time=start_time_epoch, end_time=end_time_epoch)
     header_list = ["From", "To", "Date Receieved", "Submission status", "Void","Errors"]
     header_list.extend([each[1] for each in results['questions']])
