@@ -32,10 +32,11 @@ p {
   #questionnaire_preview .questionnaire_preview .answer {
     margin-bottom: 5px; }
   #questionnaire_preview .questionnaire_preview label {
-    float: left !important;
     font-weight: normal; }
   #questionnaire_preview .questionnaire_preview input[type=radio], #questionnaire_preview .questionnaire_preview input[type=checkbox] {
     float: left !important; }
+  #questionnaire_preview .questionnaire_preview input[type=text] {
+    width: 300px; }
   #questionnaire_preview .questionnaire_preview div {
     width: 100%;
     float: left; }

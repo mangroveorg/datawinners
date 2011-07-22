@@ -18,6 +18,9 @@
   margin: 0px 20px 0 20px; }
   #question_form #questions-panel .question_list li {
     margin-bottom: 10px; }
+#question_form #range_min, #question_form #range_max {
+  width: 70px;
+  margin-bottom: 10px; }
 #question_form #question-detail-panel {
   float: left;
   width: 525px; }
