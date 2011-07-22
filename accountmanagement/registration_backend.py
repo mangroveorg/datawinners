@@ -95,7 +95,7 @@ class RegistrationBackend(object):
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
-                                     organization=organization)
+                                     organization=organization, office_phone=kwargs.get("office_phone"), mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"))
         return new_user
 
     def registration_allowed(self, request):

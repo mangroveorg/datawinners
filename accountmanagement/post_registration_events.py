@@ -7,5 +7,8 @@ def ngo_user_created(sender, user, request, **kwargs):
     data = NGOUserProfile()
     data.org_id = kwargs['organization_id']
     data.title = kwargs['title']
+    data.office_phone = kwargs['office_phone']
+    data.mobile_phone = kwargs['mobile_phone']
+    data.skype = kwargs['skype']
     data.user = user
     data.save()
