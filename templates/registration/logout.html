@@ -1,9 +1,9 @@
 {% extends 'layout_registration.html' %}
-{% block page_title %}Logout{% endblock %}
+{% block page_title %}Sign out{% endblock %}
 {% load i18n %}
 
 {% block content %}
     <div>
-            <div class="success-message-box">You have successfully signed out. Thanks for your visit. <a href="{% url django.contrib.auth.views.login %}">Login again</a></div>
+            <div class="success-message-box">You have successfully signed out. Thanks for your visit. <a href="{% url django.contrib.auth.views.login %}">Sign in again</a></div>
     </div>
 {% endblock %}

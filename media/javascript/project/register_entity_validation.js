@@ -12,7 +12,7 @@ $(document).ready(function() {
         var text = $.trim($('#' + element.id).val());
         if (text=="")
             return true;
-        var re = new RegExp("^[^a-z]*$");
+        var re = new RegExp("^[^a-zA-Z]*$");
         return re.test(text);
     }, "Please enter a valid phone number");
 
