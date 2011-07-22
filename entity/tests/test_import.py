@@ -12,7 +12,7 @@ class TestImport(unittest.TestCase):
         self.csv_data = """
 "form_code","t","n","l","g","d","s","m"
 "REG","reporter","Aàman Farafangana ","Farafangana ","-21.8  46.8333","This is a Clinic in near to Farafangana ",,987654328
-"REG","reporter","Reporter1 Fianarantsoa ","Fianarantsoa ","-20.45  45.1","C'est une clinique à Fianarantsoa",,987654329
+"REG","reporter","Reporter1 Fianarantsoa ","mahajanga ","-20.45  45.1","C'est une clinique à Fianarantsoa",,987654329
 "REG","reporter","Reporter2 Maintirano ","Maintirano ","-18.05  44.0333","This is a reporter in Maintirano ",,987654333
 "REG","reporter","Reporter3 Mananjary ","Mananjary ","-21.2  48.3667","This is a reporter in Mananjary ",,987654334
 """

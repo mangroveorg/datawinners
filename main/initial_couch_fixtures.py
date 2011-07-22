@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager_for_user
 from datawinners.project.models import Project, ProjectState
 from datawinners.submission.views import SMS
@@ -11,7 +12,6 @@ from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
 from pytz import UTC
-from mangrove.datastore.views import sync_views
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
@@ -254,19 +254,21 @@ def load_sms_data_for_cli001(manager):
     today = datetime.today()
     THIS_MONTH = datetime(today.year,today.month,5,12,45,58)
     PREV_MONTH = THIS_MONTH - timedelta(days=8)
-    sms_player = SMSPlayer(manager, SubmissionHandler(manager))
+    tree = LocationTree()
+    sms_player = SMSPlayer(manager, SubmissionHandler(manager), location_tree=tree)
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '261333782943'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
+
     message1 = "reg +t  clinic +n  Clinic in Analalava  +l  Analalava  +g  -14.6333  47.7667  +d This is a Clinic in Analalava +m 987654321"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "reg +t  clinic +n  Clinic in Andapa  +l  Andapa  +g  -14.65  49.6167  +d This is a Clinic in Andapa  +m 87654322"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "reg +t  clinic +n  Clinic in Antalaha  +l  Antalaha  +g  -14.8833  50.25  +d This is a Clinic in Antalaha  +m 87654323"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Antananarivo  +l  Antananarivo  +g  -18.8  47.4833  +d This is a Clinic in Antananarivo  +m 87654324"
+    message1 = "reg +t  clinic +n  Clinic in ANALAMANGA  +l  ANALAMANGA  +g  -18.8  47.4833  +d This is a Clinic in Antananarivo  +m 87654324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Diégo–Suarez +l  Diégo–Suarez +g  -12.35  49.3  +d This is a Clinic in Diégo–Suarez +m 87654325"
+    message1 = "reg +t  clinic +n  Clinic in TSIMANARIRAZANA +l  TSIMANARIRAZANA +g  -12.35  49.3  +d This is a Clinic in Diégo–Suarez +m 87654325"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "reg +t  clinic +n  Clinic in Antsirabe  +l  Antsirabe  +g  -19.8167  47.0667  +d This is a Clinic in Antsirabe  +m 87654326"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
@@ -274,28 +276,13 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "reg +t  clinic +n  clinique à Farafangana  +l  Farafangana  +g  -22.8  47.8333  +d This is a Clinic in Farafangana  +m 87654328"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Fianarantsoa  +l  Fianarantsoa  +g  -21.45  47.1 +d  C'est une clinique à Fianarantsoa +m 87654329"
+    message1 = "reg +t  clinic +n  Clinic in Fianarantsoa I +l  Fianarantsoa I +g  -21.45  47.1 +d  C'est une clinique à Fianarantsoa +m 87654329"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Île Sainte–Marie  +l  Île Sainte–Marie  +g  -17.0833  49.8167  +d This is a Clinic in Île Sainte–Marie  +m 87654330"
+    message1 = "reg +t  clinic +n  Clinic in Sainte Marie  +l  Sainte Marie  +g  -17.0833  49.8167  +d This is a Clinic in Île Sainte–Marie  +m 87654330"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "reg +t  clinic +n  Clinic in Mahajanga +l  Mahajanga +g  -15.6667  46.35  +d This is a Clinic in Mahajanga +m 87654331"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Solapur  +l  Solapur  +g  17.6667 75.9  +d This is a Clinic in Solapur  +m 87654377"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n Clinic in Bangalore  +l  Bangalore  +g  12.9833 77.5833  +d This is a Clinic in Bangalore  +m 87654378"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Belgaum  +l  Belgaum  +g  15.85 74.6167  +d This is a Clinic in Belgaum  +m 87654379"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Bellary  +l  Bellary  +g  15.15 76.85  +d This is a Clinic in Bellary  +m 87654380"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Hubli–Dharwad  +l  Hubli–Dharwad  +g  15.35 75.1667  +d This is a Clinic in Hubli–Dharwad  +m 87654381"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Mandya  +l  Mandya  +g  12.55 76.9  +d This is a Clinic in Mandya  +m 87654382"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Mangalore  +l  Mangalore  +g  12.9167 74.8833  +d This is a Clinic in Mangalore  +m 87654383"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "reg +t  clinic +n  Clinic in Mysore  +l  Mysore  +g  12.3 76.65  +d This is a Clinic in Mysore  +m 87654384"
-    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
@@ -312,55 +299,55 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "cli001 +EID cid005 +NA Aanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = 'cli001 +EID cid006 +NA Ianda (",) +FA 34 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
+    message1 = 'cli001 +EID cid001 +NA Ianda (",) +FA 34 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli26 +NA ànita +FA 45 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
+    message1 = "cli001 +EID cid001 +NA ànita +FA 45 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "cli001 +EID cid004 +NA Amanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = 'cli001 +EID cid005 +NA Vanda (",) +FA 34 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cid006 +NA ànnita +FA 80 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
+    message1 = "cli001 +EID cid003 +NA ànnita +FA 80 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli26 +NA Amanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
+    message1 = "cli001 +EID cid002 +NA Amanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = 'cli001 +EID cid004 +NA Panda (",) +FA 34 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "cli001 +EID cid005 +NA ànnita +FA 50 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cid006 +NA Jimanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
+    message1 = "cli001 +EID cid003 +NA Jimanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = 'cli001 +EID cli26 +NA Kanda (",) +FA 64 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
+    message1 = 'cli001 +EID cli10 +NA Kanda (",) +FA 64 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "cli001 +EID cid004 +NA ànnita +FA 30 +RD 07.03.2011 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "cli001 +EID cid005 +NA Qamanda +RD 12.03.2011 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = 'cli001 +EID cid006 +NA Huanda (*_*) +FA 74 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
+    message1 = 'cli001 +EID cid001 +NA Huanda (*_*) +FA 74 +RD 27.03.2011 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
     datetime_mocker.set_date_time_now(DEC_2010)
     # Total number of identical records = 4
-    message1 = "cli001 +EID cli25 +FA 47 +RD 15.12.2010 +BG d +SY ace +GPS -58.3452 19.3345"
+    message1 = "cli001 +EID cli12 +FA 47 +RD 15.12.2010 +BG d +SY ace +GPS -58.3452 19.3345"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli23 +NA De'melo +FA 38 +RD 27.12.2010 +BG c +SY ba +GPS 81.672 92.33456"
+    message1 = "cli001 +EID cli11 +NA De'melo +FA 38 +RD 27.12.2010 +BG c +SY ba +GPS 81.672 92.33456"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli24 +NA Dono`mova +FA 24 +RD 06.12.2010 +BG b +SY cd +GPS 65.23452 -28.3456"
+    message1 = "cli001 +EID cli13 +NA Dono`mova +FA 24 +RD 06.12.2010 +BG b +SY cd +GPS 65.23452 -28.3456"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli22 +NA Aàntra +FA 89 +RD 11.12.2010 +BG a +SY bd +GPS 45.234 89.32345"
+    message1 = "cli001 +EID cli15 +NA Aàntra +FA 89 +RD 11.12.2010 +BG a +SY bd +GPS 45.234 89.32345"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
     datetime_mocker.set_date_time_now(NOV_2010)
     # Total number of identical records = 3
-    message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 07.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
+    message1 = "cli001 +EID cli12 +NA ànnita +FA 90 +RD 07.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli20 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
+    message1 = "cli001 +EID cli14 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = 'cli001 +EID cli8 +NA Kanda (",) +FA 34 +RD 27.11.2010 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli21 +NA ànnita +FA 90 +RD 17.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
+    message1 = "cli001 +EID cli9 +NA ànnita +FA 90 +RD 17.11.2010 +BG b +SY bbe +GPS 45.233 28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli20 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
+    message1 = "cli001 +EID cid007 +NA Amanda +RD 12.11.2010 +BG c +SY bd +GPS 40.2 69.3123"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = 'cli001 +EID cli8 +NA Kanda (",) +FA 34 +RD 27.11.2010 +BG d +SY be +GPS 38.3452 15.3345'
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
@@ -418,7 +405,7 @@ def load_sms_data_for_cli001(manager):
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
     message1 = "cli001 +EID cli18 +NA àntra +FA 28 +RD 12.06.2011 +BG a +SY adb +GPS -45.234 169.32345"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
-    message1 = "cli001 +EID cli19 +NA Tinnita +FA 37 +BG d +SY ace +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli9 +NA Tinnita +FA 37 +BG d +SY ace +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
     message1 = "cli001 +EID cli17 +NA Catty +FA 98 +RD 25.06.2011 +BG b +SY dce +GPS 33.23452 -68.3456"
@@ -426,7 +413,7 @@ def load_sms_data_for_cli001(manager):
     message1 = "cli001 +EID cli18 +NA àntra +FA 58 +RD 22.06.2011 +BG a +SY adb +GPS -45.234 169.32345"
     response = sms_player.accept(Request(transportInfo=
                                          transport, message=message1))
-    message1 = "cli001 +EID cli19 +NA Tinnita +FA 27 +BG d +SY ace +GPS -78.233 -28.3324"
+    message1 = "cli001 +EID cli9 +NA Tinnita +FA 27 +BG d +SY ace +GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
 

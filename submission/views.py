@@ -2,6 +2,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_db_manager_for
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException
@@ -21,7 +22,7 @@ def sms(request):
     _to = request.POST["to_msisdn"]
     try:
         dbm = get_db_manager_for(_to)
-        sms_player = SMSPlayer(dbm, SubmissionHandler(dbm))
+        sms_player = SMSPlayer(dbm, SubmissionHandler(dbm), LocationTree())
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
         response = sms_player.accept(Request(transportInfo=transportInfo, message=_message))
         message = SMSResponse(response).text()
