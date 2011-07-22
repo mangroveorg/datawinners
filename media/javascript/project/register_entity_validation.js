@@ -51,7 +51,7 @@ $(document).ready(function() {
             },
             geo_code:{
                 required:function(element) {
-                    return $.trim($("#location").val()) == "";
+                    return $.trim($("#id_location").val()) == "";
                 },
                 gpsrule: true
             },
