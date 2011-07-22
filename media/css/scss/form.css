@@ -134,7 +134,7 @@ span.error_arrow, #questionnaire-code-error, label.error_arrow {
   width: 170px; }
 
 /*Form elements without form tag*/
-input[type=text] {
+input[type=text], textarea {
   width: 350px;
   height: 25px;
   border-color: #cccccc; }

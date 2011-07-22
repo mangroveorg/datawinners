@@ -178,7 +178,7 @@ form{
 }
 
 /*Form elements without form tag*/
-input[type=text]{
+input[type=text], textarea{
     width:$text_box_width;
     height:25px;
     border-color:$border_color;
