@@ -39,6 +39,8 @@
     .add_subject_form ul li .location_section label {
       display: block;
       float: none; }
+    .add_subject_form ul li .location_section .error_arrow {
+      max-width: 170px; }
     .add_subject_form ul li #add_subject_type {
       margin-left: 120px; }
       .add_subject_form ul li #add_subject_type label {
