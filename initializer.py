@@ -12,15 +12,13 @@ REPORTER_SHORT_CODE = 'TEST'
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
-DEFAULT_LOCATION = ["madagascar"]
-
 def create_default_reporter(manager):
     try:
         entity = get_by_short_code(manager, REPORTER_SHORT_CODE, REPORTER_ENTITY_TYPE)
         entity.delete()
     except DataObjectNotFound:
         pass
-    entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=REPORTER_SHORT_CODE, location=DEFAULT_LOCATION)
+    entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=REPORTER_SHORT_CODE)
 
     mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
                                                  primitive_type='string')

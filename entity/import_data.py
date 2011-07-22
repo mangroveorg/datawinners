@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 from datawinners import settings
-from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities, get_by_short_code
@@ -77,10 +76,10 @@ def _handle_uploaded_file(file_name,file,manager):
     base_name, extension = os.path.splitext(file_name)
     if extension == '.csv':
         file = file.splitlines()
-        csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser(), location_tree= LocationTree())
+        csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser())
         response = csv_player.accept(file)
     elif extension == '.xls':
-        xls_player = XlsPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=XlsParser(), location_tree = LocationTree())
+        xls_player = XlsPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=XlsParser())
         response = xls_player.accept(file)
     else:
         raise InvalidFileFormatException()

@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 from datawinners.location.LocationTree import LocationTree
+from mangrove.utils.types import is_string
 
 
 def _get_lowest_administrative_boundary(location_path):
