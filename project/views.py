@@ -34,6 +34,9 @@ from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 
+END_OF_DAY = " 23:59:59"
+START_OF_DAY = " 00:00:00"
+
 PAGE_SIZE = 10
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest", "sum(yes)", "percent(yes)", "sum(no)", "percent(no)"]
@@ -291,8 +294,8 @@ def _format_data_for_presentation(data_dictionary, form_model):
 def _load_data(form_model, manager, questionnaire_code, request):
     header_list = helper.get_headers(form_model.fields)
     aggregation_type_list = json.loads(request.POST.get("aggregation-types"))
-    start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00")
-    end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59")
+    start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY)
+    end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY)
     aggregates = helper.get_aggregate_list(header_list[1:], aggregation_type_list)
     aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
     data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
@@ -349,7 +352,9 @@ def _create_excel_response(raw_data_list,file_name):
 def export_log(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request)
-    row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False)
+    start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + " 00:00:00"))
+    end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + " 23:59:59"))
+    row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False, start_time=start_time_epoch, end_time=end_time_epoch)
     header_list = ["From", "To", "Date Receieved", "Submission status", "Void","Errors"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
