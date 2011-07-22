@@ -9,7 +9,7 @@
     }
     DW.show_data.prototype = {
         _init : function(){
-            $.get($(window).location,
+            $.get(window.location,
                   {
 //                      date_from: this.date_from,
 //                      date_to: this.date_to,
