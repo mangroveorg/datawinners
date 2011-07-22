@@ -454,8 +454,9 @@ def finish(request, project_id=None):
         organization_settings = OrganizationSetting.objects.get(organization=organization)
         to_number = organization_settings.sms_tel_number
         previous_link = reverse(datasenders_wizard, args=[project_id])
+        fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
         return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number,
-                                                                   'project':project, 'fields': form_model.fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
+                                                                   'project':project, 'fields': fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
                                                                    'number_of_datasenders': number_of_registered_datasenders,
                                                                    'number_of_subjects': number_of_registered_subjects, "previous": previous_link},
                                                                     context_instance=RequestContext(request))

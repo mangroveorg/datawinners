@@ -104,11 +104,9 @@
             <label>Questions: </label>
             <ol>
                 {% for question in fields %}
-                {% if not question.is_entity_field  %}
                 <li>
                  <p>{{ question.name }}</p>
                 </li>
-                    {% endif %}
                   {% endfor %}
             </ol>
             <a href="{{project_links.questionnaire_link}}">edit</a>
