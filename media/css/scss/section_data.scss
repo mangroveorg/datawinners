@@ -206,6 +206,46 @@ table{
 #pagination{
     margin-top:10px;
 }
+.dataTables_info{
+    float:right;
+    width:15%;
+    margin-top:20px;
+}
+.dataTables_paginate{
+    min-width:200px;
+    float:left;
+    margin-top:20px;
+    span{
+        float:left;
+        padding:0px 7px !important;
+        font-size:10px !important;
+    }
+    span.paginate_button{
+        color:#0070ac;
+        background:none;
+        border-radius:0;
+        -webkit-border-radius:0;
+        -moz-border-radius:0;
+        border-radius:1px solid #CCCCCC;
+        &:hover{
+            background:none;
+        }
+    }
+    span.paginate_active{
+        background:#FFD857;
+        color:#6F451D;
+        border:1px solid #D4972D;
+        border-radius:0;
+        -webkit-border-radius:0;
+        -moz-border-radius:0;
+    }
+    span.paginate_button_disabled{
+        color:#CCCCCC;
+        &:hover{
+            background:none;
+        }
+    }
+}
 
 
 
