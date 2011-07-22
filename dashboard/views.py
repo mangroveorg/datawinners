@@ -13,7 +13,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.field import field_to_json
 from mangrove.transport.reporter import find_reporter
 
-def get_submissions(dbm, form_code, questions_num):
+def get_submissions(dbm, form_code):
     rows = dbm.load_all_rows_in_view('submissionlog', reduce=False, descending=True, startkey=[form_code, {}],
                                          endkey=[form_code], limit=7)
 
@@ -22,15 +22,17 @@ def get_submissions(dbm, form_code, questions_num):
     submission_errors = 0
     if rows is not None:
         for row in rows:
-            reporter = find_reporter(dbm, row.value["source"])
-            reporter = reporter[0]["name"]
-            if row.value["status"]:
-                message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
-            else:
-                message = row.value["error_message"]
-            submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter,
-                              status=row.value["status"])
-            submission_list.append(submission)
+            phone_number = row.value["source"]
+            if phone_number <> 'xls':
+                reporter = find_reporter(dbm, row.value["source"])
+                reporter = reporter[0]["name"]
+                if row.value["status"]:
+                    message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
+                else:
+                    message = row.value["error_message"]
+                submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter,
+                                  status=row.value["status"])
+                submission_list.append(submission)
 
         rows = dbm.load_all_rows_in_view('submissionlog', startkey=[form_code], endkey=[form_code, {}],
                                          group=True, group_level=1, reduce=True)
@@ -51,8 +53,7 @@ def dashboard(request):
 
         form_model = manager.get(row['value']['qid'], FormModel)
         questionnaire_code = form_model.form_code
-        questions_num = len(form_model.fields)
-        submissions, success, errors = get_submissions(manager, questionnaire_code, questions_num)
+        submissions, success, errors = get_submissions(manager, questionnaire_code)
 
         project = dict(name=row['value']['name'], link=link, submissions=submissions, success=success, errors=errors)
         project_list.append(project)
