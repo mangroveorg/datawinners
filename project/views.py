@@ -404,7 +404,7 @@ def datasenders_wizard(request, project_id=None):
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
         _format_field_description_for_data_senders(reg_form)
-        cleaned_up_fields = [reg_form.fields[1],reg_form.fields[3], reg_form.fields[4], reg_form.fields[6]]
+        cleaned_up_fields = _get_questions_for_datasenders_registration_for_wizard(reg_form.fields)
         return render_to_response('project/datasenders_wizard.html',
                 {'fields': cleaned_up_fields, "previous": previous_link,
                  'form': import_reporter_form,
@@ -413,7 +413,6 @@ def datasenders_wizard(request, project_id=None):
 
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
-    pass
 
 
 @login_required(login_url='/login')
@@ -496,13 +495,24 @@ def registered_datasenders(request, project_id=None):
     all_data = load_all_subjects_of_type(request)
     return render_to_response('project/registered_datasenders.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
 
+
+def _get_questions_for_datasenders_registration_for_print_preview(questions):
+    cleaned_qestions = _get_questions_for_datasenders_registration_for_wizard(questions)
+    cleaned_qestions.insert(0,questions[0])
+    return cleaned_qestions
+
+def _get_questions_for_datasenders_registration_for_wizard(questions):
+    return [questions[1], questions[3], questions[4], questions[6] ]
+
+
 @login_required(login_url='/login')
 def datasenders(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     _format_field_description_for_data_senders(reg_form)
-    return render_to_response('project/datasenders.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+    cleaned_up_fields = _get_questions_for_datasenders_registration_for_print_preview(reg_form.fields)
+    return render_to_response('project/datasenders.html', {'fields': cleaned_up_fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -587,7 +597,7 @@ def sender_registration_form_preview(request,project_id=None):
                                                                                                              project,
                                                                                                              project_id)
         example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
-        cleaned_up_questions = [questions[1], questions[3], questions[4], questions[6] ]
+        cleaned_up_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions":cleaned_up_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
