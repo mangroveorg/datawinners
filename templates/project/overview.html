@@ -26,8 +26,11 @@
         {% endif %}
        {% include 'maps/entity_map.html'  %}
         <div class="grid_23 title_block">
-            <h3 class="grid_4 alpha">Project Profile</h3>
-            <div class="grid_18 margin_top_5">
+            <h3 class="grid_5 alpha">Project Profile<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-2px;"></h3>
+            <div class="tooltip"><p>
+                Review the basic information for your project. Click "View" to see the whole profile or "Edit profile" to make changes.
+            </p></div>
+            <div class="grid_17 margin_top_5">
                 <a href="#">View</a>
                 {% if project.state != 'Active' %}
                     <span>|</span>

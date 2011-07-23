@@ -1,4 +1,4 @@
-\{% extends 'step_wizard.html' %}
+{% extends 'step_wizard.html' %}
 
 {% block page_title %} Subjects {% endblock %}
 
@@ -40,8 +40,26 @@
 
 
 {% block step_number %}
-    <h3>Step 2: Subjects</h3>
-    <p>Register and manage Subjects by editing the registration form below. You can also do this at a later time.</p>
+    <h3>Step 2: Subjects<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-2px;"></h3>
+    <div class="tooltip"><p>
+        <strong>What is this?</strong><br />
+        Your Data Senders collect data about <strong>Subjects</strong>, which are often people (patients, farmers)
+        or things (health clinics, retail shops). <strong>Subjects</strong> can also be staff who send you their
+        monthly activity reports.<br /><br />
+        DataWinners gives you the option to <strong>Register Subjects</strong> by entering basic data (name,
+        location, subject type) about each subject. DataWinners will then give each subject a <strong>Unique
+        Identification Number ('ID')</strong>. Data Senders will always identify <strong>Subjects by</strong> their
+        ID. This saves time and space in the SMS because Data Senders will not have to type the name, location and
+        other information about the subject each time they send data.<br /><br />
+        <strong>What do I need to do?</strong><br />
+        Decide what information you want to use to identify and register each <strong>Subject</strong> ( For example:
+        first name, last name, location, mobile phone number, etc.). You then have three ways to register this
+        information: 1) Manually enter the details using the <strong>online form</strong>, 2) <strong>import a list
+        </strong>; or, 3) Print out the Subject Registration Questionnaire, give it to your Data Senders
+        and ask your <strong>Data</strong> <strong>Senders to register Subjects</strong> themselves. Don’t worry, you
+        can always edit this information later.
+    </p></div>
+    <p>Review the questions by clicking on each</p>
 {% endblock %}
 {% block content %}
 
@@ -51,15 +69,41 @@
     <span>(Optional)</span>
     <div class="add_subjects_section alpha omega">
         <div class="grid_11 alpha omega">
-            <h6>Add Subjects Manually</h6>
+            <h6>Add Subjects Manually<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-8px;"></h6>
+            <div class="tooltip"><p>
+                <strong>What is this?</strong><br />
+                Add subjects one-by-one using the online registration form<br /><br />
+                <strong>What do I need to do?</strong><br />
+                Click the blue "Add Subjects Manually" button and follow the step-by-step instructions.
+            </p></div>
 
             <p>Enter your Subjects individually</p>
             <input id='add_subject' type="button" class="button_blue" value="Add Subjects Manually"/>
         </div>
         <div class="grid_11  omega import_list">
-            <h6>Import a List of Subjects</h6>
+            <h6>Import a List of Subjects<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-8px;"></h6>
+            <div class="tooltip"><p>
+                <strong>What is this?</strong><br />
+                Add a list of subjects all at once by importing an Excel (.xls) or a Comma Separated Value (.csv) file<br /><br />
+                <strong>What do I need to do?</strong><br />
+                Follow these five easy steps to import a list of Subjects:<br />
+                1) Open a new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In cell C1 type N.  In cell D1 type M.
+                In cell E1 type S.  In cell F1 type L.  In cell G1 type G.  In cell H1 type D.<br />
+                2) In cell A2, type REG. In cell B2, type the Subject type (example: Clinic). In cell C2, type the name
+                of your Subject (example:  Northern Clinic). In cell D2, type the mobile telephone number of the Subject.
+                In cell E2, type a unique ID code for the Subject.
+                DataWinners will automatically generate a unique ID number if you leave this cell blank.
+                In cell F2, type the location of the Subject. In cell
+                G2 type the GPS coordinates of the Subject (Right click on cell G2, choose "Format Cells", Choose "Text",
+                then click "OK". Then enter the GPS coordinates in the following format: 16.8665 47.53150. Remember do not
+                include a comma).  In cell F2 type a short description of the Subject.<br />
+                3. Repeat step #2 for each Subject starting in cell A3. Every Subject thereafter will occupy a new row (A4, A5, A6 etc.)<br />
+                4. Save the file as (.csv) or (.xls)<br />
+                5. Click on blue "Import List" button and follow instructions
+            </p></div>
 
             <p>Upload an excel (.xls) or csv file (.csv) of your Subjects</p>
+
             <input id='import_subjects' type="button" class="button_blue" value="Import List"/>
         </div>
         <div class="add_subject_form">

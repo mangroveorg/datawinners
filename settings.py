@@ -1,4 +1,4 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+    # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 # Django settings for web project.
 import os
@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'datawinners.main',
     'datawinners.project',
     'datawinners.dashboard',
-    'datawinners.location',
+    #'datawinners.location',
     'datawinners.entity',
     'datawinners.submission',
     'django_extensions',

@@ -3,7 +3,23 @@
     </div>
     <div>
         <div id="questions-panel" class="grid_8 alpha">
-            <h4>Questions</h4>
+            <h4>Questions<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-5px;"></h4>
+            {% if step == "subjects" %}
+            <div class="tooltip"><p>
+                <strong>What is this?</strong><br />
+                Decide what information you want to use to identify and register each subject of your questionnaire.  For example, Clinic Name, Location, Phone Number.<br /><br />
+                <strong>What do I need to do?</strong><br />
+                Review the questions by clicking on each question in order.
+            </p></div>
+            {% endif %}
+            {% if step == "datasenders" %}
+            <div class="tooltip"><p>
+                <strong>What is this?</strong><br />
+                Decide what information you need to collect about each Data Sender.  <br /><br />
+                <strong>What do I need to do?</strong><br />
+                Review the questions by clicking on each
+            </p></div>
+            {% endif %}
 
             <div class="question_list">
                 <ol>

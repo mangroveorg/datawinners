@@ -5,15 +5,35 @@
                                            data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: viewModel.isEnabled() "/>
                                 </li>
                                 <li>
-                                    <label>Code <img src="/media/images/help_icon.png" class="help_icon"> <div class="tooltip"><p>This is a question code </p></div></label>
-
+                                    <label>Code<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
+                                    <div class="tooltip"><p>
+                                        <strong>What is this?</strong><br />
+                                        Each question in a questionnaire is identified by its own unique
+                                        <strong>Question Code</strong>. This Question Code tells DataWinners what
+                                        question is answered by the Data Sender.<br /><br />
+                                        <strong>What do I need to do?</strong><br />
+                                        Enter a 1 or 2 character code (letters, numbers or both). Your Data Senders
+                                        type the "+" code followed by the question code (example: +rpd) for each question.
+                                        This will tell DataWinners what question the Data Sender is answering.
+                                    </p></div>
                                     <input id="code" name="code" type="text" class="required"
                                            data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
                                 </li>
                                 <li class="question_type margin_null"
                                     data-bind="visible: !selectedQuestion().is_entity_question()">
-                                    <label>Answer Type <img src="/media/images/help_icon.png" class="help_icon"><div class="tooltip"><p>This is a answer type</p></div></label>
-
+                                    <label>Answer Type<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
+                                    <div class="tooltip"><p>
+                                        <strong>What is this?</strong><br />
+                                        Questionnaires collect data in several formats: numbers, text, multiple choice
+                                        and dates. The <strong>Answer Type</strong> identifies which format the Data
+                                        Sender must use when answering the question.<br /><br />
+                                        <strong>What do I need to do?</strong><br />
+                                        Select the <strong>Answer Type</strong> that the Data Sender will use when
+                                        answering the question. Answers can be numbers, text, multiple choice, or dates.<br/>
+                                        When using the <strong>Multiple Choice option</strong>, Data Senders will type
+                                        in the letter (A, B, C etc.) that corresponds to the correct answer NOT the text
+                                        in the answer field.
+                                    </p></div>
 
                                     <div><input type="radio" name="type" value="text"
                                                 data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()" /> Word or
@@ -107,7 +127,16 @@
                                 </li>
                                 <li>
                                     <div class="margin_top_20">
-                                        <label>Instructions</label>
+                                        <label>Instructions<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
+                                        <div class="tooltip"><p>
+                                            <strong>What is this?</strong><br />
+                                            When you print the Questionnaire and give it to your Data Senders, these
+                                            <strong>Instructions</strong> will appear below each question. They provide
+                                            background or other important information to help Data Senders answer the
+                                            questionnaire.<br /><br />
+                                            <strong>What do I need to do?</strong><br />
+                                            Type in any specific information that may be important to help the Data Sender answer the question.
+                                        </p></div>
                                         <span id="question_instruction"
                                               data-bind="text: selectedQuestion().instruction"></span>
                                     </div>

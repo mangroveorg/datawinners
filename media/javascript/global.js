@@ -7,7 +7,8 @@
           $.addwatermarks();
           $(".help_icon").tooltip({
                       position: "top right",
-                      opacity:0.6,
+                      relative: true,
+                      opacity:0.8,
                       events: {
                           def:     "mouseover,mouseout",
                           input:   "focus,blur",
@@ -15,8 +16,6 @@
                           tooltip: "click,click"
                       }
 
-          });
+          }).dynamic({ bottom: { direction: 'down', bounce: true } });
 
     })
-
-

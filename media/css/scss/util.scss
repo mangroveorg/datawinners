@@ -160,21 +160,32 @@ table{
 div.tooltip {
 	display:none;
     background: url(/media/images/help_arrow.png) no-repeat 4px bottom;
-    padding-left:10px;
-    padding-bottom:7px;
+    padding-left:10px !important;
+    padding-bottom:7px !important;
+    margin: 0 !important;
+    border: none !important;
+    z-index:9000;
 	p{
-        background:#000;
-        font-size:12px;
+        background:#000 !important;
+        font-size:12px !important;
+        font-weight:normal !important;
+        font-style:normal !important;
+        text-align:left !important;
         height:auto;
-        width:auto;
-        max-width:200px;
-        padding:15px;
-        color:#fff;
-        border:2px solid #FFD857;
+        width:320px;
+        padding:15px !important;
+        margin:0 !important;
+        color:#fff !important;
+        border:2px solid #FFD857 !important;
         border-radius:5px;
         -moz-border-radius:5px;
         -webkit-border-radius:5px;
 	}
+}
+div.tooltip.bottom {
+  background: url(/media/images/help_arrow_bottom.png) no-repeat 4px top;
+  padding-bottom:0 !important;
+  padding-top:5px !important;
 }
 span.tooltip{
     background: url(/media/images/help_arrow.png) no-repeat left bottom;
@@ -193,3 +204,4 @@ span.tooltip{
         cursor:text;
     }
 }
+
