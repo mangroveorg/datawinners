@@ -32,7 +32,7 @@ class ReporterRegistrationForm(Form):
     def _is_int(self, s):
         try:
             int(s)
-            return Trueeror
+            return True
         except ValueError:
             return False
 
