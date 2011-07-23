@@ -142,7 +142,7 @@ def create_datasender(request):
 
 def create_type(request):
     message = ""
-    success = False
+    success = True
     form = EntityTypeForm(request.POST)
     if form.is_valid():
         entity_name = form.cleaned_data["entity_type_create"]
@@ -154,7 +154,9 @@ def create_type(request):
             success = True
         except EntityTypeAlreadyDefined as type_already_defined:
             message = type_already_defined.message
-            success = False
+    else:
+        message = form.fields['entity_type_regex'].error_messages['invalid']
+        success = False
     return HttpResponse(json.dumps({'success': success, 'message': message}))
 
 
