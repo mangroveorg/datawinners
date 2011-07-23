@@ -66,7 +66,6 @@ class EditUserProfileForm(UserProfileForm):
         return self.cleaned_data.get('username')
 
 class RegistrationForm(RegistrationFormUniqueEmail):
-    error_css_class = 'error'
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False)
