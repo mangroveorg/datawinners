@@ -80,6 +80,10 @@
  }
  .ui-accordion .ui-accordion-content {
     padding:20px 10px 0 10px;
+    width:100%;
+    ul{
+        width:100%;
+    }
     ol{
         margin:10px 0 10px 40px;
     }
