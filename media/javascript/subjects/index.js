@@ -11,18 +11,20 @@ $(document).ready(function() {
             $("#error_table").hide();
             $("#subject_table tbody").html('');
             $.each(responseJSON.all_data, function(index, element) {
-                $("#subject_table tbody").append("<tr><td>" + element.short_name + "</td><td>" + element.name + "</td><td>"  + element.type + "</td><td>" + element.location + "</td><td>" + element.description + "</td><td>" + element.mobile_number + "</td></tr>")
+                $("#subject_table tbody").append("<tr><td>" + element.short_name + "</td><td>" + element.name + "</td><td>"  + element.type + "</td><td>" + element.location + "</td><td>"+ element.geocode + "</td><td>" + element.description + "</td><td>" + element.mobile_number + "</td></tr>")
             });
             if (responseJSON.success == true) {
-                $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#register_link'));
+                $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
 
             }
             else {
                 $('#error_tbody').html('');
-                $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#register_link'));
                 if (responseJSON.error_message)
                 {
-                    $('<span id="message" class="error_message">' + responseJSON.error_message + '</span>').insertAfter($('#register_link'));
+                    $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
+                }
+                else{
+                    $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                 }
                 if(responseJSON.failure_imports > 0)
                 {

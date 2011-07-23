@@ -27,12 +27,13 @@ def tabulate_failures(rows):
 
 def _tabulate_data(entity, row, short_code, type):
     id = row['id']
-    name = entity.value(NAME_FIELD)
+    name = entity.value(NAME_FIELD) if entity.value(NAME_FIELD) else "--"
     geocode = row['doc']['geometry'].get('coordinates')
-    location = sequence_to_str(entity.location_path)
-    mobile_number = entity.value(MOBILE_NUMBER_FIELD)
-    description = entity.value(DESCRIPTION_FIELD)
-    return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode, location=location,
+    geocode_string = ", ".join([str(i) for i in geocode]) if geocode else "--"
+    location = sequence_to_str(entity.location_path) if sequence_to_str(entity.location_path) != "" else "--"
+    mobile_number = entity.value(MOBILE_NUMBER_FIELD) if entity.value(MOBILE_NUMBER_FIELD) else "--"
+    description = entity.value(DESCRIPTION_FIELD) if entity.value(DESCRIPTION_FIELD) else "--"
+    return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode_string, location=location,
                 description=description, mobile_number=mobile_number)
 
 
