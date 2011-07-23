@@ -60,9 +60,12 @@ body > div {
   display: none; }
 body .ui-dialog {
   display: block;
-  height: auto !important;
+  height: 100% !important;
   left: 0px !important;
-  width: 100% !important; }
+  top: 0px !important;
+  width: 100% !important;
+  overflow: visible !important;
+  /*border:1px solid red;*/ }
   body .ui-dialog .ui-dialog-titlebar, body .ui-dialog .preview_block {
     display: none; }
   body .ui-dialog .ui-dialog-content {
