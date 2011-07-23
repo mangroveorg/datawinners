@@ -148,7 +148,7 @@ $(document).ready(function(){
         var time_range = DW.submit_data()
         $("#start_time").attr("value", time_range[0]);
         $("#end_time").attr("value", time_range[1]);
-        $('#export_form').submit()
+        $('#export_form').submit();
     });
 
     $('#time_filter').click(function() {

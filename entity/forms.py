@@ -27,7 +27,7 @@ class ReporterRegistrationForm(Form):
         self.fields['first_name'].widget.attrs['watermark'] = "Enter Data Sender's name"
         self.fields['telephone_number'].widget.attrs['watermark'] = "Enter Data Sender's number eg: "
         self.fields['location'].widget.attrs['watermark'] = "Enter region, district or commune"
-        self.fields['geo_code'].widget.attrs['watermark'] = "Enter latitude and longitude eg: 120.67889 84.34567"
+        self.fields['geo_code'].widget.attrs['watermark'] = "Enter lat and long eg: 19.3 42.37"
 
     def _is_int(self, s):
         try:
