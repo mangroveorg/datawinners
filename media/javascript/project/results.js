@@ -66,7 +66,7 @@ $(document).ready(function(){
                     }, dateEnd: 'today' }
                 ],
                 presets: {dateRange: 'Date Range'},
-                earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
+                earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/'
 
             });
 
