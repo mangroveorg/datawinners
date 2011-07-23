@@ -134,6 +134,9 @@ table {
   background: url(/media/images/icons.png) no-repeat left -170px;
   padding-left: 25px; }
 
+.cancel_link {
+  margin-right: 10px; }
+
 /* Titles */
 .highlighted_title {
   color: #C35C00; }

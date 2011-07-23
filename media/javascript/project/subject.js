@@ -27,11 +27,14 @@ $(document).ready(function(){
         }
     });
 
-     $("#add_subject").unbind('click').click(function() {
+    $("#add_subject").unbind('click').click(function() {
         $(".add_subject_form").dialog("open");
     });
 
-
+    $(".cancel_link").unbind('click').click(function(event) {
+        event.preventDefault();
+        $(".add_subject_form").dialog("close");
+    });
 
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
