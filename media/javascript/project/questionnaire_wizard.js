@@ -110,11 +110,17 @@ $(document).ready(function() {
 
         $.post('/project/questionnaire/save', post_data,
                 function(response) {
+                    $("#message-label").removeClass("none");
+                    $("#message-label").removeClass("message-box");
+                    $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + "The question has been saved." + "</label");
+                    redirect();
                 }).error(function(e) {
+                    $("#message-label").removeClass("none");
+                    $("#message-label").removeClass("success-message-box");
+                    $("#message-label").addClass("message-box");
                     $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
                 });
-        redirect();
         return false;
     });
 
