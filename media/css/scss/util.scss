@@ -208,3 +208,17 @@ span.tooltip{
     }
 }
 
+.title_links{
+    margin-left:20px;
+    font-size:12px;
+    font-weight:normal;
+    position:relative;
+    top:-3px;
+    a{
+        margin:0 5px 0 5px;
+    }
+    .pipe{
+        color:#666666;
+    }
+}
+

@@ -1,7 +1,23 @@
 {% extends 'layout_application.html' %}
 {% block page_title %}Data Senders{% endblock %}
 
-{% block section_title %}Data Senders{% endblock %}
+{% block section_title %}
+Data Senders
+<span class="title_links">
+     <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.entity.views.create_datasender %}">
+        Add a data sender
+     </a>
+    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+    <div class="tooltip">
+        <p>
+        <strong>What is this?</strong><br />
+        Add Data Sender one-by-one using the online registration form<br /><br />
+        <strong>What do I need to do?</strong><br />
+        Click the blue "Add a Data Sender" link and follow the step-by-step instructions
+        </p>
+    </div>
+</span>
+{% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -62,14 +78,6 @@
                     5. Click on "Import List" button and follow instructions
                 </p></div>
                 <div class="clear"></div>
-                <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.entity.views.create_datasender %}">
-                    Add a data sender.</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-                <div class="tooltip"><p>
-                    <strong>What is this?</strong><br />
-                    Add Data Sender one-by-one using the online registration form<br /><br />
-                    <strong>What do I need to do?</strong><br />
-                    Click the blue "Add a Data Sender" link and follow the step-by-step instructions
-                </p></div>
             </div>
             <div id='error_table'>
                 <table class="styled_table">

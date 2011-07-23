@@ -184,3 +184,14 @@ span.tooltip {
     text-decoration: none;
     color: #CCCCCC;
     cursor: text; }
+
+.title_links {
+  margin-left: 20px;
+  font-size: 12px;
+  font-weight: normal;
+  position: relative;
+  top: -3px; }
+  .title_links a {
+    margin: 0 5px 0 5px; }
+  .title_links .pipe {
+    color: #666666; }

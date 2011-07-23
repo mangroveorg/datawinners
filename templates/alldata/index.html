@@ -1,7 +1,11 @@
 {% extends 'layout_application.html' %}
 {% block page_title %}All Data{% endblock %}
 
-{% block section_title %}All Data{% endblock %}
+{% block section_title %}All Data
+    <span class="title_links">
+ <a href="/allfailedsubmissions">View all failed submissions for HNI</a>
+    </span>
+{% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -38,5 +42,4 @@
             {% endfor %}
         </table>
     </div>
-    <a href="/allfailedsubmissions">View all failed submissions for HNI</a>
 {% endblock %}

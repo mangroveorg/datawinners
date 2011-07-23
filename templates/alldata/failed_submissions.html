@@ -1,7 +1,11 @@
 {% extends 'layout_application.html' %}
 {% block page_title %}All Data{% endblock %}
 
-{% block section_title %}Failed Submissions{% endblock %}
+{% block section_title %}Failed Submissions
+<span class="title_links">
+    <a href="/alldata/">View All Data</a>
+</span>
+{% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -36,5 +40,4 @@
         {% endfor %}
     </table>
 </div>
-    <a href="/alldata/">View All Data</a>
 {% endblock %}
