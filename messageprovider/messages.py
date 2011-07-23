@@ -64,7 +64,7 @@ exception_messages = {
         DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
     },
     ex.InactiveFormModelException:{
-        DEFAULT: u"Error. You can not send us your answers for this questionnaire. The project is inactive. Please contact the administrator."
+        DEFAULT: u"Error. This project is not yet active. Submissions can be made only for an active project."
     }
 }
 
