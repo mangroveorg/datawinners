@@ -64,8 +64,7 @@ body .ui-dialog {
   left: 0px !important;
   top: 0px !important;
   width: 100% !important;
-  overflow: visible !important;
-  /*border:1px solid red;*/ }
+  overflow: visible !important; }
   body .ui-dialog .ui-dialog-titlebar, body .ui-dialog .preview_block {
     display: none; }
   body .ui-dialog .ui-dialog-content {
