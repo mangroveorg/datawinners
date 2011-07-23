@@ -10,7 +10,10 @@
 #question_form .alpha_list {
   margin-left: 20px; }
   #question_form .alpha_list input {
-    float: left; }
+    float: none; }
+  #question_form .alpha_list .error_arrow {
+    float: none !important;
+    background-position: 0px 3px !important; }
 #question_form .new_question {
   display: none; }
 #question_form #questions-panel {

@@ -15,11 +15,16 @@
     }
  }
  .alpha_list{
-     input{
-        float:left;
+    input{
+        float:none;
     }
-    margin-left: 20px
+    .error_arrow{
+        float:none !important;
+        background-position:0px 3px !important;
+    }
+    margin-left:20px;
  }
+
 
  .new_question{
     display:none;

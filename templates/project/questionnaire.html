@@ -38,11 +38,9 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/html" id="choice-template">
         <li>
-            <p class="grid_17">
                 <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName: true, enable: viewModel.isEnabled()"/>
                 <a href="questionnaire.html#" class='delete delete_link'
                    data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
-            </p>
         </li>
     </script>
     <script type="text/html" id="question-list-template_new">
