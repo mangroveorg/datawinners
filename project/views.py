@@ -355,7 +355,7 @@ def export_log(request):
     start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY))
     end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY))
     row_count, results = _load_submissions(1, manager, questionnaire_code, pagination=False, start_time=start_time_epoch, end_time=end_time_epoch)
-    header_list = ["From", "To", "Date Receieved", "Submission status", "Void","Errors"]
+    header_list = ["To", "From", "Date Receieved", "Submission status", "Void","Errors"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
     if row_count:
