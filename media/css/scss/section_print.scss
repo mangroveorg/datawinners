@@ -103,6 +103,7 @@ body{
         }
     }
 }
+@-moz-document url-prefix() { .questionnaire_preview ol li { float:none !important; } }
 .ui-widget-content{
     border:0 !important;
 }

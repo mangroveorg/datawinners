@@ -71,5 +71,9 @@ body .ui-dialog {
     body .ui-dialog .ui-dialog-content ol li {
       page-break-inside: avoid; }
 
+@-moz-document url-prefix() {
+  .questionnaire_preview ol li {
+    float: none !important; } }
+
 .ui-widget-content {
   border: 0 !important; }
