@@ -27,6 +27,10 @@
                 <a href="{{ project_links.activate_project_link }}">Activate Project</a>
             {% endif %}
         {% endif %}
+        {% if project.state == 'Test' %}
+            <a href="#" id='sms_tester'>Test SMS Questionnaire</a>
+            {% include 'project/sms_tester_form.html' %}
+        {% endif %}
     </div>
 
 {% endblock %}
