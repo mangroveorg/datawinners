@@ -55,6 +55,8 @@
       margin-left: 15px;
       font-size: 14px;
       font-weight: normal; }
+    #review_section .header .ui-icon-triangle-1-e, #review_section .header .ui-icon-triangle-1-s {
+      display: none !important; }
   #review_section .ui-accordion {
     width: 100% !important;
     border-bottom: 1px solid #CCCCCC;
