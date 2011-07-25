@@ -145,7 +145,7 @@ def create_type(request):
     success = True
     form = EntityTypeForm(request.POST)
     if form.is_valid():
-        entity_name = form.cleaned_data["entity_type_create"]
+        entity_name = form.cleaned_data["entity_type_regex"]
         entity_name = [entity_name.lower()]
         try:
             manager = get_database_manager(request)
