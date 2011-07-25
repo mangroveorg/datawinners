@@ -20,7 +20,7 @@
   <form id="registration_form" class="" action="" method="POST">
   <fieldset>
       {% csrf_token %}
-      <ul class="span-7 column border">
+      <ul>
           <li class="{{ form.first_name.css_classes }} form-row-10px">
               {{ form.first_name.label_tag }}
               {{ form.first_name }}
@@ -51,7 +51,8 @@
             </ul>
           </li>
 
-          <li>
+          <li class="button_block">
+              <a href="/entity/datasenders/" class="cancel_link">Cancel</a>
               <input type="button" id="id_register_button" value="Add" class="button margin_top_20"/>
           </li>
       </ul>

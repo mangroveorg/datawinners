@@ -3,6 +3,12 @@
 {% block page_title %} Add A Data Sender {% endblock %}
 {% block section_title %} Add A Data Sender{% endblock %}
 
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "data_senders" %}
+    {{ block.super }}
+{% endblock %}
+
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/fade_message_out.js"></script>
@@ -14,6 +20,7 @@
     {{ block.super }}
     <link rel="stylesheet" href="/media/css/scss/section_register.scss" media="screen">
     <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_datasenders_common.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_css %}
