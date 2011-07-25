@@ -33,11 +33,9 @@
                     <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
                     <td>{{ project.created }}</td>
                     <td>{{ project.type }}</td>
-                    <td><span class="report_links"><a href="{{ project.summary }}"
-                                                      class="disabled">Summary</a>|<a href="{{ project.analysis }}"
-                                                                                      class="{{ project.disabled }}">Analysis</a>
-                            |<a
-                            href="{{ project.log }}" class="{{ project.disabled }}">All Data Records</a></span></td>
+                    <td><span class="report_links"><label>Summary</label>
+                        <a href="{{ project.analysis }}"class="{{ project.disabled }}">Analysis</a>
+                            |<a href="{{ project.log }}" class="{{ project.disabled }}">All Data Records</a></span></td>
                 </tr>
             {% endfor %}
         </table>

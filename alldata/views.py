@@ -18,8 +18,8 @@ def index(request):
     rows = models.get_all_projects(dbm=manager)
     project_list = []
     for row in rows:
-        analysis = log = ""
-        disabled = "disabled"
+        analysis = log = "#"
+        disabled = "disable_link"
         project_id = row['value']['_id']
         project = models.get_project(project_id, dbm=manager)
         questionnaire = manager.get(project['qid'], FormModel)
