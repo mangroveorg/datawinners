@@ -386,8 +386,8 @@ def subjects_wizard(request, project_id=None):
         return HttpResponseRedirect(reverse(questionnaire_wizard, args=[project_id]))
 
 
-def _format_field_description_for_data_senders(reg_form):
-    for field in reg_form.fields:
+def _format_field_description_for_data_senders(reg_form_fields):
+    for field in reg_form_fields:
         if field.code == 't':
             continue
         temp = field.label.get("eng")
@@ -403,7 +403,7 @@ def datasenders_wizard(request, project_id=None):
         previous_link = reverse(questionnaire_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
         import_reporter_form = ReporterRegistrationForm()
-        _format_field_description_for_data_senders(reg_form)
+        _format_field_description_for_data_senders(reg_form.fields)
         cleaned_up_fields = _get_questions_for_datasenders_registration_for_wizard(reg_form.fields)
         return render_to_response('project/datasenders_wizard.html',
                 {'fields': cleaned_up_fields, "previous": previous_link,
@@ -501,6 +501,7 @@ def _get_questions_for_datasenders_registration_for_print_preview(questions):
     cleaned_qestions.insert(0,questions[0])
     return cleaned_qestions
 
+
 def _get_questions_for_datasenders_registration_for_wizard(questions):
     return [questions[1], questions[3], questions[4], questions[6] ]
 
@@ -510,7 +511,7 @@ def datasenders(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-    _format_field_description_for_data_senders(reg_form)
+    _format_field_description_for_data_senders(reg_form.fields)
     cleaned_up_fields = _get_questions_for_datasenders_registration_for_print_preview(reg_form.fields)
     return render_to_response('project/datasenders.html', {'fields': cleaned_up_fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
 
@@ -549,7 +550,6 @@ def questionnaire_preview(request, project_id=None):
             question = helper.get_preview_for_field(field)
             questions.append(question)
         example_sms = "%s +%s <answer> .... +%s <answer>" % (form_model.form_code, fields[0].code, fields[len(fields)-1].code)
-#        example_sms = fields[len(fields)-1].code
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
@@ -558,10 +558,10 @@ def questionnaire_preview(request, project_id=None):
 
 
 def _get_preview_for_field_in_registration_questionnaire(field):
-    return {"description": field.label.get('eng'), "code": field.code, "type": field.type, "constraint": helper._get_constraint(field),"instruction": field.instruction}
+    return {"description": field.label.get('eng'), "code": field.code, "type": field.type, "constraint": field.instruction,"instruction": field.instruction}
 
 
-def _get_registration_form(manager, project, project_id):
+def _get_registration_form(manager, project, project_id, type_of_subject='subject'):
     previous_link = reverse(subjects_wizard, args=[project_id])
     registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = registration_questionnaire.fields
@@ -569,6 +569,7 @@ def _get_registration_form(manager, project, project_id):
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field)
+        question = {k:v.replace('subject', type_of_subject) for (k,v) in question.items()}
         questions.append(question)
     return fields, previous_link, project_links, questions, registration_questionnaire
 
@@ -595,10 +596,10 @@ def sender_registration_form_preview(request,project_id=None):
     if request.method == "GET":
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
-                                                                                                             project_id)
+                                                                                                             project_id, type_of_subject='Data sender')
         example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
-        cleaned_up_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
+        datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         return render_to_response('project/questionnaire_preview.html',
-                {"questions":cleaned_up_questions, 'questionnaire_code': registration_questionnaire.form_code,
+                {"questions":datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
                                   context_instance=RequestContext(request))
