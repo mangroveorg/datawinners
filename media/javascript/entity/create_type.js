@@ -12,6 +12,7 @@ $("#add_type").live("click", function(){
                     $("#id_entity_type").prepend("<option value=" + new_type+ ">" +new_type + "</option>");
                     $('#id_entity_type').val(0);
                     $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
+                    $("#type_message").html('');
                 }
                 else{
                     $('#id_entity_type').val(new_type.toLowerCase());
