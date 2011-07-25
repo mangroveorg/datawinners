@@ -26,13 +26,15 @@ $(document).ready(function(){
             $('#error_tbody').html('');
             $("#error_table").hide();
             if (responseJSON.success == true) {
-                $('<span id="message" class="success_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
+                $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
             }
             else {
-                $('<span id="message" class="error_message">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
                 if (responseJSON.error_message)
                 {
-                    $('<span id="message" class="error_message">' + responseJSON.error_message + '</span>').insertAfter($('#file-uploader'));
+                    $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</span>').insertAfter($('#file-uploader'));
+                }
+                else{
+                    $('<div id="message" class="error_message message-box">' + responseJSON.message + '</span>').insertAfter($('#file-uploader'));
                 }
                 if(responseJSON.failure_imports > 0)
                 {

@@ -35,7 +35,7 @@ $(document).ready(function() {
                             $('#message').delay(10000).fadeOut();
                         }
                         else {
-                            $('<span id="message" class="error_message">' + d.message + '</span>').insertBefore($('#question_form'));
+                            $('<div id="message" class="error_message message-box">' + d.message + '</span>').insertBefore($('#question_form'));
                         }
                     }
             );
