@@ -8,6 +8,7 @@ from mangrove.datastore.entity import Entity
 
 
 class TestHelper(unittest.TestCase):
+
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
 
@@ -18,6 +19,12 @@ class TestHelper(unittest.TestCase):
         entity2 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002",
                          geometry={'type': 'Point', 'coordinates': [1, 3]})
         entity_list = [entity1, entity2]
+        self.assertEqual(expected_geojson, helper.create_location_geojson(entity_list))
+
+    def test_should_create_location_geojson_for_unknown_location(self):
+        expected_geojson = '{"type": "FeatureCollection", "features": []}'
+        entity1 = Entity(self.dbm, entity_type="Water Point", location=["India", "MH", "Pune"], short_code="WP002")
+        entity_list = [entity1]
         self.assertEqual(expected_geojson, helper.create_location_geojson(entity_list))
 
     @SkipTest

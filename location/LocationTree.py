@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from _collections import defaultdict
-from itertools import groupby
 from django.contrib.gis.geos.point import Point
 from django.db import connection
 from networkx import *
@@ -73,19 +72,12 @@ where name_1  ILIKE CAST(%(like)s as TEXT) limit 5)
 order by LEVEL
     """
 
-
-#    print list(LocationLevel.objects.raw(sql,params = data_dict))
-
     cursor.execute(sql, data_dict )
     rows = cursor.fetchall()
     location_dict = defaultdict(list)
     for level, location in rows:
         location_dict[level].append(location)
     return location_dict
-
-
-#    for key,vals in group:
-#        print key, list(vals)
 
 
 class LocationTree(object):
@@ -125,7 +117,10 @@ class LocationTree(object):
         return self.tree.neighbors(parent.lower())
 
     def get_hierarchy_path(self, location_name):
-        return nx.shortest_path(self.tree, ROOT, location_name.lower())[1:]
+        try:
+            return nx.shortest_path(self.tree, ROOT, location_name.lower())[1:]
+        except NetworkXError:
+            return [location_name]
 
     def exists(self, location):
         return location.lower() in self.tree.nodes()
@@ -160,6 +155,8 @@ class LocationTree(object):
         column = 'name_%s' % level
         exactly_matches = column + '__iexact'
         row = LocationLevel.objects.filter(**{exactly_matches : location}).centroid(model_att='c')
+        if not row:
+            return None
         point = row[0].c
         return point.x, point.y
 

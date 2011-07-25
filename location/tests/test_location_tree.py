@@ -3,7 +3,6 @@ import unittest
 from unittest.case import SkipTest
 from datawinners.location.LocationTree import LocationTree, get_locations_for_country, get_location_groups_for_country
 
-@SkipTest
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
         self.tree = LocationTree()
@@ -19,6 +18,9 @@ class TestLocationTree(unittest.TestCase):
     def test_get_hierarchy_from_location(self):
         self.assertEqual(self.tree.get_hierarchy_path('Amboanjo'),
             ['madagascar', 'vatovavy fitovinany', 'manakara atsimo', 'amboanjo'])
+
+    def test_should_return_same_value_if_not_in_path(self):
+        self.assertEqual(['pune'], self.tree.get_hierarchy_path('pune'))
 
     def test_is_valid_location(self):
         self.assertTrue(self.tree.exists("amboanjo"))
@@ -46,9 +48,12 @@ class TestLocationTree(unittest.TestCase):
         actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soas")
         self.assertEqual(expected_location_group, actual_location_groups)
 
-        
+    @SkipTest
     def test_should_get_centroid_for_location_based_on_level_given(self):
-        self.assertEqual((46.90540972823169, -18.762105675278256), self.tree.get_centroid(location='Ambatomanjaka', level = '3'))
+        self.assertEqual((46.8558925459, -18.762105675278256), self.tree.get_centroid(location='Ambatomanjaka', level = '3'))
         self.assertFalse(self.tree.exists("XYZ"))
+
+    def test_should_return_none_for_location_unknown(self):
+        self.assertEqual(None, self.tree.get_centroid(location='pune', level = '3'))
 
 

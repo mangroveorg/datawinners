@@ -17,6 +17,8 @@ def _get_geo_json_for_entity_from_geo_code(entity, geometry):
 def _get_geo_json_from_location(lowest_admin_boundary, level):
     tree = LocationTree()
     geo_code = tree.get_centroid(lowest_admin_boundary, level)
+    if geo_code is None:
+        return None
     geo_json_geometry = {"type": "Point", "coordinates": [geo_code[0], geo_code[1]]}
     geojson_feature = {"type": "Feature", "geometry": geo_json_geometry}
     return geojson_feature
