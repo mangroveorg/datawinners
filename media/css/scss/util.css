@@ -198,3 +198,16 @@ span.tooltip {
     margin: 0 5px 0 5px; }
   .title_links .pipe {
     color: #666666; }
+
+.mobile_block p {
+  font-size: 12px; }
+.mobile_block .mobile {
+  background: url("/media/images/mobile.png") no-repeat left top;
+  height: 360px;
+  width: 200px; }
+  .mobile_block .mobile textarea {
+    height: 74px;
+    margin-left: 36px;
+    margin-top: 77px;
+    width: 94px;
+    font-size: 12px; }

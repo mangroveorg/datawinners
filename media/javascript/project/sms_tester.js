@@ -6,6 +6,7 @@ $(document).ready(function() {
         title: 'SMS Tester'
     });
     $("#sms_tester").unbind('click').click(function() {
+        $(".sms_tester_form").removeClass("none");
         $(".sms_tester_form").dialog("open");
     });
 

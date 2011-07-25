@@ -55,8 +55,6 @@
       margin-left: 15px;
       font-size: 14px;
       font-weight: normal; }
-    #review_section .header .ui-icon-triangle-1-e, #review_section .header .ui-icon-triangle-1-s {
-      display: none !important; }
   #review_section .ui-accordion {
     width: 100% !important;
     border-bottom: 1px solid #CCCCCC;
@@ -116,16 +114,3 @@
   .SMS_tester_section .preview_questionnaire {
     background: url(/media/images/mobile_icons.png) no-repeat 0px -71px;
     padding-left: 25px !important; }
-
-.mobile_block p {
-  font-size: 12px; }
-.mobile_block .mobile {
-  background: url("/media/images/mobile.png") no-repeat left top;
-  height: 360px;
-  width: 200px; }
-  .mobile_block .mobile textarea {
-    height: 74px;
-    margin-left: 36px;
-    margin-top: 77px;
-    width: 94px;
-    font-size: 12px; }

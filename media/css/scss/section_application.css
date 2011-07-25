@@ -46,7 +46,8 @@
         margin-right: 5px; }
       #container_content #page_title .project_detail a, #container_wizard #page_title .project_detail a {
         border-left: 1px solid #666666;
-        padding-left: 7px; }
+        padding-left: 7px;
+        padding-right: 7px; }
 
 table.styled_table {
   width: 100%;
