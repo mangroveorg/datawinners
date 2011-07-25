@@ -227,14 +227,14 @@ def _load_submissions(current_page, manager, questionnaire_code, pagination=True
     if form_model.entity_defaults_to_reporter():
         fields = form_model.fields[1:]
     questions = helper.get_code_and_title(fields)
-    rows = get_submission_count_for_form(manager, questionnaire_code, start_time, end_time)
+    count = get_submission_count_for_form(manager, questionnaire_code, start_time, end_time)
     results = {'questionnaire': questionnaire,
                'questions': questions}
-    if rows:
+    if count:
         submissions, ids = _get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions),
                                                         pagination, start_time=start_time, end_time=end_time)
         results.update(submissions=zip(submissions, ids))
-    return rows, results
+    return count, results
 
 #TODO- Refactoring needed for results and data related views.
 @login_required(login_url='/login')
@@ -245,11 +245,15 @@ def project_results(request, project_id=None, questionnaire_code=None):
     project_links = _make_project_links(project, questionnaire_code)
     if request.method == 'GET':
         current_page = int(request.GET.get('page_number') or 1)
-        rows, results = _load_submissions(current_page, manager, questionnaire_code,True, 0, int(mktime(datetime.datetime.now().timetuple())) * 1000)
-        if rows is None:
+        start_time = request.GET.get("start_time") or ""
+        end_time = request.GET.get("end_time") or ""
+        start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
+        end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
+        count, results = _load_submissions(current_page, manager, questionnaire_code,True, start_time_epoch, end_time_epoch)
+        if not count:
             error_message = "No submissions present for this project"
         return render_to_response('project/results.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
                  'error_message': error_message, 'project_links': project_links, 'project': project},
                                   context_instance=RequestContext(request)
         )
@@ -260,9 +264,9 @@ def project_results(request, project_id=None, questionnaire_code=None):
             manager.invalidate(each)
             SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
         current_page = request.POST.get('current_page')
-        rows, results = _load_submissions(int(current_page), manager, questionnaire_code)
+        count, results = _load_submissions(int(current_page), manager, questionnaire_code)
         return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')

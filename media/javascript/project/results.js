@@ -1,20 +1,50 @@
-(function(){
+
+$(document).ready(function(){
+
+    $.ajaxSetup({ cache: false });
+
+    DW.init_pagination = function () {
+        DW.current_page = 0;
+        $("#pagination").pagination($('#total_rows').val(), {
+            items_per_page:10,
+            num_display_entries : 5,
+            num_edge_entries:2,
+            load_first_page:false,
+            callback : function(page_number) {
+                new DW.show_data(page_number + 1);
+                DW.current_page = page_number + 1
+            }
+        });
+    }
+
+    DW.submit_data = function() {
+        var time_range = $("#dateRangePicker").val().split("/");
+        if(time_range[0] == ""){
+            time_range[0]='01-01-1996';
+            time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
+            return time_range;
+        }
+        if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
+            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
+            $("#dateErrorDiv").show();
+            time_range[0] = "";
+            time_range[1] = "";
+        }
+        return time_range;
+   };
+
+
     DW.show_data = function(page_number){
-        //        this.date_from = $('#date_from').val();
-        //        this.date_to = $('#date_to').val();
-        //        this.contains =$('#contains_text').val().trim();
         this.page_number = page_number;
         this._init();
-        this._addAnswerFilter();
     }
     DW.show_data.prototype = {
         _init : function(){
+            var time_range = DW.submit_data();
             $.get(window.location,
                   {
-//                      date_from: this.date_from,
-//                      date_to: this.date_to,
-//                      contains: this.contains,
-                      'filters': JSON.stringify(this._answerFilter(), null, 2),
+                      start_time:time_range[0],
+                      end_time: time_range[1],
                       page_number: this.page_number,
                       rand: Math.floor(Math.random()*10000000)
                   },
@@ -24,33 +54,14 @@
                     }
                   }
                  );
-            },
-        _answerFilter : function(){
-            var filters = [];
-            $('p:has(input[type=text].answer_filter)').each(function(){
-                var p = $(this);
-                if(p.find('input.answer_filter').val().trim().length > 0){
-                    filters.push({code: p.find('select').val(), answer: p.find('input.answer_filter').val().trim()});
-                }
-            });
-            return filters
-        },
-        _addAnswerFilter : function(){
-            $('#add_answer_filter').click(function() {
-                $('li input[type=text].answer_filter:last').parent('li').clone().insertAfter($('li input[type=text].answer_filter:last').parent('li'));
-            });
-        }
+            }
     }
 
-})();
 
-$(document).ready(function(){
-
-    $.ajaxSetup({ cache: false });
-    var screen_width = $(window).width() - 50;
-     $("#data_record").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
+   DW.screen_width = $(window).width() - 50;
+     $("#data_record").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>")
     DW.wrap_table = function() {
-        $("#data_analysis").wrap("<div class='data_table' style='width:"+screen_width+"px'/>")
+        $("#data_analysis").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>")
     };
     $("#dateRangePicker").daterangepicker({
                 presetRanges: [
@@ -77,17 +88,7 @@ $(document).ready(function(){
         })
 
     })
-    DW.current_page = 0;
-    //$('#total_rows').val() is the total number of results which needs to be sent for every pagination click(total_rows).val(), don't take that out
-    $("#pagination").pagination($('#total_rows').val().trim(),{
-        items_per_page:10,
-        num_display_entries : 5,
-        num_edge_entries:2,
-        callback : function(page_number) {
-            new DW.show_data(page_number + 1);
-            DW.current_page = page_number + 1
-        }
-    });
+
     $('#action').change(function(){
        var ids = [];
        if($(".selected_submissions:checked").length == 0){
@@ -126,25 +127,7 @@ $(document).ready(function(){
         }
        }
    });
-   DW.submit_data = function() {
-        var time_range = $("#dateRangePicker").val().split("/");
-        if(time_range[0] == ""){
-            time_range[0]='01-01-1996';
-            time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
-            return time_range;
-        }
-        if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
-            $("#dateErrorDiv").show();
-            time_range[0] = "";
-            time_range[1] = "";
-        }
-        return time_range;
-   };
     $('#export_link').click(function(){
-//        var path = window.location.pathname;
-//        var element_list = path.split("/");
-//        $("#questionnaire_code").attr("value", element_list[element_list.length - 2]);
         var time_range = DW.submit_data()
         $("#start_time").attr("value", time_range[0]);
         $("#end_time").attr("value", time_range[1]);
@@ -160,9 +143,12 @@ $(document).ready(function(){
             success:function(response) {
                 if (response) {
                     $('#results').html(response);
+                    DW.init_pagination();
                 }
             }
         });
     });
+
+    DW.init_pagination();
 });
 
