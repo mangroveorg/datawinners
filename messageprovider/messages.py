@@ -65,6 +65,9 @@ exception_messages = {
     },
     ex.InactiveFormModelException:{
         DEFAULT: u"Error. This project is not yet active. Submissions can be made only for an active project."
+    },
+    Exception:{
+        DEFAULT: u"Error. Internal error. Please call technical support"
     }
 }
 

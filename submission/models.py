@@ -2,12 +2,12 @@ from django.db import models
 from datawinners.messageprovider.message_handler import _get_response_message
 
 class DatawinnerLog(models.Model):
-    message = models.CharField(max_length=100)
+    message = models.TextField()
     from_number = models.CharField(max_length=15)
     to_number = models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     form_code = models.CharField(max_length=20, blank=True, null=True)
-    error = models.CharField(max_length=500)
+    error = models.TextField()
 
 
 #TODO: Move all message templating for responses here.

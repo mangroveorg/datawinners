@@ -38,6 +38,9 @@ def sms(request):
         log.save()
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
+    except Exception as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+
 
     return HttpResponse(message)
 

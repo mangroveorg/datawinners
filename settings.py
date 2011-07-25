@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'datawinners.main',
     'datawinners.project',
     'datawinners.dashboard',
-    #'datawinners.location',
+    'datawinners.location',
     'datawinners.entity',
     'datawinners.submission',
     'django_extensions',
