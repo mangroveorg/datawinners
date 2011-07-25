@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 
 from datawinners.main.utils import get_database_manager
+from datawinners.project.models import ProjectState
 from mangrove.datastore import data
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.field import field_to_json
@@ -42,6 +43,11 @@ def get_submissions(dbm, form_code):
 
     return submission_list, submission_success, submission_errors
 
+
+def is_project_inactive(row):
+    return row['value']['state'] == ProjectState.INACTIVE
+
+
 @login_required(login_url='/login')
 def dashboard(request):
     manager = get_database_manager(request)
@@ -55,7 +61,8 @@ def dashboard(request):
         questionnaire_code = form_model.form_code
         submissions, success, errors = get_submissions(manager, questionnaire_code)
 
-        project = dict(name=row['value']['name'], link=link, submissions=submissions, success=success, errors=errors)
+        project = dict(name=row['value']['name'], link=link, submissions=submissions, success=success, errors=errors,
+                       inactive=is_project_inactive(row))
         project_list.append(project)
 
     return render_to_response('dashboard/home.html',
