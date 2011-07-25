@@ -60,7 +60,6 @@ body > div {
   display: none; }
 body .ui-dialog {
   display: block;
-  height: 100% !important;
   left: 0px !important;
   top: 0px !important;
   width: 100% !important;
@@ -69,6 +68,8 @@ body .ui-dialog {
     display: none; }
   body .ui-dialog .ui-dialog-content {
     overflow: visible !important; }
+    body .ui-dialog .ui-dialog-content ol li {
+      page-break-inside: avoid; }
 
 .ui-widget-content {
   border: 0 !important; }

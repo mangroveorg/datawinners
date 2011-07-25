@@ -88,7 +88,6 @@ body{
     }
     .ui-dialog{
         display:block;
-        height:100% !important;
         left:0px !important;
         top:0px !important;
         width:100% !important;
@@ -98,6 +97,9 @@ body{
         }
         .ui-dialog-content{
             overflow:visible !important;
+            ol li{
+                page-break-inside:avoid;
+            }
         }
     }
 }
