@@ -228,3 +228,14 @@ span.tooltip {
     margin-top: 77px;
     width: 94px;
     font-size: 12px; }
+
+#cancel_project_block, #activate_project_block {
+  padding: 20px;
+  display: none; }
+  #cancel_project_block .warning_message, #activate_project_block .warning_message {
+    margin-bottom: 30px; }
+  #cancel_project_block a.cancel_link, #activate_project_block a.cancel_link {
+    color: #0070ac;
+    font-size: 12px; }
+  #cancel_project_block #confirm, #activate_project_block #confirm {
+    color: #6F451D; }
