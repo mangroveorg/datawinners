@@ -326,6 +326,8 @@ def _get_constraint(field):
         return _get_date_format_constraint(field)
     if type(field) is SelectField:
         return _get_options_constraint(field)
+    if type(field) is GeoCodeField:
+        return "xx.xxxx yy.yyyy"
     else:
         return ""
     
