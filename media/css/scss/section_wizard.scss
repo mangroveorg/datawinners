@@ -76,7 +76,19 @@ $slider_range:#FFFFFF;
         }
     }
 }
-
+#cancel_project_block{
+    padding:20px;
+    .warning_message{
+        margin-bottom:30px;
+    }
+    a.cancel_link{
+        color:#0070ac;
+        font-size:12px;
+    }
+    #confirm{
+        color:#6F451D;
+    }
+}
 .buttons{
     width:100%;
     float:left;
