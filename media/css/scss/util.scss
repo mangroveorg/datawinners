@@ -163,6 +163,23 @@ table{
     margin-left:5px;
 }
 
+/* Active and test states */
+.Active_state, .Test_state, .Inactive_state{
+    padding:3px 7px 3px 7px;
+    -moz-border-radius:7px;
+    -webkit-border-radius:7px;
+    color:#FFFFFF;
+}
+.Active_state{
+    background-color:#108600;
+}
+.Test_state{
+    background-color:#ab190d;
+}
+.Inactive_state{
+    background-color:#0477c8;
+}
+
 div.tooltip {
 	display:none;
     background: url(/media/images/help_arrow.png) no-repeat 4px bottom;

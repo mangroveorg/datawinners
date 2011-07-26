@@ -10,7 +10,9 @@
 {% block section_title %}
     <h2 class="project_title">{{ project.name }}</h2>
     <div class="project_detail">
-        <span class="project_status">Project status: {{ project.state }}</span>
+        <span class="project_status">Project status:
+            <span class="{{ project.state }}_state">{{ project.state }}</span>
+        </span>
         {% if  project.state  != 'Active' %}
             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
             {% if project.state == 'Test' %}
