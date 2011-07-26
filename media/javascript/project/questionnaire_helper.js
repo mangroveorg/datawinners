@@ -7,7 +7,7 @@ DW.instruction_template = {
     "range_number" :"Answer must be a number between %d-%d.",
     "text":"Answer must be a word or phrase",
     "max_text":"Answer must be a word or phrase %d characters maximum",
-    "date":"Answer must be a date in the following format %s. Example: %s",
+    "date":"Answer must be a date in the following format: %s. Example: %s",
     "single_select":"Choose 1 answer from the above list. Example: a",
     "multi_select":"Choose 1 or more answers from the above list. Example: a or ab ",
     "gps":"Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547 ",
@@ -15,8 +15,13 @@ DW.instruction_template = {
     "mm.dd.yyyy": "12.25.2011",
     "mm.yyyy": "12.2011"
 
-}
+};
+DW.date_template = {
+    "dd.mm.yyyy": "day.month.year",
+        "mm.dd.yyyy": "month.day.year",
+        "mm.yyyy": "month.year"
 
+};
 DW.question = function(question) {
     var defaults = {
         name : "Question",
@@ -81,7 +86,7 @@ DW.question.prototype = {
                       return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
                   }
                   if(this.type()=="date")
-                    return $.sprintf(DW.instruction_template.date, this.date_format(), DW.instruction_template[this.date_format()]);
+                    return $.sprintf(DW.instruction_template.date, DW.date_template[this.date_format()], DW.instruction_template[this.date_format()]);
                   if(this.type()=="geocode")
                     return DW.instruction_template.gps;
                   if(this.type()=="select1")
