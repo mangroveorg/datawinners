@@ -45,7 +45,7 @@
             <p>This Project is not yet active. Data displayed is test data. <a href="#" class="activate_project">Click Here to Activate</a></p>
         </div>
         {% endif %}
-    <form id = "export_form" method="post" action="/project/export/log">
+    <form id = "export_form" method="get" action="/project/export/log">
     {% csrf_token %}
         <input id = "questionnaire_code" name='questionnaire_code' type="hidden" value="{{ questionnaire_code }}"/>
         <input id='start_time' name='start_time' type="hidden"/>
