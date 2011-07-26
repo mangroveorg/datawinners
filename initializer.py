@@ -8,7 +8,7 @@ from mangrove.form_model.form_model import   MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 
 
-REPORTER_SHORT_CODE = 'TEST'
+REPORTER_SHORT_CODE = 'test'
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
