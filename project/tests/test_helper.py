@@ -499,9 +499,9 @@ class TestPreviewCreator(unittest.TestCase):
         preview = helper.get_preview_for_field(field)
         self.assertEqual("dd/mm/yyyy", preview["constraint"])
 
-    def test_should_return_blank_in_other_cases(self):
+    def test_should_return_geocode_format(self):
         type = DataDictType(Mock(DatabaseManager), name="date type")
         field = GeoCodeField(name="What is the place?", code="dat", label="naam", ddtype=type)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("", preview["constraint"])
+        self.assertEqual("xx.xxxx yy.yyyy", preview["constraint"])
 
