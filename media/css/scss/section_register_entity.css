@@ -30,3 +30,6 @@
   margin-left: 167px; }
   .add_entity_form #add_subject_type input[type=text] {
     width: 200px; }
+  .add_entity_form #add_subject_type .message-box {
+    float: left;
+    font-size: 12px; }

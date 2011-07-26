@@ -17,11 +17,13 @@ $(document).ready(function() {
                         $('#id_entity_type').trigger('change');
                         $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
                         $("#type_message").html('');
+                        $("#type_message").removeClass("message-box")
                     }
                     else{
                         $('#id_entity_type').val(new_type.toLowerCase());
                         $("#add_subject_type").accordion({collapsible: false,autoHeight:false, active:2});
                         $("#type_message").html(data.message);
+                        $("#type_message").addClass("message-box")
                     }
                 });
     });

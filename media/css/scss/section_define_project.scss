@@ -17,11 +17,12 @@ fieldset{
 
 #add_subject_type{
     margin-left:170px;
-    label{
-        width:300px;
-    }
     input[type=text]{
         width:200px;
+    }
+    .message-box{
+        float:left;
+        font-size:12px;
     }
 }
 

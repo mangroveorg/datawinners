@@ -87,7 +87,8 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     organization_city = forms.CharField(max_length=30, required=True, label='* City')
     organization_state = forms.CharField(max_length=30, required=False, label='State / Province')
     organization_country = forms.CharField(max_length=30, required=True, label='* Country')
-    organization_zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
+    organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
+                                  error_message="Please enter a valid Postal / Zip code", label='* Postal / Zip Code')
     organization_office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="Office Phone Number",
                                   error_message="Please enter a valid phone number")
     organization_website = forms.URLField(required=False, label='Website Url')

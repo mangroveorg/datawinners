@@ -59,8 +59,9 @@
         }
         #add_subject_type{
             margin-left:120px;
-            label{
-                width:auto;
+            .message-box{
+                float:left !important;
+                font-size:12px;
             }
         }
 

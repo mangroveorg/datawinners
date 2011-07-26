@@ -15,10 +15,11 @@ fieldset {
 
 #add_subject_type {
   margin-left: 170px; }
-  #add_subject_type label {
-    width: 300px; }
   #add_subject_type input[type=text] {
     width: 200px; }
+  #add_subject_type .message-box {
+    float: left;
+    font-size: 11px; }
 
 #id_entity_type {
   min-width: 130px; }
