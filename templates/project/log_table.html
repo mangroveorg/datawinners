@@ -1,4 +1,8 @@
-<div id="message_text" class="success">{{ success_message }}</div>
+<div id="message_text">
+    {% if  success_message  %}
+        <div class="success-message-box">{{ success_message }}</div>
+    {% endif %}
+</div>
 <input id="total_rows" type="hidden" value="{{ pages }}" />
 <table class="styled_table" id="data_record">
     <thead>

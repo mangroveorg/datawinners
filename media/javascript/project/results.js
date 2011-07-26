@@ -87,12 +87,12 @@ $(document).ready(function(){
            $(this).attr("checked", !$(this).attr('checked'))
         })
 
-    })
+    });
 
     $('#action').change(function(){
        var ids = [];
        if($(".selected_submissions:checked").length == 0){
-            $("#message_text").html("<span class='error_message'>" + "Please select atleast one undeleted record" + "</span>");
+            $("#message_text").html("<div class='error_message message-box'>" + "Please select atleast one undeleted record" + "</div>");
             $('#action').val(0);
        }
        else{
@@ -101,7 +101,7 @@ $(document).ready(function(){
                 ids.push($(this).val());
        });
        if(ids.length==0){
-            $("#message_text").html("<span class='error_message'>" + "This data has already been deleted" + "</span>");
+            $("#message_text").html("<div class='error_message message-box'>" + "This data has already been deleted" + "</div>");
             $('#action').val(0);
        }
        else{
@@ -115,15 +115,16 @@ $(document).ready(function(){
                                $('#submission_table').empty();
                                $('#submission_table').append(response);
                                $('#action').val(0);
-
                     },
                  error: function(e) {
-                    $("#message_text").html("<span class='error_message'>" + e.responseText + "</span>");
+                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
                     $('#action').val(0);
                 }
              });
            }
-           else $("action").val(0);
+           else{
+               $("action").val(0);
+           }
         }
        }
    });
