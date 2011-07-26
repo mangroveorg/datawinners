@@ -80,7 +80,7 @@ class RegistrationForm(RegistrationFormUniqueEmail):
                                   error_message="Please enter a valid phone number")
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
-    organization_name = forms.CharField(required=True, label='* Organization Name')
+    organization_name = forms.CharField(required=True, max_length= 30, label='* Organization Name')
     organization_sector = forms.CharField(widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))), label='Organization Sector')
     organization_address = forms.CharField(required=True, max_length=30, label='* Address')
