@@ -75,6 +75,7 @@ $(document).ready(function() {
         'source': 'web',
         'destination': 'mangrove'
     };
+
     ko.applyBindings(DW.viewModel);
 
 });
