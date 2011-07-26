@@ -16,7 +16,7 @@ fieldset {
 #add_subject_type {
   margin-left: 170px; }
   #add_subject_type label {
-    width: auto; }
+    width: 300px; }
   #add_subject_type input[type=text] {
     width: 200px; }
 
