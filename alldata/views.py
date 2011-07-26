@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from datawinners import utils
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from datawinners.project.models import ProjectState
@@ -35,7 +36,18 @@ def index(request):
         project_list.append(project)
     return render_to_response('alldata/index.html', {'projects': project_list}, context_instance=RequestContext(request))
 
+
+def _get_organization_sms_number_for(user):
+    profile = user.get_profile()
+    organization = Organization.objects.get(org_id=profile.org_id)
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    org_number = organization_settings.sms_tel_number
+    return org_number
+
+
 @login_required(login_url='/login')
 def failed_submissions(request):
     logs = DatawinnerLog.objects.all()
-    return render_to_response('alldata/failed_submissions.html', {'logs': logs}, context_instance=RequestContext(request))
+    org_number = _get_organization_sms_number_for(user=request.user)
+    org_logs = [log for log in logs if log.to_number==org_number]
+    return render_to_response('alldata/failed_submissions.html', {'logs': org_logs}, context_instance=RequestContext(request))
