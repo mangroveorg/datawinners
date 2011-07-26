@@ -34,7 +34,8 @@
         margin-right: 10px;
         font-weight: normal; }
       #review_section ul li p {
-        font-weight: bold; }
+        font-weight: bold;
+        width: 550px; }
   #review_section h4 {
     border-bottom: 1px solid #CCCCCC; }
   #review_section .ui-accordion-content {
