@@ -3,6 +3,7 @@ $(document).ready(function(){
 
     $.ajaxSetup({ cache: false });
 
+
     DW.init_pagination = function () {
         DW.current_page = 0;
         $("#pagination").pagination($('#total_rows').val(), {
@@ -41,19 +42,20 @@ $(document).ready(function(){
     DW.show_data.prototype = {
         _init : function(){
             var time_range = DW.submit_data();
-            $.get(window.location,
+            $.get('/project/datarecords/filter',
                   {
+                      questionnaire_code: $('#questionnaire_id').val(),
                       start_time:time_range[0],
                       end_time: time_range[1],
                       page_number: this.page_number,
                       rand: Math.floor(Math.random()*10000000)
-                  },
+                  }).success(
                   function(data){
                     if(data){
-                        $('#results').replaceWith($(data).find('#results'));
+                        $('#submission_table').html(data);
                     }
                   }
-                 );
+);
             }
     }
 
@@ -136,14 +138,14 @@ $(document).ready(function(){
     });
 
     $('#time_filter').click(function() {
-        var time_range = DW.submit_data()
+        var time_range = DW.submit_data();
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/project/datarecords/filter',
             data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':time_range[0], 'end_time': time_range[1]},
             success:function(response) {
                 if (response) {
-                    $('#results').html(response);
+                    $('#submission_table').html(response);
                     DW.init_pagination();
                 }
             }

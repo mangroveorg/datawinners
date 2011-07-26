@@ -237,6 +237,9 @@ def _load_submissions(current_page, manager, questionnaire_code, pagination=True
     return count, results
 
 #TODO- Refactoring needed for results and data related views.
+
+
+
 @login_required(login_url='/login')
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
@@ -244,12 +247,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     project = models.get_project(project_id, dbm=manager)
     project_links = _make_project_links(project, questionnaire_code)
     if request.method == 'GET':
-        current_page = int(request.GET.get('page_number') or 1)
-        start_time = request.GET.get("start_time") or ""
-        end_time = request.GET.get("end_time") or ""
-        start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
-        end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
-        count, results = _load_submissions(current_page, manager, questionnaire_code,True, start_time_epoch, end_time_epoch)
+        count, results = _get_submissions(manager, questionnaire_code, request)
         if not count:
             error_message = "No submissions present for this project"
         return render_to_response('project/results.html',
@@ -269,16 +267,33 @@ def project_results(request, project_id=None, questionnaire_code=None):
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
 
+
+def _get_submissions(manager,questionnaire_code, request):
+    request_bag = request.GET
+    current_page = int(request_bag.get('page_number') or 1)
+    start_time = request_bag.get("start_time") or ""
+    end_time = request_bag.get("end_time") or ""
+    start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
+    end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
+    count, results = _load_submissions(current_page, manager, questionnaire_code, True, start_time_epoch,
+                                       end_time_epoch)
+    return count,results
+
+
 @login_required(login_url='/login')
-def filter_project_results(request):
+def submissions(request):
+    """
+            Called via ajax, returns the partial HTML for the submissions made for the project, paginated.
+    """
     manager = get_database_manager(request)
-    if request.method == 'POST':
-        questionnaire_code = request.POST['questionnaire_code']
-        start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY))
-        end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY))
-        rows, results = _load_submissions(1, manager,questionnaire_code, True, start_time_epoch, end_time_epoch)
+    if request.method == 'GET':
+        questionnaire_code = request.method.GET.get('questionnaire_code')
+        count,results = _get_submissions(manager, questionnaire_code, request)
+        error_message = ""
+        if not count:
+            error_message = "No submissions present for this project"
         return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': rows,
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,'error_message': error_message,
                  'success_message': ""}, context_instance=RequestContext(request))
 
 def _format_data_for_presentation(data_dictionary, form_model):
