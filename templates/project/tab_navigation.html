@@ -19,20 +19,22 @@
                 <div class="tooltip">
                     <p>Your project status is Test. You need to click on 'Activate Project' to activate it.</p>
                 </div>
-                <a href="{{ project_links.activate_project_link }}">Activate Project</a>
+                <a href="#" class="activate_project">Activate Project</a>
                 <a href="#" id='sms_tester'>Test SMS Questionnaire</a>
                 {% include 'project/sms_tester_form.html' %}
             {% else %}
                 <div class="tooltip">
                     <p>Your project is inactive. You need to complete the Profile to activate it.</p>
                 </div>
-                <a href="{{ project_links.activate_project_link }}">Activate Project</a>
+                <a href="#" class="activate_project">Activate Project</a>
             {% endif %}
         {% endif %}
-        {% if project.state == 'Test' %}
-            <a href="#" id='sms_tester'>Test SMS Questionnaire</a>
-            {% include 'project/sms_tester_form.html' %}
-        {% endif %}
+    </div>
+    <div id="activate_project_block">
+        <p class="warning_message">Are you sure you want to activate this project?
+                   </p>
+        <a href="#" class="cancel_link" >Cancel</a>
+        <a href="{{ project_links.activate_project_link }}" class="button" id="confirm">Confirm</a>
     </div>
 
 {% endblock %}

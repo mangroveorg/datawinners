@@ -168,6 +168,7 @@ table{
     padding:3px 7px 3px 7px;
     -moz-border-radius:7px;
     -webkit-border-radius:7px;
+    border-radius:7px;
     color:#FFFFFF;
 }
 .Active_state{
@@ -258,4 +259,19 @@ p{
             font-size:12px;
     }
 }
+}
+
+#cancel_project_block, #activate_project_block{
+    padding:20px;
+    display:none;
+    .warning_message{
+        margin-bottom:30px;
+    }
+    a.cancel_link{
+        color:#0070ac;
+        font-size:12px;
+    }
+    #confirm{
+        color:#6F451D;
+    }
 }
