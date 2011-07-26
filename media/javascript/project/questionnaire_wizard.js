@@ -74,6 +74,12 @@ $(document).ready(function() {
 
     });
 
+    $('#questionnaire-code').blur(function(){
+        if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()){
+            alert("Warning: Changing the questionnaire code will remove all existing test data.");
+        }
+    });
+
     $("#submit-button").click(function() {
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
