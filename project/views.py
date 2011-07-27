@@ -129,6 +129,11 @@ def edit_profile(request, project_id=None):
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
+        older_entity_type = project.entity_type
+        if older_entity_type != form.cleaned_data["entity_type"]:
+           new_questionnaire =  helper.create_questionnaire(form.cleaned_data, manager)
+           new_qid = new_questionnaire.save()
+           project.qid = new_qid
         project.update(form.cleaned_data)
         project.update_questionnaire(manager)
 
@@ -138,11 +143,6 @@ def edit_profile(request, project_id=None):
             messages.error(request, e.message)
             return render_to_response('project/profile.html', {'form': form, 'project': project},
                                       context_instance=RequestContext(request))
-        project = models.get_project(pid, manager)
-        form_model = helper.load_questionnaire(manager, project.qid)
-        entity_type = form.cleaned_data['entity_type']
-        form_model.entity_type = [entity_type] if is_string(entity_type) else entity_type
-        form_model.save()
         return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
         return render_to_response('project/profile.html', {'form': form, 'project': project},

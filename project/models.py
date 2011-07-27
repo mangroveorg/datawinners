@@ -58,7 +58,7 @@ class Project(DocumentBase):
     def update_questionnaire(self, dbm):
         form_model = dbm.get(self.qid, FormModel)
         form_model.name = self.name
-        form_model.entity_type = self.entity_type
+        form_model.entity_type =  [self.entity_type] if is_string(self.entity_type) else self.entity_type
         form_model.save()
 
     def activate(self, dbm):

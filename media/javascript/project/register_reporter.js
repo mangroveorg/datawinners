@@ -8,6 +8,7 @@ $(document).ready(function() {
                 $("#add_data_sender_form").html(response);
                 $("#id_location").catcomplete({
                     source: "/places"});
+                DW.hide_message();
             },
             error: function(e) {
                 $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
@@ -32,5 +33,9 @@ $(document).ready(function() {
     $("#id_location").catcomplete({
         source: "/places"
     });
+
+     DW.hide_message = function() {
+        $('#flash-message').delay(5000).fadeOut();
+    };
 
 });
