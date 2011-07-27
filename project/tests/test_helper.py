@@ -370,8 +370,6 @@ class TestHelper(unittest.TestCase):
         question4 = DateField("What is date", "Q4", "date_question", "mm.yyyy", ddtype)
         actual_list = helper.get_type_list([question1, question2, question3, question4])
         choice_type = copy(helper.MULTI_CHOICE_TYPE_OPTIONS)
-        choice_type.extend(
-            ["sum(red)", "sum(yellow)", "sum(green)", "percent(red)", "percent(yellow)", "percent(green)"])
         expected_list = [helper.NUMBER_TYPE_OPTIONS, helper.TEXT_TYPE_OPTIONS, choice_type, helper.DATE_TYPE_OPTIONS]
         self.assertListEqual(expected_list, actual_list)
 
