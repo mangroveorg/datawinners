@@ -7,13 +7,14 @@ $(document).ready(function() {
          var new_type = $("#id_entity_type_text").val().toLowerCase();
         $.post("/entity/type/create/", { entity_type_regex: new_type},
                 function(response) {
-                    var data=JSON.parse(response)
-                    if(data.success==true){
+                    var data=JSON.parse(response);
+                    if(data.success){
                         var options = $("#id_entity_type").attr('options');
                         if(should_append(options, new_type)){
-                            $("#id_entity_type").prepend("<option value=" + new_type+ ">" +new_type + "</option>");
+                            $("#id_entity_type").prepend ($('<option></option>').val(new_type).html(new_type))
+
                         }
-                        $('#id_entity_type').val(new_type);
+                       $('#id_entity_type').val(0);
                         $('#id_entity_type').trigger('change');
                         $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
                         $("#type_message").html('');
