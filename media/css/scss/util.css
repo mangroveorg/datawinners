@@ -269,3 +269,13 @@ span.tooltip {
   padding: 1px !important; }
   .ui-dialog-titlebar-close.ui-state-hover .ui-icon {
     background: none !important; }
+
+.ui-autocomplete-category {
+  font-weight: bold;
+  padding: .2em .4em;
+  margin: .8em 0 .2em;
+  line-height: 1.5; }
+
+.ui-menu-item a {
+  color: #000000 !important;
+  font-size: 12px; }
