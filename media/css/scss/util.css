@@ -240,21 +240,16 @@ span.tooltip {
     width: 94px;
     font-size: 12px; }
 
-#cancel_project_block a.wizard_cancel_link {
-  color: #0070ac;
-  font-size: 12px; }
-
-#activate_project_block a.cancel_link {
-  color: #0070ac;
-  font-size: 12px; }
-
-#cancel_project_block, #activate_project_block {
+#cancel_project_block, #activate_project_block, #questionnaire_code_change {
   padding: 20px;
   display: none; }
-  #cancel_project_block .warning_message, #activate_project_block .warning_message {
+  #cancel_project_block .warning_message, #activate_project_block .warning_message, #questionnaire_code_change .warning_message {
     margin-bottom: 30px; }
-  #cancel_project_block #confirm, #activate_project_block #confirm {
+  #cancel_project_block #confirm, #cancel_project_block #ok_button, #activate_project_block #confirm, #activate_project_block #ok_button, #questionnaire_code_change #confirm, #questionnaire_code_change #ok_button {
     color: #6F451D; }
+  #cancel_project_block a.wizard_cancel_link, #cancel_project_block a.cancel_link, #activate_project_block a.wizard_cancel_link, #activate_project_block a.cancel_link, #questionnaire_code_change a.wizard_cancel_link, #questionnaire_code_change a.cancel_link {
+    color: #0070ac;
+    font-size: 12px; }
 
 .ui-dialog-titlebar-close {
   background: white url("/media/images/icons.png") no-repeat scroll -5px -170px !important;

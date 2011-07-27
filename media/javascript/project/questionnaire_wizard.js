@@ -73,11 +73,22 @@ $(document).ready(function() {
         }
 
     });
-
+   $("#questionnaire_code_change").dialog({
+        title: "Warning!!",
+        modal: true,
+        autoOpen: false,
+        height: 200,
+        width: 300,
+        closeText: 'hide'
+      }
+   );
     $('#questionnaire-code').blur(function(){
         if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()){
-            alert("Warning: Changing the questionnaire code will remove all existing test data.");
+            $("#questionnaire_code_change").dialog("open");
         }
+    });
+    $("#ok_button").bind("click", function(){
+         $("#questionnaire_code_change").dialog("close");
     });
 
     $("#submit-button").click(function() {

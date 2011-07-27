@@ -276,30 +276,20 @@ p{
 }
 }
 
-#cancel_project_block{
-    a.wizard_cancel_link{
-        color:#0070ac;
-        font-size:12px;
-    }
-
-}
-
-#activate_project_block{
-    a.cancel_link{
-        color:#0070ac;
-        font-size:12px;
-    }
-}
-
-#cancel_project_block, #activate_project_block{
+#cancel_project_block, #activate_project_block, #questionnaire_code_change{
     padding:20px;
     display:none;
     .warning_message{
         margin-bottom:30px;
     }
-    #confirm{
+    #confirm, #ok_button{
         color:#6F451D;
     }
+    a.wizard_cancel_link, a.cancel_link{
+        color:#0070ac;
+        font-size:12px;
+    }
+
 }
 
 .ui-dialog-titlebar-close{
