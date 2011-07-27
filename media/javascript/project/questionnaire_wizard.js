@@ -120,6 +120,7 @@ $(document).ready(function() {
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + "The question has been saved." + "</label");
+                    hide_message();
                     redirect();
                 }).error(function(e) {
                     $("#message-label").removeClass("none");
@@ -131,7 +132,7 @@ $(document).ready(function() {
     });
 
     function hide_message() {
-        $('#message-label label').delay(5000).fadeOut();
+        $('#message-label').delay(5000).fadeOut();
     }
 
     $('input[name=type]:radio').change(
