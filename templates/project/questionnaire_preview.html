@@ -3,13 +3,7 @@
 {% block page_title %}Project - Questionnaire {% endblock %}
 
 
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_print.scss" rel="stylesheet" media="print"/>
-{% endblock %}
-
 {% block body %}
-
     <div id="questionnaire_preview">
             <div class="preview_block"><a href="#" class="printBtn">Print</a></div>
         <ul class="questionnaire_title">
@@ -26,7 +20,7 @@
                  <p class="content italic">{{ example_sms }}</p>
             </li>
         </ul>
-        <ol class="questionnaire_preview" id="questionnaire_preview">
+        <ol class="questionnaire_preview" >
             {% for question in questions %}
                 <li>
                     <h6>{{ question.description }}<span> +{{ question.code }}</span></h6>
