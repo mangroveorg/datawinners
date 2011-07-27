@@ -72,7 +72,7 @@ DW.question.prototype = {
         this.instruction = ko.dependentObservable({
             read: function(){
                   if(this.type()=="text"){
-                      if (this.max_length()!="")
+                      if (this.max_length()!="" && this.max_length()>0 )
                           return $.sprintf(DW.instruction_template.max_text, this.max_length());
                       return DW.instruction_template.text;
                   }
