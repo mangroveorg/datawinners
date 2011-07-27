@@ -52,16 +52,6 @@
     .wizard ul li.finish {
       padding-right: 0px; }
 
-#cancel_project_block {
-  padding: 20px; }
-  #cancel_project_block .warning_message {
-    margin-bottom: 30px; }
-  #cancel_project_block a.cancel_link {
-    color: #0070ac;
-    font-size: 12px; }
-  #cancel_project_block #confirm {
-    color: #6F451D; }
-
 .buttons {
   width: 100%;
   float: left; }
@@ -94,3 +84,6 @@
         margin-top: 13px; }
       .buttons .buttons .next_step a, .buttons .buttons .next_step form {
         float: right; }
+
+.wizard_cancel_link {
+  margin-right: 10px; }

@@ -21,10 +21,10 @@ $(document).ready(function(){
    );
    $(".cancel").bind("click", function(){
        $("#cancel_project_block").dialog("open");
-   })
-    $(".cancel_link").bind("click", function(){
+   });
+    $("#wizard_cancel_link").bind("click", function(){
          $("#cancel_project_block").dialog("close");
     })
-})
+});
 
 
