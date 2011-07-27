@@ -110,7 +110,7 @@ def submit(request):
                                                       destination=post.get('destination')))
         response = web_player.accept(request)
         if response.success:
-            message = get_success_msg_for_registration_using(response, "Subject", "web")
+            message = get_success_msg_for_registration_using(response, "Unique", "web")
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id

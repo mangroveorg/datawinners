@@ -39,7 +39,7 @@ def get_success_msg_for_submission_using(response):
 
 
 def get_success_msg_for_registration_using(response, entity_type, source):
-    resp_string = "%s identification number: %s" % (entity_type, response.short_code)
+    resp_string = "%s identification number(ID) is: %s" % (entity_type, response.short_code)
     thanks = success_messages[REGISTRATION] % resp_string
     if source=="sms":
         return thanks + "We received : "  + get_expanded_response(response.processed_data)
@@ -62,6 +62,6 @@ def _get_response_message(response):
 
 def _get_success_message(response):
     if response.is_registration:
-        return get_success_msg_for_registration_using(response, "Subject", "sms")
+        return get_success_msg_for_registration_using(response, "Unique", "sms")
     else:
         return get_success_msg_for_submission_using(response)
