@@ -67,7 +67,7 @@ $(document).ready(function() {
         wrapper: "span",
         errorPlacement: function(error, element) {
             offset = element.offset();
-            error.insertAfter(element)
+            error.insertAfter(element);
             error.addClass('error_arrow');  // add a class to the wrapper
 
         }

@@ -383,7 +383,7 @@ def export_log(request):
 
     count,results,error_message = _get_submissions(manager,questionnaire_code,request,paginate=False)
 
-    header_list = ["To", "From", "Date Received", "Submission status", "Void","Errors"]
+    header_list = ["To", "From", "Date Received", "Submission status", "Deleted Record","Errors"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
     if count:
