@@ -1,0 +1,53 @@
+.organization, .administrative {
+  margin-bottom: 15px;
+  padding: 10px;
+  min-height: 400px; }
+
+.signin {
+  margin-bottom: 15px;
+  padding: 10px;
+  min-height: 250px; }
+  .signin ul li label {
+    font-size: 14px;
+    display: block;
+    font-weight: bold;
+    width: 80px;
+    float: left; }
+
+.right_hand_section {
+  border: 1px solid #ececec;
+  min-height: 250px;
+  padding: 10px; }
+
+.left_hand_section {
+  margin-right: 25px; }
+
+#container_content .content {
+  padding: 20px;
+  min-height: 300px !important; }
+
+.signin_form {
+  margin: 50px 0 0px 70px; }
+
+.reset_form {
+  margin: 50px 0 50px 70px; }
+  .reset_form label {
+    width: 90px; }
+
+form fieldset legend {
+  font-size: 20px; }
+form ul li label {
+  font-size: 14px;
+  display: block;
+  font-weight: bold;
+  width: 170px;
+  float: left; }
+form ul li input[type=text], form ul li input[type=password] {
+  width: 200px;
+  height: 20px;
+  border-color: #cccccc; }
+
+.about_datawinners {
+  background: #feee96; }
+  .about_datawinners p {
+    margin-top: 10px; }
