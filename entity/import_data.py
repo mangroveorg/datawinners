@@ -77,7 +77,6 @@ def load_all_subjects_of_type(request, entity_type="reporter"):
 def _handle_uploaded_file(file_name,file,manager):
     base_name, extension = os.path.splitext(file_name)
     if extension == '.csv':
-        file = file.splitlines()
         csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser(), location_tree= LocationTree())
         response = csv_player.accept(file)
     elif extension == '.xls':
