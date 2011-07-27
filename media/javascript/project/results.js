@@ -124,9 +124,7 @@ $(document).ready(function(){
                 }
              });
            }
-           else{
-               $("action").val(0);
-           }
+           else $("#action").val(0);
         }
        }
    });
