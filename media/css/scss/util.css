@@ -255,3 +255,18 @@ span.tooltip {
     margin-bottom: 30px; }
   #cancel_project_block #confirm, #activate_project_block #confirm {
     color: #6F451D; }
+
+.ui-dialog-titlebar-close {
+  background: white url("/media/images/icons.png") no-repeat scroll -5px -170px !important;
+  width: 13px !important;
+  height: 16px !important;
+  border: 1px solid #6F451D !important;
+  padding: 1px !important; }
+
+.ui-dialog-titlebar-close.ui-state-hover {
+  background-position: -5px 168px;
+  border: 0 !important;
+  width: 13px !important;
+  height: 16px !important;
+  border: 1px solid #6F451D !important;
+  padding: 1px !important; }
