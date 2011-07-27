@@ -166,10 +166,11 @@ table {
 .ajax_loader_small {
   background: url(/media/images/ajax-loader-small.gif) no-repeat left top;
   padding: 10px 20px 20px 10px;
-  float: left; }
+  margin-left: 10px; }
 
 #add_subject_type .ajax_loader_small {
-  margin-left: 100px; }
+  margin-left: 100px;
+  float: left; }
 
 /* Tooltip */
 div.tooltip {

@@ -16,12 +16,14 @@ $(document).ready(function() {
     });
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
+            $(this).after("<span class='ajax_loader_small'></span>");
             if (DW.viewModel.message.s())
                 DW.viewModel.message.s(DW.viewModel.message.s().toLowerCase());
             $.post($('#post_url').val(), {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel), null, 1)},
                     function(response) {
                         var d = $.parseJSON(response);
                         $('#message').remove();
+                        $(".ajax_loader_small").hide();
                         if (d.success) {
                             $('<div id="message" class="success-message-box">' + d.message + '</div>').insertBefore($('#question_form'));
                             $("#entity_name").val('');
@@ -35,6 +37,7 @@ $(document).ready(function() {
                             $('#message').delay(10000).fadeOut();
                         }
                         else {
+                            $(".ajax_loader_small").hide();
                             $('<div id="message" class="error_message message-box">' + d.message + '</span>').insertBefore($('#question_form'));
                         }
                     }
