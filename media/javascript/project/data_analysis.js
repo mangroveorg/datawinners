@@ -8,7 +8,7 @@ $(document).ready(function() {
             aggregationArray.push($(this).val())
         });
         var time_range = $("#dateRangePicker").val().split("/");
-        if(time_range[0] == ""){
+        if(time_range[0] == "" || time_range[0] == "Click to select a date range"){
             time_range[0]='01-01-1996';
             time_range[1]=Date.parse('today').toString('dd-MM-yyyy');
             return time_range;
