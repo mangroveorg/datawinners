@@ -24,7 +24,7 @@ $(document).ready(function() {
                         $("#type_message").html(data.message);
                         $("#type_message").addClass("message-box");
                     }
-                    ("#id_entity_type_text").val("")
+                    $("#id_entity_type_text").val("");
                     $("#add_subject_type").accordion({collapsible: false,autoHeight:false, active:2});
 
                 });

@@ -152,7 +152,7 @@ def create_type(request):
             define_type(manager, entity_name)
             message = "Entity definition successful"
             success = True
-        except EntityTypeAlreadyDefined as type_already_defined:
+        except EntityTypeAlreadyDefined:
             message = "This subject has already been added."
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
