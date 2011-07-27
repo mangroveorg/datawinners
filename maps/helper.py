@@ -33,8 +33,8 @@ def _get_geo_json_from_location_path(location_path):
 
 
 def create_location_geojson(entity_list):
-
     location_list=[]
+    geometry_geo_json = None
     for entity in entity_list:
         geometry = entity.geometry
         location_path=entity.location_path

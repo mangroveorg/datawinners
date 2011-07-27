@@ -17,7 +17,7 @@ class ReporterRegistrationForm(Form):
                             error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
                             ,
                             label="* Name")
-    telephone_number = RegexField(required=True, regex="^[^a-zA-Z]*$", max_length=15, label="* Mobile Number",
+    telephone_number = RegexField(required=True, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="* Mobile Number",
                                   error_message="Please enter a valid phone number")
     geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
     location = CharField(max_length=100, required=False, label="Enter location")

@@ -3,6 +3,7 @@ $(document).ready(function(){
 
     $.ajaxSetup({ cache: false });
 
+
     DW.init_pagination = function () {
         DW.current_page = 0;
         $("#pagination").pagination($('#total_rows').val(), {
@@ -41,19 +42,20 @@ $(document).ready(function(){
     DW.show_data.prototype = {
         _init : function(){
             var time_range = DW.submit_data();
-            $.get(window.location,
+            $.get('/project/datarecords/filter',
                   {
+                      questionnaire_code: $('#questionnaire_id').val(),
                       start_time:time_range[0],
                       end_time: time_range[1],
                       page_number: this.page_number,
                       rand: Math.floor(Math.random()*10000000)
-                  },
+                  }).success(
                   function(data){
                     if(data){
-                        $('#results').replaceWith($(data).find('#results'));
+                        $('#submission_table').html(data);
                     }
                   }
-                 );
+);
             }
     }
 
@@ -87,12 +89,12 @@ $(document).ready(function(){
            $(this).attr("checked", !$(this).attr('checked'))
         })
 
-    })
+    });
 
     $('#action').change(function(){
        var ids = [];
        if($(".selected_submissions:checked").length == 0){
-            $("#message_text").html("<span class='error_message'>" + "Please select atleast one undeleted record" + "</span>");
+            $("#message_text").html("<div class='error_message message-box'>" + "Please select atleast one undeleted record" + "</div>");
             $('#action').val(0);
        }
        else{
@@ -101,7 +103,7 @@ $(document).ready(function(){
                 ids.push($(this).val());
        });
        if(ids.length==0){
-            $("#message_text").html("<span class='error_message'>" + "This data has already been deleted" + "</span>");
+            $("#message_text").html("<div class='error_message message-box'>" + "This data has already been deleted" + "</div>");
             $('#action').val(0);
        }
        else{
@@ -115,15 +117,14 @@ $(document).ready(function(){
                                $('#submission_table').empty();
                                $('#submission_table').append(response);
                                $('#action').val(0);
-
                     },
                  error: function(e) {
-                    $("#message_text").html("<span class='error_message'>" + e.responseText + "</span>");
+                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
                     $('#action').val(0);
                 }
              });
            }
-           else $("action").val(0);
+           else $("#action").val(0);
         }
        }
    });
@@ -135,14 +136,14 @@ $(document).ready(function(){
     });
 
     $('#time_filter').click(function() {
-        var time_range = DW.submit_data()
+        var time_range = DW.submit_data();
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/project/datarecords/filter',
             data: {'questionnaire_code': $('#questionnaire_id').val(), 'start_time':time_range[0], 'end_time': time_range[1]},
             success:function(response) {
                 if (response) {
-                    $('#results').html(response);
+                    $('#submission_table').html(response);
                     DW.init_pagination();
                 }
             }

@@ -25,7 +25,7 @@ $(document).ready(function() {
                         if (d.success) {
                             $('<div id="message" class="success-message-box">' + d.message + '</div>').insertBefore($('#question_form'));
                             $("#entity_name").val('');
-                            $("#location").val('');
+                            $("#id_location").val('');
                             $("#geo_code").val('');
                             $("#description").val('');
                             $("#mobile_number").val('');

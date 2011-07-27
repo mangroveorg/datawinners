@@ -26,7 +26,7 @@
     <p>Fill out the following information to create your project</p>
 {% endblock %}
 {% block content %}
-    <form action="" method="POST">
+    <form action="" method="POST" id="profile_form">
     <div class="define_project">
         {% csrf_token %}
         {% if messages %}

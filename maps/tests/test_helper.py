@@ -37,3 +37,7 @@ class TestHelper(unittest.TestCase):
                              geometry={'type': 'Point', 'coordinates': [1, 3]})
         entity_list = [entity1, entity2]
         self.assertEqual(expected_geojson, helper.create_location_geojson(entity_list))
+
+    def test_should_not_raise_exception_if_no_location_or_geo_code_specified(self):
+        entity = Entity(self.dbm, entity_type="Water Point", short_code="WP002")
+        helper.create_location_geojson(entity_list=[entity])

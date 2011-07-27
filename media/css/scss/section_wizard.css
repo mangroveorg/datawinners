@@ -84,3 +84,6 @@
         margin-top: 13px; }
       .buttons .buttons .next_step a, .buttons .buttons .next_step form {
         float: right; }
+
+.wizard_cancel_link {
+  margin-right: 10px; }

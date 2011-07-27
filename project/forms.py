@@ -19,11 +19,11 @@ class MyRadioFieldRenderer(RadioFieldRenderer):
             attrs = self.attrs.copy()
             if choice[0] == 'public information':
                 attrs['disabled'] = 'disabled'
-            if choice[0] == 'close':
+            if choice[0] == 'open':
                 attrs['disabled'] = 'disabled'
             if choice[0] == 'survey':
                 attrs['checked'] = True
-            if choice[0] == 'open':
+            if choice[0] == 'close':
                 attrs['checked'] = True
             yield RadioInput(self.name, self.value, attrs, choice, i)
 
@@ -37,7 +37,7 @@ class ProjectProfile(Form):
                             ('public information', 'Public information: I want to send information'))
     DEVICE_CHOICES = (('sms', 'SMS'),)
     SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender (eg. monthly activity report)'),('no','Other Subject'))
-    GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data on registration'),('close','Closed Data Sender Group. Only certain people can send in data'))
+    GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data without registering'),('close','Closed Data Sender Group. Only registered data sender will be able to send data'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
@@ -62,7 +62,6 @@ class ProjectProfile(Form):
         return self.cleaned_data.get('entity_type')
 
     def clean(self):
-        self.cleaned_data['devices'] = ['sms']
         if self.cleaned_data.get("activity_report") == 'yes':
             self.cleaned_data['entity_type'] = REPORTER
             if self.errors.get('entity_type') is not None:

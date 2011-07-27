@@ -43,8 +43,9 @@
       max-width: 170px; }
     .add_subject_form ul li #add_subject_type {
       margin-left: 120px; }
-      .add_subject_form ul li #add_subject_type label {
-        width: auto; }
+      .add_subject_form ul li #add_subject_type .message-box {
+        float: left !important;
+        font-size: 12px; }
     .add_subject_form ul li .auto_gen_checkbox label {
       float: none;
       display: inline; }

@@ -31,10 +31,9 @@
         {% endif %}
     </div>
     <div id="activate_project_block">
-        <p class="warning_message">Are you sure you want to activate this project?
-                   </p>
+        <p class="warning_message">Warning: Activating the project will remove all existing test data.</p>
         <a href="#" class="cancel_link" >Cancel</a>
-        <a href="{{ project_links.activate_project_link }}" class="button" id="confirm">Confirm</a>
+        <a href="{{ project_links.activate_project_link }}" class="button" id="confirm">Activate</a>
     </div>
 
 {% endblock %}
