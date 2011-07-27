@@ -18,7 +18,7 @@ NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
 DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
-TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
+TEXT_TYPE_OPTIONS = ["Latest"]
 TEST_FLAG = 'TEST'
 
 
@@ -170,19 +170,20 @@ def generate_questionnaire_code(dbm):
 
 def get_type_list(fields):
     type_dictionary = dict(IntegerField=NUMBER_TYPE_OPTIONS, TextField=TEXT_TYPE_OPTIONS, DateField=DATE_TYPE_OPTIONS,
-                           GeoCodeField=GEO_TYPE_OPTIONS)
+                           GeoCodeField=GEO_TYPE_OPTIONS, SelectField=MULTI_CHOICE_TYPE_OPTIONS)
     type_list = []
     for field in fields:
         field_type = field.__class__.__name__
-        if field_type == "SelectField":
-            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
-            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
-                                field.options])
-            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
-                                field.options])
-            type_list.append(choice_type)
-        else:
-            type_list.append(type_dictionary.get(field_type))
+#TODO- Future functionality. Removing for beta-release. Uncomment this when aggregations for multiple choice field are added.
+#        if field_type == "SelectField":
+#            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
+#            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
+#                                field.options])
+#            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
+#                                field.options])
+#            type_list.append(choice_type)
+#        else:
+        type_list.append(type_dictionary.get(field_type))
     return type_list
 
 
