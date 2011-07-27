@@ -66,8 +66,8 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_registration_with_short_code(self):
-        expected_message = success_messages[REGISTRATION] % "Reporter identification number(ID) is: REP1"
+        expected_message = success_messages[REGISTRATION] % "Unique identification number(ID) is: REP1"
         submission_response = SubmissionResponse(success=True, submission_id=123, errors={}, processed_data={'name':'tester'}, short_code="REP1")
         response = Response(reporters=[], submission_response=submission_response)
-        message = get_success_msg_for_registration_using(response, "Reporter", "web")
+        message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)

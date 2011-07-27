@@ -42,7 +42,7 @@ def _validate_post_data(dbm, request):
             response = web_player.accept(
                 Request(message=_get_data(form_data),
                         transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
-            message = get_success_msg_for_registration_using(response, "Reporter", "web")
+            message = get_success_msg_for_registration_using(response, "web")
             success = True
         except MangroveException as exception:
             form_errors.append(exception.message)
@@ -110,7 +110,7 @@ def submit(request):
                                                       destination=post.get('destination')))
         response = web_player.accept(request)
         if response.success:
-            message = get_success_msg_for_registration_using(response, "Unique", "web")
+            message = get_success_msg_for_registration_using(response, "web")
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id

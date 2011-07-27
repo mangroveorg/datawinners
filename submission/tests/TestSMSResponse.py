@@ -16,5 +16,5 @@ class TestSMSResponse(unittest.TestCase):
         response = Response(reporters=[{ NAME_FIELD : "Mr. X"}], submission_response=SubmissionResponse(
             True, "1", datarecord_id="2", short_code="CLI001",
             processed_data={'name': 'Clinic X'},is_registration = True))
-        self.assertEqual(u'Registration successful. Subject identification number: CLI001.We received : name: Clinic X',
+        self.assertEqual(u'Registration successful. Unique identification number(ID) is: CLI001.We received : name: Clinic X',
                          SMSResponse(response).text())
