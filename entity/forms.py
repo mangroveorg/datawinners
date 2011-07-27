@@ -38,20 +38,7 @@ class ReporterRegistrationForm(Form):
 
     def clean_telephone_number(self):
         return ("").join([each for each in self.cleaned_data['telephone_number'] if self._is_int(each) ])
-
-    def clean_geo_code(self):
-        geo_code_string = self.cleaned_data['geo_code']
-        geo_code_string = geo_code_string.strip()
-        geo_code_string = (' ').join(geo_code_string.split())
-        if is_empty(geo_code_string):
-            return geo_code_string
-        lat_long = geo_code_string.split(' ')
-        if len(lat_long) != 2:
-            raise ValidationError("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
-        if not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
-            raise ValidationError("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
-        return geo_code_string
-
+    
     def clean(self):
         a = self.cleaned_data.get("location")
         b = self.cleaned_data.get("geo_code")
