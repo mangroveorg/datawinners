@@ -12,7 +12,6 @@ from django.contrib.auth.models import User
 
 
 class OrganizationForm(ModelForm):
-    error_css_class = 'error'
     required_css_class = 'required'
 
     name = forms.CharField(required=True, label='* Organization name')
@@ -40,7 +39,6 @@ class OrganizationForm(ModelForm):
 
 class UserProfileForm(forms.Form):
 
-    error_css_class = 'error'
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False)
@@ -109,7 +107,6 @@ class RegistrationForm(RegistrationFormUniqueEmail):
 
 
 class LoginForm(AuthenticationForm):
-    error_css_class = 'error'
     required_css_class = 'required'
 
     def clean_username(self):
@@ -135,10 +132,8 @@ class LoginForm(AuthenticationForm):
 
 
 class ResetPasswordForm(PasswordResetForm):
-    error_css_class = 'error'
     required_css_class = 'required'
 
 
 class PasswordSetForm(SetPasswordForm):
-    error_css_class = 'error'
     required_css_class = 'required'
