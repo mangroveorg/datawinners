@@ -262,6 +262,8 @@ span.tooltip {
   height: 16px !important;
   border: 1px solid #6F451D !important;
   padding: 1px !important; }
+  .ui-dialog-titlebar-close .ui-icon {
+    background: none !important; }
 
 .ui-dialog-titlebar-close.ui-state-hover {
   background-position: -5px 168px;
@@ -270,3 +272,5 @@ span.tooltip {
   height: 16px !important;
   border: 1px solid #6F451D !important;
   padding: 1px !important; }
+  .ui-dialog-titlebar-close.ui-state-hover .ui-icon {
+    background: none !important; }
