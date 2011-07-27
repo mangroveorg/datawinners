@@ -50,6 +50,12 @@
     width:50px;
     float:none;
  }
+ #not_wizard{
+    .error_arrow{
+        float:none !important;
+        background-position: left 3px;
+    }
+ }
 
 }
 
