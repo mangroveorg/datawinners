@@ -3,8 +3,8 @@ $(document).ready(function() {
 
 
     $("#add_type").live("click", function(){
-
-         var new_type = $("#id_entity_type_text").val().toLowerCase();
+        $("#type_message").html("<span class='ajax_loader_small'></span>");
+        var new_type = $("#id_entity_type_text").val().toLowerCase();
         $.post("/entity/type/create/", { entity_type_regex: new_type},
                 function(response) {
                     var data=JSON.parse(response);
@@ -24,7 +24,7 @@ $(document).ready(function() {
                         $('#id_entity_type').val(new_type.toLowerCase());
                         $("#add_subject_type").accordion({collapsible: false,autoHeight:false, active:2});
                         $("#type_message").html(data.message);
-                        $("#type_message").addClass("message-box")
+                        $("#type_message").addClass("message-box");
                     }
                 });
     });

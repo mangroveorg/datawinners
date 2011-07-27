@@ -181,6 +181,20 @@ table{
     background-color:#0477c8;
 }
 
+/* Ajax Loaders */
+.ajax_loader_small{
+    background:url(/media/images/ajax-loader-small.gif) no-repeat left top;
+    padding:10px 20px 20px 10px;
+    float:left;
+}
+
+ #add_subject_type{
+    .ajax_loader_small{
+        margin-left:100px;
+    }
+ }
+
+/* Tooltip */
 div.tooltip {
 	display:none;
     background: url(/media/images/help_arrow.png) no-repeat 4px bottom;
