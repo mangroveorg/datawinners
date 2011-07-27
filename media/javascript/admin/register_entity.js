@@ -17,6 +17,7 @@ $(document).ready(function() {
     $('#register_entity').unbind('click').click(function() {
         if ($('#question_form').valid()) {
             $(this).after("<span class='ajax_loader_small'></span>");
+            DW.viewModel.message.l($('#id_location').val());
             if (DW.viewModel.message.s())
                 DW.viewModel.message.s(DW.viewModel.message.s().toLowerCase());
             $.post($('#post_url').val(), {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel), null, 1)},

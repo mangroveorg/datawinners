@@ -41,7 +41,7 @@ $(document).ready(function(){
             var message = {'form_code':'reg',
                 't':$('#id_entity_type').val(),
                 's':$('#short_name').val(),
-                'l':$('#location').val(),
+                'l':$('#id_location').val(),
                 'd':$('#description').val(),
                 'm':$('#mobile_number').val(),
                 'n':$('#entity_name').val(),
@@ -55,7 +55,7 @@ $(document).ready(function(){
                         if (d.success) {
                             $('<div id="message" class="success_message success-message-box">' + d.message + '</span>').insertBefore($('#question_form'));
                             $("#entity_name").val('');
-                            $("#location").val('');
+                            $("#id_location").val('');
                             $("#geo_code").val('');
                             $("#description").val('');
                             $("#mobile_number").val('');
