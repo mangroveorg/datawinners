@@ -7,20 +7,6 @@
     {{ block.super }}
     <link href="/media/css/scss/section_print.scss" rel="stylesheet" media="print"/>
 {% endblock %}
-{##}
-{% block page_js %}
-    {{ block.super }}
-    <script>
-    $(document).ready(function(){
-        $('.printBtn').bind('click',function() {
-{#            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );#}
-//            thePopup.onload = function(){this.print(); this.close(); }
-            self.print();
-        });
-    });
-    </script>
-{% endblock %}
-
 
 {% block body %}
 
@@ -73,5 +59,13 @@
             {% endfor %}
         </ol>
     </div>
-
+    <script>
+    $(document).ready(function(){
+        $('.printBtn').bind('click',function() {
+{#            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );#}
+//            thePopup.onload = function(){this.print(); this.close(); }
+            self.print();
+        });
+    });
+    </script>
 {% endblock %}
