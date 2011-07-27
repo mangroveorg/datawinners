@@ -41,6 +41,9 @@
     {% compress js %}
          {% block page_js %} {% endblock %}
     {% endcompress %}
+    <noscript>
+        <p class="message-box margin_left_20">Javascript is disabled in your browser, Please enable it.</p>
+    </noscript>
 
 </head>
 <body>
