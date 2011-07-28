@@ -53,7 +53,7 @@ class ReporterRegistrationForm(Form):
                 lat_long = geo_code_string.split(' ')
                 if len(lat_long) != 2:
                     self._errors['geo_code'] = self.error_class([msg])
-                if not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
+                elif not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
                     self._errors['geo_code'] = self.error_class([msg])
                 self.cleaned_data['geo_code'] = geo_code_string
         return self.cleaned_data
