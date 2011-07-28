@@ -3,6 +3,8 @@ Below steps taken with minor modifications from,
 http://library.linode.com/web-servers/nginx/python-uwsgi/ubuntu-10.10-maverick
 
 
+
+
 Install uWSGI
 
 apt-get update
@@ -36,6 +38,22 @@ mv init-deb.sh /etc/init.d/nginx
 chmod +x /etc/init.d/nginx
 /usr/sbin/update-rc.d -f nginx defaults
 /etc/init.d/nginx start
+
+Install nginx from ppa
+
+Ubuntu PPA
+You can get the latest stable version of Nginx from the Nginx PPA on Launchpad:
+
+You will need to have root privileges to perform the following commands.
+
+For Ubuntu 10.04 and newer:
+
+sudo -s
+nginx=stable # use nginx=development for latest development version
+add-apt-repository ppa:nginx/$nginx
+apt-get update 
+apt-get install nginx
+If you get an error about add-apt-repository not existing, you will want to install python-software-properties.
 
 Configure uWSGI
 

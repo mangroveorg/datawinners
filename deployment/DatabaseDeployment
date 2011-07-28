@@ -1,0 +1,49 @@
+1) couchdb
+2) postgresql
+
+1) install postgresql
+sudo apt-get install postgresql
+
+
+2) install postgis
+
+sudo apt-get install postgresql-8.4-postgis
+
+3) sudo apt-get install gdal-bin python-psycopg2 python-setuptools
+
+4) see if gcc is installed on the system.  
+type dpkg -i gcc
+if not install gcc with the command sudo apt-get install gcc
+
+5) see if make is install on the system
+type dpkg -i make
+if not, install make with the command sudo apt-get install make
+
+
+6) see if g++ is install on the system
+type dpkg -i g++
+if not, install g++ with the command sudo apt-get install g++
+
+4) install GEOS, PROJ.4 & GDAL.
+sudo apt-get install libgeos-c1
+
+https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/#spatial-database
+
+
+5) create the postgres user mangrover
+
+a) sudo su - postgres
+b) createuser --createdb
+
+6) from the mangrover user exceute following commands to create postgis template
+   a)  wget https://docs.djangoproject.com/en/dev/_downloads/create_template_postgis-debian.sh
+   b) chmod 755 create_template_postgis-debian.sh
+   c) run ./create_template_postgis-debian.sh
+
+7) create mangrove db from the postgis template
+createdb -T template_postgis mangrove
+
+
+
+
+
