@@ -91,7 +91,7 @@ def create_profile(request):
     project_summary = dict(name='New Project')
     if request.method == 'GET':
         form = ProjectProfile(entity_list=entity_list,initial={'activity_report':'yes'})
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit':False},
                                   context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
@@ -108,11 +108,11 @@ def create_profile(request):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
+            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit':False},
                                       context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary},
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit':False},
                                   context_instance=RequestContext(request))
 
 
@@ -124,7 +124,7 @@ def edit_profile(request, project_id=None):
     project = models.get_project(project_id, dbm=manager)
     if request.method == 'GET':
         form = ProjectProfile(data=project, entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project': project},
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit':True},
                                   context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
@@ -141,11 +141,11 @@ def edit_profile(request, project_id=None):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project},
+            return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit':True},
                                       context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project},
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit':True},
                                   context_instance=RequestContext(request))
 
 
