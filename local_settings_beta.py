@@ -3,7 +3,7 @@ DEBUG=False
 TEMPLATE_DEBUG=False
 
 ADMINS = (
-    ('TW', 'hnisupport@thoughtworks.com'),
+    ('TW', 'hni-support@thoughtworks.com'),
 )
 
 DATABASES = {
