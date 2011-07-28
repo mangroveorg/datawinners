@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.forms.fields import RegexField, CharField, FileField
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
@@ -37,7 +36,26 @@ class ReporterRegistrationForm(Form):
 
     def clean_telephone_number(self):
         return ("").join([each for each in self.cleaned_data['telephone_number'] if self._is_int(each) ])
-  
+
+    def _geo_code_format_validations(self, lat_long, msg):
+        if len(lat_long) != 2:
+            self._errors['geo_code'] = self.error_class([msg])
+        else:
+            try:
+                if not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
+                    self._errors['geo_code'] = self.error_class([msg])
+            except Exception:
+                self._errors['geo_code'] = self.error_class([msg])
+
+    def _geo_code_validations(self, b):
+        msg = "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+        geo_code_string = b.strip()
+        geo_code_string = (' ').join(geo_code_string.split())
+        if not is_empty(geo_code_string):
+            lat_long = geo_code_string.split(' ')
+            self._geo_code_format_validations(lat_long, msg)
+            self.cleaned_data['geo_code'] = geo_code_string
+
     def clean(self):
         a = self.cleaned_data.get("location")
         b = self.cleaned_data.get("geo_code")
@@ -46,16 +64,7 @@ class ReporterRegistrationForm(Form):
             self._errors['location'] = self.error_class([msg])
             self._errors['geo_code'] = self.error_class([msg])
         if bool(b):
-            msg = "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
-            geo_code_string = b.strip()
-            geo_code_string = (' ').join(geo_code_string.split())
-            if not is_empty(geo_code_string):
-                lat_long = geo_code_string.split(' ')
-                if len(lat_long) != 2:
-                    self._errors['geo_code'] = self.error_class([msg])
-                elif not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
-                    self._errors['geo_code'] = self.error_class([msg])
-                self.cleaned_data['geo_code'] = geo_code_string
+            self._geo_code_validations(b)
         return self.cleaned_data
 
 
