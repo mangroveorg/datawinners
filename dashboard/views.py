@@ -26,7 +26,7 @@ def get_submissions(dbm, form_code):
             phone_number = row.value["source"]
             if phone_number <> 'xls':
                 reporter = find_reporter(dbm, row.value["source"])
-                reporter = reporter[0]["name"]
+                reporter = reporter[0].get("name")
                 if row.value["status"]:
                     message = " ".join(["%s: %s" % (k, v) for k, v in row.value["values"].items()])
                 else:
