@@ -25,7 +25,7 @@ def is_admin(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if not user.groups.filter(name = "NGO Admins").count() > 0:
-            return HttpResponseNotFound()
+            return HttpResponseRedirect(datawinners.settings.HOME_PAGE)
 
         return f(*args, **kw)
     return wrapper

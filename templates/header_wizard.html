@@ -10,7 +10,9 @@
                     </div>
                     <span class="welcome">Welcome {{ user.first_name }}! </span>
                     <span><a href="{% url accountmanagement.views.edit_user %}">Your Profile</a></span>
-                    <span><a href="{% url accountmanagement.views.settings %}">Account</a></span>
+                    {% if user.groups.all.0.name == 'NGO Admins' %}
+                        <span><a href="{% url accountmanagement.views.settings %}">Account</a></span>
+                    {% endif %}
                     <span>  <a href="{% url django.contrib.auth.views.logout %}">Sign out</a> </span>
                     <span><a href="#" class="padding_right_null">Help</a></span>
                 </div>
