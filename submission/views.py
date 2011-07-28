@@ -15,6 +15,9 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 SMS = "sms"
 WEB = "web"
 
+import logging
+logger = logging.getLogger("django")
+
 def _test_mode_numbers(request):
     profile = request.user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
@@ -58,6 +61,7 @@ def sms(request):
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
     except Exception as exception:
+        logger.exception('SMS Processing failure: message')
         message = get_exception_message_for(exception=exception, channel=SMS)
 
     return HttpResponse(message)
