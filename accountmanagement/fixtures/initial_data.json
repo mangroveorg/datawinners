@@ -32,6 +32,14 @@
         }
     },
     {
+        "model": "sites.site",
+        "pk": 5,
+        "fields": {
+            "domain": "www.datawinners.com",
+            "name": "beta system"
+        }
+    },
+    {
         "pk": "SLX364903",
         "model": "accountmanagement.organization",
         "fields": {
