@@ -77,7 +77,7 @@
             </fieldset>
             <fieldset>
                 <legend>Subjects and Questionnaire</legend>
-            <li class="{{ form.activity_report.css_classes  }} form-row-10px">
+            <li class="{{ form.activity_report.css_classes  }} form-row-10px" id ="about_questionnaire">
                 {{ form.activity_report.label_tag }}
                 {{ form.activity_report }}
                 {{ form.activity_report.errors }}
@@ -137,7 +137,13 @@
             </li>
              </fieldset>
         </ul>
-
+    {% if edit %}
+    <div id="profile_warning_message">
+        <p class="warning_message">Warning: Updating the associated type of the project questionnaire will remove all existing data.</p>
+        <a href="#" class="cancel_link" >Cancel</a>
+        <a href="#" class="button" id="continue">Continue</a>
+    </div>
+    {% endif %}
     </div>
 
 
