@@ -115,9 +115,6 @@ def submit(request):
 
 
 def create_datasender(request):
-    """
-
-    """
     if request.method == 'GET':
         form = ReporterRegistrationForm()
         return render_to_response('entity/create_datasender.html', {'form': form},
@@ -134,7 +131,6 @@ def create_datasender(request):
 
 
 def create_type(request):
-    message = ""
     success = False
     form = EntityTypeForm(request.POST)
     if form.is_valid():
