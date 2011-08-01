@@ -4,7 +4,7 @@ from datawinners import settings
 from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
-from mangrove.datastore.entity import get_all_entities, get_by_short_code
+from mangrove.datastore.entity import get_all_entities, get_by_short_code, Entity
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
 from mangrove.transport.player.parser import CsvParser, XlsParser
@@ -44,7 +44,7 @@ def _get_entity_type_from_row(row):
 
 def _get_entity_for_row(manager, row, type):
     short_code = row['doc']['short_code']
-    entity = get_by_short_code(dbm=manager, short_code=short_code, entity_type=type)
+    entity = Entity.new_from_doc(dbm=manager, doc=Entity.__document_class__.wrap(row.get('doc')))
     return entity, short_code
 
 
