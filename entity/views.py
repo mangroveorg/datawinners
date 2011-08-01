@@ -100,11 +100,6 @@ def submit(request):
     try:
         web_player = WebPlayer(dbm, SubmissionHandler(dbm), LocationTree())
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
-#        display_location = message.get(mapper['location'])
-#        geo_code = message.get(mapper['geo_code'])
-#        location_hierarchy = _get_location_hierarchy(display_location, geo_code)
-#        if location_hierarchy is  not None:
-#            message[mapper['location']] = display_location
         request = Request(message=message,
                           transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
                                                       destination=post.get('destination')))
