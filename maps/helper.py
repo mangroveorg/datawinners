@@ -14,8 +14,7 @@ def _get_geo_json_for_entity_from_geo_code(entity, geometry):
     return geometry_geo_json
 
 
-def _get_geo_json_from_location(lowest_admin_boundary, level):
-    tree = LocationTree()
+def _get_geo_json_from_location(lowest_admin_boundary, level, tree):
     geo_code = tree.get_centroid(lowest_admin_boundary, level)
     if geo_code is None:
         return None
@@ -24,15 +23,16 @@ def _get_geo_json_from_location(lowest_admin_boundary, level):
     return geojson_feature
 
 
-def _get_geo_json_from_location_path(location_path):
+def _get_geo_json_from_location_path(location_path, tree):
     lowest_admin_boundary, level = _get_lowest_administrative_boundary(location_path)
     geojson_feature=None
     if lowest_admin_boundary is not None:
-        geojson_feature = _get_geo_json_from_location(lowest_admin_boundary, level)
+        geojson_feature = _get_geo_json_from_location(lowest_admin_boundary, level, tree)
     return geojson_feature
 
 
 def create_location_geojson(entity_list):
+    tree = LocationTree()
     location_list=[]
     geometry_geo_json = None
     for entity in entity_list:
@@ -41,7 +41,7 @@ def create_location_geojson(entity_list):
         if geometry:
             geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, geometry)
         elif location_path:
-            geometry_geo_json = _get_geo_json_from_location_path(location_path)
+            geometry_geo_json = _get_geo_json_from_location_path(location_path, tree)
 
         if geometry_geo_json is not None:
             location_list.append(geometry_geo_json)
