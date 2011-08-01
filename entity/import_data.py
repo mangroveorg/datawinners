@@ -29,7 +29,7 @@ def _tabulate_data(entity, row, short_code, type):
     id = row['id']
     name = entity.value(NAME_FIELD) if entity.value(NAME_FIELD) else "--"
     geocode = row['doc']['geometry'].get('coordinates')
-    geocode_string = ", ".join([str(i) for i in geocode]) if geocode else "--"
+    geocode_string = ", ".join([str(i) for i in geocode]) if geocode is not None else "--"
     location = sequence_to_str(entity.location_path) if sequence_to_str(entity.location_path) != "" else "--"
     mobile_number = entity.value(MOBILE_NUMBER_FIELD) if entity.value(MOBILE_NUMBER_FIELD) else "--"
     description = entity.value(DESCRIPTION_FIELD) if entity.value(DESCRIPTION_FIELD) else "--"

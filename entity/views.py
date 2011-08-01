@@ -92,8 +92,6 @@ def _get_submission(post):
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
 def submit(request):
-    mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
-              'location': LOCATION_TYPE_FIELD_CODE}
     dbm = get_database_manager(request)
     post = _get_submission(request.POST)
     success = True
