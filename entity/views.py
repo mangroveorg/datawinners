@@ -22,6 +22,7 @@ from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import is_empty
 from datawinners.entity import import_data as import_module
 
+COUNTRY = ',MADAGASCAR'
 
 def _validate_post_data(dbm, request):
     form = ReporterRegistrationForm(request.POST)
@@ -58,7 +59,7 @@ def _get_data(form_data):
     telephone_number = form_data.get('telephone_number')
     if telephone_number is not None:
         data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
-    data[mapper['location']] = form_data.get('location')
+    data[mapper['location']] = form_data.get('location')+ COUNTRY if form_data.get('location') is not None else None
     data[mapper['geo_code']] = form_data.get('geo_code')
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
@@ -98,6 +99,8 @@ def submit(request):
     try:
         web_player = WebPlayer(dbm, SubmissionHandler(dbm), LocationTree())
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
+        if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
+            message[LOCATION_TYPE_FIELD_CODE]+= COUNTRY
         request = Request(message=message,
                           transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
                                                       destination=post.get('destination')))
