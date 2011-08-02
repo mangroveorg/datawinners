@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
    $("#activate_project_block").dialog({
         title: "Activate this Project?",
         modal: true,
@@ -11,6 +10,8 @@ $(document).ready(function(){
    );
    $(".activate_project").bind("click", function(){
        $("#activate_project_block").dialog("open");
+       $('#confirm').attr('href',$(this).attr('href'));
+       return false;
    });
    $("#activate_project_block .cancel_link").bind("click", function(){
          $("#activate_project_block").dialog("close");
