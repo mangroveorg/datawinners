@@ -15,4 +15,8 @@ $(document).ready(function() {
                     $("#id_message").val(response);
                 });
     });
+    $("#clear_sms").unbind('click').click(function() {
+                    $("#id_message").val("");
+    });
+    
 });
