@@ -1,0 +1,12 @@
+# The unique name of this transport
+TRANSPORT_NAME: smpp_transport_unicel
+POST_TO_URL: http://www.datawinners.com/submission
+system_id: HNI  # username
+password:       # password
+host: smpp2.unicel.in         # the host to connect to
+port: 52612              # the port to connect to
+
+exchange_name: vumi.topic   # the AMQ exchange name
+exchange_type: topic        # the AMQ exchange type
+system-type: "VMA"
+USER_ACCOUNT: "vumi"

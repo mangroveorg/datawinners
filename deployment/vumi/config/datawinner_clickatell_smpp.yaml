@@ -1,0 +1,14 @@
+# The unique name of this transport
+TRANSPORT_NAME: smpp_transport_clickatell
+POST_TO_URL: http://www.datawinners.com/submission
+system_id: HNIaccount  # username
+password:       # password
+host: smpp.clickatell.com         # the host to connect to
+port: 2773              # the port to connect to
+
+exchange_name: vumi.topic   # the AMQ exchange name
+exchange_type: topic        # the AMQ exchange type
+system_type: "3321490"
+USER_ACCOUNT: "vumi"
+dest_addr_ton: 1
+dest_addr_npi: 1
