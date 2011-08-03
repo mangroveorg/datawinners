@@ -125,14 +125,14 @@ class LocationTree(object):
     def exists(self, location):
         return location.lower() in self.tree.nodes()
 
-    def get_location_for_geocode(self, lat, long):
-        point = Point(long, lat)
-        rows = list(LocationLevel.objects.filter(geom__contains=point))
-        if not len(rows):
-            return None
-        row = rows[0]
-        field = "name_%s" % (self._get_lowest_level(row))
-        return getattr(row, field)
+    def get_location_hierarchy_for_geocode(self, lat, long):
+        row = self._get_location_level_row_for_geo_code(lat, long)
+        lowest_level = self._get_lowest_level(row)
+        location = []
+        for i in range(0,lowest_level+1):
+            field = "name_%s" % i
+            location.append(getattr(row, field).lower())
+        return location
 
     def _get_lowest_level(self, row):
         i = 0
@@ -144,12 +144,10 @@ class LocationTree(object):
                 break
         return i - 1
 
-    def get_location_hierarchy_for_geocode(self, lat, long):
-        location = self.get_location_for_geocode(lat, long)
-        if location:
-            return self.get_hierarchy_path(location)
-        else:
-            return []
+    def get_location_for_geocode(self, lat, long):
+        row = self._get_location_level_row_for_geo_code(lat, long)
+        field = "name_%s" % self._get_lowest_level(row)
+        return getattr(row, field)
 
     def get_centroid(self, location, level):
         column = 'name_%s' % level
@@ -159,6 +157,13 @@ class LocationTree(object):
             return None
         point = row[0].c
         return point.x, point.y
+
+    def _get_location_level_row_for_geo_code(self, lat, long):
+        point = Point(long, lat)
+        rows = list(LocationLevel.objects.filter(geom__contains=point))
+        if not len(rows):
+            return None
+        return rows[0]
 
 
 

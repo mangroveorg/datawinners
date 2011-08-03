@@ -27,16 +27,15 @@ class TestLocationTree(unittest.TestCase):
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_lowest_admin_location_for_geocode(self):
-        self.assertEqual("ZAZAFOTSY", self.tree.get_location_for_geocode(lat=-22.12, long=46.21))
-        self.assertFalse(self.tree.exists("XYZ"))
-
-    def test_should_get_lowest_admin_location_for_geocode(self):
         self.assertEqual("fkt ambaribe", self.tree.get_location_for_geocode(lat=-18.777180, long=46.854321).lower())
         self.assertFalse(self.tree.exists("XYZ"))
 
     def test_should_get_location_hierarchy_for_geocode(self):
         self.assertEqual([u'madagascar', u'itasy', u'miarinarivo', u'ambatomanjaka', u'fkt ambaribe'], self.tree.get_location_hierarchy_for_geocode(lat=-18.777180, long=46.854321))
         self.assertFalse(self.tree.exists("XYZ"))
+
+    def test_should_get_location_hierarchy_to_the_lowest_level_for_geocode(self):
+        self.assertEqual([u'madagascar', u'analamanga', u'manjakandriana', u'ambohitrony', u'ambohijanaka'], self.tree.get_location_hierarchy_for_geocode(lat=-18.7415362448, long=47.7765977667))
 
     @SkipTest
     #TODO: USe this test and the related piece of code when the functionality gets used
