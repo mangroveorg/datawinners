@@ -27,14 +27,14 @@ $(document).ready(function() {
                         $(".ajax_loader_small").hide();
                         if (d.success) {
                             $('<div id="message" class="success-message-box">' + d.message + '</div>').insertBefore($('#question_form'));
-                            $("#entity_name").val('');
-                            $("#id_location").val('');
-                            $("#geo_code").val('');
-                            $("#description").val('');
-                            $("#mobile_number").val('');
-                            $("#short_name").val('');
+                            DW.viewModel.message.n('');
+                            DW.viewModel.message.s('');
+                            DW.viewModel.message.t('');
+                            DW.viewModel.message.l('');
+                            DW.viewModel.message.d('');
+                            DW.viewModel.message.m('');
+                            DW.viewModel.message.g('');
                             $('#id_entity_type').val(0);
-
                             $('#message').delay(10000).fadeOut();
                         }
                         else {
