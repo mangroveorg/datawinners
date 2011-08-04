@@ -49,7 +49,7 @@ class TestHelper(unittest.TestCase):
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
         self.assertIsInstance(q4, SelectField)
-        self.assertEquals(q1._to_json_view()["length"], {"min": 1, "max": 15})
+        self.assertEquals(q1._to_json_view()['constraints']["length"], {"min": 1, "max": 15})
         self.assertEquals(q2._to_json_view()["range"], {"min": 0, "max": 100})
         self.assertEquals(q3._to_json_view()["type"], "select")
         self.assertEquals(q4._to_json_view()["type"], "select1")
@@ -92,7 +92,7 @@ class TestHelper(unittest.TestCase):
                  "is_entity_question": False}
         ]
         q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraint.max, None)
+        self.assertEqual(q1.constraints['length'].max, None)
 
     def test_should_create_text_question_with_no_max_lengt_and_min_length(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
@@ -103,8 +103,7 @@ class TestHelper(unittest.TestCase):
                  "is_entity_question": False}
         ]
         q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraint.max, None)
-        self.assertEqual(q1.constraint.min, None)
+        self.assertEqual(q1.constraints.get('length'), None)
 
     def test_should_return_tuple_list_of_submissions(self):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
@@ -423,29 +422,29 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_add_constraint_text_for_text_field_with_min(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
         constraint = TextConstraint(min=10)
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, length=constraint)
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("Minimum 10 characters", preview["constraint"])
+        self.assertEqual("Minimum 10 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
         constraint = TextConstraint(max=100)
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, length=constraint)
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("Upto 100 characters", preview["constraint"])
+        self.assertEqual("Upto 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max_and_min(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
         constraint = TextConstraint(min=10, max=100)
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, length=constraint)
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("Between 10 - 100 characters", preview["constraint"])
+        self.assertEqual("Between 10 - 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_without_constraint(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("", preview["constraint"])
+        self.assertEqual("", preview["constraints"])
 
 
     def test_should_add_constraint_text_for_numeric_field_with_min(self):
@@ -453,7 +452,7 @@ class TestPreviewCreator(unittest.TestCase):
         constraint = NumericConstraint(min=10)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("Minimum 10", preview["constraint"])
+        self.assertEqual("Minimum 10", preview["constraints"])
         self.assertEqual("integer", preview["type"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max(self):
@@ -461,20 +460,20 @@ class TestPreviewCreator(unittest.TestCase):
         constraint = NumericConstraint(max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("Upto 100", preview["constraint"])
+        self.assertEqual("Upto 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max_and_min(self):
         type = DataDictType(Mock(DatabaseManager), name="age type")
         constraint = NumericConstraint(min=10, max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("10 - 100", preview["constraint"])
+        self.assertEqual("10 - 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_without_constraint(self):
         type = DataDictType(Mock(DatabaseManager), name="age type")
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("", preview["constraint"])
+        self.assertEqual("", preview["constraints"])
 
     def test_should_return_choices(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
@@ -482,7 +481,7 @@ class TestPreviewCreator(unittest.TestCase):
                             options=[("Red", "a"), ("Green", "b"), ("Blue", "c")])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("select1", preview["type"])
-        self.assertEqual(["Red", "Green", "Blue"], preview["constraint"])
+        self.assertEqual(["Red", "Green", "Blue"], preview["constraints"])
 
     def test_should_return_choices_type_as_select(self):
         type = DataDictType(Mock(DatabaseManager), name="color type")
@@ -495,11 +494,11 @@ class TestPreviewCreator(unittest.TestCase):
         type = DataDictType(Mock(DatabaseManager), name="date type")
         field = DateField(name="What is the date?", code="dat", label="naam", ddtype=type, date_format="dd/mm/yyyy")
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("dd/mm/yyyy", preview["constraint"])
+        self.assertEqual("dd/mm/yyyy", preview["constraints"])
 
     def test_should_return_geocode_format(self):
         type = DataDictType(Mock(DatabaseManager), name="date type")
         field = GeoCodeField(name="What is the place?", code="dat", label="naam", ddtype=type)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("xx.xxxx yy.yyyy", preview["constraint"])
+        self.assertEqual("xx.xxxx yy.yyyy", preview["constraints"])
 

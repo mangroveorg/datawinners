@@ -192,9 +192,9 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type,
-                          length=TextConstraint(min=1, max=12))
+                          constraints=[TextConstraint(min=1, max=12)])
     question2 = TextField(label="Name", code="NA", name="What is your name?",
-                          length=TextConstraint(min=1, max=10),
+                          constraints=[TextConstraint(min=1, max=10)],
                           defaultValue="some default value", language="eng", ddtype=name_type)
     question3 = IntegerField(label="Father age", code="FA", name="What is age of father?",
                              range=NumericConstraint(min=18, max=100), ddtype=age_type)

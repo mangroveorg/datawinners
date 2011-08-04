@@ -65,7 +65,7 @@ def create_entity_id_question(dbm):
     entity_id_question = TextField(name=name, code=ENTITY_QUESTION_DISPLAY_CODE,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
-                                   length=TextConstraint(min=1, max=12))
+                                   constraints=dict(length=TextConstraint(min=1, max=12)))
     return entity_id_question
 
 
@@ -107,9 +107,11 @@ def _create_text_question(post_dict, ddtype):
     min_length_from_post = post_dict.get("min_length")
     max_length = max_length_from_post if not is_empty(max_length_from_post) else None
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
-    length = TextConstraint(min=min_length, max=max_length)
+    constraint_dict = {}
+    if not (max_length is None and min_length is None and int(max_length)>int(min_length)):
+        constraint_dict['length'] = TextConstraint(min=min_length, max=max_length)
     return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                     entity_question_flag=post_dict.get("is_entity_question"), length=length, ddtype=ddtype,
+                     entity_question_flag=post_dict.get("is_entity_question"), constraints=constraint_dict, ddtype=ddtype,
                      instruction=post_dict.get("instruction"))
 
 
@@ -279,19 +281,23 @@ def _get_max_min(field):
     constraint = field.constraint
     min = constraint.min
     max = constraint.max
-    return constraint, max, min
+    return max, min
 
 
-def _get_text_constraint(max, min):
-    if min is not None and max is None:
-        constraint_text = "Minimum %s characters" % min
-        return constraint_text
-    if min is None and max is not None:
-        constraint_text = "Upto %s characters" % max
-        return constraint_text
-    elif min is not None and max is not None:
-        constraint_text = "Between %s - %s characters" % (min, max)
-        return constraint_text
+def _get_text_constraint(field):
+    length_constraint = field.constraints.get('length')
+    if length_constraint is not None:
+        min = length_constraint.min
+        max = length_constraint.max
+        if min is not None and max is None:
+            constraint_text = "Minimum %s characters" % min
+            return constraint_text
+        if min is None and max is not None:
+            constraint_text = "Upto %s characters" % max
+            return constraint_text
+        elif min is not None and max is not None:
+            constraint_text = "Between %s - %s characters" % (min, max)
+            return constraint_text
     return ""
 
 
@@ -317,12 +323,11 @@ def _get_date_format_constraint(field):
 
 
 def _get_constraint(field):
-    if type(field) is TextField or type(field) is IntegerField:
-        constraint, max, min = _get_max_min(field)
-        if type(constraint) is TextConstraint:
-            return _get_text_constraint(max, min)
-        if type(constraint) is NumericConstraint:
-            return _get_numeric_constraint(max, min)
+    if type(field) is IntegerField:
+        max, min = _get_max_min(field)
+        return _get_numeric_constraint(max, min)
+    if type(field) is TextField:
+        return _get_text_constraint(field)
     elif type(field) is DateField:
         return _get_date_format_constraint(field)
     if type(field) is SelectField:
@@ -334,4 +339,4 @@ def _get_constraint(field):
     
 
 def get_preview_for_field(field):
-    return {"description": field.name, "code": field.code, "type": field.type, "constraint": _get_constraint(field),"instruction": field.instruction}
+    return {"description": field.name, "code": field.code, "type": field.type, "constraints": _get_constraint(field),"instruction": field.instruction}

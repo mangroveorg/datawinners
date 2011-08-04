@@ -595,7 +595,7 @@ def questionnaire_preview(request, project_id=None):
 
 
 def _get_preview_for_field_in_registration_questionnaire(field):
-    return {"description": field.label.get('eng'), "code": field.code, "type": field.type, "constraint": field.instruction,"instruction": field.instruction}
+    return {"description": field.label.get('eng'), "code": field.code, "type": field.type, "constraints": field.instruction,"instruction": field.instruction}
 
 
 def _get_registration_form(manager, project, project_id, type_of_subject='subject'):
