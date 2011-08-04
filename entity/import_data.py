@@ -25,14 +25,18 @@ def tabulate_failures(rows):
     return tabulated_data
 
 
+def _format(value):
+    return value if value else "--"
+
+
 def _tabulate_data(entity, row, short_code, type):
     id = row['id']
-    name = entity.value(NAME_FIELD) if entity.value(NAME_FIELD) else "--"
+    name = _format(entity.value(NAME_FIELD))
     geocode = row['doc']['geometry'].get('coordinates')
     geocode_string = ", ".join([str(i) for i in geocode]) if geocode is not None else "--"
-    location = sequence_to_str(entity.location_path) if sequence_to_str(entity.location_path) != "" else "--"
-    mobile_number = entity.value(MOBILE_NUMBER_FIELD) if entity.value(MOBILE_NUMBER_FIELD) else "--"
-    description = entity.value(DESCRIPTION_FIELD) if entity.value(DESCRIPTION_FIELD) else "--"
+    location = _format(sequence_to_str(entity.location_path))
+    mobile_number = _format(entity.value(MOBILE_NUMBER_FIELD))
+    description = _format(entity.value(DESCRIPTION_FIELD))
     return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode_string, location=location,
                 description=description, mobile_number=mobile_number)
 
