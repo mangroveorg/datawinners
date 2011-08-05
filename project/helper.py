@@ -4,7 +4,7 @@ from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
-from mangrove.form_model.validation import NumericConstraint, TextConstraint
+from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
 from mangrove.datastore import aggregrate as aggregate_module
@@ -65,7 +65,7 @@ def create_entity_id_question(dbm):
     entity_id_question = TextField(name=name, code=ENTITY_QUESTION_DISPLAY_CODE,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
-                                   constraints=dict(length=TextConstraint(min=1, max=12)))
+                                   constraints=dict(length=TextLengthConstraint(min=1, max=12)))
     return entity_id_question
 
 
@@ -109,7 +109,7 @@ def _create_text_question(post_dict, ddtype):
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     constraint_dict = {}
     if not (max_length is None and min_length is None):
-        constraint_dict['length'] = TextConstraint(min=min_length, max=max_length)
+        constraint_dict['length'] = TextLengthConstraint(min=min_length, max=max_length)
     return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      entity_question_flag=post_dict.get("is_entity_question"), constraints=constraint_dict, ddtype=ddtype,
                      instruction=post_dict.get("instruction"))
@@ -120,7 +120,7 @@ def _create_integer_question(post_dict, ddtype):
     min_range_from_post = post_dict.get("range_min")
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
     min_range = min_range_from_post if not is_empty(min_range_from_post) else None
-    range = NumericConstraint(min=min_range, max=max_range)
+    range = NumericRangeConstraint(min=min_range, max=max_range)
     return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                         range=range, ddtype=ddtype, instruction=post_dict.get("instruction"))
 

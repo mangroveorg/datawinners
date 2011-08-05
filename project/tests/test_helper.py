@@ -13,7 +13,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.datastore import data
 from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
-from mangrove.form_model.validation import TextConstraint, NumericConstraint
+from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 
 
 class TestHelper(unittest.TestCase):
@@ -425,21 +425,21 @@ class TestPreviewCreator(unittest.TestCase):
 
     def test_should_add_constraint_text_for_text_field_with_min(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        constraint = TextConstraint(min=10)
+        constraint = TextLengthConstraint(min=10)
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        constraint = TextConstraint(max=100)
+        constraint = TextLengthConstraint(max=100)
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max_and_min(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        constraint = TextConstraint(min=10, max=100)
+        constraint = TextLengthConstraint(min=10, max=100)
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Between 10 - 100 characters", preview["constraints"])
@@ -453,7 +453,7 @@ class TestPreviewCreator(unittest.TestCase):
 
     def test_should_add_constraint_text_for_numeric_field_with_min(self):
         type = DataDictType(Mock(DatabaseManager), name="age type")
-        constraint = NumericConstraint(min=10)
+        constraint = NumericRangeConstraint(min=10)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10", preview["constraints"])
@@ -461,14 +461,14 @@ class TestPreviewCreator(unittest.TestCase):
 
     def test_should_add_constraint_text_for_numeric_field_with_max(self):
         type = DataDictType(Mock(DatabaseManager), name="age type")
-        constraint = NumericConstraint(max=100)
+        constraint = NumericRangeConstraint(max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max_and_min(self):
         type = DataDictType(Mock(DatabaseManager), name="age type")
-        constraint = NumericConstraint(min=10, max=100)
+        constraint = NumericRangeConstraint(min=10, max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, range=constraint)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("10 - 100", preview["constraints"])

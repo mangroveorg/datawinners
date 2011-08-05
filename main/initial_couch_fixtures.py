@@ -15,7 +15,7 @@ from pytz import UTC
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
-from mangrove.form_model.validation import NumericConstraint, TextConstraint
+from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import Request, SMSPlayer, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from mangrove.transport.submissions import SubmissionHandler
@@ -192,12 +192,12 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type,
-                          constraints=dict(length=TextConstraint(min=1, max=12)))
+                          constraints=dict(length=TextLengthConstraint(min=1, max=12)))
     question2 = TextField(label="Name", code="NA", name="What is your name?",
-                          constraints=dict(length=TextConstraint(min=1, max=10)),
+                          constraints=dict(length=TextLengthConstraint(min=1, max=10)),
                           defaultValue="some default value", language="eng", ddtype=name_type)
     question3 = IntegerField(label="Father age", code="FA", name="What is age of father?",
-                             range=NumericConstraint(min=18, max=100), ddtype=age_type)
+                             range=NumericRangeConstraint(min=18, max=100), ddtype=age_type)
     question4 = DateField(label="Report date", code="RD", name="What is reporting date?",
                           date_format="dd.mm.yyyy", ddtype=date_type)
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
