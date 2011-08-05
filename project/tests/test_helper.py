@@ -39,20 +39,24 @@ class TestHelper(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
                 {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False}
+                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
+                {"title": "q5", "code": "qc5", "description": "desc4", "type": "text"}
         ]
         q1 = helper.create_question(post[0], self.dbm)
         q2 = helper.create_question(post[1], self.dbm)
         q3 = helper.create_question(post[2], self.dbm)
         q4 = helper.create_question(post[3], self.dbm)
+        q5 = helper.create_question(post[4], self.dbm)
         self.assertIsInstance(q1, TextField)
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
         self.assertIsInstance(q4, SelectField)
-        self.assertEquals(q1._to_json_view()['constraints']["length"], {"min": 1, "max": 15})
+        self.assertIsInstance(q5, TextField)
+        self.assertEquals(q1._to_json_view()["length"], {"min": 1, "max": 15})
         self.assertEquals(q2._to_json_view()["range"], {"min": 0, "max": 100})
         self.assertEquals(q3._to_json_view()["type"], "select")
         self.assertEquals(q4._to_json_view()["type"], "select1")
+        self.assertEquals(q5._to_json_view()["type"], "text")
 
     def test_should_save_questionnaire_from_post(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,

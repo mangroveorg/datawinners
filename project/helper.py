@@ -108,7 +108,7 @@ def _create_text_question(post_dict, ddtype):
     max_length = max_length_from_post if not is_empty(max_length_from_post) else None
     min_length = min_length_from_post if not is_empty(min_length_from_post) else None
     constraint_dict = {}
-    if not (max_length is None and min_length is None and int(max_length)>int(min_length)):
+    if not (max_length is None and min_length is None):
         constraint_dict['length'] = TextConstraint(min=min_length, max=max_length)
     return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      entity_question_flag=post_dict.get("is_entity_question"), constraints=constraint_dict, ddtype=ddtype,
