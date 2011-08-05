@@ -29,14 +29,19 @@ def _format(value):
     return value if value else "--"
 
 
+def _get_value_from_entity_data(entity,field):
+    field = entity.data.get(field)
+    return field.get('value') if field is not None else "--"
+
+
 def _tabulate_data(entity, row, short_code, type):
     id = row['id']
-    name = _format(entity.value(NAME_FIELD))
     geocode = row['doc']['geometry'].get('coordinates')
     geocode_string = ", ".join([str(i) for i in geocode]) if geocode is not None else "--"
     location = _format(sequence_to_str(entity.location_path))
-    mobile_number = _format(entity.value(MOBILE_NUMBER_FIELD))
-    description = _format(entity.value(DESCRIPTION_FIELD))
+    name = _get_value_from_entity_data(entity,NAME_FIELD)
+    mobile_number = _get_value_from_entity_data(entity,MOBILE_NUMBER_FIELD)
+    description = _get_value_from_entity_data(entity,DESCRIPTION_FIELD)
     return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode_string, location=location,
                 description=description, mobile_number=mobile_number)
 
@@ -52,8 +57,7 @@ def _get_entity_for_row(manager, row, type):
     return entity, short_code
 
 
-def load_all_subjects(request):
-    manager = get_database_manager(request)
+def load_subject_registration_data(manager):
     rows = get_all_entities(dbm=manager, include_docs=True)
     data = []
     for row in rows:
@@ -63,6 +67,11 @@ def load_all_subjects(request):
         if type.lower() != 'reporter':
             data.append(_tabulate_data(entity, row, short_code, type))
     return data
+
+
+def load_all_subjects(request):
+    manager = get_database_manager(request)
+    return load_subject_registration_data(manager)
 
 
 def load_all_subjects_of_type(request, entity_type="reporter"):
