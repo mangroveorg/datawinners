@@ -65,7 +65,7 @@ def create_entity_id_question(dbm):
     entity_id_question = TextField(name=name, code=ENTITY_QUESTION_DISPLAY_CODE,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
-                                   constraints=dict(length=TextLengthConstraint(min=1, max=12)))
+                                   constraints=[TextLengthConstraint(min=1, max=12)])
     return entity_id_question
 
 
