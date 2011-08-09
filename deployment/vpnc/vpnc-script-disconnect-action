@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ ! -e /var/run/vpnc/disconnect ]; then
+    bash /etc/vpnc/reconnect-script &
+fi

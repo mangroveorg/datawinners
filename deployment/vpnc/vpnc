@@ -1,0 +1,28 @@
+#!/bin/bash
+
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+        log_begin_msg "Starting vpnc connections..."
+        . /etc/default/vpnc
+
+        rm -f /var/run/vpnc/disconnect
+        . /etc/vpnc/reconnect-script
+    ;;
+
+    stop)
+        log_begin_msg "Stopping vpnc..."
+        touch /var/run/vpnc/disconnect
+        vpnc-disconnect &
+        log_end_msg $?
+
+    ;;
+
+    restart)
+        log_begin_msg "Restarting vpnc..."
+        vpnc-disconnect &
+        log_end_msg $?
+esac
+exit 0
+

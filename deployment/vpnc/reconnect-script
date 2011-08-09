@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sleep 5
+
+. /etc/default/vpnc
+
+
+vpnc-connect /etc/vpnc/airtel &
+
