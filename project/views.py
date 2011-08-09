@@ -28,7 +28,6 @@ from mangrove.form_model.form_model import get_form_model_by_code, FormModel, RE
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
-from mangrove.utils.types import is_string
 from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
@@ -55,6 +54,7 @@ def _make_project_links(project, questionnaire_code):
 
     if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
+        project_links['test_questionnaire_link'] = reverse(test_questionnaire, args=[project_id])
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
@@ -559,6 +559,15 @@ def questionnaire(request, project_id=None):
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links},
+                                  context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def test_questionnaire(request, project_id=None):
+    manager = get_database_manager(request)
+    if request.method == 'GET':
+        project = models.get_project(project_id, manager)
+        form_model = helper.load_questionnaire(manager, project.qid)
+        return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project, 'project_links':_make_project_links(project, form_model.form_code)},
                                   context_instance=RequestContext(request))
 
 

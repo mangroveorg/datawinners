@@ -1,0 +1,26 @@
+{% extends 'project/tab_navigation.html' %}
+{% block page_title %} Projects - Overview {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "test_questionnaire" %}
+{{ block.super }}
+{% endblock %}
+
+{% block body %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <form>
+    <table>{{ form_model.to_html }}</table>
+
+    </form>
+
+{% endblock %}
