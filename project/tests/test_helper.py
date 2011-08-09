@@ -89,14 +89,14 @@ class TestHelper(unittest.TestCase):
 
     def test_should_create_text_question_with_no_max_length(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
-                 "min_length": 1, "max_length": ""},
+                 "min_length": 1},
                 {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": 100},
                 {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
         q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraints['length'].max, None)
+        self.assertEqual(q1.constraints[0].max, None)
 
     def test_should_create_text_question_with_no_max_lengt_and_min_length(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
@@ -107,7 +107,7 @@ class TestHelper(unittest.TestCase):
                  "is_entity_question": False}
         ]
         q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraints.get('length'), None)
+        self.assertEqual(q1.constraints, [])
 
     def test_should_return_tuple_list_of_submissions(self):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
@@ -425,22 +425,22 @@ class TestPreviewCreator(unittest.TestCase):
 
     def test_should_add_constraint_text_for_text_field_with_min(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        constraint = TextLengthConstraint(min=10)
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
+        constraints = [TextLengthConstraint(min=10)]
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        constraint = TextLengthConstraint(max=100)
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
+        constraints = [TextLengthConstraint(max=100)]
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max_and_min(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        constraint = TextLengthConstraint(min=10, max=100)
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=dict(length=constraint))
+        constraints = [TextLengthConstraint(min=10, max=100)]
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Between 10 - 100 characters", preview["constraints"])
 

@@ -285,8 +285,8 @@ def _get_max_min(field):
 
 
 def _get_text_constraint(field):
-    length_constraint = field.constraints.get('length')
-    if length_constraint is not None:
+    if not is_empty(field.constraints):
+        length_constraint = field.constraints[0]
         min = length_constraint.min
         max = length_constraint.max
         if min is not None and max is None:
