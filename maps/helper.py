@@ -32,16 +32,11 @@ def _get_geo_json_from_location_path(location_path, tree):
 
 
 def create_location_geojson(entity_list):
-    tree = LocationTree()
     location_list=[]
-    geometry_geo_json = None
     for entity in entity_list:
-        geometry = entity.geometry
-        location_path=entity.location_path
-        if geometry:
-            geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, geometry)
-        elif location_path:
-            geometry_geo_json = _get_geo_json_from_location_path(location_path, tree)
+        geometry_geo_json = None
+        if entity.geometry:
+            geometry_geo_json = _get_geo_json_for_entity_from_geo_code(entity, entity.geometry)
 
         if geometry_geo_json is not None:
             location_list.append(geometry_geo_json)

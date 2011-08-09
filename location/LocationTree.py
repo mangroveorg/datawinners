@@ -106,14 +106,9 @@ class LocationTree(object):
     def nodes(self):
         return self.tree.nodes()
 
-    def name_to_code(self, location_name):
-        pass
 
-    def code_to_name(self, location_code):
-        location = LocationLevel.objects.filter()
-        pass
 
-    def get_next_level(self, parent):
+    def _get_next_level(self, parent):
         return self.tree.neighbors(parent.lower())
 
     def get_hierarchy_path(self, location_name):
@@ -122,7 +117,7 @@ class LocationTree(object):
         except NetworkXError:
             return [location_name]
 
-    def exists(self, location):
+    def _exists(self, location):
         return location.lower() in self.tree.nodes()
 
     def get_location_hierarchy_for_geocode(self, lat, long):
@@ -144,7 +139,7 @@ class LocationTree(object):
                 break
         return i - 1
 
-    def get_location_for_geocode(self, lat, long):
+    def _get_location_for_geocode(self, lat, long):
         row = self._get_location_level_row_for_geo_code(lat, long)
         field = "name_%s" % self._get_lowest_level(row)
         return getattr(row, field)
