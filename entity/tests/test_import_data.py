@@ -2,7 +2,6 @@
 
 import unittest
 from datawinners.entity.import_data import load_subject_registration_data
-from datawinners.location.LocationTree import LocationTree
 from mangrove import initializer
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.datadict import DataDictType
@@ -17,7 +16,7 @@ class TestImportData(unittest.TestCase):
     def setUp(self):
         self.dbm = get_db_manager(database='mangrove-test')
         self._create_entities()
-        self.player = SMSPlayer(self.dbm, SubmissionHandler(self.dbm), LocationTree())
+        self.player = SMSPlayer(self.dbm, SubmissionHandler(self.dbm))
         self.transport = TransportInfo(transport="sms", source="1234", destination="5678")
         initializer.run(self.dbm)
 

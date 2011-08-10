@@ -1,19 +1,15 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from unittest.case import SkipTest
-from datawinners.location.LocationTree import LocationTree, get_locations_for_country, get_location_groups_for_country
+from datawinners.location.LocationTree import get_locations_for_country, get_location_groups_for_country, get_location_tree
 
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
-        self.tree = LocationTree()
+        self.tree = get_location_tree()
 
 
     def tearDown(self):
         pass
-
-    def test_load_tree(self):
-        self.assertEqual('Madagascar', self.tree.countries[0])
-        self.assertEqual(22, len(self.tree._get_next_level('Madagascar')))
 
     def test_get_hierarchy_from_location(self):
         self.assertEqual(self.tree.get_hierarchy_path('Amboanjo'),

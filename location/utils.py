@@ -8,7 +8,7 @@ def load_from_gdam_shp_file(file_name,verbose):
     lm = LayerMapping(LocationLevel, ind_shp, location_level_mapping, transform=False, encoding='iso-8859-1')
     lm.save(strict=True,verbose=verbose)
     
-def load_from_madagascar_ocha_wgs84_shp_file(root_directory,verbose):
+def load_from_madagascar_ocha_wgs84_shp_file(root_directory,verbose=True):
     for root, dirs, files in os.walk(root_directory):
         files = glob.glob(root + '/*.shp')
         for file in files:

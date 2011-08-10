@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners import utils
 from datawinners.entity import helper
-from datawinners.location.LocationTree import LocationTree
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 from mangrove.datastore.entity import get_all_entity_types, define_type
@@ -39,7 +38,7 @@ def _validate_post_data(dbm, request):
             if not helper.unique(dbm, tel_number):
                 raise MultipleReportersForANumberException(entered_telephone_number)
 
-            web_player = WebPlayer(dbm, SubmissionHandler(dbm), LocationTree())
+            web_player = WebPlayer(dbm, SubmissionHandler(dbm))
             response = web_player.accept(
                 Request(message=_get_data(form_data),
                         transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
@@ -97,7 +96,7 @@ def submit(request):
     post = _get_submission(request.POST)
     success = True
     try:
-        web_player = WebPlayer(dbm, SubmissionHandler(dbm), LocationTree())
+        web_player = WebPlayer(dbm, SubmissionHandler(dbm))
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
         if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
             message[LOCATION_TYPE_FIELD_CODE]+= COUNTRY

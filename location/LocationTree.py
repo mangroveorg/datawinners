@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from _collections import defaultdict
+from threading import Lock
 from django.contrib.gis.geos.point import Point
 from django.db import connection
 from networkx import *
@@ -79,31 +80,38 @@ order by LEVEL
         location_dict[level].append(location)
     return location_dict
 
+_tree=None
+_tree_lock=Lock()
+
+
+def get_location_tree():
+    global _tree
+    with _tree_lock:
+        if _tree is None:
+            _tree = LocationTree()
+    return _tree
 
 class LocationTree(object):
     def __init__(self):
         self.tree = DiGraph()
-        self.countries = []
         self.loadfromdb()
 
     def loadfromdb(self):
-        rows = LocationLevel.objects.all()
-        geo_countries = LocationLevel.objects.values('name_0').distinct()
-        self.countries = [geo_country['name_0'] for geo_country in geo_countries]
+        rows = LocationLevel.objects.values('name_0','name_1','name_2','name_3','name_4')
         for row in rows:
             path_list = ['root']
             i = 0
             while 1:
                 field = "name_%s" % (i,)
                 try:
-                    value = getattr(row, field)
-                except AttributeError as e:
+                    value = row[field]
+                except KeyError as e:
                     break
                 i += 1
                 path_list.append(value.lower())
             self.tree.add_path(path_list)
 
-    def nodes(self):
+    def _nodes(self):
         return self.tree.nodes()
 
 
