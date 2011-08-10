@@ -17,10 +17,10 @@ def load_from_madagascar_ocha_wgs84_shp_file(root_directory,verbose):
                 lm.save(strict=True,verbose=verbose)
             except LayerMapError:
                 continue
-    location_level = LocationLevel.objects.all()
-    for location in location_level:
-        location.name_0 = "Madagascar"
-        location.save()
+    print "Imported Shapefiles."
+    print "Updating database with country name as Madagascar"
+    LocationLevel.objects.update(name_0 = "Madagascar")
+    print "Done"
 
 
 def map_location_groups_to_categories(input, country):
