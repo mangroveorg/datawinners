@@ -197,7 +197,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                           constraints=[TextLengthConstraint(min=1, max=10)],
                           defaultValue="some default value", language="eng", ddtype=name_type)
     question3 = IntegerField(label="Father age", code="FA", name="What is age of father?",
-                             range=NumericRangeConstraint(min=18, max=100), ddtype=age_type)
+                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type)
     question4 = DateField(label="Report date", code="RD", name="What is reporting date?",
                           date_format="dd.mm.yyyy", ddtype=date_type)
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",

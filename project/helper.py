@@ -122,7 +122,7 @@ def _create_integer_question(post_dict, ddtype):
     min_range = min_range_from_post if not is_empty(min_range_from_post) else None
     range = NumericRangeConstraint(min=min_range, max=max_range)
     return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                        range=range, ddtype=ddtype, instruction=post_dict.get("instruction"))
+                        constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"))
 
 
 def _create_date_question(post_dict, ddtype):
@@ -278,9 +278,11 @@ def remove_reporter(entity_type_list):
 
 
 def _get_max_min(field):
-    constraint = field.constraint
-    min = constraint.min
-    max = constraint.max
+    max = min = None
+    if len(field.constraints) > 0:
+        constraint = field.constraints[0]
+        min = constraint.min
+        max = constraint.max
     return max, min
 
 
