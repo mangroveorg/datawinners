@@ -18,6 +18,7 @@
 {% endblock %}
 
 {% block content %}
+    <span class="success">{{ success_message }}</span>
     <form method="POST">
     {% csrf_token %}
     <table>{{ form_model.to_html }}</table>
