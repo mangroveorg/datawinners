@@ -32,18 +32,18 @@
                     {% endif %}
                     <div class="answer">
                         {% if question.type != "select" and question.type != "select1"%}
-                            <div><input type="text" disabled="disabled" name="text" value="{{ question.constraint }}" /></div>
+                            <div><input type="text" disabled="disabled" name="text" value="{{ question.constraints }}" /></div>
                         {% endif %}
                         {% if question.type == "select1"%}
                             <ol class="multiple_select">
-                            {% for option in question.constraint%}
+                            {% for option in question.constraints%}
                               <li><label>{{ option }}</label></li>
                             {% endfor %}
                             </ol>
                         {% endif %}
                         {% if question.type == "select"%}
                             <ol class="multiple_select">
-                            {% for option in question.constraint %}
+                            {% for option in question.constraints %}
                                 <li><label>{{ option }}</label></li>
                             {% endfor %}
                             </ol>
