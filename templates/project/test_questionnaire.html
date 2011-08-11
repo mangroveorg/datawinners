@@ -18,9 +18,10 @@
 {% endblock %}
 
 {% block content %}
-    <form>
+    <form method="POST">
+    {% csrf_token %}
     <table>{{ form_model.to_html }}</table>
-
+    <input type="submit" class="button" value="Submit" />
     </form>
 
 {% endblock %}

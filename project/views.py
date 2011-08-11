@@ -25,7 +25,7 @@ from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
-from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
+from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler, SubmissionRequest
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import data, aggregrate as aggregate_module
@@ -564,12 +564,23 @@ def questionnaire(request, project_id=None):
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
     manager = get_database_manager(request)
+    project = models.get_project(project_id, manager)
+    form_model = helper.load_questionnaire(manager, project.qid)
     if request.method == 'GET':
-        project = models.get_project(project_id, manager)
-        form_model = helper.load_questionnaire(manager, project.qid)
         return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project, 'project_links':_make_project_links(project, form_model.form_code)},
                                   context_instance=RequestContext(request))
 
+    if request.method == 'POST':
+        submission_request = post_to_submission(dict(request.POST))
+        submission_handler = SubmissionHandler(dbm=manager)
+        submission_response = submission_handler.accept(SubmissionRequest(form_model.form_code, submission=submission_request,transport='web', source='web', destination='mangrove'))
+        return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project, 'project_links':_make_project_links(project, form_model.form_code)},
+                                  context_instance=RequestContext(request))
+
+
+def post_to_submission(post_request):
+    post_request.pop('csrfmiddlewaretoken')
+    return {code: value[0] for code,value in post_request.iteritems()}
 
 @login_required(login_url='/login')
 def questionnaire_preview(request, project_id=None):
