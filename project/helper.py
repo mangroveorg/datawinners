@@ -10,7 +10,6 @@ from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
 from mangrove.datastore import aggregrate as aggregate_module
 import models
 import xlwt
-from copy import copy
 from datetime import datetime
 from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE
 
@@ -136,7 +135,7 @@ def _create_geo_code_question(post_dict, ddtype):
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
-    options = [choice.get("text") for choice in post_dict["choices"]]
+    options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
     return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                        options=options, single_select_flag=single_select_flag, ddtype=ddtype,
                        instruction=post_dict.get("instruction"))

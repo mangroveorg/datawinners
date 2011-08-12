@@ -59,12 +59,19 @@ var viewModel =
         return viewModel.selectedQuestion().type() == 'text';
     },
     addOptionToQuestion: function() {
-        viewModel.selectedQuestion().choices.push({text:"", val:""});
+        var lastChoice = viewModel.selectedQuestion().choices()[viewModel.selectedQuestion().choices().length - 1];
+        viewModel.selectedQuestion().choices.push({text:"", val:String.fromCharCode(lastChoice.val.charCodeAt(0) + 1)});
         viewModel.selectedQuestion().choices.valueHasMutated();
         viewModel.selectedQuestion.valueHasMutated();
         viewModel.questions.valueHasMutated();
     },
     removeOptionFromQuestion:function(choice) {
+        var indexOfChoice = viewModel.selectedQuestion().choices().indexOf(choice);
+        var lastChoice = choice;
+        for(var i = indexOfChoice + 1; i < viewModel.selectedQuestion().choices().length; i++){
+            viewModel.selectedQuestion().choices()[i]['val'] = String.fromCharCode(lastChoice['val'].charCodeAt(0));
+            lastChoice = viewModel.selectedQuestion().choices()[i - 1];
+        }
         viewModel.selectedQuestion().choices.remove(choice);
         viewModel.selectedQuestion.valueHasMutated();
     },
