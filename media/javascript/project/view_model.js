@@ -67,10 +67,10 @@ var viewModel =
     },
     removeOptionFromQuestion:function(choice) {
         var indexOfChoice = viewModel.selectedQuestion().choices().indexOf(choice);
-        var lastChoiceChar = choice['val'].charCodeAt(0);
+        var lastChoiceValue = choice['val'].charCodeAt(0);
         for(var i = indexOfChoice + 1; i < viewModel.selectedQuestion().choices().length; i++){
-            viewModel.selectedQuestion().choices()[i]['val'] = String.fromCharCode(lastChoiceChar);
-            lastChoiceChar = lastChoiceChar + 1;
+            viewModel.selectedQuestion().choices()[i]['val'] = String.fromCharCode(lastChoiceValue);
+            lastChoiceValue = lastChoiceValue + 1;
         }
         viewModel.selectedQuestion().choices.remove(choice);
         viewModel.selectedQuestion.valueHasMutated();

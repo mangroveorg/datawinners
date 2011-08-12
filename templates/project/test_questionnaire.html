@@ -19,9 +19,19 @@
 
 {% block content %}
     <span class="success">{{ success_message }}</span>
+    {% for field in form_model.fields %}
+        {% for error in field.errors %}
+            <span class="error">{{ error }}</span><br>
+        {% endfor %}
+    {% endfor %}
+
     <form method="POST">
     {% csrf_token %}
-    <table>{{ form_model.to_html }}</table>
+    <table>
+        {% for field in form_model.fields %}
+            {{ field }}
+        {% endfor %}
+    </table>
     <input type="submit" class="button" value="Submit" />
     </form>
 

@@ -573,11 +573,18 @@ def test_questionnaire(request, project_id=None):
     if request.method == 'POST':
         submission_request = post_to_submission(dict(request.POST))
         submission_handler = SubmissionHandler(dbm=manager)
+        form_model.bind(submission_request)
+        if not form_model.is_valid():
+            return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project,
+                                                                     'project_links':_make_project_links(project, form_model.form_code)},
+                                  context_instance=RequestContext(request))
+
         submission_response = submission_handler.accept(SubmissionRequest(form_model.form_code, submission=submission_request,
                                                                           transport='web', source='web', destination='mangrove'))
         success_message = "Successfully submitted" if submission_response.success else ""
         return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project,
-                                                                     'project_links':_make_project_links(project, form_model.form_code), 'success_message': success_message},
+                                                                     'project_links':_make_project_links(project, form_model.form_code), 'success_message': success_message,
+                                                                     'errors': submission_response.errors},
                                   context_instance=RequestContext(request))
 
 
