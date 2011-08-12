@@ -69,9 +69,9 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="mast
             run("git checkout .")
             activate_and_run(virtual_env, "pip install -r requirements.pip")
         with cd(code_dir + '/src/datawinners'):
+            activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py updatedb syncall")
             activate_and_run(virtual_env, "python manage.py recreatedb")
-            activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             restart_servers()
 
 
