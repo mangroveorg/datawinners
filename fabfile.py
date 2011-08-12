@@ -22,13 +22,10 @@ def branch_exists(branch_name):
     return not run("git branch -a|grep %s" % branch_name).failed
 
 
-def sync_develop_branch():
-    run("git checkout develop")
-    run("git pull origin develop")
-
-def sync_showcase_branch():
-    run("git checkout showcase")
-    run("git pull origin showcase")
+def sync_branch(branch):
+    run("git pull")
+    run("git checkout %s" % branch)
+    run("git pull origin %s" % branch)
 
 
 def delete_if_branch_exists(build_number):
@@ -61,7 +58,8 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="deve
     """
     ENVIRONMENT_CONFIGURATIONS = {
                                     "showcase": "showcase_local_settings.py",
-                                    "test": "test_local_settings.py"
+                                    "test": "test_local_settings.py",
+                                    "master": "showcase_local_settings.py"
                                  }
 
     if build_number == 'lastSuccessfulBuild':
@@ -74,17 +72,14 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="deve
         git_clone_if_not_present(code_dir)
         with cd(code_dir):
             run("git reset --hard HEAD")
-            if branch=="showcase":
-                sync_showcase_branch()
-            else:
-                sync_develop_branch()
+            sync_branch(branch)
             delete_if_branch_exists(build_number)
             run("git checkout -b %s $COMMIT_SHA" % (build_number, ))
             run("git checkout .")
             activate_and_run(virtual_env, "pip install -r requirements.pip")
         with cd(code_dir + '/src/datawinners'):
             run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
-            activate_and_run(virtual_env, "python manage.py syncdb")
+            activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py recreatedb")
             restart_gunicorn(virtual_env)
 
