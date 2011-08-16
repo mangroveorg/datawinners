@@ -40,15 +40,16 @@
   .wizard ul li {
     float: left;
     font-weight: bold;
-    padding: 10px 115px 0 0px; }
+    padding: 10px 117px 0 0px;
+    margin-left: -25px; }
     .wizard ul li.questionnaire {
-      padding-right: 130px; }
+      padding-right: 111px; }
     .wizard ul li.subjects {
-      padding-right: 140px; }
+      padding-right: 124px; }
     .wizard ul li.datasenders {
-      padding-right: 90px; }
+      padding-right: 127px; }
     .wizard ul li.reminder {
-      padding-right: 82px; }
+      padding-right: 108px; }
     .wizard ul li.finish {
       padding-right: 0px; }
 
