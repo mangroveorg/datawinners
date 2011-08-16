@@ -10,6 +10,7 @@ from django.template.context import RequestContext
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import get_database_manager
+from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
@@ -21,10 +22,12 @@ from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, MangroveException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
+from mangrove.transport.player import player
+from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler, SubmissionRequest
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
@@ -32,6 +35,11 @@ from mangrove.datastore import data, aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
+
+import logging
+
+logger = logging.getLogger("django")
+
 
 END_OF_DAY = " 23:59:59"
 START_OF_DAY = " 00:00:00"
@@ -62,7 +70,8 @@ def _make_project_links(project, questionnaire_code):
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
         project_links['questionnaire_preview_link'] = reverse(questionnaire_preview, args=[project_id])
-        project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview, args=[project_id])
+        project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
+                                                                     args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
     return project_links
 
@@ -90,16 +99,17 @@ def create_profile(request):
     entity_list = helper.remove_reporter(entity_list)
     project_summary = dict(name='New Project')
     if request.method == 'GET':
-        form = ProjectProfile(entity_list=entity_list,initial={'activity_report':'yes'})
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit':False},
+        form = ProjectProfile(entity_list=entity_list, initial={'activity_report': 'yes'})
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
                                   context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
-        entity_type=form.cleaned_data['entity_type']
+        entity_type = form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
-                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'], sender_group=form.cleaned_data['sender_group'])
+                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'],
+                          sender_group=form.cleaned_data['sender_group'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
             pid = project.save(manager)
@@ -108,11 +118,11 @@ def create_profile(request):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit':False},
+            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
                                       context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit':False},
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
                                   context_instance=RequestContext(request))
 
 
@@ -124,16 +134,16 @@ def edit_profile(request, project_id=None):
     project = models.get_project(project_id, dbm=manager)
     if request.method == 'GET':
         form = ProjectProfile(data=project, entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit':True},
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
                                   context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
     if form.is_valid():
         older_entity_type = project.entity_type
         if older_entity_type != form.cleaned_data["entity_type"]:
-           new_questionnaire =  helper.create_questionnaire(form.cleaned_data, manager)
-           new_qid = new_questionnaire.save()
-           project.qid = new_qid
+            new_questionnaire = helper.create_questionnaire(form.cleaned_data, manager)
+            new_qid = new_questionnaire.save()
+            project.qid = new_qid
         project.update(form.cleaned_data)
         project.update_questionnaire(manager)
 
@@ -141,11 +151,11 @@ def edit_profile(request, project_id=None):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit':True},
+            return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
                                       context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit':True},
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
                                   context_instance=RequestContext(request))
 
 
@@ -205,16 +215,19 @@ def project_overview(request, project_id=None):
     project_links = _make_project_links(project, questionnaire.form_code)
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
-             , 'project_profile_link': link, 'number_of_questions': number_of_questions},
+            , 'project_profile_link': link, 'number_of_questions': number_of_questions},
                               context_instance=RequestContext(request))
 
 
-def _get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination, start_time = None, end_time = None):
+def _get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination, start_time=None,
+                                 end_time=None):
     if pagination:
-        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, start_time=start_time, end_time=end_time, page_number=current_page,
+        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, start_time=start_time,
+                                                         end_time=end_time, page_number=current_page,
                                                          page_size=PAGE_SIZE)
     else:
-        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, start_time=start_time, end_time=end_time, page_number=current_page,
+        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, start_time=start_time,
+                                                         end_time=end_time, page_number=current_page,
                                                          page_size=None)
     submissions = helper.get_submissions(questions, submissions)
     return submissions, ids
@@ -246,7 +259,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     project = models.get_project(project_id, dbm=manager)
     project_links = _make_project_links(project, questionnaire_code)
     if request.method == 'GET':
-        count, results, error_message  = _get_submissions(manager, questionnaire_code, request)
+        count, results, error_message = _get_submissions(manager, questionnaire_code, request)
         return render_to_response('project/results.html',
                 {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
                  'error_message': error_message, 'project_links': project_links, 'project': project},
@@ -265,17 +278,19 @@ def project_results(request, project_id=None, questionnaire_code=None):
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
 
 
-def _load_submissions_for_page(manager,current_page, questionnaire_code, start_time_epoch,end_time_epoch):
+def _load_submissions_for_page(manager, current_page, questionnaire_code, start_time_epoch, end_time_epoch):
     count, results = _load_submissions(current_page, manager, questionnaire_code, True, start_time_epoch,
                                        end_time_epoch)
     return count, results
 
-def _load_all_submissions(manager,questionnaire_code, start_time_epoch,end_time_epoch):
+
+def _load_all_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch):
     count, results = _load_submissions(1, manager, questionnaire_code, False, start_time_epoch,
                                        end_time_epoch)
     return count, results
 
-def _get_submissions(manager,questionnaire_code, request,paginate=True):
+
+def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
     start_time = request_bag.get("start_time") or ""
     end_time = request_bag.get("end_time") or ""
@@ -283,13 +298,13 @@ def _get_submissions(manager,questionnaire_code, request,paginate=True):
     end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
     if paginate:
         current_page = int(request_bag.get('page_number') or 1)
-        count, results = _load_submissions_for_page(manager,current_page, questionnaire_code,
-                                                start_time_epoch,end_time_epoch)
+        count, results = _load_submissions_for_page(manager, current_page, questionnaire_code,
+                                                    start_time_epoch, end_time_epoch)
     else:
-        count, results = _load_all_submissions(manager,questionnaire_code,start_time_epoch,end_time_epoch)
+        count, results = _load_all_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch)
 
     error_message = "No submissions present for this project" if not count else None
-    return count,results,error_message
+    return count, results, error_message
 
 
 @login_required(login_url='/login')
@@ -300,10 +315,12 @@ def submissions(request):
     manager = get_database_manager(request)
     if request.method == 'GET':
         questionnaire_code = request.GET.get('questionnaire_code')
-        count,results,error_message = _get_submissions(manager, questionnaire_code, request)
+        count, results, error_message = _get_submissions(manager, questionnaire_code, request)
         return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,'error_message': error_message,
+                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
+                 'error_message': error_message,
                  'success_message': ""}, context_instance=RequestContext(request))
+
 
 def _format_data_for_presentation(data_dictionary, form_model):
     header_list = helper.get_headers(form_model.fields)
@@ -312,8 +329,8 @@ def _format_data_for_presentation(data_dictionary, form_model):
     if data_dictionary == {}:
         return "[]", header_list, type_list
 
-    entity_question_description=form_model.entity_question.name
-    data_list = helper.get_values(data_dictionary, header_list,entity_question_description)
+    entity_question_description = form_model.entity_question.name
+    data_list = helper.get_values(data_dictionary, header_list, entity_question_description)
     data_list = helper.to_report(data_list)
     response_string = encode_json(data_list)
     return response_string, header_list, type_list
@@ -364,13 +381,13 @@ def export_data(request):
     response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list = json.loads(response_string)
     raw_data_list.insert(0, header_list)
-    file_name = request.POST.get(u"project_name")+'_analysis'
+    file_name = request.POST.get(u"project_name") + '_analysis'
     return _create_excel_response(raw_data_list, file_name)
 
 
-def _create_excel_response(raw_data_list,file_name):
+def _create_excel_response(raw_data_list, file_name):
     response = HttpResponse(mimetype="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename="%s.xls"'%(file_name,)
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (file_name,)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
     return response
@@ -381,17 +398,17 @@ def export_log(request):
     questionnaire_code = request.GET.get("questionnaire_code")
     manager = get_database_manager(request)
 
-    count,results,error_message = _get_submissions(manager,questionnaire_code,request,paginate=False)
+    count, results, error_message = _get_submissions(manager, questionnaire_code, request, paginate=False)
 
-    header_list = ["To", "From", "Date Received", "Submission status", "Deleted Record","Errors"]
+    header_list = ["To", "From", "Date Received", "Submission status", "Deleted Record", "Errors"]
     header_list.extend([each[1] for each in results['questions']])
     raw_data_list = [header_list]
     if count:
         submissions, ids = zip(*results['submissions'])
         raw_data_list.extend([list(each) for each in submissions])
 
-    file_name = request.GET.get(u"project_name")+'_log'
-    return _create_excel_response(raw_data_list,file_name)
+    file_name = request.GET.get(u"project_name") + '_log'
+    return _create_excel_response(raw_data_list, file_name)
 
 
 @login_required(login_url='/login')
@@ -458,8 +475,9 @@ def activate_project(request, project_id=None):
     form_model = helper.load_questionnaire(manager, project.qid)
     oneDay = datetime.timedelta(days=1)
     tomorrow = datetime.datetime.now() + oneDay
-    submissions, ids = get_submissions_made_for_form(manager, form_model.form_code, start_time=0, end_time=int(mktime(tomorrow.timetuple())) * 1000,
-                                                         page_size=None)
+    submissions, ids = get_submissions_made_for_form(manager, form_model.form_code, start_time=0,
+                                                     end_time=int(mktime(tomorrow.timetuple())) * 1000,
+                                                     page_size=None)
     for each in ids:
         if each is not None:
             data_record = manager._load_document(each, DataRecordDocument)
@@ -467,17 +485,19 @@ def activate_project(request, project_id=None):
             SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
+
 def _make_links_for_finish_page(project_id, form_model):
-    project_links= {'edit_link': reverse(edit_profile, args=[project_id]),
-                    'subject_link': reverse(subjects_wizard, args=[project_id]),
-                    'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
-                    'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
-                    'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
-                    'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
-                    'subject_registration_preview_link' : reverse(subject_registration_form_preview, args=[project_id]),
-                    'sender_registration_preview_link' : reverse(sender_registration_form_preview, args=[project_id])
-                    }
+    project_links = {'edit_link': reverse(edit_profile, args=[project_id]),
+                     'subject_link': reverse(subjects_wizard, args=[project_id]),
+                     'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
+                     'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
+                     'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
+                     'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
+                     'subject_registration_preview_link': reverse(subject_registration_form_preview, args=[project_id]),
+                     'sender_registration_preview_link': reverse(sender_registration_form_preview, args=[project_id])
+    }
     return project_links
+
 
 @login_required(login_url='/login')
 def finish(request, project_id=None):
@@ -495,13 +515,18 @@ def finish(request, project_id=None):
         to_number = organization_settings.sms_tel_number
         previous_link = reverse(reminders_wizard, args=[project_id])
         fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
-        return render_to_response('project/finish_and_test.html', {'from_number':from_number, 'to_number':to_number,
-                                                                   'project':project, 'fields': fields, 'project_links': _make_links_for_finish_page(project_id, form_model),
-                                                                   'number_of_datasenders': number_of_registered_datasenders,
-                                                                   'number_of_subjects': number_of_registered_subjects, "previous": previous_link},
-                                                                    context_instance=RequestContext(request))
+        return render_to_response('project/finish_and_test.html', {'from_number': from_number, 'to_number': to_number,
+                                                                   'project': project, 'fields': fields,
+                                                                   'project_links': _make_links_for_finish_page(
+                                                                       project_id, form_model),
+                                                                   'number_of_datasenders': number_of_registered_datasenders
+            ,
+                                                                   'number_of_subjects': number_of_registered_subjects,
+                                                                   "previous": previous_link},
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
+
 
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)
@@ -509,36 +534,45 @@ def _get_project_and_project_link(manager, project_id):
     project_links = _make_project_links(project, questionnaire.form_code)
     return project, project_links
 
+
 @login_required(login_url='/login')
 def subjects(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-    return render_to_response('project/subjects.html', {'fields': reg_form.fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+    return render_to_response('project/subjects.html',
+            {'fields': reg_form.fields, 'project': project, 'project_links': project_links},
+                              context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
     all_data = load_all_subjects_of_type(request, project.entity_type)
-    return render_to_response('project/registered_subjects.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
+    return render_to_response('project/registered_subjects.html',
+            {'project': project, 'project_links': project_links, 'all_data': all_data},
+                              context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request)
     project, project_links = _get_project_and_project_link(manager, project_id)
     all_data = load_all_subjects_of_type(request)
-    return render_to_response('project/registered_datasenders.html', {'project':project, 'project_links':project_links, 'all_data':all_data}, context_instance=RequestContext(request))
+    return render_to_response('project/registered_datasenders.html',
+            {'project': project, 'project_links': project_links, 'all_data': all_data},
+                              context_instance=RequestContext(request))
 
 
 def _get_questions_for_datasenders_registration_for_print_preview(questions):
     cleaned_qestions = _get_questions_for_datasenders_registration_for_wizard(questions)
-    cleaned_qestions.insert(0,questions[0])
+    cleaned_qestions.insert(0, questions[0])
     return cleaned_qestions
 
 
 def _get_questions_for_datasenders_registration_for_wizard(questions):
-    return [questions[1], questions[3], questions[4], questions[6] ]
+    return [questions[1], questions[3], questions[4], questions[6]]
 
 
 @login_required(login_url='/login')
@@ -548,7 +582,9 @@ def datasenders(request, project_id=None):
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     _format_field_description_for_data_senders(reg_form.fields)
     cleaned_up_fields = _get_questions_for_datasenders_registration_for_print_preview(reg_form.fields)
-    return render_to_response('project/datasenders.html', {'fields': cleaned_up_fields, 'project':project, 'project_links':project_links}, context_instance=RequestContext(request))
+    return render_to_response('project/datasenders.html',
+            {'fields': cleaned_up_fields, 'project': project, 'project_links': project_links},
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -568,36 +604,53 @@ def questionnaire(request, project_id=None):
                  "previous": previous_link, 'project': project, 'project_links': project_links},
                                   context_instance=RequestContext(request))
 
+
+def _make_project_context(form_model, project):
+    return {'form_model': form_model, 'project': project,
+            'project_links': _make_project_links(project,
+                                                 form_model.form_code)}
+
+
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
+    TEMPLATE = 'project/test_questionnaire.html'
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     form_model = helper.load_questionnaire(manager, project.qid)
     if request.method == 'GET':
-        return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project, 'project_links':_make_project_links(project, form_model.form_code)},
+        return render_to_response(TEMPLATE, _make_project_context(form_model, project)
+                                  ,
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
         submission_request = post_to_submission(dict(request.POST))
-        submission_handler = SubmissionHandler(dbm=manager)
         form_model.bind(submission_request)
         if not form_model.is_valid():
-            return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project,
-                                                                     'project_links':_make_project_links(project, form_model.form_code)},
-                                  context_instance=RequestContext(request))
+            return render_to_response(TEMPLATE, _make_project_context(form_model, project),
+                                      context_instance=RequestContext(request))
+        submission_request["form_code"] = form_model.form_code
+        success_message = None
+        error_message = None
+        try:
+            response = WebPlayer(manager,SubmissionHandler(dbm=manager)).accept(Request(message=submission_request,
+                                                                                     transportInfo=
+                                                                                     TransportInfo(transport="web",
+                                                                                                   source=request.user.username,
+                                                                                                   destination=""
+                                                                                     )))
+            success_message = "Successfully submitted" if response.success else ""
+        except Exception as exception:
+            logger.exception('Web Submission failure:-')
+            error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
 
-        submission_response = submission_handler.accept(SubmissionRequest(form_model.form_code, submission=submission_request,
-                                                                          transport='web', source='web', destination='mangrove'))
-        success_message = "Successfully submitted" if submission_response.success else ""
-        return render_to_response('project/test_questionnaire.html',{'form_model': form_model, 'project': project,
-                                                                     'project_links':_make_project_links(project, form_model.form_code), 'success_message': success_message,
-                                                                     'errors': submission_response.errors},
-                                  context_instance=RequestContext(request))
-
+        _project_context = _make_project_context(form_model, project)
+        _project_context.update({'success_message': success_message,'error_message': error_message})
+        return render_to_response(TEMPLATE, _project_context,context_instance=RequestContext(request))
 
 def post_to_submission(post_request):
     post_request.pop('csrfmiddlewaretoken')
-    return {code: value[0] for code,value in post_request.iteritems()}
+    return {code: value[0] for code, value in post_request.iteritems()}
+
 
 @login_required(login_url='/login')
 def questionnaire_preview(request, project_id=None):
@@ -614,16 +667,18 @@ def questionnaire_preview(request, project_id=None):
         for field in fields:
             question = helper.get_preview_for_field(field)
             questions.append(question)
-        example_sms = "%s +%s <answer> .... +%s <answer>" % (form_model.form_code, fields[0].code, fields[len(fields)-1].code)
+        example_sms = "%s +%s <answer> .... +%s <answer>" % (
+            form_model.form_code, fields[0].code, fields[len(fields) - 1].code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
+                 "previous": previous_link, 'project': project, 'project_links': project_links,
+                 'example_sms': example_sms},
                                   context_instance=RequestContext(request))
 
 
-
 def _get_preview_for_field_in_registration_questionnaire(field):
-    return {"description": field.label.get('eng'), "code": field.code, "type": field.type, "constraints": field.instruction,"instruction": field.instruction}
+    return {"description": field.label.get('eng'), "code": field.code, "type": field.type,
+            "constraints": field.instruction, "instruction": field.instruction}
 
 
 def _get_registration_form(manager, project, project_id, type_of_subject='subject'):
@@ -634,13 +689,13 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field)
-        question = {k:v.replace('subject', type_of_subject) for (k,v) in question.items()}
+        question = {k: v.replace('subject', type_of_subject) for (k, v) in question.items()}
         questions.append(question)
     return fields, previous_link, project_links, questions, registration_questionnaire
 
 
 @login_required(login_url='/login')
-def subject_registration_form_preview(request,project_id=None):
+def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     if request.method == "GET":
@@ -648,23 +703,29 @@ def subject_registration_form_preview(request,project_id=None):
                                                                                                              project,
                                                                                                              project_id)
 
-        example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+        example_sms = "%s +%s <answer> .... +%s <answer>" % (
+            registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
+                 "previous": previous_link, 'project': project, 'project_links': project_links,
+                 'example_sms': example_sms},
                                   context_instance=RequestContext(request))
 
+
 @login_required(login_url='/login')
-def sender_registration_form_preview(request,project_id=None):
+def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     if request.method == "GET":
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
-                                                                                                             project_id, type_of_subject='Data sender')
-        example_sms = "%s +%s <answer> .... +%s <answer>" % (registration_questionnaire.form_code, fields[0].code, fields[len(fields)-1].code)
+                                                                                                             project_id,
+                                                                                                             type_of_subject='Data sender')
+        example_sms = "%s +%s <answer> .... +%s <answer>" % (
+            registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         return render_to_response('project/questionnaire_preview.html',
-                {"questions":datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links, 'example_sms':example_sms},
+                {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
+                 "previous": previous_link, 'project': project, 'project_links': project_links,
+                 'example_sms': example_sms},
                                   context_instance=RequestContext(request))

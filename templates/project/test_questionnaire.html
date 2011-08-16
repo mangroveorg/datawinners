@@ -18,7 +18,12 @@
 {% endblock %}
 
 {% block content %}
-    <span class="success">{{ success_message }}</span>
+    {% if success_message %}
+        <span class="success">{{ success_message }}</span>
+    {% endif %}
+    {% if error_message %}
+        <span class="error">{{ error_message }}</span>
+    {% endif %}
     {% for field in form_model.fields %}
         {% for error in field.errors %}
             <span class="error">{{ error }}</span><br>
