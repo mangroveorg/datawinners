@@ -478,7 +478,7 @@ def reminders(request, project_id):
         project = models.get_project(project_id, dbm)
         questionnaire = helper.load_questionnaire(dbm, project.qid)
         return render_to_response('project/reminders.html', {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                                                             'project_id': project_id, 'form': ReminderForm(initial={'is_reminder':project.reminders})},
+                                                             'project_id': project_id, 'form': ReminderForm(initial={'is_reminder': project.reminders}), 'is_reminder': project.reminders},
                                   context_instance=RequestContext(request))
 @csrf_exempt
 def enable_reminders_in_project(request, project_id=None):
