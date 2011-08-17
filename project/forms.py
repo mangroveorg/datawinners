@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, TypedChoiceField, DecimalField
+from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, IntegerField
 from django.core.exceptions import ValidationError
 from django.forms.forms import Form
 from django.forms.widgets import RadioFieldRenderer, RadioInput, RadioSelect
 from django import forms
+from datawinners.project.models import Reminder
 from mangrove.form_model.form_model import REPORTER
-from django.forms.widgets import Textarea
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
@@ -70,8 +70,13 @@ class ProjectProfile(Form):
         return self.cleaned_data
 
 
-class ReminderForm(forms.Form):
-    choices = ((1,'Yes'), (0,'No'))
-    is_reminder = TypedChoiceField(label="Do you want to remind your DataSenders to send in their data?", choices=choices,widget=RadioSelect,initial=choices[1])
-    days_before = DecimalField(label="Day of the month you want to send the reminder")
+class ReminderForm(forms.ModelForm):
+    choices = ((True,'Yes'), (False,'No'))
+    is_reminder = ChoiceField(label="Do you want to remind your DataSenders to send in their data?", choices=choices,widget=RadioSelect,initial=False)
+    days_before = IntegerField(label="Day of the month you want to send the reminder")
     message = CharField(widget=forms.Textarea, max_length=160, label="Message")
+
+    class Meta:
+        model = Reminder
+
+
