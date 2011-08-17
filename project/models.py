@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 
-from couchdb.mapping import  TextField, ListField
-from django.db.models.fields import BooleanField, IntegerField, CharField
+from couchdb.mapping import  TextField, ListField, BooleanField
+from django.db.models.fields import IntegerField, CharField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -12,7 +12,6 @@ from django.db import models
 
 class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
-    is_reminder = BooleanField()
     days_before = IntegerField()
     message = CharField(max_length=160)
 
@@ -32,8 +31,9 @@ class Project(DocumentBase):
     qid = TextField()
     state = TextField()
     sender_group = TextField()
+    reminders = BooleanField()
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminders=False):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -45,6 +45,7 @@ class Project(DocumentBase):
         self.state = state
         self.activity_report = activity_report
         self.sender_group = sender_group
+        self.reminders = reminders
 
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('all_projects', key=self.name)

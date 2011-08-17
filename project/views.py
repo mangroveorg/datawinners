@@ -4,17 +4,16 @@ import json
 import datetime
 from time import mktime
 from django.contrib.auth.decorators import login_required
-from django.forms.formsets import formset_factory
-from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.views.decorators.csrf import csrf_exempt
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile, ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder
+from datawinners.project.models import Project, ProjectState
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -24,13 +23,13 @@ from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, MangroveException
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler, SubmissionRequest
+from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import data, aggregrate as aggregate_module
@@ -463,23 +462,23 @@ def datasenders_wizard(request, project_id=None):
 
 @login_required(login_url='/login')
 def reminders_wizard(request, project_id=None):
-    ReminderFormSet = modelformset_factory(Reminder,form=ReminderForm, extra=1, max_num=10)
-    previous_link = reverse(datasenders_wizard, args=[project_id])
     if request.method == 'GET':
-        total_reminder_for_projects = Reminder.objects.filter(project_id=project_id).count() + 1 #FIXME This sucks, fix when we move to next version of Django
-        initial_data = [{'project_id':project_id}] * total_reminder_for_projects
-        return render_to_response('project/reminders_wizard.html', {"previous": previous_link,
-                                                                    'reminders':ReminderFormSet(queryset = Reminder.objects.filter(project_id=project_id), initial=initial_data)},
+        dbm = get_database_manager(request)
+        project = models.get_project(project_id, dbm)
+        previous_link = reverse(datasenders_wizard, args=[project_id])
+        return render_to_response('project/reminders_wizard.html', {"previous": previous_link, 'project_id': project_id, 'form': ReminderForm(initial={'is_reminder':project.reminders})},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        reminders = ReminderFormSet(request.POST)
-        if reminders.is_valid():
-            reminders.save()
-        else:
-            return render_to_response('project/reminders_wizard.html', {"previous": previous_link,'reminders':ReminderFormSet}, context_instance=RequestContext(request))
-        
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
+@csrf_exempt
+def enable_reminders_in_project(request, project_id=None):
+    if request.method == 'POST':
+        dbm = get_database_manager(request)
+        project = models.get_project(project_id, dbm)
+        project.reminders = True if request.POST['is_reminder'] == 'True' else False
+        project.save(dbm)
+        return HttpResponse("The status of reminder for project %s is %d" %(project.name, project.reminders))
 
 @login_required(login_url='/login')
 def activate_project(request, project_id=None):

@@ -27,6 +27,7 @@
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datasender.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -57,23 +58,21 @@
         Sender Registration Questionnaire, give it to your Data Senders and ask your <strong>Data Senders to register
         themselves</strong>. Don’t worry, you can always edit this information later.
     </p></div>
-    <p>Manage Reminders. You can also do this at a later time.</p>
-
 {% endblock %}
 {% block content %}
-    <form action="" method="POST">
-    {% csrf_token %}
-    {{ reminders.management_form }}
-    {% for form in reminders %}
-       {{ form }}
-    {% endfor %}
+    <span id="project_id" style="display: none;">{{ project_id }}</span>
+    <div>
+        {{ form }}
+    </div>
 {% endblock %}
-{% block buttons %}
-    {{ block.super }}
-        <input id="submit-button" type="submit"value="Next Step: Review and Test"/>
+    {% block buttons %}
+        <form action="" method="POST">
+            {% csrf_token %}
+        {{ block.super }}
+        <input id="submit-button" type="submit" value="Next Step: Review and Test"/>
         <input id="submit_button_right" type="button" value=" "/>
-{% endblock %}
-    </form>
+        </form>
+    {% endblock %}
 {% block previous_step %}
      <a class="bold" href={{ previous }}>Data Senders</a>
 {% endblock %}
