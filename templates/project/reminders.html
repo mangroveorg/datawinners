@@ -1,0 +1,33 @@
+{% extends 'project/tab_navigation.html' %}
+
+{% block page_title %}Project - Reminders {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "reminders" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    <span id="project_id" style="display: none;">{{ project_id }}</span>
+    <div>
+        {{ form }}
+    </div>
+{% endblock %}

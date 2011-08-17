@@ -57,6 +57,9 @@
         <li class="{% ifactivetab 'tab_nav' 'test_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.test_questionnaire_link }}">Web Submission</a>
         </li>
+        <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.reminders_link }}">Reminders</a>
+        </li>
         {% endif %}
         {% if project.state != 'Inactive' %}
         <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">

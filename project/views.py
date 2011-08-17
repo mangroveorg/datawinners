@@ -74,6 +74,7 @@ def _make_project_links(project, questionnaire_code):
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
+        project_links['reminders_link'] = reverse(reminders, args=[project_id])
     return project_links
 
 
@@ -471,6 +472,14 @@ def reminders_wizard(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
+def reminders(request, project_id):
+    if request.method == 'GET':
+        dbm = get_database_manager(request)
+        project = models.get_project(project_id, dbm)
+        questionnaire = helper.load_questionnaire(dbm, project.qid)
+        return render_to_response('project/reminders.html', {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
+                                                             'project_id': project_id, 'form': ReminderForm(initial={'is_reminder':project.reminders})},
+                                  context_instance=RequestContext(request))
 @csrf_exempt
 def enable_reminders_in_project(request, project_id=None):
     if request.method == 'POST':
