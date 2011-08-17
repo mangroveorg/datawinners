@@ -653,7 +653,7 @@ def test_questionnaire(request, project_id=None):
 
 def post_to_submission(post_request):
     post_request.pop('csrfmiddlewaretoken')
-    return {code: value[0] for code, value in post_request.iteritems()}
+    return {code: "".join(value) for code, value in post_request.iteritems()}
 
 
 @login_required(login_url='/login')

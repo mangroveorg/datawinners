@@ -213,6 +213,9 @@ select{
     border-color:$border_color;
     background:#FFFFFF;
 }
+.multiple_select{
+    height: auto;
+}
 .button{
     border: 1px solid #D4972D !important;
     -moz-border-radius:3px;
