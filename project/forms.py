@@ -75,8 +75,7 @@ class ReminderForm(forms.ModelForm):
     is_reminder = ChoiceField(label="Do you want to remind your DataSenders to send in their data?", choices=choices,widget=RadioSelect,initial=False)
     days_before = IntegerField(label="Day of the month you want to send the reminder")
     message = CharField(widget=forms.Textarea, max_length=160, label="Message")
+    project_id = CharField(widget=forms.HiddenInput, label="Project ID")
 
     class Meta:
         model = Reminder
-
-

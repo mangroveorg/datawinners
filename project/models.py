@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 
 from couchdb.mapping import  TextField, ListField
-from django.db.models.fields import BooleanField, DecimalField, IntegerField, CharField
+from django.db.models.fields import BooleanField, IntegerField, CharField
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -11,6 +11,7 @@ from django.db import models
 
 
 class Reminder(models.Model):
+    project_id = CharField(null=False, blank=False, max_length=264)
     is_reminder = BooleanField()
     days_before = IntegerField()
     message = CharField(max_length=160)

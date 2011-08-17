@@ -61,18 +61,19 @@
 
 {% endblock %}
 {% block content %}
-    {% for reminder in reminders %}
-        {{ reminder }}
+    <form action="" method="POST">
+    {% csrf_token %}
+    {{ reminders.management_form }}
+    {% for form in reminders %}
+       {{ form }}
     {% endfor %}
 {% endblock %}
 {% block buttons %}
     {{ block.super }}
-        <form action="" method="POST">
-    {% csrf_token %}
         <input id="submit-button" type="submit"value="Next Step: Review and Test"/>
         <input id="submit_button_right" type="button" value=" "/>
-    </form>
 {% endblock %}
+    </form>
 {% block previous_step %}
      <a class="bold" href={{ previous }}>Data Senders</a>
 {% endblock %}

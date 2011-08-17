@@ -463,11 +463,21 @@ def datasenders_wizard(request, project_id=None):
 
 @login_required(login_url='/login')
 def reminders_wizard(request, project_id=None):
-    reminders = modelformset_factory(Reminder,form=ReminderForm)
+    ReminderFormSet = modelformset_factory(Reminder,form=ReminderForm, extra=1, max_num=10)
+    previous_link = reverse(datasenders_wizard, args=[project_id])
     if request.method == 'GET':
-        previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html', {"previous": previous_link,'reminders':reminders}, context_instance=RequestContext(request))
+        total_reminder_for_projects = Reminder.objects.filter(project_id=project_id).count() + 1 #FIXME This sucks, fix when we move to next version of Django
+        initial_data = [{'project_id':project_id}] * total_reminder_for_projects
+        return render_to_response('project/reminders_wizard.html', {"previous": previous_link,
+                                                                    'reminders':ReminderFormSet(queryset = Reminder.objects.filter(project_id=project_id), initial=initial_data)},
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
+        reminders = ReminderFormSet(request.POST)
+        if reminders.is_valid():
+            reminders.save()
+        else:
+            return render_to_response('project/reminders_wizard.html', {"previous": previous_link,'reminders':ReminderFormSet}, context_instance=RequestContext(request))
+        
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
 
