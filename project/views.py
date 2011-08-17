@@ -624,6 +624,12 @@ def _make_project_context(form_model, project):
                                                  form_model.form_code)}
 
 
+def _create_submission_request(form_model, request):
+    submission_request = dict(request.POST)
+    submission_request["form_code"] = form_model.form_code
+    return submission_request
+
+
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
     TEMPLATE = 'project/test_questionnaire.html'
@@ -636,12 +642,7 @@ def test_questionnaire(request, project_id=None):
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        submission_request = post_to_submission(dict(request.POST))
-        form_model.bind(submission_request)
-        if not form_model.is_valid():
-            return render_to_response(TEMPLATE, _make_project_context(form_model, project),
-                                      context_instance=RequestContext(request))
-        submission_request["form_code"] = form_model.form_code
+        submission_request = _create_submission_request(form_model, request)
         success_message = None
         error_message = None
         try:
@@ -652,11 +653,17 @@ def test_questionnaire(request, project_id=None):
                                                                                                    destination=""
                                                                                      )))
             success_message = "Successfully submitted" if response.success else ""
+            bound_form = response.bound_form
+
+            if not bound_form.is_valid():
+                return render_to_response(TEMPLATE, _make_project_context(bound_form, project),
+                                      context_instance=RequestContext(request))
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
+            bound_form = exception.bound_form
 
-        _project_context = _make_project_context(form_model, project)
+        _project_context = _make_project_context(bound_form, project)
         _project_context.update({'success_message': success_message,'error_message': error_message})
         return render_to_response(TEMPLATE, _project_context,context_instance=RequestContext(request))
 
