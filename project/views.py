@@ -507,7 +507,8 @@ def _make_links_for_finish_page(project_id, form_model):
                      'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
                      'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
                      'subject_registration_preview_link': reverse(subject_registration_form_preview, args=[project_id]),
-                     'sender_registration_preview_link': reverse(sender_registration_form_preview, args=[project_id])
+                     'sender_registration_preview_link': reverse(sender_registration_form_preview, args=[project_id]),
+                     'reminder_link': reverse(reminders_wizard, args=[project_id])
     }
     return project_links
 
@@ -528,6 +529,7 @@ def finish(request, project_id=None):
         to_number = organization_settings.sms_tel_number
         previous_link = reverse(reminders_wizard, args=[project_id])
         fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
+        is_reminder = "enabled" if project.reminders else "disabled"
         return render_to_response('project/finish_and_test.html', {'from_number': from_number, 'to_number': to_number,
                                                                    'project': project, 'fields': fields,
                                                                    'project_links': _make_links_for_finish_page(
@@ -535,7 +537,8 @@ def finish(request, project_id=None):
                                                                    'number_of_datasenders': number_of_registered_datasenders
             ,
                                                                    'number_of_subjects': number_of_registered_subjects,
-                                                                   "previous": previous_link},
+                                                                   "previous": previous_link,
+                                                                   "is_reminder": is_reminder},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
