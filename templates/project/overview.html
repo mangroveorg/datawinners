@@ -21,7 +21,7 @@
     <div class="span-18 box">
         {% if project.state != 'Active' %}
             <div class="grid_23 margin_bottom_20 margin_top_20 alpha">
-                <a class="button_blue " href ={{ project_profile_link }} >Edit this project</a>
+                <a id="edit_project" class="button_blue " href ={{ project_profile_link }} >Edit this project</a>
             </div>
         {% endif %}
        {% include 'maps/entity_map.html'  %}

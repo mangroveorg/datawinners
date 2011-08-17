@@ -190,28 +190,33 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
-    question1 = TextField(label="entity_question", code="EID", name="What is associated entity?",
+    question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type,
-                          constraints=[TextLengthConstraint(min=1, max=12)])
-    question2 = TextField(label="Name", code="NA", name="What is your name?",
+                          constraints=[TextLengthConstraint(min=1, max=12)],instruction="Answer must be a word or phrase 12 characters maximum")
+    question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", language="eng", ddtype=name_type)
-    question3 = IntegerField(label="Father age", code="FA", name="What is age of father?",
-                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type)
-    question4 = DateField(label="Report date", code="RD", name="What is reporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type)
+                          defaultValue="some default value", language="eng", ddtype=name_type,
+                     instruction="Answer must be a word or phrase 10 characters maximum")
+    question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
+                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                     instruction="Answer must be a number between 18-100.")
+    question4 = DateField(label="Report date", code="RD", name="What is réporting date?",
+                          date_format="dd.mm.yyyy", ddtype=date_type, instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type)
-    question6 = SelectField(label="Symptoms", code="SY", name="What are symptoms?",
+                            ddtype=select_type, instruction="Choose 1 answer from the above list. Example: a")
+    question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                                      ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type)
-    question7 = GeoCodeField(name="What is the GPS code for clinic", code="GPS", label="What is the GPS code for clinic?",
-                             language="eng", ddtype=geo_code_type)
+                            ddtype=select_type, instruction="Choose 1 or more answers from the above list. Example: a or ab")
+    question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS", label="What is the GPS code for clinic?",
+                             language="eng", ddtype=geo_code_type, instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547")
+    question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
+                            options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")], single_select_flag=False,
+                            ddtype=select_type, instruction="Choose 1 or more answers from the above list. Example: a or ab")
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli001", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7],
+                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
                            entity_type=CLINIC_ENTITY_TYPE
     )
     try:
@@ -227,9 +232,10 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         project.save(manager)
     except Exception:
         pass
+
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            fields=[question1, question2, question3, question4, question5, question6, question7, question8],
                             entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid2 = form_model2.save()
@@ -242,6 +248,114 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     project2.state = ProjectState.ACTIVE
     try:
         project2.save(manager)
+    except Exception:
+        pass
+
+    form_model3 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli003", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid3 = form_model3.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli003").delete()
+        qid3 = form_model3.save()
+    project3 = Project(name="Clinic3 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project3.qid = qid3
+    project3.state = ProjectState.TEST
+    try:
+        project3.save(manager)
+    except Exception:
+        pass
+
+    form_model4 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli004", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid4 = form_model4.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli004").delete()
+        qid4 = form_model4.save()
+    project4 = Project(name="Clinic4 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project4.qid = qid4
+    project4.state = ProjectState.TEST
+    try:
+        project4.save(manager)
+    except Exception:
+        pass
+
+    form_model5 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli005", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid5 = form_model5.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli005").delete()
+        qid5 = form_model5.save()
+    project5 = Project(name="Clinic5 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project5.qid = qid5
+    project5.state = ProjectState.TEST
+    try:
+        project5.save(manager)
+    except Exception:
+        pass
+
+    form_model6 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli006", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid6 = form_model6.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli006").delete()
+        qid6 = form_model6.save()
+    project6 = Project(name="Clinic6 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project6.qid = qid6
+    project6.state = ProjectState.TEST
+    try:
+        project6.save(manager)
+    except Exception:
+        pass
+
+    form_model7 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli007", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid7 = form_model7.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli007").delete()
+        qid7 = form_model7.save()
+    project7 = Project(name="Clinic7 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project7.qid = qid7
+    project7.state = ProjectState.TEST
+    try:
+        project7.save(manager)
+    except Exception:
+        pass
+
+    form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli008", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid8 = form_model8.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli008").delete()
+        qid8 = form_model8.save()
+    project8 = Project(name="Clinic8 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
+    project8.qid = qid8
+    project8.state = ProjectState.INACTIVE
+    try:
+        project8.save(manager)
     except Exception:
         pass
 
