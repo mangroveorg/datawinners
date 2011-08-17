@@ -4,7 +4,6 @@ import json
 import datetime
 from time import mktime
 from django.contrib.auth.decorators import login_required
-from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
@@ -24,13 +23,13 @@ from datawinners.project import models
 from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, MangroveException
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler, SubmissionRequest
+from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import data, aggregrate as aggregate_module
@@ -625,6 +624,12 @@ def _make_project_context(form_model, project):
                                                  form_model.form_code)}
 
 
+def _create_submission_request(form_model, request):
+    submission_request = dict(request.POST)
+    submission_request["form_code"] = form_model.form_code
+    return submission_request
+
+
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
     TEMPLATE = 'project/test_questionnaire.html'
@@ -637,12 +642,7 @@ def test_questionnaire(request, project_id=None):
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        submission_request = post_to_submission(dict(request.POST))
-        form_model.bind(submission_request)
-        if not form_model.is_valid():
-            return render_to_response(TEMPLATE, _make_project_context(form_model, project),
-                                      context_instance=RequestContext(request))
-        submission_request["form_code"] = form_model.form_code
+        submission_request = _create_submission_request(form_model, request)
         success_message = None
         error_message = None
         try:
@@ -653,11 +653,17 @@ def test_questionnaire(request, project_id=None):
                                                                                                    destination=""
                                                                                      )))
             success_message = "Successfully submitted" if response.success else ""
+            bound_form = response.bound_form
+
+            if not bound_form.is_valid():
+                return render_to_response(TEMPLATE, _make_project_context(bound_form, project),
+                                      context_instance=RequestContext(request))
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
+            bound_form = exception.bound_form
 
-        _project_context = _make_project_context(form_model, project)
+        _project_context = _make_project_context(bound_form, project)
         _project_context.update({'success_message': success_message,'error_message': error_message})
         return render_to_response(TEMPLATE, _project_context,context_instance=RequestContext(request))
 
