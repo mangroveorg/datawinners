@@ -61,7 +61,9 @@
 
 {% endblock %}
 {% block content %}
-    Reminders
+    {% for reminder in reminders %}
+        {{ reminder }}
+    {% endfor %}
 {% endblock %}
 {% block buttons %}
     {{ block.super }}

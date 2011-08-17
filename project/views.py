@@ -4,6 +4,7 @@ import json
 import datetime
 from time import mktime
 from django.contrib.auth.decorators import login_required
+from django.forms.formsets import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -11,7 +12,7 @@ from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_exception_message_for
-from datawinners.project.forms import ProjectProfile
+from datawinners.project.forms import ProjectProfile, ReminderForm
 from datawinners.project.models import Project, ProjectState
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
@@ -460,9 +461,10 @@ def datasenders_wizard(request, project_id=None):
         return HttpResponseRedirect(reverse(reminders_wizard, args=[project_id]))
 
 def reminders_wizard(request, project_id=None):
+    reminders=formset_factory(ReminderForm)
     if request.method == 'GET':
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html', {"previous": previous_link}, context_instance=RequestContext(request))
+        return render_to_response('project/reminders_wizard.html', {"previous": previous_link,'reminders':reminders}, context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
