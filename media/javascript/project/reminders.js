@@ -7,9 +7,9 @@ $(document).ready(function(){
             var message = "Reminders has been activated for the project"
             if(is_reminder === "False"){
                 message = "Reminders has been de-activated for the project"
-                $('#add_reminder').hide();
+                $('.add_reminder').hide();
             }else{
-                $('#add_reminder').show();
+                $('.add_reminder').show();
             }
             $('.success_message').show().html(message).fadeOut(10000);
         });
@@ -30,6 +30,19 @@ function viewModel() {
         this.newMessage("");
         this.newDay("");
     }
+    this.save = function(){
+        $('/project/reminders/', ko.toJSON(this.reminders), function(){
+            console.log("The reminders has been saved")
+        })
+    }
+
+    var self = this;
+    $.get("/project/reminders/", function(data) {
+        var mappedReminders = $.map(data, function(item) {
+            return new reminder(item.message, item.day, self)
+        });
+        self.reminders(mappedReminders);
+    });
 }
 
 ko.applyBindings(new viewModel());
