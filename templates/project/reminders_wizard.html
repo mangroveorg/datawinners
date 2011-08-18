@@ -10,23 +10,13 @@
 
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
-    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
-    <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet" />
-    <link href="/media/css/scss/section_datasenders_common.scss" rel="stylesheet" />
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
-     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/datasender.js"></script>
     <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>
 
     <script type="text/javascript">
@@ -60,10 +50,7 @@
     </p></div>
 {% endblock %}
 {% block content %}
-    <span id="project_id" style="display: none;">{{ project_id }}</span>
-    <div>
-        {{ form }}
-    </div>
+    {% include 'project/reminder_content.html' %}
 {% endblock %}
     {% block buttons %}
         <form action="" method="POST">

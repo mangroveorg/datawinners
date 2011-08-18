@@ -33,25 +33,6 @@
 
 
 {% block content %}
-    <span id="project_id" style="display: none;">{{ project_id }}</span>
-    <span class="success_message"></span>
-    <div>
-        {{ form }}
-    </div>
-    <form class="add_reminder" data-bind="submit: addReminder" style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
-        Add task: <input data-bind="value: newDay" placeholder="Day?" />
-        <input data-bind="value: newMessage" placeholder="Message?" />
-        <button type="submit">Add</button>
-    </form>
-
-    <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
-    <button class="add_reminder" data-bind="click: save" style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">Save the reminders</button>
-    <script type="text/html" id="reminderTemplate">
-        <li>
-            <input type="text" data-bind="value: message" />
-            <input type="text" data-bind="value: day" />
-            <a href="#" data-bind="click: remove">Delete</a>
-        </li>
-    </script>
+    {% include 'project/reminder_content.html' %}
 
 {% endblock %}

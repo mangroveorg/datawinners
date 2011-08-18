@@ -1,0 +1,27 @@
+<span id="project_id" style="display: none;">{{ project_id }}</span>
+<span class="success_message"></span>
+<div>
+    {{ form }}
+</div>
+<div>
+<form class="add_reminder" data-bind="submit: addReminder"
+      style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
+    <span>New Reminder: </span>
+    <input data-bind="value: newDay" placeholder="Day?"/>
+    <input data-bind="value: newMessage" placeholder="Message?"/>
+    <button type="submit">Add</button>
+</form>
+</div>
+<div id="reminder-list">
+    <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
+</div>
+<button class="add_reminder" data-bind="click: save"
+        style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">Save the reminders
+</button>
+<script type="text/html" id="reminderTemplate">
+    <li>
+        <input type="text" data-bind="value: message"/>
+        <input type="text" data-bind="value: day"/>
+        <a href="#" data-bind="click: remove">Delete</a>
+    </li>
+</script>
