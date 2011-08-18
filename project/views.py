@@ -4,6 +4,9 @@ import json
 import datetime
 from time import mktime
 from django.contrib.auth.decorators import login_required
+from django.forms.forms import Form
+from django import forms
+from django.forms.widgets import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -25,7 +28,7 @@ from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model import form_model
-from mangrove.form_model.field import field_to_json
+from mangrove.form_model.field import field_to_json, SelectField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
@@ -642,19 +645,62 @@ def _create_submission_request(form_model, request):
     return submission_request
 
 
+def _make_questionnaire_form_context(questionnaire_form, project, form_code):
+    return {'questionnaire_form': questionnaire_form, 'project': project,
+                'project_links': _make_project_links(project, form_code)}
+
+
+def _get_select_field(field, choices):
+    if field.single_select_flag:
+        return forms.ChoiceField(choices=choices, required=False, label=field.name, initial=field.value)
+    return forms.MultipleChoiceField(choices=choices, widget=forms.SelectMultiple(attrs={'class': 'multiple_select', 'size': len(choices)}), required=False, label=field.name, initial=field.value)
+
+
+def _get_django_field(field):
+    if isinstance(field, SelectField):
+        choice_list = [('','--None--')]
+        for option in field.options:
+            choice_list.append((option['val'],option['text']['eng']))
+        choices = tuple(choice_list)
+        return  _get_select_field(field, choices)
+    return forms.CharField(label=field.name, initial=field.value, required=False)
+
+
+
+def _create_django_form_from_form_model(form_model):
+    properties = {field.code.lower() : _get_django_field(field) for field in form_model.fields}
+    properties.update( { 'form_code' :  forms.CharField(widget=HiddenInput,initial=form_model.form_code) } )
+    return type('QuestionnaireForm', (Form, ), properties)
+
+
+def _to_list(errors):
+    error_dict = dict()
+    for key,value in errors.items():
+        error_dict.update({key : [value] if not isinstance(value,list) else value})
+    return error_dict
+
+
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
     TEMPLATE = 'project/test_questionnaire.html'
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     form_model = helper.load_questionnaire(manager, project.qid)
+
+    QuestionnaireForm = _create_django_form_from_form_model(form_model)
+
     if request.method == 'GET':
-        return render_to_response(TEMPLATE, _make_project_context(form_model, project)
-                                  ,
+        questionnaire_form = QuestionnaireForm()
+        return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        submission_request = _create_submission_request(form_model, request)
+        questionnaire_form = QuestionnaireForm(request.POST)
+        if not questionnaire_form.is_valid():
+            return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
+                                  context_instance=RequestContext(request))
+
+        submission_request = questionnaire_form.cleaned_data
         success_message = None
         error_message = None
         try:
@@ -665,17 +711,16 @@ def test_questionnaire(request, project_id=None):
                                                                                                    destination=""
                                                                                      )))
             success_message = "Successfully submitted" if response.success else ""
-            bound_form = response.bound_form
 
             if not response.success:
-                return render_to_response(TEMPLATE, _make_project_context(bound_form, project),
+                questionnaire_form._errors = _to_list(response.errors)
+                return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
                                       context_instance=RequestContext(request))
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
-            bound_form = exception.bound_form
 
-        _project_context = _make_project_context(bound_form, project)
+        _project_context = _make_questionnaire_form_context(questionnaire_form, project,form_model.form_code)
         _project_context.update({'success_message': success_message,'error_message': error_message})
         return render_to_response(TEMPLATE, _project_context,context_instance=RequestContext(request))
 

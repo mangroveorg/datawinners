@@ -27,11 +27,15 @@
 
     <form method="POST">
     {% csrf_token %}
+{#    <table>#}
+{#        {% for field in form_model.fields %}#}
+{#            {{ field }}#}
+{#        {% endfor %}#}
+{#    </table>#}
     <table>
-        {% for field in form_model.fields %}
-            {{ field }}
-        {% endfor %}
+        {{ questionnaire_form }}
     </table>
+
     <input type="submit" class="button" value="Submit" />
     </form>
 
