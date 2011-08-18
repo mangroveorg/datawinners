@@ -15,23 +15,23 @@ $(document).ready(function(){
         });
     });
 
-ko.applyBindings(new viewModel())
-});
-
-var reminder = function(day, message, ownerViewModel) {
-    this.day = ko.observable(day);
+function reminder(message, day, ownerViewModel) {
     this.message = ko.observable(message);
-    this.remove = function() {
-        ownerViewModel.reminders.remove(this);
+    this.day = ko.observable(day);
+    this.remove = function() { ownerViewModel.reminders.remove(this) }
+}
+
+function viewModel() {
+    this.reminders = ko.observableArray([]);
+    this.newMessage = ko.observable();
+    this.newDay = ko.observable();
+    this.addReminder = function() {
+        this.reminders.push(new reminder(this.newMessage(), this.newDay(), this));
+        this.newMessage("");
+        this.newDay("");
     }
 }
-var viewModel = function() {
-    this.reminders = ko.observableArray([]);
-    this.newDay = ko.observable();
-    this.newMessage = ko.observable();
-    this.addReminder = function() {
-        this.reminders.push(new reminder(this.newDay, this.newMessage, this));
-        this.newDay("");
-        this.newMessage("");
-    };
-}
+
+ko.applyBindings(new viewModel());
+});
+

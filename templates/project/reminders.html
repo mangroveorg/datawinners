@@ -38,11 +38,19 @@
     <div>
         {{ form }}
     </div>
-    <form id="add_reminder" data-bind="submit: addReminder" style="display: {% if is_reminder %} block; {% else %} none; {% endif %}>
-    <input data-bind="value: newDay" placeholder="Day of the month when the reminder needs to go out.">
-    <input data-bind="value: newMessage" placeholder="The text of the reminder.">
-    <input data-bind="value: newDay" placeholder="Day of the month when the reminder needs to go out.">
-    <button type="submit" class="submit">Add</button>
+    <form id="add_reminder" data-bind="submit: addReminder" style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
+        Add task: <input data-bind="value: newDay" placeholder="Day?" />
+        <input data-bind="value: newMessage" placeholder="Message?" />
+        <button type="submit">Add</button>
     </form>
-    <ul data-bind="template: {name: 'reminderTemplate', foreach: reminders}, visible: reminders().length > 0"></ul>
+
+    <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
+    <script type="text/html" id="reminderTemplate">
+        <li>
+            <input type="text" data-bind="value: message" />
+            <input type="text" data-bind="value: day" />
+            <a href="#" data-bind="click: remove">Delete</a>
+        </li>
+    </script>
+
 {% endblock %}
