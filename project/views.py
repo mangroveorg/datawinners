@@ -488,17 +488,15 @@ def reminders_profile_page(request, project_id):
 @login_required(login_url='/login')
 @csrf_exempt
 def reminders(request, project_id):
-    dbm = get_database_manager(request)
-    project = models.get_project(project_id, dbm)
     if request.method == 'GET':
-        reminders = Reminder.objects.filter(project_id = project.qid)
+        reminders = Reminder.objects.filter(project_id = project_id)
         return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
 
     if request.method == 'POST':
-        print request.POST
         reminders = json.loads(request.POST['reminders'])
+        Reminder.objects.filter(project_id=project_id).delete()
         for reminder in reminders:
-            Reminder(project_id=project.qid, days_before=reminder['day'], message=reminder['message']).save()
+            Reminder(project_id=project_id, days_before=reminder['day'], message=reminder['message']).save()
         return HttpResponse("Reminders has been saved")
     
 @csrf_exempt

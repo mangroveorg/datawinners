@@ -26,25 +26,19 @@ function viewModel() {
     this.newMessage = ko.observable();
     this.newDay = ko.observable();
     this.addReminder = function() {
-        console.log(this.newMessage());
-        console.log(this.newDay());
         this.reminders.push(new reminder(this.newMessage(), this.newDay(), this));
-        console.log(this.reminders());
         this.newMessage("");
         this.newDay("");
     }
     this.save = function(){
-        console.log(ko.toJSON(this.reminders()));
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.reminders())}, function(){
-            console.log("The reminders has been saved")
+            $('.success_message').show().html("The reminders has been saved").fadeOut(10000);
         })
     }
 
     var self = this;
     $.getJSON("/project/reminders/" + project_id + "/", function(data) {
         var mappedReminders = $.map(data, function(item) {
-            console.log("hello");
-            console.log(item);
             return new reminder(item.message, item.day, self)
         });
         self.reminders(mappedReminders);
