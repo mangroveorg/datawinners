@@ -1,7 +1,7 @@
 $(document).ready(function(){
+    var project_id = $('#project_id').html();
     $('.choice').change(function(){
         var is_reminder = $("input[@name='rdio']:checked").val();
-        var project_id = $('#project_id').html();
         var url = '/project/reminderstatus/' + project_id+"/";
         $.post(url, {'is_reminder': is_reminder}, function(data){
             var message = "Reminders has been activated for the project"
@@ -26,19 +26,25 @@ function viewModel() {
     this.newMessage = ko.observable();
     this.newDay = ko.observable();
     this.addReminder = function() {
+        console.log(this.newMessage());
+        console.log(this.newDay());
         this.reminders.push(new reminder(this.newMessage(), this.newDay(), this));
+        console.log(this.reminders());
         this.newMessage("");
         this.newDay("");
     }
     this.save = function(){
-        $('/project/reminders/', ko.toJSON(this.reminders), function(){
+        console.log(ko.toJSON(this.reminders()));
+        $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.reminders())}, function(){
             console.log("The reminders has been saved")
         })
     }
 
     var self = this;
-    $.get("/project/reminders/", function(data) {
+    $.getJSON("/project/reminders/" + project_id + "/", function(data) {
         var mappedReminders = $.map(data, function(item) {
+            console.log("hello");
+            console.log(item);
             return new reminder(item.message, item.day, self)
         });
         self.reminders(mappedReminders);

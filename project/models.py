@@ -15,6 +15,9 @@ class Reminder(models.Model):
     days_before = IntegerField()
     message = CharField(max_length=160)
 
+    def to_dict(self):
+        return {'day': self.days_before, 'message': self.message}
+
 
 class ProjectState(object):
     INACTIVE = 'Inactive'

@@ -16,7 +16,7 @@ from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile, ReminderForm
-from datawinners.project.models import Project, ProjectState
+from datawinners.project.models import Project, ProjectState, Reminder
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -77,7 +77,7 @@ def _make_project_links(project, questionnaire_code):
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
-        project_links['reminders_link'] = reverse(reminders, args=[project_id])
+        project_links['reminders_link'] = reverse(reminders_profile_page, args=[project_id])
     return project_links
 
 
@@ -475,7 +475,8 @@ def reminders_wizard(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
-def reminders(request, project_id):
+@login_required(login_url='/login')
+def reminders_profile_page(request, project_id):
     if request.method == 'GET':
         dbm = get_database_manager(request)
         project = models.get_project(project_id, dbm)
@@ -483,6 +484,23 @@ def reminders(request, project_id):
         return render_to_response('project/reminders.html', {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                                                              'project_id': project_id, 'form': ReminderForm(initial={'is_reminder': project.reminders}), 'is_reminder': project.reminders},
                                   context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def reminders(request, project_id):
+    dbm = get_database_manager(request)
+    project = models.get_project(project_id, dbm)
+    if request.method == 'GET':
+        reminders = Reminder.objects.filter(project_id = project.qid)
+        return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
+
+    if request.method == 'POST':
+        print request.POST
+        reminders = json.loads(request.POST['reminders'])
+        for reminder in reminders:
+            Reminder(project_id=project.qid, days_before=reminder['day'], message=reminder['message']).save()
+        return HttpResponse("Reminders has been saved")
+    
 @csrf_exempt
 def enable_reminders_in_project(request, project_id=None):
     if request.method == 'POST':
