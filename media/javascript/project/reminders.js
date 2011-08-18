@@ -14,4 +14,24 @@ $(document).ready(function(){
             $('.success_message').show().html(message).fadeOut(10000);
         });
     });
+
+ko.applyBindings(new viewModel())
 });
+
+var reminder = function(day, message, ownerViewModel) {
+    this.day = ko.observable(day);
+    this.message = ko.observable(message);
+    this.remove = function() {
+        ownerViewModel.reminders.remove(this);
+    }
+}
+var viewModel = function() {
+    this.reminders = ko.observableArray([]);
+    this.newDay = ko.observable();
+    this.newMessage = ko.observable();
+    this.addReminder = function() {
+        this.reminders.push(new reminder(this.newDay, this.newMessage, this));
+        this.newDay("");
+        this.newMessage("");
+    };
+}
