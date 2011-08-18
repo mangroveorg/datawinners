@@ -667,7 +667,7 @@ def test_questionnaire(request, project_id=None):
             success_message = "Successfully submitted" if response.success else ""
             bound_form = response.bound_form
 
-            if not bound_form.is_valid():
+            if not response.success:
                 return render_to_response(TEMPLATE, _make_project_context(bound_form, project),
                                       context_instance=RequestContext(request))
         except Exception as exception:
