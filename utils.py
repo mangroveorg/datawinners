@@ -2,8 +2,11 @@
 from django.http import HttpResponseRedirect
 import xlwt
 from datetime import datetime
+from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
+from mangrove.datastore import settings
+from mangrove.datastore.database import get_db_manager
 
 def clean_date(date_val):
     new_date_val = date_val.replace(tzinfo=None)
@@ -37,3 +40,9 @@ def is_new_user(f):
 
         return f(*args, **kw)
     return wrapper
+
+
+def get_database_manager_for_org(organization):
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    db = organization_settings.document_store
+    return get_db_manager(database=db)

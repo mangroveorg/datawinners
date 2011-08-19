@@ -2,6 +2,8 @@
 
 from couchdb.mapping import  TextField, ListField, BooleanField
 from django.db.models.fields import IntegerField, CharField
+from django.db.models.fields.related import ForeignKey
+from datawinners.accountmanagement.models import Organization
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -14,6 +16,7 @@ class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
     days_before = IntegerField()
     message = CharField(max_length=160)
+    organization = ForeignKey(Organization)
 
     def to_dict(self):
         return {'day': self.days_before, 'message': self.message}
