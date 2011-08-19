@@ -257,7 +257,6 @@ def _load_submissions(current_page, manager, questionnaire_code, pagination=True
 #TODO- Refactoring needed for results and data related views.
 
 
-
 @login_required(login_url='/login')
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request)
@@ -696,6 +695,15 @@ def _to_list(errors):
     return error_dict
 
 
+def _create_request(questionnaire_form, username):
+    return Request(message=questionnaire_form.cleaned_data,
+                   transportInfo=
+                   TransportInfo(transport="web",
+                                 source=username,
+                                 destination=""
+                   ))
+
+
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
     TEMPLATE = 'project/test_questionnaire.html'
@@ -716,19 +724,14 @@ def test_questionnaire(request, project_id=None):
             return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
                                   context_instance=RequestContext(request))
 
-        submission_request = questionnaire_form.cleaned_data
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager,SubmissionHandler(dbm=manager)).accept(Request(message=submission_request,
-                                                                                     transportInfo=
-                                                                                     TransportInfo(transport="web",
-                                                                                                   source=request.user.username,
-                                                                                                   destination=""
-                                                                                     )))
-            success_message = "Successfully submitted" if response.success else ""
-
-            if not response.success:
+            response = WebPlayer(manager,SubmissionHandler(dbm=manager)).accept(_create_request(questionnaire_form, request.user.username))
+            if response.success:
+                success_message = "Successfully submitted"
+                questionnaire_form = QuestionnaireForm()
+            else:
                 questionnaire_form._errors = _to_list(response.errors)
                 return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
                                       context_instance=RequestContext(request))
@@ -739,10 +742,6 @@ def test_questionnaire(request, project_id=None):
         _project_context = _make_questionnaire_form_context(questionnaire_form, project,form_model.form_code)
         _project_context.update({'success_message': success_message,'error_message': error_message})
         return render_to_response(TEMPLATE, _project_context,context_instance=RequestContext(request))
-
-def post_to_submission(post_request):
-    post_request.pop('csrfmiddlewaretoken')
-    return {code: "".join(value) for code, value in post_request.iteritems()}
 
 
 @login_required(login_url='/login')
