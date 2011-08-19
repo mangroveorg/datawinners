@@ -32,7 +32,7 @@ from mangrove.form_model.field import field_to_json, SelectField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form, SubmissionHandler
+from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import data, aggregrate as aggregate_module
@@ -660,7 +660,7 @@ def _create_submission_request(form_model, request):
     return submission_request
 
 
-def _make_questionnaire_form_context(questionnaire_form, project, form_code):
+def _make_form_context(questionnaire_form, project, form_code):
     return {'questionnaire_form': questionnaire_form, 'project': project,
                 'project_links': _make_project_links(project, form_code)}
 
@@ -704,9 +704,13 @@ def _create_request(questionnaire_form, username):
                    ))
 
 
+def _get_response(form_code, project, questionnaire_form, request):
+    return render_to_response('project/test_questionnaire.html', _make_form_context(questionnaire_form, project, form_code),
+                              context_instance=RequestContext(request))
+
+
 @login_required(login_url='/login')
 def test_questionnaire(request, project_id=None):
-    TEMPLATE = 'project/test_questionnaire.html'
     manager = get_database_manager(request)
     project = models.get_project(project_id, manager)
     form_model = helper.load_questionnaire(manager, project.qid)
@@ -715,33 +719,30 @@ def test_questionnaire(request, project_id=None):
 
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
-                                  context_instance=RequestContext(request))
+        return _get_response(form_model.form_code, project, questionnaire_form, request)
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(request.POST)
         if not questionnaire_form.is_valid():
-            return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
-                                  context_instance=RequestContext(request))
+            return _get_response(form_model.form_code, project, questionnaire_form, request)
 
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager,SubmissionHandler(dbm=manager)).accept(_create_request(questionnaire_form, request.user.username))
+            response = WebPlayer(manager).accept(_create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = "Successfully submitted"
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = _to_list(response.errors)
-                return render_to_response(TEMPLATE, _make_questionnaire_form_context(questionnaire_form, project, form_model.form_code),
-                                      context_instance=RequestContext(request))
+                return _get_response(form_model.form_code, project, questionnaire_form, request)
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
 
-        _project_context = _make_questionnaire_form_context(questionnaire_form, project,form_model.form_code)
+        _project_context = _make_form_context(questionnaire_form, project,form_model.form_code)
         _project_context.update({'success_message': success_message,'error_message': error_message})
-        return render_to_response(TEMPLATE, _project_context,context_instance=RequestContext(request))
+        return render_to_response('project/test_questionnaire.html', _project_context,context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')

@@ -19,10 +19,10 @@
 
 {% block content %}
     {% if success_message %}
-        <span class="success">{{ success_message }}</span>
+        <div class="success-message-box">{{ success_message }}</div>
     {% endif %}
     {% if error_message %}
-        <span class="error">{{ error_message }}</span>
+        <div class="message-box">{{ error_message }}</div>
     {% endif %}
 
     <form method="POST">

@@ -1,18 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-import json
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState
-import mangrove
-from mangrove.datastore import data
 from mangrove.form_model.form_model import FormModel
-from mangrove.form_model.field import field_to_json
 from mangrove.transport.player import player
 from mangrove.transport.reporter import find_reporter
 

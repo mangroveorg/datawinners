@@ -1,11 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, IntegerField
+from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.core.exceptions import ValidationError
 from django.forms.forms import Form
 from django.forms.widgets import RadioFieldRenderer, RadioInput, RadioSelect
 from django import forms
-from datawinners.project.models import Reminder
 from mangrove.form_model.form_model import REPORTER
 
 

@@ -43,7 +43,7 @@ def stop_servers():
     run("sudo service nginx stop")
 
 
-def start_servers(virtual_env):
+def start_servers():
     run("sudo service uwsgi start")
     run("sudo service nginx start")
 
