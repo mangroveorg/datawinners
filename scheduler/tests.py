@@ -4,10 +4,12 @@ when you run "manage.py test".
 
 Replace this with more appropriate tests for your application.
 """
+from unittest.case import SkipTest
 
 from django.test import TestCase
 
 
+@SkipTest
 class SimpleTest(TestCase):
     def test_basic_addition(self):
         """
