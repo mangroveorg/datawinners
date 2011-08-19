@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 from datawinners import settings
-from datawinners.main.utils import get_database_manager
+from datawinners.main.utils import get_database_manager, is_reporter
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
-from mangrove.datastore.entity import get_all_entities, Entity
+from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
 from mangrove.transport.player.parser import CsvParser, XlsParser
@@ -28,15 +28,15 @@ def _format(value):
     return value if value else "--"
 
 
-def _tabulate_data(entity, row, short_code, type):
-    id = row['id']
-    geocode = row['doc']['geometry'].get('coordinates')
+def _tabulate_data(entity):
+    id = entity.id
+    geocode = entity.geometry.get('coordinates')
     geocode_string = ", ".join([str(i) for i in geocode]) if geocode is not None else "--"
     location = _format(sequence_to_str(entity.location_path))
     name = _format(entity.value(NAME_FIELD))
     mobile_number = _format(entity.value(MOBILE_NUMBER_FIELD))
     description = _format(entity.value(DESCRIPTION_FIELD))
-    return dict(id=id, name=name, short_name=short_code, type=type, geocode=geocode_string, location=location,
+    return dict(id=id, name=name, short_name=entity.short_code, type=".".join(entity.type_path), geocode=geocode_string, location=location,
                 description=description, mobile_number=mobile_number)
 
 
@@ -44,22 +44,15 @@ def _get_entity_type_from_row(row):
     type = row['doc']['aggregation_paths']['_type']
     return type
 
+def _is_not_reporter(entity):
+    return not is_reporter(entity)
 
-def _get_entity_for_row(manager, row, type):
-    short_code = row['doc']['short_code']
-    entity = Entity.new_from_doc(dbm=manager, doc=Entity.__document_class__.wrap(row.get('doc')))
-    return entity, short_code
-
-
-def load_subject_registration_data(manager):
-    rows = get_all_entities(dbm=manager, include_docs=True)
+def load_subject_registration_data(manager, filter_entities = _is_not_reporter):
+    entities = get_all_entities(dbm=manager, include_docs=True)
     data = []
-    for row in rows:
-        type = _get_entity_type_from_row(row)
-        entity, short_code = _get_entity_for_row(manager, row, type)
-        type = '.'.join(type)
-        if type.lower() != 'reporter':
-            data.append(_tabulate_data(entity, row, short_code, type))
+    for entity in entities:
+        if filter_entities(entity):
+            data.append(_tabulate_data(entity))
     return data
 
 
@@ -68,18 +61,9 @@ def load_all_subjects(request):
     return load_subject_registration_data(manager)
 
 
-def load_all_subjects_of_type(request, entity_type="reporter"):
+def load_all_subjects_of_type(request, filter_entities = is_reporter):
     manager = get_database_manager(request)
-    rows = get_all_entities(dbm=manager, include_docs=True)
-    data = []
-    for row in rows:
-        type = _get_entity_type_from_row(row)
-        entity, short_code = _get_entity_for_row(manager, row, type)
-        type = '.'.join(type)
-        if type.lower() == entity_type:
-            data.append(_tabulate_data(entity, row, short_code, type))
-    return data
-
+    return load_subject_registration_data(manager, filter_entities)
 
 def _handle_uploaded_file(file_name,file,manager):
     base_name, extension = os.path.splitext(file_name)

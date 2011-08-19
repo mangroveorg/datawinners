@@ -22,6 +22,8 @@ def get_database_manager(request):
     user = request.user
     return get_database_manager_for_user(user)
 
+def is_reporter(entity):
+    return True if entity.type_path[0] == 'reporter' else False
 
 def get_db_manager_for(org_tel_number):
     try:
