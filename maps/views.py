@@ -8,7 +8,7 @@ from mangrove.datastore.entity import get_entities_by_type
 
 
 def map_entities(request):
-    entity_list = get_entities_by_type(get_database_manager(request), request.GET['id'])
+    entity_list = get_entities_by_type(get_database_manager(request.user), request.GET['id'])
     location_geojson = helper.create_location_geojson(entity_list)
     return HttpResponse(location_geojson)
 

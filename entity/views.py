@@ -92,7 +92,7 @@ def _get_submission(post):
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
 def submit(request):
-    dbm = get_database_manager(request)
+    dbm = get_database_manager(request.user)
     post = _get_submission(request.POST)
     success = True
     try:
@@ -122,7 +122,7 @@ def create_datasender(request):
         return render_to_response('entity/create_datasender.html', {'form': form},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
-        dbm = get_database_manager(request)
+        dbm = get_database_manager(request.user)
         form, form_errors, message, success = _validate_post_data(dbm, request)
         if success:
             form = ReporterRegistrationForm()
@@ -139,7 +139,7 @@ def create_type(request):
         entity_name = form.cleaned_data["entity_type_regex"]
         entity_name = [entity_name.lower()]
         try:
-            manager = get_database_manager(request)
+            manager = get_database_manager(request.user)
             define_type(manager, entity_name)
             message = "Entity definition successful"
             success = True
@@ -151,7 +151,7 @@ def create_type(request):
 
 
 def create_subject(request):
-    db_manager = get_database_manager(request)
+    db_manager = get_database_manager(request.user)
     entity_types = get_all_entity_types(db_manager)
     project_helper.remove_reporter(entity_types)
     return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types},
@@ -163,7 +163,7 @@ def create_subject(request):
 @login_required(login_url='/login')
 @utils.is_new_user
 def all_subjects(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     if request.method == 'POST':
         error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
         subjects_data = import_module.load_all_subjects(request)
@@ -180,14 +180,14 @@ def all_subjects(request):
 @login_required(login_url='/login')
 @utils.is_new_user
 def all_datasenders(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     if request.method == 'POST':
         error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
-        all_data_senders = import_module.load_all_subjects_of_type(request)
+        all_data_senders = import_module.load_all_subjects_of_type(manager)
 
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
-    all_data_senders = import_module.load_all_subjects_of_type(request)
+    all_data_senders = import_module.load_all_subjects_of_type(manager)
     return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders},
                               context_instance=RequestContext(request))
 
@@ -197,7 +197,7 @@ def all_datasenders(request):
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
 def import_subjects_from_project_wizard(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
     return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))

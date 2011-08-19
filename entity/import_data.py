@@ -57,12 +57,11 @@ def load_subject_registration_data(manager, filter_entities = _is_not_reporter):
 
 
 def load_all_subjects(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     return load_subject_registration_data(manager)
 
 
-def load_all_subjects_of_type(request, filter_entities = is_reporter):
-    manager = get_database_manager(request)
+def load_all_subjects_of_type(manager, filter_entities = is_reporter):
     return load_subject_registration_data(manager, filter_entities)
 
 def _handle_uploaded_file(file_name,file,manager):

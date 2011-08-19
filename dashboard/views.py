@@ -63,7 +63,7 @@ def is_project_inactive(row):
 
 @login_required(login_url='/login')
 def dashboard(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
 
     project_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=4)

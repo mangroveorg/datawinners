@@ -11,7 +11,7 @@ from mangrove.datastore.entity import get_all_entity_types
 
 @login_required(login_url='/login')
 def report(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     types = get_all_entity_types(manager)
     choices = [('.'.join(t), '.'.join(t)) for t in types]
     column_headers = []
@@ -54,7 +54,7 @@ def tabulate_output(report_data, first_column_name):
 
 @login_required(login_url='/login')
 def hierarchy_report(request):
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     column_headers, values = [], []
     choices = [(t, '.'.join(t)) for t in get_all_entity_types(manager)]
 

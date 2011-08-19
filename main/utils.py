@@ -10,17 +10,12 @@ from glob import iglob
 import string
 
 
-def get_database_manager_for_user(user):
+def get_database_manager(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
-
-
-def get_database_manager(request):
-    user = request.user
-    return get_database_manager_for_user(user)
 
 def is_reporter(entity):
     return True if entity.type_path[0] == 'reporter' else False

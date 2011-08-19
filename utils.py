@@ -35,7 +35,7 @@ def get_excel_sheet(raw_data, sheet_name):
 def is_new_user(f):
 
     def wrapper(*args, **kw):
-        if not len(get_all_projects(get_database_manager(args[0]))):
+        if not len(get_all_projects(get_database_manager(args[0].user))):
             return HttpResponseRedirect("/start?page=" + args[0].path)
 
         return f(*args, **kw)

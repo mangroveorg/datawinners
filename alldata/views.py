@@ -15,7 +15,7 @@ from datawinners.submission.models import DatawinnerLog
 @utils.is_new_user
 def index(request):
 
-    manager = get_database_manager(request)
+    manager = get_database_manager(request.user)
     rows = models.get_all_projects(dbm=manager)
     project_list = []
     for row in rows:
