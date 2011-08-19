@@ -3,21 +3,21 @@
 <div>
     {{ form }}
 </div>
-<div>
-<form class="add_reminder" data-bind="submit: addReminder"
+<div class="add_reminder">
+<form data-bind="submit: addReminder"
       style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
     <span>New Reminder: </span>
     <input data-bind="value: newDay" placeholder="Day?"/>
     <input data-bind="value: newMessage" placeholder="Message?"/>
-    <button type="submit">Add</button>
+    <button type="submit">Add Reminder</button>
 </form>
-</div>
 <div id="reminder-list">
     <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
 </div>
-<button class="add_reminder" data-bind="click: save"
+<button data-bind="click: save"
         style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">Save the reminders
 </button>
+    </div>
 <script type="text/html" id="reminderTemplate">
     <li>
         <input type="text" data-bind="value: message"/>
