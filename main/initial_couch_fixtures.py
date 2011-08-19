@@ -5,7 +5,7 @@ from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager_for_user
+from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState
 from datawinners.submission.views import SMS
 from mangrove.datastore.database import get_db_manager
@@ -75,7 +75,7 @@ def load_manager_for_default_test_account():
     user = User.objects.get(username=DEFAULT_USER)
     group = Group.objects.filter(name = "NGO Admins")
     user.groups.add(group[0])
-    return get_database_manager_for_user(user)
+    return get_database_manager(user)
 
 
 def register(manager, entity_type, data, location, short_code):
