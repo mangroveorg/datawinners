@@ -8,7 +8,6 @@ from datawinners.main.utils import get_db_manager_for
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException
 from mangrove.transport.player.player import SMSPlayer, Request, TransportInfo
-from mangrove.transport.submissions import SubmissionHandler
 from datawinners.messageprovider.message_handler import get_exception_message_for
 
 SMS = "sms"

@@ -8,7 +8,6 @@ from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import define_type, create_entity
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
-from mangrove.transport.submissions import SubmissionHandler
 
 class TestImportData(unittest.TestCase):
 
@@ -16,7 +15,7 @@ class TestImportData(unittest.TestCase):
     def setUp(self):
         self.dbm = get_db_manager(database='mangrove-test')
         self._create_entities()
-        self.player = SMSPlayer(self.dbm, SubmissionHandler(self.dbm))
+        self.player = SMSPlayer(self.dbm)
         self.transport = TransportInfo(transport="sms", source="1234", destination="5678")
         initializer.run(self.dbm)
 

@@ -8,7 +8,6 @@ from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatExcept
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
 from mangrove.transport.player.parser import CsvParser, XlsParser
 from mangrove.transport.player.player import CsvPlayer, XlsPlayer
-from mangrove.transport.submissions import SubmissionHandler
 from mangrove.utils.types import sequence_to_str
 
 def tabulate_failures(rows):
@@ -67,10 +66,10 @@ def load_all_subjects_of_type(manager, filter_entities = is_reporter):
 def _handle_uploaded_file(file_name,file,manager):
     base_name, extension = os.path.splitext(file_name)
     if extension == '.csv':
-        csv_player = CsvPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=CsvParser())
+        csv_player = CsvPlayer(dbm=manager, parser=CsvParser())
         response = csv_player.accept(file)
     elif extension == '.xls':
-        xls_player = XlsPlayer(dbm=manager, submission_handler=SubmissionHandler(manager), parser=XlsParser())
+        xls_player = XlsPlayer(dbm=manager, parser=XlsParser())
         response = xls_player.accept(file)
     else:
         raise InvalidFileFormatException()
