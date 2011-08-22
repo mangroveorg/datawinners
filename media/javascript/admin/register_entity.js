@@ -35,7 +35,6 @@ $(document).ready(function() {
                             DW.viewModel.message.m('');
                             DW.viewModel.message.g('');
                             $('#id_entity_type').val(0);
-                            $('#message').delay(10000).fadeOut();
                         }
                         else {
                             $(".ajax_loader_small").hide();

@@ -4,9 +4,17 @@
 var DW = {};
 
 $(document).ready(function() {
+
+    DW.flash_message = function() {
+        $('.success-message-box').delay(5000).fadeOut();
+    };
+    
     $("#global_error").ajaxError(function(event, request, settings) {
         $("#global_error").addClass("message-box");
         $("#global_error").html("<p>Error requesting page " + settings.url + "</p>");
+    });
+    $("#global_error").ajaxSuccess(function() {
+        DW.flash_message();
     });
 
     $.addwatermarks();
@@ -23,4 +31,5 @@ $(document).ready(function() {
 
     }).dynamic({ bottom: { direction: 'down', bounce: true } });
 
+    DW.flash_message();
 })
