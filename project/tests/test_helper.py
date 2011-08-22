@@ -442,7 +442,7 @@ class TestPreviewCreator(unittest.TestCase):
         constraints = [TextLengthConstraint(min=10, max=100)]
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("Between 10 - 100 characters", preview["constraints"])
+        self.assertEqual("Between 10 -- 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_without_constraint(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
@@ -471,7 +471,7 @@ class TestPreviewCreator(unittest.TestCase):
         constraint = NumericRangeConstraint(min=10, max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
         preview = helper.get_preview_for_field(field)
-        self.assertEqual("10 - 100", preview["constraints"])
+        self.assertEqual("10 -- 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_without_constraint(self):
         type = DataDictType(Mock(DatabaseManager), name="age type")
