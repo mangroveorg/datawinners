@@ -20,12 +20,11 @@ from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 
 
 class DateTimeMocker(object):
-
     def __init__(self):
         self.datetime_patcher = patch("mangrove.datastore.entity.utcnow")
         self.datetime_mock = self.datetime_patcher.start()
 
-    def set_date_time_now(self,val):
+    def set_date_time_now(self, val):
         self.datetime_mock.return_value = val
 
     def end_mock(self):
@@ -40,16 +39,19 @@ def create_or_update_entity(manager, entity_type, location, aggregation_paths, s
         pass
     return create_entity(manager, entity_type, short_code, location, aggregation_paths, geometry)
 
-def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None, description=None):
+
+def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None,
+                           description=None):
     e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-                         short_code=short_code, geometry=geometry)
+                                short_code=short_code, geometry=geometry)
     name_type = create_data_dict(manager, name='Name Type', slug='Name', primitive_type='string')
     mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     description_type = create_data_dict(manager, name='Description', slug='description', primitive_type='string')
-    e.add_data(data=[(NAME_FIELD,name,name_type)])
-    e.add_data([(MOBILE_NUMBER_FIELD,mobile_number,mobile_type)])
-    e.add_data([(DESCRIPTION_FIELD,description,description_type)])
+    e.add_data(data=[(NAME_FIELD, name, name_type)])
+    e.add_data([(MOBILE_NUMBER_FIELD, mobile_number, mobile_type)])
+    e.add_data([(DESCRIPTION_FIELD, description, description_type)])
     return e
+
 
 def create_entity_types(manager, entity_types):
     for entity_type in entity_types:
@@ -71,14 +73,14 @@ def create_data_dict(dbm, name, slug, primitive_type, description=None):
 def load_manager_for_default_test_account():
     DEFAULT_USER = "tester150411@gmail.com"
     user = User.objects.get(username=DEFAULT_USER)
-    group = Group.objects.filter(name = "NGO Admins")
+    group = Group.objects.filter(name="NGO Admins")
     user.groups.add(group[0])
     return get_database_manager(user)
 
 
 def register(manager, entity_type, data, location, short_code):
     e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-                      short_code=short_code)
+                                short_code=short_code)
     e.add_data(data=data)
     return e
 
@@ -137,7 +139,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
                                short_code="cid006", geometry={"type": "Point", "coordinates": [26.227112, 78.18708]},
-                               name="New Gwalior Clinic", description="This a clinic in New Gwalior.", mobile_number="1234561")
+                               name="New Gwalior Clinic", description="This a clinic in New Gwalior.",
+                               mobile_number="1234561")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -156,7 +159,8 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
 def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
                                geometry={"type": "Point", "coordinates": [23.0395677, 72.566005]},
-                               name="Ahmedabad waterpoint", description="This a waterpoint in Ahmedabad.", mobile_number="1234563")
+                               name="Ahmedabad waterpoint", description="This a waterpoint in Ahmedabad.",
+                               mobile_number="1234563")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -164,7 +168,8 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="wp02",
                                geometry={"type": "Point", "coordinates": [23.251671, 69.66256]},
-                               name="Bhuj waterpoint", description="This a waterpoint in Bhuj.", mobile_number="1234564")
+                               name="Bhuj waterpoint", description="This a waterpoint in Bhuj.",
+                               mobile_number="1234564")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -172,7 +177,8 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="wp03",
                                geometry={"type": "Point", "coordinates": [28.46385, 77.017838]},
-                               name="Gurgaon waterpoint", description="This a waterpoint in Gurgaon.", mobile_number="1234564")
+                               name="Gurgaon waterpoint", description="This a waterpoint in Gurgaon.",
+                               mobile_number="1234564")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
         e.save()
@@ -190,31 +196,39 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
                           language="eng", entity_question_flag=True, ddtype=entity_id_type,
-                          constraints=[TextLengthConstraint(min=1, max=12)],instruction="Answer must be a word or phrase 12 characters maximum")
+                          constraints=[TextLengthConstraint(min=1, max=12)],
+                          instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
                           defaultValue="some default value", language="eng", ddtype=name_type,
-                     instruction="Answer must be a word or phrase 10 characters maximum")
+                          instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
                              constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
-                     instruction="Answer must be a number between 18-100.")
+                             instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="Report date", code="RD", name="What is réporting date?",
-                          date_format="dd.mm.yyyy", ddtype=date_type, instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
                             ddtype=select_type, instruction="Choose 1 answer from the above list. Example: a")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
-                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
-                            ddtype=select_type, instruction="Choose 1 or more answers from the above list. Example: a or ab")
-    question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS", label="What is the GPS code for clinic?",
-                             language="eng", ddtype=geo_code_type, instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547")
+                                ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+                            ddtype=select_type,
+                            instruction="Choose 1 or more answers from the above list. Example: a or ab")
+    question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
+                             label="What is the GPS code for clinic?",
+                             language="eng", ddtype=geo_code_type,
+                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547")
     question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
-                            options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")], single_select_flag=False,
-                            ddtype=select_type, instruction="Choose 1 or more answers from the above list. Example: a or ab")
+                            options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
+                            single_select_flag=False,
+                            ddtype=select_type,
+                            instruction="Choose 1 or more answers from the above list. Example: a or ab")
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli001", type='survey',
-                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
+                           fields=[question1, question2, question3, question4, question5, question6, question7,
+                                   question8],
                            entity_type=CLINIC_ENTITY_TYPE
     )
     try:
@@ -223,7 +237,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no',sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close")
     project.qid = qid
     project.state = ProjectState.ACTIVE
     try:
@@ -233,7 +247,8 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
-                            fields=[question1, question2, question3, question4, question5, question6, question7, question8],
+                            fields=[question1, question2, question3, question4, question5, question6, question7,
+                                    question8],
                             entity_type=CLINIC_ENTITY_TYPE)
     try:
         qid2 = form_model2.save()
@@ -364,7 +379,7 @@ def load_sms_data_for_cli001(manager):
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
     today = datetime.today()
-    THIS_MONTH = datetime(today.year,today.month,5,12,45,58)
+    THIS_MONTH = datetime(today.year, today.month, 5, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=8)
     sms_player = SMSPlayer(manager)
     FROM_NUMBER = '1234567890'
@@ -543,10 +558,12 @@ def load_data():
                                          primitive_type='string')
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
-                                                              (NAME_FIELD, "Shweta", first_name_type)], location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
+        (NAME_FIELD, "Shweta", first_name_type)],
+             location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep1")
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
-                                                              (NAME_FIELD, "David", first_name_type)], location=[u'Madagascar', u'Fianarantsoa', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
+        (NAME_FIELD, "David", first_name_type)],
+             location=[u'Madagascar', u'Fianarantsoa', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2")
     load_sms_data_for_cli001(manager)
 

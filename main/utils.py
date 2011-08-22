@@ -17,8 +17,10 @@ def get_database_manager(user):
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
 
+
 def is_reporter(entity):
     return True if entity.type_path[0] == 'reporter' else False
+
 
 def get_db_manager_for(org_tel_number):
     try:
@@ -39,6 +41,7 @@ def create_views(dbm):
             map = (funcs['map'] if 'map' in funcs else None)
             reduce = (funcs['reduce'] if 'reduce' in funcs else None)
             database_manager.create_view(view_name=v, map=map, reduce=reduce)
+
 
 def sync_views(dbm):
     """Updates or Creates a standard set of views in the database"""

@@ -24,8 +24,8 @@ class TestImport(unittest.TestCase):
     def test_should_import_data_senders(self):
         file_name = "reporters.csv"
         request = Mock()
-        request.GET = {'qqfile' : file_name}
+        request.GET = {'qqfile': file_name}
         request.raw_post_data = self.csv_data
-        error_message, failure_imports, success, success_message = import_data(request=request,manager = self.dbm)
+        error_message, failure_imports, success, success_message = import_data(request=request, manager=self.dbm)
         self.assertTrue(success)
-        self.assertEqual(4,get_entity_count_for_type(self.dbm,entity_type="reporter"))
+        self.assertEqual(4, get_entity_count_for_type(self.dbm, entity_type="reporter"))

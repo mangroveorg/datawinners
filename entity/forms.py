@@ -6,7 +6,10 @@ class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    entity_type_regex = RegexField(regex="^[A-Za-z\d\s]+$", max_length=20, error_message="Only letters and numbers are valid", required=True, label="New Subject(eg clinic, waterpoint etc)")
+    entity_type_regex = RegexField(regex="^[A-Za-z\d\s]+$", max_length=20,
+                                   error_message="Only letters and numbers are valid", required=True,
+                                   label="New Subject(eg clinic, waterpoint etc)")
+
 
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
@@ -35,7 +38,7 @@ class ReporterRegistrationForm(Form):
             return False
 
     def clean_telephone_number(self):
-        return ("").join([each for each in self.cleaned_data['telephone_number'] if self._is_int(each) ])
+        return ("").join([each for each in self.cleaned_data['telephone_number'] if self._is_int(each)])
 
     def _geo_code_format_validations(self, lat_long, msg):
         if len(lat_long) != 2:

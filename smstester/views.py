@@ -29,4 +29,4 @@ def index(request):
         form = SMSTesterForm()
 
     return render_to_response('smstester/index.html',
-                              {'form': form, 'message': message}, context_instance=RequestContext(request))
+            {'form': form, 'message': message}, context_instance=RequestContext(request))

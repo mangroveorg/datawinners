@@ -25,8 +25,8 @@ def report(request):
             aggregates_field = form.cleaned_data['aggregates_field']
             location = filter_criteria.split(",") if filter_criteria else None
             report_data = data.aggregate(manager, entity_type=entity_type,
-                                     aggregates={aggregates_field: data.reduce_functions.LATEST},
-                                     filter=LocationFilter(location=location)
+                                         aggregates={aggregates_field: data.reduce_functions.LATEST},
+                                         filter=LocationFilter(location=location)
             )
             column_headers, values = tabulate_output(report_data, "ID")
             if not len(values):
@@ -68,13 +68,13 @@ def hierarchy_report(request):
             aggregate_on_path = form.cleaned_data['aggregate_on_path']
             level = form.cleaned_data['level']
             report_data = data.aggregate(manager, entity_type=entity_type,
-                                     aggregates=aggregates,
-                                     aggregate_on=TypeAggregration(type=aggregate_on_path,level=level),
-                                     )
+                                         aggregates=aggregates,
+                                         aggregate_on=TypeAggregration(type=aggregate_on_path, level=level),
+                                         )
             column_headers, values = tabulate_output(report_data, "Path")
     else:
         form = ReportHierarchy(choices=choices)
 
     return render_to_response('reports/reportperhierarchypath.html',
-                              {'form': form, 'column_headers': column_headers, 'column_values': values},
+            {'form': form, 'column_headers': column_headers, 'column_values': values},
                               context_instance=RequestContext(request))

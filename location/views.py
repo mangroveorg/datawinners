@@ -13,7 +13,7 @@ from datawinners.location.utils import map_location_groups_to_categories
 def places  (request):
     query_string = request.GET.get('term')
     location_group = get_location_groups_for_country(country="Madagascar", start_with=query_string)
-    categories=map_location_groups_to_categories(location_group, country="Madagascar")
+    categories = map_location_groups_to_categories(location_group, country="Madagascar")
 
-    return HttpResponse(json.dumps(categories),mimetype="application/json",content_type="application/json")
+    return HttpResponse(json.dumps(categories), mimetype="application/json", content_type="application/json")
 

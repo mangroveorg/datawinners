@@ -35,7 +35,8 @@ def _tabulate_data(entity):
     name = _format(entity.value(NAME_FIELD))
     mobile_number = _format(entity.value(MOBILE_NUMBER_FIELD))
     description = _format(entity.value(DESCRIPTION_FIELD))
-    return dict(id=id, name=name, short_name=entity.short_code, type=".".join(entity.type_path), geocode=geocode_string, location=location,
+    return dict(id=id, name=name, short_name=entity.short_code, type=".".join(entity.type_path), geocode=geocode_string,
+                location=location,
                 description=description, mobile_number=mobile_number)
 
 
@@ -43,10 +44,12 @@ def _get_entity_type_from_row(row):
     type = row['doc']['aggregation_paths']['_type']
     return type
 
+
 def _is_not_reporter(entity):
     return not is_reporter(entity)
 
-def load_subject_registration_data(manager, filter_entities = _is_not_reporter):
+
+def load_subject_registration_data(manager, filter_entities=_is_not_reporter):
     entities = get_all_entities(dbm=manager, include_docs=True)
     data = []
     for entity in entities:
@@ -60,10 +63,11 @@ def load_all_subjects(request):
     return load_subject_registration_data(manager)
 
 
-def load_all_subjects_of_type(manager, filter_entities = is_reporter):
+def load_all_subjects_of_type(manager, filter_entities=is_reporter):
     return load_subject_registration_data(manager, filter_entities)
 
-def _handle_uploaded_file(file_name,file,manager):
+
+def _handle_uploaded_file(file_name, file, manager):
     base_name, extension = os.path.splitext(file_name)
     if extension == '.csv':
         csv_player = CsvPlayer(dbm=manager, parser=CsvParser())
@@ -76,14 +80,14 @@ def _handle_uploaded_file(file_name,file,manager):
     return response
 
 
-def import_data(request,manager):
+def import_data(request, manager):
     success = False
     response_message = ''
     error_message = None
     failure_imports = None
     try:
         file_name = request.GET.get('qqfile')
-        response = _handle_uploaded_file(file_name=file_name,file=request.raw_post_data,manager=manager)
+        response = _handle_uploaded_file(file_name=file_name, file=request.raw_post_data, manager=manager)
         successful_imports = len([index for index in response if index.success])
         total = len(response)
         failure = [i for i in enumerate(response) if not i[1].success]

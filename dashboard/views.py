@@ -42,9 +42,9 @@ def _get_submission_breakup(dbm, form_code):
 
 def get_submissions(dbm, form_code):
     rows = dbm.load_all_rows_in_view('submissionlog', reduce=False, descending=True, startkey=[form_code, {}],
-                                         endkey=[form_code], limit=7)
+                                     endkey=[form_code], limit=7)
     if not rows:
-        return [],0,0
+        return [], 0, 0
 
     submission_list = []
     for row in rows:
@@ -68,7 +68,7 @@ def dashboard(request):
     project_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=4)
     for row in rows:
-        link = reverse("project-overview",args=(row['value']['_id'],))
+        link = reverse("project-overview", args=(row['value']['_id'],))
 
         form_model = manager.get(row['value']['qid'], FormModel)
         submissions, success, errors = get_submissions(manager, form_model.form_code)
@@ -78,7 +78,8 @@ def dashboard(request):
         project_list.append(project)
 
     return render_to_response('dashboard/home.html',
-                              {"projects": project_list}, context_instance=RequestContext(request))
+            {"projects": project_list}, context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 def start(request):
@@ -89,7 +90,8 @@ def start(request):
                  'subjects': 'subjects', 'alldata': 'all_data'}
     page = request.GET['page']
     page = page.split('/')
-    url_tokens = [each for each in page if each !='']
+    url_tokens = [each for each in page if each != '']
     text = text_dict[url_tokens[-1]]
-    return render_to_response('dashboard/start.html', {'text': text, 'title': text, 'active_tab': tabs_dict[url_tokens[-1]]},
+    return render_to_response('dashboard/start.html',
+            {'text': text, 'title': text, 'active_tab': tabs_dict[url_tokens[-1]]},
                               context_instance=RequestContext(request))

@@ -57,15 +57,16 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="deve
        virtual_env : path to your virtual_env folder
     """
     ENVIRONMENT_CONFIGURATIONS = {
-                                    "showcase": "showcase_local_settings.py",
-                                    "test": "test_local_settings.py",
-                                    "master": "showcase_local_settings.py"
-                                 }
+        "showcase": "showcase_local_settings.py",
+        "test": "test_local_settings.py",
+        "master": "showcase_local_settings.py"
+    }
 
     if build_number == 'lastSuccessfulBuild':
         build_number = run("curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
 
-    run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (branch,build_number))
+    run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
+    branch, build_number))
 
     code_dir = home_dir + '/mangrove'
     with settings(warn_only=True):

@@ -4,8 +4,6 @@ from datawinners.main.initial_couch_fixtures import load_manager_for_default_tes
 
 
 class Command(BaseCommand):
-
-
     def handle(self, *args, **options):
         managers = []
         if "syncall" in args:

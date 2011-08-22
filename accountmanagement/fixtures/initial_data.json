@@ -135,10 +135,10 @@
             "is_staff": false,
             "last_login": "2011-04-17 04:46:57",
             "groups": [
-                
+
             ],
             "user_permissions": [
-                
+
             ],
             "password": "sha1$64c7c$408711ddd5e4e6ba7d4865dd350b7509124f3e86",
             "email": "tester150411@gmail.com",
@@ -157,10 +157,10 @@
             "is_staff": false,
             "last_login": "2011-04-17 04:54:47",
             "groups": [
-                
+
             ],
             "user_permissions": [
-                
+
             ],
             "password": "sha1$8c72d$7bca3757c08d7e047c4bfa91bc79a26af06ff1c4",
             "email": "tester@gmail.com",
@@ -190,26 +190,26 @@
         }
     },
     {
-        "pk": 1, 
-        "model": "auth.group", 
+        "pk": 1,
+        "model": "auth.group",
         "fields": {
-            "name": "NGO Admins", 
+            "name": "NGO Admins",
             "permissions": []
         }
-    }, 
+    },
     {
-        "pk": 2, 
-        "model": "auth.group", 
+        "pk": 2,
+        "model": "auth.group",
         "fields": {
-            "name": "Project Managers", 
+            "name": "Project Managers",
             "permissions": []
         }
-    }, 
+    },
     {
-        "pk": 3, 
-        "model": "auth.group", 
+        "pk": 3,
+        "model": "auth.group",
         "fields": {
-            "name": "Read Only Users", 
+            "name": "Read Only Users",
             "permissions": []
         }
     }

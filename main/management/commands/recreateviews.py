@@ -5,7 +5,6 @@ import mangrove
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         managers = []
         if "syncall" in args:

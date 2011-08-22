@@ -44,7 +44,6 @@ import logging
 
 logger = logging.getLogger("django")
 
-
 END_OF_DAY = " 23:59:59"
 START_OF_DAY = " 00:00:00"
 
@@ -463,16 +462,20 @@ def datasenders_wizard(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(reminders_wizard, args=[project_id]))
 
+
 @login_required(login_url='/login')
 def reminders_wizard(request, project_id=None):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html', {"previous": previous_link, 'project_id': project_id, 'form': ReminderForm(initial={'is_reminder':project.reminders})},
+        return render_to_response('project/reminders_wizard.html', {"previous": previous_link, 'project_id': project_id,
+                                                                    'form': ReminderForm(
+                                                                        initial={'is_reminder': project.reminders})},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
+
 
 @login_required(login_url='/login')
 def reminders_profile_page(request, project_id):
@@ -480,15 +483,18 @@ def reminders_profile_page(request, project_id):
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         questionnaire = helper.load_questionnaire(dbm, project.qid)
-        return render_to_response('project/reminders.html', {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                                                             'project_id': project_id, 'form': ReminderForm(initial={'is_reminder': project.reminders}), 'is_reminder': project.reminders},
+        return render_to_response('project/reminders.html',
+                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
+                 'project_id': project_id, 'form': ReminderForm(initial={'is_reminder': project.reminders}),
+                 'is_reminder': project.reminders},
                                   context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @csrf_exempt
 def reminders(request, project_id):
     if request.method == 'GET':
-        reminders = Reminder.objects.filter(project_id = project_id)
+        reminders = Reminder.objects.filter(project_id=project_id)
         return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
 
     if request.method == 'POST':
@@ -497,7 +503,8 @@ def reminders(request, project_id):
         for reminder in reminders:
             Reminder(project_id=project_id, days_before=reminder['day'], message=reminder['message']).save()
         return HttpResponse("Reminders has been saved")
-    
+
+
 @csrf_exempt
 def enable_reminders_in_project(request, project_id=None):
     if request.method == 'POST':
@@ -505,7 +512,8 @@ def enable_reminders_in_project(request, project_id=None):
         project = models.get_project(project_id, dbm)
         project.reminders = True if request.POST['is_reminder'] == 'True' else False
         project.save(dbm)
-        return HttpResponse("The status of reminder for project %s is %d" %(project.name, project.reminders))
+        return HttpResponse("The status of reminder for project %s is %d" % (project.name, project.reminders))
+
 
 @login_required(login_url='/login')
 def activate_project(request, project_id=None):
@@ -662,13 +670,15 @@ def _create_submission_request(form_model, request):
 
 def _make_form_context(questionnaire_form, project, form_code):
     return {'questionnaire_form': questionnaire_form, 'project': project,
-                'project_links': _make_project_links(project, form_code)}
+            'project_links': _make_project_links(project, form_code)}
 
 
 def _create_select_field(field, choices):
     if field.single_select_flag:
         return forms.ChoiceField(choices=choices, required=False, label=field.name, initial=field.value)
-    return forms.MultipleChoiceField(choices=choices, widget=forms.SelectMultiple(attrs={'class': 'multiple_select', 'size': len(choices)}), required=False, label=field.name, initial=field.value)
+    return forms.MultipleChoiceField(choices=choices, widget=forms.SelectMultiple(
+        attrs={'class': 'multiple_select', 'size': len(choices)}), required=False, label=field.name,
+                                     initial=field.value)
 
 
 def _create_choices(field):
@@ -684,21 +694,20 @@ def _get_django_field(field):
         return  _create_select_field(field, _create_choices(field))
     display_field = forms.CharField(label=field.name, initial=field.value, required=False)
     display_field.widget.attrs["watermark"] = field.get_constraint_text()
-#    display_field.widget.attrs["watermark"] = "18 - 1"
+    #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
 
 
-
 def _create_django_form_from_form_model(form_model):
-    properties = {field.code.lower() : _get_django_field(field) for field in form_model.fields}
-    properties.update( { 'form_code' :  forms.CharField(widget=HiddenInput,initial=form_model.form_code) } )
+    properties = {field.code.lower(): _get_django_field(field) for field in form_model.fields}
+    properties.update({'form_code': forms.CharField(widget=HiddenInput, initial=form_model.form_code)})
     return type('QuestionnaireForm', (Form, ), properties)
 
 
 def _to_list(errors):
     error_dict = dict()
-    for key,value in errors.items():
-        error_dict.update({key : [value] if not isinstance(value,list) else value})
+    for key, value in errors.items():
+        error_dict.update({key: [value] if not isinstance(value, list) else value})
     return error_dict
 
 
@@ -712,7 +721,8 @@ def _create_request(questionnaire_form, username):
 
 
 def _get_response(form_code, project, questionnaire_form, request):
-    return render_to_response('project/web_questionnaire.html', _make_form_context(questionnaire_form, project, form_code),
+    return render_to_response('project/web_questionnaire.html',
+                              _make_form_context(questionnaire_form, project, form_code),
                               context_instance=RequestContext(request))
 
 
@@ -747,9 +757,10 @@ def web_questionnaire(request, project_id=None):
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
 
-        _project_context = _make_form_context(questionnaire_form, project,form_model.form_code)
-        _project_context.update({'success_message': success_message,'error_message': error_message})
-        return render_to_response('project/web_questionnaire.html', _project_context,context_instance=RequestContext(request))
+        _project_context = _make_form_context(questionnaire_form, project, form_model.form_code)
+        _project_context.update({'success_message': success_message, 'error_message': error_message})
+        return render_to_response('project/web_questionnaire.html', _project_context,
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')

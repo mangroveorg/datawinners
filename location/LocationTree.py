@@ -53,7 +53,7 @@ def get_location_groups_for_country(country, start_with):
     search_string = start_with.lower().encode()
 
     data_dict = {}
-    data_dict['like'] = psycopg2.Binary(search_string +'%')
+    data_dict['like'] = psycopg2.Binary(search_string + '%')
     sql = """
     (select 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
@@ -73,15 +73,15 @@ where name_1  ILIKE CAST(%(like)s as TEXT) limit 5)
 order by LEVEL
     """
 
-    cursor.execute(sql, data_dict )
+    cursor.execute(sql, data_dict)
     rows = cursor.fetchall()
     location_dict = defaultdict(list)
     for level, location in rows:
         location_dict[level].append(location)
     return location_dict
 
-_tree=None
-_tree_lock=Lock()
+_tree = None
+_tree_lock = Lock()
 
 
 def get_location_tree():
@@ -91,13 +91,14 @@ def get_location_tree():
             _tree = LocationTree()
     return _tree
 
+
 class LocationTree(object):
     def __init__(self):
         self.tree = DiGraph()
         self.loadfromdb()
 
     def loadfromdb(self):
-        rows = LocationLevel.objects.values('name_0','name_1','name_2','name_3','name_4')
+        rows = LocationLevel.objects.values('name_0', 'name_1', 'name_2', 'name_3', 'name_4')
         for row in rows:
             path_list = ['root']
             i = 0
@@ -113,7 +114,6 @@ class LocationTree(object):
 
     def _nodes(self):
         return self.tree.nodes()
-
 
 
     def _get_next_level(self, parent):
@@ -132,7 +132,7 @@ class LocationTree(object):
         row = self._get_location_level_row_for_geo_code(lat, long)
         lowest_level = self._get_lowest_level(row)
         location = []
-        for i in range(0,lowest_level+1):
+        for i in range(0, lowest_level + 1):
             field = "name_%s" % i
             location.append(getattr(row, field).lower())
         return location
@@ -155,7 +155,7 @@ class LocationTree(object):
     def get_centroid(self, location, level):
         column = 'name_%s' % level
         exactly_matches = column + '__iexact'
-        row = LocationLevel.objects.filter(**{exactly_matches : location}).centroid(model_att='c')
+        row = LocationLevel.objects.filter(**{exactly_matches: location}).centroid(model_att='c')
         if not row:
             return None
         point = row[0].c

@@ -9,8 +9,8 @@ class SMSTesterForm(Form):
     required_css_class = 'required'
 
     message = forms.CharField(required=True, label="SMS *", max_length=140, widget=Textarea({"cols": 30, "rows": 4}))
-    to_number = forms.CharField(required=True, label="To *",initial="261333782943")
-    from_number = forms.CharField(required=True, label="From *",initial="1234567890")
+    to_number = forms.CharField(required=True, label="To *", initial="261333782943")
+    from_number = forms.CharField(required=True, label="From *", initial="1234567890")
     response = forms.CharField(label="Response", max_length=140, widget=Textarea(), required=False)
 
     def clean_message(self):

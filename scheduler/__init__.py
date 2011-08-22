@@ -12,9 +12,8 @@ sched = Scheduler()
 sched.start()
 
 
-
 def send_reminders():
-    reminders = Reminder.objects.filter(days_before = date.today().day)
+    reminders = Reminder.objects.filter(days_before=date.today().day)
     reminders_grouped_project_id = defaultdict(list)
     for reminder in reminders:
         reminders_grouped_project_id[reminder.project_id].append(reminder)

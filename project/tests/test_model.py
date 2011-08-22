@@ -59,16 +59,17 @@ class TestProjectModel(unittest.TestCase):
         with self.assertRaises(DataObjectAlreadyExists):
             self.project1.save(self.dbm)
 
-    def _create_form_model_for_project(self,project):
+    def _create_form_model_for_project(self, project):
         ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
                               primitive_type='string')
         question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
                               language="eng", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
-                              defaultValue="some default value", language="eng", constraints=[TextLengthConstraint(5, 10)],
+                              defaultValue="some default value", language="eng",
+                              constraints=[TextLengthConstraint(5, 10)],
                               ddtype=ddtype)
         self.form_model = FormModel(self.dbm, name=self.project1.name, form_code="abc", fields=[question1, question2],
-                               entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
+                                    entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
         qid = self.form_model.save()
         project.qid = qid
         project.save(self.dbm)
@@ -85,7 +86,7 @@ class TestProjectModel(unittest.TestCase):
         self.project1.activate(self.dbm)
         form_model = self.dbm.get(self.project1.qid, FormModel)
         self.assertTrue(form_model.is_active())
-        self.assertEquals(ProjectState.ACTIVE,self.project1.state)
+        self.assertEquals(ProjectState.ACTIVE, self.project1.state)
 
     def test_should_deactivate_form_on_project_deactivate(self):
         project = Project(state=ProjectState.ACTIVE)
@@ -100,7 +101,7 @@ class TestProjectModel(unittest.TestCase):
             form_model_mock.save.assert_called_once_with()
             project_save_mock.assert_called_once_with(dbm)
 
-        self.assertEqual( ProjectState.INACTIVE, project.state)
+        self.assertEqual(ProjectState.INACTIVE, project.state)
 
     def test_should_set_form_to_test_on_project_set_to_test(self):
         project = Project(state=ProjectState.ACTIVE)
@@ -115,6 +116,6 @@ class TestProjectModel(unittest.TestCase):
             form_model_mock.save.assert_called_once_with()
             project_save_mock.assert_called_once_with(dbm)
 
-        self.assertEqual( ProjectState.TEST, project.state)
+        self.assertEqual(ProjectState.TEST, project.state)
 
 

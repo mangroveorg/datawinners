@@ -4,7 +4,7 @@ import json
 
 def _get_lowest_administrative_boundary(location_path):
     lowest_admin_boundary = location_path[len(location_path) - 1] if len(location_path) > 0 else None
-    return lowest_admin_boundary, len(location_path)-1
+    return lowest_admin_boundary, len(location_path) - 1
 
 
 def _get_geo_json_for_entity_from_geo_code(entity, geometry):
@@ -24,14 +24,14 @@ def _get_geo_json_from_location(lowest_admin_boundary, level, tree):
 
 def _get_geo_json_from_location_path(location_path, tree):
     lowest_admin_boundary, level = _get_lowest_administrative_boundary(location_path)
-    geojson_feature=None
+    geojson_feature = None
     if lowest_admin_boundary is not None:
         geojson_feature = _get_geo_json_from_location(lowest_admin_boundary, level, tree)
     return geojson_feature
 
 
 def create_location_geojson(entity_list):
-    location_list=[]
+    location_list = []
     for entity in entity_list:
         geometry_geo_json = None
         if entity.geometry:

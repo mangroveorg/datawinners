@@ -10,8 +10,6 @@ from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
 
 class TestImportData(unittest.TestCase):
-
-
     def setUp(self):
         self.dbm = get_db_manager(database='mangrove-test')
         self._create_entities()
@@ -28,21 +26,21 @@ class TestImportData(unittest.TestCase):
 
         subjects = load_subject_registration_data(self.dbm)
 
-        self.assertEqual(4,len(subjects))
+        self.assertEqual(4, len(subjects))
 
-        self.assertEqual(subjects[0]['name'],'--')
-        self.assertEqual(subjects[0]['geocode'],'1.0, 1.0')
+        self.assertEqual(subjects[0]['name'], '--')
+        self.assertEqual(subjects[0]['geocode'], '1.0, 1.0')
 
-        self.assertEqual(subjects[1]['name'],'clinic1')
-        self.assertEqual(subjects[1]['mobile_number'],'--')
+        self.assertEqual(subjects[1]['name'], 'clinic1')
+        self.assertEqual(subjects[1]['mobile_number'], '--')
 
-        self.assertEqual(subjects[2]['name'],'--')
-        self.assertEqual(subjects[2]['mobile_number'],'12332114')
+        self.assertEqual(subjects[2]['name'], '--')
+        self.assertEqual(subjects[2]['mobile_number'], '12332114')
 
-        self.assertEqual(subjects[3]['name'],'--')
-        self.assertEqual(subjects[3]['geocode'],'--')
-        self.assertEqual(subjects[3]['location'],'pune')
-        self.assertEqual(subjects[3]['description'],'this is a clinic')
+        self.assertEqual(subjects[3]['name'], '--')
+        self.assertEqual(subjects[3]['geocode'], '--')
+        self.assertEqual(subjects[3]['location'], 'pune')
+        self.assertEqual(subjects[3]['description'], 'this is a clinic')
 
 
     def _create_entities(self):
@@ -54,10 +52,10 @@ class TestImportData(unittest.TestCase):
                                                   primitive_type='string')
         rep1 = create_entity(self.dbm, ['reporter'], 'rep1')
         rep1.add_data(data=[(MOBILE_NUMBER_FIELD, '1234', self.telephone_number_type),
-                (NAME_FIELD, "Test_reporter", self.name_type)], submission=dict(submission_id="2"))
+            (NAME_FIELD, "Test_reporter", self.name_type)], submission=dict(submission_id="2"))
 
 
-    def _register_entity(self,text):
+    def _register_entity(self, text):
         self.player.accept(Request(transportInfo=self.transport, message=text))
 
     def _register_entities(self):

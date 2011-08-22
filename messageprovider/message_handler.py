@@ -2,7 +2,7 @@
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import NAME_FIELD
 from mangrove.utils.types import is_empty, is_sequence, sequence_to_str
-from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE, \
+from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE,\
     success_messages, SUBMISSION, REGISTRATION
 
 
@@ -17,7 +17,7 @@ def get_exception_message_for(exception, channel=None):
             message = exception_messages[ex_type].get(DEFAULT)
     else:
         message = exception_messages[ex_type][DEFAULT]
-    if isinstance(exception,MangroveException) and exception.data is not None and "%s" in message:
+    if isinstance(exception, MangroveException) and exception.data is not None and "%s" in message:
         return message % exception.data
     return message
 
@@ -42,8 +42,8 @@ def get_success_msg_for_submission_using(response):
 def get_success_msg_for_registration_using(response, source):
     resp_string = "Unique identification number(ID) is: %s" % (response.short_code)
     thanks = success_messages[REGISTRATION] % resp_string
-    if source=="sms":
-        return thanks + "We received : "  + get_expanded_response(response.processed_data)
+    if source == "sms":
+        return thanks + "We received : " + get_expanded_response(response.processed_data)
     return thanks
 
 

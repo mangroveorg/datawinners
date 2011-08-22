@@ -112,15 +112,16 @@ class TestHelper(unittest.TestCase):
     def test_should_return_tuple_list_of_submissions(self):
         questions = [("Q1", "Question 1"), ("Q2", "Question 2")]
         submissions = [
-                {'values': {'q1': 'ans1', 'q2': 'ans2'}, 'channel': 'sms', 'status': True, 'voided': False, 'test':False,
+                {'values': {'q1': 'ans1', 'q2': 'ans2'}, 'channel': 'sms', 'status': True, 'voided': False,
+                 'test': False,
                  'created': datetime(2011, 1, 1), 'error_message': 'error1', 'destination': '2616', 'source': '1234'},
-                {'values': {'q2': 'ans22'}, 'channel': 'sms', 'status': False, 'voided': True, 'test':True,
+                {'values': {'q2': 'ans22'}, 'channel': 'sms', 'status': False, 'voided': True, 'test': True,
                  'created': datetime(2011, 1, 2),
                  'error_message': 'error2', 'destination': '2616', 'source': '1234'}
         ]
         required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-                ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
-                                                                                                              ]
+            ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
+        ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
@@ -348,15 +349,15 @@ class TestHelper(unittest.TestCase):
 
     def test_should_create_value_list(self):
         data_dictionary = {'1': {'What is age of father?': 55, 'What is your name?': 'shweta',
-                                             "What colour do you choose?": ["red", "blue"],
-                                             "what is your loc?": [21.1, 23.3],
-                                             'What is associated entity?': 'cid002'},
+                                 "What colour do you choose?": ["red", "blue"],
+                                 "what is your loc?": [21.1, 23.3],
+                                 'What is associated entity?': 'cid002'},
                            '2': {'What is age of father?': 35, 'What is your name?': 'asif',
-                                             "What colour do you choose?": ["red"], "what is your loc?": [21.1],
-                                             'What is associated entity?': 'cid001'}}
+                                 "What colour do you choose?": ["red"], "what is your loc?": [21.1],
+                                 'What is associated entity?': 'cid001'}}
         header_list = ["Clinic code?", "What is your name?", "What is age of father?",
                        "What colour do you choose?", "what is your loc?"]
-        actual_list = helper.get_values(data_dictionary, header_list,'What is associated entity?')
+        actual_list = helper.get_values(data_dictionary, header_list, 'What is associated entity?')
         expected_list = [{"entity_name": "cid002", "values": ['shweta', 55, "red,blue", "21.1,23.3"]},
                 {"entity_name": "cid001", "values": ['asif', 35, "red", "21.1"]}]
         self.assertListEqual(expected_list, actual_list)
@@ -412,10 +413,10 @@ class TestHelper(unittest.TestCase):
 
 
 class TestPreviewCreator(unittest.TestCase):
-
     def test_should_create_basic_fields_in_preview(self):
         type = DataDictType(Mock(DatabaseManager), name="Name type")
-        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, instruction="please write more tests")
+        field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type,
+                          instruction="please write more tests")
         preview = helper.get_preview_for_field(field)
         self.assertEquals("What's in a name?", preview["description"])
         self.assertEquals("nam", preview["code"])

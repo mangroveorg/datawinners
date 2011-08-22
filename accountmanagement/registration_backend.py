@@ -11,7 +11,6 @@ from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import create_organization
 
 
-
 class RegistrationBackend(object):
     """
     A registration backend which follows a simple workflow:
@@ -53,7 +52,6 @@ class RegistrationBackend(object):
     """
 
 
-
     def register(self, request, **kwargs):
         """
         Given a username, email address and password, register a new
@@ -88,14 +86,15 @@ class RegistrationBackend(object):
         #        new_user = User.objects.create_user(email,email,password)
         new_user.first_name = kwargs.get('first_name')
         new_user.last_name = kwargs.get('last_name')
-        group = Group.objects.filter(name = "NGO Admins")
+        group = Group.objects.filter(name="NGO Admins")
         new_user.groups.add(group[0])
         new_user.save()
         organization = create_organization(kwargs)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
-                                     organization=organization, office_phone=kwargs.get("office_phone"), mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"))
+                                     organization=organization, office_phone=kwargs.get("office_phone"),
+                                     mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"))
         return new_user
 
     def registration_allowed(self, request):

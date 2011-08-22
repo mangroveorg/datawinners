@@ -28,17 +28,20 @@ class NGOUserProfile(models.Model):
     mobile_phone = models.TextField(null=True, blank=True)
     skype = models.TextField(null=True)
 
+
 class SMSC(models.Model):
-    vumi_username=models.TextField()
+    vumi_username = models.TextField()
 
     def __unicode__(self):
         return self.vumi_username
-    
+
+
 class OrganizationSetting(models.Model):
     organization = models.ForeignKey(Organization, unique=True)
     document_store = models.TextField()
     sms_tel_number = models.TextField(unique=True, null=True)
-    smsc=models.ForeignKey(SMSC, null=True, blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
+    smsc = models.ForeignKey(SMSC, null=True,
+                             blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
 
     def __unicode__(self):
         return self.organization.name

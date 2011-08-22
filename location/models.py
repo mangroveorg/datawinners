@@ -12,30 +12,29 @@ class LocationLevel(models.Model):
 
 
 location_level_mapping = {
-    'name_0' : 'NAME_0',
-    'name_1' : 'NAME_1',
-    'name_2' : 'NAME_2',
-    'name_3' : 'NAME_3',
-    'name_4' : 'NAME_4',
-    'geom' : 'MULTIPOLYGON',
-}
+    'name_0': 'NAME_0',
+    'name_1': 'NAME_1',
+    'name_2': 'NAME_2',
+    'name_3': 'NAME_3',
+    'name_4': 'NAME_4',
+    'geom': 'MULTIPOLYGON',
+    }
 
 
 # Auto-generated `LayerMapping` dictionary for WorldBorders model
 madagascar_wgs84_mapping = {
-    'name_1' : 'LIB_REG',
-    'name_2' : 'LIB_DIST',
-    'name_3' : 'LIB_COM',
-    'name_4' : 'LIB_FKT',
-    'geom' : 'MULTIPOLYGON',
-}
-
+    'name_1': 'LIB_REG',
+    'name_2': 'LIB_DIST',
+    'name_3': 'LIB_COM',
+    'name_4': 'LIB_FKT',
+    'geom': 'MULTIPOLYGON',
+    }
 
 location_level_mapping = {
     "madagascar": {"level1": "Region",
                    "level2": "District",
                    "level3": "Commune",
                    "level4": "Fokontany"
-                   }
+    }
 }
 

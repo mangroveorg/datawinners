@@ -55,18 +55,19 @@ exception_messages = {
         DEFAULT: u"Invalid message format.",
         SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
     },
-    ex.NoQuestionsSubmittedException:{
-        DEFAULT: u"Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire and resend SMS with the right Question code.",
+    ex.NoQuestionsSubmittedException: {
+        DEFAULT: u"Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire and resend SMS with the right Question code."
+        ,
         SMS: u"Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire and resend SMS with the right Question code."
 
     },
-    ex.MultipleSubmissionsForSameCodeException:{
+    ex.MultipleSubmissionsForSameCodeException: {
         DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
     },
-    ex.InactiveFormModelException:{
+    ex.InactiveFormModelException: {
         DEFAULT: u"Error. This project is not yet active. Submissions can be made only for an active project."
     },
-    Exception:{
+    Exception: {
         DEFAULT: u"Error. Internal error. Please call technical support"
     }
 }

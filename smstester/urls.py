@@ -5,4 +5,4 @@ from datawinners.smstester.views import index
 
 urlpatterns = patterns('',
     (r'^smstester$', index),
-)
+                       )

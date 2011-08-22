@@ -81,7 +81,7 @@ def create_questionnaire(post, dbm):
     if entity_type == [REPORTER]:
         fields = [entity_id_question, activity_report_question]
     return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
-                           form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE)
+                     form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE)
 
 
 def load_questionnaire(dbm, questionnaire_id):
@@ -149,8 +149,9 @@ def get_submissions(questions, submissions):
     formatted_list = []
     for each in submissions:
         submission_source = TEST_FLAG if each.get('test') else each.get('source')
-        formatted_list.append([each.get('destination'), submission_source,  each.get('created'), each.get('status'), each.get('voided'),
-     each.get('error_message')]+[each.get('values').get(q[0].lower()) for q in questions])
+        formatted_list.append(
+            [each.get('destination'), submission_source, each.get('created'), each.get('status'), each.get('voided'),
+             each.get('error_message')] + [each.get('values').get(q[0].lower()) for q in questions])
 
     return [tuple(each) for each in formatted_list]
 
@@ -175,15 +176,15 @@ def get_type_list(fields):
     type_list = []
     for field in fields:
         field_type = field.__class__.__name__
-#TODO- Future functionality. Removing for beta-release. Uncomment this when aggregations for multiple choice field are added.
-#        if field_type == "SelectField":
-#            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
-#            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
-#                                field.options])
-#            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
-#                                field.options])
-#            type_list.append(choice_type)
-#        else:
+        #TODO- Future functionality. Removing for beta-release. Uncomment this when aggregations for multiple choice field are added.
+        #        if field_type == "SelectField":
+        #            choice_type = copy(MULTI_CHOICE_TYPE_OPTIONS)
+        #            choice_type.extend(["sum(" + choice.get("text").get(field.language) + ")"for choice in
+        #                                field.options])
+        #            choice_type.extend(["percent(" + choice.get("text").get(field.language) + ")" for choice in
+        #                                field.options])
+        #            type_list.append(choice_type)
+        #        else:
         type_list.append(type_dictionary.get(field_type))
     return type_list
 
@@ -193,13 +194,13 @@ def get_headers(field_list):
     return [each.name for each in field_list]
 
 
-def get_values(data_dictionary, header_list,entity_question_description):
+def get_values(data_dictionary, header_list, entity_question_description):
     """
        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
        header_list = ["What is associated entity", "What is your name", "What is age of father?"]
        expected_list = [{"entity_name":"cid002", "values":['shweta', 55 ]}, {"entity_name":"cid001", "values":['asif', 35]}]
     """
-    value_list = [] 
+    value_list = []
     for key, values in data_dictionary.items():
         current_dict = dict()
         current_dict[u"entity_name"] = values.get(entity_question_description)
@@ -275,5 +276,7 @@ def remove_reporter(entity_type_list):
     entity_type_list.sort()
     return entity_type_list
 
+
 def get_preview_for_field(field):
-    return {"description": field.name, "code": field.code, "type": field.type, "constraints": field.get_constraint_text(),"instruction": field.instruction}
+    return {"description": field.name, "code": field.code, "type": field.type,
+            "constraints": field.get_constraint_text(), "instruction": field.instruction}

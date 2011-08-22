@@ -44,7 +44,6 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
 
 class TestShouldTemplatizeMessage(unittest.TestCase):
-
     def test_should_format_error_message_with_question_codes(self):
         expected_message = "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for q1, q2"
         errors = {"q1": "Some error", "q2": "Some other error"}
@@ -54,24 +53,24 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
     def test_should_format_success_message_for_submission_with_reporter_name(self):
         expected_message = success_messages[SUBMISSION] % "rep1" + "age: 12 name: tester choice: red"
         form_submission_mock = Mock()
-        form_submission_mock.cleaned_data = {'name':'tester','age':12,'choice':['red']}
-        response = Response(reporters=[{"name": "rep1"}], submission_id=123,form_submission=form_submission_mock)
+        form_submission_mock.cleaned_data = {'name': 'tester', 'age': 12, 'choice': ['red']}
+        response = Response(reporters=[{"name": "rep1"}], submission_id=123, form_submission=form_submission_mock)
         message = get_success_msg_for_submission_using(response)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
         expected_message = success_messages[SUBMISSION] % "" + "name: tester"
         form_submission_mock = Mock()
-        form_submission_mock.cleaned_data = {'name':'tester'}
-        response = Response(reporters=[], submission_id=123,form_submission=form_submission_mock)
+        form_submission_mock.cleaned_data = {'name': 'tester'}
+        response = Response(reporters=[], submission_id=123, form_submission=form_submission_mock)
         message = get_success_msg_for_submission_using(response)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_registration_with_short_code(self):
         expected_message = success_messages[REGISTRATION] % "Unique identification number(ID) is: REP1"
         form_submission_mock = Mock()
-        form_submission_mock.cleaned_data = {'name':'tester'}
+        form_submission_mock.cleaned_data = {'name': 'tester'}
         form_submission_mock.short_code = "REP1"
-        response = Response(reporters=[], submission_id=123,form_submission=form_submission_mock)
+        response = Response(reporters=[], submission_id=123, form_submission=form_submission_mock)
         message = get_success_msg_for_registration_using(response, "web")
         self.assertEqual(expected_message, message)
