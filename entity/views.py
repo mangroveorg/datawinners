@@ -37,7 +37,7 @@ def _validate_post_data(dbm, request):
             if not helper.unique(dbm, tel_number):
                 raise MultipleReportersForANumberException(entered_telephone_number)
 
-            web_player = WebPlayer(dbm, SubmissionHandler(dbm))
+            web_player = WebPlayer(dbm)
             response = web_player.accept(
                 Request(message=_get_data(form_data),
                         transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
@@ -95,7 +95,7 @@ def submit(request):
     post = _get_submission(request.POST)
     success = True
     try:
-        web_player = WebPlayer(dbm, SubmissionHandler(dbm))
+        web_player = WebPlayer(dbm)
         message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
         if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
             message[LOCATION_TYPE_FIELD_CODE]+= COUNTRY

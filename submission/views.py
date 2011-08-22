@@ -42,7 +42,7 @@ def sms(request):
     _from, _to = _get_from_and_to_numbers(request)
     try:
         dbm = get_db_manager_for(_to)
-        sms_player = SMSPlayer(dbm, SubmissionHandler(dbm))
+        sms_player = SMSPlayer(dbm)
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
         response = sms_player.accept(Request(transportInfo=transportInfo, message=_message))
         message = SMSResponse(response).text()
