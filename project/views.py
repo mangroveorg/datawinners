@@ -66,7 +66,7 @@ def _make_project_links(project, questionnaire_code):
 
     if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
-        project_links['test_questionnaire_link'] = reverse(test_questionnaire, args=[project_id])
+        project_links['test_questionnaire_link'] = reverse(web_questionnaire, args=[project_id])
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
@@ -665,20 +665,27 @@ def _make_form_context(questionnaire_form, project, form_code):
                 'project_links': _make_project_links(project, form_code)}
 
 
-def _get_select_field(field, choices):
+def _create_select_field(field, choices):
     if field.single_select_flag:
         return forms.ChoiceField(choices=choices, required=False, label=field.name, initial=field.value)
     return forms.MultipleChoiceField(choices=choices, widget=forms.SelectMultiple(attrs={'class': 'multiple_select', 'size': len(choices)}), required=False, label=field.name, initial=field.value)
 
 
+def _create_choices(field):
+    choice_list = [('', '--None--')]
+    for option in field.options:
+        choice_list.append((option['val'], option['text']['eng']))
+    choices = tuple(choice_list)
+    return choices
+
+
 def _get_django_field(field):
     if isinstance(field, SelectField):
-        choice_list = [('','--None--')]
-        for option in field.options:
-            choice_list.append((option['val'],option['text']['eng']))
-        choices = tuple(choice_list)
-        return  _get_select_field(field, choices)
-    return forms.CharField(label=field.name, initial=field.value, required=False)
+        return  _create_select_field(field, _create_choices(field))
+    display_field = forms.CharField(label=field.name, initial=field.value, required=False)
+    display_field.widget.attrs["watermark"] = field.get_constraint_text()
+#    display_field.widget.attrs["watermark"] = "18 - 1"
+    return display_field
 
 
 
@@ -705,12 +712,12 @@ def _create_request(questionnaire_form, username):
 
 
 def _get_response(form_code, project, questionnaire_form, request):
-    return render_to_response('project/test_questionnaire.html', _make_form_context(questionnaire_form, project, form_code),
+    return render_to_response('project/web_questionnaire.html', _make_form_context(questionnaire_form, project, form_code),
                               context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
-def test_questionnaire(request, project_id=None):
+def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, manager)
     form_model = helper.load_questionnaire(manager, project.qid)
@@ -742,7 +749,7 @@ def test_questionnaire(request, project_id=None):
 
         _project_context = _make_form_context(questionnaire_form, project,form_model.form_code)
         _project_context.update({'success_message': success_message,'error_message': error_message})
-        return render_to_response('project/test_questionnaire.html', _project_context,context_instance=RequestContext(request))
+        return render_to_response('project/web_questionnaire.html', _project_context,context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
