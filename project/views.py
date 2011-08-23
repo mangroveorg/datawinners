@@ -326,21 +326,18 @@ def submissions(request):
 
 
 def _format_data_for_presentation(data_dictionary, form_model):
-    header_list = helper.get_headers(form_model.fields)
-    type_list = helper.get_type_list(form_model.fields[1:])
-    header_list[0] = form_model.entity_type[0] + " Code"
+    headers = helper.get_field_names(form_model.fields)
+    type_list = helper.get_aggregation_options_for_all_fields(form_model.fields[1:])
+    headers[0] = form_model.entity_type[0] + " Code"
     if data_dictionary == {}:
-        return "[]", header_list, type_list
+        return "[]", headers, type_list
 
-    entity_question_description = form_model.entity_question.name
-    data_list = helper.get_values(data_dictionary, header_list, entity_question_description)
-    data_list = helper.to_report(data_list)
-    response_string = encode_json(data_list)
-    return response_string, header_list, type_list
+    response_string = encode_json(helper.get_all_values(data_dictionary, headers, form_model.entity_question.name))
+    return response_string, headers, type_list
 
 
 def _load_data(form_model, manager, questionnaire_code, request):
-    header_list = helper.get_headers(form_model.fields)
+    header_list = helper.get_field_names(form_model.fields)
     aggregation_type_list = json.loads(request.POST.get("aggregation-types"))
     start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY)
     end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY)
@@ -360,18 +357,18 @@ def project_data(request, project_id=None, questionnaire_code=None):
     project_links = _make_project_links(project, questionnaire_code)
 
     if request.method == "GET":
-        data_dictionary = data.aggregate_for_form(manager, form_code=questionnaire_code,
+        entity_values_dict = data.aggregate_for_form(manager, form_code=questionnaire_code,
                                                   aggregates={"*": data.reduce_functions.LATEST},
                                                   aggregate_on=EntityAggregration())
-        response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        response_string, header_list, type_list = _format_data_for_presentation(entity_values_dict, form_model)
         return render_to_response('project/data_analysis.html',
                 {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
                  "header_list": header_list, "type_list": type_list, 'project_links': project_links, 'project': project}
                                   ,
                                   context_instance=RequestContext(request))
     if request.method == "POST":
-        data_dictionary = _load_data(form_model, manager, questionnaire_code, request)
-        response_string, header_list, type_list = _format_data_for_presentation(data_dictionary, form_model)
+        entity_values_dict = _load_data(form_model, manager, questionnaire_code, request)
+        response_string, header_list, type_list = _format_data_for_presentation(entity_values_dict, form_model)
         return HttpResponse(response_string)
 
 

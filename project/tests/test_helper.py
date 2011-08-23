@@ -343,7 +343,7 @@ class TestHelper(unittest.TestCase):
                               language="eng", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
-        actual_list = helper.get_headers([question1, question2])
+        actual_list = helper.get_field_names([question1, question2])
         expected_list = ["What is associated entity", "What is your name"]
         self.assertListEqual(expected_list, actual_list)
 
@@ -357,9 +357,9 @@ class TestHelper(unittest.TestCase):
                                  'What is associated entity?': 'cid001'}}
         header_list = ["Clinic code?", "What is your name?", "What is age of father?",
                        "What colour do you choose?", "what is your loc?"]
-        actual_list = helper.get_values(data_dictionary, header_list, 'What is associated entity?')
-        expected_list = [{"entity_name": "cid002", "values": ['shweta', 55, "red,blue", "21.1,23.3"]},
-                {"entity_name": "cid001", "values": ['asif', 35, "red", "21.1"]}]
+        actual_list = helper.get_all_values(data_dictionary, header_list, 'What is associated entity?')
+        expected_list = [["cid002",'shweta', 55, "red,blue", "21.1,23.3"],
+                ["cid001",'asif', 35, "red", "21.1"]]
         self.assertListEqual(expected_list, actual_list)
 
     def test_should_create_type_list(self):
@@ -372,7 +372,7 @@ class TestHelper(unittest.TestCase):
                                 options=[("red", 1), ("yellow", 2), ('green', 3)], name="What is your favourite colour",
                                 ddtype=ddtype)
         question4 = DateField("What is date", "Q4", "date_question", "mm.yyyy", ddtype)
-        actual_list = helper.get_type_list([question1, question2, question3, question4])
+        actual_list = helper.get_aggregation_options_for_all_fields([question1, question2, question3, question4])
         choice_type = copy(helper.MULTI_CHOICE_TYPE_OPTIONS)
         expected_list = [helper.NUMBER_TYPE_OPTIONS, helper.TEXT_TYPE_OPTIONS, choice_type, helper.DATE_TYPE_OPTIONS]
         self.assertListEqual(expected_list, actual_list)
@@ -390,13 +390,6 @@ class TestHelper(unittest.TestCase):
         actual_list = helper.get_aggregate_list(header_list, post_data)
         self.assertIsInstance(actual_list[0], Latest)
         self.assertIsInstance(actual_list[1], Sum)
-
-    def test_should_create_list_of_values(self):
-        data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
-                {"entity_name": "cid001", "values": ['asif', 35]}]
-        actual_list = helper.to_report(data_list)
-        expected_list = [["cid002", 'shweta', 55], ["cid001", 'asif', 35]]
-        self.assertListEqual(expected_list, actual_list)
 
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"

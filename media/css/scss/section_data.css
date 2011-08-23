@@ -196,3 +196,6 @@ table {
     color: #CCCCCC; }
     .dataTables_paginate span.paginate_button_disabled:hover {
       background: none; }
+
+.table_footer {
+  background-color: #525252 !important; }

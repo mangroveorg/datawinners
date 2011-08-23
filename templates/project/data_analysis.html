@@ -108,11 +108,21 @@
             </tr>
             <tr class="data_header">
                 {% for each in header_list %}
-                <th>{{ each }}</th>
+                <th>{{ each }}
+                </th>
                 {% endfor %}
             </tr>
             </thead>
-    </table>
+            <tfoot>
+            <tr>
+                {% for each in header_list %}
+                <th class="table_footer">
+                       Grand Total
+                </th>
+                {% endfor %}
+            </tr>
+            </tfoot>
+        </table>
     </div>
     <div id="demo"></div>
 {% endblock %}

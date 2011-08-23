@@ -6,7 +6,7 @@ from mangrove.form_model.field import TextField, IntegerField, SelectField, Date
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.utils.helpers import slugify
-from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string
+from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string, sequence_to_str
 from mangrove.datastore import aggregrate as aggregate_module
 import models
 import xlwt
@@ -170,7 +170,7 @@ def generate_questionnaire_code(dbm):
     return code
 
 
-def get_type_list(fields):
+def get_aggregation_options_for_all_fields(fields):
     type_dictionary = dict(IntegerField=NUMBER_TYPE_OPTIONS, TextField=TEXT_TYPE_OPTIONS, DateField=DATE_TYPE_OPTIONS,
                            GeoCodeField=GEO_TYPE_OPTIONS, SelectField=MULTI_CHOICE_TYPE_OPTIONS)
     type_list = []
@@ -189,31 +189,30 @@ def get_type_list(fields):
     return type_list
 
 
-def get_headers(field_list):
+def get_field_names(field_list):
     assert is_sequence(field_list)
     return [each.name for each in field_list]
 
 
-def get_values(data_dictionary, header_list, entity_question_description):
+def _to_str(value):
+    if is_sequence(value):
+        return sequence_to_str(value)
+    return value
+
+
+def _to_value_list(entity_question_description, header_list, value_dict):
+    value_list = [value_dict.get(entity_question_description)]
+    value_list.extend([_to_str(value_dict.get(header)) for header in header_list[1:]])
+    return value_list
+
+
+def get_all_values(data_dictionary, header_list, entity_question_description):
     """
        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
        header_list = ["What is associated entity", "What is your name", "What is age of father?"]
        expected_list = [{"entity_name":"cid002", "values":['shweta', 55 ]}, {"entity_name":"cid001", "values":['asif', 35]}]
     """
-    value_list = []
-    for key, values in data_dictionary.items():
-        current_dict = dict()
-        current_dict[u"entity_name"] = values.get(entity_question_description)
-        current_dict[u"values"] = list()
-        for each in header_list[1:]:
-            current_val = values.get(each)
-            if type(current_val) == list:
-                if not is_string(current_val[0]):
-                    current_val = [unicode(each) for each in current_val]
-                current_val = u",".join(current_val)
-            current_dict[u"values"].append(current_val)
-        value_list.append(current_dict)
-    return value_list
+    return [_to_value_list(entity_question_description, header_list, value_dict) for value_dict in data_dictionary.values()]
 
 
 def get_aggregate_dictionary(header_list, post_data):
@@ -229,20 +228,6 @@ def get_aggregate_list(header_list, post_data):
     for index, field_name in enumerate(header_list):
         aggregates.append(aggregate_module.aggregation_factory(post_data[index].strip().lower(), field_name))
     return aggregates
-
-
-def to_report(data_list):
-    """
-    data_list = [{"entity_name": "cid002", "values": ['shweta', 55]},
-                         {"entity_name": "cid001", "values": ['asif', 35]}]
-        expected_list = [["cid002", 'shweta', 55],["cid001", 'asif', 35]]
-    """
-    final_list = []
-    for each in data_list:
-        current_list = [each["entity_name"]]
-        current_list.extend(each["values"])
-        final_list.append(current_list)
-    return final_list
 
 
 def get_formatted_time_string(time_val):
