@@ -336,15 +336,15 @@ def _format_data_for_presentation(data_dictionary, form_model):
     return response_string, headers, type_list
 
 
-def _load_data(form_model, manager, questionnaire_code, request):
+def _load_data(form_model, manager, questionnaire_code, aggregation_types, start_time, end_time):
     header_list = helper.get_field_names(form_model.fields)
-    aggregation_type_list = json.loads(request.POST.get("aggregation-types"))
-    start_time = helper.get_formatted_time_string(request.POST.get("start_time").strip() + START_OF_DAY)
-    end_time = helper.get_formatted_time_string(request.POST.get("end_time").strip() + END_OF_DAY)
+    aggregation_type_list = json.loads(aggregation_types)
+    start_time = helper.get_formatted_time_string(start_time.strip() + START_OF_DAY)
+    end_time = helper.get_formatted_time_string(end_time.strip() + END_OF_DAY)
     aggregates = helper.get_aggregate_list(header_list[1:], aggregation_type_list)
     aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
     data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
-                                                                     aggregates=aggregates, starttime=start_time,
+                                                                     aggregates=aggregates, aggregate_on=EntityAggregration(), starttime=start_time,
                                                                      endtime=end_time)
     return data_dictionary
 
@@ -367,7 +367,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
                                   ,
                                   context_instance=RequestContext(request))
     if request.method == "POST":
-        entity_values_dict = _load_data(form_model, manager, questionnaire_code, request)
+        entity_values_dict = _load_data(form_model, manager, questionnaire_code, request.POST.get("aggregation-types"), request.POST.get("start_time"), request.POST.get("end_time"))
         response_string, header_list, type_list = _format_data_for_presentation(entity_values_dict, form_model)
         return HttpResponse(response_string)
 
