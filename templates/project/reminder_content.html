@@ -15,7 +15,8 @@
       style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
     <span>New Reminder: </span>
     <input data-bind="value: newDay" placeholder="Day?"/>
-    <input data-bind="value: newMessage" placeholder="Message?"/>
+    <input data-bind="value: newMessage, valueUpdate: 'keyup'" placeholder="Message?" maxlength="160"/>
+    The message count is <span data-bind="text: newMessage().length"></span>
     <button type="submit">Add Reminder</button>
 </form>
 <div id="reminder-list">

@@ -23,7 +23,7 @@ function reminder(message, day, ownerViewModel) {
 
 function viewModel() {
     this.reminders = ko.observableArray([]);
-    this.newMessage = ko.observable();
+    this.newMessage = ko.observable("");
     this.newDay = ko.observable();
     this.addReminder = function() {
         this.reminders.push(new reminder(this.newMessage(), this.newDay(), this));
