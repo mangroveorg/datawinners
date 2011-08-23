@@ -1,0 +1,33 @@
+#footer{
+    a{
+        color:#afdd88;
+        text-decoration:none;
+        &:hover{
+            text-decoration:underline;
+        }
+    }
+    div{
+        text-align:left;
+        color:#b9cedc;
+        font-size:12px;
+        line-height:16px;
+        margin:0;
+    }
+    img{
+        margin:0 15px 6px 0;
+    }
+    p{
+        margin:20px 0;
+    }
+    small{
+        font-size:11px;
+    }
+    ul{
+        a {
+            line-height:23px;
+        }
+    }
+    .italic {
+        font-size:11px;
+    }
+}
