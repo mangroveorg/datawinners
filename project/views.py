@@ -219,7 +219,7 @@ def project_overview(request, project_id=None):
     project_links = _make_project_links(project, questionnaire.form_code)
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
-            , 'project_profile_link': link, 'number_of_questions': number_of_questions},
+             , 'project_profile_link': link, 'number_of_questions': number_of_questions},
                               context_instance=RequestContext(request))
 
 
@@ -501,7 +501,8 @@ def reminders(request, project_id):
         reminders = json.loads(request.POST['reminders'])
         Reminder.objects.filter(project_id=project_id).delete()
         for reminder in reminders:
-            Reminder(project_id=project_id, days_before=reminder['day'], message=reminder['message']).save()
+            Reminder(project_id=project_id, day_of_the_month=reminder['day'], message=reminder['message'],
+                     organization=utils.get_organization(request)).save()
         return HttpResponse("Reminders has been saved")
 
 
@@ -570,7 +571,7 @@ def finish(request, project_id=None):
                                                                    'project_links': _make_links_for_finish_page(
                                                                        project_id, form_model),
                                                                    'number_of_datasenders': number_of_registered_datasenders
-            ,
+                                                                   ,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "previous": previous_link,
                                                                    "is_reminder": is_reminder},
@@ -696,7 +697,6 @@ def _get_django_field(field):
     display_field.widget.attrs["watermark"] = field.get_constraint_text()
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
-
 
 def _create_django_form_from_form_model(form_model):
     properties = {field.code.lower(): _get_django_field(field) for field in form_model.fields}

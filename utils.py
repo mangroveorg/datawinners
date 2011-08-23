@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect
 import xlwt
 from datetime import datetime
-from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from mangrove.datastore import settings
@@ -46,3 +46,7 @@ def get_database_manager_for_org(organization):
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     db = organization_settings.document_store
     return get_db_manager(database=db)
+
+def get_organization(request):
+    profile = request.user.get_profile()
+    return Organization.objects.get(org_id=profile.org_id)

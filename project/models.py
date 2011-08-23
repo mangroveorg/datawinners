@@ -14,12 +14,12 @@ from django.db import models
 
 class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
-    days_before = IntegerField()
+    day_of_the_month = IntegerField()
     message = CharField(max_length=160)
     organization = ForeignKey(Organization)
 
     def to_dict(self):
-        return {'day': self.days_before, 'message': self.message}
+        return {'day': self.day_of_the_month, 'message': self.message}
 
 
 class ProjectState(object):
