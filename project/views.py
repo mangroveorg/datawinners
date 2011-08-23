@@ -469,7 +469,7 @@ def reminders_wizard(request, project_id=None):
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html', {"previous": previous_link, 'project_id': project_id,
+        return render_to_response('project/reminders_wizard.html', {"previous": previous_link, 'project_id': project_id,'is_reminder': project.reminders,
                                                                     'form': ReminderForm(
                                                                         initial={'is_reminder': project.reminders})},
                                   context_instance=RequestContext(request))

@@ -22,13 +22,6 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>
-    <script type="text/x-jquery-tmpl" id="reminderTemplate">
-    <li>
-        <input type="text" data-bind="value: day">
-        <input type="text" data-bind="value: message">
-        <a href="#" data-bind="click:remove">Remove</a>
-    </li>
-    </script>
 {% endblock %}
 
 
