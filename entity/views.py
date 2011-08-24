@@ -22,31 +22,23 @@ from datawinners.entity import import_data as import_module
 
 COUNTRY = ',MADAGASCAR'
 
-def _validate_post_data(dbm, request):
-    form = ReporterRegistrationForm(request.POST)
+def _validate_form(dbm, form):
     message = None
-    success = False
-    form_errors = []
-    form_errors.extend(form.non_field_errors())
     if form.is_valid():
-        form_errors = []
-        form_data = {k: v for (k, v) in form.cleaned_data.items() if not is_empty(v)}
-        try:
-            entered_telephone_number = form_data.get("telephone_number")
-            tel_number = _get_telephone_number(entered_telephone_number)
-            if not helper.unique(dbm, tel_number):
-                raise MultipleReportersForANumberException(entered_telephone_number)
+        telephone_number = form.cleaned_data["telephone_number"]
+        if not helper.unique(dbm, telephone_number):
+            form._errors['telephone_number'] = (u"Sorry, the telephone number %s has already been registered") % (telephone_number,)
+            return message
 
+        try:
             web_player = WebPlayer(dbm)
-            response = web_player.accept(
-                Request(message=_get_data(form_data),
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data),
                         transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
-            success = True
         except MangroveException as exception:
-            form_errors.append(exception.message)
-            success = False
-    return form, form_errors, message, success
+            message = exception.message
+
+    return message
 
 
 def _get_data(form_data):
@@ -54,20 +46,13 @@ def _get_data(form_data):
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
               'location': LOCATION_TYPE_FIELD_CODE}
     data = dict()
-    telephone_number = form_data.get('telephone_number')
-    if telephone_number is not None:
-        data[mapper['telephone_number']] = _get_telephone_number(telephone_number)
+    data[mapper['telephone_number']] = form_data.get('telephone_number')
     data[mapper['location']] = form_data.get('location') + COUNTRY if form_data.get('location') is not None else None
     data[mapper['geo_code']] = form_data.get('geo_code')
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
     data[ENTITY_TYPE_FIELD_CODE] = 'Reporter'
     return data
-
-
-def _get_telephone_number(number_as_given):
-    return "".join([num for num in number_as_given if num.isdigit()])
-
 
 #TODO This method has to be moved into a proper place since this is used for registering entities.
 @csrf_view_exempt
@@ -106,14 +91,11 @@ def create_datasender(request):
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
-        form, form_errors, message, success = _validate_post_data(dbm, request)
-        if success:
-            form = ReporterRegistrationForm()
-        response = render_to_response('datasender_form.html',
-                {'form': form, 'message': message, 'form_errors': form_errors, 'success': success},
+        form = ReporterRegistrationForm(request.POST)
+        message= _validate_form(dbm, form)
+        return render_to_response('datasender_form.html',
+                {'form': form, 'message': message},
                                       context_instance=RequestContext(request))
-        return response
-
 
 def create_type(request):
     success = False
