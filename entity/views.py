@@ -69,22 +69,6 @@ def _get_telephone_number(number_as_given):
     return "".join([num for num in number_as_given if num.isdigit()])
 
 
-def _get_submission_data(post, key):
-    if post.get(key):
-        return post.get(key)
-    return None
-
-
-def _get_submission(post):
-    data = json.loads(post.get('data'))
-    return {
-        'transport': _get_submission_data(data, 'transport'),
-        'source': _get_submission_data(data, 'source'),
-        'destination': _get_submission_data(data, 'destination'),
-        'message': _get_submission_data(data, 'message')
-    }
-
-
 #TODO This method has to be moved into a proper place since this is used for registering entities.
 @csrf_view_exempt
 @csrf_response_exempt
@@ -92,11 +76,11 @@ def _get_submission(post):
 @login_required(login_url='/login')
 def submit(request):
     dbm = get_database_manager(request.user)
-    post = _get_submission(request.POST)
+    post = json.loads(request.POST['data'])
     success = True
     try:
         web_player = WebPlayer(dbm)
-        message = {k: v for (k, v) in post.get('message').items() if not is_empty(v)}
+        message = post['message']
         if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
             message[LOCATION_TYPE_FIELD_CODE] += COUNTRY
         request = Request(message=message,
