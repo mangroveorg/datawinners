@@ -1,5 +1,7 @@
 $(document).ready(function() {
+    $(document).ajaxStop($.unblockUI);
     $("#id_register_button").unbind().live('click', function() {
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> Just a moment...</h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
             url: '/entity/datasender/create',

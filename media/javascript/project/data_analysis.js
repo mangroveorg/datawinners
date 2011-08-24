@@ -66,9 +66,11 @@ $(document).ready(function() {
     DW.dataBinding(initial_data, false, true);
     DW.wrap_table();
     $('#data_analysis select').customStyle();
+    $(document).ajaxStop($.unblockUI);
 
     $(".aggregation_type").live("change", function() {
         var time_list = DW.submit_data();
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> Just a moment...</h1>' });
         $.ajax({
             type: 'POST',
             url: window.location.pathname,
@@ -95,6 +97,7 @@ $(document).ready(function() {
 
     $('#time_submit').click(function() {
         var time_list = DW.submit_data();
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> Just a moment...</h1>' });
         $.ajax({
             type: 'POST',
             url: window.location.pathname,
