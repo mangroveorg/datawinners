@@ -333,8 +333,7 @@ def _format_data_for_presentation(entity_values_dict, form_model):
         return "[]", headers, type_list
 
     field_values, grand_totals = helper.get_all_values(entity_values_dict, headers, form_model.entity_question.name)
-    response_string = encode_json(field_values)
-    return response_string, headers, type_list, grand_totals
+    return field_values, headers, type_list, grand_totals
 
 
 def _load_data(form_model, manager, questionnaire_code, aggregation_types = None, start_time = None, end_time = None):
@@ -375,17 +374,17 @@ def project_data(request, project_id=None, questionnaire_code=None):
     project = models.get_project(project_id, dbm=manager)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    response_string, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code, request)
+    field_values, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code, request)
 
     if request.method == "GET":
         return render_to_response('project/data_analysis.html',
-                {"entity_type": form_model.entity_type[0], "data_list": repr(response_string),
+                {"entity_type": form_model.entity_type[0], "data_list": repr(encode_json(field_values)),
                  "header_list": header_list, "type_list": type_list, 'grand_totals': grand_totals, 'project_links': (
                 _make_project_links(project, questionnaire_code)), 'project': project}
                                   ,
                                   context_instance=RequestContext(request))
     if request.method == "POST":
-        return HttpResponse(response_string)
+        return HttpResponse(encode_json({'data': field_values, 'footer':grand_totals}))
 
 
 @login_required(login_url='/login')
@@ -395,8 +394,7 @@ def export_data(request):
     form_model = get_form_model_by_code(manager, questionnaire_code)
     data_dictionary = _load_data(form_model, manager, questionnaire_code, request.POST.get("aggregation-types"),
                                  request.POST.get("start_time"), request.POST.get("end_time"))
-    response_string, header_list, type_list, grand_totals = _format_data_for_presentation(data_dictionary, form_model)
-    raw_data_list = json.loads(response_string)
+    raw_data_list, header_list, type_list, grand_totals = _format_data_for_presentation(data_dictionary, form_model)
     raw_data_list.insert(0, header_list)
     file_name = request.POST.get(u"project_name") + '_analysis'
     return _create_excel_response(raw_data_list, file_name)
