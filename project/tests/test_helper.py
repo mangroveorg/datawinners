@@ -5,6 +5,7 @@ import unittest
 from mock import Mock, patch
 from datawinners.project import helper
 from datawinners.project.models import Project
+from datawinners.project.views import _get_imports_subjects_post_url
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
@@ -120,8 +121,8 @@ class TestHelper(unittest.TestCase):
                  'error_message': 'error2', 'destination': '2616', 'source': '1234'}
         ]
         required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-            ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
-        ]
+                ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
+                                                                                                              ]
         self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
@@ -362,8 +363,8 @@ class TestHelper(unittest.TestCase):
         header_list = ["Clinic code?", "What is your name?", "What is age of father?",
                        "What colour do you choose?", "what is your loc?"]
         field_valus, grand_totals = helper.get_all_values(data_dictionary, header_list, 'What is associated entity?')
-        expected_list = [["cid002",'shweta', 55, "red,blue", "21.1,23.3"],
-                ["cid001",'asif', 35, "red", "21.1"]]
+        expected_list = [["cid002", 'shweta', 55, "red,blue", "21.1,23.3"],
+            ["cid001", 'asif', 35, "red", "21.1"]]
         self.assertListEqual(expected_list, field_valus)
 
     def test_should_create_type_list(self):
@@ -507,3 +508,10 @@ class TestPreviewCreator(unittest.TestCase):
         preview = helper.get_preview_for_field(field)
         self.assertEqual("xx.xxxx yy.yyyy", preview["constraints"])
 
+    def test_should_make_project_post_url_for_import_subject_project_wizard(self):
+        url = _get_imports_subjects_post_url('123')
+        self.assertEqual("/entity/subject/import/?project_id=123", url)
+
+    def test_should_make_the_post_url_for_import_subject_project_wizard(self):
+        url = _get_imports_subjects_post_url()
+        self.assertEqual("/entity/subject/import/", url)

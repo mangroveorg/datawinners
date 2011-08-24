@@ -195,7 +195,7 @@ def all_datasenders(request):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
-def import_subjects_from_project_wizard(request):
+def import_subjects_from_project_wizard(request,project_id=None):
     manager = get_database_manager(request.user)
     error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
     return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,

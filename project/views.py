@@ -450,6 +450,11 @@ def _format_field_description_for_data_senders(reg_form_fields):
         field.label.update(eng=temp)
 
 
+def _get_imports_subjects_post_url(project_id=None):
+    import_url = reverse(import_subjects_from_project_wizard)
+    return import_url if project_id is None else ("%s?project_id=%s" % (import_url, project_id))
+
+
 @login_required(login_url='/login')
 def datasenders_wizard(request, project_id=None):
     if request.method == 'GET':
@@ -463,7 +468,7 @@ def datasenders_wizard(request, project_id=None):
         return render_to_response('project/datasenders_wizard.html',
                 {'fields': cleaned_up_fields, "previous": previous_link,
                  'form': import_reporter_form,
-                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project, 'step': 'datasenders'},
+                 'post_url': _get_imports_subjects_post_url(project_id), 'project': project, 'step': 'datasenders'},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
