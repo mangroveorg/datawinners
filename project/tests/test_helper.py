@@ -343,9 +343,13 @@ class TestHelper(unittest.TestCase):
                               language="eng", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
-        actual_list = helper.get_field_names([question1, question2])
-        expected_list = ["What is associated entity", "What is your name"]
-        self.assertListEqual(expected_list, actual_list)
+
+        form_model = Mock()
+        form_model.fields = [question1, question2]
+        form_model.entity_type = ["Clinic"]
+
+        actual_list = helper.get_headers(form_model)
+        self.assertListEqual(["Clinic Code", "What is your name"], actual_list)
 
     def test_should_create_value_list(self):
         data_dictionary = {'1': {'What is age of father?': 55, 'What is your name?': 'shweta',
@@ -385,9 +389,12 @@ class TestHelper(unittest.TestCase):
         self.assertEquals(expected_dictionary, actual_dict)
 
     def test_should_return_aggregates_list(self):
-        header_list = ["field1", "field2"]
+        field_mock = Mock()
+        field_mock.name = "field1"
+        field_mock1 = Mock()
+        field_mock1.name = "field2"
         post_data = ["Latest", "Sum"]
-        actual_list = helper.get_aggregate_list(header_list, post_data)
+        actual_list = helper.get_aggregate_list([field_mock, field_mock1], post_data)
         self.assertIsInstance(actual_list[0], Latest)
         self.assertIsInstance(actual_list[1], Sum)
 

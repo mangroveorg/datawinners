@@ -189,9 +189,8 @@ def get_aggregation_options_for_all_fields(fields):
     return type_list
 
 
-def get_field_names(field_list):
-    assert is_sequence(field_list)
-    return [each.name for each in field_list]
+def get_headers(form_model):
+    return [form_model.entity_type[0] + " Code"] + [field.name for field in form_model.fields[1:]]
 
 
 def _to_str(value):
@@ -203,9 +202,7 @@ def _to_str(value):
 
 
 def _to_value_list(first_element, header_list, value_dict):
-    value_list = [first_element]
-    value_list.extend([_to_str(value_dict.get(header)) for header in header_list[1:]])
-    return value_list
+    return [first_element] + [_to_str(value_dict.get(header)) for header in header_list[1:]]
 
 
 def get_all_values(data_dictionary, header_list, entity_question_description):
@@ -227,10 +224,10 @@ def get_aggregate_dictionary(header_list, post_data):
     return aggregates
 
 
-def get_aggregate_list(header_list, post_data):
+def get_aggregate_list(fields, post_data):
     aggregates = []
-    for index, field_name in enumerate(header_list):
-        aggregates.append(aggregate_module.aggregation_factory(post_data[index].strip().lower(), field_name))
+    for index, field in enumerate(fields):
+        aggregates.append(aggregate_module.aggregation_factory(post_data[index].strip().lower(), field.name))
     return aggregates
 
 
