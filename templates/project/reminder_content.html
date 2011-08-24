@@ -1,10 +1,3 @@
-<script type="text/x-jquery-tmpl" id="reminderTemplate">
-    <li>
-        <input type="text" data-bind="value: day">
-        <input type="text" data-bind="value: message">
-        <a href="#" data-bind="click:remove">Remove</a>
-    </li>
-    </script>
 <span id="project_id" style="display: none;">{{ project_id }}</span>
 <span class="success_message"></span>
 <div>
@@ -17,6 +10,7 @@
         <p class="reminder_content">
             <span>When</span>
             <input data-bind="value: newDay" placeholder="day"/> day(s) <strong>before</strong> the deadline
+            <br><span id="newDay_err" class="error_message"></span>
         </p>
 
         <p class="reminder_content">
@@ -32,6 +26,7 @@
                       maxlength="160"/>
             </textarea>
             The message count is <span data-bind="text: newMessage().length"></span>
+            <br><span id="newMessage_err" class="error_message"></span>
         </p>
     </div>
     <a data-bind="click: addReminder">Add another Reminder</a>

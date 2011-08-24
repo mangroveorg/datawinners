@@ -26,11 +26,20 @@ function viewModel() {
     this.newMessage = ko.observable("");
     this.newDay = ko.observable();
     this.addReminder = function() {
-        console.log(this.newMessage());
-        console.log(this.newDay());
+        if(this.newMessage() === ""){
+            $('#newMessage_err').show().html("Can't be blank.")
+            return;
+        }
+        if(this.newDay() === ""){
+            $('#newDay_err').show().html("Can't be blank.")
+            return;
+        }
         this.reminders.push(new reminder(this.newMessage(), this.newDay(), this));
         this.newMessage("");
         this.newDay("");
+        $('#newMessage_err').hide();
+        $('#newDay_err').hide();
+
     }
     this.save = function(){
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.reminders())}, function(){
