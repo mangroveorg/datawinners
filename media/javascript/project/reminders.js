@@ -7,9 +7,9 @@ $(document).ready(function(){
             var message = "Reminders has been activated for the project"
             if(is_reminder === "False"){
                 message = "Reminders has been de-activated for the project"
-                $('.add_reminder').hide();
+                $('.add_reminder').addClass('none');
             }else{
-                $('.add_reminder').show();
+                $('.add_reminder').removeClass('none');
             }
             $('.success_message').show().html(message).fadeOut(10000);
         });

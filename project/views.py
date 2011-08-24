@@ -35,7 +35,7 @@ from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
 from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
-from mangrove.datastore import data, aggregrate as aggregate_module
+from mangrove.datastore import aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
@@ -76,7 +76,7 @@ def _make_project_links(project, questionnaire_code):
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
-        project_links['reminders_link'] = reverse(reminders_profile_page, args=[project_id])
+        project_links['reminders_link'] = reverse(reminders, args=[project_id])
     return project_links
 
 
@@ -490,7 +490,7 @@ def reminders_wizard(request, project_id=None):
 
 
 @login_required(login_url='/login')
-def reminders_profile_page(request, project_id):
+def reminders(request, project_id):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
@@ -504,7 +504,7 @@ def reminders_profile_page(request, project_id):
 
 @login_required(login_url='/login')
 @csrf_exempt
-def reminders(request, project_id):
+def manage_reminders(request, project_id):
     if request.method == 'GET':
         reminders = Reminder.objects.filter(project_id=project_id)
         return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))

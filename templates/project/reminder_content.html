@@ -3,9 +3,8 @@
 <div>
     {{ form }}
 </div>
-<div class="add_reminder">
-<form data-bind="submit: addReminder"
-      style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
+<div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
+<form data-bind="submit: addReminder">
     <div class="reminder_content_section">
         <p class="reminder_content">
             <span>When</span>
@@ -16,8 +15,8 @@
         <p class="reminder_content">
             To Whom
         <ul>
-            <li><input type="radio">All chosen DS type</li>
-            <li><input type="radio">Anyone who hasn't sent data</li>
+            <li><input name="target_datasenders" type="radio">All chosen DS type</li>
+            <li><input name="target_datasenders" type="radio">Anyone who hasn't sent data</li>
         </ul>
         </p>
 
@@ -34,10 +33,8 @@
 <div id="reminder-list">
     <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
 </div>
-<button class="button" data-bind="click: save"
-        style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">Save the reminders
-</button>
-    </div>
+<button class="button" data-bind="click: save">Save the reminders</button>
+</div>
 <script type="text/html" id="reminderTemplate">
     <li>
         <span data-bind="text: message"/>
