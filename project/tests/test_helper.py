@@ -357,10 +357,10 @@ class TestHelper(unittest.TestCase):
                                  'What is associated entity?': 'cid001'}}
         header_list = ["Clinic code?", "What is your name?", "What is age of father?",
                        "What colour do you choose?", "what is your loc?"]
-        actual_list = helper.get_all_values(data_dictionary, header_list, 'What is associated entity?')
+        field_valus, grand_totals = helper.get_all_values(data_dictionary, header_list, 'What is associated entity?')
         expected_list = [["cid002",'shweta', 55, "red,blue", "21.1,23.3"],
                 ["cid001",'asif', 35, "red", "21.1"]]
-        self.assertListEqual(expected_list, actual_list)
+        self.assertListEqual(expected_list, field_valus)
 
     def test_should_create_type_list(self):
         ddtype = Mock(spec=DataDictType)

@@ -195,13 +195,15 @@ def get_field_names(field_list):
 
 
 def _to_str(value):
+    if value is None:
+        return u"--"
     if is_sequence(value):
         return sequence_to_str(value)
     return value
 
 
-def _to_value_list(entity_question_description, header_list, value_dict):
-    value_list = [value_dict.get(entity_question_description)]
+def _to_value_list(first_element, header_list, value_dict):
+    value_list = [first_element]
     value_list.extend([_to_str(value_dict.get(header)) for header in header_list[1:]])
     return value_list
 
@@ -210,9 +212,11 @@ def get_all_values(data_dictionary, header_list, entity_question_description):
     """
        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
        header_list = ["What is associated entity", "What is your name", "What is age of father?"]
-       expected_list = [{"entity_name":"cid002", "values":['shweta', 55 ]}, {"entity_name":"cid001", "values":['asif', 35]}]
+       expected_list = [ ['cid002',''shweta', 55 ],['cid001','asif', 35]]
     """
-    return [_to_value_list(entity_question_description, header_list, value_dict) for value_dict in data_dictionary.values()]
+    grand_totals_dict = data_dictionary.pop('GrandTotals') if 'GrandTotals' in data_dictionary else {}
+    grand_totals = _to_value_list("Grand Total", header_list, grand_totals_dict)
+    return [_to_value_list(value_dict.get(entity_question_description), header_list, value_dict) for value_dict in data_dictionary.values()], grand_totals
 
 
 def get_aggregate_dictionary(header_list, post_data):

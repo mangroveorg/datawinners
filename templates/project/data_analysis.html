@@ -115,9 +115,9 @@
             </thead>
             <tfoot>
             <tr>
-                {% for each in header_list %}
+                {% for each in grand_totals %}
                 <th class="table_footer">
-                       Grand Total
+                       {{ each }}
                 </th>
                 {% endfor %}
             </tr>
