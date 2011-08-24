@@ -13,23 +13,40 @@
 <div class="add_reminder">
 <form data-bind="submit: addReminder"
       style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">
-    <span>New Reminder: </span>
-    <input data-bind="value: newDay" placeholder="Day?"/>
-    <input data-bind="value: newMessage, valueUpdate: 'keyup'" placeholder="Message?" maxlength="160"/>
-    The message count is <span data-bind="text: newMessage().length"></span>
-    <button type="submit">Add Reminder</button>
+    <div class="reminder_content_section">
+        <p class="reminder_content">
+            <span>When</span>
+            <input data-bind="value: newDay" placeholder="day"/> day(s) <strong>before</strong> the deadline
+        </p>
+
+        <p class="reminder_content">
+            To Whom
+        <ul>
+            <li><input type="radio">All chosen DS type</li>
+            <li><input type="radio">Anyone who hasn't sent data</li>
+        </ul>
+        </p>
+
+        <p class="reminder_content">
+            <textarea data-bind="value: newMessage, valueUpdate: 'keyup'" placeholder="Message"
+                      maxlength="160"/>
+            </textarea>
+            The message count is <span data-bind="text: newMessage().length"></span>
+        </p>
+    </div>
+    <a data-bind="click: addReminder">Add another Reminder</a>
 </form>
 <div id="reminder-list">
     <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
 </div>
-<button data-bind="click: save"
+<button class="button" data-bind="click: save"
         style="display: {% if is_reminder %} block; {% else %} none; {% endif %}">Save the reminders
 </button>
     </div>
 <script type="text/html" id="reminderTemplate">
     <li>
-        <input type="text" data-bind="value: message"/>
-        <input type="text" data-bind="value: day"/>
+        <span data-bind="text: message"/>
+        <span data-bind="text: day"/>
         <a href="#" data-bind="click: remove">Delete</a>
     </li>
 </script>
