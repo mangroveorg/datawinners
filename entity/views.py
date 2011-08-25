@@ -12,10 +12,10 @@ from datawinners.entity import helper
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 from mangrove.datastore.entity import get_all_entity_types, define_type
-from datawinners.project import helper as project_helper
+from datawinners.project import helper as project_helper, models
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER
 from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
@@ -157,12 +157,21 @@ def all_datasenders(request):
                               context_instance=RequestContext(request))
 
 
+def _associate_data_senders_to_project(imported_entities, manager, project_id):
+    project = models.get_project(project_id, manager)
+    project.data_senders.extend([k for k, v in imported_entities.items() if v == REPORTER])
+    project.save(manager)
+
+
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
-def import_subjects_from_project_wizard(request,project_id=None):
+def import_subjects_from_project_wizard(request):
     manager = get_database_manager(request.user)
+    project_id = request.GET.get('project_id')
     error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
+    if project_id is not None:
+        _associate_data_senders_to_project(imported_entities, manager, project_id)
     return HttpResponse(json.dumps({'success': is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))

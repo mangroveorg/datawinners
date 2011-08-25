@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 
-from couchdb.mapping import  TextField, ListField, BooleanField
+from couchdb.mapping import  TextField, ListField, BooleanField, DictField
 from django.db.models.fields import IntegerField, CharField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
@@ -38,6 +38,7 @@ class Project(DocumentBase):
     state = TextField()
     sender_group = TextField()
     reminders = BooleanField()
+    data_senders = ListField(TextField())
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminders=False):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
