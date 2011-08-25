@@ -5,7 +5,6 @@ from datetime import datetime
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
-from mangrove.datastore import settings
 from mangrove.datastore.database import get_db_manager
 
 def clean_date(date_val):

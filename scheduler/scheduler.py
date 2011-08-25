@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from _collections import defaultdict
 from datetime import date
-from apscheduler.scheduler import Scheduler
 from datawinners import utils
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.entity.import_data import load_all_subjects_of_type

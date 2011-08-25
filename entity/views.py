@@ -14,10 +14,9 @@ from datawinners.messageprovider.message_handler import get_success_msg_for_regi
 from mangrove.datastore.entity import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, MultipleReportersForANumberException
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE
 from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
-from mangrove.utils.types import is_empty
 from datawinners.entity import import_data as import_module
 
 COUNTRY = ',MADAGASCAR'
