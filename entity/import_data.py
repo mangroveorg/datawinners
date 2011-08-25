@@ -80,20 +80,34 @@ def _handle_uploaded_file(file_name, file, manager):
     return response
 
 
+def _get_imported_entities(responses):
+    imported_entities = {response.short_code: response.entity_type[0] for response in responses if response.success}
+    return imported_entities
+
+
+def _get_failed_responses(responses):
+    return [i for i in enumerate(responses) if not i[1].success]
+
+
+def _get_success_status(successful_imports, total):
+    return True if total == successful_imports else False
+
+
 def import_data(request, manager):
     success = False
     response_message = ''
     error_message = None
     failure_imports = None
+    imported_entities = {}
     try:
         file_name = request.GET.get('qqfile')
-        response = _handle_uploaded_file(file_name=file_name, file=request.raw_post_data, manager=manager)
-        successful_imports = len([index for index in response if index.success])
-        total = len(response)
-        failure = [i for i in enumerate(response) if not i[1].success]
-        failure_imports = tabulate_failures(failure)
-        if total == successful_imports:
-            success = True
+        responses = _handle_uploaded_file(file_name=file_name, file=request.raw_post_data, manager=manager)
+        imported_entities = _get_imported_entities(responses)
+        successful_imports = len(imported_entities)
+        total = len(responses)
+        failures = _get_failed_responses(responses)
+        failure_imports = tabulate_failures(failures)
+        success = _get_success_status(successful_imports, total)
         response_message = '%s of %s records uploaded' % (successful_imports, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
@@ -104,4 +118,4 @@ def import_data(request, manager):
         error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
         if settings.DEBUG:
             raise
-    return error_message, failure_imports, success, response_message
+    return error_message, failure_imports, success, response_message, imported_entities

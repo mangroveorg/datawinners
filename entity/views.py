@@ -129,7 +129,7 @@ def create_subject(request):
 def all_subjects(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
-        error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
+        error_message, failure_imports, success, success_message, imported_entities = import_module.import_data(request, manager)
         subjects_data = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': subjects_data}))
@@ -146,7 +146,7 @@ def all_subjects(request):
 def all_datasenders(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
-        error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
+        error_message, failure_imports, success, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = import_module.load_all_subjects_of_type(manager)
 
         return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
@@ -162,6 +162,6 @@ def all_datasenders(request):
 @login_required(login_url='/login')
 def import_subjects_from_project_wizard(request,project_id=None):
     manager = get_database_manager(request.user)
-    error_message, failure_imports, success, success_message = import_module.import_data(request, manager)
+    error_message, failure_imports, success, success_message, imported_entities = import_module.import_data(request, manager)
     return HttpResponse(json.dumps({'success': success, 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
