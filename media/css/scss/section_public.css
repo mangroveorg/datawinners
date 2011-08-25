@@ -83,3 +83,102 @@ body {
           margin-left: 20px; }
     #container_home_how #home_how img.title {
       margin: 25px 0 5px 0; }
+
+#container_page_title {
+  height: 125px;
+  overflow: hidden;
+  background: url("/media/images/dw_pattern_bg.gif") repeat left top;
+  border-bottom: 1px solid #CCCCCC; }
+  #container_page_title #page_title {
+    width: 720px;
+    float: right;
+    padding-top: 65px;
+    font-size: 32px;
+    color: #010101;
+    font-weight: bold; }
+
+#container_breadcrumbs {
+  height: 55px;
+  overflow: hidden; }
+  #container_breadcrumbs #page_breadcrumbs {
+    width: 720px;
+    float: right;
+    padding-top: 35px;
+    font-size: 11px;
+    color: #333333;
+    font-weight: bold; }
+    #container_breadcrumbs #page_breadcrumbs a {
+      color: #4379a2;
+      font-weight: normal; }
+
+#container_main_content {
+  padding-bottom: 40px; }
+  #container_main_content #nav_content {
+    width: 190px;
+    float: left; }
+    #container_main_content #nav_content a {
+      color: #333; }
+      #container_main_content #nav_content a:hover {
+        color: #3a9912; }
+    #container_main_content #nav_content h1 {
+      color: #3a9912;
+      font-size: 15px;
+      margin: 0 0 15px 0; }
+    #container_main_content #nav_content ul {
+      margin: 0; }
+      #container_main_content #nav_content ul li {
+        font-weight: bold;
+        font-size: 14px;
+        padding: 5px 0 15px;
+        border-top: 1px solid #000; }
+        #container_main_content #nav_content ul li ul {
+          margin: 0 0 0 10px; }
+          #container_main_content #nav_content ul li ul li {
+            font-weight: normal;
+            padding: 0;
+            border: none; }
+            #container_main_content #nav_content ul li ul li li {
+              font-size: 12px; }
+  #container_main_content #main_content {
+    width: 740px;
+    float: right;
+    border-left: 1px solid #DDDDDD; }
+    #container_main_content #main_content a {
+      color: #044c83; }
+      #container_main_content #main_content a:hover {
+        text-decoration: underline; }
+    #container_main_content #main_content h1 {
+      margin: 20px 0 0 0;
+      font-size: 22px; }
+    #container_main_content #main_content h2 {
+      margin: 20px 0 0 0;
+      font-size: 16px; }
+    #container_main_content #main_content p {
+      margin: 10px 0; }
+    #container_main_content #main_content .left_content {
+      width: 500px;
+      float: left; }
+    #container_main_content #main_content .right_content {
+      width: 200px;
+      overflow: hidden;
+      float: right; }
+      #container_main_content #main_content .right_content .block_1 {
+        background: #e3edf4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top;
+        padding: 12px 18px;
+        font-size: 12px;
+        color: #333333;
+        margin-bottom: 25px; }
+        #container_main_content #main_content .right_content .block_1 h1 {
+          margin: 5px 0 0 0;
+          font-size: 14px;
+          color: #333333; }
+      #container_main_content #main_content .right_content .block_2 {
+        background: #ebf2f8 url("/media/images/dw_sec_bg_right2.gif") repeat-x left top;
+        padding: 12px 18px;
+        font-size: 12px;
+        color: #333333;
+        margin-bottom: 25px; }
+        #container_main_content #main_content .right_content .block_2 h1 {
+          margin: 5px 0 0 0;
+          font-size: 14px;
+          color: #333333; }
