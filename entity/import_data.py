@@ -1,11 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 from datawinners import settings
-from datawinners.main.utils import get_database_manager, is_reporter
+from datawinners.main.utils import get_database_manager, include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER
 from mangrove.transport.player.parser import CsvParser, XlsParser
 from mangrove.transport.player.player import FilePlayer, Channel
 from mangrove.utils.types import sequence_to_str
@@ -45,15 +45,11 @@ def _get_entity_type_from_row(row):
     return type
 
 
-def _is_not_reporter(entity):
-    return not is_reporter(entity)
-
-
-def load_subject_registration_data(manager, filter_entities=_is_not_reporter):
+def load_subject_registration_data(manager, filter_entities=exclude_of_type,type=REPORTER):
     entities = get_all_entities(dbm=manager, include_docs=True)
     data = []
     for entity in entities:
-        if filter_entities(entity):
+        if filter_entities(entity,type):
             data.append(_tabulate_data(entity))
     return data
 
@@ -63,8 +59,8 @@ def load_all_subjects(request):
     return load_subject_registration_data(manager)
 
 
-def load_all_subjects_of_type(manager, filter_entities=is_reporter):
-    return load_subject_registration_data(manager, filter_entities)
+def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPORTER):
+    return load_subject_registration_data(manager, filter_entities,type)
 
 
 def _handle_uploaded_file(file_name, file, manager):

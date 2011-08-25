@@ -13,7 +13,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
-from datawinners.main.utils import get_database_manager
+from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder
@@ -613,7 +613,7 @@ def subjects(request, project_id=None):
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data = load_all_subjects_of_type(manager, project.entity_type)
+    all_data = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=project.entity_type)
     return render_to_response('project/registered_subjects.html',
             {'project': project, 'project_links': project_links, 'all_data': all_data},
                               context_instance=RequestContext(request))

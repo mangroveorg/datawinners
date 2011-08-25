@@ -17,10 +17,11 @@ def get_database_manager(user):
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
 
+def include_of_type(entity,type):
+    return True if entity.type_path[0] == type else False
 
-def is_reporter(entity):
-    return True if entity.type_path[0] == 'reporter' else False
-
+def exclude_of_type(entity,type):
+    return False if entity.type_path[0] == type else True
 
 def get_db_manager_for(org_tel_number):
     try:
