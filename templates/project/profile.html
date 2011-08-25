@@ -136,6 +136,13 @@
                 Click the radio button next to your choice. Don’t worry, you can always change your mind later.
             </li>
              </fieldset>
+            <fieldset>
+                <legend>When do we need the data</legend>
+            <li class="{{ form.sender_group.css_classes  }} form-row-10px">
+                {{ form.has_frequency.label_tag }}
+                <span> {{ form.has_frequency }} {{ form.frequency_period }} </span>
+            </li>
+             </fieldset>
         </ul>
     {% if edit %}
     <div id="profile_warning_message">

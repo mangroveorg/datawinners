@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
+from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, BooleanField
 from django.core.exceptions import ValidationError
 from django.forms.forms import Form
 from django.forms.widgets import RadioFieldRenderer, RadioInput, RadioSelect
@@ -37,6 +37,8 @@ class ProjectProfile(Form):
     DEVICE_CHOICES = (('sms', 'SMS'),)
     SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender (eg. monthly activity report)'),('no','Other Subject'))
     GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data without registering'),('close','Closed Data Sender Group. Only registered data sender will be able to send data'))
+    FREQUENCY_PERIOD_CHOICES = (('month', 'Month'),)
+    FREQUENCY_CHOICES = ((False, 'Every'), (True, 'Whenever a data sender has data for us.'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
     goals = CharField(max_length=300, widget=forms.Textarea, label='Project Description', required=False)
@@ -46,6 +48,8 @@ class ProjectProfile(Form):
     entity_type = ChoiceField(label="Other Subjects", required=False)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[0], required=False)
+    has_frequency = BooleanField(label="How often do you need the data?", widget=forms.RadioSelect(choices=FREQUENCY_CHOICES), required=False)
+    frequency_period = ChoiceField(choices=FREQUENCY_PERIOD_CHOICES, widget=forms.Select, required=False)
 
     def __init__(self, entity_list,  *args, **kwargs):
         assert isinstance(entity_list, list)
