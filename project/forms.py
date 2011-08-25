@@ -37,7 +37,8 @@ class ProjectProfile(Form):
     DEVICE_CHOICES = (('sms', 'SMS'),)
     SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender (eg. monthly activity report)'),('no','Other Subject'))
     GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data without registering'),('close','Closed Data Sender Group. Only registered data sender will be able to send data'))
-    FREQUENCY_PERIOD_CHOICES = (('month', 'Month'),)
+    FREQUENCY_PERIOD_CHOICES = (('none', 'Any time'), ('daily', 'Daily'), ('monthly', 'Monthly'),)
+    DEADLINE_TYPE = (('current', 'That'), ('next', 'Following'))
     FREQUENCY_CHOICES = ((False, 'Every'), (True, 'Whenever a data sender has data for us.'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
@@ -48,8 +49,11 @@ class ProjectProfile(Form):
     entity_type = ChoiceField(label="Other Subjects", required=False)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[0], required=False)
-    has_frequency = BooleanField(label="How often do you need the data?", widget=forms.RadioSelect(choices=FREQUENCY_CHOICES), required=False)
-    frequency_period = ChoiceField(choices=FREQUENCY_PERIOD_CHOICES, widget=forms.Select, required=False)
+    frequency_period = ChoiceField(label = "How often do you want the data?",  choices=FREQUENCY_PERIOD_CHOICES, widget=forms.Select, required=False)
+    has_deadline = BooleanField(label="Do you want to set a deadline?", widget=forms.RadioSelect(choices=((True, 'Yes'), (False, 'No'))))
+    deadline_type =  ChoiceField(label = "of",  choices=DEADLINE_TYPE, widget=forms.Select, required=False)
+    deadline_day =  ChoiceField(label = "day",  choices=(), widget=forms.Select, required=False)
+
 
     def __init__(self, entity_list,  *args, **kwargs):
         assert isinstance(entity_list, list)
