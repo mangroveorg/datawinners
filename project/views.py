@@ -462,7 +462,7 @@ def datasenders_wizard(request, project_id=None):
         reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(questionnaire_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
-        import_reporter_form = ReporterRegistrationForm()
+        import_reporter_form = ReporterRegistrationForm(initial={'project_id':project_id})
         _format_field_description_for_data_senders(reg_form.fields)
         cleaned_up_fields = _get_questions_for_datasenders_registration_for_wizard(reg_form.fields)
         return render_to_response('project/datasenders_wizard.html',

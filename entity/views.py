@@ -22,7 +22,13 @@ from mangrove.utils.types import is_empty
 
 COUNTRY = ',MADAGASCAR'
 
-def _validate_form(dbm, form):
+def _associate_data_sender_to_project(dbm, project_id, response):
+    project = models.get_project(project_id, dbm)
+    project.data_senders.append(response.short_code)
+    project.save(dbm)
+
+
+def _process_form(dbm, form):
     message = None
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
@@ -35,6 +41,9 @@ def _validate_form(dbm, form):
             response = web_player.accept(Request(message=_get_data(form.cleaned_data),
                         transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
+            project_id = form.cleaned_data["project_id"]
+            if not is_empty(project_id):
+                _associate_data_sender_to_project(dbm, project_id, response)
         except MangroveException as exception:
             message = exception.message
 
@@ -92,7 +101,7 @@ def create_datasender(request):
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
-        message= _validate_form(dbm, form)
+        message= _process_form(dbm, form)
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message},
                                       context_instance=RequestContext(request))

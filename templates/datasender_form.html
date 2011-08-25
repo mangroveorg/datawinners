@@ -40,9 +40,12 @@
               {{ form.geo_code }}
               {{ form.geo_code.errors }}
                 </li>
+                <li>
+                    {{ form.project_id.as_hidden }}
+                </li>
+
             </ul>
           </li>
-
           <li class="button_block">
               <a href="/entity/datasenders/" class="cancel_link">Cancel</a>
               <input type="button" id="id_register_button" value="Add" class="button margin_top_20"/>

@@ -1,3 +1,4 @@
+from django.forms import HiddenInput
 from django.forms.fields import RegexField, CharField, FileField
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
@@ -22,6 +23,7 @@ class ReporterRegistrationForm(Form):
                                   error_message="Please enter a valid phone number")
     geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
     location = CharField(max_length=100, required=False, label="Enter location")
+    project_id = CharField(required=False, widget=HiddenInput())
 
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
