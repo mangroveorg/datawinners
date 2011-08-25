@@ -5,6 +5,7 @@ from datawinners.entity.import_data import import_data
 from mangrove import initializer
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.entity import get_entity_count_for_type
+from mangrove.utils.types import is_empty
 
 class TestImport(unittest.TestCase):
     def setUp(self):
@@ -26,8 +27,7 @@ class TestImport(unittest.TestCase):
         request = Mock()
         request.GET = {'qqfile': file_name}
         request.raw_post_data = self.csv_data
-        error_message, failure_imports, success, success_message, imported_entities = import_data(request=request, manager=self.dbm)
-        self.assertTrue(success)
+        error_message, failure_imports, success_message, imported_entities = import_data(request=request, manager=self.dbm)
         self.assertEqual(4, get_entity_count_for_type(self.dbm, entity_type="reporter"))
         self.assertEqual(4,len(imported_entities))
         self.assertEqual('reporter', imported_entities["r1"])

@@ -94,7 +94,6 @@ def _get_success_status(successful_imports, total):
 
 
 def import_data(request, manager):
-    success = False
     response_message = ''
     error_message = None
     failure_imports = None
@@ -107,7 +106,6 @@ def import_data(request, manager):
         total = len(responses)
         failures = _get_failed_responses(responses)
         failure_imports = tabulate_failures(failures)
-        success = _get_success_status(successful_imports, total)
         response_message = '%s of %s records uploaded' % (successful_imports, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
@@ -118,4 +116,4 @@ def import_data(request, manager):
         error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
         if settings.DEBUG:
             raise
-    return error_message, failure_imports, success, response_message, imported_entities
+    return error_message, failure_imports, response_message, imported_entities
