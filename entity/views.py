@@ -27,7 +27,7 @@ def _validate_form(dbm, form):
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
         if not helper.unique(dbm, telephone_number):
-            form._errors['telephone_number'] = (u"Sorry, the telephone number %s has already been registered") % (telephone_number,)
+            form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
             return message
 
         try:

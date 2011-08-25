@@ -103,7 +103,7 @@ def create_profile(request):
     entity_list = helper.remove_reporter(entity_list)
     project_summary = dict(name='New Project')
     if request.method == 'GET':
-        form = ProjectProfile(entity_list=entity_list, initial={'activity_report': 'yes'})
+        form = ProjectProfile(entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
                                   context_instance=RequestContext(request))
 
