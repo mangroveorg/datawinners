@@ -148,15 +148,15 @@
                     {{ form.has_deadline }}
                     {{ form.has_deadline.errors }}
                 </li>
-                <li class="{{ form.deadline_type.css_classes  }} form-row-10px">
-                    {{ form.deadline_type.label_tag }}
-                    {{ form.deadline_type}}
-                    {{ form.deadline_type.errors }}
-                </li>
                 <li class="{{ form.deadline_day.css_classes  }} form-row-10px">
                     {{ form.deadline_day.label_tag }}
                     {{ form.deadline_day}}
                     {{ form.deadline_day.errors }}
+                </li>
+                <li class="{{ form.deadline_type.css_classes  }} form-row-10px">
+                    {{ form.deadline_type.label_tag }}
+                    {{ form.deadline_type}} <span id="span_deadline_type"></span>
+                    {{ form.deadline_type.errors }}
                 </li>
             </fieldset>
         </ul>
