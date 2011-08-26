@@ -2,25 +2,25 @@
 {% block main_navigation %}
 <div id="container_main_tab">
     <div id="main_tab" class="container_24">
-        <div class="grid_6 alpha">
-            <img src="/media/images/logo_dw.png" alt="DataWinners" width="137" height="22"/>
+        <div class="grid_5 alpha">
+            <a href="{% url datawinners.home.views.index %}"><img src="/media/images/logo_dw.png" alt="DataWinners" width="137" height="22"/></a>
         </div>
-        <div class="grid_18 float_right">
+        <div class="grid_19 float_right">
             <ul>
                 <li class ="{% ifactivetab 'main_nav' 'datawinners' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="javascript:void(0)">What is DataWinners</a>
+                    <a href="/what-is-datawinners">What is DataWinners</a>
                 </li>
-                <li class ="{% ifactivetab 'main_nav' 'success' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="javascript:void(0)">Success Stories</a>
+                <li class ="{% ifactivetab 'main_nav' 'examples' %}active{% else %}inactive{% endifactivetab %}">
+                    <a href="/examples">Examples</a>
                 </li>
                 <li class ="{% ifactivetab 'main_nav' 'pricing' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="javascript:void(0)">Pricing</a>
+                    <a href="/plans-and-pricing">Plans &amp; Pricing</a>
                 </li>
                 <li class ="{% ifactivetab 'main_nav' 'support' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="javascript:void(0)">Support</a>
+                    <a href="/support-and-community">Support &amp; Community</a>
                 </li>
-                <li class ="{% ifactivetab 'main_nav' 'aboutus' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="javascript:void(0)">About us</a>
+                <li class ="{% ifactivetab 'main_nav' 'about' %}active{% else %}inactive{% endifactivetab %}">
+                    <a href="/about-us">About us</a>
                 </li>
             </ul>
         </div>

@@ -135,10 +135,17 @@ body{
     #nav_content{
         width:190px;
         float:left;
-        a{
-            color:#333;
-            &:hover{
-                color:#3a9912;
+        li{
+            a{
+                color:#333;
+                &:hover{
+                    color:#3a9912;
+                }
+            }
+            &.active{
+                a{
+                    color:#3a9912;
+                }
             }
         }
         h1{
@@ -169,6 +176,7 @@ body{
     }
     #main_content{
         width:740px;
+        margin-right:5px;
         float:right;
         border-left:1px solid #DDDDDD;
         a{

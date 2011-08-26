@@ -116,10 +116,12 @@ body {
   #container_main_content #nav_content {
     width: 190px;
     float: left; }
-    #container_main_content #nav_content a {
+    #container_main_content #nav_content li a {
       color: #333; }
-      #container_main_content #nav_content a:hover {
+      #container_main_content #nav_content li a:hover {
         color: #3a9912; }
+    #container_main_content #nav_content li.active a {
+      color: #3a9912; }
     #container_main_content #nav_content h1 {
       color: #3a9912;
       font-size: 15px;
@@ -141,6 +143,7 @@ body {
               font-size: 12px; }
   #container_main_content #main_content {
     width: 740px;
+    margin-right: 5px;
     float: right;
     border-left: 1px solid #DDDDDD; }
     #container_main_content #main_content a {
