@@ -35,7 +35,7 @@ $(document).ready(function(){
         closeText: 'hide'
       }
   );
-    $('#span_deadline_type').html($('#id_frequency_period').val());
+
     $("#id_entity_type").change(function(){
         $("#profile_warning_message").dialog("open");
     });
@@ -56,11 +56,45 @@ $(document).ready(function(){
         $("#profile_warning_message").dialog("open");
     }
 
+    if($('#id_frequency_period').val() == ''){
+        $('#has_deadline_block').hide();
+        $('#deadline_day_block').hide();
+        $('#deadline_type_block').hide();
+
+    }
+    if($('#id_has_deadline_1').is(':checked')){
+        $('#deadline_day_block').hide();
+        $('#deadline_type_block').hide();
+    }
+    
+    $('#span_deadline_type').html($('#id_frequency_period').val());
     $('#id_frequency_period').change(function(element){
-        if($('#id_frequency_period').val() === 'month'){
-            options  = _.range(1, 32).map(function(n){ return new Option(n,n) })
-            $("#id_deadline_day").append(options);
+        if ($('#id_frequency_period').val() != ''){
+            $('#has_deadline_block').show();
+            $('#deadline_day_block').show();
+            $('#deadline_type_block').show();
+        }else{
+            $('#has_deadline_block').hide();
+            $('#deadline_day_block').hide();
+            $('#deadline_type_block').hide();
+            return;
         }
+//        if ($('#id_frequency_period').val() != '') {
+//            options = _.range(1, 32).map(function(n) {
+//                return new Option(n, n)
+//            })
+//            $("#id_deadline_day").append(options);
+//        }
         $('#span_deadline_type').html($('#id_frequency_period').val());
+        $('input[name="has_deadline"]').change(function(){
+            if($('#id_has_deadline_1:checked').length > 0){
+                $('#deadline_day_block').hide();
+                $('#deadline_type_block').hide();
+            }else{
+                $('#deadline_day_block').show();
+                $('#deadline_type_block').show();
+            }
+        });
     });
 });
+    

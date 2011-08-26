@@ -24,7 +24,7 @@ class TestProjectProfile(unittest.TestCase):
 
     def test_field_goals_not_required(self):
         base_form = {'name': 'Test Project', 'project_type': 'survey', 'entity_type': 'Reporter',
-                     'devices': ['sms'], 'activity_report': 'no', 'sender_group': 'open', 'has_deadline':'Yes'
+                     'devices': ['sms'], 'activity_report': 'no', 'sender_group': 'open', 'has_deadline':'No'
         }
         form = ProjectProfile(data=base_form, entity_list=[['Reporter']])
         assert form.is_valid()
