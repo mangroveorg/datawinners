@@ -12,14 +12,48 @@
     {{ block.super }}
 {% endblock %}
 
-{% block page_scss %}
+{% block page_js %}
     {{ block.super }}
-    {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
+    <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
 {% endblock %}
+
 {% block content %}
     {% block secondary_navigation_datasenders %}
-    {% activetab "secondary_tab_nav" "datasenders" %}
-    {{ block.super }}
+        {% activetab "secondary_tab_nav" "datasenders" %}
+        {{ block.super }}
     {% endblock %}
-{% include 'project/registered_entity_table.html' %}
+    <select id='action'>
+        <option value="">--</option>
+        <option value="disassociate">Dis-Associate</option>
+    </select>
+    <table class="styled_table">
+        <thead>
+        <th>Select</th>
+        <th>Unique ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Contact info</th>
+        </thead>
+        <tbody id="tbody">
+        {% for each in all_data %}
+            <tr>
+                <td><input type="checkbox" value="{{ each.short_name }}"/>
+                </td>
+                <td>{{ each.short_name }}</td>
+                {% if each.name %}
+                    <td>{{ each.name }}</td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+                <td>{{ each.type }}</td>
+                {% if each.mobile_number %}
+                    <td>{{ each.mobile_number }}</td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
 {% endblock %}

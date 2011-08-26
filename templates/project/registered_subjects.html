@@ -18,10 +18,35 @@
 {% endblock %}
 {% block content %}
     {% block secondary_navigation_subjects %}
-    {% activetab "secondary_tab_nav" "subjects" %}
-    {{ block.super }}
+        {% activetab "secondary_tab_nav" "subjects" %}
+        {{ block.super }}
     {% endblock %}
 
-    {% include 'project/registered_entity_table.html' %}
+    <table class="styled_table">
+        <thead>
+        <th>Unique ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Contact info</th>
+        </thead>
+        <tbody>
+        {% for each in all_data %}
+            <tr>
+                <td>{{ each.short_name }}</td>
+                {% if each.name %}
+                    <td>{{ each.name }}</td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+                <td>{{ each.type }}</td>
+                {% if each.mobile_number %}
+                    <td>{{ each.mobile_number }}</td>
+                {% else %}
+                    <td>--</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

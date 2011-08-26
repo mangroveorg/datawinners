@@ -622,7 +622,6 @@ def registered_subjects(request, project_id=None):
 def _get_associated_data_senders(all_data, project):
     return [data for data in all_data if data['short_name'] in project.data_senders]
 
-
 @login_required(login_url='/login')
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -632,6 +631,16 @@ def registered_datasenders(request, project_id=None):
     return render_to_response('project/registered_datasenders.html',
             {'project': project, 'project_links': project_links, 'all_data': associated_datasenders},
                               context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def disassociate_datasenders(request):
+    manager = get_database_manager(request.user)
+    project = models.get_project(request.POST['project_id'], manager)
+    ids = request.POST['ids[]']
+    project.data_senders = [datasender for datasender in project.data_senders if datasender not in ids]
+    project.save(manager)
+    return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 
 
 def _get_questions_for_datasenders_registration_for_print_preview(questions):
