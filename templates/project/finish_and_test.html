@@ -139,11 +139,15 @@
                 <h5 class="inline">Reminders</h5>
             </div>
             <div>
-                Reminders are <strong>{{ is_reminder }}</strong> for this project
-                <a id="remider_edit_link" href="{{project_links.reminder_link}}">edit</a><img src="/media/images/help_icon.png"
-                                                                       class="help_icon" style="margin-top:-6px;">
-                <div class="tooltip"><p>Click "edit" to make any required changes. </p></div>
-            </div>
+                <ul>
+                <li>
+                    Reminders are <strong>{{ is_reminder }}</strong> for this project
+                </li>
+            </ul>
+            <a id="remider_edit_link" href="{{project_links.reminder_link}}">edit</a>
+            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <div class="tooltip"><p>Click "edit" to make any required changes. </p></div>
+        </div>
 
         </div>
     </div>
