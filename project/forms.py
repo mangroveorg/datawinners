@@ -50,7 +50,7 @@ class ProjectProfile(Form):
                                   initial=DEVICE_CHOICES[0], required=False)
     frequency_enabled = ChoiceField(label = "How often do you want the data?",
                                     choices=((False, "Whenever a DataSender has data for us"), (True, "Every")), widget=forms.RadioSelect, required=True,initial=False)
-    frequency_period = ChoiceField(choices=(('week', 'Weekly'), ('month', 'Monthly'),), widget=forms.Select, required=False)
+    frequency_period = ChoiceField(choices=(('week', 'Weekly'), ('month', 'Monthly'),), widget=forms.Select(attrs={'style':'margin-left: -167px; margin-top: 19px;'}), required=False)
     has_deadline = ChoiceField(label="Do you want to set a deadline?", widget=forms.RadioSelect, choices=((False, 'No'), (True, 'Yes')), required=False, initial=False)
     deadline_month =  ChoiceField(choices=(tuple([(n,n) for n in range(1,31)])), widget=forms.Select, required=False)
     deadline_week =  ChoiceField(choices=(tuple([(day, day) for day in calendar.day_name])), widget=forms.Select(attrs={'data-bind':'random'}), required=False)
