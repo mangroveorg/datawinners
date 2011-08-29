@@ -56,10 +56,7 @@ $(document).ready(function(){
         $("#profile_warning_message").dialog("open");
     }
 
-    //Based on has_frequency orchestrate the month/week blocks.
-    show_element($('#deadline_block'),$('input[name="frequency_enabled"]:checked').val());
-    enable_timeperiod();
-    toggle_has_deadline();
+    deadline_init();
     $($('input[name="frequency_enabled"]')).change(function(){
         show_element($('#deadline_block'), $('input[name="frequency_enabled"]:checked').val())
     });
@@ -88,7 +85,11 @@ function enable_timeperiod() {
     if ($('#id_frequency_period').val() == "week") {
         show_element($('#week_block'), "True")
         show_element($('#month_block'), "False")
+        $('#week_block :input').attr('disabled', false);
+        $('#month_block :input').attr('disabled', true);
     } else if ($('#id_frequency_period').val() == "month") {
+        $('#week_block :input').attr('disabled', true);
+        $('#month_block :input').attr('disabled', false);
         show_element($('#week_block'), "False")
         show_element($('#month_block'), "True")
     }
@@ -97,8 +98,17 @@ function enable_timeperiod() {
 function toggle_has_deadline() {
     if ($('input[name="has_deadline"]:checked').val() == "True") {
         show_element($('#time_period'), "True");
+        $('#time_period :input').attr('disabled', false);
         enable_timeperiod()
     } else {
+        $('#time_period :input').attr('disabled', true);
         show_element($('#time_period'), "False");
     }
+}
+
+
+function deadline_init() {
+    show_element($('#deadline_block'), $('input[name="frequency_enabled"]:checked').val());
+    enable_timeperiod();
+    toggle_has_deadline();
 }
