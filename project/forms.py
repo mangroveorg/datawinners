@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import calendar
 
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, BooleanField
 from django.core.exceptions import ValidationError
@@ -37,8 +38,6 @@ class ProjectProfile(Form):
     DEVICE_CHOICES = (('sms', 'SMS'),)
     SUBJECT_TYPE_CHOICES = (('yes','Work performed by the data sender (eg. monthly activity report)'),('no','Other Subject'))
     GROUP_TYPE_CHOICES = (('open','Open Data Sender Group. Anyone can send in data without registering'),('close','Closed Data Sender Group. Only registered data sender will be able to send data'))
-    FREQUENCY_PERIOD_CHOICES = (('', 'Any time'),('quarter', 'Quarterly'), ('month', 'Monthly'),)
-    DEADLINE_TYPE = (('current', 'That'), ('next', 'Following'))
     FREQUENCY_CHOICES = ((False, 'Every'), (True, 'Whenever a data sender has data for us.'))
     id = CharField(required=False)
     name = CharField(required=True, label="Name this Project")
@@ -49,10 +48,13 @@ class ProjectProfile(Form):
     entity_type = ChoiceField(label="Other Subjects", required=False)
     devices = MultipleChoiceField(label='Device', widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[0], required=False)
-    frequency_period = ChoiceField(label = "How often do you want the data?",  choices=FREQUENCY_PERIOD_CHOICES, widget=forms.Select, required=False)
-    has_deadline = ChoiceField(label="Do you want to set a deadline?", widget=forms.RadioSelect, choices=(('Yes', 'Yes'), ('No', 'No')), required=False, initial=('Yes','Yes'))
-    deadline_type =  ChoiceField(label = "of",  choices=DEADLINE_TYPE, widget=forms.Select, required=False)
-    deadline_day =  ChoiceField(label = "on",  choices=(tuple([(n,n) for n in range(1,31)])), widget=forms.Select, required=False)
+    frequency_enabled = ChoiceField(label = "How often do you want the data?",
+                                    choices=((False, "Whenever a DataSender has data for us"), (True, "Every")), widget=forms.RadioSelect, required=True,initial=False)
+    frequency_period = ChoiceField(choices=(('week', 'Weekly'), ('month', 'Monthly'),), widget=forms.Select, required=False)
+    has_deadline = ChoiceField(label="Do you want to set a deadline?", widget=forms.RadioSelect, choices=((False, 'No'), (True, 'Yes')), required=False, initial=False)
+    deadline_month =  ChoiceField(choices=(tuple([(n,n) for n in range(1,31)])), widget=forms.Select, required=False)
+    deadline_week =  ChoiceField(choices=(tuple([(day, day) for day in calendar.day_name])), widget=forms.Select(attrs={'data-bind':'random'}), required=False)
+    deadline_type =  ChoiceField(choices=(('current', 'That'), ('next', 'Following')), widget=forms.Select, required=False)
 
 
     def __init__(self, entity_list,  *args, **kwargs):

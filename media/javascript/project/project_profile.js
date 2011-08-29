@@ -56,45 +56,49 @@ $(document).ready(function(){
         $("#profile_warning_message").dialog("open");
     }
 
-    if($('#id_frequency_period').val() == ''){
-        $('#has_deadline_block').hide();
-        $('#deadline_day_block').hide();
-        $('#deadline_type_block').hide();
-
-    }
-    if($('#id_has_deadline_1').is(':checked')){
-        $('#deadline_day_block').hide();
-        $('#deadline_type_block').hide();
-    }
-    
-    $('#span_deadline_type').html($('#id_frequency_period').val());
-    $('#id_frequency_period').change(function(element){
-        if ($('#id_frequency_period').val() != ''){
-            $('#has_deadline_block').show();
-            $('#deadline_day_block').show();
-            $('#deadline_type_block').show();
-        }else{
-            $('#has_deadline_block').hide();
-            $('#deadline_day_block').hide();
-            $('#deadline_type_block').hide();
-            return;
-        }
-//        if ($('#id_frequency_period').val() != '') {
-//            options = _.range(1, 32).map(function(n) {
-//                return new Option(n, n)
-//            })
-//            $("#id_deadline_day").append(options);
-//        }
-        $('#span_deadline_type').html($('#id_frequency_period').val());
-        $('input[name="has_deadline"]').change(function(){
-            if($('#id_has_deadline_1:checked').length > 0){
-                $('#deadline_day_block').hide();
-                $('#deadline_type_block').hide();
-            }else{
-                $('#deadline_day_block').show();
-                $('#deadline_type_block').show();
-            }
-        });
+    //Based on has_frequency orchestrate the month/week blocks.
+    show_element($('#deadline_block'),$('input[name="frequency_enabled"]:checked').val());
+    enable_timeperiod();
+    toggle_has_deadline();
+    $($('input[name="frequency_enabled"]')).change(function(){
+        show_element($('#deadline_block'), $('input[name="frequency_enabled"]:checked').val())
     });
+
+    $($('input[name="has_deadline"]')).change(function(){
+        toggle_has_deadline();
+    });
+
+    $('#id_frequency_period').change(function(){
+        enable_timeperiod();
+    });
+
 });
-    
+
+function show_element(element,should_show){
+    if(should_show=='True'){
+        $(element).show();
+    }else{
+        $(element).hide();
+    }
+
+}
+
+
+function enable_timeperiod() {
+    if ($('#id_frequency_period').val() == "week") {
+        show_element($('#week_block'), "True")
+        show_element($('#month_block'), "False")
+    } else if ($('#id_frequency_period').val() == "month") {
+        show_element($('#week_block'), "False")
+        show_element($('#month_block'), "True")
+    }
+}
+
+function toggle_has_deadline() {
+    if ($('input[name="has_deadline"]:checked').val() == "True") {
+        show_element($('#time_period'), "True");
+        enable_timeperiod()
+    } else {
+        show_element($('#time_period'), "False");
+    }
+}
