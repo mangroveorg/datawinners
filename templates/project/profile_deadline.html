@@ -1,0 +1,29 @@
+<fieldset>
+    <legend>When do we need the data</legend>
+    <li class="{{ form.frequency_period.css_classes  }} form-row-10px">
+        {{ form.frequency_period.label_tag }}
+        {{ form.frequency_period }}
+        {{ form.frequency_period.errors }}
+    </li>
+    <div id="has_deadline_block">
+        <li class="{{ form.has_deadline.css_classes  }} form-row-10px">
+            {{ form.has_deadline.label_tag }}
+            {{ form.has_deadline }}
+            {{ form.has_deadline.errors }}
+        </li>
+    </div>
+    <div id="deadline_day_block">
+        <li class="{{ form.deadline_day.css_classes  }} form-row-10px">
+            {{ form.deadline_day.label_tag }}
+            {{ form.deadline_day }}
+            {{ form.deadline_day.errors }}
+        </li>
+    </div>
+    <div id="deadline_type_block">
+        <li class="{{ form.deadline_type.css_classes  }} form-row-10px">
+            {{ form.deadline_type.label_tag }}
+            {{ form.deadline_type }} <span id="span_deadline_type"></span>
+            {{ form.deadline_type.errors }}
+        </li>
+    </div>
+</fieldset>
