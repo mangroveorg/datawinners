@@ -20,5 +20,6 @@ urlpatterns = patterns('',
                        (r'', include('datawinners.location.urls')),
                        (r'', include('datawinners.alldata.urls')),
                        (r'', include('datawinners.entity.urls')),
+                       (r'', include('datawinners.home.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        )
