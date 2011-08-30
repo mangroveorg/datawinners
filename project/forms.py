@@ -60,10 +60,10 @@ class ProjectProfile(Form):
     def __init__(self, entity_list,  *args, **kwargs):
         assert isinstance(entity_list, list)
         super(ProjectProfile, self).__init__(*args, **kwargs)
-        entity_list = entity_list
         self.fields['entity_type'].choices = [(t[-1], t[-1]) for t in entity_list]
         self.fields['name'].widget.attrs['watermark'] = "Enter a project name"
         self.fields['goals'].widget.attrs['watermark'] = "Describe what your team hopes to achieve by collecting this data"
+
 
     def clean_entity_type(self):
         if self.cleaned_data.get('entity_type') == "" and self.cleaned_data.get("activity_report") == 'no' :

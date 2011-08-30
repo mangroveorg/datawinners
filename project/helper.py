@@ -266,3 +266,19 @@ def remove_reporter(entity_type_list):
 def get_preview_for_field(field):
     return {"description": field.name, "code": field.code, "type": field.type,
             "constraints": field.get_constraint_text(), "instruction": field.instruction}
+
+
+def _add_to_dict(dict, post_dict,key):
+    if post_dict.get(key):
+        dict[key] = post_dict.get(key)
+
+
+def deadline_and_reminder(post_dict):
+    dict={}
+    _add_to_dict(dict, post_dict,'frequency_enabled')
+    _add_to_dict(dict, post_dict,'frequency_period')
+    _add_to_dict(dict, post_dict,'has_deadline')
+    _add_to_dict(dict, post_dict,'deadline_week')
+    _add_to_dict(dict, post_dict,'deadline_month')
+    _add_to_dict(dict, post_dict,'deadline_type')
+    return dict

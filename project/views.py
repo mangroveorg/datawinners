@@ -113,7 +113,8 @@ def create_profile(request):
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
                           devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'],
-                          sender_group=form.cleaned_data['sender_group'])
+                          sender_group=form.cleaned_data['sender_group'],
+                          reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data))
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
             pid = project.save(manager)
@@ -130,6 +131,16 @@ def create_profile(request):
                                   context_instance=RequestContext(request))
 
 
+def _generate_project_info_with_deadline_and_reminders(project):
+    project_info = {}
+    for key, value in project.items():
+        project_info[key] = value
+    for key, value in project['reminder_and_deadline'].items():
+        project_info[key] = value
+    del project_info['reminder_and_deadline']
+    return project_info
+
+
 @login_required(login_url='/login')
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -137,7 +148,7 @@ def edit_profile(request, project_id=None):
     entity_list = helper.remove_reporter(entity_list)
     project = models.get_project(project_id, dbm=manager)
     if request.method == 'GET':
-        form = ProjectProfile(data=project, entity_list=entity_list)
+        form = ProjectProfile(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
                                   context_instance=RequestContext(request))
 
@@ -148,6 +159,7 @@ def edit_profile(request, project_id=None):
             new_questionnaire = helper.create_questionnaire(form.cleaned_data, manager)
             new_qid = new_questionnaire.save()
             project.qid = new_qid
+        project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
         project.update(form.cleaned_data)
         project.update_questionnaire(manager)
 
@@ -332,7 +344,7 @@ def _format_data_for_presentation(entity_values_dict, form_model):
     return field_values, headers, type_list, grand_totals
 
 
-def _load_data(form_model, manager, questionnaire_code, aggregation_types = None, start_time = None, end_time = None):
+def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, start_time=None, end_time=None):
     if aggregation_types is not None:
         aggregation_type_list = json.loads(aggregation_types)
     else:
@@ -342,13 +354,14 @@ def _load_data(form_model, manager, questionnaire_code, aggregation_types = None
     aggregates = helper.get_aggregate_list(form_model.fields[1:], aggregation_type_list)
     aggregates = [aggregate_module.aggregation_factory("latest", form_model.fields[0].name)] + aggregates
     data_dictionary = aggregate_module.aggregate_by_form_code_python(manager, questionnaire_code,
-                                                                     aggregates=aggregates, aggregate_on=EntityAggregration(), starttime=start_time,
+                                                                     aggregates=aggregates,
+                                                                     aggregate_on=EntityAggregration(),
+                                                                     starttime=start_time,
                                                                      endtime=end_time, include_grand_totals=True)
     return data_dictionary
 
 
 def _get_aggregated_data(form_model, manager, questionnaire_code, request):
-
     if request.method == "GET":
         aaggregation_types = request.GET.get("aggregation-types")
         start_time = request.GET.get("start_time")
@@ -369,7 +382,8 @@ def project_data(request, project_id=None, questionnaire_code=None):
     project = models.get_project(project_id, dbm=manager)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
-    field_values, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code, request)
+    field_values, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code,
+                                                                              request)
 
     if request.method == "GET":
         return render_to_response('project/data_analysis.html',
@@ -379,7 +393,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
                                   ,
                                   context_instance=RequestContext(request))
     if request.method == "POST":
-        return HttpResponse(encode_json({'data': field_values, 'footer':grand_totals}))
+        return HttpResponse(encode_json({'data': field_values, 'footer': grand_totals}))
 
 
 @login_required(login_url='/login')
@@ -462,7 +476,7 @@ def datasenders_wizard(request, project_id=None):
         reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(questionnaire_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
-        import_reporter_form = ReporterRegistrationForm(initial={'project_id':project_id})
+        import_reporter_form = ReporterRegistrationForm(initial={'project_id': project_id})
         _format_field_description_for_data_senders(reg_form.fields)
         cleaned_up_fields = _get_questions_for_datasenders_registration_for_wizard(reg_form.fields)
         return render_to_response('project/datasenders_wizard.html',
@@ -481,9 +495,10 @@ def reminders_wizard(request, project_id=None):
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html', {"previous": previous_link, 'project_id': project_id,'is_reminder': project.reminders,
-                                                                    'form': ReminderForm(
-                                                                        initial={'is_reminder': project.reminders})},
+        return render_to_response('project/reminders_wizard.html',
+                {"previous": previous_link, 'project_id': project_id, 'is_reminder': project.reminders,
+                 'form': ReminderForm(
+                     initial={'is_reminder': project.reminders})},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
@@ -622,6 +637,7 @@ def registered_subjects(request, project_id=None):
 def _get_associated_data_senders(all_data, project):
     return [data for data in all_data if data['short_name'] in project.data_senders]
 
+
 @login_required(login_url='/login')
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -631,6 +647,7 @@ def registered_datasenders(request, project_id=None):
     return render_to_response('project/registered_datasenders.html',
             {'project': project, 'project_links': project_links, 'all_data': associated_datasenders},
                               context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -723,6 +740,7 @@ def _get_django_field(field):
     display_field.widget.attrs["watermark"] = field.get_constraint_text()
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
+
 
 def _create_django_form_from_form_model(form_model):
     properties = {field.code.lower(): _get_django_field(field) for field in form_model.fields}

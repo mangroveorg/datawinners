@@ -412,6 +412,33 @@ class TestHelper(unittest.TestCase):
         cleaned_list = helper.hide_entity_question([question1, question2])
         self.assertEquals([question2], cleaned_list)
 
+    def test_creates_reminder_and_deadline_when_project_submission_frequency_is_disabled(self):
+        #frequency_enabled=False&frequency_period=week&has_deadline=False
+
+        post = [{"frequency_enabled": "False"}]
+        field = helper.deadline_and_reminder(post[0])
+        self.assertEquals(field, post[0])
+
+    def test_creates_reminder_and_deadline_when_project_submission_frequency_is_enabled_and_deadline_is_disabled(self):
+        #frequency_enabled=False&has_deadline=False
+
+        post = [{"frequency_enabled": "False","has_deadline":"False"}]
+        field = helper.deadline_and_reminder(post[0])
+        self.assertEquals(field, post[0])
+
+    def test_creates_reminder_and_deadline_for_monthly_deadline(self):
+        #frequency_enabled=True&frequency_period=month&has_deadline=True&deadline_month=3&deadline_type=next
+
+        post = [{"frequency_enabled": "True","has_deadline":"True","frequency_period":"month","deadline_month":"3","deadline_type":"next"}]
+        field = helper.deadline_and_reminder(post[0])
+        self.assertEquals(field, post[0])
+    def test_creates_reminder_and_deadline_for_weekly_deadline(self):
+        #frequency_enabled=True&frequency_period=week&has_deadline=True&deadline_week=Monday&deadline_type=current
+
+        post = [{"frequency_enabled": "True","has_deadline":"False","frequency_period":"week","deadline_week":"Monday","deadline_type":"current"}]
+        field = helper.deadline_and_reminder(post[0])
+        self.assertEquals(field, post[0])
+
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):
