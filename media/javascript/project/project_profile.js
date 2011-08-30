@@ -58,7 +58,7 @@ $(document).ready(function(){
 
     deadline_init();
     $($('input[name="frequency_enabled"]')).change(function(){
-        show_element($('#deadline_block'), $('input[name="frequency_enabled"]:checked').val())
+        toggle_deadline_block();
         toggle_frequency_period();
     });
 
@@ -111,8 +111,6 @@ function toggle_has_deadline() {
 function deadline_init() {
     show_element($('#deadline_block'), $('input[name="frequency_enabled"]:checked').val());
     toggle_frequency_period();
-    enable_timeperiod();
-    toggle_has_deadline();
 }
 
 function toggle_frequency_period(){
@@ -120,5 +118,16 @@ function toggle_frequency_period(){
         $('#id_frequency_period').attr('disabled', false);
     }else{
         $('#id_frequency_period').attr('disabled', true);
+        toggle_has_deadline();
+        $('input[name="has_deadline"]').attr('disabled', true);
+    }
+}
+
+function toggle_deadline_block(){
+    show_element($('#deadline_block'), $('input[name="frequency_enabled"]:checked').val())
+    if($('input[name="frequency_enabled"]:checked').val() == "True"){
+        $('input[name="has_deadline"]').attr('disabled', false);
+    }else{
+        $('input[name="has_deadline"]').attr('disabled', true);
     }
 }
