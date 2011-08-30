@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -149,6 +150,26 @@ def all_subjects(request):
                               context_instance=RequestContext(request))
 
 
+def _get_project_association(projects):
+    project_association = defaultdict(list)
+    for project in projects:
+        for datasender in project['value']['data_senders']:
+            project_association[datasender].append(project['value']['name'])
+    return project_association
+
+
+def _get_all_datasenders(manager, projects):
+    all_data_senders = import_module.load_all_subjects_of_type(manager)
+    project_association = _get_project_association(projects)
+    for datasender in all_data_senders:
+        association = project_association.get(datasender['short_name'])
+        if association is not None:
+            datasender['projects'] = ' ,'.join(association)
+        else:
+            datasender['projects'] = '--'
+    return all_data_senders
+
+
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
@@ -158,11 +179,10 @@ def all_datasenders(request):
     projects = models.get_all_projects(manager)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        all_data_senders = import_module.load_all_subjects_of_type(manager)
-
+        all_data_senders = _get_all_datasenders(manager, projects)
         return HttpResponse(json.dumps({'success': is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
-    all_data_senders = import_module.load_all_subjects_of_type(manager)
+    all_data_senders = _get_all_datasenders(manager, projects)
     return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects},
                               context_instance=RequestContext(request))
 

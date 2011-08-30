@@ -7,6 +7,7 @@
     <th>Location</th>
     <th>Geocode</th>
     <th>Contact info</th>
+    <th>Projects</th>
     </thead>
     <tbody id='all_data_senders'>
     {% for each in all_data %}
@@ -18,6 +19,7 @@
             <td>{{ each.location }}</td>
             <td>{{ each.geocode }}</td>
             <td>{{ each.mobile_number }}</td>
+            <td>{{ each.projects }}</td>
         </tr>
     {% endfor %}
     </tbody>
