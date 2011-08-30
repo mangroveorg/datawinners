@@ -654,8 +654,7 @@ def registered_datasenders(request, project_id=None):
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
     project = models.get_project(request.POST['project_id'], manager)
-    ids = request.POST['ids[]']
-    project.data_senders = [datasender for datasender in project.data_senders if datasender not in ids]
+    [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
     project.save(manager)
     return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 

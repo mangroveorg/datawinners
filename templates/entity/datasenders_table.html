@@ -1,5 +1,6 @@
 <table id='subject_table' class="styled_table">
     <thead>
+    <th></th>
     <th>ID</th>
     <th>Name</th>
     <th>Type</th>
@@ -10,6 +11,7 @@
     <tbody id='all_data_senders'>
     {% for each in all_data %}
         <tr>
+            <td><input type="checkbox" id="{{ each.short_name }}" value="{{ each.short_name }}"/></td>
             <td>{{ each.short_name }}</td>
             <td>{{ each.name }}</td>
             <td>{{ each.type }}</td>

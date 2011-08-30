@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $("#error_table").hide();
+    
     var uploader = new qq.FileUploader({
         // pass the dom node (ex. $(selector)[0] for jQuery users)
         element: document.getElementById('file_uploader'),
@@ -40,6 +41,51 @@ $(document).ready(function() {
 
         }
     });
+
+    var allIds = [];
+
+    function updateIds() {
+        allIds = [];
+        $('#all_data_senders :checked').each(function() {
+            allIds.push($(this).val());
+        });
+    }
+
+    $('#action').change(function(){
+        updateIds();
+        $('#error').remove()
+        if ($(this).val()=='disassociate' && allIds.length > 0 && $('#project').val()!=''){
+                $.post('/entity/disassociate/',
+                        {'ids':allIds.join(';'),'project_id':$("#project").val()}
+                ).success(function(data){
+                            $('<div class="success-message-box" id="success_message">Data Senders Dis-Associated Successfully. Please Wait....</div>').insertAfter($('#action'))
+                            $('#success_message').delay(4000).fadeOut(1000, function () {$('#success_message').remove();});
+                            setTimeout(function(){window.location.href = data},5000);
+                        }
+                )
+        }
+        if ($(this).val()=='associate' && allIds.length > 0 && $('#project').val()!=''){
+                $.post('/entity/associate/',
+                        {'ids':allIds.join(';'),'project_id':$("#project").val()}
+                ).success(function(data){
+                            $('<div class="success-message-box" id="success_message">Data Senders Associated Successfully. Please Wait....</div>').insertAfter($('#action'))
+                            $('#success_message').delay(4000).fadeOut(1000, function () {$('#success_message').remove();});
+                            setTimeout(function(){window.location.href = data},5000);
+                        }
+                )
+        }
+        else if ($('#project').val()==''){
+            $('<div class="message-box" id="error">Please select atleast 1 project</div>').insertAfter($(this))
+            $('#project').val('')
+            $(this).val("");
+        }
+        else if (allIds.length == 0){
+            $('<div class="message-box" id="error">Please select atleast 1 data sender</div>').insertAfter($(this))
+            $('#project').val('')
+            $(this).val("");
+        }
+    })
+
 
 
 });

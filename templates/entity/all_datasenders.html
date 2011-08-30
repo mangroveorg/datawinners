@@ -92,8 +92,21 @@ Data Senders
                 </table>
             </div>
         </div>
+        <label class="inline">Projects: </label>
+        <select class="margin_right_20" id='project'>
+            <option value="">--</option>
+            {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.value.name }}</option>
+            {% endfor %}
+        </select>
+        <label class="inline margin_left_20">Actions: </label>
+        <select id='action'>
+            <option value="">--</option>
+            <option value="associate">Associate</option>
+            <option value="disassociate">Dis-Associate</option>
+        </select>
         {% if all_data %}
-            <h3>All Data Senders</h3>
+            <h3 class="margin_top_20">All Data Senders</h3>
             {% include 'entity/datasenders_table.html' %}
 
         {% endif %}

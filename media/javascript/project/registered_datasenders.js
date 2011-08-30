@@ -8,12 +8,12 @@ $(document).ready(function() {
         });
     }
 
-    $('#tbody input').click(updateIds);
 
     $('#action').change(function(){
+        updateIds();
         if ($(this).val()=='disassociate' && allIds.length > 0){
                 $.post('/project/disassociate/',
-                        {'ids':allIds,'project_id':$("#project_id").val()}
+                        {'ids':allIds.join(';'),'project_id':$("#project_id").val()}
                 ).success(function(data){
                             window.location.href = data
                         }

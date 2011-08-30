@@ -155,6 +155,7 @@ def all_subjects(request):
 @utils.is_new_user
 def all_datasenders(request):
     manager = get_database_manager(request.user)
+    projects = models.get_all_projects(manager)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = import_module.load_all_subjects_of_type(manager)
@@ -162,9 +163,30 @@ def all_datasenders(request):
         return HttpResponse(json.dumps({'success': is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
     all_data_senders = import_module.load_all_subjects_of_type(manager)
-    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders},
+    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects},
                               context_instance=RequestContext(request))
 
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@utils.is_new_user
+def disassociate_datasenders(request):
+    manager = get_database_manager(request.user)
+    project = models.get_project(request.POST.get('project_id'), manager)
+    [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
+    project.save(manager)
+    return HttpResponse(reverse(all_datasenders))
+
+@csrf_view_exempt
+@csrf_response_exempt
+@login_required(login_url='/login')
+@utils.is_new_user
+def associate_datasenders(request):
+    manager = get_database_manager(request.user)
+    project = models.get_project(request.POST.get('project_id'), manager)
+    project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
+    project.save(manager)
+    return HttpResponse(reverse(all_datasenders))
 
 def _associate_data_senders_to_project(imported_entities, manager, project_id):
     project = models.get_project(project_id, manager)
