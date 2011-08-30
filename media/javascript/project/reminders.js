@@ -15,28 +15,46 @@ $(document).ready(function(){
         });
     });
 
-function reminder(message, day, ownerViewModel) {
+function reminder(message, day, reminderMode, ownerViewModel) {
     this.message = ko.observable(message);
     this.day = ko.observable(day);
+    this.reminderMode = ko.observable(reminderMode);
     this.remove = function() { ownerViewModel.reminders.remove(this) }
 }
 
 function viewModel() {
     this.reminders = ko.observableArray([]);
     this.newMessage = ko.observable("");
-    this.newDay = ko.observable();
+    this.beforeDay = ko.observable();
+    this.afterDay = ko.observable();
+    this.reminderMode = ko.observable();
     this.addReminder = function() {
         if(this.newMessage() === ""){
             $('#newMessage_err').show().html("Can't be blank.")
             return;
         }
-        if(this.newDay() === ""){
-            $('#newDay_err').show().html("Can't be blank.")
-            return;
+
+        var day=this.afterDay()
+        if (this.reminderMode() == 'before_deadline'){
+            if(this.beforeDay() === ""){
+                $('#newDay_err').show().html("Day Can't be blank.")
+                return;
+            }
+            day=this.beforeDay()
         }
-        this.reminders.push(new reminder(this.newMessage(), this.newDay(), this));
+
+        if (this.reminderMode() == 'after_deadline'){
+            if(this.afterDay() === ""){
+                $('#newDay_err').show().html("Day Can't be blank.")
+                return;
+            }
+            day=this.beforeDay()
+        }
+
+
+        this.reminders.push(new reminder(this.newMessage(), day, this.reminderMode, this));
         this.newMessage("");
-        this.newDay("");
+        this.newDay("");    
         $('#newMessage_err').hide();
         $('#newDay_err').hide();
 
