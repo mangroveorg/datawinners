@@ -281,4 +281,5 @@ def deadline_and_reminder(post_dict):
     _add_to_dict(dict, post_dict,'deadline_week')
     _add_to_dict(dict, post_dict,'deadline_month')
     _add_to_dict(dict, post_dict,'deadline_type')
+    _add_to_dict(dict, post_dict,'reminders_enabled')
     return dict

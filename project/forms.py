@@ -55,6 +55,7 @@ class ProjectProfile(Form):
     deadline_month =  ChoiceField(choices=(tuple([(n,n) for n in range(1,31)])), widget=forms.Select, required=False)
     deadline_week =  ChoiceField(choices=(tuple([(day, day) for day in calendar.day_name])), widget=forms.Select(attrs={'data-bind':'random'}), required=False)
     deadline_type =  ChoiceField(choices=(('current', 'That'), ('next', 'Following')), widget=forms.Select, required=False)
+    reminders_enabled = ChoiceField(choices=((True, 'Yes'), (False, 'No')), label="Do you want to remind DataSenders to send in their data?", required=False, initial=False, widget=forms.RadioSelect)
 
 
     def __init__(self, entity_list,  *args, **kwargs):
