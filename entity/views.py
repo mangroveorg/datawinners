@@ -163,10 +163,7 @@ def _get_all_datasenders(manager, projects):
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
         association = project_association.get(datasender['short_name'])
-        if association is not None:
-            datasender['projects'] = ' ,'.join(association)
-        else:
-            datasender['projects'] = '--'
+        datasender['projects'] = ' ,'.join(association) if association is not None else '--'
     return all_data_senders
 
 
