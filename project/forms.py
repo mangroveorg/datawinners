@@ -78,8 +78,3 @@ class ProjectProfile(Form):
                 self.errors['entity_type'] = ""
 
         return self.cleaned_data
-
-
-class ReminderForm(forms.Form):
-    choices = ((True,'Yes'), (False,'No'))
-    is_reminder = ChoiceField(label="Do you want to remind your DataSenders to send in their data?", choices=choices,widget=RadioSelect(attrs={'class':'choice'}))

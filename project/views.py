@@ -15,7 +15,7 @@ from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
-from datawinners.project.forms import ProjectProfile, ReminderForm
+from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState, Reminder
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
@@ -495,10 +495,9 @@ def reminders_wizard(request, project_id=None):
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         previous_link = reverse(datasenders_wizard, args=[project_id])
+        print project.is_reminder()
         return render_to_response('project/reminders_wizard.html',
-                {"previous": previous_link, 'project_id': project_id, 'is_reminder': project.reminders,
-                 'form': ReminderForm(
-                     initial={'is_reminder': project.reminders})},
+                {"previous": previous_link, 'project_id': project_id, 'project': project, 'is_reminder': project.is_reminder()},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))

@@ -39,6 +39,7 @@ class Project(DocumentBase):
     sender_group = TextField()
     reminder_and_deadline = DictField()
     data_senders = ListField(TextField())
+    reminders=ListField(DictField())
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminder_and_deadline=None):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
@@ -53,6 +54,12 @@ class Project(DocumentBase):
         self.activity_report = activity_report
         self.sender_group = sender_group
         self.reminder_and_deadline = reminder_and_deadline
+
+    def is_reminder(self):
+        if self.reminder_and_deadline['reminders_enabled'] == "True":
+            return True
+
+        return False
 
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('all_projects', key=self.name)

@@ -1,8 +1,5 @@
 <span id="project_id" style="display: none;">{{ project_id }}</span>
 <span class="success_message"></span>
-<div>
-    {{ form }}
-</div>
 <div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
 <form data-bind="submit: addReminder">
     <div class="reminder_content_section">
@@ -34,6 +31,10 @@
     <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
 </div>
 <button class="button" data-bind="click: save">Save the reminders</button>
+</div>
+<div style="display:{% if is_reminder %} none; {% else %} block; {% endif %}">
+    Reminders are not enabled for this project
+    Please proceed to the next <a>step</a>
 </div>
 <script type="text/html" id="reminderTemplate">
     <li>
