@@ -8,6 +8,7 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string, sequence_to_str
 from mangrove.datastore import aggregrate as aggregate_module
+from django.utils.translation import ugettext_lazy as _
 import models
 import xlwt
 from datetime import datetime

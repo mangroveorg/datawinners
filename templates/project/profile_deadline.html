@@ -1,5 +1,6 @@
+{% load i18n %}
 <fieldset>
-    <legend>When do we need the data</legend>
+    <legend>{% trans "When do we need the data" %}</legend>
     <li class="{{ form.frequency_enabled.css_classes  }} form-row-10px">
         {{ form.frequency_enabled.label_tag }}
         {{ form.frequency_enabled }}

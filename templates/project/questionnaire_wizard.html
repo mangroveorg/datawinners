@@ -12,6 +12,7 @@
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet" />
 {% endblock %}
+{% load i18n %}
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/view_model.js"></script>
@@ -31,7 +32,7 @@
     <script type="text/html" id="choice-template">
         <li>
             <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName:true"/>
-            <a href="questionnaire_wizard.html#" class='delete delete_link' data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+            <a href="questionnaire_wizard.html#" class='delete delete_link' data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template">
@@ -42,7 +43,7 @@
                  <li>
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
-                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
                     </div>
                      <span class="selected_question_arrow" data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
                  </li>
@@ -56,8 +57,8 @@
 
 
 {% block step_number %}
-    <h3>Step 3: Questionnaire</h3>
-    <p>Define the questions you want your Data Senders to answer.</p>
+    <h3>{% trans "Step 3:" %} {% trans "Questionnaire" %}</h3>
+    <p>{% trans "Define the questions you want your Data Senders to answer." %}</p>
 {% endblock %}
 {% block content %}
     {% csrf_token %}
@@ -65,21 +66,20 @@
         <fieldset>
     <ul class="questionnaire_code">
          <li>
-            <label>Questionnaire Code :</label>
+            <label>{% trans "Questionnaire Code:" %}</label>
             <input id='project-id' type='hidden' value="{{ project.id }}" />
             <input id='project-state' type='hidden' value="{{ project.state }}" />
             <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}" />
              <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
              <div class="tooltip"><p>
-                 <strong>What is this?</strong><br />
-                 All questionnaires have a Unique Questionnaire Code. DataWinners uses this unique code to correctly
-                 identify your questionnaire. Use the recommended code or change it if you like.<br /><br />
-                 <strong>What do I need to do?</strong><br />
-                 Enter a 3 letter code (letters and numbers). This questionnaire code will appear on the printed version
-                 of your questionnaire. Your Data Senders will type in this code first when sending in their data.
+                 <strong>{% trans "What is this?" %}</strong><br />
+                 {% trans "q_tooltip_question_code" %}
+                 <br /><br />
+                 <strong>{% trans "What do I need to do?" %}</strong><br />
+                 {% trans "r_tooltip_question_code" %}
             </p></div>
             <input id='questionnaire-code' class='required' value="{{ questionnaire_code }}" />
-             <span id="questionnaire-code-error"></span>
+            <span id="questionnaire-code-error"></span>
         </li>
     </ul>
     <div class="questionnare_content grid_23 alpha omega">
@@ -88,28 +88,25 @@
 
         <div>
             <div id="questions-panel" class="grid_8 alpha">
-                <h4>Questions</h4>
+                <h4>{% trans "Questions" %}</h4>
                 <div data-bind="template: 'question-list-template'" class="">
                 </div>
                 <div class="add_question">
                     <a class="add_link" href="questionnaire_wizard.html#"
-                       data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">Add
-                        another Question</a>
+                       data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">{% trans "Add another Question" %}</a>
                 </div>
             </div>
 
             <div id="question-detail-panel">
-                        {% include 'project/question_detail_panel.html' %}
+                {% include 'project/question_detail_panel.html' %}
                 <div class="grid_1 alpha omega">
                     <img src="/media/images/help_icon.png" class="help_icon">
                     <div class="tooltip"><p>
-                        <strong>What is this?</strong><br />
-                        <strong>1 SMS is limited to 160 characters.</strong><br />
-                        The Running Count tallies the questionnaire code, all question codes and
-                        the maximum lengths of all answers and keeps a running count of how many characters you have used out of 160.<br /><br />
-                        <strong>What do I need to do?</strong><br />
-                        Use this count to determine how many questions you can add to the questionnaire and still keep the response within 1 SMS (160 characters).
-                        Don't worry, you can go beyond 160 characters. However, more than one SMS will be required to answer all the questions in your questionnaire.
+                        <strong>{% trans "What is this?" %}</strong><br />
+                        {% trans "q_tooltip_question_sms" %}
+                        <br /><br />
+                        <strong>{% trans "What do I need to do?" %}</strong><br />
+                        {% trans "r_tooltip_question_sms" %}
                     </p></div>
                 </div>
                 <div class="grid_13 alpha omega">
@@ -122,15 +119,15 @@
     </fieldset>
 </form>
     <div id="questionnaire_code_change">
-        <p class="warning_message">Warning: Changing the questionnaire code will remove all existing test data.</p>
-        <a href="#" class="button" id="ok_button">OK</a>
+        <p class="warning_message">{% trans "Warning: Changing the questionnaire code will remove all existing test data." %}</p>
+        <a href="#" class="button" id="ok_button">{% trans "OK" %}</a>
     </div>
 {% endblock %}
 {% block buttons %}
     {{ block.super }}
-        <input id="submit-button" type="button" value="Next Step: Data Senders"/>
+        <input id="submit-button" type="button" value="{% trans 'Next Step: Data Senders' %}"/>
         <input id="submit_button_right" type="button" value=" "/>
 {% endblock %}
 {% block previous_step %}
-     <a id="subjects_link" class="bold" href={{ previous }}>Subjects</a>
+     <a id="subjects_link" class="bold" href={{ previous }}>{% trans "Subjects" %}</a>
 {% endblock %}

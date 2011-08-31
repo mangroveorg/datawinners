@@ -1,5 +1,5 @@
 {% extends 'layout_application.html' %}
-
+{% load i18n %}
  {% block header %}
     <div id="container_header_application">
     <div class="container_24" id="header_application">
@@ -26,15 +26,15 @@
             </div>
 
             <div class="grid_24 buttons">
-                 <div class="text_align_right buttons">
+                 <div class="buttons">
                       {% block previous %}
-                      <div class="grid_5 previous_step">
-                          <a href={{ previous }}>Previous Step:</a>
+                      <div class="grid_7 previous_step">
+                          <a href={{ previous }}>{% trans "Previous Step:" %}</a>
                           {% block previous_step %} {% endblock %}
                          
                       </div>
                       {% endblock %}
-                     <div class="next_step">
+                     <div class="next_step text_align_right">
                          {% block buttons %} {% endblock %}
                      </div>
                  </div>

@@ -1,23 +1,26 @@
+{% load i18n %}
 <div class="questionnare_content grid_23 alpha omega">
     <div id="message-label">
     </div>
     <div>
         <div id="questions-panel" class="grid_8 alpha">
-            <h4>Questions<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-5px;"></h4>
+            <h4>{% trans "Questions" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-5px;"></h4>
             {% if step == "subjects" %}
             <div class="tooltip"><p>
-                <strong>What is this?</strong><br />
-                Decide what information you want to use to identify and register each subject of your questionnaire.  For example, Clinic Name, Location, Phone Number.<br /><br />
-                <strong>What do I need to do?</strong><br />
-                Review the questions by clicking on each question in order.
+                <strong>{% trans "What is this?" %}</strong><br />
+                {% trans "q_tooltip_question_panel_subject" %}
+                <br /><br />
+                <strong>{% trans "What do I need to do?" %}</strong><br />
+                {% trans "r_tooltip_question_panel_subject" %}
             </p></div>
             {% endif %}
             {% if step == "datasenders" %}
             <div class="tooltip"><p>
-                <strong>What is this?</strong><br />
-                Decide what information you need to collect about each Data Sender.  <br /><br />
-                <strong>What do I need to do?</strong><br />
-                Review the questions by clicking on each
+                <strong>{% trans "What is this?" %}</strong><br />
+                {% trans "q_tooltip_question_panel_data_sender" %}
+                <br /><br />
+                <strong>{% trans "What do I need to do?" %}</strong><br />
+                {% trans "r_tooltip_question_panel_data_sender" %}
             </p></div>
             {% endif %}
 
@@ -38,9 +41,9 @@
         <div id="question-detail-panel">
             {% for each in fields %}
                 <div class="answer{{ forloop.counter }}">
-                    <h4>Question: </h4>
+                    <h4>{% trans "Question:" %} </h4>
                     <span>{{ each.label.eng }}</span>
-                    <h4>Code: </h4>
+                    <h4>{% trans "Code:" %} </h4>
                     <span>{{ each.code }}</span>
                     <span class="selected_question_arrow"></span>
                 </div>

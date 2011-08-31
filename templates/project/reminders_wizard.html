@@ -1,6 +1,6 @@
 {% extends 'step_wizard.html' %}
-
-{% block page_title %} Reminders {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "Reminders" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -30,23 +30,13 @@
 
 
 {% block step_number %}
-    <h3>Step5: Reminders<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-3px;"></h3>
+    <h3>{% trans "Step5:" %} {% trans "Reminders" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-3px;"></h3>
     <div class="tooltip"><p>
-        <strong>What is this?</strong><br />
-        <strong>Remiders</strong> are important because they are the people who send you answers to your
-        questionnaire. They are usually based in the field.<br /><br />
-        You can <strong>register Data Senders</strong> by entering some basic information (name, location,
-        telephone number) about each Data Sender.
-        DataWinners will use the Data Sender's telephone number as the <strong>Unique Identification Number</strong>.
-        By registering your Data Senders now they won't have to send you this information (example: name) each time
-        they respond to your questionnaire. DataWinners will recognize each Data Sender by his or her registered
-        telephone number.<br /><br />
-        <strong>What do I need to do?</strong><br />
-        Decide what information you want to collect for each Data Sender (first name, last name, location, mobile
-        phone number, etc.) You then have three ways to register this information: 1) Manually enter the details
-        using the <strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) Print out the Data
-        Sender Registration Questionnaire, give it to your Data Senders and ask your <strong>Data Senders to register
-        themselves</strong>. Don’t worry, you can always edit this information later.
+        <strong>{% trans "What is this?" %}</strong><br />
+        {% trans "q_tooltip_reminders" %}
+        <br /><br />
+        <strong>{% trans "What do I need to do?" %}</strong><br />
+        {% trans "r_tooltip_reminders" %}
     </p></div>
 {% endblock %}
 {% block content %}
@@ -56,11 +46,11 @@
         <form action="" method="POST">
             {% csrf_token %}
         {{ block.super }}
-        <input id="submit-button" type="submit" value="Next Step: Review and Test"/>
+        <input id="submit-button" type="submit" value="{% trans 'Next Step: Review and Test' %}"/>
         <input id="submit_button_right" type="button" value=" "/>
         </form>
     {% endblock %}
 {% block previous_step %}
-     <a id="data_senders_link" class="bold" href={{ previous }}>Data Senders</a>
+     <a id="data_senders_link" class="bold" href={{ previous }}>{% trans "Data Senders" %}</a>
 {% endblock %}
 

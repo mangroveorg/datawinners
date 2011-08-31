@@ -1,5 +1,6 @@
+{% load i18n %}
 <fieldset>
-    <legend>Subjects and Questionnaire</legend>
+    <legend>{% trans "Subjects and Questionnaire" %}</legend>
     <li class="{{ form.activity_report.css_classes  }} form-row-10px" id="about_questionnaire">
         {{ form.activity_report.label_tag }}
         {{ form.activity_report }}
@@ -7,15 +8,10 @@
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
 
         <div class="tooltip"><p>
-            <strong>What is this?</strong><br/>
-            <strong>Subjects</strong> are very important. They are the topic of your data collection
-            questionnaires. Subjects are often <strong>people</strong> (patients, farmers, children under five)
-            or <strong>things</strong> (health clinics, retail shops, water points). Subjects can also be people
-            who send you their monthly activity reports.<br/><br/>
-            <strong>What do I need to do?</strong><br/>
-            Click one of the radio buttons to tell us the subject of your questionnaire. DataWinners will
-            provide you the step-by-step instructions for your choice. Don’t worry, you can always decide
-            or change your mind later.
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_profile_subjects" %}
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_profile_subjects" %}
         </p></div>
     </li>
     <li class="{{ form.entity_type.css_classes  }} form-row-10px">
@@ -32,16 +28,11 @@
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
 
         <div class="tooltip"><p>
-            <strong>What is this?</strong><br/>
-            Devices are important because you can choose the <strong>communication channel</strong> people will use to
-            send you your data. Your choice depends on two questions: 1) How much data do you need to collect
-            and 2) what devices do people already have. A good general rule is you can collect answers for
-            about 15 questions using SMS. For more extensive data collection needs in the field, we recommend
-            using a smart phone with the Android Operating system. If you have regional offices with good
-            internet connectivity, you can also create your own online form.<br/><br/>
-            <strong>What do I need to do?</strong><br/>
-            Choose one, two or all three channels by clicking on the boxes. Don't worry, you can always
-            change your mind later.
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_profile_devices" %}
+            <br/><br/>
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_profile_devices" %}
         </p></div>
     </li>
 </fieldset>

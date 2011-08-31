@@ -1,3 +1,4 @@
+{% load i18n %}
   {% block messages %}
       <div id="message-label" class="message-box none">
       </div>
@@ -47,8 +48,8 @@
             </ul>
           </li>
           <li class="button_block">
-              <a href="/entity/datasenders/" class="cancel_link">Cancel</a>
-              <input type="button" id="id_register_button" value="Add" class="button margin_top_20"/>
+              <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
+              <input type="button" id="id_register_button" value="{% trans 'Add' %}" class="button margin_top_20"/>
           </li>
       </ul>
   </fieldset>

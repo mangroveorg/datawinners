@@ -1,144 +1,137 @@
-  <ul>
-                                <li class="question">
-                                    <label>Question</label>
-                                    <input id="question_title" name="question_title" type="text" class="required"
-                                           data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: viewModel.isEnabled() "/>
-                                </li>
-                                <li>
-                                    <label>Code<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
-                                    <div class="tooltip"><p>
-                                        <strong>What is this?</strong><br />
-                                        Each question in a questionnaire is identified by its own unique
-                                        <strong>Question Code</strong>. This Question Code tells DataWinners what
-                                        question is answered by the Data Sender.<br /><br />
-                                        <strong>What do I need to do?</strong><br />
-                                        Enter a 1 or 2 character code (letters, numbers or both). Your Data Senders
-                                        type the "+" code followed by the question code (example: +rpd) for each question.
-                                        This will tell DataWinners what question the Data Sender is answering.
-                                    </p></div>
-                                    <input id="code" name="code" type="text" class="required"
-                                           data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                </li>
-                                <li class="question_type margin_null"
-                                    data-bind="visible: !selectedQuestion().is_entity_question()">
-                                    <label>Answer Type<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
-                                    <div class="tooltip"><p>
-                                        <strong>What is this?</strong><br />
-                                        Questionnaires collect data in several formats: numbers, text, multiple choice
-                                        and dates. The <strong>Answer Type</strong> identifies which format the Data
-                                        Sender must use when answering the question.<br /><br />
-                                        <strong>What do I need to do?</strong><br />
-                                        Select the <strong>Answer Type</strong> that the Data Sender will use when
-                                        answering the question. Answers can be numbers, text, multiple choice, or dates.<br/>
-                                        When using the <strong>Multiple Choice option</strong>, Data Senders will type
-                                        in the letter (A, B, C etc.) that corresponds to the correct answer NOT the text
-                                        in the answer field.
-                                    </p></div>
-                                    <p class="margin_bottom_10">Select what kind of answer you want from your Data Senders.</p>
-                                    <div><input type="radio" name="type" value="text"
-                                                data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()" /> Word or
-                                        Phrase
-                                    </div>
-                                    <div><input type="radio" name="type" value="integer"
-                                                data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()" /> Number
-                                    </div>
-                                    <div><input type="radio" name="type" value="date"
-                                                data-bind="checked: selectedQuestion().type,enable: viewModel.isEnabled()"/> Date
-                                    </div>
-                                    <div><input type="radio" name="type" value="choice"
-                                                data-bind="checked: selectedQuestion().isAChoiceTypeQuestion, enable: viewModel.isEnabled()"
-                                                class="choice-question-checkbox"/> List of Choices
-                                    </div>
-                                    <div><input type="radio" name="type" value="geocode"
-                                                data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"
-                                                /> GPS Coordinates
-                                    </div>
-                                </li>
+{% load i18n %}
+<ul>
+    <li class="question">
+        <label>{% trans "Question" %}</label>
+        <input id="question_title" name="question_title" type="text" class="required"
+               data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: viewModel.isEnabled() "/>
+    </li>
+    <li>
+        <label>{% trans "Code" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
 
-                                <li data-bind="visible: viewModel.showDateFormats()">
-                                    <div class="margin_top_20">
-                                        <p>
-                                            <label>Select Date Format</label>
-                                        </p>
+        <div class="tooltip"><p>
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_question_detail_code" %}
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_question_detail_code" %}
+        </p></div>
+        <input id="code" name="code" type="text" class="required"
+               data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+    </li>
+    <li class="question_type margin_null"
+        data-bind="visible: !selectedQuestion().is_entity_question()">
+        <label>{% trans "Answer Type" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
 
-                                        <p>
-                                            <input type="radio" name="date_format" value="mm.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                            month.year (06.2011)<br/>
-                                            <input type="radio" name="date_format" value="dd.mm.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                            day.month.year (28.06.2011)<br/>
-                                            <input type="radio" name="date_format" value="mm.dd.yyyy"
-                                                   data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                            month.day.year (06.28.2011)<br/>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li data-bind="visible: viewModel.showAddChoice()">
-                                    <div class="margin_top_20">
-                                        <ol class="alpha_list"
-                                            data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
+        <div class="tooltip"><p>
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_question_detail_type" %}
+            <br/><br/>
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_question_detail_type" %}
+        </p></div>
+        <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
-                                        </ol>
-                                        <a href="questionnaire_wizard.html#" class="add_link"
-                                           data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup', visible:viewModel.isEnabled()">Add
-                                            Answer Choice</a>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="answers_possible" value="select1"
-                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                        only one answer<br/>
-                                        <input type="radio" name="answers_possible" value="select"
-                                               data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                        multiple answers are permitted<br/>
-                                    </div>
-                                </li>
-                                <li data-bind="visible: viewModel.showAddRange()">
-                                    <div class="margin_top_20">
-                                        <p>
-                                            Min:
-                                            <input name="range_min" type="text" id="range_min"
-                                                   data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                        </p>
+        <div><input type="radio" name="type" value="text"
+                    data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"/>{% trans "Word or Phrase" %}
+        </div>
+        <div><input type="radio" name="type" value="integer"
+                    data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"/>{% trans "Number" %}
+        </div>
+        <div><input type="radio" name="type" value="date"
+                    data-bind="checked: selectedQuestion().type,enable: viewModel.isEnabled()"/>{% trans "Date" %}
+        </div>
+        <div><input type="radio" name="type" value="choice"
+                    data-bind="checked: selectedQuestion().isAChoiceTypeQuestion, enable: viewModel.isEnabled()"
+                    class="choice-question-checkbox"/>{% trans "List of Choices" %}
+        </div>
+        <div><input type="radio" name="type" value="geocode"
+                    data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"
+                />{% trans "GPS Coordinates" %}
+        </div>
+    </li>
 
-                                        <p>
-                                            Max:
-                                            <input name="range_max" type="text" id="range_max"
-                                                   data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
-                                    <div class="margin_top_20">
-                                        <input type="radio" name="text_length" value="length_unlimited" checked="true"
-                                               data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                        No, answer has no character limit<br/>
+    <li data-bind="visible: viewModel.showDateFormats()">
+        <div class="margin_top_20">
+            <p>
+                <label>{% trans "Select Date Format" %}</label>
+            </p>
 
-                                        <div class="max_char">
-                                            <input type="radio" name="text_length" value="length_limited"
-                                                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                            <span class="inline">
-                                                Yes, maximum number of characters should be
-                                                <input name="max_length" type="text" id="max_length"
-                                                       data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="margin_top_20">
-                                        <label>Instructions<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
-                                        <div class="tooltip"><p>
-                                            <strong>What is this?</strong><br />
-                                            When you print the Questionnaire and give it to your Data Senders, these
-                                            <strong>Instructions</strong> will appear below each question. They provide
-                                            background or other important information to help Data Senders answer the
-                                            questionnaire.<br /><br />
-                                            <strong>What do I need to do?</strong><br />
-                                            Type in any specific information that may be important to help the Data Sender answer the question.
-                                        </p></div>
-                                        <span id="question_instruction"
-                                              data-bind="text: selectedQuestion().instruction"></span>
-                                    </div>
-                                </li>
-                            </ul>
+            <p>
+                <input type="radio" name="date_format" value="mm.yyyy"
+                       data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                {% trans "month.year" %} (06.2011)<br/>
+                <input type="radio" name="date_format" value="dd.mm.yyyy"
+                       data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                {% trans "day.month.year" %} (28.06.2011)<br/>
+                <input type="radio" name="date_format" value="mm.dd.yyyy"
+                       data-bind="checked:selectedQuestion().date_format, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                {% trans "month.day.year" %} (06.28.2011)<br/>
+            </p>
+        </div>
+    </li>
+    <li data-bind="visible: viewModel.showAddChoice()">
+        <div class="margin_top_20">
+            <ol class="alpha_list"
+                data-bind="template: { name : 'choice-template',foreach : selectedQuestion().choices }">
+
+            </ol>
+            <a href="questionnaire_wizard.html#" class="add_link"
+               data-bind="click: function() { viewModel.addOptionToQuestion(); }, valueUpdate: 'keyup', visible:viewModel.isEnabled()">
+                {% trans "Add Answer Choice" %}</a>
+        </div>
+        <div>
+            <input type="radio" name="answers_possible" value="select1"
+                   data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+            {% trans "only one answer" %}<br/>
+            <input type="radio" name="answers_possible" value="select"
+                   data-bind="checked:selectedQuestion().type, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+            {% trans "multiple answers are permitted" %}<br/>
+        </div>
+    </li>
+    <li data-bind="visible: viewModel.showAddRange()">
+        <div class="margin_top_20">
+            <p>
+                {% trans "Min:" %}
+                <input name="range_min" type="text" id="range_min"
+                       data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+            </p>
+
+            <p>
+                {% trans "Max:" %}
+                <input name="range_max" type="text" id="range_max"
+                       data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+            </p>
+        </div>
+    </li>
+    <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">
+        <div class="margin_top_20">
+            <input type="radio" name="text_length" value="length_unlimited" checked="true"
+                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+            {% trans "No, answer has no character limit" %}<br/>
+
+            <div class="max_char">
+                <input type="radio" name="text_length" value="length_limited"
+                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                <span class="inline">
+                    {% trans "Yes, maximum number of characters should be" %}
+                    <input name="max_length" type="text" id="max_length"
+                           data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                </span>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="margin_top_20">
+            <label>{% trans "Instructions" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                    style="margin-top:-6px;"></label>
+
+            <div class="tooltip"><p>
+                <strong>{% trans "What is this?" %}</strong><br/>
+                {% trans "q_tooltip_question_detail_instruction" %}
+                <strong>{% trans "What do I need to do?" %}</strong><br/>
+                {% trans "r_tooltip_question_detail_instruction" %}
+            </p></div>
+            <span id="question_instruction"
+                  data-bind="text: selectedQuestion().instruction"></span>
+        </div>
+    </li>
+</ul>

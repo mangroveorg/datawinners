@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <fieldset>
     <legend>Background</legend>
     <li class="{{ form.name.css_classes  }} form-row-10px">
@@ -7,13 +9,10 @@
         <img src="/media/images/help_icon.png" class="help_icon">
 
         <div class="tooltip"><p>
-            <strong>What is this?</strong><br/>
-            DataWinners stores projects by the <strong>Project Name</strong>. It is important to give each of
-            your projects a separate name so when you have many projects running at the same time you
-            can easily track each project.<br/><br/>
-            <strong>What do I need to do?</strong><br/>
-            Name your project by typing a short descriptive phrase in the Name this Project box. Don't worry,
-            you can always edit your project name later.
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_project_profile_background" %}<br/><br/>
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_project_profile_background" %}
         </p></div>
     </li>
     <li class="{{ form.project_type.css_classes  }} form-row-10px">
@@ -23,13 +22,11 @@
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
 
         <div class="tooltip"><p>
-            <strong>What is this?</strong><br/>
-            DataWinners offers two <strong>Project Types</strong>. You can collect data from people by choosing
-            the <strong>Data Collection</strong> option. Or, you can send messages to people by choosing
-            <strong>Public Communication</strong>.<br/><br/>
-            <strong>What do I need to do?</strong><br/>
-            Click the radio button next the <strong>Project Type</strong> you are creating. We will provide
-            step-by-step instructions for your choice. Don't worry, you can always change your mind later.
+            <strong>{% trans "What is this?" %}</strong><br/>
+            {% trans "q_tooltip_project_profile_project_type" %}
+            <br/><br/>
+            <strong>{% trans "What do I need to do?" %}</strong><br/>
+            {% trans "r_tooltip_project_profile_project_type" %}
         </p></div>
     </li>
     <li class="{{ form.goals.css_classes  }} form-row-10px first">

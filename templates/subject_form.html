@@ -1,3 +1,4 @@
+{% load i18n %}
 <input id='post_url' type="hidden" value="{{ post_url }}" />
 
 <form id="question_form">
@@ -5,7 +6,7 @@
         <ul>
             <li>
                 <span>
-                     <label>* Type</label>
+                     <label>* {% trans "Type" %}</label>
                 </span>
                 <span>
                     <select id="id_entity_type" name="type" data-bind="value: message.t">
@@ -17,45 +18,45 @@
                 </span>
             </li>
             <li>
-                <label>* Name</label>
-                <input id="entity_name" name="entity_name" type="text" watermark="Enter a subject name" data-bind="value: message.n"/>
+                <label>* {% trans "Name" %}</label>
+                <input id="entity_name" name="entity_name" type="text" watermark="{% trans 'Enter a subject name' %}" data-bind="value: message.n"/>
             </li>
             <li>
-                <label>Unique Identification Number(ID)</label>
+                <label>{% trans "Unique Identification Number(ID)" %}</label>
                 <input id="short_name" name="short_name" type="text" disabled="disabled" data-bind="value: message.s"/>
                 <span class="auto_gen_checkbox">
                     <input id="autogen" name="autogen" type="checkbox" checked=true/>
-                    <label>Let us generate an ID for you</label>
+                    <label>{% trans "Let us generate an ID for you" %}</label>
                 </span>
             </li>
 
 
             <li>
-                <label>Location</label>
+                <label>{% trans "Location" %}</label>
                 <ul class="location_section">
                     <li>
-                        <label>Location Name:</label>
-                        <input id="id_location" name="location" type="text" watermark="Enter a region, district or commune" data-bind="value: message.l"/>
+                        <label>{% trans "Location Name:" %}</label>
+                        <input id="id_location" name="location" type="text" watermark="{% trans 'Enter a region, district or commune' %}" data-bind="value: message.l"/>
                     </li>
                     <li>
-                        <label>or</label>
+                        <label>{% trans "or" %}</label>
                     </li>
                     <li>
                         <label>GPS</label>
-                        <input id="geo_code" name="geo_code" type="text" watermark="Enter lat and long eg: 20.6 47.3" data-bind="value: message.g"/>
+                        <input id="geo_code" name="geo_code" type="text" watermark="{% trans 'Enter lat and long eg: 20.6 47.3' %}" data-bind="value: message.g"/>
                     </li>
                 </ul>
             </li>
             <li>
-                <label>Description</label>
-                <textarea id="description" name="description" type="text" watermark="Describe your subject in more details (optional)" data-bind="value: message.d"></textarea>
+                <label>{% trans "Description" %}</label>
+                <textarea id="description" name="description" type="text" watermark="{% trans 'Describe your subject in more details (optional)' %}" data-bind="value: message.d"></textarea>
             </li>
             <li>
-                <label>Mobile Number</label>
-                <input id="mobile_number" name="mobile_number" type="text" maxlength="15" watermark="Enter the subject's Number" data-bind="value: message.m"/>
+                <label>{% trans "Mobile Number" %}</label>
+                <input id="mobile_number" name="mobile_number" type="text" maxlength="15" watermark="{% blocktrans %}Enter the subject's Number{% endblocktrans %}" data-bind="value: message.m"/>
             </li>
         </ul>
     </fieldset>
-<a href="/entity/subjects/" class="cancel_link">Cancel</a>
-    <input type="button" value="Add" id="register_entity" class="button"/>
+<a href="/entity/subjects/" class="cancel_link">{% trans "Cancel" %}</a>
+    <input type="button" value="{% trans 'Add' %}" id="register_entity" class="button"/>
 </form>
