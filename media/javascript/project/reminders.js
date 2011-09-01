@@ -60,6 +60,7 @@ function viewModel() {
             this.remindersToSave.push(newReminder);
         };
         if (!shouldSave) {
+            this.remindersToSave = [];
             return;
         }
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
@@ -68,12 +69,19 @@ function viewModel() {
     }
 
     var self = this;
-//    $.getJSON("/project/reminders/" + project_id + "/", function(data) {
-//        var mappedReminders = $.map(data, function(item) {
-//            return new reminder(item.message, item.day, self)
-//        });
-//        self.reminders(mappedReminders);
-//    });
+    $.getJSON("/project/reminders/" + project_id + "/", function(data) {
+        var mappedReminders = $.map(data, function(item) {
+            var beforeDay = "";
+            var afterDay = "";
+            if(item.reminderMode === "after_deadline"){
+                beforeDay = item.day;
+            }else{
+                afterDay = item.day;
+            }
+            return new reminder(item.message, beforeDay, afterDay, item.reminderMode, self)
+        });
+        self.reminders(mappedReminders);
+    });
 }
 
 ko.applyBindings(new viewModel());

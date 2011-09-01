@@ -528,7 +528,7 @@ def manage_reminders(request, project_id):
         Reminder.objects.filter(project_id=project_id).delete()
         for reminder in reminders:
             Reminder(project_id=project_id, day_of_the_month=reminder['day'], message=reminder['message'],
-                     organization=utils.get_organization(request)).save()
+                     reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request)).save()
         return HttpResponse("Reminders has been saved")
 
 

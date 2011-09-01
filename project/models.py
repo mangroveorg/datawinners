@@ -16,10 +16,11 @@ class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
     day_of_the_month = IntegerField()
     message = CharField(max_length=160)
+    reminder_mode = CharField(null=False, blank=False, max_length=20, default='before_deadline')
     organization = ForeignKey(Organization)
 
     def to_dict(self):
-        return {'day': self.day_of_the_month, 'message': self.message}
+        return {'day': self.day_of_the_month, 'message': self.message, 'reminder_mode': self.reminder_mode}
 
 
 class ProjectState(object):
