@@ -15,63 +15,65 @@ $(document).ready(function(){
         });
     });
 
-function reminder(message, day, reminderMode, ownerViewModel) {
+function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel) {
     this.message = ko.observable(message);
-    this.day = ko.observable(day);
+    this.beforeDay = ko.observable(beforeDay);
+    this.afterDay = ko.observable(afterDay);
     this.reminderMode = ko.observable(reminderMode);
     this.remove = function() { ownerViewModel.reminders.remove(this) }
 }
 
 function viewModel() {
     this.reminders = ko.observableArray([]);
-    this.newMessage = ko.observable("");
-    this.beforeDay = ko.observable();
-    this.afterDay = ko.observable();
-    this.reminderMode = ko.observable();
+    this.remindersToSave = [];
     this.addReminder = function() {
-        if(this.newMessage() === ""){
-            $('#newMessage_err').show().html("Can't be blank.")
+        this.reminders.push(new reminder("", "", "", "before_deadline", this));
+    }
+    this.save = function() {
+        var shouldSave = true;
+        for(var i = 0; i < this.reminders().length; i++){
+            var newReminder = {};
+            if (this.reminders()[i].message() === "") {
+                $('#newMessage_err').show().html("Can't be blank.");
+                shouldSave = false
+            } else {
+                newReminder['message'] = this.reminders()[i].message();
+            }
+            if (this.reminders()[i].reminderMode() == 'before_deadline') {
+                if (this.reminders()[i].beforeDay() === "") {
+                    $('#newDay_err').show().html("Day Can't be blank.")
+                    shouldSave = false;
+                } else {
+                    newReminder['reminderMode'] = 'before_deadline';
+                    newReminder['day'] = this.reminders()[i].beforeDay();
+                }
+            }
+            if (this.reminders()[i].reminderMode() == 'after_deadline') {
+                if (this.reminders()[i].afterDay() === "") {
+                    $('#newDay_err').show().html("Day Can't be blank.")
+                    shouldSave = false;
+                } else {
+                    newReminder['reminderMode'] = 'after_deadline';
+                    newReminder['day'] = this.reminders()[i].afterDay();
+                }
+            }
+            this.remindersToSave.push(newReminder);
+        };
+        if (!shouldSave) {
             return;
         }
-
-        var day=this.afterDay()
-        if (this.reminderMode() == 'before_deadline'){
-            if(this.beforeDay() === ""){
-                $('#newDay_err').show().html("Day Can't be blank.")
-                return;
-            }
-            day=this.beforeDay()
-        }
-
-        if (this.reminderMode() == 'after_deadline'){
-            if(this.afterDay() === ""){
-                $('#newDay_err').show().html("Day Can't be blank.")
-                return;
-            }
-            day=this.beforeDay()
-        }
-
-
-        this.reminders.push(new reminder(this.newMessage(), day, this.reminderMode, this));
-        this.newMessage("");
-        this.newDay("");    
-        $('#newMessage_err').hide();
-        $('#newDay_err').hide();
-
-    }
-    this.save = function(){
-        $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.reminders())}, function(){
+        $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
             $('.success_message').show().html("The reminders has been saved").fadeOut(10000);
         })
     }
 
     var self = this;
-    $.getJSON("/project/reminders/" + project_id + "/", function(data) {
-        var mappedReminders = $.map(data, function(item) {
-            return new reminder(item.message, item.day, self)
-        });
-        self.reminders(mappedReminders);
-    });
+//    $.getJSON("/project/reminders/" + project_id + "/", function(data) {
+//        var mappedReminders = $.map(data, function(item) {
+//            return new reminder(item.message, item.day, self)
+//        });
+//        self.reminders(mappedReminders);
+//    });
 }
 
 ko.applyBindings(new viewModel());

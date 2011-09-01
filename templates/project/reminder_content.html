@@ -2,59 +2,47 @@
 <span id="project_id" style="display: none;">{{ project_id }}</span>
 <span class="success_message"></span>
 <div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
-    <div class="grid_23 alpha omega" id='review_section'    >
+    <div class="grid_23 alpha omega" id='review_section' data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0">
 
     </div>
-    <button class="button" data-bind="click: addReminder"></button>
+    <button class="button" data-bind="click: addReminder">{% trans "Add Reminder" %}</button>
     <button class="button" data-bind="click: save">{% trans "Save the reminders" %}</button>
-    <div id="reminder-list">
-        <ul data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0"></ul>
-    </div>
 </div>
 <div style="display:{% if is_reminder %} none; {% else %} block; {% endif %}">
     {% trans "Reminders are not enabled for this project Please proceed to the next <a>step</a>" %}
 </div>
 <script type="text/html" id="reminderTemplate">
-    <div class="reminder-details">
-        <form data-bind="submit: addReminder">
-            <div class="reminder_content_section">
-                <p class="reminder_content">
-                    <span>{% trans "When" %}</span>
-                <ul>
-                    <li>
-                        <input type="radio" value="before_deadline" data-bind="checked: reminderMode"><input
-                            data-bind="value: beforeDay" placeholder="day"/> {% trans "day(s) <strong>before</strong> the deadline" %}
-                    </li>
-                    <li><input type="radio" value="on_deadline" data-bind="checked: reminderMode">{% trans "On the deadline" %}
-                    </li>
-                    <li><input type="radio" value="after_deadline" data-bind="checked: reminderMode"><input
-                            data-bind="value: afterDay" placeholder="day"/> {% trans "day(s) <strong>after</strong> the deadline" %}
-                    </li>
-                </ul>
-                <br><span id="newDay_err" class="error_message"></span>
-                </p>
+    <div class="reminder_content_section">
+        <p class="reminder_content">
+            <span>{% trans "When" %}</span>
+        <ul>
+            <li>
+                <input type="radio" value="before_deadline" data-bind="checked: reminderMode"><input
+                    data-bind="value: beforeDay"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+            </li>
+            <li><input type="radio" value="on_deadline" data-bind="checked: reminderMode">{% trans "On the deadline" %}
+            </li>
+            <li><input type="radio" value="after_deadline" data-bind="checked: reminderMode"><input
+                    data-bind="value: afterDay"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+            </li>
+        </ul>
+        <br><span id="newDay_err" class="error_message"></span>
+        </p>
 
-                <p class="reminder_content">
-                    {% trans "To Whom" %}
-                <ul>
-                    <li><input name="target_datasenders" type="radio">{% trans "All chosen DS type" %}</li>
-                    <li><input name="target_datasenders" type="radio">{% trans "Anyone who hasn't sent data" %}</li>
-                </ul>
-                </p>
+        <p class="reminder_content">
+            {% trans "To Whom" %}
+        <ul>
+            <li><input name="target_datasenders" type="radio">{% trans "All chosen DS type" %}</li>
+            <li><input name="target_datasenders" type="radio">{% trans "Anyone who hasn't sent data" %}</li>
+        </ul>
+        </p>
 
-                <p class="reminder_content">
-                    <textarea data-bind="value: newMessage, valueUpdate: 'keyup'" placeholder="Message"
-                              maxlength="160"/>
-                    </textarea>
-                    {% trans "The message count is" %} <span data-bind="text: newMessage().length"></span>
-                    <br><span id="newMessage_err" class="error_message"></span>
-                </p>
-            </div>
-        </form>
+        <p class="reminder_content">
+            <textarea data-bind="value: message, valueUpdate: 'keyup'" placeholder="Message"
+                      maxlength="160"/>
+            </textarea>
+            {% trans "The message count is" %} <span data-bind="text: message().length"></span>
+            <br><span id="newMessage_err" class="error_message"></span>
+        </p>
     </div>
-    <li>
-        <span data-bind="text: message"/>
-        <span data-bind="text: day"/>
-        <a href="#" data-bind="click: remove">{% trans "Delete" %}</a>
-    </li>
 </script>
