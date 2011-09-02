@@ -532,16 +532,6 @@ def manage_reminders(request, project_id):
         return HttpResponse("Reminders has been saved")
 
 
-@csrf_exempt
-def enable_reminders_in_project(request, project_id=None):
-    if request.method == 'POST':
-        dbm = get_database_manager(request.user)
-        project = models.get_project(project_id, dbm)
-        project.reminders = True if request.POST['is_reminder'] == 'True' else False
-        project.save(dbm)
-        return HttpResponse("The status of reminder for project %s is %d" % (project.name, project.reminders))
-
-
 @login_required(login_url='/login')
 def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
