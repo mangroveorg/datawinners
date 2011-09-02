@@ -20,7 +20,19 @@ function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel) {
     this.beforeDay = ko.observable(beforeDay);
     this.afterDay = ko.observable(afterDay);
     this.reminderMode = ko.observable(reminderMode);
-    this.remove = function() { ownerViewModel.reminders.remove(this) }
+    this.remove = function() {
+        ownerViewModel.reminders.remove(this);
+    }
+    var self = this;
+    this.header = ko.dependentObservable(function(){
+        if(self.reminderMode === "before_deadline"){
+            return self.beforeDay + " days before deadline";
+        }else if(self.reminderMode === "after_deadline"){
+            return self.afterDay + " days after deadline";
+        }else{
+            return "";
+        }
+    }, this);
 }
 
 function viewModel() {
