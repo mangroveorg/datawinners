@@ -581,7 +581,7 @@ def finish(request, project_id=None):
         to_number = organization_settings.sms_tel_number
         previous_link = reverse(reminders_wizard, args=[project_id])
         fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
-        is_reminder = "enabled" if project.reminders else "disabled"
+        is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
         return render_to_response('project/finish_and_test.html', {'from_number': from_number, 'to_number': to_number,
                                                                    'project': project, 'fields': fields,
                                                                    'project_links': _make_links_for_finish_page(

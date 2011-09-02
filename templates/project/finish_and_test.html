@@ -139,11 +139,7 @@
             <div>
                 <ul>
                 <li>
-                    {% if is_reminder == 'active' %}
-                        {% blocktrans %}Reminders are enabled for this project{% endblocktrans %}
-                    {% else %}
-                        {% blocktrans %}Reminders are disabled for this project{% endblocktrans %}
-                    {% endif %}
+                    {% blocktrans %}Reminders are <strong>{{ is_reminder }}</strong> for this project{% endblocktrans %}
                 </li>
             </ul>
             <a id="remider_edit_link" href="{{project_links.reminder_link}}">{% trans "edit" %}</a>
