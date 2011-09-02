@@ -19,8 +19,8 @@ class ReporterRegistrationForm(Form):
                             error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
                             ,
                             label="* Name")
-    telephone_number = RegexField(required=True, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="* Mobile Number",
-                                  error_message="Please enter a valid phone number")
+    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label="* Mobile Number",
+                                  error_message="Please enter a valid phone number.Only numbers and -(dash) allowed")
     geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
     location = CharField(max_length=100, required=False, label="Enter location")
     project_id = CharField(required=False, widget=HiddenInput())
@@ -39,9 +39,7 @@ class ReporterRegistrationForm(Form):
         except ValueError:
             return False
 
-    def clean_telephone_number(self):
-        return ("").join([each for each in self.cleaned_data['telephone_number'] if self._is_int(each)])
-
+        
     def _geo_code_format_validations(self, lat_long, msg):
         if len(lat_long) != 2:
             self._errors['geo_code'] = self.error_class([msg])
