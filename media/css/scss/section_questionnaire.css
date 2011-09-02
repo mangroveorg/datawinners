@@ -10,6 +10,11 @@
   float: none;
   margin-bottom: 10px; }
 
+.sms_preview {
+  width: 900px;
+  padding-bottom: 20px;
+  padding-left: 30px; }
+
 /*The content styles for wizard based pages*/
 .wizard_content .content_wrapper .questionnaire_code label {
   font-weight: normal;
