@@ -12,9 +12,9 @@ $(document).ready(function() {
         var text = $.trim($('#' + element.id).val());
         if (text=="")
             return true;
-        var re = new RegExp("^[^a-zA-Z]*[0-9]+$");
+        var re = new RegExp("^[0-9-]+$");
         return re.test(text);
-    }, "Please enter a valid phone number");
+    }, "Please enter a valid phone number.Only numbers and -(dash) allowed");
 
     $.validator.addMethod('gpsrule', function(value, element, params) {
         var codes = $('#' + element.id).val();
