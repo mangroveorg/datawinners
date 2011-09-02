@@ -1,8 +1,9 @@
+{% load i18n %}
 <table class="styled_table">
     <thead>
-    <th>Question Number</th>
-    <th>Question</th>
-    <th>Code</th>
+    <th>{% trans "Question Number" %}</th>
+    <th>{% trans "Question" %}</th>
+    <th>{% trans "Code" %}</th>
     </thead>
     <tbody>
     {% for each in fields %}

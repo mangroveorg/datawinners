@@ -1,9 +1,10 @@
 {% extends 'layout_application.html' %}
-{% block page_title %}All Data{% endblock %}
+{% load i18n %}
+{% block page_title %}{% trans "All Data" %}{% endblock %}
 
-{% block section_title %}Failed Submissions
+{% block section_title %}{% trans "Failed Submissions" %}
 <span class="title_links">
-    <a href="/alldata/">View All Data</a>
+    <a href="/alldata/">{% trans "View All Data" %}</a>
 </span>
 {% endblock %}
 
@@ -23,11 +24,11 @@
 <div>
    <table class="styled_table">
     <thead>
-        <th> Questionnaire Code </th>
-        <th> From </th>
-        <th> To </th>
-        <th> Message </th>
-        <th> Error </th>
+        <th> {% trans "Questionnaire Code" %} </th>
+        <th> {% trans "From" %} </th>
+        <th> {% trans "To" %} </th>
+        <th> {% trans "Message" %} </th>
+        <th> {% trans "Error" %} </th>
     </thead>
         {% for log in logs%}
             <tr>

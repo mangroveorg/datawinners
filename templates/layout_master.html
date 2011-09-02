@@ -43,9 +43,10 @@
     {% endcompress %}
 
 </head>
+{% load i18n %}
 <body>
     <noscript>
-        <p class="message-box margin_left_20">Javascript is disabled in your browser, Please enable it.</p>
+        <p class="message-box margin_left_20">{% trans "Javascript is disabled in your browser, Please enable it." %}</p>
     </noscript>
     <div id="global_error">
     </div>

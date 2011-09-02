@@ -1,4 +1,5 @@
 {% extends 'layout_application.html' %}
+{% load i18n %}
 {% load dw_tabs %}
 
 {% block page_js %}
@@ -10,30 +11,30 @@
 {% block section_title %}
     <h2 class="project_title">{{ project.name }}</h2>
     <div class="project_detail">
-        <span class="project_status">Project status:
+        <span class="project_status">{% trans "Project status:" %}
             <span class="{{ project.state }}_state">{{ project.state }}</span>
         </span>
         {% if  project.state  != 'Active' %}
             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
             {% if project.state == 'Test' %}
                 <div class="tooltip">
-                    <p>Your project status is Test. You need to click on 'Activate Project' to activate it.</p>
+                    <p>{% trans "Your project status is Test. You need to click on 'Activate Project' to activate it." %}</p>
                 </div>
-                <a href="#" class="activate_project">Activate Project</a>
-                <a href="#" id='sms_tester'>Test SMS Questionnaire</a>
+                <a href="#" class="activate_project">{% trans "Activate Project" %}</a>
+                <a href="#" id='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
                 {% include 'project/sms_tester_form.html' %}
             {% else %}
                 <div class="tooltip">
-                    <p>Your project is inactive. You need to complete the Profile to activate it.</p>
+                    <p>{% trans "Your project is inactive. You need to complete the Profile to activate it." %}</p>
                 </div>
-                <a href="#" class="activate_project">Activate Project</a>
+                <a href="#" class="activate_project">{% trans "Activate Project" %}</a>
             {% endif %}
         {% endif %}
     </div>
     <div id="activate_project_block">
-        <p class="warning_message">Warning: Activating the project will remove all existing test data.</p>
-        <a href="#" class="cancel_link" >Cancel</a>
-        <a href="{{ project_links.activate_project_link }}" class="button" id="confirm">Activate</a>
+        <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="{{ project_links.activate_project_link }}" class="button" id="confirm">{% trans "Activate" %}</a>
     </div>
 
 {% endblock %}
@@ -42,28 +43,28 @@
 <div class="grid_24 tab_navigation">
     <ul>
         <li class="{% ifactivetab 'tab_nav' 'overview' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.overview_link }}">Overview</a>
+            <a href="{{ project_links.overview_link }}">{% trans "Overview" %}</a>
         </li>
         {% if project.state == 'Active' %}
         <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.subjects_link }}">Subjects</a>
+            <a href="{{ project_links.subjects_link }}">{% trans "Subjects" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.questionnaire_link }}">Questionnaire</a>
+            <a href="{{ project_links.questionnaire_link }}">{% trans "Questionnaire" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.datasenders_link }}">Data Senders</a>
+            <a href="{{ project_links.datasenders_link }}">{% trans "Data Senders" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.test_questionnaire_link }}">Web Submission</a>
+            <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.reminders_link }}">Reminders</a>
+            <a href="{{ project_links.reminders_link }}">{% trans "Reminders" %}</a>
         </li>
         {% endif %}
         {% if project.state != 'Inactive' %}
         <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
-            <a href={{ project_links.data_analysis_link }}>Data</a>
+            <a href="{{ project_links.data_analysis_link }}">{% trans "Data" %}</a>
         </li>
         {% endif %}
     </ul>
@@ -74,26 +75,16 @@
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
-
         <div class="tooltip"><p>
-            View, analyze and export your collected Data. Create an alert to be aware when something important
-            happens.<br/>
-            There are 3 main areas:<br/>
-            <strong>1. Summary</strong><br/>Look at the summary of each individual question to get a first impression of
-            your Data.<br/>
-            <strong>2. Analysis</strong><br/>View your Data as a list, chart or map. Choose the sum, minimum or average
-            of a specific answer or see what which one was the most frequent.<br/>
-            <strong>3. All Data Records</strong><br/>
-            View the list of all Data Records you have received from your Data Senders. Filter and export your list to
-            Excel.
+            {% trans "tooltip_tab_navigation" %}
         </p></div>
-        <a href="#">Summary</a>
+        <a href="#">{% trans "Summary" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.data_analysis_link }}">Analysis</a>
+        <a href="{{ project_links.data_analysis_link }}">{% trans "Analysis" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.submission_log_link }}">All Data Records</a>
+        <a href="{{ project_links.submission_log_link }}">{% trans "All Data Records" %}</a>
     </li>
 </ul>
 {% endblock %}
@@ -101,10 +92,10 @@
 {% block secondary_navigation_subjects %}
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.registered_subjects_link }}">Registered Subjects</a>
+        <a href="{{ project_links.registered_subjects_link }}">{% trans "Registered Subjects" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.subjects_link }}">Registration Questionnaire</a>
+        <a href="{{ project_links.subjects_link }}">{% trans "Registration Subjects" %}</a>
     </li>
 </ul>
 {% endblock %}
@@ -112,10 +103,10 @@
 {% block secondary_navigation_datasenders %}
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'datasenders' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.registered_datasenders_link }}">Registered Data Senders</a>
+        <a href="{{ project_links.registered_datasenders_link }}">{% trans "Registered Data Senders" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.datasenders_link }}">Registration Questionnaire</a>
+        <a href="{{ project_links.datasenders_link }}">{% trans "Registration Questionnaire" %}</a>
     </li>
 </ul>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} All Data records {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "All Data records" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -42,7 +43,7 @@
     <div class="grid_23">
             {% if  project.state  == "Test"  %}
         <div class="warning-message-box">
-            <p>This Project is not yet active. Data displayed is test data. <a href="#" class="activate_project">Click Here to Activate</a></p>
+            <p>{% trans "This Project is not yet active. Data displayed is test data" %}. <a href="#" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
         </div>
         {% endif %}
     <form id = "export_form" method="get" action="/project/export/log">
@@ -53,25 +54,25 @@
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
         <ul class="links">
-            <li><a id = "export_link" href="#">export</a> </li>
-            <li><a href="#">print</a> </li>
-            <li><a href="#" class="null_border">e-mail</a> </li>
+            <li><a id = "export_link" href="#">{% trans "export" %}</a> </li>
+            <li><a href="#">{% trans "print" %}</a> </li>
+            <li><a href="#" class="null_border">{% trans "e-mail" %}</a> </li>
         </ul>
     </div>
     <div class="heading_block grid_23 alpha">
-        <h3 class="grid_10">Results</h3>
+        <h3 class="grid_10">{% trans "Results" %}</h3>
     </div>
     <div class="heading_block grid_23 alpha">
         <div class="date_range_box">
-            <label>Show data for:</label>
-            <input type="text" id="dateRangePicker" value="Click to select a date range" />
-            <input type = "button" id = "time_filter" value = "Filter" class="button_blue"/>
+            <label>{% trans "Show data for:" %}</label>
+            <input type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}" />
+            <input type = "button" id = "time_filter" value = "{% trans 'Filter' %}" class="button_blue"/>
             <input id = "questionnaire_id"  type="hidden" value="{{ questionnaire_code }}" />
         </div>
     </div>
     <div class="heading_block grid_23 alpha">
-        <label>Actions</label>
-        <select id="action" ><option>Actions ....</option><option>Delete</option></select>
+        <label>{% trans "Actions" %}</label>
+        <select id="action" ><option>{% trans "Actions" %} ....</option><option>{% trans "Delete" %}</option></select>
     </div>
     <div id="sms_results" class="grid_23 alpha margin_top_20">
         <div>

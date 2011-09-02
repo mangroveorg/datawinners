@@ -1,3 +1,4 @@
+{% load i18n %}
 <div id="message_text">
     {% if  success_message  %}
         <div class="success-message-box">{{ success_message }}</div>
@@ -10,19 +11,19 @@
         <input type="checkbox" id="master_checkbox" value="master"/>
     </th>
     <th>
-        To
+        {% trans "To" %}
     </th>
     <th>
-        From
+        {% trans "From" %}
     </th>
     <th>
-        Date Received
+        {% trans "Date Received" %}
     </th>
     <th>
-        Submission Status
+        {% trans "Submission Status" %}
     </th>
     <th>
-        Deleted Record
+        {% trans "Deleted Record" %}
     </th>
     {% for question in results.questions %}
         <th>

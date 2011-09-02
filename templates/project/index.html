@@ -1,6 +1,7 @@
 {% extends 'layout_application.html' %}
-{% block page_title %} All Projects {% endblock %}
-{% block section_title %} <h2 class="project_title">All Projects</h2> {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "All Projects" %} {% endblock %}
+{% block section_title %} <h2 class="project_title">{% trans "All Projects" %}</h2> {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -16,15 +17,15 @@
 
 {% block content %}
     <div class="text_align_right margin_bottom_20">
-        <a id="create_project_link" href="{% url datawinners.project.views.create_profile %}" class="button">Create a new project</a>
+        <a id="create_project_link" href="{% url datawinners.project.views.create_profile %}" class="button">{% trans "Create a new project" %}</a>
     </div>
     <table class="styled_table">
         <thead>
-        <th> Name</th>
-        <th> Created On</th>
-        <th> Type</th>
-        <th> State</th>
-        <th> Actions</th>
+        <th> {% trans "Name" %}</th>
+        <th> {% trans "Created On" %}</th>
+        <th> {% trans "Type" %}</th>
+        <th> {% trans "State" %}</th>
+        <th> {% trans "Actions" %}</th>
         </thead>
         {% for project in projects %}
             <tr>
@@ -34,16 +35,16 @@
                 <td>{{ project.state }}</td>
                 <td>
                     {% if  project.state  != 'Active' %}
-                        <a href="{{ project.activate_link }}" class="activate_project">Activate</a>
+                        <a href="{{ project.activate_link }}" class="activate_project">{% trans "Activate" %}</a>
                     {% endif %}
                 </td>
             </tr>
         {% endfor %}
     </table>
     <div id="activate_project_block">
-        <p class="warning_message">Warning: Activating the project will remove all existing test data.</p>
-        <a href="#" class="cancel_link" >Cancel</a>
-        <a href="#" class="button" id="confirm">Activate</a>
+        <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>
     </div>
 
 {% endblock %}

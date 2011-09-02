@@ -1,7 +1,7 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
 
-{% block page_title %}Project - Questionnaire {% endblock %}
+{% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
 
 {% load dw_tabs %}
 
@@ -64,27 +64,26 @@
 
 
 {% block step_number %}
-    <h3>Step 3: Questionnaire</h3>
-    <p>Review the question by clicking on each</p>
+    <h3>{% trans "Step 3:" %} {% trans "Questionnaire" %}</h3>
+    <p>{% trans "Review the question by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
-    <div class="preview_block"><a class="preview" href="#"> Preview Questionnaire </a></div>
+    <div class="preview_block"><a class="preview" href="#"> {% trans "Preview Questionnaire" %} </a></div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
             <ul class="questionnaire_code">
                 <li>
-                    <label>Questionnaire Code :</label>
+                    <label>{% trans "Questionnaire Code :" %}</label>
                     <input id='project-id' type='hidden' value="{{ project.id }}"/>
                     <input id='questionnaire-code' class='required' disabled="disabled" value="{{ questionnaire_code }}"/>
                     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
                     <div class="tooltip"><p>
                         <strong>{% trans "What is this?" %}</strong><br />
-                        All questionnaires have a Unique Questionnaire Code. DataWinners uses this unique code to correctly
-                         identify your questionnaire. Use the recommended code or change it if you like.<br /><br />
+                        {% trans "q_tooltip_questionnaire_code" %}
+                        <br /><br />
                         <strong>{% trans "What do I need to do?" %}</strong><br />
-                        Enter a 3 letter code (letters and numbers). This questionnaire code will appear on the printed version
-                        of your questionnaire. Your Data Senders will type in this code first when sending in their data.
+                        {% trans "r_tooltip_questionnaire_code" %}
                     </p></div>
                     <span id="questionnaire-code-error"></span>
                 </li>
@@ -95,12 +94,12 @@
 
                 <div>
                     <div id="questions-panel" class="grid_8 alpha">
-                        <h4>Questions</h4>
+                        <h4>{% trans "Questions" %}</h4>
                         <div data-bind="template: 'question-list-template_new'" ></div>
                         <div class="add_question">
                             <a class="add_link" href="questionnaire.html#"
-                               data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">Add
-                                another Question</a>
+                               data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">
+                                {% trans "Add another Question" %}</a>
                         </div>
                     </div>
 
@@ -112,12 +111,10 @@
                             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;">
                             <div class="tooltip"><p>
                                 <strong>{% trans "What is this?" %}</strong><br />
-                                <strong>1 SMS is limited to 160 characters.</strong><br />
-                                The Running Count tallies the questionnaire code, all question codes and
-                                the maximum lengths of all answers and keeps a running count of how many characters you have used out of 160.<br /><br />
+                                {% trans "q_tooltip_question_sms" %}
+                                <br /><br />
                                 <strong>{% trans "What do I need to do?" %}</strong><br />
-                                Use this count to determine how many questions you can add to the questionnaire and still keep the response within 1 SMS (160 characters).
-                                Don't worry, you can go beyond 160 characters. However, more than one SMS will be required to answer all the questions in your questionnaire.
+                                {% trans "r_tooltip_question_sms" %}
                             </p></div>
                         </div>
                         <div class="grid_12 alpha omega">
@@ -125,7 +122,7 @@
                             </div>
                         </div>
                         <div class="margin_top_10 float_left">
-                            <input id="submit-button" type="submit" class="button" value="submit" />
+                            <input id="submit-button" type="submit" class="button" value="{% trans 'submit' %}" />
                         </div>
                     </div>
 
@@ -134,6 +131,6 @@
         </fieldset>
     </form>
     <div class="questionnaire_preview">
-        Generating the questionnaire preview.
+        {% trans "Generating the questionnaire preview." %}
     </div>
 {% endblock %}

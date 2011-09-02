@@ -1,9 +1,9 @@
-
+{% load i18n %}
 <div id="header">
     <a href="http://hni.org/index.php">
         <img width="155" height="75" alt="HNI" src="/media/images/logo.gif"></a>
     {% if user.is_authenticated %}
-        <a class="removed right" href="{% url django.contrib.auth.views.logout %}">Logout</a> {% endif %}
+        <a class="removed right" href="{% url django.contrib.auth.views.logout %}">{% trans "Logout" %}</a> {% endif %}
     <br/><br/>
     <hr>
 </div>

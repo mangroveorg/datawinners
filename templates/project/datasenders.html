@@ -1,5 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
-{% block page_title %} Projects - Data Senders {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "Projects - Data Senders" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -30,10 +31,10 @@
     {% activetab "secondary_tab_nav" "criteria" %}
     {{ block.super }}
     {% endblock %}
-    <div class='preview_block'><a class="preview_sender_registration_form" href="#"> Preview Data sender's questionnaire</a></div>
+    <div class='preview_block'><a class="preview_sender_registration_form" href="#"> {% trans "Preview Data sender's questionnaire" %}</a></div>
     {% include 'project/question_table.html' %}
     <div class="sender_registration_preview">
-        Generating the questionnaire preview.
+        {% trans "Generating the questionnaire preview." %}
     </div>
 
 {% endblock %}

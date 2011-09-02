@@ -1,22 +1,22 @@
 {% extends 'layout_print.html' %}
-
-{% block page_title %}Project - Questionnaire {% endblock %}
+{% load i18n %}
+{% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
 
 
 {% block body %}
     <div id="questionnaire_preview">
-            <div class="preview_block"><a href="#" class="printBtn">Print</a></div>
+            <div class="preview_block"><a href="#" class="printBtn">{% trans "Print" %}</a></div>
         <ul class="questionnaire_title">
             <li>
-              <p>Project Name:</p>
+              <p>{% trans "Project Name:" %}</p>
               <h5>{{ project.name }}</h5>
             </li>
             <li>
-                <p>Questionnarie Code:</p>
+                <p>{% trans "Questionnarie Code:" %}</p>
               <h5>{{ questionnaire_code }}</h5>
             </li>
             <li class="margin_top_10">
-                 <p>Example SMS: </p>
+                 <p>{% trans "Example SMS:" %} </p>
                  <p class="content italic">{{ example_sms }}</p>
             </li>
         </ul>

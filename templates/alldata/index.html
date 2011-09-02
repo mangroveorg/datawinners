@@ -1,9 +1,10 @@
 {% extends 'layout_application.html' %}
-{% block page_title %}All Data{% endblock %}
+{% load i18n %}
+{% block page_title %}{% trans "All Data" %}{% endblock %}
 
-{% block section_title %}All Data
+{% block section_title %}{% trans "All Data" %}
     <span class="title_links">
- <a href="/allfailedsubmissions">View all failed submissions</a>
+ <a href="/allfailedsubmissions">{% trans "View all failed submissions" %}</a>
     </span>
 {% endblock %}
 
@@ -23,19 +24,19 @@
     <div>
         <table class="styled_table">
             <thead>
-            <th> Name</th>
-            <th> Created On</th>
-            <th> Type</th>
-            <th> View Report</th>
+            <th> {% trans "Name" %}</th>
+            <th> {% trans "Created On" %}</th>
+            <th> {% trans "Type" %}</th>
+            <th> {% trans "View Report" %}</th>
             </thead>
             {% for project in projects %}
                 <tr>
                     <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
                     <td>{{ project.created }}</td>
                     <td>{{ project.type }}</td>
-                    <td><span class="report_links"><span class="disable_link"> Summary </span> |
-                        <a href="{{ project.analysis }}"class="{{ project.disabled }}">Analysis</a>
-                            |<a href="{{ project.log }}" class="{{ project.disabled }}">All Data Records</a></span></td>
+                    <td><span class="report_links"><span class="disable_link"> {% trans "Summary" %} </span> |
+                        <a href="{{ project.analysis }}"class="{{ project.disabled }}">{% trans "Analysis" %}</a>
+                            |<a href="{{ project.log }}" class="{{ project.disabled }}">{% trans "All Data Records" %}</a></span></td>
                 </tr>
             {% endfor %}
         </table>
