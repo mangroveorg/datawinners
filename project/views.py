@@ -511,8 +511,8 @@ def reminders(request, project_id):
         questionnaire = helper.load_questionnaire(dbm, project.qid)
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'project_id': project_id, 'form': ReminderForm(initial={'is_reminder': project.reminders}),
-                 'is_reminder': project.reminders},
+                 'project_id': project_id,
+                 'is_reminder': project.is_reminder()},
                                   context_instance=RequestContext(request))
 
 
