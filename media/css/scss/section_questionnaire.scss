@@ -19,6 +19,19 @@
     padding-bottom: 20px;
     padding-left: 30px;
 }
+.mobile{
+    background:url("/media/images/mobile1.png") no-repeat left top;
+    height:295px;
+    width:349px;
+    margin-top:2px;
+    textarea{
+            height: 101px;
+            margin-left: 44px;
+            margin-top: 91px;
+            width: 166px;
+            font-size:12px;
+    }
+}
 
 /*The content styles for wizard based pages*/
 .wizard_content{

@@ -4,13 +4,13 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript">
         var question_list = $.parseJSON({{existing_questions|safe}});
-        $(document).ready(function(){
+        $(document).ready(function() {
             $("#tab_items .questionnaire").addClass("current");
             set_current_tab();
         });
@@ -32,25 +32,30 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/html" id="choice-template">
         <li>
-            <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName:true"/>
-            <a href="questionnaire_wizard.html#" class='delete delete_link' data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
+            <input id="choice_text" name="choice_text" class="required" type="text"
+                   data-bind="value: text, uniqueName:true"/>
+            <a href="questionnaire_wizard.html#" class='delete delete_link'
+               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template">
         <div class="question_list">
             <ol>
-            {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
-                 <li>
-                    <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
-                    <div data-bind="visible: question.canBeDeleted()" class="delete">
-                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
-                    </div>
-                     <span class="selected_question_arrow" data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
-                 </li>
+                {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
+                <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
+                    <li>
+                        <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
 
-            </div>
-            {% templatetag openvariable %}/each{% templatetag closevariable %}
+                        <div data-bind="visible: question.canBeDeleted()" class="delete">
+                            <a href="questionnaire_wizard.html#" class="delete_link"
+                               data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                        </div>
+                        <span class="selected_question_arrow"
+                              data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
+                    </li>
+
+                </div>
+                {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
         </div>
     </script>
@@ -63,65 +68,71 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
-<form id="question_form">
+    <form id="question_form">
         <fieldset>
-    <ul class="questionnaire_code">
-         <li>
-            <label>{% trans "Questionnaire Code:" %}</label>
-            <input id='project-id' type='hidden' value="{{ project.id }}" />
-            <input id='project-state' type='hidden' value="{{ project.state }}" />
-            <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}" />
-             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-             <div class="tooltip"><p>
-                 <strong>{% trans "What is this?" %}</strong><br />
-                 {% trans "q_tooltip_question_code" %}
-                 <br /><br />
-                 <strong>{% trans "What do I need to do?" %}</strong><br />
-                 {% trans "r_tooltip_question_code" %}
-            </p></div>
-            <input id='questionnaire-code' class='required' value="{{ questionnaire_code }}" />
-            <span id="questionnaire-code-error"></span>
-        </li>
-    </ul>
+            <ul class="questionnaire_code">
+                <li>
+                    <label>{% trans "Questionnaire Code:" %}</label>
+                    <input id='project-id' type='hidden' value="{{ project.id }}"/>
+                    <input id='project-state' type='hidden' value="{{ project.state }}"/>
+                    <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>
+                    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
 
-    <div id='sms_preview' class="sms_preview">
-    </div>
-    <div class="questionnare_content grid_23 alpha omega">
-        <div id="message-label" class="message-box none">
-        </div>
-
-        <div>
-            <div id="questions-panel" class="grid_8 alpha">
-                <h4>{% trans "Questions" %}</h4>
-                <div data-bind="template: 'question-list-template'" class="">
-                </div>
-                <div class="add_question">
-                    <a class="add_link" href="questionnaire_wizard.html#"
-                       data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">{% trans "Add another Question" %}</a>
-                </div>
-            </div>
-
-            <div id="question-detail-panel">
-                {% include 'project/question_detail_panel.html' %}
-                <div class="grid_1 alpha omega">
-                    <img src="/media/images/help_icon.png" class="help_icon">
                     <div class="tooltip"><p>
-                        <strong>{% trans "What is this?" %}</strong><br />
-                        {% trans "q_tooltip_question_sms" %}
-                        <br /><br />
-                        <strong>{% trans "What do I need to do?" %}</strong><br />
-                        {% trans "r_tooltip_question_sms" %}
+                        <strong>{% trans "What is this?" %}</strong><br/>
+                        {% trans "q_tooltip_question_code" %}
+                        <br/><br/>
+                        <strong>{% trans "What do I need to do?" %}</strong><br/>
+                        {% trans "r_tooltip_question_code" %}
                     </p></div>
+                    <input id='questionnaire-code' class='required' value="{{ questionnaire_code }}"/>
+                    <span id="questionnaire-code-error"></span>
+                </li>
+            </ul>
+
+            <div class="questionnare_content grid_23 alpha omega">
+                <div id="message-label" class="message-box none">
                 </div>
-                <div class="grid_13 alpha omega">
-                    <div id='char-count'>
+
+                <div>
+                    <div id="questions-panel" class="grid_8 alpha">
+                        <h4>{% trans "Questions" %}</h4>
+
+                        <div data-bind="template: 'question-list-template'" class="">
+                        </div>
+                        <div class="add_question">
+                            <a class="add_link" href="questionnaire_wizard.html#"
+                               data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">{% trans "Add another Question" %}</a>
+                        </div>
+                    </div>
+
+                    <div id="question-detail-panel">
+                        {% include 'project/question_detail_panel.html' %}
+                        <div class="grid_1 alpha omega">
+                            <img src="/media/images/help_icon.png" class="help_icon">
+
+                            <div class="tooltip"><p>
+                                <strong>{% trans "What is this?" %}</strong><br/>
+                                {% trans "q_tooltip_question_sms" %}
+                                <br/><br/>
+                                <strong>{% trans "What do I need to do?" %}</strong><br/>
+                                {% trans "r_tooltip_question_sms" %}
+                            </p></div>
+                        </div>
+                        <div class="grid_13 alpha omega">
+                            <div id='char-count'>
+                            </div>
+                            <label class="margin_top_5 margin_bottom_5">SMS Preview </label>
+
+                            <div class="mobile">
+                                <textarea rows="4" cols="30" id='sms_preview'></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    </fieldset>
-</form>
+        </fieldset>
+    </form>
     <div id="questionnaire_code_change">
         <p class="warning_message">{% trans "Warning: Changing the questionnaire code will remove all existing test data." %}</p>
         <a href="#" class="button" id="ok_button">{% trans "OK" %}</a>
@@ -129,9 +140,9 @@
 {% endblock %}
 {% block buttons %}
     {{ block.super }}
-        <input id="submit-button" type="button" value="{% trans 'Next Step: Data Senders' %}"/>
-        <input id="submit_button_right" type="button" value=" "/>
+    <input id="submit-button" type="button" value="{% trans 'Next Step: Data Senders' %}"/>
+    <input id="submit_button_right" type="button" value=" "/>
 {% endblock %}
 {% block previous_step %}
-     <a id="subjects_link" class="bold" href={{ previous }}>{% trans "Subjects" %}</a>
+    <a id="subjects_link" class="bold" href={{ previous }}>{% trans "Subjects" %}</a>
 {% endblock %}
