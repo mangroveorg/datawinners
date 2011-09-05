@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 
-from couchdb.mapping import  TextField, ListField, BooleanField, DictField
+from couchdb.mapping import  TextField, ListField, DictField
 from django.db.models.fields import IntegerField, CharField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
@@ -14,7 +14,8 @@ from django.db import models
 
 class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
-    day_of_the_month = IntegerField()
+    day = IntegerField(null=True, blank=True)
+    relative = CharField(default="before", max_length=6)
     message = CharField(max_length=160)
     reminder_mode = CharField(null=False, blank=False, max_length=20, default='before_deadline')
     organization = ForeignKey(Organization)

@@ -19,11 +19,13 @@ def _get_reminders_grouped_by_project():
 
 
 def _is_reminder_enabled_for_project(project):
-    return project.reminders
+    return project.reminder_and_deadline['reminder_and_deadline'] == 'True'
 
 
-def _should_send_reminder(reminder):
-    return reminder.day_of_the_month == date.today().day
+def _should_send_reminder(reminder, project):
+    current_date = date.today().day
+    
+    frequency
 
 
 def _send_reminder_to_datasenders(dbm, reminder):
@@ -46,6 +48,6 @@ def send_reminders():
         if not _is_reminder_enabled_for_project(project):
             continue
         for reminder in reminders:
-            if _should_send_reminder(reminder):
+            if _should_send_reminder(reminder, project):
                 _send_reminder_to_datasenders(dbm, reminder)
 
