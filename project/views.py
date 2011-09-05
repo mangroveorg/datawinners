@@ -623,18 +623,15 @@ def registered_subjects(request, project_id=None):
                               context_instance=RequestContext(request))
 
 
-def _get_associated_data_senders(all_data, project):
-    return [data for data in all_data if data['short_name'] in project.data_senders]
 
 
 @login_required(login_url='/login')
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data = load_all_subjects_of_type(manager)
-    associated_datasenders = _get_associated_data_senders(all_data, project)
     return render_to_response('project/registered_datasenders.html',
-            {'project': project, 'project_links': project_links, 'all_data': associated_datasenders},
+            {'project': project, 'project_links': project_links, 'all_data': (
+            helper.get_project_data_senders(manager, project))},
                               context_instance=RequestContext(request))
 
 

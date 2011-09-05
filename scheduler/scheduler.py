@@ -5,11 +5,27 @@ from datetime import date
 from datawinners import utils
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.project.helper import get_project_data_senders
 from datawinners.project.models import Reminder, Project
 from datawinners.scheduler.vumiclient import Client, Connection
 
 import logging
 logger = logging.getLogger("django")
+
+
+def send_reminders():
+    reminders_grouped_project_id = _get_reminders_grouped_by_project()
+
+    for project_id, reminders in reminders_grouped_project_id.items():
+        dbm = utils.get_database_manager_for_org(reminders[0].organization)
+        project = dbm._load_document(project_id, Project)
+        if not project.is_reminder_enabled():
+            continue
+        for reminder in reminders:
+            if _should_send_reminder(reminder, project):
+                _send_reminder_to_project_datasenders(dbm, reminder,project)
+
+
 
 def _get_reminders_grouped_by_project():
     reminders = Reminder.objects.all()
@@ -35,26 +51,17 @@ def _should_send_reminder(reminder, project):
             if current_day == (project.get_deadline_day() + reminder.day):
                 return True
 
-def _send_reminder_to_datasenders(dbm, reminder):
+def _send_reminder_to_project_datasenders(dbm, reminder,project):
     vumiclient = Client(None, None, connection=Connection("vumi", "vumi", base_url="http://10.253.50.2:7000"))
-    #TODO get the datasender attached to the project
-    datasenders = load_all_subjects_of_type(dbm)
-    organization_settings = OrganizationSetting.objects.get(organization=reminder.organization)
+    datasenders = get_project_data_senders(dbm,project)
     for datasender in datasenders:
         vumiclient.send_sms(to_msisdn=datasender.get('mobile_number'),
-                            from_msisdn=organization_settings.sms_tel_number
+                            from_msisdn=_get_from_tel_number(reminder)
                             , message=reminder.message)
 
 
-def send_reminders():
-    reminders_grouped_project_id = _get_reminders_grouped_by_project()
+def _get_from_tel_number(reminder):
+    organization_settings = OrganizationSetting.objects.get(organization=reminder.organization)
+    return organization_settings.sms_tel_number
 
-    for project_id, reminders in reminders_grouped_project_id.items():
-        dbm = utils.get_database_manager_for_org(reminders[0].organization)
-        project = dbm._load_document(project_id, Project)
-        if not project.is_reminder_enabled():
-            continue
-        for reminder in reminders:
-            if _should_send_reminder(reminder, project):
-                _send_reminder_to_datasenders(dbm, reminder)
 

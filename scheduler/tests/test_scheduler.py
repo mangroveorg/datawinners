@@ -1,6 +1,10 @@
+from unittest.case import SkipTest
 from django.utils import unittest
+from datawinners.project.models import Project
 from datawinners.scheduler.scheduler import send_reminders
 
+#Incomplete Test
+@SkipTest
 class TestScheduler(unittest.TestCase):
 
     def setUp(self):
