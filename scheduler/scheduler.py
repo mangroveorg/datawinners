@@ -37,6 +37,8 @@ def _get_reminders_grouped_by_project():
 def _get_last_day_of_month(now):
     return calendar.monthrange(now.year,now.month)[1]
 
+#FIXME This should be encapsulated in the Projects model, but holding this work until we the functionality of the
+#feature is finalized with client.
 def _should_send_reminder(reminder, project):
     current_date = date.today()
     current_day=current_date.day
