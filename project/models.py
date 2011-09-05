@@ -57,12 +57,13 @@ class Project(DocumentBase):
         self.reminder_and_deadline = reminder_and_deadline
 
     def get_reminder_frequency_period(self):
-        return self.reminder_and_deadline.get('reminder_and_deadline')
+        return self.reminder_and_deadline.get('frequency_period')
+
+    def get_deadline_day(self):
+        if self.reminder_and_deadline.get('frequency_period') == 'month':
+            return int(self.reminder_and_deadline.get('deadline_month'))
 
     def is_reminder_enabled(self):
-        return self.reminder_and_deadline['reminder_and_deadline'] == 'True'
-
-    def is_reminder(self):
         if self.reminder_and_deadline['reminders_enabled'] == "True":
             return True
 

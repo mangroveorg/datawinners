@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger("django")
 
 def _get_reminders_grouped_by_project():
-    reminders = Reminder.objects.filter(day_of_the_month=date.today().day)
+    reminders = Reminder.objects.all()
     reminders_grouped_project_id = defaultdict(list)
     for reminder in reminders:
         reminders_grouped_project_id[reminder.project_id].append(reminder)
@@ -25,10 +25,15 @@ def _should_send_reminder(reminder, project):
     current_date = date.today()
     current_day=current_date.day
     if project.get_reminder_frequency_period()=="month":
-        if reminder.relative == "on":
-            if current_day==_get_last_day_of_month(current_date):
+        if reminder.reminder_mode == "on_deadline":
+            if current_day == project.get_deadline_day():
                 return True
-
+        if reminder.reminder_mode == "before_deadline":
+            if current_day == (project.get_deadline_day() - reminder.day):
+                return True
+        if reminder.reminder_mode == "after_deadline":
+            if current_day == (project.get_deadline_day() + reminder.day):
+                return True
 
 def _send_reminder_to_datasenders(dbm, reminder):
     vumiclient = Client(None, None, connection=Connection("vumi", "vumi", base_url="http://10.253.50.2:7000"))

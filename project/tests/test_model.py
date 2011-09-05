@@ -26,7 +26,6 @@ class TestProjectModel(unittest.TestCase):
 
         self._create_form_model_for_project(self.project1)
 
-
     def tearDown(self):
         _delete_db_and_remove_db_manager(self.dbm)
 
@@ -119,3 +118,14 @@ class TestProjectModel(unittest.TestCase):
         self.assertEqual(ProjectState.TEST, project.state)
 
 
+    def test_get_deadline_day(self):
+        reminder_and_deadline_for_month = {
+            "reminders_enabled": "True",
+            "deadline_month": "5",
+            "deadline_type": "current",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "month"
+        }
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        self.assertEquals(5, project_reminders.get_deadline_day())
