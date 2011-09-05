@@ -39,7 +39,7 @@ function viewModel() {
     this.reminders = ko.observableArray([]);
     this.remindersToSave = [];
     this.addReminder = function() {
-        this.reminders.push(new reminder("", "", "", "before_deadline", this));
+        this.reminders.push(new reminder("", "", "", "on_deadline", this));
     }
     this.save = function() {
         var shouldSave = true;
@@ -90,12 +90,12 @@ function viewModel() {
         var mappedReminders = $.map(data, function(item) {
             var beforeDay = "";
             var afterDay = "";
-            if(item.reminderMode === "after_deadline"){
+            if(item.reminder_mode === "before_deadline"){
                 beforeDay = item.day;
             }else{
                 afterDay = item.day;
             }
-            return new reminder(item.message, beforeDay, afterDay, item.reminderMode, self)
+            return new reminder(item.message, beforeDay, afterDay, item.reminder_mode, self)
         });
         self.reminders(mappedReminders);
     });

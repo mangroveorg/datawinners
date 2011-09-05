@@ -495,9 +495,8 @@ def reminders_wizard(request, project_id=None):
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        print project.is_reminder()
         return render_to_response('project/reminders_wizard.html',
-                {"previous": previous_link, 'project_id': project_id, 'project': project, 'is_reminder': project.is_reminder()},
+                {"previous": previous_link, 'project_id': project_id, 'project': project, 'is_reminder': project.is_reminder_enabled()},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
@@ -512,7 +511,7 @@ def reminders(request, project_id):
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'project_id': project_id,
-                 'is_reminder': project.is_reminder()},
+                 'is_reminder': project.is_reminder_enabled()},
                                   context_instance=RequestContext(request))
 
 
