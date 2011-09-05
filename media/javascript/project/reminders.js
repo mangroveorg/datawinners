@@ -15,6 +15,7 @@ $(document).ready(function(){
         });
     });
 
+
 function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel) {
     this.message = ko.observable(message);
     this.beforeDay = ko.observable(beforeDay);
@@ -25,12 +26,12 @@ function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel) {
     }
     var self = this;
     this.header = ko.dependentObservable(function(){
-        if(self.reminderMode === "before_deadline"){
-            return self.beforeDay + " days before deadline";
-        }else if(self.reminderMode === "after_deadline"){
-            return self.afterDay + " days after deadline";
+        if(self.reminderMode() === "before_deadline"){
+            return self.beforeDay() + " days before deadline";
+        }else if(self.reminderMode() === "after_deadline"){
+            return self.afterDay() + " days after deadline";
         }else{
-            return "";
+            return "On the deadline";
         }
     }, this);
 }
@@ -98,6 +99,7 @@ function viewModel() {
             return new reminder(item.message, beforeDay, afterDay, item.reminder_mode, self)
         });
         self.reminders(mappedReminders);
+        $("#review_section").accordion({header:'.header',collapsible: true});
     });
 }
 
