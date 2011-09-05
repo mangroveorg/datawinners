@@ -1,9 +1,10 @@
 $(document).ready(function() {
     $(".sms_tester_form").dialog({
         autoOpen: false,
-        width: 1500,
+        width: 1200,
         modal: true,
         title: 'SMS Tester',
+        zIndex:1100,
         open: function(){
             $(".questionnaire_preview1").load(quessionarie_preview_link, function() {$('.printBtn').addClass('none');});
         }
