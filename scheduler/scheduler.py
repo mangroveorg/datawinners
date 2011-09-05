@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from _collections import defaultdict
+import calendar
 from datetime import date
 from datawinners import utils
 from datawinners.accountmanagement.models import OrganizationSetting
@@ -17,15 +18,16 @@ def _get_reminders_grouped_by_project():
         reminders_grouped_project_id[reminder.project_id].append(reminder)
     return reminders_grouped_project_id
 
-
-def _is_reminder_enabled_for_project(project):
-    return project.reminder_and_deadline['reminder_and_deadline'] == 'True'
-
+def _get_last_day_of_month(now):
+    return calendar.monthrange(now.year,now.month)[1]
 
 def _should_send_reminder(reminder, project):
-    current_date = date.today().day
-    
-    frequency
+    current_date = date.today()
+    current_day=current_date.day
+    if project.get_reminder_frequency_period()=="month":
+        if reminder.relative == "on":
+            if current_day==_get_last_day_of_month(current_date):
+                return True
 
 
 def _send_reminder_to_datasenders(dbm, reminder):
@@ -45,7 +47,7 @@ def send_reminders():
     for project_id, reminders in reminders_grouped_project_id.items():
         dbm = utils.get_database_manager_for_org(reminders[0].organization)
         project = dbm._load_document(project_id, Project)
-        if not _is_reminder_enabled_for_project(project):
+        if not project.is_reminder_enabled():
             continue
         for reminder in reminders:
             if _should_send_reminder(reminder, project):
