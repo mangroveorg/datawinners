@@ -16,6 +16,7 @@ var viewModel =
         viewModel.selectedQuestion.valueHasMutated();
         viewModel.questions.valueHasMutated();
         DW.charCount();
+        DW.smsPreview();
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {

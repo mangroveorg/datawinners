@@ -8,11 +8,15 @@ $(document).ready(function() {
     viewModel.selectedQuestion.valueHasMutated();
 
     ko.applyBindings(viewModel);
-    DW.charCount();
-    $('#question_form').live("keyup", DW.charCount);
-    $('#question_form').live("click", DW.charCount);
-    $('.delete').live("click", DW.charCount);
+    getSmsPreviewAndCharChount();
+    $('#question_form').live("keyup", getSmsPreviewAndCharChount());
+    $('#question_form').live("click", getSmsPreviewAndCharChount());
+    $('.delete').live("click", getSmsPreviewAndCharChount());
 
+    function getSmsPreviewAndCharChount(){
+        DW.charCount();
+        DW.smsPreview();
+    }
     $.validator.addMethod('spacerule', function(value, element, params) {
         var list = $.trim($('#' + element.id).val()).split(" ");
         if (list.length > 1) {
