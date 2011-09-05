@@ -6,26 +6,26 @@ DW.smsPreview = function() {
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':
-                sms_preview += ' &ltnumber&gt'
+                sms_preview += ' &lt;number&gt;'
                 break;
             case 'text':
-                sms_preview += ' &lttext&gt'
+                sms_preview += ' &lt;text&gt;'
                 break;
 
             case 'date':
-                sms_preview += ' &ltdate&gt'
+                sms_preview += ' &lt;date&gt;'
                 break;
 
             case 'select':
-                sms_preview += ' &ltlist of choices&gt'
+                sms_preview += ' &lt;list of choices&gt;'
                 break;
 
             case 'select1':
-                sms_preview += ' &ltlist of choices&gt'
+                sms_preview += ' &lt;list of choices&gt;'
                 break;
 
             case 'geocode':
-                sms_preview += ' &ltgeo code&gt'
+                sms_preview += ' &lt;geo code&gt;'
         }
     }
 

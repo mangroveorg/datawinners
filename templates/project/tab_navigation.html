@@ -29,21 +29,21 @@
                 <div class="tooltip">
                     <p>{% trans "Your project status is Test. You need to click on 'Activate Project' to activate it." %}</p>
                 </div>
-                <a href="#" class="activate_project">{% trans "Activate Project" %}</a>
+                <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Activate Project" %}</a>
                 <a href="#" id='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
                 {% include 'project/sms_tester_form.html' %}
             {% else %}
                 <div class="tooltip">
                     <p>{% trans "Your project is inactive. You need to complete the Profile to activate it." %}</p>
                 </div>
-                <a href="#" class="activate_project">{% trans "Activate Project" %}</a>
+                <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Activate Project" %}</a>
             {% endif %}
         {% endif %}
     </div>
     <div id="activate_project_block">
         <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
         <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
-        <a href="{{ project_links.activate_project_link }}" class="button" id="confirm">{% trans "Activate" %}</a>
+        <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>
     </div>
 
 {% endblock %}
