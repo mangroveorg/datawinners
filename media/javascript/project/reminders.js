@@ -69,12 +69,17 @@ function viewModel() {
                     newReminder['day'] = this.reminders()[i].afterDay();
                 }
             }
+            if(this.reminders()[i].reminderMode() == "on_deadline"){
+                newReminder['reminderMode'] = 'on_deadline'
+                newReminder['day'] = 0
+            }
             this.remindersToSave.push(newReminder);
         };
         if (!shouldSave) {
             this.remindersToSave = [];
             return;
         }
+        console.log(ko.toJSON(this.remindersToSave));
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
             $('.success_message').show().html("The reminders has been saved").fadeOut(10000);
         })
