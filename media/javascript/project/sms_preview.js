@@ -1,5 +1,5 @@
 DW.smsPreview = function() {
-    var sms_preview = $('#questionnaire-code').val()
+    var sms_preview = '' + $('#questionnaire-code').val()
     for (var i = 0; i < viewModel.questions().length; i++) {
         var current_question = viewModel.questions()[i];
         sms_preview += ' +'+current_question.code()
