@@ -1,14 +1,18 @@
 $(document).ready(function() {
     $(".sms_tester_form").dialog({
         autoOpen: false,
-        width: 600,
+        width: 1500,
         modal: true,
-        title: 'SMS Tester'
+        title: 'SMS Tester',
+        open: function(){
+            $(".questionnaire_preview1").load(quessionarie_preview_link, function() {$('.printBtn').addClass('none');});
+        }
     });
     $("#sms_tester").unbind('click').click(function() {
         $(".sms_tester_form").removeClass("none");
         $(".sms_tester_form").dialog("open");
     });
+
 
     $("#send_sms").unbind('click').click(function() {
         $.post('/submission', {'message':$("#id_message").val(), 'test_mode':true}, function(response) {
