@@ -1,5 +1,6 @@
 {% extends 'accountmanagement/account/index.html' %}
-{% block page_title %} Account {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "Account" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -9,23 +10,23 @@
 
 {% block content %}
 <div class="text_align_right margin_bottom_20">
-  <a href= "/account/user/new/">Add Users</a> |
-  <a href= "#" class = "disable_link">All Users</a>
+  <a href= "/account/user/new/">{% trans "Add Users" %}</a> |
+  <a href= "#" class = "disable_link">{% trans "All Users" %}</a>
 </div>
 <div id="users_list">
     <table  class="styled_table">
     <thead>
       <th>
-        First Name
+        {% trans "First Name" %}
       </th>
       <th>
-        Last Name
+        {% trans "Last Name" %}
       </th>
       <th>
-        Email
+        {% trans "Email" %}
       </th>
       <th>
-        Projects
+        {% trans "Projects" %}
       </th>
     </thead>
       {% for user in users %}

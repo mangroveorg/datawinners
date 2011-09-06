@@ -1,5 +1,6 @@
 {% extends 'accountmanagement/account/index.html' %}
-{% block page_title %} Account {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "Account" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -12,8 +13,8 @@
 {% endblock %}
 {% block content %}
 <div class="text_align_right margin_bottom_20">
-  <a href= "#" class = "disable_link">Add Users</a> |
-  <a href= "/account/users" >All Users</a>
+  <a href= "#" class = "disable_link">{% trans "Add Users" %}</a> |
+  <a href= "/account/users" >{% trans "All Users" %}</a>
 </div>
  <div id="user_form" class="span-18 box">
     <div class = "form-5px">
@@ -22,7 +23,7 @@
         {% csrf_token %}
         <ul class="administrative">
           <li>
-            <h3 class="title">Point of Contact / Account Administrator</h3>
+            <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
           </li>
           <li class="{{ form.title.css_classes  }} form-row-10px">
             {{ profile_form.title.label_tag }}

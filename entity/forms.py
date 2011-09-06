@@ -1,5 +1,6 @@
 from django.forms import HiddenInput
 from django.forms.fields import RegexField, CharField, FileField
+from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
 
@@ -16,21 +17,21 @@ class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
     first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
-                            error_message="Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
+                            error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- ")
                             ,
-                            label="* Name")
-    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label="* Mobile Number",
-                                  error_message="Please enter a valid phone number.Only numbers and -(dash) allowed")
-    geo_code = CharField(max_length=30, required=False, label="GPS: Enter Lat Long")
-    location = CharField(max_length=100, required=False, label="Enter location")
+                            label=_("* Name"))
+    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label=_("* Mobile Number"),
+                                  error_message=_("Please enter a valid phone number.Only numbers and -(dash) allowed"))
+    geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
+    location = CharField(max_length=100, required=False, label=_("Enter location"))
     project_id = CharField(required=False, widget=HiddenInput())
 
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].widget.attrs['watermark'] = "Enter Data Sender's name"
-        self.fields['telephone_number'].widget.attrs['watermark'] = "Enter Data Sender's number eg: "
-        self.fields['location'].widget.attrs['watermark'] = "Enter region, district or commune"
-        self.fields['geo_code'].widget.attrs['watermark'] = "Enter lat and long eg: 19.3 42.37"
+        self.fields['first_name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
+        self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number eg: ")
+        self.fields['location'].widget.attrs['watermark'] = _("Enter region, district or commune")
+        self.fields['geo_code'].widget.attrs['watermark'] = _("Enter lat and long eg: 19.3 42.37")
 
     def _is_int(self, s):
         try:
@@ -51,7 +52,7 @@ class ReporterRegistrationForm(Form):
                 self._errors['geo_code'] = self.error_class([msg])
 
     def _geo_code_validations(self, b):
-        msg = "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+        msg = _("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
         geo_code_string = b.strip()
         geo_code_string = (' ').join(geo_code_string.split())
         if not is_empty(geo_code_string):
@@ -63,7 +64,7 @@ class ReporterRegistrationForm(Form):
         a = self.cleaned_data.get("location")
         b = self.cleaned_data.get("geo_code")
         if not (bool(a) or bool(b)):
-            msg = "Please fill out at least one location field correctly."
+            msg = _("Please fill out at least one location field correctly.")
             self._errors['location'] = self.error_class([msg])
             self._errors['geo_code'] = self.error_class([msg])
         if bool(b):

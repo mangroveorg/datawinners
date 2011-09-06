@@ -14,7 +14,7 @@ $(document).ready(function() {
             return true;
         var re = new RegExp("^[0-9-]+$");
         return re.test(text);
-    }, "Please enter a valid phone number.Only numbers and -(dash) allowed");
+    }, gettext("Please enter a valid phone number.Only numbers and -(dash) allowed"));
 
     $.validator.addMethod('gpsrule', function(value, element, params) {
         var codes = $('#' + element.id).val();
@@ -28,15 +28,15 @@ $(document).ready(function() {
             return false;
         return (lat_long[0] > -90 && lat_long[0] < 90)
                 && (lat_long[1] > -180 && lat_long[1] < 180);
-    }, "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315");
+    }, gettext("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"));
 
     DW.validator = $('#question_form').validate({
         messages:{
             geo_code:{
-                required:"Please fill out at least one location field."
+                required:gettext("Please fill out at least one location field")
             },
             location:{
-                required:"Please fill out at least one location field"
+                required:gettext("Please fill out at least one location field")
             }
 
         },

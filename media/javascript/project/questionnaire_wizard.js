@@ -19,23 +19,23 @@ $(document).ready(function() {
             return false;
         }
         return true;
-    }, "Space is not allowed in question code.");
+    }, gettext("Space is not allowed in question code"));
 
     $.validator.addMethod('regexrule', function(value, element, params) {
         var text = $('#' + element.id).val();
         var re = new RegExp('^[A-Za-z0-9 ]+$');
         return re.test(text);
-    }, "Only letters and digits are valid.");
+    }, gettext("Only letters and digits are valid"));
 
     $.validator.addMethod('naturalnumberrule', function(value, element, params) {
         var num = $('#' + element.id).val();
         return num != 0;
-    }, "Answer cannot be of length less than 1");
+    }, gettext("Answer cannot be of length less than 1"));
 
     $("#question_form").validate({
         messages: {
             max_length:{
-                digits: "Please enter positive numbers only"
+                digits: gettext("Please enter positive numbers only")
             }
 
         },
@@ -95,13 +95,13 @@ $(document).ready(function() {
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
-            $("#questionnaire-code-error").html("<label class='error_message'> The Questionnaire code is required.</label>");
+            $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
             return;
         }
 
         var list = $.trim($('#questionnaire-code').val()).split(" ");
         if (list.length > 1) {
-            $("#questionnaire-code-error").html("<label class='error_message'> Space is not allowed in questionnaire code.</label>");
+            $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("Space is not allowed in questionnaire code")+".</label>");
             return;
         }
         else {
@@ -111,14 +111,14 @@ $(document).ready(function() {
         var text = $('#questionnaire-code').val();
         var re = new RegExp('^[A-Za-z0-9 ]+$');
         if (!re.test(text)) {
-            $("#questionnaire-code-error").html("<label class='error_message'> Only letters and digits are valid.</label>");
+            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("Only letters and digits are valid") + ".</label>");
             return;
         }
 
         $("#questionnaire-code-error").html("");
 
         if (!$('#question_form').valid()) {
-            $("#message-label").show().html("<label class='error_message'> This questionnaire has an error.</label> ");
+            $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
             hide_message();
             return;
         }
@@ -130,7 +130,7 @@ $(document).ready(function() {
                     $("#message-label").removeClass("none");
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
-                    $("#message-label").show().html("<label class='success'>" + "The question has been saved." + "</label");
+                    $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
                     hide_message();
                     redirect();
                 }).error(function(e) {

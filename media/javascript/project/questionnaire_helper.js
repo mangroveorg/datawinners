@@ -1,25 +1,25 @@
 //DW is the global name space for DataWinner
 
 DW.instruction_template = {
-    "number" :"Answer must be a number.",
-    "min_number" :"Answer must be a number. The minimum is %d.",
-    "max_number" :"Answer must be a number. The maximum is %d.",
-    "range_number" :"Answer must be a number between %d-%d.",
-    "text":"Answer must be a word or phrase",
-    "max_text":"Answer must be a word or phrase %d characters maximum",
-    "date":"Answer must be a date in the following format: %s. Example: %s",
-    "single_select":"Choose 1 answer from the above list. Example: a",
-    "multi_select":"Choose 1 or more answers from the above list. Example: a or ab ",
-    "gps":"Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547 ",
+    "number" :gettext("Answer must be a number."),
+    "min_number" :gettext("Answer must be a number. The minimum is %d."),
+    "max_number" :gettext("Answer must be a number. The maximum is %d."),
+    "range_number" :gettext("Answer must be a number between %d-%d."),
+    "text":gettext("Answer must be a word or phrase"),
+    "max_text":gettext("Answer must be a word or phrase %d characters maximum"),
+    "date":gettext("Answer must be a date in the following format: %s. Example: %s"),
+    "single_select":gettext("Choose 1 answer from the above list. Example: a"),
+    "multi_select":gettext("Choose 1 or more answers from the above list. Example: a or ab "),
+    "gps":gettext("Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547 "),
     "dd.mm.yyyy": "25.12.2011",
     "mm.dd.yyyy": "12.25.2011",
     "mm.yyyy": "12.2011"
 
 };
 DW.date_template = {
-    "dd.mm.yyyy": "day.month.year",
-        "mm.dd.yyyy": "month.day.year",
-        "mm.yyyy": "month.year"
+    "dd.mm.yyyy": gettext("day.month.year"),
+    "mm.dd.yyyy": gettext("month.day.year"),
+    "mm.yyyy": gettext("month.year")
 
 };
 DW.question = function(question) {
@@ -41,7 +41,7 @@ DW.question = function(question) {
             max : ""
         },
         date_format: "mm.yyyy",
-        instruction: "Answer must be a text",
+        instruction: gettext("Answer must be a text"),
         loaded: true
     };
 

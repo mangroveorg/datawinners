@@ -47,14 +47,14 @@ function viewModel() {
         for(var i = 0; i < this.reminders().length; i++){
             var newReminder = {};
             if (this.reminders()[i].message() === "") {
-                $('#newMessage_err').show().html("Can't be blank.");
+                $('#newMessage_err').show().html(gettext("Can't be blank."));
                 shouldSave = false
             } else {
                 newReminder['message'] = this.reminders()[i].message();
             }
             if (this.reminders()[i].reminderMode() == 'before_deadline') {
                 if (this.reminders()[i].beforeDay() === "") {
-                    $('#newDay_err').show().html("Day Can't be blank.")
+                    $('#newDay_err').show().html(gettext("Day Can't be blank."))
                     shouldSave = false;
                 } else {
                     newReminder['reminderMode'] = 'before_deadline';
@@ -63,7 +63,7 @@ function viewModel() {
             }
             if (this.reminders()[i].reminderMode() == 'after_deadline') {
                 if (this.reminders()[i].afterDay() === "") {
-                    $('#newDay_err').show().html("Day Can't be blank.")
+                    $('#newDay_err').show().html(gettext("Day Can't be blank."))
                     shouldSave = false;
                 } else {
                     newReminder['reminderMode'] = 'after_deadline';

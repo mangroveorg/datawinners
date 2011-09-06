@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-02 12:40+0300\n"
+"POT-Creation-Date: 2011-09-06 14:23+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,99 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: accountmanagement/forms.py:17
+msgid "* Organization name"
+msgstr ""
+
+#: accountmanagement/forms.py:19
+msgid "Public Health"
+msgstr ""
+
+#: accountmanagement/forms.py:19
+msgid "Other"
+msgstr ""
+
+#: accountmanagement/forms.py:20 accountmanagement/forms.py:88
+msgid "Organization Sector"
+msgstr ""
+
+#: accountmanagement/forms.py:21 accountmanagement/forms.py:89
+msgid "* Address"
+msgstr ""
+
+#: accountmanagement/forms.py:22 accountmanagement/forms.py:90
+msgid "* City"
+msgstr ""
+
+#: accountmanagement/forms.py:23 accountmanagement/forms.py:91
+msgid "State / Province"
+msgstr ""
+
+#: accountmanagement/forms.py:24 accountmanagement/forms.py:92
+msgid "* Country"
+msgstr ""
+
+#: accountmanagement/forms.py:25 accountmanagement/forms.py:95
+msgid "* Postal / Zip Code"
+msgstr ""
+
+#: accountmanagement/forms.py:27 accountmanagement/forms.py:97
+msgid "Office Phone Number"
+msgstr ""
+
+#: accountmanagement/forms.py:28 accountmanagement/forms.py:51
+#: accountmanagement/forms.py:53 accountmanagement/forms.py:80
+#: accountmanagement/forms.py:82 accountmanagement/forms.py:98
+msgid "Please enter a valid phone number"
+msgstr ""
+
+#: accountmanagement/forms.py:29 accountmanagement/forms.py:99
+msgid "Website Url"
+msgstr ""
+
+#: accountmanagement/forms.py:46
+msgid "* First name"
+msgstr ""
+
+#: accountmanagement/forms.py:47
+msgid "* Last name"
+msgstr ""
+
+#: accountmanagement/forms.py:48
+msgid "* Email"
+msgstr ""
+
+#: accountmanagement/forms.py:49 accountmanagement/forms.py:76
+msgid "Enter a valid email address. Example:name@organization.com"
+msgstr ""
+
+#: accountmanagement/forms.py:50 accountmanagement/forms.py:79
+msgid "Office Phone"
+msgstr ""
+
+#: accountmanagement/forms.py:52 accountmanagement/forms.py:81
+msgid "Mobile Phone"
+msgstr ""
+
+#: accountmanagement/forms.py:60
+msgid ""
+"This email address is already in use. Please supply a different email address"
+msgstr ""
+
 #: accountmanagement/forms.py:75
 msgid "* Email address"
+msgstr ""
+
+#: accountmanagement/forms.py:85
+msgid "* Organization Name"
+msgstr ""
+
+#: accountmanagement/forms.py:94
+msgid "Please enter a valid Postal / Zip code"
+msgstr ""
+
+#: accountmanagement/forms.py:106
+msgid "The two password fields didn't match."
 msgstr ""
 
 #: accountmanagement/forms.py:136
@@ -27,6 +118,90 @@ msgstr ""
 
 #: accountmanagement/forms.py:138
 msgid "This account is inactive."
+msgstr ""
+
+#: dashboard/views.py:86 templates/main_navigation.html:13
+#: templates/accountmanagement/account/users_list.html:29
+#: templates/entity/datasenders_table.html:11
+msgid "Projects"
+msgstr ""
+
+#: dashboard/views.py:86 templates/main_navigation.html:16
+#: templates/step_wizard.html:34 templates/entity/all_datasenders.html:3
+#: templates/entity/all_datasenders.html:6
+#: templates/project/datasenders_wizard.html:3
+#: templates/project/datasenders_wizard.html:44
+#: templates/project/finish_and_test.html:121
+#: templates/project/profile_datasenders.html:3
+#: templates/project/reminders_wizard.html:54
+#: templates/project/tab_navigation.html:56
+msgid "Data Senders"
+msgstr ""
+
+#: dashboard/views.py:87 templates/main_navigation.html:19
+#: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
+#: templates/entity/all_subjects.html:5
+#: templates/project/finish_and_test.html:81
+#: templates/project/questionnaire_wizard.html:138
+#: templates/project/subjects.html:33 templates/project/subjects_wizard.html:3
+#: templates/project/subjects_wizard.html:43
+#: templates/project/tab_navigation.html:50
+msgid "Subjects"
+msgstr ""
+
+#: dashboard/views.py:87
+msgid "Data Records"
+msgstr ""
+
+#: entity/forms.py:20
+msgid ""
+"Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
+msgstr ""
+
+#: entity/forms.py:22
+msgid "* Name"
+msgstr ""
+
+#: entity/forms.py:23
+msgid "* Mobile Number"
+msgstr ""
+
+#: entity/forms.py:24
+msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
+msgstr ""
+
+#: entity/forms.py:25
+msgid "GPS: Enter Lat Long"
+msgstr ""
+
+#: entity/forms.py:26
+msgid "Enter location"
+msgstr ""
+
+#: entity/forms.py:31
+msgid "Enter Data Sender's name"
+msgstr ""
+
+#: entity/forms.py:32
+msgid "Enter Data Sender's number eg: "
+msgstr ""
+
+#: entity/forms.py:33
+msgid "Enter region, district or commune"
+msgstr ""
+
+#: entity/forms.py:34
+msgid "Enter lat and long eg: 19.3 42.37"
+msgstr ""
+
+#: entity/forms.py:55
+msgid ""
+"Incorrect GPS format. The GPS coordinates must be in the following format: "
+"xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+msgstr ""
+
+#: entity/forms.py:67
+msgid "Please fill out at least one location field correctly."
 msgstr ""
 
 #: project/forms.py:37
@@ -139,6 +314,14 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
+#: project/helper.py:79
+msgid "What is the reporting period for the activity?"
+msgstr ""
+
+#: project/views.py:780
+msgid "Successfully submitted"
+msgstr ""
+
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:60
 #: templates/project/index.html:46 templates/project/profile.html:49
@@ -153,7 +336,7 @@ msgstr ""
 
 #: templates/entity_question_panel.html:7 templates/project/overview.html:52
 #: templates/project/questionnaire.html:97
-#: templates/project/questionnaire_wizard.html:95
+#: templates/project/questionnaire_wizard.html:93
 msgid "Questions"
 msgstr ""
 
@@ -177,7 +360,7 @@ msgstr ""
 #: templates/project/questionnaire.html:82
 #: templates/project/questionnaire.html:113
 #: templates/project/questionnaire_wizard.html:76
-#: templates/project/questionnaire_wizard.html:109
+#: templates/project/questionnaire_wizard.html:107
 #: templates/project/reminders_wizard.html:35
 #: templates/project/subjects_wizard.html:45
 #: templates/project/subjects_wizard.html:63
@@ -212,7 +395,7 @@ msgstr ""
 #: templates/project/questionnaire.html:85
 #: templates/project/questionnaire.html:116
 #: templates/project/questionnaire_wizard.html:79
-#: templates/project/questionnaire_wizard.html:112
+#: templates/project/questionnaire_wizard.html:110
 #: templates/project/reminders_wizard.html:38
 #: templates/project/subjects_wizard.html:48
 #: templates/project/subjects_wizard.html:66
@@ -255,6 +438,8 @@ msgid "Welcome"
 msgstr ""
 
 #: templates/header_wizard.html:12
+#: templates/accountmanagement/profile/index.html:3
+#: templates/accountmanagement/profile/index.html:4
 msgid "Your Profile"
 msgstr ""
 
@@ -262,7 +447,7 @@ msgstr ""
 msgid "wizard_account"
 msgstr "Account"
 
-#: templates/header_wizard.html:16
+#: templates/header_wizard.html:16 templates/registration/logout.html:3
 msgid "Sign out"
 msgstr ""
 
@@ -270,7 +455,10 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: templates/header_wizard.html:24
+#: templates/header_wizard.html:24 templates/registration/activate.html:11
+#: templates/registration/activation_complete.html:9
+#: templates/registration/login.html:45
+#: templates/registration/password_reset_complete.html:9
 msgid "Sign in"
 msgstr ""
 
@@ -278,7 +466,7 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
-#: templates/layout_master.html:49
+#: templates/layout_master.html:50
 msgid "Javascript is disabled in your browser, Please enable it."
 msgstr ""
 
@@ -298,33 +486,6 @@ msgstr ""
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
 msgid "Dashboard"
-msgstr ""
-
-#: templates/main_navigation.html:13
-#: templates/entity/datasenders_table.html:11
-msgid "Projects"
-msgstr ""
-
-#: templates/main_navigation.html:16 templates/step_wizard.html:34
-#: templates/entity/all_datasenders.html:3
-#: templates/entity/all_datasenders.html:6
-#: templates/project/datasenders_wizard.html:3
-#: templates/project/datasenders_wizard.html:44
-#: templates/project/finish_and_test.html:121
-#: templates/project/profile_datasenders.html:3
-#: templates/project/reminders_wizard.html:54
-#: templates/project/tab_navigation.html:56
-msgid "Data Senders"
-msgstr ""
-
-#: templates/main_navigation.html:19 templates/step_wizard.html:32
-#: templates/entity/all_subjects.html:3 templates/entity/all_subjects.html:5
-#: templates/project/finish_and_test.html:81
-#: templates/project/questionnaire_wizard.html:136
-#: templates/project/subjects.html:33 templates/project/subjects_wizard.html:3
-#: templates/project/subjects_wizard.html:43
-#: templates/project/tab_navigation.html:50
-msgid "Subjects"
 msgstr ""
 
 #: templates/main_navigation.html:22
@@ -452,6 +613,30 @@ msgstr ""
 msgid "Contact info"
 msgstr ""
 
+#: templates/accountmanagement/account/add_user.html:3
+#: templates/accountmanagement/account/org_settings.html:3
+#: templates/accountmanagement/account/users_list.html:3
+msgid "Account"
+msgstr ""
+
+#: templates/accountmanagement/account/add_user.html:16
+#: templates/accountmanagement/account/users_list.html:13
+msgid "Add Users"
+msgstr ""
+
+#: templates/accountmanagement/account/add_user.html:17
+#: templates/accountmanagement/account/users_list.html:14
+msgid "All Users"
+msgstr ""
+
+#: templates/accountmanagement/account/add_user.html:26
+msgid "Point of Contact"
+msgstr ""
+
+#: templates/accountmanagement/account/add_user.html:26
+msgid "Account Administrator"
+msgstr ""
+
 #: templates/accountmanagement/account/index.html:3
 #: templates/accountmanagement/account/index.html:4
 msgid "Account Settings"
@@ -463,6 +648,27 @@ msgstr ""
 
 #: templates/accountmanagement/account/index.html:14
 msgid "Users"
+msgstr ""
+
+#: templates/accountmanagement/account/org_settings.html:82
+#: templates/accountmanagement/profile/edit_profile.html:66
+msgid "Save Changes"
+msgstr ""
+
+#: templates/accountmanagement/account/users_list.html:20
+msgid "First Name"
+msgstr ""
+
+#: templates/accountmanagement/account/users_list.html:23
+msgid "Last Name"
+msgstr ""
+
+#: templates/accountmanagement/account/users_list.html:26
+msgid "Email"
+msgstr ""
+
+#: templates/accountmanagement/profile/index.html:11
+msgid "Contact Info"
 msgstr ""
 
 #: templates/admin/base_site.html:4
@@ -1267,6 +1473,14 @@ msgstr ""
 msgid "When do we need the data"
 msgstr ""
 
+#: templates/project/profile_deadline_month_block.html:8
+msgid "month"
+msgstr ""
+
+#: templates/project/profile_deadline_week_block.html:8
+msgid "week"
+msgstr ""
+
 #: templates/project/profile_subjects-questionnaire.html:3
 msgid "Subjects and Questionnaire"
 msgstr ""
@@ -1477,12 +1691,12 @@ msgstr ""
 "type in this code first when sending in their data."
 
 #: templates/project/questionnaire.html:102
-#: templates/project/questionnaire_wizard.html:100
+#: templates/project/questionnaire_wizard.html:98
 msgid "Add another Question"
 msgstr ""
 
 #: templates/project/questionnaire.html:114
-#: templates/project/questionnaire_wizard.html:110
+#: templates/project/questionnaire_wizard.html:108
 msgid "q_tooltip_question_sms"
 msgstr ""
 "<strong>1 SMS is limited to 160 characters.</strong><br />The Running Count "
@@ -1491,7 +1705,7 @@ msgstr ""
 "out of 160."
 
 #: templates/project/questionnaire.html:117
-#: templates/project/questionnaire_wizard.html:113
+#: templates/project/questionnaire_wizard.html:111
 msgid "r_tooltip_question_sms"
 msgstr ""
 "Use this count to determine how many questions you can add to the "
@@ -1547,16 +1761,16 @@ msgstr ""
 "appear on the printed versionof your questionnaire. Your Data Senders will "
 "type in this code first when sending in their data."
 
-#: templates/project/questionnaire_wizard.html:126
+#: templates/project/questionnaire_wizard.html:128
 msgid ""
 "Warning: Changing the questionnaire code will remove all existing test data."
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:127
+#: templates/project/questionnaire_wizard.html:129
 msgid "OK"
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:132
+#: templates/project/questionnaire_wizard.html:134
 msgid "Next Step: Data Senders"
 msgstr ""
 
@@ -1616,6 +1830,10 @@ msgstr ""
 msgid "The message count is"
 msgstr ""
 
+#: templates/project/reminder_content.html:50
+msgid "Remove"
+msgstr ""
+
 #: templates/project/reminders.html:3
 msgid "Project - Reminders"
 msgstr ""
@@ -1664,23 +1882,23 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:3
+#: templates/project/sms_tester_form.html:7
 msgid "Test the SMS Questionnaire"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:5
+#: templates/project/sms_tester_form.html:9
 msgid "Verify you can send in test answers"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:8
+#: templates/project/sms_tester_form.html:12
 msgid "Send in your test answers."
 msgstr ""
 
-#: templates/project/sms_tester_form.html:10
+#: templates/project/sms_tester_form.html:14
 msgid "Refer to the Web Questionnaire Preview for a sample SMS"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:13
+#: templates/project/sms_tester_form.html:17
 msgid "sms_tester_form"
 msgstr ""
 "<p>Note : When you activate this project, all the test data will be removed "
@@ -1689,19 +1907,19 @@ msgstr ""
 "Sender. Then sms your test answers to the telephone number provided by "
 "DataWinners.</p>"
 
-#: templates/project/sms_tester_form.html:21
+#: templates/project/sms_tester_form.html:25
 msgid "Send SMS"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:22
+#: templates/project/sms_tester_form.html:26
 msgid "Clear"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:27
+#: templates/project/sms_tester_form.html:31
 msgid "See the data you received"
 msgstr ""
 
-#: templates/project/sms_tester_form.html:29
+#: templates/project/sms_tester_form.html:33
 #, python-format
 msgid ""
 "See if DataWinners received your SMS. (Go to <a href="
@@ -1876,4 +2094,119 @@ msgstr ""
 
 #: templates/project/tab_navigation.html:109
 msgid "Registration Questionnaire"
+msgstr ""
+
+#: templates/registration/activate.html:3
+#: templates/registration/activate.html:4
+msgid "Activation Confirmation"
+msgstr ""
+
+#: templates/registration/activate.html:11
+msgid "Account successfully activated"
+msgstr ""
+
+#: templates/registration/activate.html:15
+msgid "Account activation failed"
+msgstr ""
+
+#: templates/registration/activation_complete.html:3
+#: templates/registration/activation_complete.html:4
+msgid "Activation Complete"
+msgstr ""
+
+#: templates/registration/activation_complete.html:9
+msgid "You have successfully activated your account"
+msgstr ""
+
+#: templates/registration/login.html:3
+msgid "Login"
+msgstr ""
+
+#: templates/registration/login.html:4
+msgid "Sign In to Your Account on DataWinners"
+msgstr ""
+
+#: templates/registration/login.html:46
+#: templates/registration/password_reset_form.html:27
+msgid "Not registered?"
+msgstr ""
+
+#: templates/registration/login.html:46
+#: templates/registration/password_reset_form.html:27
+msgid "Create an account"
+msgstr ""
+
+#: templates/registration/login.html:46
+msgid "Reset Password"
+msgstr ""
+
+#: templates/registration/logout.html:8
+msgid "You have successfully signed out. Thanks for your visit."
+msgstr ""
+
+#: templates/registration/logout.html:8
+msgid "Sign in again"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:3
+#: templates/registration/password_reset_complete.html:4
+msgid "Password Reset"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:9
+msgid "Password reset successfully"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:3
+#: templates/registration/password_reset_confirm.html:4
+msgid "Password Reset Confirm"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:22
+msgid "Submit"
+msgstr ""
+
+#: templates/registration/password_reset_done.html:3
+#: templates/registration/password_reset_done.html:4
+msgid "Password Reset Done"
+msgstr ""
+
+#: templates/registration/password_reset_done.html:8
+msgid "Email with password reset instructions has been sent"
+msgstr ""
+
+#: templates/registration/password_reset_form.html:3
+msgid "Password reset"
+msgstr ""
+
+#: templates/registration/password_reset_form.html:4
+msgid "Forgot Your Password?"
+msgstr ""
+
+#: templates/registration/password_reset_form.html:14
+msgid ""
+"Type the full email address you use to sign in to your DataWinners Account."
+msgstr ""
+
+#: templates/registration/password_reset_form.html:15
+msgid "We will email you a code to this Email."
+msgstr ""
+
+#: templates/registration/password_reset_form.html:26
+msgid "Get Password"
+msgstr ""
+
+#: templates/registration/registration_complete.html:3
+#: templates/registration/registration_complete.html:4
+msgid "Registration Confirmation"
+msgstr ""
+
+#: templates/registration/registration_complete.html:11
+msgid "You have successfully registered"
+msgstr ""
+
+#: templates/registration/registration_complete.html:12
+msgid ""
+"An activation email has been sent to your email address. Please activate "
+"before login."
 msgstr ""

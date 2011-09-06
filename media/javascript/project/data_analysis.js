@@ -14,7 +14,7 @@ $(document).ready(function() {
             return time_range;
         }
         if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
+            $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>')
             $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
@@ -32,15 +32,15 @@ $(document).ready(function() {
     }
     $("#dateRangePicker").daterangepicker({
         presetRanges: [
-            {text: 'Current month', dateStart: function() {
+            {text: gettext('Current month'), dateStart: function() {
                 return Date.parse('today').moveToFirstDayOfMonth();
             }, dateEnd: 'today' },
-            {text: 'Last Month', dateStart: function() {
+            {text: gettext('Last Month'), dateStart: function() {
                 return Date.parse('last month').moveToFirstDayOfMonth();
             }, dateEnd: function() {
                 return Date.parse('last month').moveToLastDayOfMonth();
             } },
-            {text: 'Year to date', dateStart: function() {
+            {text: gettext('Year to date'), dateStart: function() {
                 var x = Date.parse('today');
                 x.setMonth(0);
                 x.setDate(1);
@@ -70,7 +70,7 @@ $(document).ready(function() {
 
     $(".aggregation_type").live("change", function() {
         var time_list = DW.submit_data();
-        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> Just a moment...</h1>' });
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> ' + gettext("Just a moment") + '...</h1>' });
         $.ajax({
             type: 'POST',
             url: window.location.pathname,
@@ -97,7 +97,7 @@ $(document).ready(function() {
 
     $('#time_submit').click(function() {
         var time_list = DW.submit_data();
-        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> Just a moment...</h1>' });
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> ' + gettext("Just a moment") + '...</h1>' });
         $.ajax({
             type: 'POST',
             url: window.location.pathname,

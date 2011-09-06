@@ -1,7 +1,7 @@
 {% extends 'layout_registration.html' %}
-
-{% block page_title %} Login {% endblock %}
-{% block section_title %} Sign In to Your Account on DataWinners {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "Login" %} {% endblock %}
+{% block section_title %} {% trans "Sign In to Your Account on DataWinners" %} {% endblock %}
 {% block page_js %}
     <script type="text/javascript" >
         $(document).ready(function(){
@@ -42,8 +42,8 @@
                             {{ form.password.errors }}
                         </li>
                         <li class="login_button">
-                            <div class="login_button_div"><input type="submit"  id="id_login" value="Sign in" class="button"/></div>
-                            <div class='login_links_div'><span>Not registered? <a href="/register">Create an account</a> <a href="{% url django.contrib.auth.views.password_reset %}">Reset Password</a></span></div>
+                            <div class="login_button_div"><input type="submit"  id="id_login" value="{% trans 'Sign in' %}" class="button"/></div>
+                            <div class='login_links_div'><span>{% trans "Not registered?" %} <a href="/register">{% trans "Create an account" %}</a> <a href="{% url django.contrib.auth.views.password_reset %}">{% trans "Reset Password" %}</a></span></div>
                         </li>
                     </ul>
             </form>

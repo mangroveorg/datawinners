@@ -1,17 +1,18 @@
 {% extends "layout_registration.html" %}
-{% block page_title %}Activation Confirmation{% endblock %}
-{% block section_title %} Activation Confirmation{% endblock %}
+{% load i18n %}
+{% block page_title %}{% trans "Activation Confirmation" %}{% endblock %}
+{% block section_title %} {% trans "Activation Confirmation" %}{% endblock %}
 
 {% block content %}
 <div class="span-18 box">
     <div class="span-9">
 {% if account %}
 
-<p class="success-message-box">Account successfully activated <a href="{% url auth_login %}">Sign in</a></p>
+<p class="success-message-box">{% trans "Account successfully activated" %} <a href="{% url auth_login %}">{% trans "Sign in" %}</a></p>
 
 {% else %}
 
-<p class="message-box">Account activation failed</p>
+<p class="message-box">{% trans "Account activation failed" %}</p>
 
 {% endif %}
 

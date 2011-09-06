@@ -1,6 +1,6 @@
 $(document).ready(function() {
         $(".questionnaire_preview").dialog({
-                title: "Questionnaire Preview",
+                title: gettext("Questionnaire Preview"),
                 modal: true,
                 autoOpen: false,
                 height: 700,

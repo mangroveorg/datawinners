@@ -1,5 +1,6 @@
 {% extends 'accountmanagement/account/index.html' %}
-{% block page_title %} Account {% endblock %}
+{% load i18n %}
+{% block page_title %} {% trans "Account" %} {% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
@@ -78,7 +79,7 @@
         </li>
         {{ organization_form.org_id.as_hidden }}
         <li class="margin_top_20">
-          <input type="submit" value="Save Changes" class="button" />
+          <input type="submit" value="{% trans 'Save Changes' %}" class="button" />
         </li>
       </ul>
     </form>

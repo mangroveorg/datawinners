@@ -30,6 +30,7 @@
         <link href="/media/css/plugins/960gd/ie7.css" rel="stylesheet" type="text/css" media="screen" />
     <![endif]-->
 
+    <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
     {% load compress %}
     {% compress js %}
          {% include 'javascript.html' %}

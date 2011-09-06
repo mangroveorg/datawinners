@@ -17,7 +17,7 @@ $(document).ready(function(){
         autoOpen: false,
         width: 575,
         modal: true,
-        title: 'Add A Subject',
+        title: gettext('Add A Subject'),
         close: function() {
             $('#message').remove();
             $('#question_form').each (function(){

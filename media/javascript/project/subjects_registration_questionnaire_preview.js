@@ -1,6 +1,6 @@
 $(document).ready(function() {
                 $(".subject_registration_preview").dialog({
-                title: "Subject Registration Preview",
+                title: gettext("Subject Registration Preview"),
                 modal: true,
                 autoOpen: false,
                 height: 700,

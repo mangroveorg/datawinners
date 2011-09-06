@@ -4,7 +4,7 @@ $(document).ready(function(){
        autoOpen: false,
        width: 575,
        modal: true,
-       title: 'Add A Data Sender',
+       title: gettext('Add A Data Sender'),
        close: function() {
 
            $('.errorlist').remove();

@@ -94,7 +94,7 @@ $(document).ready(function(){
     $('#action').change(function(){
        var ids = [];
        if($(".selected_submissions:checked").length == 0){
-            $("#message_text").html("<div class='error_message message-box'>" + "Please select atleast one undeleted record" + "</div>");
+            $("#message_text").html("<div class='error_message message-box'>" + gettext("Please select atleast one undeleted record") + "</div>");
             $('#action').val(0);
        }
        else{
@@ -103,11 +103,11 @@ $(document).ready(function(){
                 ids.push($(this).val());
        });
        if(ids.length==0){
-            $("#message_text").html("<div class='error_message message-box'>" + "This data has already been deleted" + "</div>");
+            $("#message_text").html("<div class='error_message message-box'>" + gettext("This data has already been deleted") + "</div>");
             $('#action').val(0);
        }
        else{
-            var answer = confirm("Are you sure you want to delete the selected record/s?");
+            var answer = confirm(gettext("Are you sure you want to delete the selected record/s?"));
            if(answer){
                $.ajax({
                   type: 'POST',

@@ -1,6 +1,6 @@
 $(document).ready(function(){
    $("#activate_project_block").dialog({
-        title: "Activate this Project?",
+        title: gettext("Activate this Project?"),
         modal: true,
         autoOpen: false,
         height: 200,

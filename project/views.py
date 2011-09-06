@@ -39,6 +39,7 @@ from mangrove.datastore import aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
+from django.utils.translation import ugettext_lazy as _
 
 import logging
 
@@ -776,7 +777,7 @@ def web_questionnaire(request, project_id=None):
         try:
             response = WebPlayer(manager).accept(_create_request(questionnaire_form, request.user.username))
             if response.success:
-                success_message = "Successfully submitted"
+                success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = _to_list(response.errors)

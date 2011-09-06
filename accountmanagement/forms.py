@@ -14,19 +14,19 @@ from django.contrib.auth.models import User
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
 
-    name = forms.CharField(required=True, label='* Organization name')
+    name = forms.CharField(required=True, label=_('* Organization name'))
     sector = forms.CharField(widget=(
-        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))),
-                             label='Organization Sector')
-    address = forms.CharField(required=True, max_length=30, label='* Address')
-    city = forms.CharField(max_length=30, required=True, label='* City')
-    state = forms.CharField(max_length=30, required=False, label='State / Province')
-    country = forms.CharField(max_length=30, required=True, label='* Country')
-    zipcode = forms.CharField(max_length=30, required=True, label='* Postal / Zip Code')
+        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', _('Public Health')), ('Other', _('Other'))))),
+                             label=_('Organization Sector'))
+    address = forms.CharField(required=True, max_length=30, label=_('* Address'))
+    city = forms.CharField(max_length=30, required=True, label=_('* City'))
+    state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
+    country = forms.CharField(max_length=30, required=True, label=_('* Country'))
+    zipcode = forms.CharField(max_length=30, required=True, label=_('* Postal / Zip Code'))
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
-                                    label="Office Phone Number",
-                                    error_message="Please enter a valid phone number")
-    website = forms.URLField(required=False, label='Website Url')
+                                    label=_("Office Phone Number"),
+                                    error_message=_("Please enter a valid phone number"))
+    website = forms.URLField(required=False, label=_('Website Url'))
 
     class Meta:
         model = Organization
@@ -43,21 +43,21 @@ class UserProfileForm(forms.Form):
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False)
-    first_name = forms.CharField(max_length=30, required=True, label='* First name')
-    last_name = forms.CharField(max_length=30, required=True, label='* Last name')
-    username = forms.EmailField(max_length=30, required=True, label="* Email", error_messages={
-        'invalid': 'Enter a valid email address. Example:name@organization.com'})
-    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="Office Phone",
-                                    error_message="Please enter a valid phone number")
-    mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="Mobile Phone",
-                                    error_message="Please enter a valid phone number")
+    first_name = forms.CharField(max_length=30, required=True, label=_('* First name'))
+    last_name = forms.CharField(max_length=30, required=True, label=_('* Last name'))
+    username = forms.EmailField(max_length=30, required=True, label=_("* Email"), error_messages={
+        'invalid': _('Enter a valid email address. Example:name@organization.com')})
+    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
+                                    error_message=_("Please enter a valid phone number"))
+    mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Mobile Phone"),
+                                    error_message=_("Please enter a valid phone number"))
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if User.objects.filter(username=username).count() > 0:
-            raise ValidationError("This email address is already in use. Please supply a different email address")
+            raise ValidationError(_("This email address is already in use. Please supply a different email address"))
         return self.cleaned_data.get('username')
 
 
@@ -73,37 +73,37 @@ class RegistrationForm(RegistrationFormUniqueEmail):
     email = forms.EmailField(widget=forms.TextInput(attrs=dict({'class': 'required'},
                                                                                     maxlength=75)),
                              label=_("* Email address"),
-                             error_messages={'invalid': 'Enter a valid email address. Example:name@organization.com'})
+                             error_messages={'invalid': _('Enter a valid email address. Example:name@organization.com')})
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
-    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="Office Phone",
-                                    error_message="Please enter a valid phone number")
-    mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label="Mobile Phone",
-                                    error_message="Please enter a valid phone number")
+    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
+                                    error_message=_("Please enter a valid phone number"))
+    mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Mobile Phone"),
+                                    error_message=_("Please enter a valid phone number"))
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
-    organization_name = forms.CharField(required=True, max_length=30, label='* Organization Name')
+    organization_name = forms.CharField(required=True, max_length=30, label=_('* Organization Name'))
     organization_sector = forms.CharField(widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))),
-                                          label='Organization Sector')
-    organization_address = forms.CharField(required=True, max_length=30, label='* Address')
-    organization_city = forms.CharField(max_length=30, required=True, label='* City')
-    organization_state = forms.CharField(max_length=30, required=False, label='State / Province')
-    organization_country = forms.CharField(max_length=30, required=True, label='* Country')
+                                          label=_('Organization Sector'))
+    organization_address = forms.CharField(required=True, max_length=30, label=_('* Address'))
+    organization_city = forms.CharField(max_length=30, required=True, label=_('* City'))
+    organization_state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
+    organization_country = forms.CharField(max_length=30, required=True, label=_('* Country'))
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
-                                            error_message="Please enter a valid Postal / Zip code",
-                                            label='* Postal / Zip Code')
+                                            error_message=_("Please enter a valid Postal / Zip code"),
+                                            label=_('* Postal / Zip Code'))
     organization_office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
-                                                 label="Office Phone Number",
-                                                 error_message="Please enter a valid phone number")
-    organization_website = forms.URLField(required=False, label='Website Url')
+                                                 label=_("Office Phone Number"),
+                                                 error_message=_("Please enter a valid phone number"))
+    organization_website = forms.URLField(required=False, label=_('Website Url'))
     username = forms.CharField(max_length=30, required=False)
 
     def clean(self):
         self.convert_email_to_lowercase()
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                msg = "The two password fields didn't match."
+                msg = _("The two password fields didn't match.")
                 self._errors['password1'] = self.error_class([msg])
         return self.cleaned_data
 

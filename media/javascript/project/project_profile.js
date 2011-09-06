@@ -27,7 +27,7 @@ $(document).ready(function(){
         DW.open_activity_report_warning();
     })
     $("#profile_warning_message").dialog({
-        title: "Warning !!",
+        title: gettext("Warning !!"),
         modal: true,
         autoOpen: false,
         height: 200,

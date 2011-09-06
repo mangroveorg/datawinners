@@ -1,4 +1,5 @@
 {% extends 'accountmanagement/profile/index.html' %}
+{% load i18n %}
 {% block page_title %} Profile {% endblock %}
 
 {% load dw_tabs %}
@@ -62,7 +63,7 @@
               {{ form.skype.errors }}
             </li>
              <li class="margin_top_20">
-                <input type="submit" value="Save Changes" class="button" id='form_submit' />
+                <input type="submit" value="{% trans 'Save Changes' %}" class="button" id='form_submit' />
             </li>
 
           </ul>

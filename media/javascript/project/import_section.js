@@ -4,7 +4,7 @@ $(document).ready(function(){
         autoOpen: false,
         width: "auto",
         modal: true,
-        title: 'Import a List',
+        title: gettext('Import a List'),
         close: function() {
             $('#message').remove();
             $('#error_tbody').html('');
