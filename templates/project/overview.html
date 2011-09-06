@@ -16,6 +16,14 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+<script type="text/javascript">
+    var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
+</script>
 {% endblock %}
 
 {% block content %}

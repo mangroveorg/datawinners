@@ -28,14 +28,13 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript">
-        var question_list = $.parseJSON({{existing_questions|safe}}),
-            quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}",
-            subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}",
-            sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
+        var question_list = $.parseJSON({{existing_questions|safe}});
+        var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
+        var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
+        var sender_registration_form_preview_link = "{{ project_links.sender_registration_preview_link }}";
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/html" id="choice-template">
         <li>

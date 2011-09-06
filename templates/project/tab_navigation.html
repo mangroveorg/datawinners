@@ -4,16 +4,9 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript">
-        var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
-    </script>
     <script src="/media/javascript/project/activate_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
-{% endblock %}
-{% block page_scss %}
-    {{ block.super }}
-    <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
 {% endblock %}
 
 
