@@ -59,9 +59,7 @@ class TestImportData(unittest.TestCase):
         self.player.accept(Request(transportInfo=self.transport, message=text))
 
     def _register_entities(self):
-        self._register_entity('reg +t clinic +s 1 +g 1 1')
-        self._register_entity('reg +t clinic +s 2 +g 21 21 +n clinic1')
-        self._register_entity('reg +t clinic +s 3 +g 11 11 +m 12332114')
-        self._register_entity('reg +t clinic +s 4 +d this is a clinic +l pune')
-
-
+        self._register_entity('reg .t clinic .s 1 .g 1 1')
+        self._register_entity('reg .t clinic .s 2 .g 21 21 .n clinic1')
+        self._register_entity('reg .t clinic .s 3 .g 11 11 .m 12332114')
+        self._register_entity('reg .t clinic .s 4 .d this is a clinic .l pune')
