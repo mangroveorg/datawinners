@@ -9,8 +9,8 @@ from datawinners.project.helper import get_project_data_senders
 from datawinners.project.models import Reminder, Project
 from datawinners.scheduler.vumiclient import Client, Connection
 
-import logging
-logger = logging.getLogger("django")
+#import logging
+#logger = logging.getLogger("django")
 
 
 def send_reminders():
