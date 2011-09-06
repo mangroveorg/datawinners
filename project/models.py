@@ -64,7 +64,7 @@ class Project(DocumentBase):
             return int(self.reminder_and_deadline.get('deadline_month'))
 
     def is_reminder_enabled(self):
-        if self.reminder_and_deadline['reminders_enabled'] == "True":
+        if self.reminder_and_deadline.get('reminders_enabled') == "True":
             return True
 
         return False
