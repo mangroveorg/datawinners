@@ -6,8 +6,12 @@
 .reminder_content_section{
     border-bottom: 1px solid;
 }
+#review_section{
+ h4{
+    border-bottom:1px solid #CCCCCC;
+ }
 
-.ui-accordion-content{
+ .ui-accordion-content{
     background:none;
     border:0;
     float:left;
@@ -43,3 +47,28 @@
         margin:10px 0 10px 40px;
     }
  }
+ .ui-state-active{
+    background-color:#525252 !important;
+    border:0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;  //for webkit browsers
+    background: -moz-linear-gradient(top,  #525252,  #262626) !important;  //for firefox 3.6+
+
+    h5{
+         color:#FFFFFF;
+         background:url(/media/images/accordion_arrows.png) no-repeat left 5px;
+         padding-left:15px;
+         margin-left:15px;
+    }
+
+    .success_error{
+        color:#FFFFFF;
+    }
+ }
+ a{
+        color:#0070ac;
+        font-size:12px;
+    }
+}
+.submit-buttons{
+    clear: left;
+}

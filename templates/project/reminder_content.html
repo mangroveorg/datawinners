@@ -5,15 +5,18 @@
     <div class="grid_23 alpha omega" id='review_section' data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0">
 
     </div>
+    <div class="submit-buttons">
     <button class="button" data-bind="click: addReminder">{% trans "Add Reminder" %}</button>
     <button class="button" data-bind="click: save">{% trans "Save the reminders" %}</button>
+    </div>
+
 </div>
 <div style="display:{% if is_reminder %} none; {% else %} block; {% endif %}">
     {% trans "Reminders are not enabled for this project Please proceed to the next <a>step</a>" %}
 </div>
 <script type="text/html" id="reminderTemplate">
         <div class="header">
-            <span data-bind="text: header()"></span>
+            <h5 data-bind="text: header()"></h5>
         </div>
     <div class="reminder_content_section">
         <p class="reminder_content">
