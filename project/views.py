@@ -40,6 +40,7 @@ from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
+from datawinners.settings import api_keys
 
 import logging
 
@@ -230,9 +231,10 @@ def project_overview(request, project_id=None):
     questionnaire = helper.load_questionnaire(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project, questionnaire.form_code)
+    map_api_key = api_keys.get(request.META['HTTP_HOST'])
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
-             , 'project_profile_link': link, 'number_of_questions': number_of_questions},
+             , 'project_profile_link': link, 'number_of_questions': number_of_questions, 'map_api_key': map_api_key},
                               context_instance=RequestContext(request))
 
 

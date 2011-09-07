@@ -181,6 +181,12 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
+api_keys = {
+    '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRc1zIX2NFWVbPRi8ei480mXx5kRhTvJ0dlKnkzn-x2lS0-6YuZ95nLPg',
+    '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',
+    'localhost:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',#We don't really need it
+    'www.datawinners.com': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxQ8GGxJxguR34iYHuX8XtwD2LSt7hRQsh6kJBqUuxoZTzQoqdnULvVCxg'}
+
 try:
     from local_settings import *
 except ImportError, e:
