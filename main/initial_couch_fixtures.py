@@ -210,7 +210,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                           date_format="dd.mm.yyyy", ddtype=date_type,
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
-                            options=[("O.", "a"), ("O-", "b"), ("AB", "c"), ("B.", "d")], single_select_flag=True,
+                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
                             ddtype=select_type, instruction="Choose 1 answer from the above list. Example: a")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
