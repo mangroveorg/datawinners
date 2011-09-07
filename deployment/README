@@ -98,3 +98,13 @@ location /media {
         }
 
 /etc/init.d/nginx restart or /etc/init.d/nginx start
+
+
+BluePill
+
+We are using BluePill to monitor the vpnc process on the vumi installation.
+To stop Bluepill: bluepill stop
+To load configuration: bluepill load <path-to-source>/mangrove /src/datawinners/deployment/bluepill.rb
+To stop Bluepill: bluepill start
+
+
