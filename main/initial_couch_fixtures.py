@@ -9,6 +9,7 @@ from datawinners.project.models import Project, ProjectState
 from datawinners.submission.views import SMS
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
+from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
 from pytz import UTC
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
@@ -269,7 +270,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     form_model3 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli003", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid3 = form_model3.save()
     except DataObjectAlreadyExists as e:
@@ -288,7 +289,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     form_model4 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli004", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid4 = form_model4.save()
     except DataObjectAlreadyExists as e:
@@ -307,7 +308,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     form_model5 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli005", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid5 = form_model5.save()
     except DataObjectAlreadyExists as e:
@@ -326,7 +327,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     form_model6 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli006", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid6 = form_model6.save()
     except DataObjectAlreadyExists as e:
@@ -345,7 +346,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     form_model7 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli007", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.TEST_STATE)
     try:
         qid7 = form_model7.save()
     except DataObjectAlreadyExists as e:
@@ -364,7 +365,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     form_model8 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli008", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7],
-                            entity_type=CLINIC_ENTITY_TYPE)
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
     try:
         qid8 = form_model8.save()
     except DataObjectAlreadyExists as e:
