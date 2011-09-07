@@ -2,7 +2,7 @@ DW.smsPreview = function() {
     var sms_preview = '' + $('#questionnaire-code').val()
     for (var i = 0; i < viewModel.questions().length; i++) {
         var current_question = viewModel.questions()[i];
-        sms_preview += ' +'+current_question.code()
+        sms_preview += ' .'+current_question.code()
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':

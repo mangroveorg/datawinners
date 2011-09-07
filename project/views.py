@@ -809,7 +809,7 @@ def questionnaire_preview(request, project_id=None):
         for field in fields:
             question = helper.get_preview_for_field(field)
             questions.append(question)
-        example_sms = "%s +%s <answer> .... +%s <answer>" % (
+        example_sms = "%s .%s <answer> .... .%s <answer>" % (
             form_model.form_code, fields[0].code, fields[len(fields) - 1].code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
@@ -845,7 +845,7 @@ def subject_registration_form_preview(request, project_id=None):
                                                                                                              project,
                                                                                                              project_id)
 
-        example_sms = "%s +%s <answer> .... +%s <answer>" % (
+        example_sms = "%s .%s <answer> .... .%s <answer>" % (
             registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
@@ -863,7 +863,7 @@ def sender_registration_form_preview(request, project_id=None):
                                                                                                              project,
                                                                                                              project_id,
                                                                                                              type_of_subject='Data sender')
-        example_sms = "%s +%s <answer> .... +%s <answer>" % (
+        example_sms = "%s .%s <answer> .... .%s <answer>" % (
             registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         return render_to_response('project/questionnaire_preview.html',
