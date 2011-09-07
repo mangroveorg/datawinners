@@ -55,19 +55,19 @@ def get_location_groups_for_country(country, start_with):
     data_dict = {}
     data_dict['like'] = psycopg2.Binary(search_string + '%')
     sql = """
-    (select 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
+    (select distinct 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
 where name_4  ILIKE CAST(%(like)s as TEXT) limit 10)
                  union
-(select 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1 as NAME
+(select distinct 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
 where name_3  ILIKE CAST(%(like)s as TEXT) limit 10)
                 union
-(select 'LEVEL2' as LEVEL,  name_2||','||name_1 as NAME
+(select distinct 'LEVEL2' as LEVEL,  name_2||','||name_1 as NAME
   from location_locationlevel l
 where name_2  ILIKE CAST(%(like)s as TEXT) limit 5)
   union
-(select 'LEVEL1' as LEVEL,  name_1 as NAME
+(select distinct 'LEVEL1' as LEVEL,  name_1 as NAME
   from location_locationlevel l
 where name_1  ILIKE CAST(%(like)s as TEXT) limit 5)
 order by LEVEL
