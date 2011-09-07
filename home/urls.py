@@ -1,10 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns
 from django.views.generic.base import TemplateView
-from datawinners.home.views import index
+from datawinners.home.views import index, switch_language
 
 urlpatterns = patterns('',
         (r'^home/$', index),
+        (r'^switch/(?P<language>.{2}?)/$', switch_language),
         (r'^what-is-datawinners/$', TemplateView.as_view(template_name='home/what_is_datawinners.html')),
         (r'^what-is-datawinners/definition/$', TemplateView.as_view(template_name='home/datawinners_definition.html')),
         (r'^what-is-datawinners/how-it-works/$', TemplateView.as_view(template_name='home/datawinners_how_it_works.html')),

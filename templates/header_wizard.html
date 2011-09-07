@@ -13,6 +13,8 @@
                     {% if user.groups.all.0.name == 'NGO Admins' %}
                         <span><a href="{% url accountmanagement.views.settings %}">{% trans "wizard_account" %}</a></span>
                     {% endif %}
+                    <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
+                    <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>
                     <span>  <a href="{% url django.contrib.auth.views.logout %}">{% trans "Sign out" %}</a> </span>
                     <span><a href="#" class="padding_right_null">{% trans "Help" %}</a></span>
                 </div>
@@ -21,6 +23,8 @@
                     <div class="grid_11 alpha logo">
                           <img src="/media/images/datawinners_logo.png"/>
                     </div>
+                    <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
+                    <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>
                     <span>  <a href="{% url django.contrib.auth.views.login %}">{% trans "Sign in" %}</a> </span>
                     <span>  <a href="{% url registration.views.register %}">{% trans "Sign up" %}</a> </span>
                 </div>
