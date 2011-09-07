@@ -1,10 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from django.shortcuts import render_to_response, redirect, HttpResponse
-from django.utils import translation
+
 
 def index(request):
-    return redirect('/en/home/')
+    return render_to_response('home/index.html')
 
 
 def switch_language(request, language):
