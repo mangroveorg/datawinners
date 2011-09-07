@@ -9,7 +9,7 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string, sequence_to_str
 from mangrove.datastore import aggregrate as aggregate_module
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import  ugettext
 import models
 import xlwt
 from datetime import datetime
@@ -76,7 +76,7 @@ def create_questionnaire(post, dbm):
                                                          description="activity reporting period")
     entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
     entity_id_question = create_entity_id_question(dbm)
-    activity_report_question = DateField(name=_("What is the reporting period for the activity?"), code="rpd",
+    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code="rpd",
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy")
     fields = [entity_id_question]
