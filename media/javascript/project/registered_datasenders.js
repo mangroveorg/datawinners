@@ -16,7 +16,7 @@ $(document).ready(function() {
                 $.post('/project/disassociate/',
                         {'ids':allIds.join(';'),'project_id':$("#project_id").val()}
                 ).success(function(data){
-                            $('<div class="success-message-box" id="success_message">' + gettext("Data Senders Dis-Associated Successfully") +'. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action'))
+                            $('<div class="success-message-box" id="success_message">' + gettext("Data Senders dissociated Successfully") +'. ' + gettext("Please Wait") + '....</div>').insertAfter($('#action'))
                             $('#success_message').delay(4000).fadeOut(1000, function () {$('#success_message').remove();});
                             setTimeout(function(){window.location.href = data},5000);
                         }

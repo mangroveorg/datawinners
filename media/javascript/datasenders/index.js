@@ -58,7 +58,7 @@ $(document).ready(function() {
                 $.post('/entity/disassociate/',
                         {'ids':allIds.join(';'),'project_id':$("#project").val()}
                 ).success(function(data){
-                            $('<div class="success-message-box" id="success_message">Data Senders Dis-Associated Successfully. Please Wait....</div>').insertAfter($('#action'))
+                            $('<div class="success-message-box" id="success_message">Data Senders dissociated Successfully. Please Wait....</div>').insertAfter($('#action'))
                             $('#success_message').delay(4000).fadeOut(1000, function () {$('#success_message').remove();});
                             setTimeout(function(){window.location.href = data},5000);
                         }
@@ -68,7 +68,7 @@ $(document).ready(function() {
                 $.post('/entity/associate/',
                         {'ids':allIds.join(';'),'project_id':$("#project").val()}
                 ).success(function(data){
-                            $('<div class="success-message-box" id="success_message">Data Senders Associated Successfully. Please Wait....</div>').insertAfter($('#action'))
+                            $('<div class="success-message-box" id="success_message">Data Senders associated Successfully. Please Wait....</div>').insertAfter($('#action'))
                             $('#success_message').delay(4000).fadeOut(1000, function () {$('#success_message').remove();});
                             setTimeout(function(){window.location.href = data},5000);
                         }

@@ -195,7 +195,7 @@ msgid "Please fill out at least one location field"
 msgstr ""
 
 #: media/javascript/project/registered_datasenders.js:19
-msgid "Data Senders Dis-Associated Successfully"
+msgid "Data Senders dissociated Successfully"
 msgstr ""
 
 #: media/javascript/project/registered_datasenders.js:19
