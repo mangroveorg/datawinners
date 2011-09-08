@@ -7,7 +7,7 @@ Bluepill.application(:vpnc) do |app|
     process.pid_file = "/var/run/vpnc/pid"
     process.start_command = "/etc/init.d/vpnc start"
     process.stop_command = "/etc/init.d/vpnc stop"
-    process.restart_command = "/etc/init.d/vpnc restart"
+    process.restart_command = "/etc/init.d/vpnc start"
     process.start_grace_time = 5.seconds
     process.stop_grace_time = 5.seconds
     process.restart_grace_time = 10 .seconds
