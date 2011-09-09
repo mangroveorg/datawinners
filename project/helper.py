@@ -145,7 +145,7 @@ def _create_select_question(post_dict, single_select_flag, ddtype):
                        instruction=post_dict.get("instruction"))
 
 
-def get_submissions(questions, submissions):
+def adapt_submissions_for_template(questions, submissions):
     assert is_sequence(questions)
     assert is_sequence(submissions)
     for s in submissions:

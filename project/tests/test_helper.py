@@ -126,7 +126,7 @@ class TestHelper(unittest.TestCase):
         required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
             ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
         ]
-        self.assertEquals(required_submissions, helper.get_submissions(questions, submissions))
+        self.assertEquals(required_submissions, helper.adapt_submissions_for_template(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
         post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text",

@@ -244,7 +244,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
     if request.method == 'GET':
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-        submission_display = helper.get_submissions(questionnaire.fields, submissions)
+        submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
         return render_to_response('project/results.html',
                 {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
                  'error_message': error_message, 'project_links': project_links, 'project': project},
@@ -256,7 +256,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
             submission = Submission.get(manager, submission_id)
             submission.void()
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-        submission_display = helper.get_submissions(questionnaire.fields, submissions)
+        submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
@@ -285,7 +285,7 @@ def submissions(request):
         questionnaire_code = request.GET.get('questionnaire_code')
         questionnaire = get_form_model_by_code(manager, questionnaire_code)
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
-        submission_display = helper.get_submissions(questionnaire.fields, submissions)
+        submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
                  'error_message': error_message,
