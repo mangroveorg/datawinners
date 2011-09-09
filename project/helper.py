@@ -6,6 +6,7 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
+from mangrove.transport import submissions
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string, sequence_to_str
 from mangrove.datastore import aggregrate as aggregate_module
@@ -13,7 +14,8 @@ from django.utils.translation import  ugettext
 import models
 import xlwt
 from datetime import datetime
-from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE
+from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE, Submission
+from models import Reminder
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -147,13 +149,12 @@ def get_submissions(questions, submissions):
     assert is_sequence(questions)
     assert is_sequence(submissions)
     for s in submissions:
-        assert isinstance(s, dict) and s.get('values') is not None
+        assert type(s) is Submission and s._doc is not None
     formatted_list = []
     for each in submissions:
-        submission_source = TEST_FLAG if each.get('test') else each.get('source')
         formatted_list.append(
-            [each.get('destination'), submission_source, each.get('created'), each.get('status'), each.get('voided'),
-             each.get('error_message')] + [each.get('values').get(q[0].lower()) for q in questions])
+            [each.uuid, each.destination, each.source, each.created, each.errors, each.status,
+             not each.data_record_id] + [each.values.get(q.code.lower()) for q in questions])
 
     return [tuple(each) for each in formatted_list]
 
@@ -295,3 +296,14 @@ def get_project_data_senders(manager, project):
     all_data = load_all_subjects_of_type(manager)
     associated_datasenders = _get_associated_data_senders(all_data, project)
     return associated_datasenders
+
+def delete_project(manager, project):
+    project_id, qid = project.id, project.qid
+    project.delete()
+    Reminder.objects.filter(project_id = project_id).delete()
+    questionnaire = FormModel.get(manager, qid)
+    questionnaire.delete()
+    submissions = questionnaire.get_submissioms()
+    for submission in submissions:
+        submission.delete()
+    submissions, data_record_ids = submissions.get_submissions_made_for_form(manager, questionnaire.form_code, start_time=None, end_time=None)

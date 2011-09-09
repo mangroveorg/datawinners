@@ -112,7 +112,7 @@ $(document).ready(function(){
                $.ajax({
                   type: 'POST',
                   url: window.location.pathname + "?rand="+ new Date().getTime(),
-                  data:  {'id_list': JSON.stringify(ids), 'current_page':DW.current_page},
+                  data:  {'id_list': JSON.stringify(ids), 'page_number':DW.current_page},
                   success:function(response) {
                                $('#submission_table').empty();
                                $('#submission_table').append(response);

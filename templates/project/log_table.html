@@ -25,21 +25,18 @@
     <th>
         {% trans "Deleted Record" %}
     </th>
-    {% for question in results.questions %}
+    {% for question in questions %}
         <th>
-            <span style="cursor:default" title='{{ question.1 }}'>{{ question.0 }}</span>
+            <span style="cursor:default" title='{{ question.name }}'>{{ question.code }}</span>
         </th>
     {% endfor %}
     </thead>
 
     <tbody>
-    {% for answer, id in results.submissions %}
+    {% for answer in submissions %}
         <tr>
             <td class="text_align_center">
-                <input type="checkbox" class="selected_submissions" value="{{ id }}"/>
-            </td>
-            <td>
-                {{ answer.0 }}
+                <input type="checkbox" class="selected_submissions" value="{{ answer.0 }}"/>
             </td>
             <td>
                 {{ answer.1 }}
@@ -48,12 +45,15 @@
                 {{ answer.2 }}
             </td>
             <td>
-                <span title='{{ answer.5 }}'>{{ answer.3 }}</span>
+                {{ answer.3 }}
             </td>
             <td>
-                {{ answer.4 }}
+                <span title='{{ answer.4 }}'>{{ answer.5 }}</span>
             </td>
-            {% for each in answer|slice:"6:" %}
+            <td>
+                {{ answer.6 }}
+            </td>
+            {% for each in answer|slice:"7:" %}
                 <td>
                     {{ each }}
                 </td>

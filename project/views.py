@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from copy import copy
 import json
 import datetime
 from time import mktime
@@ -23,16 +22,15 @@ from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 import helper
 from datawinners.project import models
-from mangrove.datastore.documents import DataRecordDocument
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.entity import get_all_entity_types, get_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json, SelectField
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_submissions, submission_count
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import get_submissions_made_for_form, SubmissionLogger, get_submission_count_for_form
+from mangrove.transport.submissions import Submission
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
@@ -238,75 +236,30 @@ def project_overview(request, project_id=None):
                               context_instance=RequestContext(request))
 
 
-def _get_submissions_for_display(current_page, dbm, questionnaire_code, questions, pagination, start_time=None,
-                                 end_time=None):
-    if pagination:
-        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, start_time=start_time,
-                                                         end_time=end_time, page_number=current_page,
-                                                         page_size=PAGE_SIZE)
-    else:
-        submissions, ids = get_submissions_made_for_form(dbm, questionnaire_code, start_time=start_time,
-                                                         end_time=end_time, page_number=current_page,
-                                                         page_size=None)
-    submissions = helper.get_submissions(questions, submissions)
-    return submissions, ids
-
-
-def _load_submissions(current_page, manager, questionnaire_code, pagination=True, start_time=None, end_time=None):
-    form_model = get_form_model_by_code(manager, questionnaire_code)
-    questionnaire = (questionnaire_code, form_model.name)
-    fields = form_model.fields
-    if form_model.entity_defaults_to_reporter():
-        fields = form_model.fields[1:]
-    questions = helper.get_code_and_title(fields)
-    count = get_submission_count_for_form(manager, questionnaire_code, start_time, end_time)
-    results = {'questionnaire': questionnaire,
-               'questions': questions}
-    if count:
-        submissions, ids = _get_submissions_for_display(current_page - 1, manager, questionnaire_code, copy(questions),
-                                                        pagination, start_time=start_time, end_time=end_time)
-        results.update(submissions=zip(submissions, ids))
-    return count, results
-
-#TODO- Refactoring needed for results and data related views.
-
-
 @login_required(login_url='/login')
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, dbm=manager)
     project_links = _make_project_links(project, questionnaire_code)
+    questionnaire = get_form_model_by_code(manager, questionnaire_code)
     if request.method == 'GET':
-        count, results, error_message = _get_submissions(manager, questionnaire_code, request)
+        count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
+        submission_display = helper.get_submissions(questionnaire.fields, submissions)
         return render_to_response('project/results.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
+                {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
                  'error_message': error_message, 'project_links': project_links, 'project': project},
                                   context_instance=RequestContext(request)
         )
     if request.method == "POST":
-        data_record_ids = json.loads(request.POST.get('id_list'))
-        for each in data_record_ids:
-            data_record = manager._load_document(each, DataRecordDocument)
-            manager.invalidate(each)
-            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
-        current_page = request.POST.get('current_page')
-        count, results = _load_submissions(int(current_page), manager, questionnaire_code)
+        submission_ids = json.loads(request.POST.get('id_list'))
+        for submission_id in submission_ids:
+            submission = Submission.get(manager, submission_id)
+            submission.void()
+        count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
+        submission_display = helper.get_submissions(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
+                {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
                  'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
-
-
-def _load_submissions_for_page(manager, current_page, questionnaire_code, start_time_epoch, end_time_epoch):
-    count, results = _load_submissions(current_page, manager, questionnaire_code, True, start_time_epoch,
-                                       end_time_epoch)
-    return count, results
-
-
-def _load_all_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch):
-    count, results = _load_submissions(1, manager, questionnaire_code, False, start_time_epoch,
-                                       end_time_epoch)
-    return count, results
-
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
@@ -314,15 +267,12 @@ def _get_submissions(manager, questionnaire_code, request, paginate=True):
     end_time = request_bag.get("end_time") or ""
     start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
     end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
-    if paginate:
-        current_page = int(request_bag.get('page_number') or 1)
-        count, results = _load_submissions_for_page(manager, current_page, questionnaire_code,
-                                                    start_time_epoch, end_time_epoch)
-    else:
-        count, results = _load_all_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch)
-
+    current_page = (int(request_bag.get('page_number') or 1) - 1) if paginate else 0
+    page_size = PAGE_SIZE if paginate else None
+    submissions = get_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch, current_page, page_size)
+    count = submission_count(manager, questionnaire_code, start_time_epoch, end_time_epoch)
     error_message = "No submissions present for this project" if not count else None
-    return count, results, error_message
+    return count, submissions, error_message
 
 
 @login_required(login_url='/login')
@@ -333,9 +283,11 @@ def submissions(request):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         questionnaire_code = request.GET.get('questionnaire_code')
-        count, results, error_message = _get_submissions(manager, questionnaire_code, request)
+        questionnaire = get_form_model_by_code(manager, questionnaire_code)
+        count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
+        submission_display = helper.get_submissions(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
-                {'questionnaire_code': questionnaire_code, 'results': results, 'pages': count,
+                {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
                  'error_message': error_message,
                  'success_message': ""}, context_instance=RequestContext(request))
 
@@ -424,15 +376,15 @@ def _create_excel_response(raw_data_list, file_name):
 def export_log(request):
     questionnaire_code = request.GET.get("questionnaire_code")
     manager = get_database_manager(request.user)
-
-    count, results, error_message = _get_submissions(manager, questionnaire_code, request, paginate=False)
+    questionnaire = get_form_model_by_code(manager, questionnaire_code)
+    count, submissions, error_message = _get_submissions(manager, questionnaire_code, request, paginate=False)
 
     header_list = ["To", "From", "Date Received", "Submission status", "Deleted Record", "Errors"]
-    header_list.extend([each[1] for each in results['questions']])
+    header_list.extend([field.code for field in questionnaire.fields])
     raw_data_list = [header_list]
     if count:
-        submissions, ids = zip(*results['submissions'])
-        raw_data_list.extend([list(each) for each in submissions])
+        raw_data_list.extend([[submission.destination, submission.source, submission.created, submission.status,
+                                   not submission.data_record_id, submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)
@@ -542,14 +494,9 @@ def activate_project(request, project_id=None):
     form_model = helper.load_questionnaire(manager, project.qid)
     oneDay = datetime.timedelta(days=1)
     tomorrow = datetime.datetime.now() + oneDay
-    submissions, ids = get_submissions_made_for_form(manager, form_model.form_code, start_time=0,
-                                                     end_time=int(mktime(tomorrow.timetuple())) * 1000,
-                                                     page_size=None)
-    for each in ids:
-        if each is not None:
-            data_record = manager._load_document(each, DataRecordDocument)
-            manager.invalidate(each)
-            SubmissionLogger(manager).void_data_record(data_record.submission.get("submission_id"))
+    submissions = get_submissions(manager, form_model.form_code, from_time = 0, to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
+    for submission in submissions:
+        submission.void()
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 
