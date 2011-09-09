@@ -113,6 +113,7 @@ class TestHelper(unittest.TestCase):
         q1 = helper.create_question(post[0], self.dbm)
         self.assertEqual(q1.constraints, [])
 
+    #This test would be fixed when we pass a created param to Submission
     @skip
     def test_should_return_tuple_list_of_submissions(self):
         dbm = Mock(spec=DatabaseManager)
