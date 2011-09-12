@@ -13,6 +13,7 @@
 {% block page_js %}
     {{ block.super }}
     <script src="/media/javascript/project/activate_project.js" type="text/javascript"></script>
+    <script src="/media/javascript/project/delete_project.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -34,7 +35,7 @@
                 <td>{{ project.type }}</td>
                 <td>{{ project.state }}</td>
                 <td>
-                    <a href="{{ project.delete_link }}">{% trans "Delete" %}</a>
+                    <a href="{{ project.delete_link }}" class="delete_project">{% trans "Delete" %}</a>
                     {% if  project.state  != 'Active' %}
                         | <a href="{{ project.activate_link }}" class="activate_project">{% trans "Activate" %}</a>
                     {% endif %}
@@ -46,6 +47,11 @@
         <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
         <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
         <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>
+    </div>
+    <div id="delete_project_block">
+        <p class="warning_message">{% trans "Export all submissions prior to deleting your project." %}</p>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="#" class="button" id="confirm_delete">{% trans "Delete Project Now" %}</a>
     </div>
 
 {% endblock %}
