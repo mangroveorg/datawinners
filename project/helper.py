@@ -152,8 +152,8 @@ def adapt_submissions_for_template(questions, submissions):
     formatted_list = []
     for each in submissions:
         formatted_list.append(
-            [each.uuid, each.destination, each.source, each.created, each.errors, each.status,
-             not each.data_record_id] + [each.values.get(q.code.lower()) for q in questions])
+            [each.uuid, each.destination, each.source, each.created, each.errors, each.status]+
+            [each.data_record.is_void() if each.data_record is not None else True] + [each.values.get(q.code.lower()) for q in questions])
 
     return [tuple(each) for each in formatted_list]
 

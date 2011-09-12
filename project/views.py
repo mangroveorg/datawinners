@@ -393,7 +393,7 @@ def export_log(request):
     raw_data_list = [header_list]
     if count:
         raw_data_list.extend([[submission.destination, submission.source, submission.created, submission.status,
-                                   not submission.data_record_id, submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
+                                   submission.data_record.is_void() if submission.data_record is not None else True, submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)
