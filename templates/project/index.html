@@ -34,8 +34,9 @@
                 <td>{{ project.type }}</td>
                 <td>{{ project.state }}</td>
                 <td>
+                    <a href="{{ project.delete_link }}">{% trans "Delete" %}</a>
                     {% if  project.state  != 'Active' %}
-                        <a href="{{ project.activate_link }}" class="activate_project">{% trans "Activate" %}</a>
+                        | <a href="{{ project.activate_link }}" class="activate_project">{% trans "Activate" %}</a>
                     {% endif %}
                 </td>
             </tr>

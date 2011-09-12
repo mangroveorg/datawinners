@@ -113,6 +113,9 @@ class Project(DocumentBase):
         self.state = ProjectState.TEST
         self.save(dbm)
 
+    def delete(self, dbm):
+        dbm.database.delete(self)
+
 def get_project(pid, dbm):
     return dbm._load_document(pid, Project)
 

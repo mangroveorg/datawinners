@@ -6,7 +6,6 @@ from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesN
 from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
-from mangrove.transport import submissions
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string, sequence_to_str
 from mangrove.datastore import aggregrate as aggregate_module
@@ -14,7 +13,7 @@ from django.utils.translation import  ugettext
 import models
 import xlwt
 from datetime import datetime
-from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE, Submission
+from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE, Submission, get_submissions
 from models import Reminder
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
@@ -299,11 +298,10 @@ def get_project_data_senders(manager, project):
 
 def delete_project(manager, project):
     project_id, qid = project.id, project.qid
-    project.delete()
     Reminder.objects.filter(project_id = project_id).delete()
     questionnaire = FormModel.get(manager, qid)
-    questionnaire.delete()
-    submissions = questionnaire.get_submissioms()
+    submissions = get_submissions(manager, questionnaire.form_code, None, None)
     for submission in submissions:
         submission.delete()
-    submissions, data_record_ids = submissions.get_submissions_made_for_form(manager, questionnaire.form_code, start_time=None, end_time=None)
+    questionnaire.delete()
+    project.delete(manager)

@@ -213,12 +213,21 @@ def index(request):
         project_id = row['value']['_id']
         link = reverse(project_overview, args=[project_id])
         activate_link = reverse(activate_project, args=[project_id])
-        project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
+        delete_link = reverse(delete_project, args=[project_id])
+        project = dict(delete_link=delete_link,name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link, activate_link=activate_link, state=row['value']['state'])
         project["created"] = project["created"].strftime("%d %B, %Y")
         project_list.append(project)
     return render_to_response('project/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@utils.is_new_user
+def delete_project(request, project_id):
+    manager = get_database_manager(request.user)
+    project = models.get_project(project_id, dbm=manager)
+    helper.delete_project(manager, project)
+    return HttpResponseRedirect(reverse(index))
 
 
 @login_required(login_url='/login')
