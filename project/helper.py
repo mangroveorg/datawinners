@@ -296,12 +296,10 @@ def get_project_data_senders(manager, project):
     associated_datasenders = _get_associated_data_senders(all_data, project)
     return associated_datasenders
 
-def delete_project(manager, project):
+def delete_project(manager, project, void = True):
     project_id, qid = project.id, project.qid
-    Reminder.objects.filter(project_id = project_id).delete()
+    [reminder.void(void) for reminder in (Reminder.objects.filter(project_id=project_id))]
     questionnaire = FormModel.get(manager, qid)
-    submissions = get_submissions(manager, questionnaire.form_code, None, None)
-    for submission in submissions:
-        submission.delete()
-    questionnaire.delete()
-    project.delete(manager)
+    [submission.void(void) for submission in get_submissions(manager, questionnaire.form_code, None, None)]
+    questionnaire.void(void)
+    project.set_void(manager, void)

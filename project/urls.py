@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 
 from datawinners.project.views import questionnaire_wizard, save_questionnaire, create_profile, index, project_overview,\
-    edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview, submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, reminders, manage_reminders, disassociate_datasenders, delete_project
+    edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview, submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -39,6 +39,7 @@ urlpatterns = patterns('',
         (r'^project/export/data$', export_data),
         (r'^project/export/log$', export_log),
         (r'^project/delete/(?P<project_id>.+?)/$', delete_project),
+        (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
         (r'^project/datarecords/filter$', submissions)
 
 )

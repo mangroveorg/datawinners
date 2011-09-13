@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 
 from couchdb.mapping import  TextField, ListField, DictField
-from django.db.models.fields import IntegerField, CharField
+from django.db.models.fields import IntegerField, CharField, BooleanField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
 from mangrove.datastore.database import  DatabaseManager
@@ -18,10 +18,14 @@ class Reminder(models.Model):
     message = CharField(max_length=160)
     reminder_mode = CharField(null=False, blank=False, max_length=20, default='before_deadline')
     organization = ForeignKey(Organization)
+    voided = BooleanField(default=False)
 
     def to_dict(self):
         return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode}
 
+    def void(self, void = True):
+        self.voided = void
+        self.save()
 
 class ProjectState(object):
     INACTIVE = 'Inactive'
@@ -115,6 +119,11 @@ class Project(DocumentBase):
 
     def delete(self, dbm):
         dbm.database.delete(self)
+
+    #The method name sucks but until we make Project DataObject we can't make the method name 'void'
+    def set_void(self, dbm, void = True):
+        self.void = void
+        self.save(dbm)
 
 def get_project(pid, dbm):
     return dbm._load_document(pid, Project)

@@ -227,8 +227,17 @@ def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, dbm=manager)
     helper.delete_project(manager, project)
+    undelete_link = reverse(undelete_project, args=[project_id])
+    print undelete_link
+    print type(undelete_link)
+    messages.info(request, undelete_link)
     return HttpResponseRedirect(reverse(index))
 
+def undelete_project(request, project_id):
+    manager = get_database_manager(request.user)
+    project = models.get_project(project_id, dbm=manager)
+    helper.delete_project(manager, project, False)
+    return HttpResponseRedirect(reverse(index))
 
 @login_required(login_url='/login')
 def project_overview(request, project_id=None):

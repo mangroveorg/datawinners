@@ -17,6 +17,13 @@
 {% endblock %}
 
 {% block content %}
+        {% if messages %}
+    {% for message in messages %}
+    <div id="undelete_project_section" class="text_align_left success-message-box">
+    <span>Your project has been deleted. </span><a id="undo_delete_project" href="{{ message }}">Undo Delete</a>
+    </div>
+    {% endfor %}
+{% endif %}
     <div class="text_align_right margin_bottom_20">
         <a id="create_project_link" href="{% url datawinners.project.views.create_profile %}" class="button">{% trans "Create a new project" %}</a>
     </div>
