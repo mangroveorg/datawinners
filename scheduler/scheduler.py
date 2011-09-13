@@ -28,7 +28,7 @@ def send_reminders():
 
 
 def _get_reminders_grouped_by_project():
-    reminders = Reminder.objects.all()
+    reminders = Reminder.objects.filter(void=False)
     reminders_grouped_project_id = defaultdict(list)
     for reminder in reminders:
         reminders_grouped_project_id[reminder.project_id].append(reminder)

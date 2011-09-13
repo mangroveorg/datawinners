@@ -492,7 +492,7 @@ def reminders(request, project_id):
 @csrf_exempt
 def manage_reminders(request, project_id):
     if request.method == 'GET':
-        reminders = Reminder.objects.filter(project_id=project_id)
+        reminders = Reminder.objects.filter(project_id=project_id, void=False)
         return HttpResponse(json.dumps([reminder.to_dict() for reminder in reminders]))
 
     if request.method == 'POST':
