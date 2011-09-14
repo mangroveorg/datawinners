@@ -286,15 +286,9 @@ def deadline_and_reminder(post_dict):
     _add_to_dict(dict, post_dict,'reminders_enabled')
     return dict
 
-
-def _get_associated_data_senders(all_data, project):
-    return [data for data in all_data if data['short_name'] in project.data_senders]
-
-
 def get_project_data_senders(manager, project):
     all_data = load_all_subjects_of_type(manager)
-    associated_datasenders = _get_associated_data_senders(all_data, project)
-    return associated_datasenders
+    return [data for data in all_data if data['short_name'] in project.data_senders]
 
 def delete_project(manager, project, void = True):
     project_id, qid = project.id, project.qid
