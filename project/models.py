@@ -58,7 +58,7 @@ class Project(DocumentBase):
         self.state = state
         self.activity_report = activity_report
         self.sender_group = sender_group
-        self.reminder_and_deadline = reminder_and_deadline
+        self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
 
     def get_reminder_frequency_period(self):
         return self.reminder_and_deadline.get('frequency_period')
