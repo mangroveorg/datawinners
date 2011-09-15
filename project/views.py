@@ -541,16 +541,10 @@ def finish(request, project_id=None):
         project.to_test_mode(manager)
         number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
         number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
-        from_number = TEST_REPORTER_MOBILE_NUMBER
-        organization_settings = OrganizationSetting.objects.get(organization=organization)
-        to_number = organization_settings.sms_tel_number
         previous_link = reverse(reminders_wizard, args=[project_id])
         fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
         is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
-        return render_to_response('project/finish_and_test.html', {'from_number': from_number, 'to_number': to_number,
-                                                                   'project': project, 'fields': fields,
+        return render_to_response('project/finish_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': _make_links_for_finish_page(
                                                                        project_id, form_model),
                                                                    'number_of_datasenders': number_of_registered_datasenders
@@ -777,7 +771,7 @@ def questionnaire_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms},
+                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
 
 
@@ -813,7 +807,7 @@ def subject_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms},
+                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
 
 
@@ -832,5 +826,12 @@ def sender_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms},
+                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
+
+def _get_organization_telephone_number(user):
+    profile = user.get_profile()
+    organization = Organization.objects.get(org_id=profile.org_id)
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    return organization_settings.sms_tel_number
+

@@ -19,9 +19,9 @@ logger = logging.getLogger("django")
 def _test_mode_numbers(request):
     profile = request.user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    _from = TEST_REPORTER_MOBILE_NUMBER
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     _to = organization_settings.sms_tel_number
+    _from = TEST_REPORTER_MOBILE_NUMBER
     return _from, _to
 
 
