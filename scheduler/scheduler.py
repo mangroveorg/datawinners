@@ -29,6 +29,8 @@ def send_reminders():
             for reminder in reminders:
                 if _should_send_reminder(reminder, project):
                     _send_reminder_to_project_datasenders(dbm, reminder,project)
+
+        logger.info("Done sending reminders.")
     except Exception:
         logger.exception("Exception while sending reminders")
 
