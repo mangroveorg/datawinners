@@ -57,9 +57,6 @@
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.datasenders_link }}">{% trans "Data Senders" %}</a>
         </li>
-        <li class="{% ifactivetab 'tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
-        </li>
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.reminders_link }}">{% trans "Reminders" %}</a>
         </li>
@@ -88,6 +85,11 @@
     <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.submission_log_link }}">{% trans "All Data Records" %}</a>
     </li>
+    {% if project.state == 'Active' %}
+    <li class="{% ifactivetab 'secondary_tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
+    </li>
+    {% endif %}
 </ul>
 {% endblock %}
 
