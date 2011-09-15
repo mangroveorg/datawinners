@@ -70,7 +70,7 @@ $(document).ready(function() {
 
     $(".aggregation_type").live("change", function() {
         var time_list = DW.submit_data();
-        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> ' + gettext("Just a moment") + '...</h1>' });
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
             url: window.location.pathname,
@@ -97,7 +97,7 @@ $(document).ready(function() {
 
     $('#time_submit').click(function() {
         var time_list = DW.submit_data();
-        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif" /> ' + gettext("Just a moment") + '...</h1>' });
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
             url: window.location.pathname,

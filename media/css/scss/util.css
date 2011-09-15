@@ -282,3 +282,6 @@ span.tooltip {
 .ui-menu-item a {
   color: #000000 !important;
   font-size: 12px; }
+
+.loading {
+  font-size: 15px; }
