@@ -5,65 +5,64 @@
 
 {% block body %}
     <div id="questionnaire_preview">
-            <div class="preview_block"><a href="#" class="printBtn">{% trans "Print" %}</a></div>
+        <div class="preview_block"><a href="#" class="printBtn">{% trans "Print" %}</a></div>
         <ul class="questionnaire_title">
             <li>
-              <p>{% trans "Organization Number: " %}</p>
-              <h5>{{ org_number }}</h5>
+                <p>{% trans "SMS your answers to" %}</p>
+                <h5>{{ org_number }}</h5>
             </li>
             <li>
-              <p>{% trans "Project Name:" %}</p>
-              <h5>{{ project.name }}</h5>
+                <p>{% trans "Project Name:" %}</p>
+                <h5>{{ project.name }}</h5>
             </li>
             <li>
                 <p>{% trans "Questionnarie Code:" %}</p>
-              <h5>{{ questionnaire_code }}</h5>
+                <h5>{{ questionnaire_code }}</h5>
             </li>
             <li class="margin_top_10">
-                 <p>{% trans "Example SMS:" %} </p>
-                 <p class="content italic">{{ example_sms }}</p>
+                <p>{% trans "Example SMS:" %} </p>
+
+                <p class="content italic">{{ example_sms }}</p>
             </li>
         </ul>
-        <ol class="questionnaire_preview" >
+        <ol class="questionnaire_preview">
             {% for question in questions %}
                 <li>
                     <h6>{{ question.description }}<span> .{{ question.code }}</span></h6>
-                    {% if  question.instruction%}
+                    {% if  question.instruction %}
                         <p class="instructions italic">
                             {{ question.instruction }}
                         </p>
 
                     {% endif %}
                     <div class="answer">
-                        {% if question.type != "select" and question.type != "select1"%}
-                            <div><input type="text" disabled="disabled" name="text" value="{{ question.constraints }}" /></div>
-                        {% endif %}
-                        {% if question.type == "select1"%}
+                        {% if question.type == "select1" %}
                             <ol class="multiple_select">
-                            {% for option in question.constraints%}
-                              <li><label>{{ option }}</label></li>
-                            {% endfor %}
+                                {% for option in question.constraints %}
+                                    <li><label>{{ option }}</label></li>
+                                {% endfor %}
                             </ol>
                         {% endif %}
-                        {% if question.type == "select"%}
+                        {% if question.type == "select" %}
                             <ol class="multiple_select">
-                            {% for option in question.constraints %}
-                                <li><label>{{ option }}</label></li>
-                            {% endfor %}
+                                {% for option in question.constraints %}
+                                    <li><label>{{ option }}</label></li>
+                                {% endfor %}
                             </ol>
                         {% endif %}
+                        <div class="margin_top_10"><input type="text" name="text"/></div>
                     </div>
                 </li>
             {% endfor %}
         </ol>
     </div>
     <script>
-    $(document).ready(function(){
-        $('.printBtn').bind('click',function() {
-{#            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );#}
+        $(document).ready(function() {
+            $('.printBtn').bind('click', function() {
+                {#            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );#}
 //            thePopup.onload = function(){this.print(); this.close(); }
-            self.print();
+                self.print();
+            });
         });
-    });
     </script>
 {% endblock %}
