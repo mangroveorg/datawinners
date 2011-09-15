@@ -671,16 +671,14 @@ def _make_form_context(questionnaire_form, project, form_code):
 
 def _create_select_field(field, choices):
     if field.single_select_flag:
-        return forms.ChoiceField(choices=choices, required=False, label=field.name, initial=field.value)
-    return forms.MultipleChoiceField(choices=choices, widget=forms.SelectMultiple(
-        attrs={'class': 'multiple_select', 'size': len(choices)}), required=False, label=field.name,
-                                     initial=field.value)
+        return forms.ChoiceField(choices=choices, required=False, label=field.name, initial=field.value, help_text=field.instruction)
+    return forms.MultipleChoiceField(label=field.name, widget=forms.CheckboxSelectMultiple, choices=choices,
+                                  initial=field.value, required=False, help_text=field.instruction)
 
 
 def _create_choices(field):
-    choice_list = [('', '--None--')]
-    for option in field.options:
-        choice_list.append((option['val'], option['text']['eng']))
+    choice_list = [('', '--None--')] if field.single_select_flag else []
+    choice_list.extend([(option['val'], option['text']['eng']) for option in field.options])
     choices = tuple(choice_list)
     return choices
 
@@ -688,7 +686,7 @@ def _create_choices(field):
 def _get_django_field(field):
     if isinstance(field, SelectField):
         return  _create_select_field(field, _create_choices(field))
-    display_field = forms.CharField(label=field.name, initial=field.value, required=False)
+    display_field = forms.CharField(label=field.name, initial=field.value, required=False, help_text=field.instruction)
     display_field.widget.attrs["watermark"] = field.get_constraint_text()
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field

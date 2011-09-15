@@ -3,18 +3,18 @@
 
 {% load dw_tabs %}
 {% block navigation %}
-{% activetab "tab_nav" "web_questionnaire" %}
-{{ block.super }}
+    {% activetab "tab_nav" "web_questionnaire" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block body %}
-{% activetab "main_nav" "projects" %}
-{{ block.super }}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
@@ -25,13 +25,39 @@
         <div class="message-box">{{ error_message }}</div>
     {% endif %}
 
-    <form method="POST">
-    {% csrf_token %}
-        <ul>
-        {{ questionnaire_form.as_ul }}
-        </ul>
+    {% if questionnaire_form.non_fielderrors %}
 
-    <input type="submit" class="button" value="Submit" />
+        <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <ul>
+            {% for field in questionnaire_form %}
+                <li>
+                    {% if not field.is_hidden %}
+                        <h6>{{ field.label }}</h6>
+                        <p class="instructions italic">
+                            {{ field.help_text }}
+                        </p>
+                    {% endif %}
+                    <div class="answer">
+                        {{ field }}
+                    </div>
+                    <ul class="errorlist">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <li>
+                                    {{ error }}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="submit" class="button" value="Submit"/>
     </form>
 
 {% endblock %}
+
+
