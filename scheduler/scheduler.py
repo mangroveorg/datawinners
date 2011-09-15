@@ -8,30 +8,34 @@ from datawinners.project.helper import get_project_data_senders
 from datawinners.project.models import Reminder, Project
 from datawinners.scheduler.vumiclient import Client, Connection
 
-#import logging
-#logger = logging.getLogger("django")
-from mangrove.form_model import form_model
+import logging
+logger = logging.getLogger("datawinners.reminders")
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.reporter import reporters_submitted_data
 from mangrove.utils.dates import convert_to_epoch
 
 
 def send_reminders():
-    reminders_grouped_project_id = _get_reminders_grouped_by_project()
+    try:
+        logger.info("Sending reminders")
+        reminders_grouped_project_id = _get_reminders_grouped_by_project()
 
-    for project_id, reminders in reminders_grouped_project_id.items():
-        dbm = utils.get_database_manager_for_org(reminders[0].organization)
-        project = dbm._load_document(project_id, Project)
-        if not project.is_reminder_enabled():
-            continue
-        for reminder in reminders:
-            if _should_send_reminder(reminder, project):
-                _send_reminder_to_project_datasenders(dbm, reminder,project)
+        for project_id, reminders in reminders_grouped_project_id.items():
+            dbm = utils.get_database_manager_for_org(reminders[0].organization)
+            project = dbm._load_document(project_id, Project)
+            if not project.is_reminder_enabled():
+                continue
+            logger.info("Total %d reminders for project %s" % (len(reminders),project.name ))
+            for reminder in reminders:
+                if _should_send_reminder(reminder, project):
+                    _send_reminder_to_project_datasenders(dbm, reminder,project)
+    except Exception:
+        logger.exception("Exception while sending reminders")
 
 
 
 def _get_reminders_grouped_by_project():
-    reminders = Reminder.objects.filter(void=False)
+    reminders = Reminder.objects.filter(voided=False)
     reminders_grouped_project_id = defaultdict(list)
     for reminder in reminders:
         reminders_grouped_project_id[reminder.project_id].append(reminder)
@@ -57,13 +61,19 @@ def _should_send_reminder(reminder, project):
                 return True
 
 def _send_reminder_to_project_datasenders(dbm, reminder,project):
+    logger.info("Sending reminder %s %s for project %s" % ( reminder.day,reminder.reminder_mode, project.name))
+    logger.info("Message %s" % ( reminder.message,))
     vumiclient = Client(None, None, connection=Connection("vumi", "vumi", base_url="http://10.253.50.2:7000"))
     datasenders = get_project_data_senders(dbm,project)
+    logger.info("Total datasenders for the project: %d" % ( len(datasenders)))
     questionnaire = FormModel.get(dbm, project.qid)
     from_time, end_time = _get_time_period_for_sending_reminders(project.get_reminder_frequency_period())
+    logger.info("Time Period Start: %s, Time Period End: %s" % ( from_time,end_time))
     datasenders_who_have_sent = [reporter.value('mobile_number') for reporter in reporters_submitted_data(dbm, questionnaire.form_code, from_time, end_time)]
+    logger.info("Total datasenders who have sent: %d" % ( len(datasenders_who_have_sent)))
     for datasender in datasenders:
         if datasender.get('mobile_number') not in datasenders_who_have_sent:
+            logger.info("Sending SMS to %s" % ( datasender.get('mobile_number')))
             vumiclient.send_sms(to_msisdn=datasender.get('mobile_number'),
                                 from_msisdn=_get_from_tel_number(reminder)
                                 , message=reminder.message)
@@ -84,3 +94,7 @@ def _get_time_period_for_sending_reminders(frequency):
         from_time = datetime.datetime(date.today().year, date.today().month, 1)
         to_time = datetime.datetime(date.today().year, date.today().month, calendar.monthrange(date.today().year, date.today().month)[1])
         return convert_to_epoch(from_time), convert_to_epoch(to_time)
+
+if __name__ == "__main__":
+    print "main"
+    send_reminders()
