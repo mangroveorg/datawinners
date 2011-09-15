@@ -118,9 +118,10 @@ function toggle_frequency_period(){
         $('#id_frequency_period').attr('disabled', false);
     }else{
         $('#id_frequency_period').attr('disabled', true);
-        toggle_has_deadline();
+
         $('input[name="has_deadline"]').attr('disabled', true);
     }
+    toggle_has_deadline();
 }
 
 function toggle_deadline_block(){
