@@ -81,6 +81,7 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="deve
         with cd(code_dir + '/src/datawinners'):
             run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
+            activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
             restart_gunicorn(virtual_env)
 
