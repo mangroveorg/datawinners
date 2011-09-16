@@ -25,7 +25,7 @@ class Month(object):
     def next_date(self, as_of,offset):
         if as_of.day > self.day and offset == 0:
             return None
-        return date(as_of.year, as_of.month + offset, self.day)
+        return date(as_of.year, as_of.month, self.day) + timedelta(days = offset*365/12)
 
 class Week(object):
 #    day is 1-7 ie Mon - Sun
