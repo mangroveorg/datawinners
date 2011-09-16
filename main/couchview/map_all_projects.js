@@ -1,7 +1,7 @@
 function(doc) {
     if (doc.document_type == 'Project') {
         if(!doc.void){
-            emit(doc.name, doc);
+            emit([doc.created,doc.name], doc);
         }
     }
 }
