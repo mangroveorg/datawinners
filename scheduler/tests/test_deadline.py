@@ -23,7 +23,7 @@ class Month(object):
 
 #    Offset is any valid offset > 0. Month knows that offset means months.
     def next_date(self, as_of,offset):
-        if as_of.day > self.day:
+        if as_of.day > self.day and offset == 0:
             return None
         return date(as_of.year, as_of.month + offset, self.day)
 
@@ -33,9 +33,13 @@ class Week(object):
         self.day = day
 
     def next_date(self, as_of,offset):
-        return None
+        if offset == 1:
+            as_of = as_of + timedelta(days=7)
 
+        if offset == 0 and as_of.isoweekday() > self.day:
+            return None
 
+        return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(6 - as_of.isoweekday()))
 
 class TestDeadline(TestCase):
     def test_should_return_next_deadline_date_for_current_month(self):
@@ -54,36 +58,36 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Month(24),mode="Following")
         self.assertEqual(date(2011,10,24), deadline.next(date(2011,9,15)))
 
-#    def test_should_return_next_deadline_date_for_following_month_with_asof_as_deadline_day(self):
-#        deadline = Deadline(frequency=Month(24),mode="Following")
-#        self.assertEqual(date(2011,10,24), deadline.next(date(2011,9,24)))
-#
-#    def test_should_return_next_deadline_date_for_following_month_with_asof_after_deadline_day(self):
-#        deadline = Deadline(frequency=Month(24),mode="Following")
-#        self.assertEqual(date(2011,10,24), deadline.next(date(2011,9,28)))
-#
-#    def test_should_return_next_deadline_date_for_current_week(self):
-#        deadline = Deadline(frequency=Week(6),mode="That")
-#        self.assertEqual(date(2011,9,17), deadline.next(date(2011,9,15)))
-#
-#    def test_should_return_next_deadline_date_for_current_week_and_asof_as_deadline_day(self):
-#        deadline = Deadline(frequency=Week(6),mode="That")
-#        self.assertEqual(date(2011,9,17), deadline.next(date(2011,9,17)))
-#
-#    def test_should_return_next_deadline_date_for_current_week_and_asof_post_deadline_day(self):
-#        deadline = Deadline(frequency=Week(6),mode="That")
-#        self.assertEqual(None, deadline.next(date(2011,9,18)))
-#
-#    def test_should_return_next_deadline_date_for_following_week(self):
-#        deadline = Deadline(frequency=Week(6),mode="Following")
-#        self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,15)))
-#
-#    def test_should_return_next_deadline_date_for_following_week_and_asof_as_deadline_day(self):
-#        deadline = Deadline(frequency=Week(6),mode="Following")
-#        self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,17)))
-#
-#    def test_should_return_next_deadline_date_for_following_week_and_asof_post_deadline_day(self):
-#        deadline = Deadline(frequency=Week(6),mode="Following")
-#        self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,18)))
+    def test_should_return_next_deadline_date_for_following_month_with_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Month(24),mode="Following")
+        self.assertEqual(date(2011,10,24), deadline.next(date(2011,9,24)))
+
+    def test_should_return_next_deadline_date_for_following_month_with_asof_after_deadline_day(self):
+        deadline = Deadline(frequency=Month(24),mode="Following")
+        self.assertEqual(date(2011,10,24), deadline.next(date(2011,9,28)))
+
+    def test_should_return_next_deadline_date_for_current_week(self):
+        deadline = Deadline(frequency=Week(6),mode="That")
+        self.assertEqual(date(2011,9,17), deadline.next(date(2011,9,15)))
+
+    def test_should_return_next_deadline_date_for_current_week_and_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="That")
+        self.assertEqual(date(2011,9,17), deadline.next(date(2011,9,17)))
+
+    def test_should_return_next_deadline_date_for_current_week_and_asof_post_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="That")
+        self.assertEqual(None, deadline.next(date(2011,9,18)))
+
+    def test_should_return_next_deadline_date_for_following_week(self):
+        deadline = Deadline(frequency=Week(6),mode="Following")
+        self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,15)))
+
+    def test_should_return_next_deadline_date_for_following_week_and_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="Following")
+        self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,17)))
+
+    def test_should_return_next_deadline_date_for_following_week_and_asof_post_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="Following")
+        self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,18)))
 
 
