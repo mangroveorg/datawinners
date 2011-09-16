@@ -25,7 +25,9 @@ class Month(object):
     def next_date(self, as_of,offset):
         if as_of.day > self.day and offset == 0:
             return None
-        return date(as_of.year, as_of.month, self.day) + timedelta(days = offset*365/12)
+        if as_of.month == 12 and offset == 1:
+            return date(as_of.year + 1, offset, self.day)
+        return date(as_of.year, as_of.month + offset, self.day)
 
 class Week(object):
 #    day is 1-7 ie Mon - Sun
@@ -57,6 +59,10 @@ class TestDeadline(TestCase):
     def test_should_return_next_deadline_date_for_following_month(self):
         deadline = Deadline(frequency=Month(24),mode="Following")
         self.assertEqual(date(2011,10,24), deadline.next(date(2011,9,15)))
+
+    def test_should_return_next_deadline_date_for_following_month_when_current_month_is_december(self):
+        deadline = Deadline(frequency=Month(24),mode="Following")
+        self.assertEqual(date(2014,1,24), deadline.next(date(2013,12,15)))
 
     def test_should_return_next_deadline_date_for_following_month_with_asof_as_deadline_day(self):
         deadline = Deadline(frequency=Month(24),mode="Following")
