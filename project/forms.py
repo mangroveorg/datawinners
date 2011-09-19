@@ -54,8 +54,8 @@ class ProjectProfile(Form):
     frequency_period = ChoiceField(choices=(('week', _('Weekly')), ('month', _('Monthly')),), widget=forms.Select(attrs={'style':'margin-left: -167px; margin-top: 19px;'}), required=False)
     has_deadline = ChoiceField(label=_("Do you want to set a deadline?"), widget=forms.RadioSelect, choices=((False, _('No')), (True, _('Yes'))), required=False, initial=False)
     deadline_month =  ChoiceField(choices=(tuple([(n,n) for n in range(1,31)])), widget=forms.Select, required=False)
-    deadline_week =  ChoiceField(choices=(tuple([(day, day) for day in calendar.day_name])), widget=forms.Select(attrs={'data-bind':'random'}), required=False)
-    deadline_type =  ChoiceField(choices=(('current', _('That')), ('next', _('Following'))), widget=forms.Select, required=False)
+    deadline_week =  ChoiceField(choices=(tuple(zip(range(1,8), calendar.day_name))), widget=forms.Select(attrs={'data-bind':'random'}), required=False)
+    deadline_type =  ChoiceField(choices=(('That', _('That')), ('Following', _('Following'))), widget=forms.Select, required=False)
     reminders_enabled = ChoiceField(choices=((True, _('Yes')), (False, _('No'))), label=_("Do you want to remind DataSenders to send in their data?"), required=False, initial=False, widget=forms.RadioSelect)
 
 

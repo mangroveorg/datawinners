@@ -4,6 +4,7 @@ from couchdb.mapping import  TextField, ListField, DictField
 from django.db.models.fields import IntegerField, CharField, BooleanField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
+from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
@@ -60,6 +61,35 @@ class Project(DocumentBase):
         self.sender_group = sender_group
         self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
 
+    def deadline(self):
+        return Deadline(self._frequency(), self._deadline_type())
+
+    def _frequency(self):
+        if self.reminder_and_deadline.get('frequency_period') == 'month':
+            return Month(int(self.reminder_and_deadline.get('deadline_month')))
+        if self.reminder_and_deadline.get('frequency_period') == 'week':
+            return Week(int(self.reminder_and_deadline.get('deadline_week')))
+
+
+    def has_deadline(self):
+        if self.reminder_and_deadline.get('has_deadline') == 'True':
+            return True
+        return False
+    
+    def frequency_enabled(self):
+        if self.reminder_and_deadline.get('frequency_enabled') == 'True':
+            return True
+        return False
+
+    def reminders_enabled(self):
+        if self.reminder_and_deadline.get('reminders_enabled') == 'True':
+            return True
+        return False
+
+    def _deadline_type(self):
+        if self.frequency_enabled():
+            return self.reminder_and_deadline.get('deadline_type')
+
     def get_reminder_frequency_period(self):
         return self.reminder_and_deadline.get('frequency_period')
 
@@ -74,8 +104,10 @@ class Project(DocumentBase):
         return False
 
     def should_send_reminders(self, as_of):
-        pass
-
+        deadline = self.deadline()
+        if as_of == deadline.next(as_of):
+            return True
+        return False
 
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('all_projects', key=self.name)
