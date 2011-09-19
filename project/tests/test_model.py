@@ -123,37 +123,37 @@ class TestProjectModel(unittest.TestCase):
         reminder_and_deadline_for_month = {
             "reminders_enabled": "True",
             "deadline_month": "5",
-            "deadline_type": "current",
+            "deadline_type": "That",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "month"
         }
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
-        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 3, 4)))
+        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 3, 4), 0))
 
     def test_should_not_send_reminder_if_day_is_after_deadline_and_deadline_type_is_that(self):
         reminder_and_deadline_for_month = {
             "reminders_enabled": "True",
             "deadline_month": "5",
-            "deadline_type": "current",
+            "deadline_type": "That",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "month"
         }
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
-        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 3, 6)))
+        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 3, 6), 0))
 
     def test_should_not_send_reminder_if_day_is_on_deadline_and_deadline_type_is_that(self):
         reminder_and_deadline_for_month = {
             "reminders_enabled": "True",
             "deadline_month": "5",
-            "deadline_type": "current",
+            "deadline_type": "That",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "month"
         }
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
-        self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 3, 5)))
+        self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 3, 5), 0))
 
     def test_should_not_send_reminder_if_week_of_day_is_before_deadline_and_deadline_type_is_that(self):
         reminder_and_deadline_for_month = {
@@ -165,7 +165,7 @@ class TestProjectModel(unittest.TestCase):
             "frequency_period": "week"
         }
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
-        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 9, 19)))
+        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 9, 19), 0))
 
     def test_should_not_send_reminder_if_day_is_after_deadline_and_deadline_type_is_that(self):
         reminder_and_deadline_for_month = {
@@ -177,7 +177,7 @@ class TestProjectModel(unittest.TestCase):
             "frequency_period": "week"
         }
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
-        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 9, 25)))
+        self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 9, 25), 0))
 
     def test_should_not_send_reminder_if_day_is_on_deadline_and_deadline_type_is_that(self):
         reminder_and_deadline_for_month = {
@@ -189,4 +189,4 @@ class TestProjectModel(unittest.TestCase):
             "frequency_period": "week"
         }
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
-        self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 9, 24)))
+        self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 9, 24), 0))

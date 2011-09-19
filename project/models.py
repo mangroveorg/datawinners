@@ -29,6 +29,14 @@ class Reminder(models.Model):
         self.voided = void
         self.save()
 
+    def delta(self):
+        if self.reminder_mode == "on":
+            return 0
+        if self.reminder_mode == "before":
+            return -self.day
+        if self.reminder_mode == "after":
+            return self.day
+
 class ProjectState(object):
     INACTIVE = 'Inactive'
     ACTIVE = 'Active'
@@ -73,19 +81,13 @@ class Project(DocumentBase):
 
 
     def has_deadline(self):
-        if self.reminder_and_deadline.get('has_deadline') == 'True':
-            return True
-        return False
-    
+        return self.reminder_and_deadline.get('has_deadline') == 'True'
+
     def frequency_enabled(self):
-        if self.reminder_and_deadline.get('frequency_enabled') == 'True':
-            return True
-        return False
+        return self.reminder_and_deadline.get('frequency_enabled') == 'True'
 
     def reminders_enabled(self):
-        if self.reminder_and_deadline.get('reminders_enabled') == 'True':
-            return True
-        return False
+        return self.reminder_and_deadline.get('reminders_enabled') == 'True'
 
     def _deadline_type(self):
         if self.frequency_enabled():
@@ -99,21 +101,19 @@ class Project(DocumentBase):
             return int(self.reminder_and_deadline.get('deadline_month'))
 
     def is_reminder_enabled(self):
-        if self.reminder_and_deadline.get('reminders_enabled') == "True":
-            return True
+        return self.reminder_and_deadline.get('reminders_enabled') == "True"
 
-        return False
-
-    def should_send_reminders(self, as_of):
+    def should_send_reminders(self, as_of, days_relative_to_deadline):
         if self._deadline_type() == "Following":
             if self._frequency_period() == "week":
                 as_of = as_of + timedelta(days=-7)
             if self._frequency_period() == "month":
                 year, month = as_of.year - 1, 12 if as_of.month == 1 else as_of.year, as_of.month - 1
                 as_of = date(year, month, as_of.day)
-        deadline = self.deadline()
-        if as_of == deadline.next(as_of):
-            return True
+        next_deadline_day = (self.deadline()).next(as_of)
+        if next_deadline_day is not None:
+            if as_of == next_deadline_day + timedelta(days = days_relative_to_deadline):
+                return True
         return False
 
     def _check_if_project_name_unique(self, dbm):
