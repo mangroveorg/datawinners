@@ -1,12 +1,17 @@
 {% extends 'public.html' %}
 {% block page_title %} Start Page {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script src="/media/javascript/home/index.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block main_content %}
     <div id="container_home_intro">
         <div id="home_intro_bg">
             <div id="home_intro" class="container_24">
                 <div class="grid_14 alpha omega">
-                    <img src="/media/images/dw_mobile_laptop.png" alt="" />
+                    <img src="/media/images/dw_mobile.jpg" width="530" height="393" style="margin-left: 44px" alt="" />
                 </div>
                 <div class="grid_10 alpha omega">
                     <div class="content">
@@ -14,8 +19,7 @@
                         Anywhere a mobile phone works.<br/>
                         Just pennies per report.</p>
                         <p>
-                            DataWinners is the easy way to collect data remotely. Get the information you need to make better
-                            decisions and respond faster to local needs.
+                            Get all the data you need using the technology you already have.
                         </p>
                         <a href="javascript:void(0)" class="intro_try_button">Try it free</a>
                         <a href="javascript:void(0)" class="intro_learn_button">Learn more</a>
@@ -36,42 +40,122 @@
                     <div class="carousel">
                         <div class="container_photo">
                             <div class="photo">
-                                <img src="/media/images/dw_carousel1.jpg" alt="" width="187" height="122" />
+                                <img src="/media/images/dw_carous_msi.jpg" alt="MSM" width="189" height="123" />
                             </div>
                         </div>
                         <div class="text">
-                            <h2>HEALTHCARE</h2>
-                            <a href="/examples/understand-who-benefits-from-services">Understand who benefits from services</a>
+                            <h2>Public Health, Madagascar</h2>
+                            <a href="/examples/understand-who-benefits-from-services">Family Planning and Reproductive Healthcare</a>
                         </div>
                     </div>
+                    <div class="plus"><a href="javascript:void(0)" rel="popup1"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
                 </div>
                 <div class="container_carousel">
                     <div class="carousel">
                         <div class="container_photo">
                             <div class="photo">
-                                <img src="/media/images/dw_carousel2.jpg" alt="" width="187" height="122" />
+                                <img src="/media/images/dw_carous_sn.jpg" alt="Santenet2" width="189" height="123" />
                             </div>
                         </div>
                         <div class="text">
-                            <h2>EDUCATION</h2>
-                            <a href="/examples/track-teacher-attendance">Track Teacher Attendance</a>
+                            <h2>Public Health, Madagascar</h2>
+                            <a href="/examples/track-teacher-attendance">Maternal and Child Health</a>
                         </div>
                     </div>
+                    <div class="plus"><a href="javascript:void(0)" rel="popup2"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
                 </div>
                 <div class="container_carousel">
                     <div class="carousel">
                         <div class="container_photo">
                             <div class="photo">
-                                <img src="/media/images/dw_carousel3.jpg" alt="" width="187" height="122" />
+                                <img src="/media/images/dw_carous_bngrc.jpg" alt="BNGRC" width="189" height="123" />
                             </div>
                         </div>
                         <div class="text">
-                            <h2>DISASTER AID</h2>
-                            <a href="/examples/send-services-and-aid-where-they-re-needed">Send services and aid where they're needed</a>
+                            <h2>Humanitaire, Madagascar</h2>
+                            <a href="/examples/send-services-and-aid-where-they-re-needed">Gestion des risques et catastrophes</a>
                         </div>
                     </div>
+                    <div class="plus"><a href="javascript:void(0)" rel="popup3"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
                 </div>
                 <div class="clear"></div>
+            </div>
+            <div id="popup1" class="carousel_popup">
+                <img src="/media/images/dw_popup_bd1.png" width="600" height="15" alt="" />
+                <div class="carousel_popup_content">
+                    <div class="carousel_popup_left">
+                        <h2>HEALTHCARE</h2>
+                        <h1>Family Planning<br/>and Reproductive Health</h1>
+                        In 2010, Marie Stopes Madagascar (MSM) began collecting and storing information sent in via mobile phone from doctors affiliated with its "BlueStar" network of medical clinics.
+                        <br/><br/>Using simple SMS technology, doctors in the network send in data regarding Family Planning services performed on a monthly basis.
+                        <br/><br/>All data is aggregated in a central database, accessible to headquarters staff, where it can be verified, filtered and exported for analysis.
+                        <br/><br/><a href="javascript:void(0)" class="more">Read more &raquo;</a>
+                    </div>
+                    <div class="carousel_popup_right">
+                        <img src="/media/images/dw_popup_m.kemplay.gif" alt="Miles Kemplay" width="65" height="65" /><br/>
+                        <p>
+                            "Thanks to HNI, we could gather about areate is enoughannable.not about the organization (this is the standard structure we agreed on). Segather timely, accurate and complete data on a monthly basis and analyze which of our marketing efforts directly lead to spikes in clients seen.
+                            <br/>We now have a much better idea where to spend our limited resources."
+                            <br/><span>Miles Kemplay, Country Director of MSM</span>
+                            <br/><img src="/media/images/dw_popup_logo_msi.gif" width="123" height="51" alt="" />
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <img src="/media/images/dw_popup_bd3.png" width="600" height="15" alt="" />
+                <div class="close"><a href="javascript:void(0)"><img src="/media/images/dw_popup_close.png" width="40" height="40" alt="" /></a></div>
+            </div>
+            <div id="popup2" class="carousel_popup">
+                <img src="/media/images/dw_popup_bd1.png" width="600" height="15" alt="" />
+                <div class="carousel_popup_content">
+                    <div class="carousel_popup_left">
+                        <h2>Child and Maternal Healthcare</h2>
+                        <h1>Child and Maternal Healthcare</h1>
+                        <br/>In 2010, the USAID-funded RTI/Santénet2 Project adopted a mobile phone reporting system to collect health services data delivered by the project.
+                        <br/><br/>Using HNI’s data collection and communication platform, RTI/Santénet 2 has collected reliable information regarding
+                        <ul>
+                            <li>Maternal health and Family Planning</li>
+                            <li>Child malnutrition</li>
+                            <li>Diarrhea, respiratory infection and malaria </li>
+                        </ul>
+                        <br/><a href="javascript:void(0)" class="more">Read more &raquo;</a>
+                    </div>
+                    <div class="carousel_popup_right">
+                        <img src="/media/images/dw_popup_v.cakir.gif" alt="V. Cakir" width="65" height="65" /><br/>
+                        <p>
+                            "Thanks to our partnership with HNI, and the hard work of our senior staff, we now have the data we need to report to USAID on macro-level indicators.  "
+                            <br/><span>Dr. Volkan Cakir, Chief of Party, The Santénet2 Project</span>
+                            <br/><br/><img src="/media/images/dw_popup_logo_sn.gif" width="90" height="44" alt="" />
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <img src="/media/images/dw_popup_bd3.png" width="600" height="15" alt="" />
+                <div class="close"><a href="javascript:void(0)"><img src="/media/images/dw_popup_close.png" width="40" height="40" alt="" /></a></div>
+            </div>
+            <div id="popup3" class="carousel_popup">
+                <img src="/media/images/dw_popup_bd1.png" width="600" height="15" alt="" />
+                <div class="carousel_popup_content">
+                    <div class="carousel_popup_left">
+                        <h2>Volet Humanitaire</h2>
+                        <h1>Gestion des Risques et des Catastrophes</h1>
+                        <br/>En 2010, le Bureau National de Gestion des Risques et des Catastrophes  (BNGRC) a commencé à effectuer les préparatifs   de mise en place de la collecte de données par SMS auprès des subdivisions administratives de base malgaches.
+                        <br/><br/>A l’aide de simples SMS, les responsables locaux peuvent envoyer leurs premières données post-cycloniques des régions touchées vers le Bureau et obtenir des tableaux et des cartes pour la prise de décisions et les interventions.
+                        <br/><br/><a href="javascript:void(0)" class="more">Read more &raquo;</a>
+                    </div>
+                    <div class="carousel_popup_right">
+                        <img src="/media/images/dw_popup_n.raonivelo.gif" alt="Nianja Raonivelo" width="65" height="65" /><br/>
+                        <p>
+                            "Maintenant, l’envoi, le traitement des données et leur compilation peuvent être effectués rapidement.
+                            <br/>On peut envoyer des messages de sensibilisation pour les préparatifs avant aléa. "
+                            <br/><span>Nianja Raonivelo, webmaster/analyste de données de BNGRC</span>
+                            <br/><img src="/media/images/dw_popup_logo_bngrc.gif" width="39" height="51" alt="" />
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <img src="/media/images/dw_popup_bd3.png" width="600" height="15" alt="" />
+                <div class="close"><a href="javascript:void(0)"><img src="/media/images/dw_popup_close.png" width="40" height="40" alt="" /></a></div>
             </div>
         </div>
     </div>
@@ -85,17 +169,17 @@
                 <img src="/media/images/dw_home_how_schema.gif" alt="How it works" width="800" height="106" />
                 <div class="grid_5 alpha omega text_align_center">
                     <p>
-                        <strong>Easily create</strong><br/> interactive surveys.
+                        <strong>Create your Questionnaire</strong>.
                     </p>
                 </div>
                 <div class="grid_6 alpha omega text_align_center">
                     <p>
-                        <strong>Receive accurate data</strong><br/> and exchange information<br/>straight from the field.
+                        <strong>Receive accurate Data</strong>.
                     </p>
                 </div>
                 <div class="grid_4 alpha omega text_align_center">
                     <p>
-                        <strong>See your result</strong> as a<br/> chart, graph, or map.
+                        <strong>See your results</strong> as a<br/>spreadsheet or a map.
                     </p>
                 </div>
                 <div class="grid_5 alpha omega margin_left_20 text_align_center">

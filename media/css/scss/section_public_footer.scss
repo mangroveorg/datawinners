@@ -1,33 +1,45 @@
 #footer{
-    a{
-        color:#afdd88;
-        text-decoration:none;
-        &:hover{
-            text-decoration:underline;
+    .cols{
+        width:240px;
+        height:240px;
+        float:left;
+        text-align:center;
+        background:url('/media/images/dw_footer_pipe2.gif') repeat-y left top;
+        .cols_content{
+            width:220px;
+            text-align:left;
+            color:#b9cedc;
+            font-size:12px;
+            line-height:16px;
+            margin:0 auto;
+            a{
+                color:#afdd88;
+                text-decoration:none;
+                &:hover{
+                    text-decoration:underline;
+                }
+            }
+
+            img{
+                margin:0 15px 6px 0;
+            }
+            p{
+                margin:20px 0;
+            }
+            small{
+                font-size:11px;
+            }
+            ul{
+                a {
+                    line-height:23px;
+                }
+            }
+            .italic {
+                font-size:11px;
+            }
         }
     }
-    div{
-        text-align:left;
-        color:#b9cedc;
-        font-size:12px;
-        line-height:16px;
-        margin:0;
-    }
-    img{
-        margin:0 15px 6px 0;
-    }
-    p{
-        margin:20px 0;
-    }
-    small{
-        font-size:11px;
-    }
-    ul{
-        a {
-            line-height:23px;
-        }
-    }
-    .italic {
-        font-size:11px;
+    .first {
+        background:none !important;
     }
 }
