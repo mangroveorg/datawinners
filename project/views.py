@@ -23,7 +23,7 @@ from datawinners.entity.views import import_subjects_from_project_wizard
 import helper
 from datawinners.project import models
 from mangrove.datastore.data import EntityAggregration
-from mangrove.datastore.entity import get_entity_count_for_type
+from mangrove.datastore.queries import get_entity_count_for_type
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
 from mangrove.form_model import form_model
