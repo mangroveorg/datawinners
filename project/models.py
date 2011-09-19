@@ -109,8 +109,8 @@ class Project(DocumentBase):
             if self._frequency_period() == "week":
                 as_of = as_of + timedelta(days=-7)
             if self._frequency_period() == "month":
-                month = 12 if as_of.month == 1 else as_of.month - 1
-                as_of = date(as_of.year, month, as_of.day)
+                year, month = as_of.year - 1, 12 if as_of.month == 1 else as_of.year, as_of.month - 1
+                as_of = date(year, month, as_of.day)
         deadline = self.deadline()
         if as_of == deadline.next(as_of):
             return True
