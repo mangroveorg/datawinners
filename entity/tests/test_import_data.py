@@ -5,7 +5,8 @@ from datawinners.entity.import_data import load_subject_registration_data
 from mangrove import initializer
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.datastore.entity import define_type, create_entity
+from mangrove.datastore.entity import create_entity
+from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
 

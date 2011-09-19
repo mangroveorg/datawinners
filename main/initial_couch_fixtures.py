@@ -10,8 +10,9 @@ from datawinners.submission.views import SMS
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
-from mangrove.datastore.entity import  define_type, create_entity, get_by_short_code
+from mangrove.datastore.entity import  create_entity, get_by_short_code
 from pytz import UTC
+from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code

@@ -12,7 +12,7 @@ from datawinners import utils
 from datawinners.entity import helper
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
-from mangrove.datastore.entity import get_all_entity_types, define_type
+from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException
