@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
+from datetime import timedelta, date
 
 from couchdb.mapping import  TextField, ListField, DictField
 from django.db.models.fields import IntegerField, CharField, BooleanField
@@ -90,7 +91,7 @@ class Project(DocumentBase):
         if self.frequency_enabled():
             return self.reminder_and_deadline.get('deadline_type')
 
-    def get_reminder_frequency_period(self):
+    def _frequency_period(self):
         return self.reminder_and_deadline.get('frequency_period')
 
     def get_deadline_day(self):
@@ -104,6 +105,12 @@ class Project(DocumentBase):
         return False
 
     def should_send_reminders(self, as_of):
+        if self._deadline_type() == "Following":
+            if self._frequency_period() == "week":
+                as_of = as_of + timedelta(days=-7)
+            if self._frequency_period() == "month":
+                month = 12 if as_of.month == 1 else as_of.month - 1
+                as_of = date(as_of.year, month, as_of.day)
         deadline = self.deadline()
         if as_of == deadline.next(as_of):
             return True
