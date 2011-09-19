@@ -117,8 +117,8 @@ class Project(DocumentBase):
         return False
 
     def _check_if_project_name_unique(self, dbm):
-        rows = dbm.load_all_rows_in_view('all_projects', key=self.name)
-        if len(rows) and rows[0]['value']['_id'] != self.id:
+        rows = dbm.load_all_rows_in_view('project_names', key=self.name)
+        if len(rows) and rows[0]['value'] != self.id:
             raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
 
     def save(self, dbm):
