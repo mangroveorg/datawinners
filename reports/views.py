@@ -6,7 +6,7 @@ from datawinners.main.utils import get_database_manager
 from mangrove.datastore import data
 from datawinners.reports.forms import Report, ReportHierarchy
 from mangrove.datastore.data import TypeAggregration, LocationFilter
-from mangrove.datastore.entity import get_all_entity_types
+from mangrove.datastore.entity_type import get_all_entity_types
 
 
 @login_required(login_url='/login')
