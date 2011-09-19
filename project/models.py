@@ -73,6 +73,10 @@ class Project(DocumentBase):
 
         return False
 
+    def should_send_reminders(self, as_of):
+        pass
+
+
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('all_projects', key=self.name)
         if len(rows) and rows[0]['value']['_id'] != self.id:
