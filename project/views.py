@@ -11,6 +11,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile
@@ -734,7 +735,7 @@ def web_questionnaire(request, project_id=None):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager).accept(_create_request(questionnaire_form, request.user.username))
+            response = WebPlayer(manager, get_location_tree()).accept(_create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()

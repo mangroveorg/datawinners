@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
 from datawinners import settings
+from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
@@ -66,10 +67,10 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPO
 def _handle_uploaded_file(file_name, file, manager):
     base_name, extension = os.path.splitext(file_name)
     if extension == '.csv':
-        csv_player = FilePlayer(manager, CsvParser(), Channel.CSV)
+        csv_player = FilePlayer(manager, CsvParser(), Channel.CSV, get_location_tree())
         response = csv_player.accept(file)
     elif extension == '.xls':
-        xls_player = FilePlayer(manager, XlsParser(), Channel.XLS)
+        xls_player = FilePlayer(manager, XlsParser(), Channel.XLS, get_location_tree())
         response = xls_player.accept(file)
     else:
         raise InvalidFileFormatException()

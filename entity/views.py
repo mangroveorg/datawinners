@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners import utils
 from datawinners.entity import helper
+from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
@@ -38,7 +39,7 @@ def _process_form(dbm, form):
             return message
 
         try:
-            web_player = WebPlayer(dbm)
+            web_player = WebPlayer(dbm, get_location_tree())
             response = web_player.accept(Request(message=_get_data(form.cleaned_data),
                         transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
@@ -74,7 +75,7 @@ def submit(request):
     post = json.loads(request.POST['data'])
     success = True
     try:
-        web_player = WebPlayer(dbm)
+        web_player = WebPlayer(dbm, get_location_tree())
         message = post['message']
         if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
             message[LOCATION_TYPE_FIELD_CODE] += COUNTRY
