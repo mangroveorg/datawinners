@@ -5,7 +5,7 @@ from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
 from datawinners.settings import api_keys
 import helper
-from mangrove.datastore.entity import get_entities_by_type
+from mangrove.datastore.queries import get_entities_by_type
 
 
 def map_entities(request):
