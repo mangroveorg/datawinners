@@ -143,7 +143,7 @@ class TestProjectModel(unittest.TestCase):
         project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
         self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 3, 6), 0))
 
-    def test_should_not_send_reminder_if_day_is_on_deadline_and_deadline_type_is_that(self):
+    def test_should_send_reminder_if_day_of_month_is_on_deadline_and_deadline_type_is_that(self):
         reminder_and_deadline_for_month = {
             "reminders_enabled": "True",
             "deadline_month": "5",
@@ -156,7 +156,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 3, 5), 0))
 
     def test_should_not_send_reminder_if_week_of_day_is_before_deadline_and_deadline_type_is_that(self):
-        reminder_and_deadline_for_month = {
+        reminder_and_deadline_for_week = {
             "reminders_enabled": "True",
             "deadline_week": "6",
             "deadline_type": "That",
@@ -164,11 +164,11 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "week"
         }
-        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_week)
         self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 9, 19), 0))
 
-    def test_should_not_send_reminder_if_day_is_after_deadline_and_deadline_type_is_that(self):
-        reminder_and_deadline_for_month = {
+    def test_should_not_send_reminder_if_week_of_day_is_after_deadline_and_deadline_type_is_that(self):
+        reminder_and_deadline_for_week = {
             "reminders_enabled": "True",
             "deadline_week": "6",
             "deadline_type": "That",
@@ -176,11 +176,11 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "week"
         }
-        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_week)
         self.assertEquals(False, project_reminders.should_send_reminders(date(2011, 9, 25), 0))
 
-    def test_should_not_send_reminder_if_day_is_on_deadline_and_deadline_type_is_that(self):
-        reminder_and_deadline_for_month = {
+    def test_should_send_reminder_if_week_of_day_is_on_deadline_and_deadline_type_is_that(self):
+        reminder_and_deadline_for_week = {
             "reminders_enabled": "True",
             "deadline_week": "6",
             "deadline_type": "That",
@@ -188,5 +188,29 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "week"
         }
-        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_week)
         self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 9, 24), 0))
+
+    def test_should_send_reminder_if_week_of_day_is_on_deadline_and_deadline_type_is_following(self):
+        reminder_and_deadline_for_week = {
+            "reminders_enabled": "True",
+            "deadline_week": "6",
+            "deadline_type": "Following",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_week)
+        self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 9, 24), 0))
+
+    def test_should_send_reminder_if_day_of_the_month_is_on_deadline_and_deadline_type_is_following(self):
+        reminder_and_deadline_for_month = {
+            "reminders_enabled": "True",
+            "deadline_month": "5",
+            "deadline_type": "Following",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "month"
+        }
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        self.assertEquals(True, project_reminders.should_send_reminders(date(2011, 9, 5), 0))

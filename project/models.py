@@ -104,13 +104,7 @@ class Project(DocumentBase):
         return self.reminder_and_deadline.get('reminders_enabled') == "True"
 
     def should_send_reminders(self, as_of, days_relative_to_deadline):
-        if self._deadline_type() == "Following":
-            if self._frequency_period() == "week":
-                as_of = as_of + timedelta(days=-7)
-            if self._frequency_period() == "month":
-                year, month = as_of.year - 1, 12 if as_of.month == 1 else as_of.year, as_of.month - 1
-                as_of = date(year, month, as_of.day)
-        next_deadline_day = (self.deadline()).next(as_of)
+        next_deadline_day = self.deadline().current(as_of)
         if next_deadline_day is not None:
             if as_of == next_deadline_day + timedelta(days = days_relative_to_deadline):
                 return True

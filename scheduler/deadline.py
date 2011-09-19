@@ -10,6 +10,9 @@ class Deadline(object):
     def next(self, as_of):
         return self.frequency.next_date(as_of,self._get_offset())
 
+    def current(self, as_of):
+        return self.frequency.current_date(as_of)
+
 #      Deadline class converts the modes "Following" or "That" to the currect offsets.
     def _get_offset(self):
         if self.mode == "Following":
@@ -29,6 +32,11 @@ class Month(object):
             return date(as_of.year + 1, offset, self.day)
         return date(as_of.year, as_of.month + offset, self.day)
 
+    def current_date(self, as_of):
+        if as_of.day > self.day:
+            return None
+        return date(as_of.year, as_of.month, self.day)
+    
 class Week(object):
 #    day is 1-7 ie Mon - Sun
     def __init__(self,day):
@@ -42,3 +50,8 @@ class Week(object):
             return None
 
         return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(6 - as_of.isoweekday()))
+
+    def current_date(self, as_of):
+        if as_of.isoweekday() > self.day:
+            return None
+        return as_of + timedelta(6-as_of.isoweekday())

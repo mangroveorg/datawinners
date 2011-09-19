@@ -56,4 +56,52 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Week(6),mode="Following")
         self.assertEqual(date(2011,9,24), deadline.next(date(2011,9,18)))
 
+    def test_should_return_current_deadline_date_for_this_week_for_following_deadline(self):
+        deadline = Deadline(frequency=Week(6),mode="Following")
+        self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,15)))
+
+    def test_should_return_current_deadline_date_for_this_week_for_that_deadline(self):
+        deadline = Deadline(frequency=Week(6),mode="That")
+        self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,15)))
+
+    def test_should_return_current_deadline_date_for_following_week_and_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="Following")
+        self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,17)))
+
+    def test_should_return_current_deadline_date_for_that_week_and_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="That")
+        self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,17)))
+
+    def test_should_return_current_deadline_date_for_following_week_and_asof_post_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="Following")
+        self.assertEqual(None, deadline.current(date(2011,9,18)))
+
+    def test_should_return_current_deadline_date_for_that_week_and_asof_post_deadline_day(self):
+        deadline = Deadline(frequency=Week(6),mode="That")
+        self.assertEqual(None, deadline.current(date(2011,9,18)))
+
+    def test_should_return_current_deadline_date_for_this_month_for_following_deadline(self):
+        deadline = Deadline(frequency=Month(6),mode="Following")
+        self.assertEqual(date(2011,9,6), deadline.current(date(2011,9,5)))
+
+    def test_should_return_current_deadline_date_for_this_month_for_that_deadline(self):
+        deadline = Deadline(frequency=Month(6),mode="That")
+        self.assertEqual(date(2011,9,6), deadline.current(date(2011,9,5)))
+
+    def test_should_return_current_deadline_date_for_following_month_and_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Month(6),mode="Following")
+        self.assertEqual(date(2011,9,6), deadline.current(date(2011,9,6)))
+
+    def test_should_return_current_deadline_date_for_that_month_and_asof_as_deadline_day(self):
+        deadline = Deadline(frequency=Month(6),mode="That")
+        self.assertEqual(date(2011,9,6), deadline.current(date(2011,9,6)))
+
+    def test_should_return_current_deadline_date_for_following_week_and_asof_post_deadline_day(self):
+        deadline = Deadline(frequency=Month(6),mode="Following")
+        self.assertEqual(None, deadline.current(date(2011,9,18)))
+
+    def test_should_return_current_deadline_date_for_that_week_and_asof_post_deadline_day(self):
+        deadline = Deadline(frequency=Month(6),mode="That")
+        self.assertEqual(None, deadline.current(date(2011,9,18)))
+
 
