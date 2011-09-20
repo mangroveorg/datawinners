@@ -35,6 +35,18 @@ def send_reminders():
         logger.exception("Exception while sending reminders")
 
 
+def send_reminders_today():
+    pass
+
+def send_reminders_on(project,reminders, date, sms_client):
+    return_list = []
+    for reminder in reminders:
+        if reminder.should_be_send_on(date):
+            return_list.append(reminder)
+            for datasender in project.get_data_senders():
+                sms_client.send_sms('from_num',datasender["mobile_number"],reminder.message)
+    return return_list
+
 
 def _get_reminders_grouped_by_project():
     reminders = Reminder.objects.filter(voided=False)
@@ -100,3 +112,7 @@ def _get_time_period_for_sending_reminders(frequency):
 if __name__ == "__main__":
     print "main"
     send_reminders()
+
+class SMSClient(object):
+    def send_sms(self,from_tel,to_tel, message):
+        pass

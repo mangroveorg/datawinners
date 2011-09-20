@@ -13,12 +13,17 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.utils.types import  is_string
 from django.db import models
 
+class ReminderMode(object):
+    BEFORE_DEADLINE = 'before_deadline'
+    ON_DEADLINE = 'on_deadline'
+    AFTER_DEADLINE = 'after_deadline'
+
 
 class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
     day = IntegerField(null=True, blank=True)
     message = CharField(max_length=160)
-    reminder_mode = CharField(null=False, blank=False, max_length=20, default='before_deadline')
+    reminder_mode = CharField(null=False, blank=False, max_length=20, default=ReminderMode.BEFORE_DEADLINE)
     organization = ForeignKey(Organization)
     voided = BooleanField(default=False)
 
@@ -30,12 +35,15 @@ class Reminder(models.Model):
         self.save()
 
     def delta(self):
-        if self.reminder_mode == "on":
+        if self.reminder_mode == ReminderMode.ON_DEADLINE:
             return 0
-        if self.reminder_mode == "before":
+        if self.reminder_mode == ReminderMode.BEFORE_DEADLINE:
             return -self.day
-        if self.reminder_mode == "after":
+        if self.reminder_mode == ReminderMode.AFTER_DEADLINE:
             return self.day
+
+    def should_be_send_on(self,on):
+        pass
 
 class ProjectState(object):
     INACTIVE = 'Inactive'
@@ -69,6 +77,9 @@ class Project(DocumentBase):
         self.activity_report = activity_report
         self.sender_group = sender_group
         self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
+
+    def get_data_senders(self):
+        return []
 
     def deadline(self):
         return Deadline(self._frequency(), self._deadline_type())
