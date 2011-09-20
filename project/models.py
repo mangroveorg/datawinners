@@ -56,9 +56,11 @@ class Reminder(models.Model):
         if on_date == deadline_date + timedelta(days=self.delta()):
             return True
         return False
-    
+
     def get_sender_list(self,project,on_date):
-        pass
+        if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
+            return project.get_data_senders_without_submissions_for(on_date)
+        return project.get_data_senders()
 
     def send(self,sms_client,from_number,on_date,project):
         pass

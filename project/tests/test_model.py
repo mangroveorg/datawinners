@@ -118,4 +118,12 @@ class TestProjectModel(unittest.TestCase):
 
         self.assertEqual(ProjectState.TEST, project.state)
 
+#    def test_should_return_data_senders_without_submissions(self):
+#        project = Project()
+#        data_senders = project.get_data_senders_without_submissions_for(date(2011,11,11))
+
+
+
+
+
 
