@@ -5,7 +5,7 @@ from datetime import date, timedelta, datetime
 from datawinners import utils
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.project.helper import get_project_data_senders
-from datawinners.project.models import Reminder, Project
+from datawinners.project.models import Reminder, Project, RemindTo
 from datawinners.scheduler.vumiclient import Client, Connection
 
 import logging
@@ -35,17 +35,16 @@ def send_reminders():
         logger.exception("Exception while sending reminders")
 
 
-def send_reminders_today():
-    pass
-
-def send_reminders_on(project,reminders, date, sms_client):
-    return_list = []
+def send_reminders_on(project,reminders, on_date, sms_client,from_number):
+    assert isinstance(on_date,date)
+    reminders_sent = []
     for reminder in reminders:
-        if reminder.should_be_send_on(date):
-            return_list.append(reminder)
-            for datasender in project.get_data_senders():
-                sms_client.send_sms('from_num',datasender["mobile_number"],reminder.message)
-    return return_list
+        if reminder.should_be_send_on(on_date):
+            datasenders = reminder.get_sender_list(project)
+            for datasender in datasenders:
+                sms_client.send_sms(from_number,datasender["mobile_number"],reminder.message)
+            reminders_sent.append(reminder)
+    return reminders_sent
 
 
 def _get_reminders_grouped_by_project():

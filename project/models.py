@@ -18,6 +18,9 @@ class ReminderMode(object):
     ON_DEADLINE = 'on_deadline'
     AFTER_DEADLINE = 'after_deadline'
 
+class RemindTo(object):
+    ALL_DATASENDERS = 'all_datasenders'
+    DATASENDERS_WITHOUT_SUBMISSIONS = 'datasenders_without_submissions'
 
 class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
@@ -26,6 +29,7 @@ class Reminder(models.Model):
     reminder_mode = CharField(null=False, blank=False, max_length=20, default=ReminderMode.BEFORE_DEADLINE)
     organization = ForeignKey(Organization)
     voided = BooleanField(default=False)
+    remind_to = CharField(null=False, blank=False, max_length=20, default=RemindTo.ALL_DATASENDERS)
 
     def to_dict(self):
         return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode}
@@ -44,6 +48,10 @@ class Reminder(models.Model):
 
     def should_be_send_on(self,on):
         pass
+
+    def get_sender_list(self,project,as_of):
+        pass
+
 
 class ProjectState(object):
     INACTIVE = 'Inactive'
@@ -79,6 +87,9 @@ class Project(DocumentBase):
         self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
 
     def get_data_senders(self):
+        return []
+
+    def get_data_senders_without_submissions_for(self,from_time,end_time):
         return []
 
     def deadline(self):
