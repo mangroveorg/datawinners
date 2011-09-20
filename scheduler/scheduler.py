@@ -35,14 +35,18 @@ def send_reminders():
         logger.exception("Exception while sending reminders")
 
 
+def _send(from_number, on_date, project, reminder, sms_client):
+    datasenders = reminder.get_sender_list(project, on_date)
+    for datasender in datasenders:
+        sms_client.send_sms(from_number, datasender["mobile_number"], reminder.message)
+
+
 def send_reminders_on(project,reminders, on_date, sms_client,from_number):
     assert isinstance(on_date,date)
     reminders_sent = []
     for reminder in reminders:
         if reminder.should_be_send_on(on_date):
-            datasenders = reminder.get_sender_list(project)
-            for datasender in datasenders:
-                sms_client.send_sms(from_number,datasender["mobile_number"],reminder.message)
+            _send(from_number,on_date,project,reminder,sms_client)
             reminders_sent.append(reminder)
     return reminders_sent
 

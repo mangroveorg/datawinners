@@ -46,10 +46,13 @@ class Reminder(models.Model):
         if self.reminder_mode == ReminderMode.AFTER_DEADLINE:
             return self.day
 
-    def should_be_send_on(self,on):
+    def should_be_send_on(self,on_date):
         pass
 
-    def get_sender_list(self,project,as_of):
+    def get_sender_list(self,project,on_date):
+        pass
+
+    def send(self,sms_client,from_number,on_date,project):
         pass
 
 
