@@ -47,7 +47,7 @@ def _get_entity_type_from_row(row):
 
 
 def load_subject_registration_data(manager, filter_entities=exclude_of_type,type=REPORTER):
-    entities = get_all_entities(dbm=manager, include_docs=True)
+    entities = get_all_entities(dbm=manager)
     data = []
     for entity in entities:
         if filter_entities(entity,type):
