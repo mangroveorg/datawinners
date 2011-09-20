@@ -31,6 +31,10 @@ class Reminder(models.Model):
     voided = BooleanField(default=False)
     remind_to = CharField(null=False, blank=False, max_length=20, default=RemindTo.ALL_DATASENDERS)
 
+    @staticmethod
+    def get_reminders_grouped_by_project():
+        pass
+
     def to_dict(self):
         return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode}
 
@@ -46,9 +50,13 @@ class Reminder(models.Model):
         if self.reminder_mode == ReminderMode.AFTER_DEADLINE:
             return self.day
 
-    def should_be_send_on(self,on_date):
-        pass
-
+    def should_be_send_on(self,deadline,on_date):
+        assert isinstance(on_date,date)
+        deadline_date = deadline.current(on_date)
+        if on_date == deadline_date + timedelta(days=self.delta()):
+            return True
+        return False
+    
     def get_sender_list(self,project,on_date):
         pass
 

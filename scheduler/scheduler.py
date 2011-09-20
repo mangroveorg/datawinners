@@ -5,7 +5,7 @@ from datetime import date, timedelta, datetime
 from datawinners import utils
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.project.helper import get_project_data_senders
-from datawinners.project.models import Reminder, Project, RemindTo
+from datawinners.project.models import Reminder, Project
 from datawinners.scheduler.vumiclient import Client, Connection
 
 import logging
@@ -13,7 +13,6 @@ logger = logging.getLogger("datawinners.reminders")
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.reporter import reporters_submitted_data
 from mangrove.utils.dates import convert_to_epoch
-
 
 def send_reminders():
     try:
@@ -34,6 +33,8 @@ def send_reminders():
     except Exception:
         logger.exception("Exception while sending reminders")
 
+def send_reminders_for_all_projects():
+    pass
 
 def _send(from_number, on_date, project, reminder, sms_client):
     datasenders = reminder.get_sender_list(project, on_date)
@@ -45,7 +46,7 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number):
     assert isinstance(on_date,date)
     reminders_sent = []
     for reminder in reminders:
-        if reminder.should_be_send_on(on_date):
+        if reminder.should_be_send_on(project.deadline(),on_date):
             _send(from_number,on_date,project,reminder,sms_client)
             reminders_sent.append(reminder)
     return reminders_sent

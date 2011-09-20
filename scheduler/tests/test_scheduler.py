@@ -2,7 +2,7 @@ from datetime import date
 from django.utils import unittest
 from mock import Mock
 from datawinners.project.models import  Reminder, Project, RemindTo
-from datawinners.scheduler.scheduler import   send_reminders_on, SMSClient
+from datawinners.scheduler.scheduler import   send_reminders_on, SMSClient, send_reminders_for_all_projects
 
 #TODO: reinder to be sent to only those not sent
 #TODO: reinder to be sent to all ds
@@ -81,4 +81,17 @@ class TestScheduler(unittest.TestCase):
             for ds in who_have_not_sent_data:
                 self.assertEqual((("from_num", ds["mobile_number"],reminder.message),{}),self.sms_client.send_sms.call_args_list[count])
                 count+=1
+
+#    def test_should_send_reminders_for_all_projects_in_an_org(self):
+#        all_projects = [ Mock(spec=Project),Mock(spec=Project),Mock(spec=Project) ]
+#        all_reminders =  [[Reminder()],[Reminder()],[Reminder()], ]
+#        reminders_per_project = { project.id: reminders  for project, reminders in zip(all_projects, all_reminders)}
+#
+#        Reminder.get_reminders_grouped_by_project.return_value = reminders_per_project
+#
+#        send_reminders_for_all_projects()
+#
+#        self.assertEqual(3,send_reminders_on.call_count)
+#        for i,proj in enumerate(all_projects):
+#            self.assertEqual(((proj,reminders_per_project[proj.id], self.mock_date,self.sms_client),{}),send_reminders_on.call_args_list[i])
 
