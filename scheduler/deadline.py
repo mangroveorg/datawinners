@@ -33,8 +33,6 @@ class Month(object):
         return date(as_of.year, as_of.month + offset, self.day)
 
     def current_date(self, as_of):
-        if as_of.day > self.day:
-            return None
         return date(as_of.year, as_of.month, self.day)
     
 class Week(object):
@@ -49,9 +47,9 @@ class Week(object):
         if offset == 0 and as_of.isoweekday() > self.day:
             return None
 
-        return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(6 - as_of.isoweekday()))
+        return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(self.day - as_of.isoweekday()))
 
     def current_date(self, as_of):
         if as_of.isoweekday() > self.day:
-            return None
+            return as_of - timedelta(as_of.isoweekday()-self.day)
         return as_of + timedelta(self.day-as_of.isoweekday())
