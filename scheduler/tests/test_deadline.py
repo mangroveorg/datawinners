@@ -64,6 +64,15 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Week(6),mode="That")
         self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,15)))
 
+    def test_should_return_current_deadline_date_for_this_week_for_that_deadline_for_day3_for_deadline_on_same_day(self):
+        deadline = Deadline(frequency=Week(3),mode="That")
+        self.assertEqual(date(2011,9,21), deadline.current(date(2011,9,21)))
+
+    def test_should_return_current_deadline_date_for_this_week_for_that_deadline_for_day3_for_deadline_on_different_day(self):
+        deadline = Deadline(frequency=Week(3),mode="That")
+        self.assertEqual(date(2011,9,21), deadline.current(date(2011,9,19)))
+
+
     def test_should_return_current_deadline_date_for_following_week_and_asof_as_deadline_day(self):
         deadline = Deadline(frequency=Week(6),mode="Following")
         self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,17)))

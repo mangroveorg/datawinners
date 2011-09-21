@@ -103,7 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-#    'datawinners.middleware.SSLMiddleware.SSLRedirect',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'datawinners.urls'
@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'datawinners.entity',
     'datawinners.submission',
     'django_extensions',
+    'django.contrib.flatpages',
     'south',
 )
 

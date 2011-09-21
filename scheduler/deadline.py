@@ -54,4 +54,4 @@ class Week(object):
     def current_date(self, as_of):
         if as_of.isoweekday() > self.day:
             return None
-        return as_of + timedelta(6-as_of.isoweekday())
+        return as_of + timedelta(self.day-as_of.isoweekday())
