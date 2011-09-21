@@ -11,7 +11,7 @@ from datawinners.scheduler.vumiclient import Client, Connection
 import logging
 logger = logging.getLogger("datawinners.reminders")
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.reporter import reporters_submitted_data
+from mangrove.transport.reporter import reporters_submitted_data_for_activity_period
 from mangrove.utils.dates import convert_to_epoch
 
 def send_reminders():
@@ -87,7 +87,7 @@ def _send_reminder_to_project_datasenders(dbm, reminder,project):
     questionnaire = FormModel.get(dbm, project.qid)
     from_time, end_time = _get_time_period_for_sending_reminders(project.get_reminder_frequency_period())
     logger.info("Time Period Start: %s, Time Period End: %s" % ( from_time,end_time))
-    datasenders_who_have_sent = [reporter.value('mobile_number') for reporter in reporters_submitted_data(dbm, questionnaire.form_code, from_time, end_time)]
+    datasenders_who_have_sent = [reporter.value('mobile_number') for reporter in reporters_submitted_data_for_activity_period(dbm, questionnaire.form_code, from_time, end_time)]
     logger.info("Total datasenders who have sent: %d" % ( len(datasenders_who_have_sent)))
     for datasender in datasenders:
         if datasender.get('mobile_number') not in datasenders_who_have_sent:
@@ -106,12 +106,12 @@ def _get_time_period_for_sending_reminders(frequency):
     if frequency == "week":
         from_time = datetime.datetime.now() + timedelta(days=1 - date.today().isoweekday())
         to_time = datetime.datetime.now() + timedelta(days=7 - date.today().isoweekday())
-        return convert_to_epoch(from_time), convert_to_epoch(to_time)
+        return from_time, to_time
 
     if frequency == "month":
         from_time = datetime.datetime(date.today().year, date.today().month, 1)
         to_time = datetime.datetime(date.today().year, date.today().month, calendar.monthrange(date.today().year, date.today().month)[1])
-        return convert_to_epoch(from_time), convert_to_epoch(to_time)
+        return from_time, to_time
 
 if __name__ == "__main__":
     print "main"
