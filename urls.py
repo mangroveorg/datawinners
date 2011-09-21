@@ -11,7 +11,6 @@ from django.contrib import admin
 urlpatterns = patterns('',
                        (r'', include('datawinners.accountmanagement.urls')),
                        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-                       (r'', include('datawinners.reports.urls')),
                        (r'', include('datawinners.project.urls')),
                        (r'', include('datawinners.smstester.urls')),
                        (r'', include('datawinners.submission.urls')),
