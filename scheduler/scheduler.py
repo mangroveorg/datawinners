@@ -2,7 +2,7 @@
 from _collections import defaultdict
 import calendar
 from datetime import date, timedelta, datetime
-from datawinners import utils, settings
+from datawinners import  settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.project.helper import get_project_data_senders
 from datawinners.project.models import Reminder, Project
@@ -20,9 +20,9 @@ def send_reminders():
     """
     Entry point for the scheduler. Sends out reminders for the day.
     """
-    send_all_reminders(datetime.now(),SMSClient())
+    send_reminders_scheduled_on(datetime.now(),SMSClient())
 
-def send_all_reminders(on_date,sms_client):
+def send_reminders_scheduled_on(on_date,sms_client):
     """
     Sends out reminders scheduled for the given date, for each organization.
     """
@@ -126,5 +126,5 @@ def _get_time_period_for_sending_reminders(frequency):
         return from_time, to_time
 
 if __name__ == "__main__":
-    send_all_reminders( date(2011,9,24),SMSClient())
+    send_reminders_scheduled_on( date(2011,9,24),SMSClient())
 
