@@ -3,6 +3,9 @@ import calendar
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
 
+class NotADeadLine(Exception):
+    pass
+
 class Deadline(object):
     def __init__(self,frequency,mode):
         self.frequency = frequency
@@ -40,6 +43,8 @@ class Month(object):
         return date(as_of.year, as_of.month, self.day)
 
     def get_frequency_period_for(self, as_of, mode):
+        if as_of.day != self.day:
+            raise NotADeadLine
         target_date = as_of
         if mode == 'Following':
             target_date = as_of + relativedelta(months=-1)
@@ -48,7 +53,10 @@ class Month(object):
         return date(target_date.year, target_date.month, 1), date(target_date.year, target_date.month, last_day)
     
 class Week(object):
-#    day is 1-7 ie Mon - Sun
+    #    day is 1-7 ie Mon - Sun
+    MONDAY_ISO_WEEKDAY = 1
+    SUNDAY_ISO_WEEKDAY = 7
+
     def __init__(self,day):
         self.day = day
 
@@ -67,6 +75,11 @@ class Week(object):
         return as_of + timedelta(self.day-as_of.isoweekday())
 
     def get_frequency_period_for(self, as_of, mode):
+        if as_of.isoweekday() != self.day:
+            raise NotADeadLine
+        target_date = as_of
         if mode == 'Following':
-            return
-        return
+            target_date = as_of + relativedelta(weeks=-1)
+        start_date =  target_date - timedelta(days = target_date.isoweekday() - self.MONDAY_ISO_WEEKDAY)
+        end_date = target_date + timedelta(days = self.SUNDAY_ISO_WEEKDAY - target_date.isoweekday())
+        return start_date,end_date
