@@ -15,7 +15,6 @@ from mangrove.datastore.database import get_db_manager
 logger = logging.getLogger("datawinners.reminders")
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.reporter import reporters_submitted_data_for_activity_period
-from mangrove.utils.dates import convert_to_epoch
 
 def send_reminders():
     """

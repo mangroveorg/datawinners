@@ -16,11 +16,12 @@ $(document).ready(function(){
     });
 
 
-function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel) {
+function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel,targetDataSenders) {
     this.message = ko.observable(message);
     this.beforeDay = ko.observable(beforeDay);
     this.afterDay = ko.observable(afterDay);
     this.reminderMode = ko.observable(reminderMode);
+    this.targetDataSenders = ko.observable(targetDataSenders);
     this.remove = function() {
         ownerViewModel.reminders.remove(this);
     }
@@ -40,12 +41,13 @@ function viewModel() {
     this.reminders = ko.observableArray([]);
     this.remindersToSave = [];
     this.addReminder = function() {
-        this.reminders.push(new reminder("", "", "", "on_deadline", this));
+        this.reminders.push(new reminder("", "", "", "on_deadline", this,'all_datasenders'));
     }
     this.save = function() {
         var shouldSave = true;
         for(var i = 0; i < this.reminders().length; i++){
             var newReminder = {};
+            newReminder['targetDataSenders'] = this.reminders()[i].targetDataSenders()
             if (this.reminders()[i].message() === "") {
                 $('#newMessage_err').show().html(gettext("Can't be blank."));
                 shouldSave = false
@@ -95,7 +97,7 @@ function viewModel() {
             }else{
                 afterDay = item.day;
             }
-            return new reminder(item.message, beforeDay, afterDay, item.reminder_mode, self)
+            return new reminder(item.message, beforeDay, afterDay, item.reminder_mode, self, item.remind_to)
         });
         self.reminders(mappedReminders);
         $("#review_section").accordion({header:'.header',collapsible: true});

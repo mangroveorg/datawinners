@@ -30,14 +30,14 @@ class Reminder(models.Model):
     reminder_mode = CharField(null=False, blank=False, max_length=20, default=ReminderMode.BEFORE_DEADLINE)
     organization = ForeignKey(Organization)
     voided = BooleanField(default=False)
-    remind_to = CharField(null=False, blank=False, max_length=20, default=RemindTo.ALL_DATASENDERS)
+    remind_to = CharField(null=False, blank=False, max_length=50, default=RemindTo.ALL_DATASENDERS)
 
     @staticmethod
     def get_reminders_grouped_by_project():
         pass
 
     def to_dict(self):
-        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode}
+        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'remind_to': self.remind_to}
 
     def void(self, void = True):
         self.voided = void

@@ -15,7 +15,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile
-from datawinners.project.models import Project, ProjectState, Reminder
+from datawinners.project.models import Project, ProjectState, Reminder, RemindTo
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -501,7 +501,7 @@ def manage_reminders(request, project_id):
         Reminder.objects.filter(project_id=project_id).delete()
         for reminder in reminders:
             Reminder(project_id=project_id, day=reminder['day'], message=reminder['message'],
-                     reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request)).save()
+                     reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request), remind_to=reminder['targetDataSenders']).save()
         return HttpResponse("Reminders has been saved")
 
 
