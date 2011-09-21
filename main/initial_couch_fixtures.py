@@ -429,7 +429,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     reminder.save()
 
     # Associate datasenders/reporters with project 9
-    project9.data_senders.extend(["rep1","rep2"])
+    project9.data_senders.extend(["rep3","rep4"])
     project9.save(manager)
 
 
@@ -613,7 +613,7 @@ def load_data():
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_projects(CLINIC_ENTITY_TYPE, manager)
-    #Register Reporter
+    #Register Reporters
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
                                          primitive_type='string')
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
@@ -625,6 +625,16 @@ def load_data():
             (NAME_FIELD, "David", first_name_type)],
              location=[u'Madagascar', u'Fianarantsoa', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2")
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891", phone_number_type),
+            (NAME_FIELD, "Mr. Reporter 3", first_name_type)],
+             location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep3")
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892", phone_number_type),
+        (NAME_FIELD, "Ms. Reporter 4", first_name_type)],
+         location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
+         short_code="rep4")
+
+
     load_sms_data_for_cli001(manager)
 
 
