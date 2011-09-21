@@ -58,7 +58,7 @@ class TestReminders(unittest.TestCase):
         project = Mock(spec=Project)
         project.get_data_senders.return_value = data_senders
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE)
-        self.assertEqual(data_senders, reminder.get_sender_list(project, today))
+        self.assertEqual(data_senders, reminder.get_sender_list(project, today,None))
 
     def test_should_return_data_senders_as_sender_list_if_remind_to_mode_is_datasenders_without_submissions(self):
         data_senders = [{'name': 'reporter1', 'mobile_number': 'tel1'},
@@ -71,5 +71,5 @@ class TestReminders(unittest.TestCase):
         expected_sender_list = [data_senders[0], data_senders[2]]
         project.get_data_senders_without_submissions_for.return_value = expected_sender_list
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
-        self.assertEqual(expected_sender_list, reminder.get_sender_list(project, today))
+        self.assertEqual(expected_sender_list, reminder.get_sender_list(project, today,None))
 

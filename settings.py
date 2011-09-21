@@ -15,6 +15,9 @@ MANAGERS = ADMINS
 
 
 COUCH_DB_SERVER = "http://localhost:5984"
+VUMI_API_URL = "http://10.253.50.2:7000"
+VUMI_USER = "vumi"
+VUMI_PASSWORD = "vumi"
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

@@ -6,7 +6,7 @@ from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
-from datawinners.project.models import Project, ProjectState
+from datawinners.project.models import Project, ProjectState, Reminder, RemindTo, ReminderMode
 from datawinners.submission.views import SMS
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
@@ -239,15 +239,24 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
-    project = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
+    project9 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
                       reminder_and_deadline={'frequency_enabled':'False', 'reminders_enabled': 'False'})
-    project.qid = qid
-    project.state = ProjectState.ACTIVE
+    project9.qid = qid
+    project9.state = ProjectState.ACTIVE
     try:
-        project.save(manager)
+        project9.save(manager)
     except Exception:
         pass
+
+    weekly_reminder_and_deadline = {
+            "reminders_enabled": "True",
+            "deadline_week": "6",
+            "deadline_type": "That",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
@@ -261,7 +270,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
-                       reminder_and_deadline={'frequency_enabled':'False', 'reminders_enabled': 'False'})
+                       reminder_and_deadline=weekly_reminder_and_deadline)
     project2.qid = qid2
     project2.state = ProjectState.ACTIVE
     try:
@@ -382,6 +391,46 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         project8.save(manager)
     except Exception:
         pass
+
+    # Creating a project to test reminders with following deadline.
+    weekly_reminder_and_following_deadline = {
+            "reminders_enabled": "True",
+            "deadline_week": "6",
+            "deadline_type": "Following",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
+
+    form_model = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
+                            form_code="cli009", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6, question7,
+                                    question8],
+                            entity_type=CLINIC_ENTITY_TYPE)
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli009").delete()
+        qid = form_model.save()
+    project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                       reminder_and_deadline=weekly_reminder_and_deadline)
+    project9.qid = qid
+    project9.state = ProjectState.ACTIVE
+    try:
+        project9.save(manager)
+    except Exception:
+        pass
+
+    # Create reminders for project2 and project 9
+    reminder = Reminder(project_id = project9.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "Reminder test")
+    reminder.save()
+
+    # Associate datasenders/reporters with project 9
+    project9.data_senders.extend(["rep1","rep2"])
+    project9.save(manager)
 
 
 def load_sms_data_for_cli001(manager):

@@ -206,7 +206,7 @@ class Connection(object):
         return self.request('delete', *args, **kwargs)
 
 
-class Client(object):
+class VumiClient(object):
     """
     A client for Vumi's HTTP API.
     """

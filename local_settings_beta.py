@@ -24,6 +24,7 @@ DATABASES = {
 
 
 COUCH_DB_SERVER = "http://178.79.185.35:5984"
+VUMI_API_URL = "http://178.79.145.58:7000"
 
 LOG_FOLDER = '/var/log/datawinners'
 LOG_FILE_NAME = "datawinners.log"

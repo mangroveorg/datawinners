@@ -2,11 +2,12 @@ from datetime import date
 from django.utils import unittest
 from mock import Mock
 from datawinners.project.models import  Reminder, Project, RemindTo
-from datawinners.scheduler.scheduler import   send_reminders_on, SMSClient, send_reminders_for_all_projects
+from datawinners.scheduler.scheduler import   send_reminders_on
 
 #TODO: reinder to be sent to only those not sent
 #TODO: reinder to be sent to all ds
 #TODO: exception scenarios
+from datawinners.scheduler.smsclient import SMSClient
 
 class TestScheduler(unittest.TestCase):
 
@@ -47,19 +48,19 @@ class TestScheduler(unittest.TestCase):
         pass
 
     def test_should_return_reminders_scheduled_for_the_day(self):
-        reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER)
+        reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
 
         self.assertEqual(2,len(reminders_sent))
         self.assertIn(self.reminder1,reminders_sent)
         self.assertIn(self.reminder3,reminders_sent)
 
     def test_should_send_sms_for_reminders_scheduled_for_the_day(self):
-        send_reminders_on(self.project, self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER)
+        send_reminders_on(self.project, self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
         self.assertEqual(8,self.sms_client.send_sms.call_count)
 
 
     def test_should_send_reminders_to_all_data_senders(self):
-        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER)
+        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
 
         count = 0
         for reminder in [self.reminder1,self.reminder3]:
@@ -74,7 +75,7 @@ class TestScheduler(unittest.TestCase):
         self.reminder1.get_sender_list.return_value = who_have_not_sent_data
         self.reminder3.get_sender_list.return_value = who_have_not_sent_data
 
-        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER)
+        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
 
         count = 0
         for reminder in [self.reminder1,self.reminder3]:
@@ -89,7 +90,7 @@ class TestScheduler(unittest.TestCase):
 #
 #        Reminder.get_reminders_grouped_by_project.return_value = reminders_per_project
 #
-#        send_reminders_for_all_projects()
+#        send_reminders_for_all_projects_for_org()
 #
 #        self.assertEqual(3,send_reminders_on.call_count)
 #        for i,proj in enumerate(all_projects):
