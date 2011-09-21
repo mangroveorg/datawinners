@@ -117,4 +117,20 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Month(6),mode="That")
         self.assertEqual(date(2011,9,6), deadline.current(date(2011,9,18)))
 
+    def test_should_retun_frequency_period_when_deadline_frequency_is_month_and_mode_is_that(self):
+        deadline = Deadline(frequency=Month(6),mode="That")
+        self.assertEqual((date(2011,9,1),date(2011,9,30)), deadline.get_applicable_frequency_period_for(date(2011,9,18)))
+
+    def test_should_retun_frequency_period_when_deadline_frequency_is_month_and_mode_is_following(self):
+        deadline = Deadline(frequency=Month(6),mode="Following")
+        self.assertEqual((date(2011,8,1),date(2011,8,31)), deadline.get_applicable_frequency_period_for(date(2011,9,18)))
+
+#    def test_should_retun_frequency_period_when_deadline_frequency_is_week_and_mode_is_that(self):
+#        deadline = Deadline(frequency=Week(5),mode="That")
+#        self.assertEqual((date(2011,9,12),date(2011,9,18)), deadline.get_applicable_frequency_period_for(date(2011,9,18)))
+#
+#    def test_should_retun_frequency_period_when_deadline_frequency_is_week_and_mode_is_following(self):
+#        deadline = Deadline(frequency=Week(5),mode="Following")
+#        self.assertEqual((date(2011,9,5),date(2011,9,11)), deadline.get_applicable_frequency_period_for(date(2011,9,18)))
+
 

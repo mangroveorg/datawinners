@@ -104,7 +104,7 @@ class Project(DocumentBase):
         all_data = load_all_subjects_of_type(dbm)
         return [data for data in all_data if data['short_name'] in self.data_senders]
 
-    def get_data_senders_without_submissions_for(self,dbm):
+    def get_data_senders_without_submissions_for(self,on_date,dbm):
         return []
 
     def deadline(self):

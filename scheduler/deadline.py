@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
+import calendar
+from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
 
 class Deadline(object):
@@ -19,6 +20,9 @@ class Deadline(object):
             return 1
         return 0
 
+    def get_applicable_frequency_period_for(self, as_of):
+        return self.frequency.get_frequency_period_for(as_of, self.mode)
+
 
 class Month(object):
     def __init__(self,day):
@@ -34,6 +38,14 @@ class Month(object):
 
     def current_date(self, as_of):
         return date(as_of.year, as_of.month, self.day)
+
+    def get_frequency_period_for(self, as_of, mode):
+        target_date = as_of
+        if mode == 'Following':
+            target_date = as_of + relativedelta(months=-1)
+        week_day, last_day = calendar.monthrange(target_date.year,target_date.month)
+
+        return date(target_date.year, target_date.month, 1), date(target_date.year, target_date.month, last_day)
     
 class Week(object):
 #    day is 1-7 ie Mon - Sun
@@ -53,3 +65,8 @@ class Week(object):
         if as_of.isoweekday() > self.day:
             return as_of - timedelta(as_of.isoweekday()-self.day)
         return as_of + timedelta(self.day-as_of.isoweekday())
+
+    def get_frequency_period_for(self, as_of, mode):
+        if mode == 'Following':
+            return
+        return
