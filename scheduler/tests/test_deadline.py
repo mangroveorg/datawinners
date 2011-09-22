@@ -106,9 +106,8 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Week(6),mode="That")
         self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,18)))
 
-    def test_should_return_current_deadline_date_for_that_week_and_asof_post_deadline_day_11(self):
-        deadline = Deadline(frequency=Week(7),mode="That")
-        self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,10)))
+
+
 
     def test_should_return_current_deadline_date_for_this_month_for_following_deadline(self):
         deadline = Deadline(frequency=Month(6),mode="Following")
