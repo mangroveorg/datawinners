@@ -14,13 +14,7 @@ class TestReminders(unittest.TestCase):
         deadline.current.return_value = date(2011, 9, 11)
         self.assertTrue(reminder.should_be_send_on(deadline, today))
 
-    def test_should_return_true_for_reminder_before_deadline_type_if_today_is_two_days_before_deadline_1(self):
-        today = date(2011, 9, 11)
-        # Tuesday deadline, so reminder will be in previous week, deadline is 2011.9.13
-        reminder = Reminder(reminder_mode=ReminderMode.BEFORE_DEADLINE, day=2)
-        deadline = Mock(spec=Deadline)
-        deadline.current.return_value = date(2011, 9, 6)
-        self.assertTrue(reminder.should_be_send_on(deadline, today))
+
 
     def test_should_return_false_for_reminder_before_deadline_type_if_today_is_not_two_days_before_deadline(self):
         today = date(2011, 9, 10)
