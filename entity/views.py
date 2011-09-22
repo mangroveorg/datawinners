@@ -190,9 +190,10 @@ def all_datasenders(request):
 @utils.is_new_user
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
-    project = models.get_project(request.POST.get('project_id'), manager)
-    [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
-    project.save(manager)
+    projects = [models.get_project(project_id, manager) for project_id in request.POST.get('project_id').split(';')]
+    for project in projects:
+        [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
+        project.save(manager)
     return HttpResponse(reverse(all_datasenders))
 
 @csrf_view_exempt
@@ -201,9 +202,10 @@ def disassociate_datasenders(request):
 @utils.is_new_user
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
-    project = models.get_project(request.POST.get('project_id'), manager)
-    project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
-    project.save(manager)
+    projects = [models.get_project(project_id, manager) for project_id in request.POST.get('project_id').split(';')]
+    for project in projects:
+        project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
+        project.save(manager)
     return HttpResponse(reverse(all_datasenders))
 
 def _associate_data_senders_to_project(imported_entities, manager, project_id):

@@ -80,18 +80,20 @@
                 </table>
             </div>
         </div>
-        <label class="inline">{% trans "Projects:" %} </label>
-        <select class="margin_right_20" id='project'>
-            <option value="">--</option>
+        <div id='all_project_block'>
+            <ul class="margin_bottom_20" id="all_projects">
             {% for project in projects %}
-                <option value="{{ project.id }}">{{ project.value.name }}</option>
+               <li><input value="{{ project.id }}" type="checkbox" />{{ project.value.name }}</li>
             {% endfor %}
-        </select>
+            </ul>
+            <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+            <a href="#" class="button">{% trans "Confirm" %}</a>
+        </div>
         <label class="inline margin_left_20">{% trans "Actions:" %} </label>
         <select id='action'>
             <option value="">--</option>
-            <option value="associate">{% trans "Associate" %}</option>
-            <option value="disassociate">{% trans "Dissociate" %}</option>
+            <option value="associate">{% trans "Add to project" %}</option>
+            <option value="disassociate">{% trans "Remove from project" %}</option>
         </select>
         {% if all_data %}
             <h3 class="margin_top_20">{% trans "All Data Senders" %}</h3>
