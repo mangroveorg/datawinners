@@ -55,7 +55,10 @@ class Reminder(models.Model):
 
     def should_be_send_on(self,deadline,on_date):
         assert isinstance(on_date,date)
-        deadline_date = deadline.current(on_date)
+        if self.reminder_mode == ReminderMode.BEFORE_DEADLINE or self.reminder_mode == ReminderMode.ON_DEADLINE:
+            deadline_date = deadline.next_deadline(on_date)
+        else:
+            deadline_date = deadline.current_deadline(on_date)
         if on_date == deadline_date + timedelta(days=self.delta()):
             return True
         return False

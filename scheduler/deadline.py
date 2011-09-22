@@ -11,13 +11,18 @@ class Deadline(object):
         self.frequency = frequency
         self.mode = mode
 
+    def next_deadline(self, as_of):
+        return self.frequency.next_deadline_date(as_of)
+
+    def current_deadline(self, as_of):
+        return self.frequency.current_deadline_date(as_of)
+
     def next(self, as_of):
         return self.frequency.next_date(as_of,self._get_offset())
 
     def current(self, as_of):
         return self.frequency.current_date(as_of)
 
-    #      Deadline class converts the modes "Following" or "That" to the currect offsets.
     def _get_offset(self):
         if self.mode == "Following":
             return 1
@@ -31,7 +36,17 @@ class Month(object):
     def __init__(self,day):
         self.day = day
 
-    #    Offset is any valid offset > 0. Month knows that offset means months.
+    def next_deadline_date(self, as_of):
+        if as_of.day > self.day:
+            as_of = as_of + relativedelta(months=1)
+        if as_of.month == 12:
+            return date(as_of.year + 1, 1, self.day)
+        return date(as_of.year, as_of.month + 1, self.day)
+
+    def current_deadline_date(self, as_of):
+        return date(as_of.year, as_of.month, self.day)
+
+    # Offset is any valid offset > 0. Month knows that offset means months.
     def next_date(self, as_of,offset):
         if as_of.day > self.day and offset == 0:
             return None
@@ -59,6 +74,18 @@ class Week(object):
 
     def __init__(self,day):
         self.day = day
+
+    def next_deadline_date(self, as_of):
+        if as_of.isoweekday() > self.day:
+            as_of = as_of + timedelta(days=7)
+
+        return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(self.day - as_of.isoweekday()))
+
+    def current_deadline_date(self, as_of):
+        if as_of.isoweekday() > self.day:
+            return as_of - timedelta(as_of.isoweekday()-self.day)
+        as_of = as_of + relativedelta(weeks=-1)
+        return as_of + timedelta(self.day-as_of.isoweekday())
 
     def next_date(self, as_of,offset):
         if offset == 1:
