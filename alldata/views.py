@@ -13,9 +13,9 @@ from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
 @utils.is_new_user
-def index(request):
+def index(request, rep_id=None):
     manager = get_database_manager(request.user)
-    rows = models.get_all_projects(dbm=manager)
+    rows = models.get_all_projects(manager, rep_id)
     project_list = []
     for row in rows:
         analysis = log = "#"
@@ -52,3 +52,8 @@ def failed_submissions(request):
     org_logs = [log for log in logs if log.to_number == org_number]
     return render_to_response('alldata/failed_submissions.html', {'logs': org_logs},
                               context_instance=RequestContext(request))
+
+
+def datasender_dashboard(request):
+    
+    pass

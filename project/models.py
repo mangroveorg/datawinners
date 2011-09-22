@@ -205,5 +205,7 @@ def get_project(pid, dbm):
     return dbm._load_document(pid, Project)
 
 
-def get_all_projects(dbm):
+def get_all_projects(dbm, data_sender_id = None):
+    if data_sender_id:
+        return dbm.load_all_rows_in_view('all_projects', startkey=data_sender_id, endkey=data_sender_id)
     return dbm.load_all_rows_in_view('all_projects')
