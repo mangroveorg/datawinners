@@ -190,6 +190,37 @@
         }
     },
     {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "username": "datasender",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-09-22 03:59:19",
+            "groups": [
+                4
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$479cb$ac78931831b974b6f04d49ee6d1564ce57928e9c",
+            "email": "datasender@hni.com",
+            "date_joined": "2011-09-22 03:59:19"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "accountmanagement.datasenderprofile",
+        "fields": {
+            "organization": "SLX364903",
+            "reporter_id": "rep3",
+            "user": 4
+        }
+    },
+    {
         "pk": 1,
         "model": "auth.group",
         "fields": {

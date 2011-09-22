@@ -30,7 +30,7 @@ class NGOUserProfile(models.Model):
 
 class DataSenderProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    org_id = models.CharField(max_length=40)
+    organization = models.ForeignKey(Organization)
     reporter_id = models.CharField(max_length=20)
 
 class SMSC(models.Model):
