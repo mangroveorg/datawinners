@@ -2,6 +2,7 @@
 import calendar
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
+import math
 
 class NotADeadLine(Exception):
     pass
@@ -52,16 +53,16 @@ class Month(object):
         """
         Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
         """
-        if as_of.day > self.day:
+        if as_of.day >= self.day:
             as_of = as_of + relativedelta(months=1)
-        if as_of.month == 12:
-            return date(as_of.year + 1, 1, self.day)
-        return date(as_of.year, as_of.month + 1, self.day)
+        return date(as_of.year, as_of.month, self.day)
 
     def current_deadline_date(self, as_of):
         """
         Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
         """
+        if as_of.day < self.day:
+            as_of = as_of + relativedelta(months=-1)
         return date(as_of.year, as_of.month, self.day)
 
     # Offset is any valid offset > 0. Month knows that offset means months.
@@ -90,7 +91,66 @@ class Month(object):
         week_day, last_day = calendar.monthrange(target_date.year,target_date.month)
 
         return date(target_date.year, target_date.month, 1), date(target_date.year, target_date.month, last_day)
-    
+
+class Quarter(object):
+    def __init__(self,month,day):
+        self.month = month
+        self.day = day
+
+    def next_deadline_date(self, as_of):
+        """
+        Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
+        """
+        as_of_quarter = int(math.ceil(as_of.month / 3.0))
+        target_quarter =  as_of_quarter
+        target_date = as_of
+        if as_of.month >= as_of_quarter * self.month and as_of.day >= self.day:
+            target_date = as_of + relativedelta(months=3)
+            target_quarter = as_of_quarter + 1
+            if target_quarter >= 4: target_quarter = 1
+        return date(target_date.year, target_quarter * self.month, self.day)
+
+    def current_deadline_date(self, as_of):
+        """
+        Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
+        """
+
+        as_of_quarter = int(math.ceil(as_of.month / 3.0))
+        target_quarter =  as_of_quarter
+        target_date = as_of
+        if as_of.month <= as_of_quarter * self.month and as_of.day < self.day:
+            target_date = as_of - relativedelta(months=3)
+            target_quarter = as_of_quarter - 1
+            if target_quarter <= 0: target_quarter = 4
+        return date(target_date.year, target_quarter * self.month, self.day)
+
+    # Offset is any valid offset > 0. Month knows that offset means months.
+    def next_date(self, as_of,offset):
+        """
+        Returns the next deadline for a given frequency period.
+        """
+        if as_of.day > self.day and offset == 0:
+            return None
+        if as_of.month == 12 and offset == 1:
+            return date(as_of.year + 1, offset, self.day)
+        return date(as_of.year, as_of.month + offset, self.day)
+
+    def current_date(self, as_of):
+        """
+        Returns the deadline for a given frequency period.
+        """
+        return date(as_of.year, as_of.month, self.day)
+
+    def get_frequency_period_for(self, as_of, mode):
+        if as_of.day != self.day:
+            raise NotADeadLine
+        target_date = as_of
+        if mode == 'Following':
+            target_date = as_of + relativedelta(months=-1)
+        week_day, last_day = calendar.monthrange(target_date.year,target_date.month)
+
+        return date(target_date.year, target_date.month, 1), date(target_date.year, target_date.month, last_day)
+
 class Week(object):
     #    day is 1-7 ie Mon - Sun
     MONDAY_ISO_WEEKDAY = 1
@@ -103,7 +163,7 @@ class Week(object):
         """
         Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
         """
-        if as_of.isoweekday() > self.day:
+        if as_of.isoweekday() >= self.day:
             as_of = as_of + timedelta(days=7)
 
         return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(self.day - as_of.isoweekday()))
@@ -112,7 +172,7 @@ class Week(object):
         """
         Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
         """
-        if as_of.isoweekday() > self.day:
+        if as_of.isoweekday() >= self.day:
             return as_of - timedelta(as_of.isoweekday()-self.day)
         as_of = as_of + relativedelta(weeks=-1)
         return as_of + timedelta(self.day-as_of.isoweekday())

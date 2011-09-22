@@ -61,7 +61,7 @@ class Reminder(models.Model):
             return self.day
 
     def _get_applicapable_deadline_date(self, deadline, on_date):
-        if self.reminder_mode == ReminderMode.BEFORE_DEADLINE or self.reminder_mode == ReminderMode.ON_DEADLINE:
+        if self.reminder_mode == ReminderMode.BEFORE_DEADLINE:
             return deadline.next_deadline(on_date)
         else:
             return deadline.current_deadline(on_date)

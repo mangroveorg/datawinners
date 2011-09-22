@@ -111,7 +111,7 @@ class TestReminders(unittest.TestCase):
 
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
         reminder.get_sender_list(project, today,None)
-        mock_deadline.next_deadline.assert_called_once_with(today)
+        mock_deadline.current_deadline.assert_called_once_with(today)
 
     def test_should_calculate_frequency_period_for_next_deadline_if_reminder_before_deadline(self):
         today = date(2011, 2, 10)
