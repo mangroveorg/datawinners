@@ -106,6 +106,10 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Week(6),mode="That")
         self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,18)))
 
+    def test_should_return_current_deadline_date_for_that_week_and_asof_post_deadline_day_11(self):
+        deadline = Deadline(frequency=Week(7),mode="That")
+        self.assertEqual(date(2011,9,17), deadline.current(date(2011,9,10)))
+
     def test_should_return_current_deadline_date_for_this_month_for_following_deadline(self):
         deadline = Deadline(frequency=Month(6),mode="Following")
         self.assertEqual(date(2011,9,6), deadline.current(date(2011,9,5)))
@@ -172,3 +176,4 @@ class TestDeadline(TestCase):
     def test_should_get_applicapable_frequency_only_if_given_date_is_a_monthly_deadline(self):
         deadline = Deadline(frequency=Month(2),mode="Following")
         self.assertRaises(  NotADeadLine , deadline.get_applicable_frequency_period_for,date(2011,9,14))
+

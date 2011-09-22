@@ -11,6 +11,7 @@ from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel
+from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
 from mangrove.utils.types import  is_string
 from django.db import models
 
@@ -104,8 +105,9 @@ class Project(DocumentBase):
         all_data = load_all_subjects_of_type(dbm)
         return [data for data in all_data if data['short_name'] in self.data_senders]
 
-    def get_data_senders_without_submissions_for(self,on_date,dbm):
-        return []
+    def get_data_senders_without_submissions_for(self,deadline_date,dbm):
+        start_date,end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
+        return get_reporters_who_submitted_data_for_frequency_period(dbm,self.qid, start_date,end_date)
 
     def deadline(self):
         return Deadline(self._frequency(), self._deadline_type())

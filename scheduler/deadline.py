@@ -17,21 +17,21 @@ class Deadline(object):
     def current(self, as_of):
         return self.frequency.current_date(as_of)
 
-#      Deadline class converts the modes "Following" or "That" to the currect offsets.
+    #      Deadline class converts the modes "Following" or "That" to the currect offsets.
     def _get_offset(self):
         if self.mode == "Following":
             return 1
         return 0
 
-    def get_applicable_frequency_period_for(self, as_of):
-        return self.frequency.get_frequency_period_for(as_of, self.mode)
+    def get_applicable_frequency_period_for(self, deadline_date):
+        return self.frequency.get_frequency_period_for(deadline_date, self.mode)
 
 
 class Month(object):
     def __init__(self,day):
         self.day = day
 
-#    Offset is any valid offset > 0. Month knows that offset means months.
+    #    Offset is any valid offset > 0. Month knows that offset means months.
     def next_date(self, as_of,offset):
         if as_of.day > self.day and offset == 0:
             return None

@@ -7,17 +7,19 @@ from datawinners.scheduler.deadline import Deadline
 
 class TestReminders(unittest.TestCase):
     def test_should_return_true_for_reminder_before_deadline_type_if_today_is_two_days_before_deadline(self):
-        today = date(2011, 2, 10)
+        today = date(2011, 9, 9)
+        # Sunday deadline
         reminder = Reminder(reminder_mode=ReminderMode.BEFORE_DEADLINE, day=2)
         deadline = Mock(spec=Deadline)
-        deadline.current.return_value = date(2011, 2, 12)
+        deadline.current.return_value = date(2011, 9, 11)
         self.assertTrue(reminder.should_be_send_on(deadline, today))
 
     def test_should_return_false_for_reminder_before_deadline_type_if_today_is_not_two_days_before_deadline(self):
-        today = date(2011, 2, 11)
+        today = date(2011, 9, 10)
+        # Sunday deadline
         reminder = Reminder(reminder_mode=ReminderMode.BEFORE_DEADLINE, day=2)
         deadline = Mock(spec=Deadline)
-        deadline.current.return_value = date(2011, 2, 12)
+        deadline.current.return_value = date(2011, 9, 11)
         self.assertFalse(reminder.should_be_send_on(deadline, today))
 
     def test_should_return_true_for_reminder_after_deadline_type_if_today_is_two_days_after_deadline(self):

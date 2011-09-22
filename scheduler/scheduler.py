@@ -14,7 +14,7 @@ from mangrove.datastore.database import get_db_manager
 
 logger = logging.getLogger("datawinners.reminders")
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.reporter import reporters_submitted_data_for_activity_period
+from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
 
 def send_reminders():
     """
@@ -99,7 +99,7 @@ def _send_reminder_to_project_datasenders(dbm, reminder,project):
     questionnaire = FormModel.get(dbm, project.qid)
     from_time, end_time = _get_time_period_for_sending_reminders(project.get_reminder_frequency_period())
     logger.info("Time Period Start: %s, Time Period End: %s" % ( from_time,end_time))
-    datasenders_who_have_sent = [reporter.value('mobile_number') for reporter in reporters_submitted_data_for_activity_period(dbm, questionnaire.form_code, from_time, end_time)]
+    datasenders_who_have_sent = [reporter.value('mobile_number') for reporter in get_reporters_who_submitted_data_for_frequency_period(dbm, questionnaire.form_code, from_time, end_time)]
     logger.info("Total datasenders who have sent: %d" % ( len(datasenders_who_have_sent)))
     for datasender in datasenders:
         if datasender.get('mobile_number') not in datasenders_who_have_sent:
