@@ -62,7 +62,7 @@ class Reminder(models.Model):
 
     def get_sender_list(self,project,on_date,dbm):
         if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
-            deadline_date = project.deadline.current(on_date)
+            deadline_date = project.deadline().current(on_date)
             return project.get_data_senders_without_submissions_for(deadline_date,dbm)
         return project.get_data_senders(dbm)
 
