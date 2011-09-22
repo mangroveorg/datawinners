@@ -3,18 +3,17 @@ from datetime import date
 import unittest
 from mock import Mock
 from datawinners.project.models import Reminder, ReminderMode, Project, RemindTo
-from datawinners.scheduler.deadline import Deadline
+from datawinners.scheduler.deadline import Deadline, Week
 
 class TestReminders(unittest.TestCase):
     def test_should_return_true_for_reminder_before_deadline_type_if_today_is_two_days_before_deadline(self):
         today = date(2011, 9, 9)
         # Sunday deadline
         reminder = Reminder(reminder_mode=ReminderMode.BEFORE_DEADLINE, day=2)
+        deadline = Deadline(frequency=Week(7),mode="That")
         deadline = Mock(spec=Deadline)
         deadline.current.return_value = date(2011, 9, 11)
         self.assertTrue(reminder.should_be_send_on(deadline, today))
-
-
 
     def test_should_return_false_for_reminder_before_deadline_type_if_today_is_not_two_days_before_deadline(self):
         today = date(2011, 9, 10)

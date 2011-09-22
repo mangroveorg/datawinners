@@ -6,6 +6,7 @@ from django.db.models.fields import IntegerField, CharField, BooleanField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
 from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.scheduler import deadline
 from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.documents import DocumentBase
@@ -61,7 +62,8 @@ class Reminder(models.Model):
 
     def get_sender_list(self,project,on_date,dbm):
         if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
-            return project.get_data_senders_without_submissions_for(on_date,dbm)
+            deadline_date = project.deadline.current(on_date)
+            return project.get_data_senders_without_submissions_for(deadline_date,dbm)
         return project.get_data_senders(dbm)
 
     def send(self,sms_client,from_number,on_date,project):
