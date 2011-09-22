@@ -63,6 +63,7 @@ def is_project_inactive(row):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def dashboard(request):
     manager = get_database_manager(request.user)
 

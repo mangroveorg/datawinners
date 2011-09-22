@@ -31,12 +31,13 @@
             </thead>
             {% for project in projects %}
                 <tr>
-                    <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
+                    <td><a href="{{ project.link }}" class='project-id-class {{ project.datasender_link_class }}'>{{ project.name }}</a></td>
                     <td>{{ project.created }}</td>
                     <td>{{ project.type }}</td>
                     <td><span class="report_links"><span class="disable_link"> {% trans "Summary" %} </span> |
-                        <a href="{{ project.analysis }}"class="{{ project.disabled }}">{% trans "Analysis" %}</a>
-                            |<a href="{{ project.log }}" class="{{ project.disabled }}">{% trans "All Data Records" %}</a></span></td>
+                        <a href="{{ project.analysis }}"class="{{ project.disabled }} {{ project.datasender_link_class }}">{% trans "Analysis" %}</a>
+                            |<a href="{{ project.log }}" class="{{ project.disabled}}  {{ project.datasender_link_class}}">{% trans "All Data Records" %}</a>
+                            |<a href="{{ project.web_submission_link }}" class="{{ project.disabled }}">{% trans "Web Submissions" %}</a></span></td>
                 </tr>
             {% endfor %}
         </table>

@@ -27,11 +27,11 @@ class NGOUserProfile(models.Model):
     office_phone = models.TextField(null=True, blank=True)
     mobile_phone = models.TextField(null=True, blank=True)
     skype = models.TextField(null=True)
+    reporter_id = models.CharField(null=True, max_length=20)
 
-class DataSenderProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
-    organization = models.ForeignKey(Organization)
-    reporter_id = models.CharField(max_length=20)
+    @property
+    def reporter(self):
+        return self.reporter_id is not None
 
 class SMSC(models.Model):
     vumi_username = models.TextField()

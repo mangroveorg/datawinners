@@ -94,7 +94,8 @@ class RegistrationBackend(object):
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
                                      organization=organization, office_phone=kwargs.get("office_phone"),
-                                     mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"))
+                                     mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"),
+                                     reporter_id= kwargs.get('reporter_id'))
         return new_user
 
     def registration_allowed(self, request):

@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
@@ -7,15 +8,16 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from datawinners.project.models import ProjectState
-from datawinners.project.views import project_overview, project_data, project_results
+from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
 @utils.is_new_user
-def index(request, rep_id=None):
+def index(request, reporter_id=None):
     manager = get_database_manager(request.user)
-    rows = models.get_all_projects(manager, rep_id)
+    rows = models.get_all_projects(manager, reporter_id)
+    print rows
     project_list = []
     for row in rows:
         analysis = log = "#"
@@ -25,13 +27,16 @@ def index(request, rep_id=None):
         questionnaire = manager.get(project['qid'], FormModel)
         questionnaire_code = questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
+        web_submission_link = reverse(web_questionnaire, args=[project_id])
+        datasender_link_class = "disable_link" if reporter_id is not None else ""
         if project.state != ProjectState.INACTIVE:
             disabled = ""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log = reverse(project_results, args=[project_id, questionnaire_code])
 
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
-                       link=link, log=log, analysis=analysis, disabled=disabled)
+                       link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link,
+                       datasender_link_class=datasender_link_class)
         project_list.append(project)
     return render_to_response('alldata/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))
@@ -55,5 +60,5 @@ def failed_submissions(request):
 
 
 def datasender_dashboard(request):
-    
-    pass
+    reporter_id = request.user.get_profile().reporter_id
+    return HttpResponseRedirect(reverse(index, args=[reporter_id]))

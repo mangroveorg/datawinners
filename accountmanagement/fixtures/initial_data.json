@@ -90,6 +90,19 @@
         }
     } ,
     {
+        "pk": 3,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "mobile_phone": null,
+            "title": "Mr",
+            "org_id": "SLX364903",
+            "office_phone": null,
+            "reporter_id": "rep3",
+            "user": 4,
+            "skype": null
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.organizationsetting",
         "fields": {
@@ -193,31 +206,20 @@
         "pk": 4,
         "model": "auth.user",
         "fields": {
-            "username": "datasender",
+            "username": "datasender@hni.com",
             "first_name": "",
             "last_name": "",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
-            "last_login": "2011-09-22 03:59:19",
+            "last_login": "2011-09-22 07:00:14",
             "groups": [
-                4
+                    4
             ],
-            "user_permissions": [
-
-            ],
-            "password": "sha1$479cb$ac78931831b974b6f04d49ee6d1564ce57928e9c",
+            "user_permissions": [],
+            "password": "sha1$f95ae$955370b0bef18a9e10be9daf8e7f7f18d85d8084",
             "email": "datasender@hni.com",
-            "date_joined": "2011-09-22 03:59:19"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "accountmanagement.datasenderprofile",
-        "fields": {
-            "organization": "SLX364903",
-            "reporter_id": "rep3",
-            "user": 4
+            "date_joined": "2011-09-22 07:00:14"
         }
     },
     {

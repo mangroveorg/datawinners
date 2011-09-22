@@ -2,6 +2,7 @@
 
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
@@ -10,6 +11,7 @@ import datawinners
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from django.contrib.auth.views import login
+from datawinners.alldata.views import datasender_dashboard
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -36,7 +38,7 @@ def is_datasender(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if not user.groups.filter(name="Data Senders").count() > 0:
-            return HttpResponseRedirect(datawinners.settings.DATASENDER_DASHBOAD)
+            return HttpResponseRedirect(reverse(datasender_dashboard))
 
         return f(*args, **kw)
 

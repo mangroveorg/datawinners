@@ -10,5 +10,6 @@ def ngo_user_created(sender, user, request, **kwargs):
     data.office_phone = kwargs['office_phone']
     data.mobile_phone = kwargs['mobile_phone']
     data.skype = kwargs['skype']
+    data.reporter_id = kwargs['reporter_id']
     data.user = user
     data.save()
