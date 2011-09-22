@@ -32,6 +32,16 @@ def is_admin(f):
 
     return wrapper
 
+def is_datasender(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        if not user.groups.filter(name="Data Senders").count() > 0:
+            return HttpResponseRedirect(datawinners.settings.DATASENDER_DASHBOAD)
+
+        return f(*args, **kw)
+
+    return wrapper
+
 
 @login_required(login_url='/login')
 @is_admin

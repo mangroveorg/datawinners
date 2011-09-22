@@ -212,5 +212,13 @@
             "name": "Read Only Users",
             "permissions": []
         }
+    },
+    {
+        "pk": 4,
+        "model": "auth.group",
+        "fields":{
+            "name": "Data Senders",
+            "permissions": []
+        }
     }
 ]

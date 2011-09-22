@@ -28,6 +28,10 @@ class NGOUserProfile(models.Model):
     mobile_phone = models.TextField(null=True, blank=True)
     skype = models.TextField(null=True)
 
+class DataSenderProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    org_id = models.CharField(max_length=40)
+    reporter_id = models.CharField(max_length=20)
 
 class SMSC(models.Model):
     vumi_username = models.TextField()
