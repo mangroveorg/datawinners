@@ -34,10 +34,6 @@ class Reminder(models.Model):
     voided = BooleanField(default=False)
     remind_to = CharField(null=False, blank=False, max_length=50, default=RemindTo.ALL_DATASENDERS)
 
-    @staticmethod
-    def get_reminders_grouped_by_project():
-        pass
-
     def to_dict(self):
         return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'remind_to': self.remind_to}
 
@@ -45,7 +41,18 @@ class Reminder(models.Model):
         self.voided = void
         self.save()
 
-    def delta(self):
+    def should_be_send_on(self,deadline,on_date):
+        assert isinstance(on_date,date)
+        deadline_date = self._get_applicapable_deadline_date(deadline, on_date)
+        return on_date == deadline_date + timedelta(days=self._delta())
+
+    def get_sender_list(self,project,on_date,dbm):
+        if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
+            deadline_date = self._get_applicapable_deadline_date(project.deadline(), on_date)
+            return project.get_data_senders_without_submissions_for(deadline_date,dbm)
+        return project.get_data_senders(dbm)
+
+    def _delta(self):
         if self.reminder_mode == ReminderMode.ON_DEADLINE:
             return 0
         if self.reminder_mode == ReminderMode.BEFORE_DEADLINE:
@@ -53,24 +60,12 @@ class Reminder(models.Model):
         if self.reminder_mode == ReminderMode.AFTER_DEADLINE:
             return self.day
 
-    def should_be_send_on(self,deadline,on_date):
-        assert isinstance(on_date,date)
+    def _get_applicapable_deadline_date(self, deadline, on_date):
         if self.reminder_mode == ReminderMode.BEFORE_DEADLINE or self.reminder_mode == ReminderMode.ON_DEADLINE:
-            deadline_date = deadline.next_deadline(on_date)
+            return deadline.next_deadline(on_date)
         else:
-            deadline_date = deadline.current_deadline(on_date)
-        if on_date == deadline_date + timedelta(days=self.delta()):
-            return True
-        return False
+            return deadline.current_deadline(on_date)
 
-    def get_sender_list(self,project,on_date,dbm):
-        if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
-            deadline_date = project.deadline().current(on_date)
-            return project.get_data_senders_without_submissions_for(deadline_date,dbm)
-        return project.get_data_senders(dbm)
-
-    def send(self,sms_client,from_number,on_date,project):
-        pass
 
 
 class ProjectState(object):

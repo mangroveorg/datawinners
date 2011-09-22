@@ -99,6 +99,37 @@ class TestReminders(unittest.TestCase):
         project = Mock(spec=Project)
         expected_sender_list = [data_senders[0], data_senders[2]]
         project.get_data_senders_without_submissions_for.return_value = expected_sender_list
+
         reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
         self.assertEqual(expected_sender_list, reminder.get_sender_list(project, today,None))
+
+    def test_should_calculate_frequency_period_for_next_deadline_if_reminder_on_deadline(self):
+        today = date(2011, 2, 10)
+        project = Mock(spec=Project)
+        mock_deadline = Mock(spec=Deadline)
+        project.deadline.return_value = mock_deadline
+
+        reminder = Reminder(reminder_mode=ReminderMode.ON_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
+        reminder.get_sender_list(project, today,None)
+        mock_deadline.next_deadline.assert_called_once_with(today)
+
+    def test_should_calculate_frequency_period_for_next_deadline_if_reminder_before_deadline(self):
+        today = date(2011, 2, 10)
+        project = Mock(spec=Project)
+        mock_deadline = Mock(spec=Deadline)
+        project.deadline.return_value = mock_deadline
+
+        reminder = Reminder(reminder_mode=ReminderMode.BEFORE_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
+        reminder.get_sender_list(project, today,None)
+        mock_deadline.next_deadline.assert_called_once_with(today)
+
+    def test_should_calculate_frequency_period_for_current_deadline_if_reminder_after_deadline(self):
+        today = date(2011, 2, 10)
+        project = Mock(spec=Project)
+        mock_deadline = Mock(spec=Deadline)
+        project.deadline.return_value = mock_deadline
+
+        reminder = Reminder(reminder_mode=ReminderMode.AFTER_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
+        reminder.get_sender_list(project, today,None)
+        mock_deadline.current_deadline.assert_called_once_with(today)
 

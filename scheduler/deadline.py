@@ -12,15 +12,27 @@ class Deadline(object):
         self.mode = mode
 
     def next_deadline(self, as_of):
+        """
+        Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
+        """
         return self.frequency.next_deadline_date(as_of)
 
     def current_deadline(self, as_of):
+        """
+        Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
+        """
         return self.frequency.current_deadline_date(as_of)
 
     def next(self, as_of):
+        """
+        Returns the next deadline for a given frequency period.
+        """
         return self.frequency.next_date(as_of,self._get_offset())
 
     def current(self, as_of):
+        """
+        Returns the deadline for a given frequency period.
+        """
         return self.frequency.current_date(as_of)
 
     def _get_offset(self):
@@ -37,6 +49,9 @@ class Month(object):
         self.day = day
 
     def next_deadline_date(self, as_of):
+        """
+        Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
+        """
         if as_of.day > self.day:
             as_of = as_of + relativedelta(months=1)
         if as_of.month == 12:
@@ -44,10 +59,16 @@ class Month(object):
         return date(as_of.year, as_of.month + 1, self.day)
 
     def current_deadline_date(self, as_of):
+        """
+        Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
+        """
         return date(as_of.year, as_of.month, self.day)
 
     # Offset is any valid offset > 0. Month knows that offset means months.
     def next_date(self, as_of,offset):
+        """
+        Returns the next deadline for a given frequency period.
+        """
         if as_of.day > self.day and offset == 0:
             return None
         if as_of.month == 12 and offset == 1:
@@ -55,6 +76,9 @@ class Month(object):
         return date(as_of.year, as_of.month + offset, self.day)
 
     def current_date(self, as_of):
+        """
+        Returns the deadline for a given frequency period.
+        """
         return date(as_of.year, as_of.month, self.day)
 
     def get_frequency_period_for(self, as_of, mode):
@@ -76,18 +100,27 @@ class Week(object):
         self.day = day
 
     def next_deadline_date(self, as_of):
+        """
+        Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
+        """
         if as_of.isoweekday() > self.day:
             as_of = as_of + timedelta(days=7)
 
         return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(self.day - as_of.isoweekday()))
 
     def current_deadline_date(self, as_of):
+        """
+        Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
+        """
         if as_of.isoweekday() > self.day:
             return as_of - timedelta(as_of.isoweekday()-self.day)
         as_of = as_of + relativedelta(weeks=-1)
         return as_of + timedelta(self.day-as_of.isoweekday())
 
     def next_date(self, as_of,offset):
+        """
+        Returns the next deadline for a given frequency period.
+        """
         if offset == 1:
             as_of = as_of + timedelta(days=7)
 
@@ -97,6 +130,9 @@ class Week(object):
         return date(as_of.year, as_of.month, as_of.day) + timedelta(days=(self.day - as_of.isoweekday()))
 
     def current_date(self, as_of):
+        """
+        Returns the deadline for a given frequency period.
+        """
         if as_of.isoweekday() > self.day:
             return as_of - timedelta(as_of.isoweekday()-self.day)
         return as_of + timedelta(self.day-as_of.isoweekday())
