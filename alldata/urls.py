@@ -5,6 +5,7 @@ from datawinners.alldata.views import failed_submissions
 
 urlpatterns = patterns('',
     (r'^alldata/(?P<reporter_id>.+?)/$', index),
+    (r'^alldata/$', index),
     (r'^allfailedsubmissions$', failed_submissions),
     (r'^datasenderdasboard/$', datasender_dashboard),
 )
