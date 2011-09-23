@@ -32,15 +32,14 @@ def get_excel_sheet(raw_data, sheet_name):
     return wb
 
 def is_new_user(f):
-
     def wrapper(*args, **kw):
-        print args
-        if not len(get_all_projects(get_database_manager(args[0].user))):
+        user = args[0].user
+        if not len(get_all_projects(get_database_manager(args[0].user))) and not user.groups.filter(
+            name="Data Senders").count() > 0:
             return HttpResponseRedirect("/start?page=" + args[0].path)
 
-        print args
-        print kw
         return f(*args, **kw)
+
     return wrapper
 
 

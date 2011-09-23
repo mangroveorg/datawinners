@@ -17,7 +17,6 @@ from datawinners.submission.models import DatawinnerLog
 def index(request, reporter_id=None):
     manager = get_database_manager(request.user)
     rows = models.get_all_projects(manager, reporter_id)
-    print rows
     project_list = []
     for row in rows:
         analysis = log = "#"
