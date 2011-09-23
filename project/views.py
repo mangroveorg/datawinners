@@ -659,9 +659,10 @@ def _create_submission_request(form_model, request):
     return submission_request
 
 
-def _make_form_context(questionnaire_form, project, form_code):
+def _make_form_context(questionnaire_form, project, form_code, disable_link_class):
     return {'questionnaire_form': questionnaire_form, 'project': project,
-            'project_links': _make_project_links(project, form_code)}
+            'project_links': _make_project_links(project, form_code),
+            'disable_link_class': disable_link_class}
 
 
 def _create_select_field(field, choices):
@@ -709,9 +710,9 @@ def _create_request(questionnaire_form, username):
                    ))
 
 
-def _get_response(form_code, project, questionnaire_form, request):
+def _get_response(form_code, project, questionnaire_form, request, disable_link_class):
     return render_to_response('project/web_questionnaire.html',
-                              _make_form_context(questionnaire_form, project, form_code),
+                              _make_form_context(questionnaire_form, project, form_code, disable_link_class),
                               context_instance=RequestContext(request))
 
 
@@ -722,15 +723,18 @@ def web_questionnaire(request, project_id=None):
     form_model = helper.load_questionnaire(manager, project.qid)
 
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
-
+    disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
+    print request.user.username
+    print "hello"
+    print disable_link_class
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(form_model.form_code, project, questionnaire_form, request)
+        return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(form_model.form_code, project, questionnaire_form, request)
+            return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
         success_message = None
         error_message = None
@@ -741,12 +745,12 @@ def web_questionnaire(request, project_id=None):
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = _to_list(response.errors)
-                return _get_response(form_model.form_code, project, questionnaire_form, request)
+                return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
 
-        _project_context = _make_form_context(questionnaire_form, project, form_model.form_code)
+        _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})
         return render_to_response('project/web_questionnaire.html', _project_context,
                                   context_instance=RequestContext(request))

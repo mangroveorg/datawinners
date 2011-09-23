@@ -37,7 +37,7 @@ def is_admin(f):
 def is_datasender(f):
     def wrapper(*args, **kw):
         user = args[0].user
-        if not user.groups.filter(name="Data Senders").count() > 0:
+        if user.groups.filter(name="Data Senders").count() > 0:
             return HttpResponseRedirect(reverse(datasender_dashboard))
 
         return f(*args, **kw)

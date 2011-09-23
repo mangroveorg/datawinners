@@ -213,7 +213,9 @@ span.tooltip {
   background: url(/media/images/help_arrow.png) no-repeat left bottom; }
 
 .disable_link {
-  color: #CCCCCC; }
+  color: #CCCCCC;
+  pointer-events: none;
+  cursor: default; }
   .disable_link:hover {
     text-decoration: none;
     color: #CCCCCC;

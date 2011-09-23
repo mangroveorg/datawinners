@@ -240,6 +240,8 @@ span.tooltip{
 
 .disable_link{
     color: #CCCCCC;
+    pointer-events: none;
+    cursor:default;
     &:hover{
         text-decoration:none;
         color:#CCCCCC;

@@ -9,9 +9,9 @@
                         <p>{% trans "You can view and edit your user profile and manage your organization's account (if you are authorized)." %}</p>
                     </div>
                     <span class="welcome">{% trans "Welcome" %} {{ user.first_name }}! </span>
-                    <span><a href="{% url accountmanagement.views.edit_user %}">{% trans "Your Profile" %}</a></span>
+                    <span><a href="{% url accountmanagement.views.edit_user %}" class="{{ disable_link_class }}">{% trans "Your Profile" %}</a></span>
                     {% if user.groups.all.0.name == 'NGO Admins' %}
-                        <span><a href="{% url accountmanagement.views.settings %}">{% trans "wizard_account" %}</a></span>
+                        <span><a href="{% url accountmanagement.views.settings %}" class="{{ disable_link_class }}">{% trans "wizard_account" %}</a></span>
                     {% endif %}
                     <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
                     <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>

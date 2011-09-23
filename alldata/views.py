@@ -18,6 +18,7 @@ def index(request, reporter_id=None):
     manager = get_database_manager(request.user)
     rows = models.get_all_projects(manager, reporter_id)
     project_list = []
+    disable_link_class = "disable_link" if reporter_id is not None else ""
     for row in rows:
         analysis = log = "#"
         disabled = "disable_link"
@@ -27,17 +28,15 @@ def index(request, reporter_id=None):
         questionnaire_code = questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
         web_submission_link = reverse(web_questionnaire, args=[project_id])
-        datasender_link_class = "disable_link" if reporter_id is not None else ""
         if project.state != ProjectState.INACTIVE:
             disabled = ""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log = reverse(project_results, args=[project_id, questionnaire_code])
 
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
-                       link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link,
-                       datasender_link_class=datasender_link_class)
+                       link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link)
         project_list.append(project)
-    return render_to_response('alldata/index.html', {'projects': project_list},
+    return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class},
                               context_instance=RequestContext(request))
 
 
