@@ -25,10 +25,10 @@
                 <p class="content italic">{{ example_sms }}</p>
             </li>
         </ul>
-        <ol class="questionnaire_preview">
+        <ul class="questionnaire_preview">
             {% for question in questions %}
                 <li>
-                    <h6>{{ question.description }}<span> .{{ question.code }}</span></h6>
+                    <h6><span> .{{ question.code }}</span> {{ question.description }}</h6>
                     {% if  question.instruction %}
                         <p class="instructions italic">
                             {{ question.instruction }}
@@ -54,7 +54,7 @@
                     </div>
                 </li>
             {% endfor %}
-        </ol>
+        </ul>
     </div>
     <script>
         $(document).ready(function() {
