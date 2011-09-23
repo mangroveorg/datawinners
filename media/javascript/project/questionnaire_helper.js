@@ -118,7 +118,7 @@ DW.question.prototype = {
     }
 };
 
-DW.current_code = 1;
+DW.current_code = 2;
 
 DW.generateQuestionCode = function() {
     return "q" + DW.current_code++;
