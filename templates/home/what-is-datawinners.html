@@ -1,0 +1,29 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} What Is DataWinners {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "datawinners" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+What is DataWinners
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>WHAT IS DATAWINNERS</h1>
+    <ul>
+        <li><a href="/what-is-datawinners/features">Features</a></li>
+        <li><a href="/what-is-datawinners/how-it-works">How it works</a></li>
+        <li><a href="/what-is-datawinners/benefits">Benefits</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

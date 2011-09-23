@@ -1,0 +1,96 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Maternal and Child Health {% endblock %}
+{% block page_theme %} Public Health, Madagascar {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "success" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+Success Stories &gt; Santenet2
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>SUCCESS STORIES</h1>
+    <ul>
+        <li class="active"><a href="/success-story/santenet2">Santenet2</a></li>
+        <li><a href="/success-story/msi">MSI</a></li>
+        <li><a href="/success-story/bngrc">BNGRC</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <div class="left_content">
+            <div align="center">
+                <em>&copy; RTI/Sant&eacute;net2: A Community Health Worker with patient</em>
+            </div>
+            <h2>About the Project</h2>
+
+            <p>The Sant&eacute;net2 project is a major public health initiative in Madagascar implemented by RTI International
+                and funded by USAID.
+                <br/>The scale and scope of the project is enormous. The intervention zones covers over 60% of
+                Madagascar and includes 6,000 villages located in mostly remote, rural areas.
+                <br/>Project staff has trained more than 12,000 community-based health workers to:</p>
+            <ul>
+                <li>Improve child survival, maternal health, and nutrition;</li>
+                <li>Reduce unintended pregnancy and improve healthy reproductive behavior;</li>
+                <li>Reduce transmission and impact of HIV/AIDS</li>
+            </ul>
+
+            <h2>The Challenge</h2>
+
+            <p>The RTI/Sant&eacute;net2 project has major reporting requirements, yet Madagascar’s underdeveloped
+                infrastructure makes data collection a challenge.
+                <br/>Every month, each of the 12,000 community-based health workers filled out a paper form summarizing
+                their monthly results (e.g. Number of sick children visited).
+                <br/>Then, 200 supervisors visited 4-5 communes each month to add up this data and email the results to
+                RTI/Sant&eacute;net2 headquarters.
+                <br/>Reporting rates were poor; less than 5% of all health data arrived at the project's headquarters.
+                Early on, Dr. Volkan Cakir, Director of the Project, recognized a need for change: “From the beginning,
+                we knew we had to innovate to be able to report on our success.”</p>
+
+            <h2>Action Taken</h2>
+
+            <p>Like much of Africa, Madagascar’s mobile telephone coverage is good; Most of the 200 supervisors own an
+                inexpensive phone.
+                <br/>RTI/Sant&eacute;net2 staff decided to put mobile technology to work. They hired HNI to create a mobile
+                phone reporting system and help them select 12 key indicators (e.g. Number of children diagnosed with
+                Malaria). They trained the 200 supervisors to SMS monthly commune level aggregated data to RTI/Sant&eacute;net2
+                headquarter database.</p>
+
+            <h2>The Result</h2>
+
+            <p>Since launching the new data collection initiative in June 2010, 97% of the project's supervisors have
+                reported data via SMS at least once. This is an impressive achievement compared to the 5% reporting rate
+                before.
+                <br/>Two-thirds of the supervisors now report consistently and each month, the successful submission
+                rate improves. </p>
+
+            <p>“Thanks to our partnership with HNI, and the hard work of our senior staff, we now have the data we need
+                to report to USAID on macro-level indicators.
+                <br/>We no longer have to extrapolate; data from the field show our community health workers treated
+                more than 100,000 cases of childhood illness in twelve months, and almost 80,000 women are using
+                community based Family Planning services.”
+                - Dr. Volkan Cakir, Director of the Project, The Sant&eacute;net2 Project</p>
+
+        </div>
+        <div class="right_content">
+            <div>
+                <div class="block_1">
+                    <h1>About RTI</h1>
+
+                    <p>
+                        RTI International is an independent, nonprofit research institute that provides research and technical services to government and commercial clients worldwide.
+                        <br/><a href="http://www.rti.org" target="_blank">http://www.rti.org</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

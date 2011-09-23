@@ -1,0 +1,88 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Family Planning and Reproductive Healthcare {% endblock %}
+{% block page_theme %} Public Health, Madagascar {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "success" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+Success Stories &gt; MSI
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>SUCCESS STORIES</h1>
+    <ul>
+        <li><a href="/success-story/santenet2">Santenet2</a></li>
+        <li class="active"><a href="/success-story/msi">MSI</a></li>
+        <li><a href="/success-story/bngrc">BNGRC</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <div class="left_content">
+            <h2>About the Project</h2>
+
+            <p>Marie Stopes Madagascar (MSM) has partnered with more than 100 private doctors and clinics throughout
+                Madagascar, collectively known as the BlueStar Network, to provide family planning and reproductive
+                healthcare for low-income women and couples. </p>
+
+            <h2>The Challenge</h2>
+
+            <p>In the past, MSM collected data from each of the 100+ doctors using a paper-based system. However, MSM
+                found this method error-prone, expensive and unreliable.
+                <br/>Data arrived at headquarters sporadically, making trend analysis impossible. Overall, MSM received
+                less than half of all required reports.
+                <br/>To expand the network and collect data from even more remote rural areas, MSM needed a new tool.
+            </p>
+
+            <h2>Action Taken</h2>
+
+            <p>MSM hired HNI to build its own internal capacity to collect data electronically.
+                <br/>Together with HNI, MSM staff chose a list of important monthly indicators (e.g. client
+                contraceptive choice by method). HNI built and installed the new application. Right away, MSM began
+                collecting valuable data from the doctors. </p>
+
+            <h2>The Result</h2>
+
+            <p>Now, more than 95% of all doctors send in their monthly reports via SMS by the specified deadline,
+                compared with less than half prior to HNI’s intervention. </p>
+
+            <p>“We needed timely, accurate and complete data on a monthly basis from our doctors.
+                <br/>Once we had a solid baseline over several months for each doctor, we started analyzing which of our
+                marketing efforts directly led to spikes in clients seen.
+                <br/>Thanks to HNI, we now have a much better idea where to spend our limited resources.” - Miles
+                Kemplay, Country Director of MSM.</p>
+
+            <p>MSM management noted 2 additional advantages to SMS-based data collection. </p>
+            <ol>
+                <li>Doctors report motivational benefits from the confirmation messages they receive in response to
+                    submitted data.
+                </li>
+                <li>Regular reporting via mobile phones has helped network members grow accustomed to using technology
+                    as a part of their professional lives.
+                </li>
+            </ol>
+
+            <p>“We have many ideas regarding how to use technology in our work…stay tuned!” reported Miles Kemplay.</p>
+        </div>
+        <div class="right_content">
+            <div>
+                <div class="block_1">
+                    <h1>About MSM</h1>
+
+                    <p>
+                       Marie Stopes Madagascar is a not-for-profit, non-governmental organization that provides family planning and reproductive healthcare for low-income women and couples throughout Madagascar. They have 15 health centers, and more than 100 private sector doctors offering reproductive health services and consulting.
+                        <br/><a href="http://www.mariestopes.mg" target="_blank">http://www.mariestopes.mg</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

@@ -16,8 +16,8 @@
         <div id="container_page_title">
             <div class="container_24">
                 <div id="page_title">
-                    {% block page_title %}
-                    {% endblock %}
+                    <span class="theme">{% block page_theme %}{% endblock %}</span>
+                    <h1>{% block page_title %}{% endblock %}</h1>
                 </div>
             </div>
         </div>

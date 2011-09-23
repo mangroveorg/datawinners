@@ -66,57 +66,116 @@ body {
   background: url("/media/images/dw_pattern_bg.gif") repeat left top;
   height: 330px;
   overflow: hidden; }
-  #container_home_carousel #carousel_title {
-    margin: 30px 0 15px 0;
-    background: url("/media/images/dw_title_slide_bg.png") no-repeat left 15px; }
-    #container_home_carousel #carousel_title div {
-      margin: 0 20px -10px 0;
-      text-align: right;
-      font-weight: bold;
-      font-size: 11px; }
-    #container_home_carousel #carousel_title a {
-      color: #818181; }
-    #container_home_carousel #carousel_title h1 {
-      margin: 0;
-      font-size: 20px;
-      color: #444;
-      text-shadow: #ffffff 0 1px 1px; }
-  #container_home_carousel #carousel {
-    width: 810px;
-    margin: 0 auto; }
-    #container_home_carousel #carousel .container_carousel {
-      width: 270px;
-      height: 210px;
-      float: left; }
-      #container_home_carousel #carousel .container_carousel .carousel {
-        margin: 0 auto;
-        width: 216px;
-        height: 210px;
-        overflow: hidden;
-        text-align: left;
-        color: #043e6a;
+  #container_home_carousel #home_carousel {
+    position: relative;
+    width: 960px; }
+    #container_home_carousel #home_carousel #carousel_title {
+      margin: 30px 0 15px 0;
+      background: url("/media/images/dw_title_slide_bg.png") no-repeat left 15px; }
+      #container_home_carousel #home_carousel #carousel_title div {
+        margin: 0 20px -10px 0;
+        text-align: right;
         font-weight: bold;
-        font-size: 14px;
-        line-height: 16px; }
-        #container_home_carousel #carousel .container_carousel .carousel .container_photo {
+        font-size: 11px; }
+      #container_home_carousel #home_carousel #carousel_title a {
+        color: #818181; }
+      #container_home_carousel #home_carousel #carousel_title h1 {
+        margin: 0;
+        font-size: 20px;
+        color: #444;
+        text-shadow: #ffffff 0 1px 1px; }
+    #container_home_carousel #home_carousel #carousel {
+      width: 810px;
+      margin: 0 auto;
+      position: relative; }
+      #container_home_carousel #home_carousel #carousel .container_carousel {
+        width: 270px;
+        height: 210px;
+        position: relative;
+        float: left; }
+        #container_home_carousel #home_carousel #carousel .container_carousel .carousel {
+          margin: 0 auto;
           width: 216px;
-          height: 151px;
+          height: 210px;
           overflow: hidden;
-          background: url("/media/images/dw_carousel_bg.png") no-repeat left top;
-          text-align: center; }
-          #container_home_carousel #carousel .container_carousel .carousel .container_photo .photo {
-            width: 206px;
-            height: 122px;
+          text-align: left;
+          color: #043e6a;
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 16px; }
+          #container_home_carousel #home_carousel #carousel .container_carousel .carousel .container_photo {
+            width: 216px;
+            height: 151px;
             overflow: hidden;
-            margin: 16px auto 0 auto; }
-        #container_home_carousel #carousel .container_carousel .carousel h2 {
+            background: url("/media/images/dw_carousel_bg.png") no-repeat left top;
+            text-align: center; }
+            #container_home_carousel #home_carousel #carousel .container_carousel .carousel .container_photo .photo {
+              width: 206px;
+              height: 122px;
+              overflow: hidden;
+              margin: 16px auto 0 auto; }
+          #container_home_carousel #home_carousel #carousel .container_carousel .carousel h2 {
+            font-size: 11px;
+            color: #555;
+            margin: 0;
+            text-transform: uppercase; }
+          #container_home_carousel #home_carousel #carousel .container_carousel .carousel a {
+            color: #043e6a; }
+          #container_home_carousel #home_carousel #carousel .container_carousel .carousel .text {
+            padding: 0 10px; }
+        #container_home_carousel #home_carousel #carousel .container_carousel .plus {
+          position: absolute;
+          top: -5px;
+          right: 15px;
+          width: 40px;
+          height: 40px; }
+    #container_home_carousel #home_carousel .carousel_popup {
+      width: 600px;
+      position: absolute;
+      top: 0;
+      left: 180px;
+      display: none; }
+      #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content {
+        background: url("/media/images/dw_popup_bd2.png") repeat-y left top;
+        padding: 3px 20px;
+        text-align: left; }
+        #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_left {
+          width: 300px;
+          float: left;
+          line-height: 14px; }
+          #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_left h1 {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #043E6A;
+            line-height: 16px; }
+          #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_left h2 {
+            font-size: 11px;
+            color: #555;
+            margin: 0;
+            text-transform: uppercase; }
+          #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_left ul {
+            margin: 10px 20px;
+            padding: 0 10px; }
+          #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_left li {
+            float: none;
+            list-style-type: disc; }
+          #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_left .more {
+            color: #043E6A; }
+        #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_right {
+          width: 240px;
+          float: right;
           font-size: 11px;
-          color: #555;
-          margin: 0; }
-        #container_home_carousel #carousel .container_carousel .carousel a {
-          color: #043e6a; }
-        #container_home_carousel #carousel .container_carousel .carousel .text {
-          padding: 0 10px; }
+          line-height: 15px;
+          color: #333; }
+          #container_home_carousel #home_carousel .carousel_popup .carousel_popup_content .carousel_popup_right span {
+            color: #555;
+            font-weight: bold; }
+      #container_home_carousel #home_carousel .carousel_popup .close {
+        position: absolute;
+        top: -8px;
+        right: 0;
+        width: 40px;
+        height: 40px; }
 
 #container_home_how {
   background: #ebf1f6 url("/media/images/dw_how_bg.gif") repeat-x left top;
@@ -143,10 +202,18 @@ body {
   #container_page_title #page_title {
     width: 720px;
     float: right;
-    padding-top: 65px;
-    font-size: 32px;
-    color: #010101;
-    font-weight: bold; }
+    padding-top: 60px; }
+    #container_page_title #page_title h1 {
+      font-size: 28px;
+      color: #010101;
+      font-weight: bold;
+      margin: 0;
+      line-height: 34px; }
+    #container_page_title #page_title .theme {
+      color: #555;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase; }
 
 #container_breadcrumbs {
   height: 55px;
@@ -236,3 +303,6 @@ body {
           margin: 5px 0 0 0;
           font-size: 14px;
           color: #333333; }
+    #container_main_content #main_content ol {
+      margin: 0 20px;
+      padding: 0 10px; }

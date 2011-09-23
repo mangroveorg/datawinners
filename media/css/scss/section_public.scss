@@ -243,10 +243,20 @@ body{
     #page_title{
         width:720px;
         float:right;
-        padding-top:65px;
-        font-size:32px;
-        color:#010101;
-        font-weight:bold;
+        padding-top:60px;
+        h1{
+            font-size:28px;
+            color:#010101;
+            font-weight:bold;
+            margin:0;
+            line-height:34px;
+        }
+        .theme{
+            color:#555;
+            font-size:11px;
+            font-weight:bold;
+            text-transform:uppercase;
+        }
     }
 }
 #container_breadcrumbs {
@@ -363,6 +373,10 @@ body{
                     color:#333333;
                 }
             }
+        }
+        ol{
+            margin:0 20px;
+            padding:0 10px;
         }
     }
 }
