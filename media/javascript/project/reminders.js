@@ -42,6 +42,8 @@ function viewModel() {
     this.remindersToSave = [];
     this.addReminder = function() {
         this.reminders.push(new reminder("", "", "", "on_deadline", this,'all_datasenders'));
+        $("#review_section").accordion("destroy").accordion({header:'.header',collapsible: true} );
+        $("#review_section").accordion("activate",this.reminders().length -1);
     }
     this.save = function() {
         var shouldSave = true;
