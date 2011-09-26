@@ -1,4 +1,5 @@
 {% load i18n %}
+<form action="">
 <span id="project_id" style="display: none;">{{ project_id }}</span>
 <span class="success_message"></span>
 <div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
@@ -7,13 +8,14 @@
     </div>
     <div class="submit-buttons">
     <button class="button" data-bind="click: addReminder">{% trans "Add Reminder" %}</button>
-    <button class="button" data-bind="click: save">{% trans "Save the reminders" %}</button>
+    <button class="button" type="submit">{% trans "Save the reminders" %}</button>
     </div>
 
 </div>
 <div style="display:{% if is_reminder %} none; {% else %} block; {% endif %}">
     {% trans "Reminders are not enabled for this project Please proceed to the next <a>step</a>" %}
 </div>
+</form>
 <script type="text/html" id="reminderTemplate">
         <div class="header">
             <h5 data-bind="text: header()"></h5>
@@ -23,13 +25,14 @@
             <span>{% trans "When" %}</span>
         <ul>
             <li>
-                <input type="radio" value="before_deadline" data-bind="checked: reminderMode"><input
-                    data-bind="value: beforeDay, valueUpdate:'keyup', enable: selectBeforeDay"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+                <input type="radio" value="before_deadline" data-bind="checked: reminderMode">
+                <input
+                    data-bind="value: beforeDay, valueUpdate:'keyup', enable: selectBeforeDay,uniqueName:true" class="required number"/> {% trans "day(s) <strong>before</strong> the deadline" %}
             </li>
             <li><input type="radio" value="on_deadline" data-bind="checked: reminderMode">{% trans "On the deadline" %}
             </li>
             <li><input type="radio" value="after_deadline" data-bind="checked: reminderMode"><input
-                    data-bind="value: afterDay, valueUpdate:'keyup', enable: selectAfterDay"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+                    data-bind="value: afterDay, valueUpdate:'keyup', enable: selectAfterDay,uniqueName:true" class="required number"/> {% trans "day(s) <strong>after</strong> the deadline" %}
             </li>
         </ul>
         <br><span id="newDay_err" class="error_message"></span>
@@ -44,8 +47,8 @@
         </p>
 
         <p class="reminder_content">
-            <textarea data-bind="value: message, valueUpdate: 'keyup'" placeholder="Message"
-                      maxlength="160"/>
+            <textarea data-bind="value: message, valueUpdate: 'keyup',uniqueName:true" placeholder="Message"
+                      maxlength="160" class="required"/>
             </textarea>
             {% trans "The message count is" %} <span data-bind="text: message().length"></span>
             <br><span id="newMessage_err" class="error_message"></span>

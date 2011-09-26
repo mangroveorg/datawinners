@@ -121,6 +121,11 @@ function viewModel() {
     });
 }
 
-ko.applyBindings(new viewModel());
+    var viewmodel = new viewModel();
+    ko.applyBindings(viewmodel);
+
+    // calls viewmodel.save only on jquery validate success.
+    $("form").validate({ submitHandler: function () { viewmodel.save() } });
+    
 });
 
