@@ -38,8 +38,8 @@
         <p class="reminder_content">
             {% trans "To Whom" %}
         <ul>
-            <li><input data-bind="checked: targetDataSenders" name="target_datasenders" type="radio" value="all_datasenders">{% trans "All chosen DS type" %}</li>
-            <li><input data-bind="checked: targetDataSenders" name="target_datasenders" type="radio" value="datasenders_without_submissions">{% trans "Anyone who hasn't sent data" %}</li>
+            <li><input data-bind="checked: targetDataSenders, uniqueName:true" name="target_datasenders" type="radio" value="all_datasenders">{% trans "All chosen DS type" %}</li>
+            <li><input data-bind="checked: targetDataSenders, uniqueName:true" name="target_datasenders" type="radio" value="datasenders_without_submissions">{% trans "Anyone who hasn't sent data" %}</li>
         </ul>
         </p>
 
