@@ -31,10 +31,13 @@
     <![endif]-->
 
     <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
+
     {% load compress %}
     {% compress js %}
          {% include 'javascript.html' %}
     {% endcompress %}
+    
+    <script type="text/javascript" src="/media/javascript/messages_{{ LANGUAGE_CODE }}.js"></script>
 
     {% block uncompress %}{% endblock %}
 
