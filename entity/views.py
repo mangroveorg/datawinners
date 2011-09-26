@@ -2,13 +2,16 @@
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners import utils
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.entity import helper
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
@@ -163,9 +166,37 @@ def _get_all_datasenders(manager, projects):
     all_data_senders = import_module.load_all_subjects_of_type(manager)
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
+        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_name'])
+        datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
         association = project_association.get(datasender['short_name'])
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
     return all_data_senders
+
+@csrf_view_exempt
+def create_web_users(request):
+    org_id = request.user.get_profile().org_id
+    if request.method == 'POST':
+        errors = []
+        post_data = json.loads(request.POST['post_data'])
+        for data in post_data:
+            users  = User.objects.filter(email=data['email'])
+            if len(users) > 0:
+                errors.append("User with email %s already exists" % data['email'])
+        if len(errors) > 0:
+            return HttpResponseBadRequest(json.dumps(errors))
+
+        for data in post_data:
+            user = User.objects.create_user(data['email'], data['email'], 'test123')
+            group = Group.objects.filter(name="Data Senders")[0]
+            user.groups.add(group)
+            user.save()
+            profile = NGOUserProfile(user=user, org_id=org_id, title="Mr", reporter_id=data['reporter_id'])
+            profile.save()
+            reset_form = PasswordResetForm({"email": user.email})
+            reset_form.is_valid()
+            reset_form.save()
+
+        return HttpResponse(json.dumps("Users has been created"))
 
 
 @csrf_view_exempt

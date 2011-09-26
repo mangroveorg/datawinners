@@ -207,7 +207,7 @@
         "model": "auth.user",
         "fields": {
             "username": "datasender@hni.com",
-            "first_name": "",
+            "first_name": "DataSender",
             "last_name": "",
             "is_active": true,
             "is_superuser": false,

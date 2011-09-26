@@ -89,11 +89,28 @@
             <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
             <a href="#" class="button">{% trans "Confirm" %}</a>
         </div>
+        <div id="web_user_block">
+            <span class="error" id="web_user_error"></span>
+            <table id="web_user_table">
+                <thead>
+                <th>Reporter ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Contact</th>
+                <th>Email *</th>
+                </thead>
+                <tbody id="web_user_table_body">
+
+                </tbody>
+            </table>
+            <button class="button" id="web_user_button">Save</button>
+        </div>
         <label class="inline margin_left_20">{% trans "Actions:" %} </label>
         <select id='action'>
             <option value="">--</option>
             <option value="associate">{% trans "Add to project" %}</option>
             <option value="disassociate">{% trans "Remove from project" %}</option>
+            <option value="makewebuser">{% trans "Make Web User" %}</option>
         </select>
         {% if all_data %}
             <h3 class="margin_top_20">{% trans "All Data Senders" %}</h3>

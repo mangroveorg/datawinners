@@ -56,8 +56,19 @@ $(document).ready(function() {
         zIndex:1100,
         beforeClose: function() {
             $('#action').val('');
-        },
+        }
     });
+    $("#web_user_block").dialog({
+        autoOpen: false,
+        modal: true,
+        title: 'Create Web Users',
+        zIndex:1100,
+        width: 700,
+        beforeClose: function() {
+            $('#action').val('');
+        }
+    });
+
 
     $("#all_project_block .cancel_link").bind("click", function() {
         $("#all_project_block").dialog("close");
@@ -88,12 +99,63 @@ $(document).ready(function() {
         var allIds = updateIds();
         $('#error').remove();
         if (allIds.length == 0) {
-            $('<div class="message-box" id="error">Please select atleast 1 data sender</div>').insertAfter($(this))
-            $('#project').val('')
+            $('<div class="message-box" id="error">Please select atleast 1 data sender</div>').insertAfter($(this));
+            $('#project').val('');
             $(this).val("");
+            return;
         }
-        else{
+        var action = $(this).val();
+        if(action=='makewebuser'){
+            populate_dialog_box_for_web_users();
+        }else{
             $("#all_project_block").dialog("open");
         }
     });
+
+    function populate_dialog_box_for_web_users() {
+        var data_sender_details = [];
+        $('#all_data_senders :checked').each(function() {
+            var row = $(this).parent().parent();
+            var data_sender = {};
+            data_sender.short_name = $($(row).children()[1]).html();
+            data_sender.name = $($(row).children()[2]).html();
+            data_sender.location = $($(row).children()[4]).html();
+            data_sender.contactInformation = $($(row).children()[6]).html();
+            data_sender.email = $($(row).children()[8]).html();
+            data_sender_details.push(data_sender);
+        });
+        $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
+        $("#web_user_block").dialog("open");
+    }
+
+    $('#web_user_button').click(function() {
+        var post_data = [];
+        $('.ds-email').each(function() {
+            var email = $(this).val();
+            if (email.trim() == "") {
+                $('#web_user_error').html('Emails are mandatory');
+                return;
+            }
+            var reporter_id = $($(this).parent().parent().children()[0]).html();
+            post_data.push({email: email, reporter_id: reporter_id});
+        });
+        $.post('/entity/webuser/create', {post_data: JSON.stringify(post_data)},
+                function(response) {
+
+                }).success(
+                function(data) {
+                    $("#web_user_block").dialog("close");
+                    window.location.href = window.location.href;
+                }).error(function(response) {
+                    var errors = JSON.parse(response.responseText);
+                    var html = ""
+                    for (var i = 0; i < errors.length; i++) {
+                        html += "<tr><td>" + errors[i] + "</td></tr>"
+                    }
+                    $('#web_user_error').html(html);
+                });
+    });
+
+    var markup = "<tr><td>${short_name}</td><td>${name}</td><td>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:100px' class='ds-email'/></td></tr>"
+    $.template("webUserTemplate", markup);
 });
