@@ -24,12 +24,12 @@
         <ul>
             <li>
                 <input type="radio" value="before_deadline" data-bind="checked: reminderMode"><input
-                    data-bind="value: beforeDay, valueUpdate:'keyup'"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+                    data-bind="value: beforeDay, valueUpdate:'keyup', enable: selectBeforeDay"/> {% trans "day(s) <strong>before</strong> the deadline" %}
             </li>
             <li><input type="radio" value="on_deadline" data-bind="checked: reminderMode">{% trans "On the deadline" %}
             </li>
             <li><input type="radio" value="after_deadline" data-bind="checked: reminderMode"><input
-                    data-bind="value: afterDay, valueUpdate:'keyup'"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+                    data-bind="value: afterDay, valueUpdate:'keyup', enable: selectAfterDay"/> {% trans "day(s) <strong>after</strong> the deadline" %}
             </li>
         </ul>
         <br><span id="newDay_err" class="error_message"></span>

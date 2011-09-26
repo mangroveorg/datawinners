@@ -35,6 +35,20 @@ function reminder(message, beforeDay, afterDay, reminderMode, ownerViewModel,tar
             return "On the deadline";
         }
     }, this);
+    this.selectBeforeDay = ko.dependentObservable(function(){
+        if(self.reminderMode() === "before_deadline"){
+            return true;
+        }
+        self.beforeDay("");
+        return false;
+    },this);
+    this.selectAfterDay = ko.dependentObservable(function(){
+        if (self.reminderMode() === "after_deadline"){
+            return true;
+        }
+        self.afterDay("");
+        return false;
+    },this);
 }
 
 function viewModel() {
