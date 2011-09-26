@@ -403,3 +403,72 @@ body{
         background:url("/media/images/dw_arrow_green.gif") no-repeat center center;
     }
 }
+#how_menu{
+    position:relative;
+    padding-top:10px;
+    .title{
+        width:180px;
+        float:left;
+        text-align:center;
+        p{
+            margin:0 !important;
+            padding:0 10px;
+            a{
+                color:#333 !important;
+            }
+        }
+    }
+    #how_active{
+        position:absolute;
+        width:180px;
+        height:180px;
+        top:0;
+        left:0;
+        background:url("/media/images/dw_how_active.png") no-repeat center center;
+    }
+}
+#how_content{
+    .container{
+        display:none;
+    }
+    .active{
+        display:block;
+    }
+    ul{
+        margin:10px 20px !important;
+        padding:0 10px !important;
+        li{
+            list-style-type:disc;
+        }
+    }
+}
+#how_nav{
+    #how_links{
+        margin:10px 0;
+        text-align:center;
+        #how_try_button{
+            display:block;
+            width:158px;
+            height:46px;
+            overflow:hidden;
+            font-size:16px;
+            font-weight:bold;
+            line-height:46px;
+            color:#6f451b !important;
+            text-shadow:#FFF2B2 0 1px 1px;
+            background:url('/media/images/dw_home_button1.png') no-repeat left top;
+            margin:0 auto;
+        }
+    }
+    #how_prev{
+        width:40%;
+        float:left;
+        font-size:14px;
+    }
+    #how_next{
+        width:40%;
+        float:right;
+        text-align:right;
+        font-size:14px;
+    }
+}
