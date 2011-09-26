@@ -263,7 +263,7 @@ body{
     height:55px;
     overflow:hidden;
     #page_breadcrumbs{
-        width:720px;
+        width:725px;
         float:right;
         padding-top:35px;
         font-size:11px;
@@ -378,5 +378,28 @@ body{
             margin:0 20px;
             padding:0 10px;
         }
+    }
+}
+#use_dw{
+    .content{
+        float:left;
+        width:180px;
+        height:70px;
+        background:#E3EDF4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top;
+        p{
+            margin:0 !important;
+            padding:10px;
+            font-size:11px;
+            line-height:16px;
+            strong{
+                font-size:14px;
+            }
+        }
+    }
+    .arrow{
+        float:left;
+        width:90px;
+        height:70px;
+        background:url("/media/images/dw_arrow_green.gif") no-repeat center center;
     }
 }

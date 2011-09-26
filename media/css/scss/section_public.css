@@ -219,7 +219,7 @@ body {
   height: 55px;
   overflow: hidden; }
   #container_breadcrumbs #page_breadcrumbs {
-    width: 720px;
+    width: 725px;
     float: right;
     padding-top: 35px;
     font-size: 11px;
@@ -306,3 +306,21 @@ body {
     #container_main_content #main_content ol {
       margin: 0 20px;
       padding: 0 10px; }
+
+#use_dw .content {
+  float: left;
+  width: 180px;
+  height: 70px;
+  background: #e3edf4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top; }
+  #use_dw .content p {
+    margin: 0 !important;
+    padding: 10px;
+    font-size: 11px;
+    line-height: 16px; }
+    #use_dw .content p strong {
+      font-size: 14px; }
+#use_dw .arrow {
+  float: left;
+  width: 90px;
+  height: 70px;
+  background: url("/media/images/dw_arrow_green.gif") no-repeat center center; }
