@@ -3,7 +3,7 @@
  * Language: FR
  */
 jQuery.extend(jQuery.validator.messages, {
-        required: "Ce champ est obligatoire. @ teny frantsay",
+        required: "Ce champ est obligatoire.",
         remote: "Veuillez remplir ce champ pour continuer.",
         email: "Veuillez entrer une adresse email valide.",
         url: "Veuillez entrer une URL valide.",

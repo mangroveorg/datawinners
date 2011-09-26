@@ -3,7 +3,7 @@
  * Language: EN
  */
 jQuery.extend(jQuery.validator.messages, {
-        required: "This field is required @ teny anglisy.",
+        required: "This field is required.",
         remote: "Please fill this field.",
         email: "Please insert a valid email adress.",
         url: "Please insert a valid URL.",
