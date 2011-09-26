@@ -36,7 +36,7 @@
                     <td>{{ project.type }}</td>
                     <td><span class="report_links"><span class="disable_link"> {% trans "Summary" %} </span> |
                         <a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
-                            |<a href="{{ project.log }}" class="{{ project.disabled}}  {{ disable_link_class}}">{% trans "All Data Records" %}</a>
+                            |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
                             |<a href="{{ project.web_submission_link }}" class="{{ project.disabled }}">{% trans "Web Submissions" %}</a></span></td>
                 </tr>
             {% endfor %}
