@@ -114,3 +114,14 @@
     </li>
 </ul>
 {% endblock %}
+
+{% block secondary_navigation_reminders %}
+<ul class="secondary_tab">
+    <li class="{% ifactivetab 'secondary_tab_nav' 'scheduled' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="#">{% trans "Scheduled Reminders" %}</a>
+    </li>
+    <li class="{% ifactivetab 'secondary_tab_nav' 'sent' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="#">{% trans "Sent Reminders" %}</a>
+    </li>
+</ul>
+{% endblock %}

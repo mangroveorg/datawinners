@@ -16,8 +16,8 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
-    <link href="/media/css/scss/reminder.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/reminder.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -27,6 +27,9 @@
 
 
 {% block content %}
+    {% block secondary_navigation_reminders %}
+        {% activetab "secondary_tab_nav" "scheduled" %}
+        {{ block.super }}
+    {% endblock %}
     {% include 'project/reminder_content.html' %}
-
 {% endblock %}
