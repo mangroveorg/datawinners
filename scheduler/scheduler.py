@@ -3,7 +3,7 @@ from _collections import defaultdict
 from datetime import date, datetime
 from datawinners import  settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.project.models import Reminder, Project
+from datawinners.project.models import Reminder, Project, ReminderLog
 from datawinners.scheduler.smsclient import SMSClient
 
 import logging
@@ -54,10 +54,13 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
     assert isinstance(on_date,date)
     logger.info("Project:- %s" % project.name )
     reminders_sent = []
-    reminders_to_be_sent = [ reminder for reminder in reminders if reminder.should_be_send_on(project.deadline(),on_date) ]
+    reminders_to_be_sent = [reminder for reminder in reminders if reminder.should_be_send_on(project.deadline(),on_date) ]
     for reminder in reminders_to_be_sent:
         smses_sent = _send_reminder(from_number,on_date,project,reminder,sms_client,dbm)
-        if smses_sent > 0: reminders_sent.append(reminder)
+        if smses_sent > 0:
+            reminders_sent.append(reminder)
+            ReminderLog(dbm, reminder=reminder, sent_status='sent', number_of_sms=smses_sent, date=on_date,
+                        project_name=project.name).save()
     logger.info("Reminders scheduled: %d " % len(reminders_to_be_sent) )
     logger.info("Reminders sent: %d " % len(reminders_sent) )
     return reminders_sent

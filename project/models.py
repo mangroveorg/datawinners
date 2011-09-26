@@ -1,15 +1,13 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 from datetime import timedelta, date
-
 from couchdb.mapping import  TextField, ListField, DictField
 from django.db.models.fields import IntegerField, CharField, BooleanField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
 from datawinners.entity.import_data import load_all_subjects_of_type
-from datawinners.scheduler import deadline
 from datawinners.scheduler.deadline import Deadline, Month, Week
-from mangrove.datastore.database import  DatabaseManager
-from mangrove.datastore.documents import DocumentBase
+from mangrove.datastore.database import  DatabaseManager, DataObject
+from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
@@ -66,7 +64,41 @@ class Reminder(models.Model):
         else:
             return deadline.current_deadline(on_date)
 
+class ReminderLogDocument(DocumentBase):
+    reminder_id = TextField()
+    project_name = TextField()
+    sent_status = TextField()
+    number_of_sms = TextField()
+    date = TZAwareDateTimeField()
+    message = TextField()
+    remind_to = TextField()
+    reminder_mode = TextField()
 
+    def __init__(self, id=None, reminder_id=None, project_name=None, sent_status=None, number_of_sms=None, date=None, message=None, remind_to=None, reminder_mode=None):
+        DocumentBase.__init__(self,id=id, document_type='ReminderLog')
+        self.reminder_id =reminder_id
+        self.project_name = project_name
+        self.sent_status = sent_status
+        self.number_of_sms = number_of_sms
+        self.date = date
+        self.message = message
+        self.remind_to = remind_to
+        self.reminder_mode = reminder_mode
+
+class ReminderLog(DataObject):
+    __document_class__ = ReminderLogDocument
+
+    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_name=None):
+        DataObject.__init__(self, dbm)
+        if reminder is not None:
+            if reminder.reminder_mode == ReminderMode.ON_DEADLINE:
+                reminder_mode = reminder.reminder_mode
+            else:
+                reminder_mode = reminder.day + ' days ' + reminder.reminder_mode
+            doc = ReminderLogDocument(reminder_id=reminder.id, project_name=project_name, sent_status=sent_status,
+                                      number_of_sms=number_of_sms, date=date, message=reminder.message,
+                                      remind_to=reminder.remind_to, reminder_mode=reminder_mode)
+            DataObject._set_document(self, doc)
 
 class ProjectState(object):
     INACTIVE = 'Inactive'

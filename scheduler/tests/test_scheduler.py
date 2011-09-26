@@ -1,6 +1,6 @@
 from datetime import date
 from django.utils import unittest
-from mock import Mock
+from mock import Mock,patch
 from datawinners.project.models import  Reminder, Project, RemindTo
 from datawinners.scheduler.scheduler import   send_reminders_on
 
@@ -21,6 +21,9 @@ class TestScheduler(unittest.TestCase):
         ]
         self.project = Mock(spec=Project)
         self.project.get_data_senders.return_value = self.data_senders
+
+        self.reminder_log_patcher = patch('datawinners.scheduler.scheduler.ReminderLog')
+        self.reminder_log_module = self.reminder_log_patcher.start()
 
         self.reminder1 = Mock(spec=Reminder)
         self.reminder1.should_be_send_on.return_value = True
@@ -45,7 +48,7 @@ class TestScheduler(unittest.TestCase):
 
 
     def tearDown(self):
-        pass
+        self.reminder_log_patcher.stop()
 
     def test_should_return_reminders_scheduled_for_the_day(self):
         reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
