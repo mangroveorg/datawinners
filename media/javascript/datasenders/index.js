@@ -40,13 +40,13 @@ $(document).ready(function() {
         }
     });
 
-    var allIds = [];
 
     function updateIds() {
-        allIds = [];
+        var allIds = [];
         $('#all_data_senders :checked').each(function() {
             allIds.push($(this).val());
         });
+        return allIds;
     }
 
     $("#all_project_block").dialog({
@@ -65,6 +65,7 @@ $(document).ready(function() {
 
     $("#all_project_block .button").bind("click", function() {
         $('#error').remove();
+        var allIds = updateIds();
         var projects = [];
         $('#all_project_block :checked').each(function() {
             projects.push($(this).val());
@@ -73,7 +74,7 @@ $(document).ready(function() {
             $('<div class="message-box" id="error">Please select atleast 1 Project</div>').insertBefore($("#all_projects"))
         }
         else {
-            var url = '/entity/' + action + '/'
+            var url = '/entity/' + $('#action').val() + '/'
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
             $.post(url,
                     {'ids':allIds.join(';'),'project_id':projects.join(';')}
@@ -83,10 +84,8 @@ $(document).ready(function() {
         }
     });
 
-    var action = ''
     $('#action').change(function() {
-        updateIds();
-        action = '';
+        var allIds = updateIds();
         $('#error').remove();
         if (allIds.length == 0) {
             $('<div class="message-box" id="error">Please select atleast 1 data sender</div>').insertAfter($(this))
@@ -94,7 +93,6 @@ $(document).ready(function() {
             $(this).val("");
         }
         else{
-            action = $(this).val()
             $("#all_project_block").dialog("open");
         }
     });
