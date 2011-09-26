@@ -8,6 +8,7 @@ from datawinners.scheduler.scheduler import   send_reminders_on
 #TODO: reinder to be sent to all ds
 #TODO: exception scenarios
 from datawinners.scheduler.smsclient import SMSClient
+from mangrove.datastore.database import DatabaseManager
 
 class TestScheduler(unittest.TestCase):
 
@@ -21,9 +22,6 @@ class TestScheduler(unittest.TestCase):
         ]
         self.project = Mock(spec=Project)
         self.project.get_data_senders.return_value = self.data_senders
-
-        self.reminder_log_patcher = patch('datawinners.scheduler.scheduler.ReminderLog')
-        self.reminder_log_module = self.reminder_log_patcher.start()
 
         self.reminder1 = Mock(spec=Reminder)
         self.reminder1.should_be_send_on.return_value = True
@@ -48,7 +46,7 @@ class TestScheduler(unittest.TestCase):
 
 
     def tearDown(self):
-        self.reminder_log_patcher.stop()
+        pass
 
     def test_should_return_reminders_scheduled_for_the_day(self):
         reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
@@ -85,6 +83,14 @@ class TestScheduler(unittest.TestCase):
             for ds in who_have_not_sent_data:
                 self.assertEqual((("from_num", ds["mobile_number"],reminder.message),{}),self.sms_client.send_sms.call_args_list[count])
                 count+=1
+
+    def test_should_log_reminders_when_sent(self):
+        dbm_mock = Mock(spec=DatabaseManager)
+        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER, dbm_mock)
+        self.reminder1.log.assert_called_once()
+        self.reminder3.log.assert_called_once()
+        self.assertEqual(0,self.reminder2.log.call_count)
+
 
 #    def test_should_send_reminders_for_all_projects_in_an_org(self):
 #        all_projects = [ Mock(spec=Project),Mock(spec=Project),Mock(spec=Project) ]

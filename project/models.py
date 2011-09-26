@@ -64,6 +64,13 @@ class Reminder(models.Model):
         else:
             return deadline.current_deadline(on_date)
 
+    def log(self, dbm, project_name, date, sent_status='sent', number_of_sms=0):
+        log = ReminderLog(dbm=dbm, reminder=self, project_name=project_name, date=date, sent_status=sent_status,
+                    number_of_sms=number_of_sms)
+        log.save()
+        return log
+
+
 class ReminderLogDocument(DocumentBase):
     reminder_id = TextField()
     project_name = TextField()
@@ -94,7 +101,7 @@ class ReminderLog(DataObject):
             if reminder.reminder_mode == ReminderMode.ON_DEADLINE:
                 reminder_mode = reminder.reminder_mode
             else:
-                reminder_mode = reminder.day + ' days ' + reminder.reminder_mode
+                reminder_mode = str(reminder.day) + ' days ' + reminder.reminder_mode
             doc = ReminderLogDocument(reminder_id=reminder.id, project_name=project_name, sent_status=sent_status,
                                       number_of_sms=number_of_sms, date=date, message=reminder.message,
                                       remind_to=reminder.remind_to, reminder_mode=reminder_mode)

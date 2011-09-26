@@ -1,9 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datetime import date
+from datetime import date, datetime
 import unittest
 from mock import Mock
-from datawinners.project.models import Reminder, ReminderMode, Project, RemindTo
+from datawinners.project.models import Reminder, ReminderMode, Project, RemindTo, ReminderLog
 from datawinners.scheduler.deadline import Deadline, Week
+from mangrove.datastore.database import DatabaseManager
 
 class TestReminders(unittest.TestCase):
     def test_should_return_true_for_reminder_before_deadline_type_if_today_is_two_days_before_deadline(self):
@@ -132,4 +133,12 @@ class TestReminders(unittest.TestCase):
         reminder = Reminder(reminder_mode=ReminderMode.AFTER_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS)
         reminder.get_sender_list(project, today,None)
         mock_deadline.current_deadline.assert_called_once_with(today)
+
+    def test_should_create_reminder_log(self):
+        reminder = Reminder(reminder_mode=ReminderMode.AFTER_DEADLINE, remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS, day=2)
+        dbm_mock = Mock(spec=DatabaseManager)
+        log = reminder.log(dbm_mock, 'test_project', datetime.now(), number_of_sms=10)
+        self.assertTrue(isinstance(log, ReminderLog))
+        dbm_mock._save_document.assert_called_once()
+
 
