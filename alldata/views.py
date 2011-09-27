@@ -16,6 +16,7 @@ from datawinners.submission.models import DatawinnerLog
 @login_required(login_url='/login')
 @utils.is_new_user
 def index(request, reporter_id=None):
+    reporter_id = request.user.get_profile().reporter_id if reporter_id is None else reporter_id #This is a very very silly hack which I am not proud of.
     manager = get_database_manager(request.user)
     rows = models.get_all_projects(manager, reporter_id)
     project_list = []
