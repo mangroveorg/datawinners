@@ -61,7 +61,7 @@ $(document).ready(function() {
     $("#web_user_block").dialog({
         autoOpen: false,
         modal: true,
-        title: 'Create Web Users',
+        title: 'Give Web Submission Access',
         zIndex:1100,
         width: 700,
         beforeClose: function() {
@@ -122,6 +122,11 @@ $(document).ready(function() {
             data_sender.location = $($(row).children()[4]).html();
             data_sender.contactInformation = $($(row).children()[6]).html();
             data_sender.email = $($(row).children()[8]).html();
+            data_sender.input_field_disabled = "disabled";
+            if(data_sender.email.trim() == "--"){
+                data_sender.input_field_disabled = "";
+                data_sender.email = "";
+            }
             data_sender_details.push(data_sender);
         });
         $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
@@ -156,6 +161,6 @@ $(document).ready(function() {
                 });
     });
 
-    var markup = "<tr><td>${short_name}</td><td>${name}</td><td>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:100px' class='ds-email'/></td></tr>"
+    var markup = "<tr><td>${short_name}</td><td>${name}</td><td>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:100px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>"
     $.template("webUserTemplate", markup);
 });
