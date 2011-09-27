@@ -151,6 +151,7 @@ $(document).ready(function() {
         if(!should_post || post_data.length == 0){
             return;
         }
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
         $.post('/entity/webuser/create', {post_data: JSON.stringify(post_data)},
                 function(response) {
 
