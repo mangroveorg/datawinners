@@ -35,8 +35,13 @@ def index(request, reporter_id=None):
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log = reverse(project_results, args=[project_id, questionnaire_code])
 
+        web_submission_link_disabled = 'disable_link'
+        if project.state == ProjectState.ACTIVE:
+            web_submission_link_disabled = ""
+
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
-                       link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link)
+                       link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link,
+                       web_submission_link_disabled=web_submission_link_disabled)
         project_list.append(project)
     return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class},
                               context_instance=RequestContext(request))
