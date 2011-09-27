@@ -63,7 +63,7 @@ $(document).ready(function() {
         modal: true,
         title: 'Give Web Submission Access',
         zIndex:1100,
-        width: 700,
+        width: 900,
         beforeClose: function() {
             $('#action').val('');
             $('#web_user_error').html("");
@@ -169,6 +169,6 @@ $(document).ready(function() {
                 });
     });
 
-    var markup = "<tr><td>${short_name}</td><td>${name}</td><td>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:100px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>"
+    var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:150px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>"
     $.template("webUserTemplate", markup);
 });
