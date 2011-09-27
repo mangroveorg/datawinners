@@ -116,7 +116,8 @@ def create_profile(request):
                           project_type=form.cleaned_data['project_type'], entity_type=entity_type,
                           devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'],
                           sender_group=form.cleaned_data['sender_group'],
-                          reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data))
+                          reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data),
+                          language=form.cleaned_data['language'])
         form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
             pid = project.save(manager)

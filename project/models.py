@@ -125,8 +125,9 @@ class Project(DocumentBase):
     reminder_and_deadline = DictField()
     data_senders = ListField(TextField())
     reminders=ListField(DictField())
+    language = TextField(default='en')
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminder_and_deadline=None):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminder_and_deadline=None, language='en'):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -139,6 +140,7 @@ class Project(DocumentBase):
         self.activity_report = activity_report
         self.sender_group = sender_group
         self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
+        self.language = language
 
     def get_data_senders(self,dbm):
         all_data = load_all_subjects_of_type(dbm)

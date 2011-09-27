@@ -46,6 +46,7 @@ class ProjectProfile(Form):
     SUBJECT_TYPE_CHOICES = (('yes',_('Work performed by the data sender (eg. monthly activity report)')),('no',_('Other Subject')))
     GROUP_TYPE_CHOICES = (('open',_('Open Data Sender Group. Anyone can send in data without registering')),('close',_('Closed Data Sender Group. Only registered data sender will be able to send data')))
     FREQUENCY_CHOICES = ((False, _("Whenever a DataSender has data for us")), (True, _("Every")))
+    LANGUAGES = (('en', 'English'), ('fr', 'French'), ('mg', 'Malagasy'))
     id = CharField(required=False)
     name = CharField(required=True, label=_("Name this Project"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Project Description'), required=False)
@@ -55,6 +56,8 @@ class ProjectProfile(Form):
     entity_type = ChoiceField(label=_("Other Subjects"), required=False)
     devices = MultipleChoiceField(label=_('Device'), widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=DEVICE_CHOICES[0], required=False)
+    language = ChoiceField(label=_("What language is the questionnaire in?"), widget=forms.RadioSelect,
+                                         choices=LANGUAGES, initial='en')
     frequency_enabled = ChoiceField(label = _("How often do you need the data?"),
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True,initial=False)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),), widget=forms.Select(attrs={'style':'margin-left: -167px; margin-top: 19px;'}), required=False)
