@@ -744,9 +744,6 @@ def web_questionnaire(request, project_id=None):
 
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
-    print request.user.username
-    print "hello"
-    print disable_link_class
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
