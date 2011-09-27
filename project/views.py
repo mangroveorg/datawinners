@@ -500,6 +500,11 @@ def reminders(request, project_id):
                  'is_reminder': project.is_reminder_enabled()},
                                   context_instance=RequestContext(request))
 
+@login_required(login_url='/login')
+@csrf_exempt
+def create_reminder(request, project_id):
+    return HttpResponse(reverse(reminders, args=[project_id]))
+
 
 @login_required(login_url='/login')
 @csrf_exempt
