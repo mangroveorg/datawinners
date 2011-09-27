@@ -48,10 +48,9 @@
 
         <p class="reminder_content">
             <textarea data-bind="value: message, valueUpdate: 'keyup',uniqueName:true" placeholder="Message"
-                      maxlength="160" class="required">
+                      maxlength="160" class="required"/>
             </textarea>
-            <div>
-            {% trans "The message count is" %} <span data-bind="text: message().length"></span></div>
+            {% trans "The message count is" %} <span data-bind="text: message().length"></span>
             <br><span id="newMessage_err" class="error_message"></span>
         </p>
         <a data-bind="click: remove">{% trans "Remove" %}</a>
