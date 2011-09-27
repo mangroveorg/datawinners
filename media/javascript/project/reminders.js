@@ -125,7 +125,7 @@ function viewModel() {
     ko.applyBindings(viewmodel);
 
     // calls viewmodel.save only on jquery validate success.
-    $("form").validate({ submitHandler: function () { viewmodel.save() } });
-    
+    $("#reminder_form").validate({ submitHandler: function () { viewmodel.save() } });
+
 });
 
