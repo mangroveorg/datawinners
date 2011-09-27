@@ -22,8 +22,9 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>
-{% endblock %}
+{#    <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>#}
+    <script type="text/javascript" src="/media/javascript/project/reminder_new.js"></script>
+{% endblock %}  
 
 
 {% block content %}
@@ -31,5 +32,60 @@
         {% activetab "secondary_tab_nav" "scheduled" %}
         {{ block.super }}
     {% endblock %}
-    {% include 'project/reminder_content.html' %}
+    <div id='new_reminder'>
+        <input type="hidden" value="{{ project.id }}" id='project_id'>
+        <span>{% trans "When" %}</span>
+        <ul class="margin_bottom_20">
+            <li>
+                <input type="radio"
+                       value="before_deadline" name="reminder_mode"><input disabled="disabled"
+                                                                           id="days_before_deadline"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+            </li>
+            <li>
+                <input type="radio" value="on_deadline" name="reminder_mode"
+                       checked="checked">{% trans "On the deadline" %}
+            </li>
+            <li>
+                <input type="radio"
+                       value="after_deadline" name="reminder_mode"><input disabled="disabled"
+                                                                          id="days_after_deadline"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+            </li>
+        </ul>
+        <span>{% trans "To Whom" %}</span>
+        <ul class="margin_bottom_20">
+            <li><input name="target_datasenders" type="radio"
+                       value="all_datasenders" checked="checked">{% trans "Everyone" %}</li>
+            <li><input name="target_datasenders" type="radio"
+                       value="datasenders_without_submissions">{% trans "Anyone who hasn't sent data" %}</li>
+        </ul>
+
+        <div class="margin_bottom_20">
+            <textarea id='message'></textarea>
+            <div class="margin_top_10">
+                {% trans "The message count is" %} <span id='message_count'>0</span>
+            </div>
+        </div>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>
+    </div>
+    <a id='add_reminder' class="float_right margin_bottom_10">Add a Reminder</a>
+    <table class="styled_table">
+    <thead>
+        <th>When</th>
+        <th>To</th>
+        <th>Message</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        {% for reminder in reminders %}
+            <tr>
+                <td>{{ reminder.reminder_mode }}</td>
+                <td>{{ reminder.remind_to }}</td>
+                <td>{{ reminder.message }}</td>
+                <td><a>Edit</a> | <a>Delete</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{#    {% include 'project/reminder_content.html' %}#}
 {% endblock %}
