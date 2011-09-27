@@ -472,3 +472,60 @@ body{
         font-size:14px;
     }
 }
+#features_menu{
+    .tab{
+        width:144px;
+        float:left;
+        text-align:center;
+    }
+}
+#features_content{
+    h3{
+        font-size:15px;
+        margin:15px 0 10px 0 !important;
+    }
+    #popbox{
+        display:none;
+    }
+    .screen{
+        position:relative;
+        padding:15px 0 20px 10px;
+        .capture{
+            -moz-box-shadow: 1px 1px 6px #EEE;
+            -webkit-box-shadow: 1px 1px 6px #EEE;
+            box-shadow: 1px 1px 6px #EEE;
+        }
+        .plus{
+            position:absolute;
+            width:40px;
+            height:40px;
+            top:0;
+            left:110px;
+        }
+    }
+}
+.ui-dialog{
+    border:1px solid #545454;
+    .ui-dialog-titlebar{
+        background:url('/media/images/dw_dialog_bg_title.gif') repeat-x;
+        color:#fff;
+        border:none;
+        text-shadow: 1px 1px 0 #444;
+    }
+    .ui-dialog-titlebar-close{
+        height:28px;
+        width:28px;
+        right:5px !important;
+        top:13px !important;
+        padding:0 !important;
+    }
+    .ui-icon-closethick{
+        background:url('/media/images/dw_dialog_close.png') no-repeat;
+        height:28px;
+        width:28px;
+    }
+    .ui-state-hover{
+        border:none;
+        background:none;
+    }
+}

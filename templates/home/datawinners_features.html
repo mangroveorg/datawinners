@@ -7,6 +7,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script src="/media/javascript/home/features.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block page_breadcrumbs %}
 <a href="/home">Home</a> &gt; <a href="/what-is-datawinners">What is DataWinners</a> &gt; Features
 {% endblock %}
@@ -22,89 +27,281 @@
 </div>
 <div id="main_content">
     <div class="margin_left_20">
-        <h2>Create a Project:</h2>
-        <ol>
-            <li>Each DataWinners Project = 1 Questionnaire</li>
-            <li>Name your project for easy identification</li>
-            <li>Set the questionnaire code so you can collect answers to multiple questionnaires simultaneously using
-                one
-                central telephone number
-            </li>
-            <li>Set how often you want to receive your answers</li>
-            <li>Set the subject of your questionnaire</li>
-        </ol>
-        <h2>Build a Questionnaire</h2>
-        <ol>
-            <li>Turn your list of key questions into an online questionnaire</li>
-            <li>Set the answer type for each question</li>
-            <li>Set criteria for each answer to improve accuracy</li>
-            <li>Monitor the SMS character count required to send in answers to key questions</li>
-            <li>Review the instructions for each question</li>
-        </ol>
-        <h2>Decide Between Test and Active States</h2>
-        <ol>
-            <li>DataWinners has two project states: Test and Active</li>
-            <li>Finalize your questionnaire and train your Data Senders in Test State</li>
-            <li>Activate your project to wipe clean your data base of all test answers sent in during training
-                exercises
-            </li>
-            <li>Start collecting real data with an empty database once you activate your project.</li>
-        </ol>
-        <h2>Test the questionnaire</h2>
-        <ol>
-            <li>Print out your draft questionnaire and fill in test answers by hand</li>
-            <li>Send in test answers via SMS using your phone</li>
-            <li>Send in test answers using the online telephone emulator</li>
-            <li>Send in test answers using your questionnaire via web form</li>
-        </ol>
-        <h2>Decide who can send in answers</h2>
-        <ol>
-            <li>Choose between:
-                <ol>
-                    <li>Everyone</li>
-                    <li>Only Data Senders you authorize</li>
-                </ol>
-            </li>
-            <li>Tell DataWinners the name, location and telephone number of each Data Sender authorized to send in
-                answers
-            </li>
-            <li>Register Data Senders one-by-one using the web form</li>
-            <li>Import a list of authorized Data Senders</li>
-        </ol>
-        <h2>Register the subjects of your questionnaire</h2>
-        <ol>
-            <li>If you are collecting data about individual subjects such as people (medical records), places (number of
-                households in a commune), things (health center stock report) or events (participation at a training),
-                register each subject first for two reasons:
-                <ol>
-                    <li>See your subjects displayed on DataWinners map</li>
-                    <li>Set a unique identification number for each subject to improve data reporting accuracy</li>
-                </ol>
-            </li>
-            <li>Tell DataWinners the name, location and telephone number of each Subject</li>
-            <li>Register Subjects one-by-one using the web form</li>
-            <li>Import a list of Subjects</li>
-            <li>Register Subjects via SMS</li>
-        </ol>
-        <h2>Set Deadlines and Reminders</h2>
-        <ol>
-            <li>Set a deadline for your Data Senders to send in their answers</li>
-            <li>Send reminders to Data Senders who have not yet sent in their answers</li>
-        </ol>
-        <h2>Modify your Questionnaire</h2>
-        <ol>
-            <li>Delete, add and edit your questionnaire later on as your needs change</li>
-            <li>Change answer type and criteria for any question</li>
-        </ol>
-        <h2>See your Data</h2>
-        <ol>
-            <li>See your Subjects plotted on a map</li>
-            <li>Review a spreadsheet of all Data Sender submissions</li>
-            <li>Filter to see only successful, or unsuccessful, or deleted submissions</li>
-            <li>Analyze your data in a spreadsheet filtered by date and subject</li>
-            <li>Perform simple statistical calculations on your data</li>
-            <li>Export your data in a single click</li>
-        </ol>
+        <div id="features_menu">
+            <div class="tab">
+                <a href="#a1"><img src="/media/images/dw_features_ico1.gif" width="90" height="80" alt="get started quickly" /><br/>
+                Get started quickly</a>
+            </div>
+            <div class="tab">
+                <a href="#a2"><img src="/media/images/dw_features_ico2.gif" width="90" height="80" alt="data collections" /><br/>
+                Data Collection</a>
+            </div>
+            <div class="tab">
+                <a href="#a3"><img src="/media/images/dw_features_ico3.gif" width="90" height="80" alt="data analysis and visualization" /><br/>
+                Data Analysis &amp; Visualization</a>
+            </div>
+            <div class="tab">
+                <a href="#a4"><img src="/media/images/dw_features_ico4.gif" width="90" height="80" alt="reminders and messages" /><br/>
+                Reminders &amp; Messages</a>
+            </div>
+            <div class="tab">
+                <a href="#a5"><img src="/media/images/dw_features_ico5.gif" width="90" height="80" alt="customizable and scalable" /><br/>
+                Customizable &amp; Scalable</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div id="features_content">
+            <a name="a1"></a><h2>Get Started Quickly!</h2>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Step-by-step Wizard"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Step-by-step Wizard" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Step-by-step Wizard"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Step-by-step Wizard</h3>
+                <p>We will guide you through all the steps & help you determine: </p>
+                <ul>
+                    <li>What data needs to be collected</li>
+                    <li>When and how often it needs to be collected</li>
+                    <li>Who will send in data</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen2.jpg" class="popbox" title="Questionnaire Templates"><img src="/media/images/dw_screen2.gif" width="120" height="180" alt="Questionnaire Templates" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen2.jpg" class="popbox" title="Questionnaire Templates"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Questionnaire Templates</h3>
+                <p>Use a template if you don’t want to create your own questionnaire. This will help you to ask the right questions.</p>
+                <p>Choose among templates for:</p>
+                <ul>
+                    <li>Monthly Activity Report</li>
+                    <li>Sales and Inventory Report</li>
+                    <li>Customer Satisfaction Survey</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Multiple Channels: SMS, Internet"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Multiple Channels: SMS, Internet" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Multiple Channels: SMS, Internet"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Multiple Channels: SMS, Internet</h3>
+                <p>Collect data via basic phones or Internet.</p>
+                <ul>
+                    <li>Even the simplest phones can send data using SMS</li>
+                    <li>Your data senders (e.g. field agents) can use their personal phone</li>
+                    <li>Collect data from the most remote areas</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Alerts & Notifications"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Alerts & Notifications" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Alerts & Notifications"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Alerts & Notifications</h3>
+                <p>Receive automatic notifications via SMS or Email when data sent in from the field meets pre-determined criteria</p>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+
+            <a name="a2"></a><h2>Data Collection Management</h2>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Data Collection Management"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Data Collection Management" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Data Collection Management"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <ul>
+                    <li>Allow anyone or only registered data senders to send you data</li>
+                    <li>Verify accuracy of data – Ability to add, edit or delete records</li>
+                    <li>As data is sent into the system, see:
+                        <ul>
+                            <li>Who is sending in data</li>
+                            <li>Who is not sending in data</li>
+                            <li>Who is generating errors with their data</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+
+            <a name="a3"></a><h2>Data Analysis & Visualization</h2>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Data Analysis"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Data Analysis" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Data Analysis"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Data Analysis</h3>
+                <ul>
+                    <li>Analyze data via lists, charts and graphs </li>
+                    <li>Export data to Excel for further calculations</li>
+                    <li>Filter data to view data by date, location, indicator or question</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Data Mapping"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Data Mapping" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Data Mapping"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Data Mapping</h3>
+                <ul>
+                    <li>See all data collection points accurately displayed on a map</li>
+                    <li>Filter map based on time period, geographic area, report questions and more!</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+
+            <a name="a4"></a><h2>Reminders &amp; Messages</h2>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Reminders &amp; Messages"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Reminders &amp; Messages" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Reminders &amp; Messages"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Automatic reminders & messages</h3>
+                <p>Send automatic reminders to your data senders (e.g. field staff)</p>
+                <ul>
+                    <li>Set automatic reminders to send to your data senders before and after your deadlines</li>
+                    <li>Send automatic feedback messages after they have sent in their data</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Ad hoc messaging"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Ad hoc messaging" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Ad hoc messaging"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Ad hoc messaging</h3>
+                <p>Send ad hoc SMS to</p>
+                <ul>
+                    <li>Field staff and project personnel</li>
+                    <li>Target group members or beneficiaries</li>
+                    <li>Any other stakeholders</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+
+            <a name="a5"></a><h2>Customizable & Expandable</h2>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" rel="Customizable projects"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Customizable projects" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" rel="Customizable projects"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Customizable projects</h3>
+                <p>Craft projects that meet your program’s specific needs and objectives.</p>
+                <ul>
+                    <li>Capture an accurate picture of operations in the field</li>
+                    <li>Communicate easily with your staff in the field with targeted SMS broadcasts</li>
+                    <li>Launch a public campaign that anyone can send responses in to</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Flexible - Collect any type of data"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Flexible - Collect any type of data" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Flexible - Collect any type of data"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Flexible - Collect any type of data</h3>
+                <p>Unlimited variety and customization options when creating your questionnaires. Collect data about:</p>
+                <ul>
+                    <li>People (patients, new-born babies, beneficiaries)</li>
+                    <li>Places (health clinics, farms, schools)</li>
+                    <li>Things (water pumps, agricultural yields)</li>
+                    <li>Geographic regions (towns, cities, districts)</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_screen1.jpg" class="popbox" title="Expandable - Unlimited project and storage capacity"><img src="/media/images/dw_screen1.gif" width="120" height="180" alt="Expandable - Unlimited project and storage capacity" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_screen1.jpg" class="popbox" title="Expandable - Unlimited project and storage capacity"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_14 alpha omega float_right">
+                <h3>Expandable - Unlimited project and storage capacity</h3>
+                <p>As your projects grow and become more sophisticated, don’t worry – you can create new projects and collect an unlimited amount of data.</p>
+                <ul>
+                    <li>Create and manage as many projects as you like</li>
+                    <li>Infinite, secure server space for all your projects</li>
+                </ul>
+                <p>
+                    <a href="javascript:void(0)">See examples &raquo;</a>
+                    <a href="javascript:void(0)">Read more &raquo;</a>
+                </p>
+            </div>
+            <div class="clear"></div>
+
+            <div id="popbox">
+                <img src="/media/images/dw_screen1.jpg" alt="" />
+            </div>
+        </div>
     </div>
 </div>
 <div class="clear"></div>
