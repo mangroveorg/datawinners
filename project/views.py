@@ -16,6 +16,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile
+from datawinners.project.helper import format_reminders
 from datawinners.project.models import Project, ProjectState, Reminder
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
@@ -43,6 +44,7 @@ from django.utils.translation import ugettext_lazy as _
 from datawinners.settings import api_keys
 
 import logging
+from mangrove.utils.types import is_empty
 
 logger = logging.getLogger("django")
 
@@ -494,17 +496,36 @@ def reminders(request, project_id):
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
         questionnaire = helper.load_questionnaire(dbm, project.qid)
-        reminders = Reminder.objects.filter(voided=False)
+        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'reminders':reminders,
+                 'reminders':format_reminders(reminders),
                  'is_reminder': project.is_reminder_enabled()},
                                   context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @csrf_exempt
 def create_reminder(request, project_id):
+    new_reminder = json.loads(request.POST['reminder'])
+    if is_empty(new_reminder['id']):
+        Reminder(project_id=project_id, day=new_reminder['day'], message=new_reminder['message'],
+                 reminder_mode=new_reminder['reminder_mode'], remind_to=new_reminder['remind_to'],
+                 organization=utils.get_organization(request)).save()
+    else:
+        reminder = Reminder.objects.filter(project_id=project_id, id=new_reminder['id'])[0]
+        reminder.day = new_reminder['day']
+        reminder.message = new_reminder['message']
+        reminder.reminder_mode = new_reminder['reminder_mode']
+        reminder.remind_to = new_reminder['remind_to']
+        reminder.save()
     return HttpResponse(reverse(reminders, args=[project_id]))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def get_reminder(request, project_id):
+    reminder_id = request.GET['id']
+    reminder = Reminder.objects.filter(project_id=project_id, id=reminder_id)[0]
+    return HttpResponse(json.dumps(reminder.to_dict()))
 
 
 @login_required(login_url='/login')

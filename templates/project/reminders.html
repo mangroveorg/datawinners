@@ -34,6 +34,7 @@
     {% endblock %}
     <div id='new_reminder'>
         <input type="hidden" value="{{ project.id }}" id='project_id'>
+        <input type="hidden" id='reminder_id'>
         <span class="bold">{% trans "When" %}</span>
         <ul class="margin_bottom_20">
             <li>
@@ -66,7 +67,7 @@
             </div>
         </div>
         <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
-        <a href="#" class="button" id="confirm">{% trans "Add" %}</a>
+        <a href="#" class="button" id="confirm">{% trans "Confirm" %}</a>
     </div>
     <a id='add_reminder' class="float_right margin_bottom_10">Add a Reminder</a>
     <table class="styled_table">
@@ -79,10 +80,10 @@
     <tbody>
         {% for reminder in reminders %}
             <tr>
-                <td>{{ reminder.reminder_mode }}</td>
-                <td>{{ reminder.remind_to }}</td>
+                <td>{{ reminder.when }}</td>
+                <td>{{ reminder.to }}</td>
                 <td>{{ reminder.message }}</td>
-                <td><a>Edit</a> | <a>Delete</a></td>
+                <td><a href="#" class="edit_reminder" name="{{ reminder.id }}">Edit</a> | <a href="{{ reminder.delete_link }}">Delete</a></td>
             </tr>
         {% endfor %}
     </tbody>

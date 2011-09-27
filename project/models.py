@@ -33,7 +33,7 @@ class Reminder(models.Model):
     remind_to = CharField(null=False, blank=False, max_length=50, default=RemindTo.ALL_DATASENDERS)
 
     def to_dict(self):
-        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'remind_to': self.remind_to}
+        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'remind_to': self.remind_to, 'id': self.id}
 
     def void(self, void = True):
         self.voided = void
