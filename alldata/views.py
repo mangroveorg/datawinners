@@ -15,7 +15,6 @@ from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
 @utils.is_new_user
-@is_datasender
 def index(request, reporter_id=None):
     manager = get_database_manager(request.user)
     rows = models.get_all_projects(manager, reporter_id)
