@@ -5,6 +5,7 @@ from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from datawinners import utils
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
+from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from datawinners.project.models import ProjectState
@@ -14,6 +15,7 @@ from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
 @utils.is_new_user
+@is_datasender
 def index(request, reporter_id=None):
     manager = get_database_manager(request.user)
     rows = models.get_all_projects(manager, reporter_id)

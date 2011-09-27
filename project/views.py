@@ -10,6 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
+from datawinners.accountmanagement.views import is_datasender
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -143,6 +144,7 @@ def _generate_project_info_with_deadline_and_reminders(project):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -207,6 +209,7 @@ def save_questionnaire(request):
 
 @login_required(login_url='/login')
 @utils.is_new_user
+@is_datasender
 def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request.user))
@@ -224,6 +227,7 @@ def index(request):
 
 @login_required(login_url='/login')
 @utils.is_new_user
+@is_datasender
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, dbm=manager)
@@ -256,6 +260,7 @@ def project_overview(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, dbm=manager)
@@ -351,6 +356,7 @@ def _get_aggregated_data(form_model, manager, questionnaire_code, request):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, dbm=manager)
@@ -371,6 +377,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request.user)
@@ -392,6 +399,7 @@ def _create_excel_response(raw_data_list, file_name):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def export_log(request):
     questionnaire_code = request.GET.get("questionnaire_code")
     manager = get_database_manager(request.user)
@@ -410,6 +418,7 @@ def export_log(request):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def subjects_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request.user)
@@ -444,6 +453,7 @@ def _get_imports_subjects_post_url(project_id=None):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def datasenders_wizard(request, project_id=None):
     if request.method == 'GET':
         manager = get_database_manager(request.user)
@@ -477,6 +487,7 @@ def reminders_wizard(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def reminders(request, project_id):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
@@ -506,6 +517,7 @@ def manage_reminders(request, project_id):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, manager)
@@ -618,6 +630,7 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 
 
 @login_required(login_url='/login')
+@is_datasender
 def datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
