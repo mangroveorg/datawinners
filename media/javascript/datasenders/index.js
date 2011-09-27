@@ -66,6 +66,7 @@ $(document).ready(function() {
         width: 700,
         beforeClose: function() {
             $('#action').val('');
+            $('#web_user_error').html("");
         }
     });
 
@@ -134,16 +135,22 @@ $(document).ready(function() {
     }
 
     $('#web_user_button').click(function() {
+        $('#web_user_error').html("");
         var post_data = [];
-        $('.ds-email').each(function() {
+        var should_post = true;
+        $('input:enabled.ds-email').each(function() {
             var email = $(this).val();
             if (email.trim() == "") {
                 $('#web_user_error').html('Emails are mandatory');
+                should_post = false;
                 return;
             }
             var reporter_id = $($(this).parent().parent().children()[0]).html();
             post_data.push({email: email, reporter_id: reporter_id});
         });
+        if(!should_post || post_data.length == 0){
+            return;
+        }
         $.post('/entity/webuser/create', {post_data: JSON.stringify(post_data)},
                 function(response) {
 
