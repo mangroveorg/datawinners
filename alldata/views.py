@@ -15,8 +15,8 @@ from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
 @utils.is_new_user
-def index(request, reporter_id=None):
-    reporter_id = request.user.get_profile().reporter_id if reporter_id is None else reporter_id #This is a very very silly hack which I am not proud of.
+def index(request):
+    reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)
     rows = models.get_all_projects(manager, reporter_id)
     project_list = []
@@ -63,7 +63,3 @@ def failed_submissions(request):
     return render_to_response('alldata/failed_submissions.html', {'logs': org_logs},
                               context_instance=RequestContext(request))
 
-
-def datasender_dashboard(request):
-    reporter_id = request.user.get_profile().reporter_id
-    return HttpResponseRedirect(reverse(index, args=[reporter_id]))

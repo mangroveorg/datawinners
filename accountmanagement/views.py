@@ -10,6 +10,8 @@ import datawinners
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from django.contrib.auth.views import login
+from datawinners.main.utils import get_database_manager
+from datawinners.project.models import get_all_projects
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -42,6 +44,18 @@ def is_datasender(f):
 
     return wrapper
 
+
+def is_datasender_allowed(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        projects = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+        project_ids = [project.id for project in projects]
+        project_id = kw['project_id']
+        if not project_id in project_ids:
+            return HttpResponseRedirect(datawinners.settings.DATASENDER_DASHBOARD)
+
+        return f(*args, **kw)
+    return wrapper
 
 @login_required(login_url='/login')
 @is_admin

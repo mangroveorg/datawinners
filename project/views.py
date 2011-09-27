@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from datawinners.accountmanagement.views import is_datasender
+from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -737,6 +737,7 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
 
 
 @login_required(login_url='/login')
+@is_datasender_allowed
 def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, manager)
