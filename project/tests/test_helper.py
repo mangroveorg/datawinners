@@ -85,7 +85,7 @@ class TestHelper(unittest.TestCase):
     def test_should_return_code_title_tuple_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              language="eng", entity_question_flag=True, ddtype=ddtype)
+                              language="en", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")],
@@ -239,7 +239,7 @@ class TestHelper(unittest.TestCase):
         LABEL = "Entity ID"
         SLUG = "entity_id"
         TYPE = "string"
-        post = {"entity_type": "Water Point", "name": "Test Project"}
+        post = {"entity_type": "Water Point", "name": "Test Project", "language": "en"}
         dbm = Mock(spec=DatabaseManager)
 
         patcher = patch("datawinners.project.helper.generate_questionnaire_code")
@@ -267,7 +267,7 @@ class TestHelper(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="name", code="na", name="What is your name",
-                              language="eng", ddtype=ddtype)
+                              language="en", ddtype=ddtype)
         question2 = TextField(label="address", code="add", name="What is your address",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
         post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [],
@@ -345,7 +345,7 @@ class TestHelper(unittest.TestCase):
     def test_should_create_header_list(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              language="eng", entity_question_flag=True, ddtype=ddtype)
+                              language="en", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
 
@@ -410,7 +410,7 @@ class TestHelper(unittest.TestCase):
     def test_should_remove_default_entity_field(self):
         ddtype = Mock(spec=DataDictType)
         question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              language="eng", entity_question_flag=True, ddtype=ddtype)
+                              language="en", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
         cleaned_list = helper.hide_entity_question([question1, question2])

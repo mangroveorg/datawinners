@@ -2,6 +2,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from django.utils.translation import gettext as _
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
@@ -45,28 +46,27 @@ def sms(request):
     form_code, values = SMSParser().parse(_message)
     _from, _to = _get_from_and_to_numbers(request)
     dbm = get_db_manager_for(_to)
-    form_model = get_form_model_by_code(form_code)
-    request.session['django_language'] = form_model.language
+    form_model = get_form_model_by_code(dbm, form_code)
+    request.session['django_language'] = form_model.activeLanguages
     try:
         sms_player = SMSPlayer(dbm, get_location_tree())
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
         response = sms_player.accept(Request(transportInfo=transportInfo, message=_message))
-        message = SMSResponse(response).text()
-
+        message = _(SMSResponse(response).text())
     except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
+        message = _(get_exception_message_for(exception=exception, channel=SMS))
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
                             error=message)
         log.save()
     except NumberNotRegisteredException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
+        message = _(get_exception_message_for(exception=exception, channel=SMS))
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
         log.save()
     except MangroveException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
+        message = _(get_exception_message_for(exception=exception, channel=SMS))
     except Exception as exception:
         logger.exception('SMS Processing failure: message')
-        message = get_exception_message_for(exception=exception, channel=SMS)
+        message = _(get_exception_message_for(exception=exception, channel=SMS))
 
     return HttpResponse(message)
 
