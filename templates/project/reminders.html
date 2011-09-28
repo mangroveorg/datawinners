@@ -30,6 +30,7 @@
         {% activetab "secondary_tab_nav" "scheduled" %}
         {{ block.super }}
     {% endblock %}
+    {% if project.is_reminder_enabled %}
     <div id='new_reminder'>
         <form id='reminder_form'>
             <input type="hidden" value="{{ project.id }}" id='project_id'>
@@ -101,4 +102,9 @@
             </tbody>
         </table>
     </div>
+    {% else %}
+        <div>
+            <strong>{% trans "Reminders are not enabled for this project." %}</strong>
+        </div>
+    {% endif %}
 {% endblock %}
