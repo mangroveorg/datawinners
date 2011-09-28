@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-06 13:17+0300\n"
+"POT-Creation-Date: 2011-09-28 07:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: media/javascript/datasenders/index.js:90
+#: media/javascript/project/data_analysis.js:73
+#: media/javascript/project/data_analysis.js:100
+#: media/javascript/project/register_reporter.js:4
+msgid "Just a moment"
+msgstr ""
 
 #: media/javascript/file_uploader/fileuploader.js:480
 msgid "Drop files here to upload"
@@ -53,18 +60,16 @@ msgstr ""
 msgid "Year to date"
 msgstr ""
 
-#: media/javascript/project/data_analysis.js:73
-#: media/javascript/project/data_analysis.js:100
-#: media/javascript/project/register_reporter.js:4
-msgid "Just a moment"
-msgstr ""
-
 #: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"
 msgstr ""
 
 #: media/javascript/project/datasenders_registration_questionnaire_preview.js:3
 msgid "Data Sender Registration Preview"
+msgstr ""
+
+#: media/javascript/project/delete_project.js:3
+msgid "Delete this Project?"
 msgstr ""
 
 #: media/javascript/project/import_section.js:7
@@ -206,12 +211,12 @@ msgstr ""
 msgid "Please select at least 1 data sender"
 msgstr ""
 
-#: media/javascript/project/reminders.js:49
+#: media/javascript/project/reminders.js:69
 msgid "Can't be blank."
 msgstr ""
 
-#: media/javascript/project/reminders.js:56
-#: media/javascript/project/reminders.js:65
+#: media/javascript/project/reminders.js:76
+#: media/javascript/project/reminders.js:85
 msgid "Day Can't be blank."
 msgstr ""
 

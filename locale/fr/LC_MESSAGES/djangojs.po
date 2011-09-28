@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-06 13:17+0300\n"
+"POT-Creation-Date: 2011-09-28 07:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: media/javascript/datasenders/index.js:90
+#: media/javascript/project/data_analysis.js:73
+#: media/javascript/project/data_analysis.js:100
+#: media/javascript/project/register_reporter.js:4
+msgid "Just a moment"
+msgstr "Veuillez patienter"
 
 #: media/javascript/file_uploader/fileuploader.js:480
 msgid "Drop files here to upload"
@@ -54,12 +61,6 @@ msgstr "Mois dernier"
 msgid "Year to date"
 msgstr "Du début de l'année à la date"
 
-#: media/javascript/project/data_analysis.js:73
-#: media/javascript/project/data_analysis.js:100
-#: media/javascript/project/register_reporter.js:4
-msgid "Just a moment"
-msgstr "Veuillez patienter"
-
 #: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"
 msgstr "Ajouter un envoyeur"
@@ -67,6 +68,11 @@ msgstr "Ajouter un envoyeur"
 #: media/javascript/project/datasenders_registration_questionnaire_preview.js:3
 msgid "Data Sender Registration Preview"
 msgstr "Aperçu de l'ajout d'envoyeur"
+
+#: media/javascript/project/delete_project.js:3
+#, fuzzy
+msgid "Delete this Project?"
+msgstr "Activer ce projet ?"
 
 #: media/javascript/project/import_section.js:7
 msgid "Import a List"
@@ -214,12 +220,12 @@ msgstr "Veuillez patienter"
 msgid "Please select at least 1 data sender"
 msgstr "Veuillez remplir au moins un champ de localité"
 
-#: media/javascript/project/reminders.js:49
+#: media/javascript/project/reminders.js:69
 msgid "Can't be blank."
 msgstr "Ne peut être vide"
 
-#: media/javascript/project/reminders.js:56
-#: media/javascript/project/reminders.js:65
+#: media/javascript/project/reminders.js:76
+#: media/javascript/project/reminders.js:85
 msgid "Day Can't be blank."
 msgstr "Le jour doit être saisi"
 
