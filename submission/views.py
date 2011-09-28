@@ -47,7 +47,10 @@ def sms(request):
     _from, _to = _get_from_and_to_numbers(request)
     dbm = get_db_manager_for(_to)
     form_model = get_form_model_by_code(dbm, form_code)
-    request.session['django_language'] = form_model.activeLanguages[0]
+    try:
+        getattr(request, 'session')
+    except AttributeError:
+        setattr(request, 'session', {'django_language' : form_model.activeLanguages[0]})
     try:
         sms_player = SMSPlayer(dbm, get_location_tree())
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
