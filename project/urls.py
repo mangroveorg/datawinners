@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 
 from datawinners.project.views import questionnaire_wizard, save_questionnaire, create_profile, index, project_overview,\
-    edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview, submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder
+    edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview, submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, delete_reminder
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -33,6 +33,7 @@ urlpatterns = patterns('',
         (r'^project/wizard/reminders/(?P<project_id>.+?)/$', reminders_wizard),
         (r'^project/create_reminder/(?P<project_id>.+?)/$', create_reminder),
         (r'^project/get_reminder/(?P<project_id>.+?)/$', get_reminder),
+        (r'^project/delete_reminder/(?P<project_id>.+?)/(?P<reminder_id>.+?)/$', delete_reminder),
         (r'^project/reminderspage/(?P<project_id>.+?)/$', reminders),
         (r'^project/reminders/(?P<project_id>.+?)/$', manage_reminders),
         (r'^project/wizard/datasenders/(?P<project_id>.+?)/$', datasenders_wizard),

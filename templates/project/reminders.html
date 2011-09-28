@@ -22,10 +22,8 @@
 
 {% block page_js %}
     {{ block.super }}
-{#    <script type="text/javascript" src="/media/javascript/project/reminders.js"></script>#}
     <script type="text/javascript" src="/media/javascript/project/reminder_new.js"></script>
-{% endblock %}  
-
+{% endblock %}
 
 {% block content %}
     {% block secondary_navigation_reminders %}
@@ -40,7 +38,8 @@
             <li>
                 <input type="radio"
                        value="before_deadline" name="reminder_mode"><input disabled="disabled"
-                                                                           id="days_before_deadline" type="text"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+                                                                           id="days_before_deadline"
+                                                                           type="text"/> {% trans "day(s) <strong>before</strong> the deadline" %}
             </li>
             <li>
                 <input type="radio" value="on_deadline" name="reminder_mode"
@@ -49,7 +48,8 @@
             <li>
                 <input type="radio"
                        value="after_deadline" name="reminder_mode"><input disabled="disabled"
-                                                                          id="days_after_deadline" type="text"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+                                                                          id="days_after_deadline"
+                                                                          type="text"/> {% trans "day(s) <strong>after</strong> the deadline" %}
             </li>
         </ul>
         <span class="bold">{% trans "To Whom" %}</span>
@@ -62,31 +62,42 @@
 
         <div class="margin_bottom_20">
             <textarea id='message'></textarea>
+
             <div class="margin_top_10">
                 {% trans "The message count is" %} <span id='message_count'>0</span>
             </div>
         </div>
-        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
         <a href="#" class="button" id="confirm">{% trans "Confirm" %}</a>
     </div>
-    <a id='add_reminder' class="float_right margin_bottom_10">Add a Reminder</a>
-    <table class="styled_table">
-    <thead>
-        <th>When</th>
-        <th>To</th>
-        <th>Message</th>
-        <th>Actions</th>
-    </thead>
-    <tbody>
-        {% for reminder in reminders %}
-            <tr>
-                <td>{{ reminder.when }}</td>
-                <td>{{ reminder.to }}</td>
-                <td>{{ reminder.message }}</td>
-                <td><a href="#" class="edit_reminder" name="{{ reminder.id }}">Edit</a> | <a href="{{ reminder.delete_link }}">Delete</a></td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-{#    {% include 'project/reminder_content.html' %}#}
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-message-box reminder-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <a id='add_reminder' class="float_right margin_bottom_10">Add a Reminder</a>
+        <table class="styled_table float_left">
+            <thead>
+            <th>When</th>
+            <th>To</th>
+            <th>Message</th>
+            <th>Actions</th>
+            </thead>
+            <tbody>
+            {% for reminder in reminders %}
+                <tr>
+                    <td>{{ reminder.when }}</td>
+                    <td>{{ reminder.to }}</td>
+                    <td>{{ reminder.message }}</td>
+                    <td><a href="#" class="edit_reminder" name="{{ reminder.id }}">Edit</a> | <a
+                            href="{{ reminder.delete_link }}">Delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

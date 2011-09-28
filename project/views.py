@@ -16,8 +16,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile
-from datawinners.project.helper import format_reminders
-from datawinners.project.models import Project, ProjectState, Reminder
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -488,6 +487,24 @@ def reminders_wizard(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
+def _format_string_for_reminder_table(value):
+    return (' '.join(value.split('_'))).title()
+
+
+def _make_reminder_mode(reminder_mode, day):
+    if reminder_mode == ReminderMode.ON_DEADLINE:
+        return _format_string_for_reminder_table(reminder_mode)
+    return str(day) + ' days ' + _format_string_for_reminder_table(reminder_mode)
+
+
+def _format_reminder(reminder, project_id):
+    return dict(message=reminder.message, id=reminder.id,
+                to = _format_string_for_reminder_table(reminder.remind_to),
+                when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
+                delete_link=reverse(delete_reminder, args=[project_id, reminder.id]))
+
+def _format_reminders(reminders, project_id):
+    return [_format_reminder(reminder, project_id) for reminder in reminders]
 
 @login_required(login_url='/login')
 @is_datasender
@@ -499,7 +516,7 @@ def reminders(request, project_id):
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'reminders':format_reminders(reminders),
+                 'reminders':_format_reminders(reminders, project_id),
                  'is_reminder': project.is_reminder_enabled()},
                                   context_instance=RequestContext(request))
 
@@ -527,6 +544,12 @@ def get_reminder(request, project_id):
     reminder = Reminder.objects.filter(project_id=project_id, id=reminder_id)[0]
     return HttpResponse(json.dumps(reminder.to_dict()))
 
+@login_required(login_url='/login')
+@csrf_exempt
+def delete_reminder(request, project_id, reminder_id):
+    Reminder.objects.filter(project_id=project_id, id=reminder_id)[0].delete()
+    messages.success(request, 'Reminder deleted successfully')
+    return HttpResponseRedirect(reverse(reminders, args=[project_id]))
 
 @login_required(login_url='/login')
 @csrf_exempt

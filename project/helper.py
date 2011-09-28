@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.entity.import_data import load_all_subjects_of_type
-from datawinners.project.models import ReminderMode
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
@@ -298,24 +297,3 @@ def delete_project(manager, project, void = True):
     [submission.void(void) for submission in get_submissions(manager, questionnaire.form_code, None, None)]
     questionnaire.void(void)
     project.set_void(manager, void)
-
-
-def _format_string_for_reminder_table(value):
-    return (' '.join(value.split('_'))).title()
-
-
-def _make_reminder_mode(reminder_mode, day):
-    if reminder_mode == ReminderMode.ON_DEADLINE:
-        return _format_string_for_reminder_table(reminder_mode)
-    return str(day) + ' days ' + _format_string_for_reminder_table(reminder_mode)
-
-
-def _format_reminder(reminder):
-    return dict(message=reminder.message, id=reminder.id,
-                to = _format_string_for_reminder_table(reminder.remind_to),
-                when=_make_reminder_mode(reminder.reminder_mode, reminder.day),
-                delete_link='')
-
-
-def format_reminders(reminders):
-    return [_format_reminder(reminder) for reminder in reminders]

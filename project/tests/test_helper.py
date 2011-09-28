@@ -6,7 +6,6 @@ from unittest.case import skip
 from mock import Mock, patch
 from datawinners.accountmanagement.models import Organization
 from datawinners.project import helper
-from datawinners.project.helper import format_reminders
 from datawinners.project.models import Project, Reminder
 from datawinners.project.views import _get_imports_subjects_post_url
 from mangrove.datastore.database import  DatabaseManager
@@ -542,24 +541,3 @@ class TestPreviewCreator(unittest.TestCase):
     def test_should_make_the_post_url_for_import_subject_project_wizard(self):
         url = _get_imports_subjects_post_url()
         self.assertEqual("/entity/subject/import/", url)
-
-    def test_should_return_reminders_in_the_required_format(self):
-        reminder1 = Reminder(project_id=1, day=0, message='Hi!!',
-                             reminder_mode='on_deadline', remind_to='datasenders_without_submissions',
-                             organization=Organization())
-        reminder2 = Reminder(project_id=1, day=2, message='Hi!!',
-                             reminder_mode='before_deadline', remind_to='all_datasenders',
-                             organization=Organization())
-
-        reminders=[reminder1, reminder2]
-        formated_reminders = format_reminders(reminders)
-
-        self.assertEqual(2,len(formated_reminders))
-        self.assertEqual('',formated_reminders[0]['delete_link'])
-
-        self.assertEqual('On Deadline',formated_reminders[0]['when'])
-        self.assertEqual('Datasenders Without Submissions',formated_reminders[0]['to'])
-
-        self.assertEqual('2 days Before Deadline',formated_reminders[1]['when'])
-        self.assertEqual('All Datasenders',formated_reminders[1]['to'])
-
