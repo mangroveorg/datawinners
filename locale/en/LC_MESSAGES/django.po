@@ -2226,3 +2226,39 @@ msgstr ""
 #messageprovider/messages.py
 msgid "Registration successful."
 msgstr ""
+
+msgid "What is associated subject type?"
+msgstr ""
+
+msgid "What is the subject's name?"
+msgstr ""
+
+msgid "What is the subject's Unique ID Number"
+msgstr ""
+
+msgid "What is the subject's location?"
+msgstr ""
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the subject"
+msgstr ""
+
+msgid "What is the mobile number associated with the subject?"
+msgstr ""
+
+msgid "What is associatéd entity?"
+msgstr ""
+
+msgid "What is the data sender's name?"
+msgstr ""
+
+msgid "What is the data sender's location?"
+msgstr ""
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""

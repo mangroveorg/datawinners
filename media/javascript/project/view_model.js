@@ -19,7 +19,9 @@ var viewModel =
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {
-            return this.code() + ' ' + this.title();
+            console.log(this.title());
+            console.log(gettext(this.title()));
+            return this.code() + ' ' + gettext(this.title());
         }, question);
         viewModel.questions.push(question);
         viewModel.questions.valueHasMutated();

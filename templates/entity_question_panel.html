@@ -29,7 +29,8 @@
                     {% for each in fields %}
                         <div class="question{{ forloop.counter }}">
                             <li>
-                                <a>{{ each.label.en }} {{ each.code }}</a>
+{#                                This would change when the registration question would be able to store text of other languages #}
+                                <a>{% trans each.label.en %} {{ each.code }}</a>
                                 <span class="selected_question_arrow"></span>
                             </li>
                         </div>
