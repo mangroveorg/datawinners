@@ -1,0 +1,115 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} PRICING {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "pricing" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home">Home</a> &gt; Pricing
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <div id="pricing">
+            <div class="grid_9 alpha omega">
+                <div class="container_plan">
+                    <div class="plan">
+                        <div class="padding_10">
+                            <h2>30 Day Test Drive</h2>
+                            free
+                            <a href="javascript:void(0)" class="try_button">Try it free</a>
+                            <ul>
+                                <li>Same online functionality as paid subscription</li>
+                                <li>International telephone number for test purposes</li>
+                                <li>10 SMS submissions*</li>
+                                <li>10 Web submissions</li>
+                            </ul>
+                            <em><small>* International SMS rates apply  (for Test  Drive only)</small></em>
+                        </div>
+                    </div>
+                    <div class="badge">
+                        <img src="/media/images/dw_badge_world.png" width="80" height="80" alt="worldwide" />
+                    </div>
+                </div>
+            </div>
+            <div class="grid_9 alpha omega">
+                <div class="container_plan">
+                    <div class="plan">
+                        <div class="padding_10">
+                            <h2>Ready to Work</h2>
+                            $850 <small>per month</small>
+                            <a href="javascript:void(0)" class="try_button">Suscribe now</a>
+                            <ul>
+                                <li>Full access to online data collection tool</li>
+                                <li>Local telephone number for your organization</li>
+                                <li>Packet of 5000 SMS</li>
+                                <li>Unlimited Web submissions</li>
+                            </ul>
+                            Save 10% <a href="#a3">learn more</a>
+                        </div>
+                    </div>
+                    <div class="badge">
+                        <img src="/media/images/dw_badge_mada.png" width="80" height="80" alt="Madagascar" />
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <h2>More Details</h2>
+        <ul>
+            <li><a href="#a1">Where DataWinners is available</a></li>
+            <li><a href="#a2">Key details of Monthly Subscription</a></li>
+            <li><a href="#a3">Monthly Subscription Costs</a></li>
+            <li><a href="#a4">Payment</a></li>
+            <li><a href="#a5">Need help getting started?</a></li>
+        </ul>
+        <a name="a1"></a><h2>Where DataWinners is available</h2>
+        <ul>
+            <li>DataWinners is currently available in Madagascar</li>
+            <li>It will be available worldwide starting in early 2012</li>
+            <li>Free Test Drive account is available anywhere</li>
+        </ul>
+        <a name="a2"></a><h2>Key Details of Monthly Subscription</h2>
+        <ul>
+            <li>1 Subscription per organization per country</li>
+            <li>Local number provided by HNI</li>
+            <li>5000 SMS included</li>
+            <li>Overage: $50 for 500 additional SMS</li>
+            <li>Coverage: Airtel</li>
+            <li>Reverse SMS Billing</li>
+        </ul>
+        <a name="a3"></a><h2>Monthly Subscription Costs</h2>
+        <table width="500" class="pricelist">
+            <tr>
+                <td width="400">Price per month:</td>
+                <td width="100">$ 850</td>
+            </tr>
+            <tr>
+                <td>- 10% Discount:<br/><em><small>Pay 6 months in advance and save 10%</small></em></td>
+                <td>- $ 85</td>
+            </tr>
+            <tr>
+                <td><strong>Price per month</strong> (with Discount):</td>
+                <td><strong>$ 765</strong></td>
+            </tr>
+        </table>
+        <a name="a4"></a><h2>Payment</h2>
+        <ol>
+            <li><strong>Wire transfer</strong></li>
+            <li><strong>Credit card</strong><br/>Call us directly and we can securely process your credit card payment over the phone</li>
+            <li><strong>Pay via ACH</strong><br/>TransferDirect, secure transfer of funds between two US-based bank accounts (normally free of charge).</li>
+        </ol>
+        <a name="a5"></a><h2>Need help getting started? </h2>
+        <p>If you need help getting started or have an ambitious data collection project that requires a DataWinners custom solution, contact us:
+        Email: info@datawinners.com</p>
+        <p>Our team has extensive experience developing mobile data collection systems. <a href="/success-story/santenet2">See our Success Stories.</a></p>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

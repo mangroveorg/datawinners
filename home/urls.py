@@ -13,7 +13,7 @@ urlpatterns = patterns('',
         (r'^success-story/bngrc/$', TemplateView.as_view(template_name='home/success_story_bngrc.html')),
         (r'^success-story/msi/$', TemplateView.as_view(template_name='home/success_story_msi.html')),
         (r'^success-story/santenet2/$', TemplateView.as_view(template_name='home/success_story_santenet2.html')),
-        (r'^pricing/$', index),
+        (r'^pricing/$', TemplateView.as_view(template_name='home/pricing.html')),
         (r'^support/$', index),
         (r'^about-us/$', index),
     )
