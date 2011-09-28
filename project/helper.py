@@ -84,7 +84,7 @@ def create_questionnaire(post, dbm):
     if entity_type == [REPORTER]:
         fields = [entity_id_question, activity_report_question]
     return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
-                     form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE)
+                     form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE, language=post['language'])
 
 
 def load_questionnaire(dbm, questionnaire_id):

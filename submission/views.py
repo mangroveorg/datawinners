@@ -8,6 +8,8 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_db_manager_for
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException
+from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.transport.player.parser import SMSParser
 from mangrove.transport.player.player import SMSPlayer, Request, TransportInfo
 from datawinners.messageprovider.message_handler import get_exception_message_for
 
@@ -40,9 +42,12 @@ def _get_from_and_to_numbers(request):
 @require_http_methods(['POST'])
 def sms(request):
     _message = request.POST["message"]
+    form_code, values = SMSParser().parse(_message)
     _from, _to = _get_from_and_to_numbers(request)
+    dbm = get_db_manager_for(_to)
+    form_model = get_form_model_by_code(form_code)
+    request.session['django_language'] = form_model.language
     try:
-        dbm = get_db_manager_for(_to)
         sms_player = SMSPlayer(dbm, get_location_tree())
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
         response = sms_player.accept(Request(transportInfo=transportInfo, message=_message))
