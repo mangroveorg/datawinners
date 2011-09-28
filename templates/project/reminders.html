@@ -31,44 +31,45 @@
         {{ block.super }}
     {% endblock %}
     <div id='new_reminder'>
-        <input type="hidden" value="{{ project.id }}" id='project_id'>
-        <input type="hidden" id='reminder_id'>
-        <span class="bold">{% trans "When" %}</span>
-        <ul class="margin_bottom_20">
-            <li>
-                <input type="radio"
-                       value="before_deadline" name="reminder_mode"><input disabled="disabled"
-                                                                           id="days_before_deadline"
-                                                                           type="text"/> {% trans "day(s) <strong>before</strong> the deadline" %}
-            </li>
-            <li>
-                <input type="radio" value="on_deadline" name="reminder_mode"
-                       checked="checked">{% trans "On the deadline" %}
-            </li>
-            <li>
-                <input type="radio"
-                       value="after_deadline" name="reminder_mode"><input disabled="disabled"
-                                                                          id="days_after_deadline"
-                                                                          type="text"/> {% trans "day(s) <strong>after</strong> the deadline" %}
-            </li>
-        </ul>
-        <span class="bold">{% trans "To Whom" %}</span>
-        <ul class="margin_bottom_20">
-            <li><input name="target_datasenders" type="radio"
-                       value="all_datasenders" checked="checked">{% trans "Everyone" %}</li>
-            <li><input name="target_datasenders" type="radio"
-                       value="datasenders_without_submissions">{% trans "Anyone who hasn't sent data" %}</li>
-        </ul>
+        <form id='reminder_form'>
+            <input type="hidden" value="{{ project.id }}" id='project_id'>
+            <input type="hidden" id='reminder_id'>
+            <span class="bold">{% trans "When" %}</span>
+            <ul class="margin_bottom_20" id='when_block'>
+                <li>
+                    <input type="radio"
+                           value="before_deadline" name="reminder_mode"><input disabled="disabled"
+                                                                               id="days_before_deadline"
+                                                                               type="text" class="required number"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+                </li>
+                <li>
+                    <input type="radio" value="on_deadline" name="reminder_mode"
+                           checked="checked">{% trans "On the deadline" %}
+                </li>
+                <li>
+                    <input type="radio"
+                           value="after_deadline" name="reminder_mode"><input disabled="disabled"
+                                                                              id="days_after_deadline"
+                                                                              type="text" class="required number"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+                </li>
+            </ul>
+            <span class="bold">{% trans "To Whom" %}</span>
+            <ul class="margin_bottom_20">
+                <li><input name="target_datasenders" type="radio"
+                           value="all_datasenders" checked="checked">{% trans "Everyone" %}</li>
+                <li><input name="target_datasenders" type="radio"
+                           value="datasenders_without_submissions">{% trans "Anyone who hasn't sent data" %}</li>
+            </ul>
 
-        <div class="margin_bottom_20">
-            <textarea id='message'></textarea>
-
-            <div class="margin_top_10">
-                {% trans "The message count is" %} <span id='message_count'>0</span>
+            <div class="margin_bottom_20">
+                <textarea id='message' class="required" name="message"></textarea>
+                <div class="margin_top_10">
+                    {% trans "The message count is" %} <span id='message_count'>0</span>
+                </div>
             </div>
-        </div>
-        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
-        <a href="#" class="button" id="confirm">{% trans "Confirm" %}</a>
+            <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+            <a href="#" class="button" id="confirm">{% trans "Confirm" %}</a>
+        </form>
     </div>
     <div>
         {% if messages %}
