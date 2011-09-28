@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import NAME_FIELD
 from mangrove.utils.types import is_empty, is_sequence, sequence_to_str
-from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE, get_submission_success_message
+from datawinners.messageprovider.messages import exception_messages, DEFAULT, VALIDATION_FAILURE_ERROR_MESSAGE, get_submission_success_message, get_registration_success_message
 
 
 def get_exception_message_for(exception, channel=None):
@@ -43,7 +43,7 @@ def get_success_msg_for_submission_using(response):
 def get_success_msg_for_registration_using(response, source):
 
     resp_string = (_("Unique identification number(ID) is:") + " %s") % (response.short_code)
-    thanks = registration_success_message % resp_string
+    thanks = get_registration_success_message() % resp_string
     if source == "sms":
         return thanks + _("We received : ") + get_expanded_response(response.processed_data)
     return thanks
