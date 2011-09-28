@@ -1,10 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.http import HttpResponseRedirect
 import xlwt
 from datetime import datetime
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.main.utils import get_database_manager
-from datawinners.project.models import get_all_projects
 from mangrove.datastore.database import get_db_manager
 
 def clean_date(date_val):
@@ -31,16 +28,7 @@ def get_excel_sheet(raw_data, sheet_name):
             ws.write(row_number, col_number, val, style=cell_style)
     return wb
 
-def is_new_user(f):
-    def wrapper(*args, **kw):
-        user = args[0].user
-        if not len(get_all_projects(get_database_manager(args[0].user))) and not user.groups.filter(
-            name="Data Senders").count() > 0:
-            return HttpResponseRedirect("/start?page=" + args[0].path)
 
-        return f(*args, **kw)
-
-    return wrapper
 
 
 def get_database_manager_for_org(organization):
@@ -51,3 +39,10 @@ def get_database_manager_for_org(organization):
 def get_organization(request):
     profile = request.user.get_profile()
     return Organization.objects.get(org_id=profile.org_id)
+
+def convert_to_ordinal(number):
+    if 10 < number < 14: return u'%sth' % number
+    if number % 10 == 1: return u'%sst' % number
+    if number % 10 == 2: return u'%snd' % number
+    if number % 10 == 3: return u'%srd' % number
+    return u'%sth' % number

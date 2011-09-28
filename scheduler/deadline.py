@@ -3,6 +3,7 @@ import calendar
 from dateutil.relativedelta import relativedelta
 from datetime import date, timedelta
 import math
+from datawinners.utils import convert_to_ordinal
 
 class NotADeadLine(Exception):
     pass
@@ -44,10 +45,19 @@ class Deadline(object):
     def get_applicable_frequency_period_for(self, deadline_date):
         return self.frequency.get_frequency_period_for(deadline_date, self.mode)
 
+    def description(self):
+        return self.frequency.description(self.mode)
+
 
 class Month(object):
     def __init__(self,day):
         self.day = day
+
+    def description(self, mode):
+        if mode=='Following':
+            return convert_to_ordinal(self.day) + ' of the ' + mode + ' Month'
+        return convert_to_ordinal(self.day) + ' of the Month'
+
 
     def next_deadline_date(self, as_of):
         """
@@ -158,6 +168,14 @@ class Week(object):
 
     def __init__(self,day):
         self.day = day
+
+    def _get_week_day_name(self):
+        return dict(zip(range(1, 8), calendar.day_name))[self.day]
+
+    def description(self, mode):
+        if mode=='Following':
+            return self._get_week_day_name() + ' of the ' + mode + ' Week'
+        return self._get_week_day_name() + ' of the Week'
 
     def next_deadline_date(self, as_of):
         """

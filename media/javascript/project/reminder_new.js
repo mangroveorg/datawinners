@@ -29,21 +29,17 @@ $(document).ready(function() {
         if ($(this).val() == 'before_deadline') {
             $('#days_before_deadline').attr("disabled", "");
             $('#days_after_deadline').attr("disabled", "disabled");
-            $('#days_before_deadline').val("");
-            $('#days_after_deadline').val("");
         }
         else if ($(this).val() == 'on_deadline') {
             $('#days_before_deadline').attr("disabled", "disabled");
             $('#days_after_deadline').attr("disabled", "disabled");
-            $('#days_before_deadline').val("");
-            $('#days_after_deadline').val("");
         }
         else if ($(this).val() == 'after_deadline') {
             $('#days_before_deadline').attr("disabled", "disabled");
             $('#days_after_deadline').attr("disabled", "");
-            $('#days_before_deadline').val("");
-            $('#days_after_deadline').val("");
         }
+        $('#days_before_deadline').val("");
+        $('#days_after_deadline').val("");
     });
 
     $('#message').keyup(function() {

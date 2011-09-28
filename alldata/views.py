@@ -1,11 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners import utils
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
-from datawinners.accountmanagement.views import is_datasender
+from datawinners.accountmanagement.views import is_new_user
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 from datawinners.project.models import ProjectState
@@ -14,7 +12,7 @@ from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 def index(request):
     reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)

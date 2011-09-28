@@ -80,7 +80,9 @@
                 </div>
             {% endfor %}
         {% endif %}
-
+        <div>
+            <strong>Deadline: </strong>{{ project.deadline.description }}
+        </div>
         <a id='add_reminder' class="float_right margin_bottom_10">Add a Reminder</a>
         <table class="styled_table float_left">
             <thead>

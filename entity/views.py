@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from datawinners import utils
 from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.accountmanagement.views import is_datasender
+from datawinners.accountmanagement.views import is_datasender, is_new_user
 from datawinners.entity import helper
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
@@ -141,7 +141,7 @@ def create_subject(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 @is_datasender
 def all_subjects(request):
     manager = get_database_manager(request.user)
@@ -204,7 +204,7 @@ def create_web_users(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 @is_datasender
 def all_datasenders(request):
     manager = get_database_manager(request.user)
@@ -221,7 +221,7 @@ def all_datasenders(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = [models.get_project(project_id, manager) for project_id in request.POST.get('project_id').split(';')]
@@ -233,7 +233,7 @@ def disassociate_datasenders(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = [models.get_project(project_id, manager) for project_id in request.POST.get('project_id').split(';')]

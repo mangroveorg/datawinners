@@ -57,6 +57,17 @@ def is_datasender_allowed(f):
         return f(*args, **kw)
     return wrapper
 
+def is_new_user(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        if not len(get_all_projects(get_database_manager(args[0].user))) and not user.groups.filter(
+            name="Data Senders").count() > 0:
+            return HttpResponseRedirect("/start?page=" + args[0].path)
+
+        return f(*args, **kw)
+
+    return wrapper
+
 @login_required(login_url='/login')
 @is_admin
 def settings(request):

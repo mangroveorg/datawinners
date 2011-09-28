@@ -1,12 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import calendar
 
-from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, BooleanField
+from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.core.exceptions import ValidationError
 from django.forms.forms import Form
 from django.utils.translation import ugettext_lazy as _
-from django.forms.widgets import RadioFieldRenderer, RadioInput, RadioSelect
+from django.forms.widgets import RadioFieldRenderer, RadioInput
 from django import forms
+from datawinners.utils import convert_to_ordinal
 from mangrove.form_model.form_model import REPORTER
 
 
@@ -32,12 +33,6 @@ class MyRadioFieldRenderer(RadioFieldRenderer):
 class MyRadioSelect(forms.RadioSelect):
     renderer = MyRadioFieldRenderer
 
-def convert_to_ordinal(n):
-    if 10 < n < 14: return u'%sth' % n
-    if n % 10 == 1: return u'%sst' % n
-    if n % 10 == 2: return u'%snd' % n
-    if n % 10 == 3: return u'%srd' % n
-    return u'%sth' % n
 
 class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', _('Survey project: I want to collect data from the field')),

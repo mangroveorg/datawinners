@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed
+from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -210,7 +210,7 @@ def save_questionnaire(request):
 
 
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 @is_datasender
 def index(request):
     project_list = []
@@ -228,7 +228,7 @@ def index(request):
                               context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
-@utils.is_new_user
+@is_new_user
 @is_datasender
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)

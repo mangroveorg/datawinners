@@ -173,3 +173,18 @@ class TestDeadline(TestCase):
         deadline = Deadline(frequency=Month(2),mode="Following")
         self.assertRaises(  NotADeadLine , deadline.get_applicable_frequency_period_for,date(2011,9,14))
 
+    def test_should_return_description_of_monthly_deadline_in_that_mode(self):
+        deadline = Deadline(frequency=Month(2),mode="That")
+        self.assertEqual('2nd of the Month',deadline.description())
+
+    def test_should_return_description_of_monthly_deadline_in_following_mode(self):
+        deadline = Deadline(frequency=Month(2),mode="Following")
+        self.assertEqual('2nd of the Following Month',deadline.description())
+
+    def test_should_return_description_of_weekly_deadline_in_that_mode(self):
+        deadline = Deadline(frequency=Week(1),mode="That")
+        self.assertEqual('Monday of the Week',deadline.description())
+
+    def test_should_return_description_of_weekly_deadline_in_following_mode(self):
+        deadline = Deadline(frequency=Week(5),mode="Following")
+        self.assertEqual('Friday of the Following Week',deadline.description())
