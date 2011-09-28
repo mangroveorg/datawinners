@@ -2252,3 +2252,19 @@ msgid ""
 msgstr ""
 "Un email d'activation a été envoyé sur votre adresse email. Veuillez activer "
 "votre compte avant de vous connecter."
+
+#message_provider/message_handler.py:43
+msgid "Unique identification number(ID) is:"
+msgstr "Numéro d'identification unique (ID) est:"
+
+#message_provider/message_handler.py:48
+msgid "We received : "
+msgstr "Nous avons reçu: "
+
+#messageprovider/messages.py
+msgid "Thank you"
+msgstr "Merci"
+
+#messageprovider/messages.py
+msgid "Registration successful."
+msgstr "Inscription réussie."

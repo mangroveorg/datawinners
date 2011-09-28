@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.utils.translation import ugettext as _
 import mangrove.errors.MangroveException as ex
 
 
@@ -74,7 +75,8 @@ exception_messages = {
 
 VALIDATION_FAILURE_ERROR_MESSAGE = u"Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
 
-success_messages = {
-    SUBMISSION: u"Thank you %s. We received : ",
-    REGISTRATION: u"Registration successful. %s."
-}
+def get_submission_success_message():
+    return _("Thank you") + " %s. " + _("We received : ")
+
+def get_registration_success_message():
+    return _("Registration successful.") + " %s."

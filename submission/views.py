@@ -47,26 +47,26 @@ def sms(request):
     _from, _to = _get_from_and_to_numbers(request)
     dbm = get_db_manager_for(_to)
     form_model = get_form_model_by_code(dbm, form_code)
-    request.session['django_language'] = form_model.activeLanguages
+    request.session['django_language'] = form_model.activeLanguages[0]
     try:
         sms_player = SMSPlayer(dbm, get_location_tree())
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
         response = sms_player.accept(Request(transportInfo=transportInfo, message=_message))
-        message = _(SMSResponse(response).text())
+        message = SMSResponse(response).text()
     except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
-        message = _(get_exception_message_for(exception=exception, channel=SMS))
+        message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
                             error=message)
         log.save()
     except NumberNotRegisteredException as exception:
-        message = _(get_exception_message_for(exception=exception, channel=SMS))
+        message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
         log.save()
     except MangroveException as exception:
-        message = _(get_exception_message_for(exception=exception, channel=SMS))
+        message = get_exception_message_for(exception=exception, channel=SMS)
     except Exception as exception:
         logger.exception('SMS Processing failure: message')
-        message = _(get_exception_message_for(exception=exception, channel=SMS))
+        message = get_exception_message_for(exception=exception, channel=SMS)
 
     return HttpResponse(message)
 

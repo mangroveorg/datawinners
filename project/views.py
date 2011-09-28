@@ -444,9 +444,9 @@ def _format_field_description_for_data_senders(reg_form_fields):
     for field in reg_form_fields:
         if field.code == 't':
             continue
-        temp = field.label.get("eng")
+        temp = field.label.get("en")
         temp = temp.replace("subject", "data sender")
-        field.label.update(eng=temp)
+        field.label.update(en=temp)
 
 
 def _get_imports_subjects_post_url(project_id=None):
@@ -738,7 +738,7 @@ def _create_select_field(field, choices):
 
 def _create_choices(field):
     choice_list = [('', '--None--')] if field.single_select_flag else []
-    choice_list.extend([(option['val'], option['text']['eng']) for option in field.options])
+    choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
     choices = tuple(choice_list)
     return choices
 
@@ -843,7 +843,7 @@ def questionnaire_preview(request, project_id=None):
 
 
 def _get_preview_for_field_in_registration_questionnaire(field):
-    return {"description": field.label.get('eng'), "code": field.code, "type": field.type,
+    return {"description": field.label.get('en'), "code": field.code, "type": field.type,
             "constraints": field.instruction, "instruction": field.instruction}
 
 
