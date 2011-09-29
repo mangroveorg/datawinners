@@ -121,7 +121,7 @@
         <a href="{{ project_links.reminders_link }}">{% trans "Scheduled Reminders" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'sent' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="#">{% trans "Sent Reminders" %}</a>
+        <a href="{{ project_links.sent_reminders_link }}">{% trans "Sent Reminders" %}</a>
     </li>
 </ul>
 {% endblock %}

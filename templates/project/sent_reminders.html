@@ -1,0 +1,55 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Project - Reminders" %} {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "reminders" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_reminder.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    {% block secondary_navigation_reminders %}
+        {% activetab "secondary_tab_nav" "scheduled" %}
+        {{ block.super }}
+    {% endblock %}
+    {% if project.is_reminder_enabled %}
+        <div class="margin_bottom_20">
+            <strong>Deadline: </strong>{{ project.deadline.description }}
+        </div>
+        <table class="styled_table">
+            <thead>
+            <th>When</th>
+            <th>To</th>
+            <th>Message</th>
+            <th>Date</th>
+            </thead>
+            <tbody>
+            {% for reminder in reminders %}
+                <tr>
+                    <td>{{ reminder.when }}</td>
+                    <td>{{ reminder.to }}</td>
+                    <td>{{ reminder.message }}</td>
+                    <td>{{ reminder.date }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div>
+            <strong>{% trans "Reminders are not enabled for this project." %}</strong>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -80,6 +80,7 @@ def _make_project_links(project, questionnaire_code):
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
         project_links['reminders_link'] = reverse(reminders, args=[project_id])
+        project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
     return project_links
 
 
@@ -567,6 +568,17 @@ def manage_reminders(request, project_id):
                      reminder_mode=reminder['reminderMode'], organization=utils.get_organization(request), remind_to=reminder['targetDataSenders']).save()
         return HttpResponse("Reminders has been saved")
 
+@login_required(login_url='/login')
+@is_datasender
+def sent_reminders(request, project_id):
+    dbm = get_database_manager(request.user)
+    project = models.get_project(project_id, dbm)
+    questionnaire = helper.load_questionnaire(dbm, project.qid)
+    return render_to_response('project/sent_reminders.html',
+                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
+                 'reminders':Reminder.objects.filter(project_id=project_id, voided=False),
+                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
+                                  context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @is_datasender
