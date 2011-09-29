@@ -22,7 +22,7 @@
 
 {% block content %}
     {% block secondary_navigation_reminders %}
-        {% activetab "secondary_tab_nav" "scheduled" %}
+        {% activetab "secondary_tab_nav" "sent" %}
         {{ block.super }}
     {% endblock %}
     {% if project.is_reminder_enabled %}
@@ -39,8 +39,8 @@
             <tbody>
             {% for reminder in reminders %}
                 <tr>
-                    <td>{{ reminder.when }}</td>
-                    <td>{{ reminder.to }}</td>
+                    <td>{{ reminder.reminder_mode }}</td>
+                    <td>{{ reminder.remind_to }}</td>
                     <td>{{ reminder.message }}</td>
                     <td>{{ reminder.date }}</td>
                 </tr>

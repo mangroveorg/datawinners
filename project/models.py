@@ -14,6 +14,12 @@ from mangrove.transport.reporter import get_reporters_who_submitted_data_for_fre
 from mangrove.utils.types import  is_string
 from django.db import models
 
+
+def get_all_reminder_logs_for_project(project_id, dbm):
+        assert isinstance(dbm, DatabaseManager)
+        rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
+        return [ReminderLog.new_from_doc(dbm=dbm, doc=ReminderLog.__document_class__.wrap(row['doc'])) for row in rows]
+
 class ReminderMode(object):
     BEFORE_DEADLINE = 'before_deadline'
     ON_DEADLINE = 'on_deadline'
@@ -64,8 +70,8 @@ class Reminder(models.Model):
         else:
             return deadline.current_deadline(on_date)
 
-    def log(self, dbm, project_name, date, sent_status='sent', number_of_sms=0):
-        log = ReminderLog(dbm=dbm, reminder=self, project_name=project_name, date=date, sent_status=sent_status,
+    def log(self, dbm, project_id, date, sent_status='sent', number_of_sms=0):
+        log = ReminderLog(dbm=dbm, reminder=self, project_id=project_id, date=date, sent_status=sent_status,
                     number_of_sms=number_of_sms)
         log.save()
         return log
@@ -73,7 +79,7 @@ class Reminder(models.Model):
 
 class ReminderLogDocument(DocumentBase):
     reminder_id = TextField()
-    project_name = TextField()
+    project_id = TextField()
     sent_status = TextField()
     number_of_sms = TextField()
     date = TZAwareDateTimeField()
@@ -81,10 +87,10 @@ class ReminderLogDocument(DocumentBase):
     remind_to = TextField()
     reminder_mode = TextField()
 
-    def __init__(self, id=None, reminder_id=None, project_name=None, sent_status=None, number_of_sms=None, date=None, message=None, remind_to=None, reminder_mode=None):
+    def __init__(self, id=None, reminder_id=None, project_id=None, sent_status=None, number_of_sms=None, date=None, message=None, remind_to=None, reminder_mode=None):
         DocumentBase.__init__(self,id=id, document_type='ReminderLog')
         self.reminder_id =reminder_id
-        self.project_name = project_name
+        self.project_id = project_id
         self.sent_status = sent_status
         self.number_of_sms = number_of_sms
         self.date = date
@@ -93,19 +99,39 @@ class ReminderLogDocument(DocumentBase):
         self.reminder_mode = reminder_mode
 
 class ReminderLog(DataObject):
+
     __document_class__ = ReminderLogDocument
 
-    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_name=None):
+    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_id=None):
         DataObject.__init__(self, dbm)
         if reminder is not None:
             if reminder.reminder_mode == ReminderMode.ON_DEADLINE:
-                reminder_mode = reminder.reminder_mode
+                reminder_mode = self._format_string_before_saving(reminder.reminder_mode)
             else:
-                reminder_mode = str(reminder.day) + ' days ' + reminder.reminder_mode
-            doc = ReminderLogDocument(reminder_id=reminder.id, project_name=project_name, sent_status=sent_status,
+                reminder_mode = str(reminder.day) + ' days ' + self._format_string_before_saving(reminder.reminder_mode)
+            doc = ReminderLogDocument(reminder_id=reminder.id, project_id=project_id, sent_status=sent_status,
                                       number_of_sms=number_of_sms, date=date, message=reminder.message,
-                                      remind_to=reminder.remind_to, reminder_mode=reminder_mode)
+                                      remind_to=self._format_string_before_saving(reminder.remind_to), reminder_mode=reminder_mode)
             DataObject._set_document(self, doc)
+
+    @property
+    def reminder_mode(self):
+        return self._doc.reminder_mode
+
+    @property
+    def remind_to(self):
+        return self._doc.remind_to
+
+    @property
+    def message(self):
+        return self._doc.message
+
+    @property
+    def date(self):
+        return self._doc.date
+
+    def _format_string_before_saving(self, value):
+        return  (' '.join(value.split('_'))).title()
 
 class ProjectState(object):
     INACTIVE = 'Inactive'

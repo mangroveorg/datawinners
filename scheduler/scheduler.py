@@ -3,7 +3,7 @@ from _collections import defaultdict
 from datetime import date, datetime
 from datawinners import  settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.project.models import Reminder, Project, ReminderLog
+from datawinners.project.models import Reminder, Project
 from datawinners.scheduler.smsclient import SMSClient
 
 import logging
@@ -59,7 +59,7 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
         smses_sent = _send_reminder(from_number,on_date,project,reminder,sms_client,dbm)
         if smses_sent > 0:
             reminders_sent.append(reminder)
-            reminder.log(dbm, project.name, on_date, number_of_sms=smses_sent)
+            reminder.log(dbm, project.id, on_date, number_of_sms=smses_sent)
     logger.info("Reminders scheduled: %d " % len(reminders_to_be_sent) )
     logger.info("Reminders sent: %d " % len(reminders_sent) )
     return reminders_sent

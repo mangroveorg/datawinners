@@ -16,7 +16,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.project.forms import ProjectProfile
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -576,7 +576,7 @@ def sent_reminders(request, project_id):
     questionnaire = helper.load_questionnaire(dbm, project.qid)
     return render_to_response('project/sent_reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'reminders':Reminder.objects.filter(project_id=project_id, voided=False),
+                 'reminders':get_all_reminder_logs_for_project(project_id, dbm),
                  'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
