@@ -19,8 +19,6 @@ var viewModel =
     },
     loadQuestion: function(question) {
         question.display = ko.dependentObservable(function() {
-            console.log(this.title());
-            console.log(gettext(this.title()));
             return this.code() + ' ' + gettext(this.title());
         }, question);
         viewModel.questions.push(question);
