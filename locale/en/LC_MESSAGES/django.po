@@ -251,7 +251,7 @@ msgid ""
 msgstr ""
 
 #: project/forms.py:48
-msgid "Whenever a DataSender has data for us"
+msgid "Whenever a data sender has data for us"
 msgstr ""
 
 #: project/forms.py:48

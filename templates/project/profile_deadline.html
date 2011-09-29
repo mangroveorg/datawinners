@@ -19,8 +19,14 @@
                     {% include 'project/profile_deadline_week_block.html' %}
                 </div>
             </li>
+            <li>
+                <div id="deadline_example" />
+            </li>
         </div>
+
     </div>
+
+
     <li class="{{ form.reminders_enabled.css_classes  }} form-row-10px">
         {{ form.reminders_enabled.label_tag }}
         {{ form.reminders_enabled }}

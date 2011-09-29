@@ -40,7 +40,7 @@ class ProjectProfile(Form):
     DEVICE_CHOICES = (('sms', 'SMS'),)
     SUBJECT_TYPE_CHOICES = (('yes',_('Work performed by the data sender (eg. monthly activity report)')),('no',_('Other Subject')))
     GROUP_TYPE_CHOICES = (('open',_('Open Data Sender Group. Anyone can send in data without registering')),('close',_('Closed Data Sender Group. Only registered data sender will be able to send data')))
-    FREQUENCY_CHOICES = ((False, _("Whenever a DataSender has data for us")), (True, _("Every")))
+    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
     LANGUAGES = (('en', 'English'), ('fr', 'French'), ('mg', 'Malagasy'))
     id = CharField(required=False)
     name = CharField(required=True, label=_("Name this Project"))

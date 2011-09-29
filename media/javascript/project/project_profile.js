@@ -70,6 +70,22 @@ $(document).ready(function(){
         enable_timeperiod();
     });
 
+    $('#id_deadline_week,#id_deadline_month,#id_deadline_type,#id_frequency_period').change(function(){
+        DW.set_deadline_example();
+    });
+
+    DW.set_deadline_example = function(e){
+        var frequency = $('#id_frequency_period').val();
+
+        if (frequency == 'week'){
+            var deadline_example =  $('#id_deadline_week option:selected').text() + ' of '+$('#id_deadline_type:not(:disabled) option:selected').text()+ ' week';
+        }else if (frequency == 'month')
+        {
+            var deadline_example = $('#id_deadline_month option:selected').text() + ' of January'
+        }
+        $('#deadline_example').text(deadline_example)
+    }
+
 });
 
 function show_element(element,should_show){

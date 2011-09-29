@@ -256,7 +256,7 @@ msgstr ""
 "Restreint. Seuls les personnes enregistrées peuvent envoyer des données"
 
 #: project/forms.py:48
-msgid "Whenever a DataSender has data for us"
+msgid "Whenever a data sender has data for us"
 msgstr "A chaque fois que l'envoyeur a des données à communiquer"
 
 #: project/forms.py:48
