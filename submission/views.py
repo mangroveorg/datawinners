@@ -58,6 +58,7 @@ def sms(request):
     form_model = get_form_model_by_code(dbm, form_code)
     try:
         getattr(request, 'session')
+        request.session['django_language'] = form_model.activeLanguages[0]
     except AttributeError:
         setattr(request, 'session', {'django_language' : form_model.activeLanguages[0]})
     try:

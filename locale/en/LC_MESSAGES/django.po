@@ -2281,3 +2281,93 @@ msgid ""
 "An activation email has been sent to your email address. Please activate "
 "before login."
 msgstr ""
+
+msgid "What is associated subject type?"
+msgstr ""
+
+msgid "What is the subject's name?"
+msgstr ""
+
+msgid "What is the subject's Unique ID Number"
+msgstr ""
+
+msgid "What is the subject's location?"
+msgstr ""
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the subject"
+msgstr ""
+
+msgid "What is the mobile number associated with the subject?"
+msgstr ""
+
+msgid "What is associatéd entity?"
+msgstr ""
+
+msgid "What is the data sender's name?"
+msgstr ""
+
+msgid "What is the data sender's location?"
+msgstr ""
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+
+msgid "Entity identified by %s is already defined"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+msgstr ""
+
+msgid "Questionnaire ID %s doesnt exist."
+msgstr ""
+
+msgid "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed questionnaire and resend SMS"
+msgstr ""
+
+msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
+msgstr ""
+
+msgid "This telephone number is not registered in our system."
+msgstr ""
+
+msgid "This telephone number is not registered in our system. Please register or contact us at 033 20 426 89."
+msgstr ""
+
+msgid "Question Code Already Exists"
+msgstr ""
+
+msgid "Question Code %s provided already exists"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
+msgstr ""
+
+msgid "This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
+msgstr ""
+
+msgid "Invalid message format."
+msgstr ""
+
+msgid "Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
+msgstr ""
+
+msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire and resend SMS with the right Question code."
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
+msgstr ""
+
+msgid "Error. This project is not yet active. Submissions can be made only for an active project."
+msgstr ""
+
+msgid "Error. Internal error. Please call technical support"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
+msgstr ""
