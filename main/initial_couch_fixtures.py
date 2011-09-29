@@ -213,12 +213,12 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                           instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
     question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
-                            ddtype=select_type, instruction="Choose 1 answer from the above list. Example: a")
+                            ddtype=select_type, instruction="Choose 1 answer from the list. Example: a")
     question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
                             options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
                                     ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
                             ddtype=select_type,
-                            instruction="Choose 1 or more answers from the above list. Example: a or ab")
+                            instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
                              label="What is the GPS code for clinic?",
                              language="eng", ddtype=geo_code_type,
@@ -227,7 +227,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
                             single_select_flag=False,
                             ddtype=select_type,
-                            instruction="Choose 1 or more answers from the above list. Example: a or ab")
+                            instruction="Choose 1 or more answers from the list.")
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
                            form_code="cli001", type='survey',
                            fields=[question1, question2, question3, question4, question5, question6, question7,
