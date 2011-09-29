@@ -1820,11 +1820,11 @@ msgstr ""
 
 #: templates/project/reminder_content.html:38
 msgid "All chosen DS type"
-msgstr ""
+msgstr "Everyone"
 
 #: templates/project/reminder_content.html:39
 msgid "Anyone who hasn't sent data"
-msgstr ""
+msgstr "Anyone who has not sent data"
 
 #: templates/project/reminder_content.html:47
 msgid "The message count is"

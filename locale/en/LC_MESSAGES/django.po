@@ -1877,12 +1877,12 @@ msgstr ""
 
 #: templates/project/reminder_content.html:44
 msgid "All chosen DS type"
-msgstr ""
+msgstr "Everyone"
 
 #: templates/project/reminder_content.html:45
 #: templates/project/reminders.html:61
 msgid "Anyone who hasn't sent data"
-msgstr ""
+msgstr "Anyone who has not sent data"
 
 #: templates/project/reminder_content.html:53
 #: templates/project/reminders.html:67
