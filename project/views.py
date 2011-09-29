@@ -517,25 +517,26 @@ def reminders(request, project_id):
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':_format_reminders(reminders, project_id),
-                 'is_reminder': project.is_reminder_enabled()},
+                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @csrf_exempt
 def create_reminder(request, project_id):
-    new_reminder = json.loads(request.POST['reminder'])
-    if is_empty(new_reminder['id']):
-        Reminder(project_id=project_id, day=new_reminder['day'], message=new_reminder['message'],
-                 reminder_mode=new_reminder['reminder_mode'], remind_to=new_reminder['remind_to'],
+    if is_empty(request.POST['id']):
+        Reminder(project_id=project_id, day=request.POST.get('day', 0), message=request.POST['message'],
+                 reminder_mode=request.POST['reminder_mode'], remind_to=request.POST['remind_to'],
                  organization=utils.get_organization(request)).save()
+        messages.success(request, 'Reminder added successfully')
     else:
-        reminder = Reminder.objects.filter(project_id=project_id, id=new_reminder['id'])[0]
-        reminder.day = new_reminder['day']
-        reminder.message = new_reminder['message']
-        reminder.reminder_mode = new_reminder['reminder_mode']
-        reminder.remind_to = new_reminder['remind_to']
+        reminder = Reminder.objects.filter(project_id=project_id, id=request.POST['id'])[0]
+        reminder.day = request.POST.get('day', 0)
+        reminder.message = request.POST['message']
+        reminder.reminder_mode = request.POST['reminder_mode']
+        reminder.remind_to = request.POST['remind_to']
         reminder.save()
-    return HttpResponse(reverse(reminders, args=[project_id]))
+        messages.success(request, 'Reminder updated successfully')
+    return HttpResponseRedirect(reverse(reminders, args=[project_id]))
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -548,7 +549,7 @@ def get_reminder(request, project_id):
 @csrf_exempt
 def delete_reminder(request, project_id, reminder_id):
     Reminder.objects.filter(project_id=project_id, id=reminder_id)[0].delete()
-    messages.success(request, 'Reminder deleted successfully')
+    messages.success(request, 'Reminder deleted')
     return HttpResponseRedirect(reverse(reminders, args=[project_id]))
 
 @login_required(login_url='/login')

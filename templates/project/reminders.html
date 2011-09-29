@@ -32,16 +32,16 @@
     {% endblock %}
     {% if project.is_reminder_enabled %}
     <div id='new_reminder'>
-        <form id='reminder_form'>
+        <form id='reminder_form' method="POST" action='{{ create_reminder_link }}'>
             <input type="hidden" value="{{ project.id }}" id='project_id'>
-            <input type="hidden" id='reminder_id'>
+            <input type="hidden" id='reminder_id' name="id">
             <span class="bold">{% trans "When" %}</span>
             <ul class="margin_bottom_20" id='when_block'>
                 <li>
                     <input type="radio"
                            value="before_deadline" name="reminder_mode"><input disabled="disabled"
                                                                                id="days_before_deadline"
-                                                                               type="text" class="required number"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+                                                                               type="text" class="required number" name="day"/> {% trans "day(s) <strong>before</strong> the deadline" %}
                 </li>
                 <li>
                     <input type="radio" value="on_deadline" name="reminder_mode"
@@ -51,14 +51,14 @@
                     <input type="radio"
                            value="after_deadline" name="reminder_mode"><input disabled="disabled"
                                                                               id="days_after_deadline"
-                                                                              type="text" class="required number"/> {% trans "day(s) <strong>after</strong> the deadline" %}
+                                                                              type="text" class="required number" name="day"/> {% trans "day(s) <strong>after</strong> the deadline" %}
                 </li>
             </ul>
             <span class="bold">{% trans "To Whom" %}</span>
             <ul class="margin_bottom_20">
-                <li><input name="target_datasenders" type="radio"
+                <li><input name="remind_to" type="radio"
                            value="all_datasenders" checked="checked">{% trans "Everyone" %}</li>
-                <li><input name="target_datasenders" type="radio"
+                <li><input name="remind_to" type="radio"
                            value="datasenders_without_submissions">{% trans "Anyone who hasn't sent data" %}</li>
             </ul>
 

@@ -46,33 +46,10 @@ $(document).ready(function() {
         $('#message_count').html($('#message').val().length);
     });
 
-
-    DW.makeJson = function() {
-        reminder = {}
-        reminder['reminder_mode'] = $('input[name="reminder_mode"]:checked').val();
-        reminder['id'] = $('#reminder_id').val();
-        reminder['day'] = 0;
-        if (reminder['reminder_mode'] == 'before_deadline') {
-            reminder['day'] = $('#days_before_deadline').val();
-        }
-        else if (reminder['reminder_mode'] == 'after_deadline') {
-            reminder['day'] = $('#days_after_deadline').val();
-        }
-        reminder['remind_to'] = $('input[name="target_datasenders"]:checked').val();
-        reminder['message'] = $('#message').val();
-        return reminder
-    }
-
     $('#new_reminder .button').bind("click", function() {
         var validator = $('#reminder_form').validate();
         if ($('#reminder_form').valid()) {
-            var url = '/project/create_reminder/' + $('#project_id').val() + '/'
-            $.post(url, {'reminder':JSON.stringify(DW.makeJson())},
-                    function() {
-
-                    }).success(function(data) {
-                        window.location.href = data;
-                    })
+            $('#reminder_form').submit();
         }
         else {
             $('input.error').each(function() {
@@ -95,7 +72,7 @@ $(document).ready(function() {
                 $(id)[0].disabled = false;
             }
 
-            $('[name="target_datasenders"][value="' + data.remind_to + '"]')[0].checked = true;
+            $('[name="remind_to"][value="' + data.remind_to + '"]')[0].checked = true;
 
             $('#reminder_id').val(data.id);
             $("#new_reminder").dialog("open");
