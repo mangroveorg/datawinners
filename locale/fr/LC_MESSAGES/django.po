@@ -293,8 +293,8 @@ msgstr "Canal"
 
 #: project/forms.py:59
 #, fuzzy
-msgid "What language is the questionnaire in?"
-msgstr "Quel est l'objet du questionnaire"
+msgid "Choose your language for the questionnaire and automatic messages to Data Senders?"
+msgstr "Choisissez votre langue pour le questionnaire et les messages automatiques aux expéditeurs de données?"
 
 #: project/forms.py:61
 #, fuzzy
