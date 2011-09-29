@@ -41,10 +41,19 @@ def _get_from_and_to_numbers(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
+#TODO This needs some major refactoring. It is very clear that I want to do things which the accept method of the player outside the accept method and hence I am duplicating here.
 def sms(request):
     _message = request.POST["message"]
-    form_code, values = SMSParser().parse(_message)
     _from, _to = _get_from_and_to_numbers(request)
+    try:
+        form_code, values = SMSParser().parse(_message)
+    except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
+                            error=message)
+        log.save()
+        return HttpResponse(message)
+    
     dbm = get_db_manager_for(_to)
     form_model = get_form_model_by_code(dbm, form_code)
     try:
