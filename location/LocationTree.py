@@ -50,7 +50,7 @@ def get_locations_for_country(country, start_with):
 
 def get_location_groups_for_country(country, start_with):
     cursor = connection.cursor()
-    search_string = start_with.lower().encode()
+    search_string = start_with.lower().encode('utf-8')
 
     data_dict = {}
     data_dict['like'] = psycopg2.Binary(search_string + '%')
