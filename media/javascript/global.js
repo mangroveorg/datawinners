@@ -6,7 +6,7 @@ var DW = {};
 $(document).ready(function() {
 
     DW.flash_message = function() {
-        $('.success-message-box').delay(5000).fadeOut();
+        $('.success-message-box').delay(10000).fadeOut();
     };
     
     $("#global_error").ajaxError(function(event, request, settings) {
