@@ -761,6 +761,7 @@ def _get_django_field(field):
         return  _create_select_field(field, _create_choices(field))
     display_field = forms.CharField(label=field.name, initial=field.value, required=False, help_text=field.instruction)
     display_field.widget.attrs["watermark"] = field.get_constraint_text()
+    display_field.widget.attrs['style'] = 'padding-top: 7px;'
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
 
