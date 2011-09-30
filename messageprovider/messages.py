@@ -59,7 +59,8 @@ exception_messages = {
     },
     ex.SubmissionParseException: {
         DEFAULT: u"Invalid message format.",
-        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
+        WEB: u"The system is experiencing a problem right now. Please try again in a few minutes",
+        SMS: u"The system is unable to accept your SMS right now. Please wait one hour and resend the same message."
     },
     ex.NoQuestionsSubmittedException: {
         DEFAULT: u"Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire and resend SMS with the right Question code."
