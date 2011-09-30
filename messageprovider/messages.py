@@ -17,7 +17,9 @@ exception_messages = {
         DEFAULT: u"Entity identified by %s is already defined"},
 
     ex.EntityQuestionCodeNotSubmitted: {
-        DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+        DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing.",
+        WEB: u"This field is required.",
+        SMS: u"Error. Incorrect answer for %s. Please re-send entire message."
     },
 
     ex.FormModelDoesNotExistsException: {
