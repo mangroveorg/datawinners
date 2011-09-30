@@ -50,7 +50,7 @@ exception_messages = {
     },
 
     ex.EntityTypeDoesNotExistsException: {
-        DEFAULT: u"This entity %s reported on is not registered in our system. Please register entity or contact us at 033 20 426 89."
+        DEFAULT: u"Error. Incorrect answer for question t. Please resend entire message."
     },
 
     ex.SMSParserInvalidFormatException: {
