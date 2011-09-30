@@ -124,7 +124,7 @@ def create_type(request):
             message = "Entity definition successful"
             success = True
         except EntityTypeAlreadyDefined:
-            message = "This subject has already been added."
+            message = "%s already registered as a subject type. Please select %s from the drop down menu." %  (entity_name[0], entity_name[0])
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
     return HttpResponse(json.dumps({'success': success, 'message': message}))
