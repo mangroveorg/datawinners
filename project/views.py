@@ -15,6 +15,7 @@ from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
+from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
@@ -26,7 +27,7 @@ from datawinners.project import models
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.queries import get_entity_count_for_type
 from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json, SelectField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
@@ -822,6 +823,10 @@ def web_questionnaire(request, project_id=None):
             else:
                 questionnaire_form._errors = _to_list(response.errors)
                 return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
+
+        except DataObjectNotFound as exception:
+            message = exception_messages.get(DataObjectNotFound).get(WEB)
+            error_message = message % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)

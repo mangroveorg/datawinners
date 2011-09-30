@@ -31,6 +31,7 @@ exception_messages = {
 
     ex.DataObjectNotFound: {
         DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89",
+        WEB: u"This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit.",
         SMS: u"This %s %s is not registered in our system.Please register this %s or contact your supervisor."
     },
 
