@@ -9,7 +9,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_db_manager_for
 from datawinners.messageprovider.messages import exception_messages, SMS
 from datawinners.submission.models import DatawinnerLog, SMSResponse
-from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, UnknownOrganization
+from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, UnknownOrganization, SMSParserInvalidFormatException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParser
 from mangrove.transport.player.player import SMSPlayer, Request, TransportInfo
@@ -45,7 +45,7 @@ def sms(request):
     _from, _to = _get_from_and_to_numbers(request)
     try:
         form_code, values = SMSParser().parse(_message)
-    except SubmissionParseException as exception:
+    except (SubmissionParseException,SMSParserInvalidFormatException,) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
                             error=message)

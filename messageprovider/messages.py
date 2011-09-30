@@ -55,7 +55,7 @@ exception_messages = {
 
     ex.SMSParserInvalidFormatException: {
         DEFAULT: u"Invalid message format.",
-        SMS: u"Error: Invalid Submission. Locate the Questionnaire Code on the printed questionnaire and resend SMS starting with the Questionnaire Code"
+        SMS: u"Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
     },
     ex.SubmissionParseException: {
         DEFAULT: u"Invalid message format.",
