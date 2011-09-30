@@ -34,7 +34,7 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
     def test_should_return_valid_message_even_if_code_is_None(self):
         message = get_exception_message_for(exception=EntityQuestionCodeNotSubmitted(), channel="web")
-        expected_message = "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+        expected_message = "This field is required."
         self.assertEqual(expected_message, message)
 
     def test_should_return_valid_message_if_its_not_parameterized(self):
