@@ -74,14 +74,30 @@ $(document).ready(function(){
         DW.set_deadline_example();
     });
 
-    DW.set_deadline_example = function(e){
+    DW.set_deadline_example = function(){
+        var deadline_example = "";
         var frequency = $('#id_frequency_period').val();
+        var deadline_type_value = $('#id_deadline_type:not(:disabled)').val();
 
         if (frequency == 'week'){
-            var deadline_example =  $('#id_deadline_week option:selected').text() + ' of '+$('#id_deadline_type:not(:disabled) option:selected').text()+ ' week';
+            // Monday of the following week
+            // Monday of the week
+            var selected_weekday_text = $('#id_deadline_week option:selected').text();
+            if (deadline_type_value == 'Following'){
+                deadline_example = interpolate("%(day)s of the week following the reporting week ",{ day : selected_weekday_text},true);
+            }else{
+                deadline_example = interpolate("%(day)s of the reporting week",{ day : selected_weekday_text },true);
+            }
         }else if (frequency == 'month')
         {
-            var deadline_example = $('#id_deadline_month option:selected').text() + ' of January'
+            // 5th day of October for September report
+            // 5th day of October for October report
+            var selected_month_day_text = $('#id_deadline_month option:selected').text();
+            if (deadline_type_value == 'Following'){
+                deadline_example = interpolate("%(day)s of October for September report",{ day : selected_month_day_text },true);
+            }else{
+                deadline_example = interpolate("%(day)s of October for October report",{ day : selected_month_day_text },true);
+            }
         }
         $('#deadline_example').text(deadline_example)
     }
@@ -115,11 +131,14 @@ function enable_timeperiod() {
 function toggle_has_deadline() {
     if ($('input[name="has_deadline"]:checked').val() == "True") {
         show_element($('#time_period'), "True");
+        show_element($('#deadline_example_block'), "True");
         $('#time_period :input').attr('disabled', false);
-        enable_timeperiod()
+        enable_timeperiod();
+        DW.set_deadline_example();
     } else {
         $('#time_period :input').attr('disabled', true);
         show_element($('#time_period'), "False");
+        show_element($('#deadline_example_block'), "False");
     }
 }
 
