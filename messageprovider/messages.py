@@ -37,7 +37,7 @@ exception_messages = {
 
     ex.NumberNotRegisteredException: {
         DEFAULT: u"This telephone number is not registered in our system.",
-        SMS: u"This telephone number is not registered in our system. Please register or contact us at 033 20 426 89."
+        SMS: u"Your telephone number is not yet registered in our system. Please contact your supervisor."
     },
 
     ex.QuestionCodeAlreadyExistsException: {

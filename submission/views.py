@@ -9,7 +9,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_db_manager_for
 from datawinners.messageprovider.messages import exception_messages, SMS
 from datawinners.submission.models import DatawinnerLog, SMSResponse
-from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound
+from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, UnknownOrganization
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParser
 from mangrove.transport.player.player import SMSPlayer, Request, TransportInfo
@@ -51,8 +51,13 @@ def sms(request):
                             error=message)
         log.save()
         return HttpResponse(message)
-    
-    dbm = get_db_manager_for(_to)
+
+    try:
+        dbm = get_db_manager_for(_to)
+    except UnknownOrganization as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
+        log.save()
     try:
         form_model = get_form_model_by_code(dbm, form_code)
     except FormModelDoesNotExistsException as exception:
