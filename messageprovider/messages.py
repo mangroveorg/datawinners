@@ -30,7 +30,8 @@ exception_messages = {
     },
 
     ex.DataObjectNotFound: {
-        DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
+        DEFAULT: u"This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89",
+        SMS: u"This %s %s is not registered in our system.Please register this %s or contact your supervisor."
     },
 
     ex.NumberNotRegisteredException: {

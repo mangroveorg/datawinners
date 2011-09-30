@@ -7,8 +7,9 @@ from datawinners.accountmanagement.models import OrganizationSetting, Organizati
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_db_manager_for
+from datawinners.messageprovider.messages import exception_messages
 from datawinners.submission.models import DatawinnerLog, SMSResponse
-from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException
+from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParser
 from mangrove.transport.player.player import SMSPlayer, Request, TransportInfo
@@ -82,6 +83,9 @@ def sms(request):
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
         log.save()
+    except DataObjectNotFound as exception:
+        message = exception_messages.get(DataObjectNotFound).get(SMS)
+        message = message % (form_model.entity_type[0], exception.data[1], form_model.entity_type[0])
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
     except Exception as exception:
