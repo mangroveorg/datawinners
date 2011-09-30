@@ -47,7 +47,7 @@ def sms(request):
     _from, _to = _get_from_and_to_numbers(request)
     try:
         form_code, values = SMSParser().parse(_message)
-    except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
+    except SubmissionParseException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
                             error=message)
@@ -55,7 +55,14 @@ def sms(request):
         return HttpResponse(message)
     
     dbm = get_db_manager_for(_to)
-    form_model = get_form_model_by_code(dbm, form_code)
+    try:
+        form_model = get_form_model_by_code(dbm, form_code)
+    except FormModelDoesNotExistsException as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
+                            error=message)
+        log.save()
+        return HttpResponse(message)
     try:
         getattr(request, 'session')
         request.session['django_language'] = form_model.activeLanguages[0]

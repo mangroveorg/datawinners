@@ -11,7 +11,7 @@ from mangrove.transport.player.player import Response
 class TestGetExceptionMessageHandler(unittest.TestCase):
     def test_should_return_message_for_exception_for_channel(self):
         message = get_exception_message_for(exception=FormModelDoesNotExistsException("QC1"), channel="sms")
-        expected_message = "Error with Questionnaire ID QC1. Find the Questionnaire ID on the printed questionnaire and resend SMS"
+        expected_message = "Error with Questionnaire code QC1. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
         self.assertEqual(expected_message, message)
 
 
