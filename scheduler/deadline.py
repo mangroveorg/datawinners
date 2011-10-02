@@ -59,21 +59,30 @@ class Month(object):
         return convert_to_ordinal(self.day) + ' of the Month'
 
 
+    def _get_day_of_month(self,as_of):
+        """
+        This method is required to handle below cases:
+        1. If day 31 is selected as the deadline day, returns the last day of that month.
+        2. If current month is february and day selected is > 28, returns the last day of that month accounting for leap year.
+        """
+        last_day_of_month = calendar.monthrange(as_of.year,as_of.month)[1]
+        return min(self.day,last_day_of_month)
+
     def next_deadline_date(self, as_of):
         """
         Returns the next deadline date after the current deadline date. A given deadline is applicable till the next deadline.
         """
-        if as_of.day >= self.day:
+        if as_of.day >= self._get_day_of_month(as_of):
             as_of = as_of + relativedelta(months=1)
-        return date(as_of.year, as_of.month, self.day)
+        return date(as_of.year, as_of.month, self._get_day_of_month(as_of))
 
     def current_deadline_date(self, as_of):
         """
         Returns the current deadline date that is still active. A given deadline is applicable till the next deadline.
         """
-        if as_of.day < self.day:
+        if as_of.day < self._get_day_of_month(as_of):
             as_of = as_of + relativedelta(months=-1)
-        return date(as_of.year, as_of.month, self.day)
+        return date(as_of.year, as_of.month, self._get_day_of_month(as_of))
 
     # Offset is any valid offset > 0. Month knows that offset means months.
     def next_date(self, as_of,offset):

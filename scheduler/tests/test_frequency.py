@@ -78,3 +78,46 @@ class TestMonthlyFrequency(TestCase):
     def test_should_return_next_deadline_for_monthly_frequency_for_date_after_deadline(self):
         month = Month(3)
         self.assertEqual(date(2011,10,3) ,month.next_deadline_date(date(2011,9,9)))
+
+    #    next deadline with day 31
+    def test_should_return_next_deadline_for_monthly_frequency_for_date_on_deadline_for_day31(self):
+        month = Month(31)
+        self.assertEqual(date(2011,10,31) ,month.next_deadline_date(date(2011,10,3)))
+
+    def test_should_return_next_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_asof_with_30_days(self):
+        month = Month(31)
+        self.assertEqual(date(2011,9,30) ,month.next_deadline_date(date(2011,9,3)))
+
+    def test_should_return_next_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_asof_with_30_days_on_last_day_of_month(self):
+        month = Month(31)
+        self.assertEqual(date(2011,10,31) ,month.next_deadline_date(date(2011,9,30)))
+
+    def test_should_return_next_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_feb_with_28_days(self):
+        month = Month(31)
+        self.assertEqual(date(2011,2,28) ,month.next_deadline_date(date(2011,2,3)))
+
+    def test_should_return_next_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_feb_with_29_days(self):
+        month = Month(31)
+        self.assertEqual(date(2012,2,29) ,month.next_deadline_date(date(2012,2,3)))
+
+    #    current deadline with day 31
+    def test_should_return_current_deadline_for_monthly_frequency_for_date_on_deadline_for_day31(self):
+        month = Month(31)
+        self.assertEqual(date(2011,9,30) ,month.current_deadline_date(date(2011,10,3)))
+
+    def test_should_return_current_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_asof_with_30_days(self):
+        month = Month(31)
+        self.assertEqual(date(2011,8,31) ,month.current_deadline_date(date(2011,9,3)))
+
+    def test_should_return_current_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_asof_with_30_days_on_last_day_of_month(self):
+        month = Month(31)
+        self.assertEqual(date(2011,9,30) ,month.current_deadline_date(date(2011,9,30)))
+
+    def test_should_return_current_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_feb_with_28_days(self):
+        month = Month(31)
+        self.assertEqual(date(2011,2,28)  ,month.current_deadline_date(date(2011,3,3)))
+
+    def test_should_return_current_deadline_for_monthly_frequency_for_date_on_deadline_for_day31_for_feb_with_29_days(self):
+        month = Month(31)
+        self.assertEqual(date(2012,2,29)  ,month.current_deadline_date(date(2012,3,3)))
+
