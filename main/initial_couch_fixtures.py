@@ -20,6 +20,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import Request, SMSPlayer, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from mangrove.transport.submissions import Submission
 
 
 class DateTimeMocker(object):
@@ -414,7 +415,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         qid = form_model.save()
     project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
-                       reminder_and_deadline=weekly_reminder_and_deadline)
+                       reminder_and_deadline=weekly_reminder_and_following_deadline)
     project9.qid = qid
     project9.state = ProjectState.ACTIVE
     try:
@@ -424,13 +425,19 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
 
     # Create reminders for project2 and project 9
     reminder = Reminder(project_id = project9.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,
-             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
              message = "Reminder test")
     reminder.save()
 
     # Associate datasenders/reporters with project 9
     project9.data_senders.extend(["rep3","rep4"])
     project9.save(manager)
+
+    # Add a submission for reporter 3, for activity period, 2011,9,12 - 2011,9,18
+    submission= Submission(manager, TransportInfo('sms', '1234567891', '123'), form_code="cli009",values='reporter 3 submission')
+    submission._doc.event_time = datetime(2011,9,16)
+    submission.save()
+
 
 
 def load_sms_data_for_cli001(manager):

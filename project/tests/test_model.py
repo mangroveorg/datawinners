@@ -8,9 +8,10 @@ from datawinners.project.models import Project, get_all_projects, get_project, P
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import attributes
+from mangrove.datastore.entity import Entity
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.form_model.validation import TextLengthConstraint
 
 
@@ -118,9 +119,52 @@ class TestProjectModel(unittest.TestCase):
 
         self.assertEqual(ProjectState.TEST, project.state)
 
-#    def test_should_return_data_senders_without_submissions(self):
-#        project = Project()
-#        data_senders = project.get_data_senders_without_submissions_for(date(2011,11,11))
+    def test_get_deadline_day(self):
+        reminder_and_deadline_for_month = {
+            "reminders_enabled": "True",
+            "deadline_month": "5",
+            "deadline_type": "current",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "month"
+        }
+        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        self.assertEquals(5, project_reminders.get_deadline_day())
+
+
+    def _create_reporter_entity(self, short_code):
+        return Entity(dbm=Mock(spec=DatabaseManager), entity_type=REPORTER, short_code=short_code)
+
+
+    def test_should_return_data_senders_without_submissions(self):
+        reminder_and_deadline_for_month = {
+            "reminders_enabled": "True",
+            "deadline_month": "5",
+            "deadline_type": "current",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "month"
+        }
+        project = Project(reminder_and_deadline=reminder_and_deadline_for_month)
+        project.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
+        dbm = Mock(spec=DatabaseManager)
+
+        with patch(
+            "datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
+            with patch("datawinners.project.models.load_all_subjects_of_type") as load_all_subjects_of_type_mock:
+                load_all_subjects_of_type_mock.return_value = [{"short_name": "rep%s" % i, "mobile_number": i}  for i in
+                                                                                                                range(
+                                                                                                                    10)]
+                get_reporters_who_submitted_data_for_frequency_period_mock.return_value = [
+                    self._create_reporter_entity("rep1"), self._create_reporter_entity("rep3")]
+
+                data_senders = project.get_data_senders_without_submissions_for(date(2011, 11, 5), dbm)
+
+        self.assertEqual(3, len(data_senders))
+        self.assertIn("rep2", [ds["short_name"]  for ds in data_senders])
+        self.assertIn("rep4", [ds["short_name"]  for ds in data_senders])
+        self.assertIn("rep5", [ds["short_name"]  for ds in data_senders])
+
 
 
 

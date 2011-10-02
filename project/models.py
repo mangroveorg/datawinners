@@ -16,18 +16,21 @@ from django.db import models
 
 
 def get_all_reminder_logs_for_project(project_id, dbm):
-        assert isinstance(dbm, DatabaseManager)
-        rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
-        return [ReminderLog.new_from_doc(dbm=dbm, doc=ReminderLog.__document_class__.wrap(row['doc'])) for row in rows]
+    assert isinstance(dbm, DatabaseManager)
+    rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
+    return [ReminderLog.new_from_doc(dbm=dbm, doc=ReminderLog.__document_class__.wrap(row['doc'])) for row in rows]
+
 
 class ReminderMode(object):
     BEFORE_DEADLINE = 'before_deadline'
     ON_DEADLINE = 'on_deadline'
     AFTER_DEADLINE = 'after_deadline'
 
+
 class RemindTo(object):
     ALL_DATASENDERS = 'all_datasenders'
     DATASENDERS_WITHOUT_SUBMISSIONS = 'datasenders_without_submissions'
+
 
 class Reminder(models.Model):
     project_id = CharField(null=False, blank=False, max_length=264)
@@ -39,21 +42,22 @@ class Reminder(models.Model):
     remind_to = CharField(null=False, blank=False, max_length=50, default=RemindTo.ALL_DATASENDERS)
 
     def to_dict(self):
-        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'remind_to': self.remind_to, 'id': self.id}
+        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode,
+                'remind_to': self.remind_to, 'id': self.id}
 
-    def void(self, void = True):
+    def void(self, void=True):
         self.voided = void
         self.save()
 
-    def should_be_send_on(self,deadline,on_date):
-        assert isinstance(on_date,date)
+    def should_be_send_on(self, deadline, on_date):
+        assert isinstance(on_date, date)
         deadline_date = self._get_applicapable_deadline_date(deadline, on_date)
         return on_date == deadline_date + timedelta(days=self._delta())
 
-    def get_sender_list(self,project,on_date,dbm):
+    def get_sender_list(self, project, on_date, dbm):
         if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
             deadline_date = self._get_applicapable_deadline_date(project.deadline(), on_date)
-            return project.get_data_senders_without_submissions_for(deadline_date,dbm)
+            return project.get_data_senders_without_submissions_for(deadline_date, dbm)
         return project.get_data_senders(dbm)
 
     def _delta(self):
@@ -72,7 +76,7 @@ class Reminder(models.Model):
 
     def log(self, dbm, project_id, date, sent_status='sent', number_of_sms=0):
         log = ReminderLog(dbm=dbm, reminder=self, project_id=project_id, date=date, sent_status=sent_status,
-                    number_of_sms=number_of_sms)
+                          number_of_sms=number_of_sms)
         log.save()
         return log
 
@@ -87,9 +91,10 @@ class ReminderLogDocument(DocumentBase):
     remind_to = TextField()
     reminder_mode = TextField()
 
-    def __init__(self, id=None, reminder_id=None, project_id=None, sent_status=None, number_of_sms=None, date=None, message=None, remind_to=None, reminder_mode=None):
-        DocumentBase.__init__(self,id=id, document_type='ReminderLog')
-        self.reminder_id =reminder_id
+    def __init__(self, id=None, reminder_id=None, project_id=None, sent_status=None, number_of_sms=None, date=None,
+                 message=None, remind_to=None, reminder_mode=None):
+        DocumentBase.__init__(self, id=id, document_type='ReminderLog')
+        self.reminder_id = reminder_id
         self.project_id = project_id
         self.sent_status = sent_status
         self.number_of_sms = number_of_sms
@@ -98,8 +103,8 @@ class ReminderLogDocument(DocumentBase):
         self.remind_to = remind_to
         self.reminder_mode = reminder_mode
 
-class ReminderLog(DataObject):
 
+class ReminderLog(DataObject):
     __document_class__ = ReminderLogDocument
 
     def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_id=None):
@@ -111,7 +116,8 @@ class ReminderLog(DataObject):
                 reminder_mode = str(reminder.day) + ' days ' + self._format_string_before_saving(reminder.reminder_mode)
             doc = ReminderLogDocument(reminder_id=reminder.id, project_id=project_id, sent_status=sent_status,
                                       number_of_sms=number_of_sms, date=date, message=reminder.message,
-                                      remind_to=self._format_string_before_saving(reminder.remind_to), reminder_mode=reminder_mode)
+                                      remind_to=self._format_string_before_saving(reminder.remind_to),
+                                      reminder_mode=reminder_mode)
             DataObject._set_document(self, doc)
 
     @property
@@ -133,10 +139,12 @@ class ReminderLog(DataObject):
     def _format_string_before_saving(self, value):
         return  (' '.join(value.split('_'))).title()
 
+
 class ProjectState(object):
     INACTIVE = 'Inactive'
     ACTIVE = 'Active'
     TEST = 'Test'
+
 
 class Project(DocumentBase):
     name = TextField()
@@ -150,10 +158,12 @@ class Project(DocumentBase):
     sender_group = TextField()
     reminder_and_deadline = DictField()
     data_senders = ListField(TextField())
-    reminders=ListField(DictField())
+    reminders = ListField(DictField())
     language = TextField(default='en')
 
-    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None, state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminder_and_deadline=None, language='en'):
+    def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
+                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminder_and_deadline=None,
+                 language='en'):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -168,13 +178,23 @@ class Project(DocumentBase):
         self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
         self.language = language
 
-    def get_data_senders(self,dbm):
+    def get_data_senders(self, dbm):
         all_data = load_all_subjects_of_type(dbm)
         return [data for data in all_data if data['short_name'] in self.data_senders]
 
-    def get_data_senders_without_submissions_for(self,deadline_date,dbm):
-        start_date,end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
-        return get_reporters_who_submitted_data_for_frequency_period(dbm,self.qid, start_date,end_date)
+    def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
+        start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
+        form_code = self._load_form(dbm).form_code
+        data_senders_with_submission = get_reporters_who_submitted_data_for_frequency_period(dbm, form_code, start_date,
+                                                                                             end_date)
+        return [ds.short_code for ds in data_senders_with_submission]
+
+    def get_data_senders_without_submissions_for(self, deadline_date, dbm):
+        data_sender_ids_with_submission = self._get_data_senders_ids_who_made_submission_for(dbm, deadline_date)
+        all_data_senders = self.get_data_senders(dbm)
+        data_senders_without_submission = [data_sender for data_sender in all_data_senders  if
+                                           data_sender['short_name'] not in data_sender_ids_with_submission]
+        return data_senders_without_submission
 
     def deadline(self):
         return Deadline(self._frequency(), self._deadline_type())
@@ -212,7 +232,7 @@ class Project(DocumentBase):
     def should_send_reminders(self, as_of, days_relative_to_deadline):
         next_deadline_day = self.deadline().current(as_of)
         if next_deadline_day is not None:
-            if as_of == next_deadline_day + timedelta(days = days_relative_to_deadline):
+            if as_of == next_deadline_day + timedelta(days=days_relative_to_deadline):
                 return True
         return False
 
@@ -234,27 +254,28 @@ class Project(DocumentBase):
                                                                                               value_dict.get(key))
 
     def update_questionnaire(self, dbm):
-        form_model = dbm.get(self.qid, FormModel)
+        form_model = self._load_form(dbm)
         form_model.name = self.name
-        form_model.entity_type =  [self.entity_type] if is_string(self.entity_type) else self.entity_type
+        form_model.entity_type = [self.entity_type] if is_string(self.entity_type) else self.entity_type
         form_model.save()
 
     def activate(self, dbm):
-        form_model = dbm.get(self.qid, FormModel)
+        form_model = self._load_form(dbm)
         form_model.activate()
         form_model.save()
         self.state = ProjectState.ACTIVE
         self.save(dbm)
 
+
     def deactivate(self, dbm):
-        form_model = dbm.get(self.qid, FormModel)
+        form_model = self._load_form(dbm)
         form_model.deactivate()
         form_model.save()
         self.state = ProjectState.INACTIVE
         self.save(dbm)
 
     def to_test_mode(self, dbm):
-        form_model = dbm.get(self.qid, FormModel)
+        form_model = self._load_form(dbm)
         form_model.set_test_mode()
         form_model.save()
         self.state = ProjectState.TEST
@@ -264,15 +285,20 @@ class Project(DocumentBase):
         dbm.database.delete(self)
 
     #The method name sucks but until we make Project DataObject we can't make the method name 'void'
-    def set_void(self, dbm, void = True):
+    def set_void(self, dbm, void=True):
         self.void = void
         self.save(dbm)
+
+    def _load_form(self, dbm):
+        form_model = dbm.get(self.qid, FormModel)
+        return form_model
+
 
 def get_project(pid, dbm):
     return dbm._load_document(pid, Project)
 
 
-def get_all_projects(dbm, data_sender_id = None):
+def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
         return dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id)
     return dbm.load_all_rows_in_view('all_projects')
