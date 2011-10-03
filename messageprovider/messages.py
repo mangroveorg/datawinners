@@ -80,7 +80,7 @@ exception_messages = {
 }
 
 def get_validation_failure_error_message():
-    return _("Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s")
+    return _("Error. Incorrect answer for question %s. Please resend entire message.")
 
 def get_submission_success_message():
     return _("Thank you") + " %s. " + _("We received : ")
