@@ -30,16 +30,17 @@ class TestImportData(unittest.TestCase):
 
         self.assertEqual(4, len(subjects))
 
-        self.assertEqual(subjects[0]['name'], '--')
+        self.assertEqual(subjects[0]['name'], 'clinic0')
         self.assertEqual(subjects[0]['geocode'], '1.0, 1.0')
+        self.assertEqual(subjects[0]['mobile_number'], '--')
 
         self.assertEqual(subjects[1]['name'], 'clinic1')
         self.assertEqual(subjects[1]['mobile_number'], '--')
 
-        self.assertEqual(subjects[2]['name'], '--')
+        self.assertEqual(subjects[2]['name'], 'clinic2')
         self.assertEqual(subjects[2]['mobile_number'], '12332114')
 
-        self.assertEqual(subjects[3]['name'], '--')
+        self.assertEqual(subjects[3]['name'], 'clinic3')
         self.assertEqual(subjects[3]['geocode'], '--')
         self.assertEqual(subjects[3]['location'], 'pune')
         self.assertEqual(subjects[3]['description'], 'this is a clinic')
@@ -61,7 +62,7 @@ class TestImportData(unittest.TestCase):
         self.player.accept(Request(transportInfo=self.transport, message=text))
 
     def _register_entities(self):
-        self._register_entity('reg .t clinic .s 1 .g 1 1')
+        self._register_entity('reg .t clinic .s 1 .g 1 1 .n clinic0')
         self._register_entity('reg .t clinic .s 2 .g 21 21 .n clinic1')
-        self._register_entity('reg .t clinic .s 3 .g 11 11 .m 12332114')
-        self._register_entity('reg .t clinic .s 4 .d this is a clinic .l pune')
+        self._register_entity('reg .t clinic .s 3 .g 11 11 .m 12332114 .n clinic2')
+        self._register_entity('reg .t clinic .s 4 .d this is a clinic .l pune .n clinic3')
