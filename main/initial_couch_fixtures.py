@@ -446,7 +446,7 @@ def load_sms_data_for_cli001(manager):
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
     today = datetime.today()
-    THIS_MONTH = datetime(today.year, today.month, 5, 12, 45, 58)
+    THIS_MONTH = datetime(today.year, today.month, 1, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=8)
     sms_player = SMSPlayer(manager, get_location_tree())
     FROM_NUMBER = '1234567890'
