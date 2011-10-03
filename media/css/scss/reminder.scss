@@ -5,6 +5,7 @@
 
 .reminder_content_section{
     border-bottom: 1px solid;
+    height:575px !important;
 }
 #review_section{
  h4{
@@ -72,4 +73,8 @@
 }
 .submit-buttons{
     clear: left;
+}
+
+label.error{
+    clear:both;
 }

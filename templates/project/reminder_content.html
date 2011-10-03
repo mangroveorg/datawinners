@@ -5,14 +5,12 @@
 <span class="success_message"></span>
 <div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
     <div class="grid_23 alpha omega" id='review_section' data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0">
-
     </div>
     <div class="submit-buttons">
-    <br>
-    <button class="button" data-bind="click: addReminder">{% trans "Add Reminder" %}</button>
-    <button class="button" type="submit">{% trans "Save the reminders" %}</button>
+        <br>
+        <button class="button" data-bind="click: addReminder">{% trans "Add Reminder" %}</button>
+        <button class="button" type="submit">{% trans "Save the reminders" %}</button>
     </div>
-
 </div>
 <div style="display:{% if is_reminder %} none; {% else %} block; {% endif %}">
     {% trans "Reminders are not enabled for this project Please proceed to the next <a>step</a>" %}
@@ -49,10 +47,12 @@
         </p>
 
         <p class="reminder_content">
-            <textarea data-bind="value: message, valueUpdate: 'keyup',uniqueName:true" placeholder="Message"
-                      maxlength="160" class="required"/>
+            <textarea data-bind="value: message, valueUpdate: 'keyup',uniqueName:true"
+                      maxlength="160" class="required">
             </textarea>
-            {% trans "The message count is" %} <span data-bind="text: message().length"></span>
+            <div>
+                {% trans "The message count is" %} <span data-bind="text: message().length"></span>
+            </div>
             <br><span id="newMessage_err" class="error_message"></span>
         </p>
         <a data-bind="click: remove">{% trans "Remove" %}</a>

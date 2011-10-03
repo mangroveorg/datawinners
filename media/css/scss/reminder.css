@@ -3,7 +3,8 @@
   padding-bottom: 1em; }
 
 .reminder_content_section {
-  border-bottom: 1px solid; }
+  border-bottom: 1px solid;
+  height: 575px !important; }
 
 #review_section h4 {
   border-bottom: 1px solid #CCCCCC; }
@@ -55,3 +56,6 @@
 
 .submit-buttons {
   clear: left; }
+
+label.error {
+  clear: both; }
