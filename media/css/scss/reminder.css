@@ -17,7 +17,8 @@
   float: left;
   padding: 10px 0 10px 0px;
   font-weight: normal;
-  background: none; }
+  background: none;
+  border-bottom: 1px solid #CCCCCC !important; }
   #review_section .header h5 {
     float: left;
     background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
