@@ -47,7 +47,7 @@ def sms(request):
         form_code, values = SMSParser().parse(_message)
     except (SubmissionParseException,SMSParserInvalidFormatException,) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
-        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None,
                             error=message)
         log.save()
         return HttpResponse(message)
