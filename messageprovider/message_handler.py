@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from collections import OrderedDict
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import NAME_FIELD
@@ -29,7 +30,9 @@ def get_submission_error_message_for(errors):
 
 
 def get_expanded_response(response_dict):
-    stringified_dict = {k: _stringify(v) for k, v in response_dict.items()}
+    stringified_dict = OrderedDict()
+    for k,v in response_dict.items():
+        stringified_dict[k] = _stringify(v)
     expanded_response = " ".join([": ".join(each) for each in stringified_dict.items()])
     return expanded_response
 
