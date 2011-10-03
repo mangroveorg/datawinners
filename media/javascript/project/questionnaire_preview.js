@@ -1,5 +1,5 @@
 $(document).ready(function() {
-        $(".questionnaire_preview").dialog({
+    $(".questionnaire_preview").dialog({
                 title: gettext("Questionnaire Preview"),
                 modal: true,
                 autoOpen: false,
@@ -7,12 +7,14 @@ $(document).ready(function() {
                 width: 800,
                 closeText: 'hide',
                 open: function() {
-                  // Here I load the content. This is the content of your link.
-                  $(".questionnaire_preview").load(quessionarie_preview_link, function() {});
+                    // Here I load the content. This is the content of your link.
+                    $(".questionnaire_preview").load(quessionarie_preview_link, function() {
+                        $(".displayText").show()
+                    });
                 }
-              }
-          );
-        $(".preview").bind("click", function(){
-           $(".questionnaire_preview").dialog("open");
-        });
+            }
+    );
+    $(".preview").bind("click", function() {
+        $(".questionnaire_preview").dialog("open");
+    });
 });
