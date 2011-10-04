@@ -90,11 +90,6 @@ def update_questionnaire_with_questions(form_model, question_set, dbm):
         form_model.add_field(create_question(question, dbm))
     return form_model
 
-
-def get_code_and_title(fields):
-    return [(each_field.code, each_field.name)for each_field in fields]
-
-
 def _create_text_question(post_dict, ddtype):
     max_length_from_post = post_dict.get("max_length")
     min_length_from_post = post_dict.get("min_length")

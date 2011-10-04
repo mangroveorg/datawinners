@@ -91,7 +91,7 @@ def questionnaire_wizard(request, project_id=None):
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
-        form_model = FormModel(manager, project.qid)
+        form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire_wizard.html',

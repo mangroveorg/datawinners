@@ -88,9 +88,8 @@ class TestHelper(unittest.TestCase):
                               language="en", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
                               defaultValue="some default value", language="eng", ddtype=ddtype)
-        self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")],
-                                                                                            helper.get_code_and_title(
-                                                                                                [question1, question2]))
+        code_and_title = [(each_field.code, each_field.name)for each_field in [question1, question2]]
+        self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
 
     def test_should_create_text_question_with_no_max_length(self):
         post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
