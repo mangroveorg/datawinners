@@ -93,8 +93,6 @@ def questionnaire_wizard(request, project_id=None):
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         fields = form_model.fields
-        if form_model.entity_defaults_to_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire_wizard.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
@@ -715,8 +713,6 @@ def questionnaire(request, project_id=None):
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         fields = form_model.fields
-        if form_model.entity_defaults_to_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
         project_links = _make_project_links(project, form_model.form_code)
         return render_to_response('project/questionnaire.html',
@@ -845,8 +841,6 @@ def questionnaire_preview(request, project_id=None):
         project = models.get_project(project_id, manager)
         form_model = helper.load_questionnaire(manager, project.qid)
         fields = form_model.fields
-        if form_model.entity_defaults_to_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
         project_links = _make_project_links(project, form_model.form_code)
         questions = []
         for field in fields:

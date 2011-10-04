@@ -99,7 +99,7 @@ DW.question.prototype = {
             owner:this
     });
         this.canBeDeleted = function() {
-            return (!this.is_entity_question());
+            return (!((this.code() == 'q1') || (this.code() == 'q2')));
         };
         this.isenabled = function(){
           return !this.loaded();

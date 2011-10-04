@@ -9,7 +9,6 @@ var viewModel =
         }, question);
         question.loaded(false);
         var test_code = DW.generateQuestionCode();
-//            question.options.code =
         question.code(viewModel.check_unique_code(test_code))
         viewModel.questions.push(question);
         viewModel.selectedQuestion(question);
