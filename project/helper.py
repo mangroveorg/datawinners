@@ -84,11 +84,6 @@ def create_questionnaire(post, dbm):
     return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
                      form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE, language=post['language'])
 
-
-def load_questionnaire(dbm, questionnaire_id):
-    return dbm.get(questionnaire_id, FormModel)
-
-
 def update_questionnaire_with_questions(form_model, question_set, dbm):
     form_model.delete_all_fields()
     for question in question_set:

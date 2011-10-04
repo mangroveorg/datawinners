@@ -91,7 +91,7 @@ def questionnaire_wizard(request, project_id=None):
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
-        form_model = helper.load_questionnaire(manager, project.qid)
+        form_model = FormModel(manager, project.qid)
         fields = form_model.fields
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire_wizard.html',
@@ -251,7 +251,7 @@ def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, dbm=manager)
     link = reverse(edit_profile, args=[project_id])
-    questionnaire = helper.load_questionnaire(manager, project['qid'])
+    questionnaire = FormModel(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project, questionnaire.form_code)
     map_api_key = api_keys.get(request.META['HTTP_HOST'])
@@ -512,7 +512,7 @@ def reminders(request, project_id):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
         project = models.get_project(project_id, dbm)
-        questionnaire = helper.load_questionnaire(dbm, project.qid)
+        questionnaire = FormModel(dbm, project.qid)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
@@ -572,7 +572,7 @@ def manage_reminders(request, project_id):
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     project = models.get_project(project_id, dbm)
-    questionnaire = helper.load_questionnaire(dbm, project.qid)
+    questionnaire = FormModel(dbm, project.qid)
     return render_to_response('project/sent_reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':get_all_reminder_logs_for_project(project_id, dbm),
@@ -585,7 +585,7 @@ def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, manager)
     project.activate(manager)
-    form_model = helper.load_questionnaire(manager, project.qid)
+    form_model = FormModel.get(manager, project.qid)
     oneDay = datetime.timedelta(days=1)
     tomorrow = datetime.datetime.now() + oneDay
     submissions = get_submissions(manager, form_model.form_code, from_time = 0, to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
@@ -612,13 +612,13 @@ def _make_links_for_finish_page(project_id, form_model):
 def finish(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, manager)
-    form_model = helper.load_questionnaire(manager, project.qid)
+    form_model = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         project.to_test_mode(manager)
         number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
         number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
         previous_link = reverse(reminders_wizard, args=[project_id])
-        fields = form_model.fields[1:] if form_model.entity_defaults_to_reporter() else form_model.fields
+        fields = form_model.fields
         is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
         return render_to_response('project/finish_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': _make_links_for_finish_page(
@@ -635,7 +635,7 @@ def finish(request, project_id=None):
 
 def _get_project_and_project_link(manager, project_id):
     project = models.get_project(project_id, manager)
-    questionnaire = helper.load_questionnaire(manager, project.qid)
+    questionnaire = FormModel.get(manager, project.qid)
     project_links = _make_project_links(project, questionnaire.form_code)
     return project, project_links
 
@@ -711,7 +711,7 @@ def questionnaire(request, project_id=None):
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
-        form_model = helper.load_questionnaire(manager, project.qid)
+        form_model = FormModel(manager, project.qid)
         fields = form_model.fields
         existing_questions = json.dumps(fields, default=field_to_json)
         project_links = _make_project_links(project, form_model.form_code)
@@ -796,7 +796,7 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
 def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = models.get_project(project_id, manager)
-    form_model = helper.load_questionnaire(manager, project.qid)
+    form_model = FormModel(manager, project.qid)
 
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
@@ -839,7 +839,7 @@ def questionnaire_preview(request, project_id=None):
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
         project = models.get_project(project_id, manager)
-        form_model = helper.load_questionnaire(manager, project.qid)
+        form_model = FormModel(manager, project.qid)
         fields = form_model.fields
         project_links = _make_project_links(project, form_model.form_code)
         questions = []
