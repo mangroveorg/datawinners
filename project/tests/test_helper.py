@@ -113,20 +113,20 @@ class TestHelper(unittest.TestCase):
         q1 = helper.create_question(post[0], self.dbm)
         self.assertEqual(q1.constraints, [])
 
-    #This test would be fixed when we pass a created param to Submission
-    @skip
-    def test_should_return_tuple_list_of_submissions(self):
-        dbm = Mock(spec=DatabaseManager)
-        questions = [Field(name="Question 1", code="Q1", ddtype="int"),
-                     Field(code="Q2", name="Question 2", ddtype="int")]
-        submissions = [
-            Submission(dbm, values={'q1': 'ans1', 'q2': 'ans2'}, transport_info=TransportInfo("sms", "1234", "2616")),
-            Submission(dbm, values={'q2': 'ans22'}, transport_info=TransportInfo("sms", "1234", "2616"))
-        ]
-        required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-            ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
-        ]
-        self.assertEquals(required_submissions, helper.adapt_submissions_for_template(questions, submissions))
+#    #This test would be fixed when we pass a created param to Submission
+#    @skip
+#    def test_should_return_tuple_list_of_submissions(self):
+#        dbm = Mock(spec=DatabaseManager)
+#        questions = [Field(name="Question 1", code="Q1", ddtype="int"),
+#                     Field(code="Q2", name="Question 2", ddtype="int")]
+#        submissions = [
+#            Submission(dbm, values={'q1': 'ans1', 'q2': 'ans2'}, transport_info=TransportInfo("sms", "1234", "2616")),
+#            Submission(dbm, values={'q2': 'ans22'}, transport_info=TransportInfo("sms", "1234", "2616"))
+#        ]
+#        required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
+#            ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
+#        ]
+#        self.assertEquals(required_submissions, helper.adapt_submissions_for_template(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
         post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text",
@@ -256,7 +256,7 @@ class TestHelper(unittest.TestCase):
                                                          primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
-        self.assertEqual(1, len(form_model.fields))
+        self.assertEqual(2, len(form_model.fields))
         self.assertEqual(True, form_model.fields[0].is_entity_field)
         self.assertEqual(["Water Point"], form_model.entity_type)
         self.assertFalse(form_model.is_active())
@@ -275,7 +275,7 @@ class TestHelper(unittest.TestCase):
         form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1, question2],
                                entity_type=["reporter"], type="survey")
         form_model2 = helper.update_questionnaire_with_questions(form_model, [post], dbm)
-        self.assertEquals(2, len(form_model2.fields))
+        self.assertEquals(1, len(form_model2.fields))
 
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
@@ -405,15 +405,6 @@ class TestHelper(unittest.TestCase):
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
-
-    def test_should_remove_default_entity_field(self):
-        ddtype = Mock(spec=DataDictType)
-        question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
-                              language="en", entity_question_flag=True, ddtype=ddtype)
-        question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-                              defaultValue="some default value", language="eng", ddtype=ddtype)
-        cleaned_list = helper.hide_entity_question([question1, question2])
-        self.assertEquals([question2], cleaned_list)
 
     def test_creates_reminder_and_deadline_when_project_submission_frequency_is_disabled(self):
         #frequency_enabled=False&frequency_period=week&has_deadline=False
