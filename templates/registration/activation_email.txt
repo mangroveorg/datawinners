@@ -1,6 +1,14 @@
+Hello,
 
-Activate account at {{ site.name }}:
+Welcome to DataWinners!
+You can now send in your data via the Internet. If you have any
+questions, please contact your supervisor.
 
+Click on this link to activate your DataWinners account:
 http://{{ site.domain }}{% url registration_activate activation_key %}
 
 Link is valid for {{ expiration_days }} days.
+
+Have Fun!
+Your DataWinners Team
+www.datawinners.com

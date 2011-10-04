@@ -79,5 +79,5 @@ def _get_reminders_grouped_by_project_for_organization(organization_id):
     return reminders_grouped_project_id
 
 if __name__ == "__main__":
-    send_reminders_scheduled_on( date(2011,9,24),SMSClient())
+    send_reminders_scheduled_on( date(2011,10,04),SMSClient())
 
