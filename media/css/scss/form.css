@@ -109,9 +109,6 @@ span.error_arrow, #questionnaire-code-error, label.error_arrow {
     color: #000000;
     font-weight: normal !important; }
 
-.no-hide {
-  display: inline !important; }
-
 .warning-message-box {
   position: relative;
   left: -5px;
