@@ -4,7 +4,6 @@
 {% load i18n %}
 
 {% block content %}
-    <div>
-            <div class="success-message-box">{% trans "You have successfully signed out. Thanks for your visit." %} <a href="{% url django.contrib.auth.views.login %}">{% trans "Sign in again" %}</a></div>
-    </div>
+    <div class="success-box">{% trans "You have successfully signed out. Thanks for your visit." %} <a
+            href="{% url django.contrib.auth.views.login %}">{% trans "Sign in again" %}</a></div>
 {% endblock %}

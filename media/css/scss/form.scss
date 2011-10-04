@@ -129,7 +129,7 @@ form{
         }
 }
 
-.success-message-box{
+.success-message-box, .success-box{
         background:#E7FED5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
         color:#000000 !important;
         margin:10px;
@@ -140,6 +140,11 @@ form{
             font-weight:normal !important;
         }
 }
+
+.no-hide{
+        display:inline !important;
+}
+
 .warning-message-box{
     position:relative;
     left:-5px;

@@ -99,15 +99,18 @@ span.error_arrow, #questionnaire-code-error, label.error_arrow {
     color: #000000;
     font-weight: normal !important; }
 
-.success-message-box {
+.success-message-box, .success-box {
   background: #e7fed5 url("/media/images/right_icons.png") no-repeat scroll 4px -29px;
   color: #000000 !important;
   margin: 10px;
   padding: 7px 10px 7px 50px;
   border: 1px solid #2a8634; }
-  .success-message-box label {
+  .success-message-box label, .success-box label {
     color: #000000;
     font-weight: normal !important; }
+
+.no-hide {
+  display: inline !important; }
 
 .warning-message-box {
   position: relative;
