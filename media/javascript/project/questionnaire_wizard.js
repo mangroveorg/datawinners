@@ -2,7 +2,6 @@
 $(document).ready(function() {
     for(index in question_list){
         var questions = new DW.question(question_list[index]);
-        console.log(questions);
         viewModel.loadQuestion(questions);
     }
     viewModel.selectedQuestion(viewModel.questions()[0]);

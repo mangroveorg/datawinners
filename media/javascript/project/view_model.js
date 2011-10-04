@@ -9,7 +9,7 @@ var viewModel =
         }, question);
         question.loaded(false);
         var test_code = DW.generateQuestionCode();
-        question.code(viewModel.check_unique_code(test_code))
+        question.code(viewModel.check_unique_code(test_code));
         viewModel.questions.push(question);
         viewModel.selectedQuestion(question);
         viewModel.selectedQuestion.valueHasMutated();
@@ -31,7 +31,9 @@ var viewModel =
         viewModel.questions.remove(question);
         var next_index = (index) % viewModel.questions().length;
         viewModel.changeSelectedQuestion(viewModel.questions()[next_index]);
-
+        if(index == viewModel.questions().length){
+            DW.current_code -= 1;
+        }
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {
