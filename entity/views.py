@@ -159,7 +159,7 @@ def all_subjects(request):
 
     subjects_data = import_module.load_all_subjects(request)
     return render_to_response('entity/all_subjects.html', {'all_data': subjects_data},
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 
 def _get_project_association(projects):
