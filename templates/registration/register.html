@@ -2,7 +2,10 @@
 
 {% block page_title %} Register {% endblock %}
 {% block section_title %} Sign Up To Start Using DataWinners Now {% endblock %}
-
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
+{% endblock %}
 
 {% block content %}
     <div class="span-18 box">
@@ -145,7 +148,7 @@
 
                             </li>
                             <li class="margin_top_20">
-                                <input type="submit" value="Sign Up" class="button" />
+                                <input type="button" id="submit_registration_form" value="Sign Up" class="button" />
                                 <div class="grid_7 margin_top_10 last">Already registered? <a href="{% url django.contrib.auth.views.login %}">Sign in here</a></div>
                             </li>
                         </ul>
