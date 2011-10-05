@@ -2,7 +2,6 @@
     text-align:left;
     color:#c0ecb1;
     font-size:12px;
-    font-weight:bold;
     div{
         padding:12px 0 3px 0;
     }
@@ -11,6 +10,7 @@
         text-decoration:none;
         padding:0 4px 0 6px;
         line-height:11px;
+        border-left:1px solid #ffffff;
         &:hover{
             text-decoration:underline;
         }
@@ -40,6 +40,7 @@
                 height:34px;
                 line-height:34px;
                 padding:0 20px;
+                margin:0 2px;
                 &:hover {
                     color:#000000;
                     background:url('/media/images/dw_pattern_bg.gif') repeat-x left top;

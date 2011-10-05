@@ -1,0 +1,35 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Success Stories {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "success" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home">Home</a> &gt; Success Stories
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>SUCCESS STORIES</h1>
+    <ul>
+        <li><a href="/success-story/msi">Family Planning and Reproductive Healthcare</a></li>
+        <li><a href="/success-story/santenet2">Maternal and Child Health</a></li>
+        <li><a href="/success-story/bngrc">Gestion des Risques et Catastrophes</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <div class="left_content">
+
+        </div>
+        <div class="right_content">
+            
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

@@ -16,6 +16,9 @@ body{
 #container_content{
     background:#ffffff;
 }
+#container_secondary_content{
+    background:#ffffff url('/media/images/dw_secondary_bg.gif') repeat-x left 75px;
+}
 #container_footer{
     padding:45px 0 20px 0;
 }
@@ -236,14 +239,14 @@ body{
     }
 }
 #container_page_title{
-    height:125px;
+    height:75px;
     overflow:hidden;
     background:url("/media/images/dw_pattern_bg.gif") repeat left top;
     border-bottom:1px solid #CCCCCC;
     #page_title{
         width:720px;
         float:right;
-        padding-top:60px;
+        padding-top:20px;
         h1{
             font-size:28px;
             color:#010101;
@@ -381,6 +384,7 @@ body{
     }
 }
 #use_dw{
+    margin:20px 0;
     .content{
         float:left;
         width:180px;
@@ -410,11 +414,10 @@ body{
         width:180px;
         float:left;
         text-align:center;
-        p{
-            margin:0 !important;
-            padding:0 10px;
-            a{
-                color:#333 !important;
+        a{
+            color:#043E6A !important;
+            &:hover{
+                text-decoration:none !important;
             }
         }
     }
@@ -428,11 +431,8 @@ body{
     }
 }
 #how_content{
-    .container{
-        display:none;
-    }
-    .active{
-        display:block;
+    h2{
+        margin-bottom:20px !important;
     }
     ul{
         margin:10px 20px !important;
@@ -441,10 +441,16 @@ body{
             list-style-type:disc;
         }
     }
+    .container{
+        display:none;
+    }
+    .active{
+        display:block;
+    }
 }
 #how_nav{
     #how_links{
-        margin:10px 0;
+        margin:30px 0;
         text-align:center;
         #how_try_button{
             display:block;
@@ -586,6 +592,13 @@ body{
     .ui-state-hover{
         border:none;
         background:none;
+    }
+}
+.bulleted{
+    margin:0 20px !important;
+    padding:0 10px !important;
+    li{
+        list-style-type:disc !important;
     }
 }
 small{

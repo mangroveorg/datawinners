@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.plus a').click(function() {
+    $('.container_carousel a').click(function() {
         popup = $('#'+$(this).attr('rel'));
         if(popup != undefined) {
             popup.fadeIn();

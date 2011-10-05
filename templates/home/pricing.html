@@ -7,6 +7,11 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script src="/media/javascript/home/pricing.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block page_breadcrumbs %}
 <a href="/home">Home</a> &gt; Pricing
 {% endblock %}
@@ -51,7 +56,7 @@
                                 <li>Packet of 5000 SMS</li>
                                 <li>Unlimited Web submissions</li>
                             </ul>
-                            Save 10% <a href="#a3">learn more</a>
+                            Save 10% <a id="learn_more" href="#a3">learn more</a>
                         </div>
                     </div>
                     <div class="badge">
@@ -62,7 +67,7 @@
             <div class="clear"></div>
         </div>
         <h2>More Details</h2>
-        <ul>
+        <ul class="bulleted">
             <li><a href="#a1">Where DataWinners is available</a></li>
             <li><a href="#a2">Key details of Monthly Subscription</a></li>
             <li><a href="#a3">Monthly Subscription Costs</a></li>
@@ -70,13 +75,13 @@
             <li><a href="#a5">Need help getting started?</a></li>
         </ul>
         <a name="a1"></a><h2>Where DataWinners is available</h2>
-        <ul>
+        <ul class="bulleted">
             <li>DataWinners is currently available in Madagascar</li>
             <li>It will be available worldwide starting in early 2012</li>
             <li>Free Test Drive account is available anywhere</li>
         </ul>
         <a name="a2"></a><h2>Key Details of Monthly Subscription</h2>
-        <ul>
+        <ul class="bulleted">
             <li>1 Subscription per organization per country</li>
             <li>Local number provided by HNI</li>
             <li>5000 SMS included</li>

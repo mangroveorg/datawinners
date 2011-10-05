@@ -1,5 +1,5 @@
 {% extends 'public.html' %}
-{% block page_title %} Start Page {% endblock %}
+{% block page_title %} DataWinners {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
@@ -15,14 +15,14 @@
                 </div>
                 <div class="grid_10 alpha omega">
                     <div class="content">
-                        <p class="title">Get timely data va SMS.<br/>
+                        <p class="title">Get timely data via SMS.<br/>
                         Anywhere a mobile phone works.<br/>
                         Just pennies per report.</p>
                         <p>
                             Get all the data you need using the technology you already have.
                         </p>
-                        <a href="javascript:void(0)" class="intro_try_button">Try it free</a>
-                        <a href="javascript:void(0)" class="intro_learn_button">Learn more</a>
+                        <a href="{% url registration.views.register %}" class="intro_try_button">Try it Free</a>
+                        <a href="/what-is-datawinners" class="intro_learn_button">Learn More</a>
                     </div>
                 </div>
                 <div class="clear"></div>
@@ -32,7 +32,7 @@
     <div id="container_home_carousel">
         <div id="home_carousel" class="container_24 text_align_center">
             <div id="carousel_title">
-                <div><a href="/examples">view all stories &raquo;</a></div>
+                <div><a href="/success-stories">view all stories &raquo;</a></div>
                 <h1>Make better decisions to change lives</h1>
             </div>
             <div id="carousel">
@@ -40,12 +40,12 @@
                     <div class="carousel">
                         <div class="container_photo">
                             <div class="photo">
-                                <img src="/media/images/dw_carous_msi.jpg" alt="MSM" width="189" height="123" />
+                                <a href="javascript:void(0)" rel="popup1"><img src="/media/images/dw_carous_msi.jpg" alt="MSM" width="189" height="123" /></a>
                             </div>
                         </div>
                         <div class="text">
                             <h2>Public Health, Madagascar</h2>
-                            <a href="/success-story/msi">Family Planning and Reproductive Healthcare</a>
+                            <a href="javascript:void(0)" rel="popup1">Family Planning and Reproductive Healthcare</a>
                         </div>
                     </div>
                     <div class="plus"><a href="javascript:void(0)" rel="popup1"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
@@ -54,12 +54,12 @@
                     <div class="carousel">
                         <div class="container_photo">
                             <div class="photo">
-                                <img src="/media/images/dw_carous_sn.jpg" alt="Santenet2" width="189" height="123" />
+                                <a href="javascript:void(0)" rel="popup2"><img src="/media/images/dw_carous_sn.jpg" alt="Santenet2" width="189" height="123" /></a>
                             </div>
                         </div>
                         <div class="text">
                             <h2>Public Health, Madagascar</h2>
-                            <a href="/success-story/santenet2">Maternal and Child Health</a>
+                            <a href="javascript:void(0)" rel="popup2">Maternal and Child Health</a>
                         </div>
                     </div>
                     <div class="plus"><a href="javascript:void(0)" rel="popup2"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
@@ -68,12 +68,12 @@
                     <div class="carousel">
                         <div class="container_photo">
                             <div class="photo">
-                                <img src="/media/images/dw_carous_bngrc.jpg" alt="BNGRC" width="189" height="123" />
+                                <a href="javascript:void(0)" rel="popup3"><img src="/media/images/dw_carous_bngrc.jpg" alt="BNGRC" width="189" height="123" /></a>
                             </div>
                         </div>
                         <div class="text">
                             <h2>Humanitaire, Madagascar</h2>
-                            <a href="/success-story/bngrc">Gestion des risques et catastrophes</a>
+                            <a href="javascript:void(0)" rel="popup3">Gestion des risques et catastrophes</a>
                         </div>
                     </div>
                     <div class="plus"><a href="javascript:void(0)" rel="popup3"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
@@ -84,8 +84,8 @@
                 <img src="/media/images/dw_popup_bd1.png" width="600" height="15" alt="" />
                 <div class="carousel_popup_content">
                     <div class="carousel_popup_left">
-                        <h2>HEALTHCARE</h2>
-                        <h1>Family Planning<br/>and Reproductive Health</h1>
+                        <h2>Public Health</h2>
+                        <h1>Family Planning<br/>and Reproductive Healthcare</h1>
                         In 2010, Marie Stopes Madagascar (MSM) began collecting and storing information sent in via mobile phone from doctors affiliated with its "BlueStar" network of medical clinics.
                         <br/><br/>Using simple SMS technology, doctors in the network send in data regarding Family Planning services performed on a monthly basis.
                         <br/><br/>All data is aggregated in a central database, accessible to headquarters staff, where it can be verified, filtered and exported for analysis.
@@ -94,7 +94,7 @@
                     <div class="carousel_popup_right">
                         <img src="/media/images/dw_popup_m.kemplay.gif" alt="Miles Kemplay" width="65" height="65" /><br/>
                         <p>
-                            "Thanks to HNI, we could gather about areate is enoughannable.not about the organization (this is the standard structure we agreed on). Segather timely, accurate and complete data on a monthly basis and analyze which of our marketing efforts directly lead to spikes in clients seen.
+                            "Thanks to HNI, we could gather timely, accurate and complete data on a monthly basis and analyze which of our marketing efforts directly lead to spikes in clients seen.
                             <br/>We now have a much better idea where to spend our limited resources."
                             <br/><span>Miles Kemplay, Country Director of MSM</span>
                             <br/><img src="/media/images/dw_popup_logo_msi.gif" width="123" height="51" alt="" />
@@ -109,12 +109,12 @@
                 <img src="/media/images/dw_popup_bd1.png" width="600" height="15" alt="" />
                 <div class="carousel_popup_content">
                     <div class="carousel_popup_left">
-                        <h2>Child and Maternal Healthcare</h2>
+                        <h2>Public Health</h2>
                         <h1>Child and Maternal Healthcare</h1>
                         <br/>In 2010, the USAID-funded RTI/Santénet2 Project adopted a mobile phone reporting system to collect health services data delivered by the project.
                         <br/><br/>Using HNI’s data collection and communication platform, RTI/Santénet 2 has collected reliable information regarding
                         <ul>
-                            <li>Maternal health and Family Planning</li>
+                            <li>Maternal health and family planning</li>
                             <li>Child malnutrition</li>
                             <li>Diarrhea, respiratory infection and malaria </li>
                         </ul>
@@ -163,7 +163,7 @@
         <div id="home_how" class="container_24">
             <div class="grid_4 alpha omega">
                 <img src="/media/images/dw_home_how.png" alt="How it works" width="140" height="25" class="title" /><br/>
-                <a href="javascript:void(0)">Learn more &raquo;</a>
+                <a href="/what-is-datawinners/how-it-works">Learn more &raquo;</a>
             </div>
             <div class="grid_20 alpha omega">
                 <img src="/media/images/dw_home_how_schema.gif" alt="How it works" width="800" height="106" />

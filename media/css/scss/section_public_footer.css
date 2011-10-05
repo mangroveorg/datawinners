@@ -1,30 +1,21 @@
-#footer .cols {
-  width: 240px;
-  height: 240px;
-  float: left;
-  text-align: center;
-  background: url("/media/images/dw_footer_pipe2.gif") repeat-y left top; }
-  #footer .cols .cols_content {
-    width: 220px;
-    text-align: left;
-    color: #b9cedc;
-    font-size: 12px;
-    line-height: 16px;
-    margin: 0 auto; }
-    #footer .cols .cols_content a {
-      color: #afdd88;
-      text-decoration: none; }
-      #footer .cols .cols_content a:hover {
-        text-decoration: underline; }
-    #footer .cols .cols_content img {
-      margin: 0 15px 6px 0; }
-    #footer .cols .cols_content p {
-      margin: 20px 0; }
-    #footer .cols .cols_content small {
-      font-size: 11px; }
-    #footer .cols .cols_content ul a {
-      line-height: 23px; }
-    #footer .cols .cols_content .italic {
-      font-size: 11px; }
-#footer .first {
-  background: none !important; }
+#footer a {
+  color: #afdd88;
+  text-decoration: none; }
+  #footer a:hover {
+    text-decoration: underline; }
+#footer div {
+  text-align: left;
+  color: #b9cedc;
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0; }
+#footer img {
+  margin: 0 15px 6px 0; }
+#footer p {
+  margin: 20px 0; }
+#footer small {
+  font-size: 11px; }
+#footer ul a {
+  line-height: 23px; }
+#footer .italic {
+  font-size: 11px; }

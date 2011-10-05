@@ -14,6 +14,9 @@ body {
 #container_content {
   background: #ffffff; }
 
+#container_secondary_content {
+  background: white url("/media/images/dw_secondary_bg.gif") repeat-x left 75px; }
+
 #container_footer {
   padding: 45px 0 20px 0; }
 
@@ -195,14 +198,14 @@ body {
       margin: 25px 0 5px 0; }
 
 #container_page_title {
-  height: 125px;
+  height: 75px;
   overflow: hidden;
   background: url("/media/images/dw_pattern_bg.gif") repeat left top;
   border-bottom: 1px solid #CCCCCC; }
   #container_page_title #page_title {
     width: 720px;
     float: right;
-    padding-top: 60px; }
+    padding-top: 20px; }
     #container_page_title #page_title h1 {
       font-size: 28px;
       color: #010101;
@@ -307,23 +310,25 @@ body {
       margin: 0 20px;
       padding: 0 10px; }
 
-#use_dw .content {
-  float: left;
-  width: 180px;
-  height: 70px;
-  background: #e3edf4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top; }
-  #use_dw .content p {
-    margin: 0 !important;
-    padding: 10px;
-    font-size: 11px;
-    line-height: 16px; }
-    #use_dw .content p strong {
-      font-size: 14px; }
-#use_dw .arrow {
-  float: left;
-  width: 90px;
-  height: 70px;
-  background: url("/media/images/dw_arrow_green.gif") no-repeat center center; }
+#use_dw {
+  margin: 20px 0; }
+  #use_dw .content {
+    float: left;
+    width: 180px;
+    height: 70px;
+    background: #e3edf4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top; }
+    #use_dw .content p {
+      margin: 0 !important;
+      padding: 10px;
+      font-size: 11px;
+      line-height: 16px; }
+      #use_dw .content p strong {
+        font-size: 14px; }
+  #use_dw .arrow {
+    float: left;
+    width: 90px;
+    height: 70px;
+    background: url("/media/images/dw_arrow_green.gif") no-repeat center center; }
 
 #how_menu {
   position: relative;
@@ -332,11 +337,10 @@ body {
     width: 180px;
     float: left;
     text-align: center; }
-    #how_menu .title p {
-      margin: 0 !important;
-      padding: 0 10px; }
-      #how_menu .title p a {
-        color: #333 !important; }
+    #how_menu .title a {
+      color: #043E6A !important; }
+      #how_menu .title a:hover {
+        text-decoration: none !important; }
   #how_menu #how_active {
     position: absolute;
     width: 180px;
@@ -345,18 +349,20 @@ body {
     left: 0;
     background: url("/media/images/dw_how_active.png") no-repeat center center; }
 
-#how_content .container {
-  display: none; }
-#how_content .active {
-  display: block; }
+#how_content h2 {
+  margin-bottom: 20px !important; }
 #how_content ul {
   margin: 10px 20px !important;
   padding: 0 10px !important; }
   #how_content ul li {
     list-style-type: disc; }
+#how_content .container {
+  display: none; }
+#how_content .active {
+  display: block; }
 
 #how_nav #how_links {
-  margin: 10px 0;
+  margin: 30px 0;
   text-align: center; }
   #how_nav #how_links #how_try_button {
     display: block;
@@ -473,6 +479,12 @@ body {
   .ui-dialog .ui-state-hover {
     border: none;
     background: none; }
+
+.bulleted {
+  margin: 0 20px !important;
+  padding: 0 10px !important; }
+  .bulleted li {
+    list-style-type: disc !important; }
 
 small {
   font-size: 11px; }
