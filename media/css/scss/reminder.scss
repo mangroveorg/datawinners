@@ -5,7 +5,8 @@
 
 .reminder_content_section{
     border-bottom: 1px solid;
-    height:575px !important;
+    height:600px !important;
+    width: 95%;
 }
 #review_section{
  h4{
@@ -76,5 +77,15 @@
 }
 
 label.error{
-    clear:both;
+    position:absolute;
+    float:none;
+    color:#FFFFFF;
+    display:inline;
+    background-color:#c20303;
+    margin-left:10px;
+    padding:3px 10px 3px 10px;
+    border:1px solid #00000;
+    -moz-border-radius:5px;
+    -webkit-moz-border-radius:5px;
+    opacity:0.8;
 }
