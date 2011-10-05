@@ -90,8 +90,8 @@
             <a href="#" class="button">{% trans "Confirm" %}</a>
         </div>
         <div id="web_user_block">
-            <span class="italic">Enter each data sender's email address below. Each can submit data via the internet</span><br>
-            <span class="message-box" id="web_user_error" style="display: none;"></span>
+            <div class="italic">Enter each data sender's email address below. Each can submit data via the internet</div>
+            <div class="message-box" id="web_user_error" style="display: none;"></div>
             <table id="web_user_table">
                 <thead>
                 <th>Reporter ID</th>
@@ -104,7 +104,8 @@
 
                 </tbody>
             </table>
-            <button class="button" id="web_user_button">Save</button>
+            <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+            <a href="#" class="button" id="web_user_button">{% trans "Give Access" %}</a>
         </div>
         <label class="inline margin_left_20">{% trans "Actions:" %} </label>
         <select id='action'>

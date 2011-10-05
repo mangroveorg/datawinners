@@ -75,6 +75,10 @@ $(document).ready(function() {
         $("#all_project_block").dialog("close");
     });
 
+    $("#web_user_block .cancel_link").bind("click", function() {
+        $("#web_user_block").dialog("close");
+    });
+
     $("#all_project_block .button").bind("click", function() {
         $('#error').remove();
         var allIds = updateIds();
@@ -135,7 +139,7 @@ $(document).ready(function() {
     }
 
     $('#web_user_button').click(function() {
-        $('#web_user_error').html("");
+        $('#web_user_error').hide();
         var post_data = [];
         var should_post = true;
         $('input:enabled.ds-email').each(function() {
