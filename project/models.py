@@ -158,7 +158,6 @@ class Project(DocumentBase):
     sender_group = TextField()
     reminder_and_deadline = DictField()
     data_senders = ListField(TextField())
-    reminders = ListField(DictField())
     language = TextField(default='en')
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
