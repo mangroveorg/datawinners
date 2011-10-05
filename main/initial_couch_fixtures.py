@@ -16,7 +16,7 @@ from pytz import UTC
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code, GEO_CODE_FIELD
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import Request, SMSPlayer, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
@@ -82,9 +82,9 @@ def load_manager_for_default_test_account():
     return get_database_manager(user)
 
 
-def register(manager, entity_type, data, location, short_code):
+def register(manager, entity_type, data, location, short_code, geometry=None):
     e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-                                short_code=short_code)
+                                short_code=short_code, geometry=geometry)
     e.add_data(data=data)
     return e
 
@@ -634,20 +634,20 @@ def load_data():
     first_name_type = create_data_dict(manager, name='First Name', slug='first_name', primitive_type='string')
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
             (NAME_FIELD, "Shweta", first_name_type)],
-             location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
-             short_code="rep1")
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "261332592634", phone_number_type),
             (NAME_FIELD, "David", first_name_type)],
-             location=[u'Madagascar', u'Fianarantsoa', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
-             short_code="rep2")
+             location=[u'Madagascar', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
+             short_code="rep2", geometry={"type": "Point", "coordinates": [-20.9027586764, 47.165034158]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891", phone_number_type),
             (NAME_FIELD, "Mr. Reporter 3", first_name_type)],
-             location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
-             short_code="rep3")
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep3", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892", phone_number_type),
         (NAME_FIELD, "Ms. Reporter 4", first_name_type)],
-         location=[u'Madagascar', u'Toliary', u'Menabe', u'Mahabo', u'Beronono'],
-         short_code="rep4")
+         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+         short_code="rep4", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
 
     load_sms_data_for_cli001(manager)
