@@ -764,7 +764,7 @@ def _get_django_field(field):
 
 
 def _create_django_form_from_form_model(form_model):
-    properties = {field.code.lower(): _get_django_field(field) for field in form_model.fields}
+    properties = {field.code: _get_django_field(field) for field in form_model.fields}
     properties.update({'form_code': forms.CharField(widget=HiddenInput, initial=form_model.form_code)})
     return type('QuestionnaireForm', (Form, ), properties)
 
