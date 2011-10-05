@@ -116,6 +116,8 @@ def create_datasender(request):
                 {'form': form, 'message': message},
                                       context_instance=RequestContext(request))
 
+
+@login_required(login_url='/login')
 def create_type(request):
     success = False
     form = EntityTypeForm(request.POST)
