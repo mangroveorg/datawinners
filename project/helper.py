@@ -60,14 +60,15 @@ def create_question(post_dict, dbm):
         return _create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
 
 
-def create_entity_id_question(dbm):
+def create_entity_id_question(dbm,entity_type):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
     name = "Which subject are you reporting on?"
     entity_id_question = TextField(name=name, code="q1",
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
-                                   constraints=[TextLengthConstraint(min=1, max=12)])
+                                   constraints=[TextLengthConstraint(min=1, max=12)],required=(
+        entity_type == [REPORTER]))
     return entity_id_question
 
 
@@ -76,10 +77,10 @@ def create_questionnaire(post, dbm):
                                                          primitive_type="date",
                                                          description="activity reporting period")
     entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
-    entity_id_question = create_entity_id_question(dbm)
+    entity_id_question = create_entity_id_question(dbm,entity_type)
     activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code="q2",
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
-                                         date_format="dd.mm.yyyy")
+                                         date_format="dd.mm.yyyy",required=False)
     fields = [entity_id_question, activity_report_question]
     return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
                      form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE, language=post['language'])
