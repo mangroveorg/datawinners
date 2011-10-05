@@ -129,7 +129,7 @@ def create_type(request):
         message = form.fields['entity_type_regex'].error_messages['invalid']
     return HttpResponse(json.dumps({'success': success, 'message': message}))
 
-
+@login_required(login_url='/login')
 def create_subject(request):
     db_manager = get_database_manager(request.user)
     entity_types = get_all_entity_types(db_manager)
