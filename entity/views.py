@@ -98,7 +98,7 @@ def submit(request):
         entity_id = None
     return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
 
-
+@login_required(login_url='/login')
 def create_datasender(request):
     if request.method == 'GET':
         form = ReporterRegistrationForm()
