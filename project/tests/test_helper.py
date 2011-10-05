@@ -233,7 +233,7 @@ class TestHelper(unittest.TestCase):
                                                         primitive_type=TYPE, description=LABEL)
         self.assertEqual(expected_data_dict, integer_question.ddtype)
 
-    def test_should_create_questionnaire_with_entity_question(self):
+    def test_should_create_questionnaire_with_entity_question_for_subjects(self):
         NAME = "eid"
         LABEL = "Entity ID"
         SLUG = "entity_id"
@@ -258,9 +258,44 @@ class TestHelper(unittest.TestCase):
 
         self.assertEqual(2, len(form_model.fields))
         self.assertEqual(True, form_model.fields[0].is_entity_field)
+        self.assertEqual(True, form_model.fields[0].is_required())
+        activity_period_question = form_model.fields[1]
+        self.assertEqual(False, activity_period_question.is_required())
         self.assertEqual(["Water Point"], form_model.entity_type)
         self.assertFalse(form_model.is_active())
         patcher.stop()
+
+    def test_should_create_questionnaire_with_entity_question_for_questionnaire_on_activity_report(self):
+        NAME = "eid"
+        LABEL = "Entity ID"
+        SLUG = "entity_id"
+        TYPE = "string"
+        post = {"entity_type": "reporter", "name": "Test Project", "language": "en"}
+        dbm = Mock(spec=DatabaseManager)
+
+        patcher = patch("datawinners.project.helper.generate_questionnaire_code")
+        mock = patcher.start()
+        mock.return_value = '001'
+
+        expected_data_dict = DataDictType(dbm, NAME, SLUG, TYPE, LABEL)
+        self.create_ddtype_mock.return_value = expected_data_dict
+
+        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
+            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
+            form_model = helper.create_questionnaire(post, dbm)
+
+        self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
+                                                         primitive_type=TYPE, description=LABEL)
+        self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
+
+        self.assertEqual(2, len(form_model.fields))
+        self.assertEqual(True, form_model.fields[0].is_entity_field)
+        self.assertEqual(False, form_model.fields[0].is_required())
+        activity_period_question = form_model.fields[1]
+        self.assertEqual(False, activity_period_question.is_required())
+        self.assertFalse(form_model.is_active())
+        patcher.stop()
+
 
     def test_should_update_questionnaire(self):
         dbm = Mock(spec=DatabaseManager)

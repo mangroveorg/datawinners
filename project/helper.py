@@ -68,7 +68,7 @@ def create_entity_id_question(dbm,entity_type):
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    constraints=[TextLengthConstraint(min=1, max=12)],required=(
-        entity_type == [REPORTER]))
+        entity_type != [REPORTER]))
     return entity_id_question
 
 
