@@ -26,6 +26,7 @@ DW.question = function(question) {
     var defaults = {
         name : "Question",
         code : "code",
+        required:true,
         type : "text",
         choices :[
             {text:"default", val:""}
@@ -65,6 +66,7 @@ DW.question.prototype = {
         this.title = ko.observable(q.name);
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
+        this.required = ko.observable(q.required);
         this.choices = ko.observableArray(q.choices);
         this.is_entity_question = ko.observable(q.entity_question_flag);
         this.date_format = ko.observable(q.date_format);

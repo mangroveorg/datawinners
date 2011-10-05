@@ -101,7 +101,7 @@ def _create_text_question(post_dict, ddtype):
         constraints.append(TextLengthConstraint(min=min_length, max=max_length))
     return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                      entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
-                     instruction=post_dict.get("instruction"))
+                     instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def _create_integer_question(post_dict, ddtype):
@@ -111,24 +111,24 @@ def _create_integer_question(post_dict, ddtype):
     min_range = min_range_from_post if not is_empty(min_range_from_post) else None
     range = NumericRangeConstraint(min=min_range, max=max_range)
     return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                        constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"))
+                        constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def _create_date_question(post_dict, ddtype):
     return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"))
+                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def _create_geo_code_question(post_dict, ddtype):
     return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype,
-                        instruction=post_dict.get("instruction"))
+                        instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
     options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
     return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
                        options=options, single_select_flag=single_select_flag, ddtype=ddtype,
-                       instruction=post_dict.get("instruction"))
+                       instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def adapt_submissions_for_template(questions, submissions):
