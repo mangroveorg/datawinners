@@ -1,6 +1,7 @@
 {% extends 'project/tab_navigation.html' %}
 {% block page_title %} Web Submission {% endblock %}
 
+{% load field_tags %}
 {% load dw_tabs %}
 {% block navigation %}
     {% activetab "tab_nav" "data" %}
@@ -14,6 +15,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_web_questionnaire.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
@@ -43,7 +45,13 @@
                         </p>
                     {% endif %}
                     <div class="answer">
-                        {{ field }}
+                        {% if field|field_type == 'ChoiceField' %}
+                            <span class="single_select_question" wmwrap="true">
+                                {{ field }}
+                            </span>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
                     </div>
                     <ul class="errorlist">
                         {% if field.errors %}
