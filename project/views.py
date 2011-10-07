@@ -768,11 +768,18 @@ def _create_django_form_from_form_model(form_model):
     properties.update({'form_code': forms.CharField(widget=HiddenInput, initial=form_model.form_code)})
     return type('QuestionnaireForm', (Form, ), properties)
 
+def _lookup(code, value):
+    if value == "Answer for question " + str(code) + " is required":
+        return "This field is required"
+    return value
+
+def _lookup_in_list(code, values):
+    return [_lookup(code,value) for value in values]
 
 def _to_list(errors):
     error_dict = dict()
     for key, value in errors.items():
-        error_dict.update({key: [value] if not isinstance(value, list) else value})
+        error_dict.update({key: [_lookup(key, value)] if not isinstance(value, list) else _lookup_in_list(key, value)})
     return error_dict
 
 
