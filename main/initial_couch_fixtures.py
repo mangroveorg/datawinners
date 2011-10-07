@@ -199,12 +199,12 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
     geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
-                          language="eng", entity_question_flag=True, ddtype=entity_id_type,
+                          language="en", entity_question_flag=True, ddtype=entity_id_type,
                           constraints=[TextLengthConstraint(min=1, max=12)],
                           instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="Name", code="NA", name="What is your namé?",
                           constraints=[TextLengthConstraint(min=1, max=10)],
-                          defaultValue="some default value", language="eng", ddtype=name_type,
+                          defaultValue="some default value", language="en", ddtype=name_type,
                           instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
                              constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
@@ -222,7 +222,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                             instruction="Choose 1 or more answers from the list.")
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
                              label="What is the GPS code for clinic?",
-                             language="eng", ddtype=geo_code_type,
+                             language="en", ddtype=geo_code_type,
                              instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547")
     question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],

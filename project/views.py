@@ -151,7 +151,7 @@ def edit_profile(request, project_id=None):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-    project = models.get_project(project_id, dbm=manager)
+    project = Project.load(manager.database, project_id)
     if request.method == 'GET':
         form = ProjectProfile(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
         return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
