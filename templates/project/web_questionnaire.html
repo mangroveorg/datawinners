@@ -52,7 +52,7 @@
                         {% else %}
                             {{ field }}
                         {% endif %}
-                    </div>
+
                     <ul class="errorlist">
                         {% if field.errors %}
                             {% for error in field.errors %}
@@ -62,6 +62,7 @@
                             {% endfor %}
                         {% endif %}
                     </ul>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
