@@ -6,7 +6,7 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from datawinners.accountmanagement.views import is_new_user
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
-from datawinners.project.models import ProjectState
+from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
@@ -23,7 +23,7 @@ def index(request):
         analysis = log = "#"
         disabled = "disable_link"
         project_id = row['value']['_id']
-        project = models.get_project(project_id, dbm=manager)
+        project = Project.load(manager.database, project_id)
         questionnaire = manager.get(project['qid'], FormModel)
         questionnaire_code = questionnaire.form_code
         link = reverse(project_overview, args=[project_id])

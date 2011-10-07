@@ -36,7 +36,7 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(len(projects), 2)
 
     def test_get_one_project(self):
-        self.assertEquals(get_project(self.project1_id, self.dbm)['_id'], self.project1_id)
+        self.assertEquals(Project.load(self.dbm.database, self.project1_id)['_id'], self.project1_id)
 
     def test_should_update_project(self):
         self.project1.update(dict(name='Test1', devices=['web', 'sms'], goals="New goals"))

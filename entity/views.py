@@ -17,6 +17,7 @@ from datawinners.entity import helper
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
+from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
@@ -29,7 +30,7 @@ from mangrove.utils.types import is_empty
 COUNTRY = ',MADAGASCAR'
 
 def _associate_data_sender_to_project(dbm, project_id, response):
-    project = models.get_project(project_id, dbm)
+    project = Project.load(dbm.manager, project_id)
     project.data_senders.append(response.short_code)
     project.save(dbm)
 
@@ -108,11 +109,9 @@ def create_datasender(request):
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         message= _process_form(dbm, form)
-        if message is not None:
-            form = ReporterRegistrationForm()
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message},
-                                  context_instance=RequestContext(request))
+                                      context_instance=RequestContext(request))
 
 def create_type(request):
     success = False
@@ -226,7 +225,7 @@ def all_datasenders(request):
 @is_new_user
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
-    projects = [models.get_project(project_id, manager) for project_id in request.POST.get('project_id').split(';')]
+    projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
     for project in projects:
         [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
         project.save(manager)
@@ -238,14 +237,14 @@ def disassociate_datasenders(request):
 @is_new_user
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
-    projects = [models.get_project(project_id, manager) for project_id in request.POST.get('project_id').split(';')]
+    projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
     for project in projects:
         project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
         project.save(manager)
     return HttpResponse(reverse(all_datasenders))
 
 def _associate_data_senders_to_project(imported_entities, manager, project_id):
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     project.data_senders.extend([k for k, v in imported_entities.items() if v == REPORTER])
     project.save(manager)
 

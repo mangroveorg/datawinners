@@ -53,7 +53,7 @@ def migrate_01(managers, map_fun_project_docs, map_fun_raw_form_model_docs, map_
         for project in projects:
             document = project.key
             document['language'] = 'en'
-            document['datasenders'] = []
+            document['data_senders'] = []
             document['reminder_and_deadline'] = {"frequency_enabled": "False", "reminders_enabled": "False"}
             manager.database.save(document)
 

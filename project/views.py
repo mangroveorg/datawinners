@@ -90,7 +90,7 @@ def questionnaire_wizard(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
-        project = models.get_project(project_id, manager)
+        project = Project.load(manager.database, project_id)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         existing_questions = json.dumps(fields, default=field_to_json)
@@ -188,7 +188,7 @@ def save_questionnaire(request):
         json_string = request.POST['question-set']
         question_set = json.loads(json_string)
         pid = request.POST['pid']
-        project = models.get_project(pid, dbm=manager)
+        project = Project.load(manager.database, pid)
         form_model = FormModel.get(manager, project.qid)
         try:
             form_model = helper.update_questionnaire_with_questions(form_model, question_set, manager)
@@ -232,7 +232,7 @@ def index(request):
 @is_datasender
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, dbm=manager)
+    project = Project.load(manager.database, project_id)
     helper.delete_project(manager, project)
     undelete_link = reverse(undelete_project, args=[project_id])
     print undelete_link
@@ -242,14 +242,14 @@ def delete_project(request, project_id):
 
 def undelete_project(request, project_id):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, dbm=manager)
+    project = Project.load(manager.database, project_id)
     helper.delete_project(manager, project, False)
     return HttpResponseRedirect(reverse(index))
 
 @login_required(login_url='/login')
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, dbm=manager)
+    project = Project.load(manager.database, project_id)
     link = reverse(edit_profile, args=[project_id])
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
@@ -265,7 +265,7 @@ def project_overview(request, project_id=None):
 @is_datasender
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, dbm=manager)
+    project = Project.load(manager.database, project_id)
     project_links = _make_project_links(project, questionnaire_code)
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
     if request.method == 'GET':
@@ -361,7 +361,7 @@ def _get_aggregated_data(form_model, manager, questionnaire_code, request):
 @is_datasender
 def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, dbm=manager)
+    project = Project.load(manager.database, project_id)
     form_model = get_form_model_by_code(manager, questionnaire_code)
 
     field_values, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code,
@@ -427,7 +427,7 @@ def subjects_wizard(request, project_id=None):
         reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(edit_profile, args=[project_id])
         entity_types = get_all_entity_types(manager)
-        project = models.get_project(project_id, manager)
+        project = Project.load(manager.database, project_id)
         helper.remove_reporter(entity_types)
         import_subject_form = SubjectUploadForm()
         return render_to_response('project/subjects_wizard.html',
@@ -461,7 +461,7 @@ def datasenders_wizard(request, project_id=None):
         manager = get_database_manager(request.user)
         reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
         previous_link = reverse(questionnaire_wizard, args=[project_id])
-        project = models.get_project(project_id, manager)
+        project = Project.load(manager.database, project_id)
         import_reporter_form = ReporterRegistrationForm(initial={'project_id': project_id})
         _format_field_description_for_data_senders(reg_form.fields)
         cleaned_up_fields = _get_questions_for_datasenders_registration_for_wizard(reg_form.fields)
@@ -479,7 +479,7 @@ def datasenders_wizard(request, project_id=None):
 def reminders_wizard(request, project_id=None):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
-        project = models.get_project(project_id, dbm)
+        project = Project.load(dbm.database, project_id)
         previous_link = reverse(datasenders_wizard, args=[project_id])
         return render_to_response('project/reminders_wizard.html',
                 {"previous": previous_link, 'project': project, 'is_reminder': project.is_reminder_enabled()},
@@ -511,7 +511,7 @@ def _format_reminders(reminders, project_id):
 def reminders(request, project_id):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
-        project = models.get_project(project_id, dbm)
+        project = Project.load(dbm.database, project_id)
         questionnaire = FormModel.get(dbm, project.qid)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         return render_to_response('project/reminders.html',
@@ -571,7 +571,7 @@ def manage_reminders(request, project_id):
 @is_datasender
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
-    project = models.get_project(project_id, dbm)
+    project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
     return render_to_response('project/sent_reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
@@ -583,7 +583,7 @@ def sent_reminders(request, project_id):
 @is_datasender
 def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     project.activate(manager)
     form_model = FormModel.get(manager, project.qid)
     oneDay = datetime.timedelta(days=1)
@@ -611,7 +611,7 @@ def _make_links_for_finish_page(project_id, form_model):
 @login_required(login_url='/login')
 def finish(request, project_id=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         project.to_test_mode(manager)
@@ -634,7 +634,7 @@ def finish(request, project_id=None):
 
 
 def _get_project_and_project_link(manager, project_id):
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     questionnaire = FormModel.get(manager, project.qid)
     project_links = _make_project_links(project, questionnaire.form_code)
     return project, project_links
@@ -676,7 +676,7 @@ def registered_datasenders(request, project_id=None):
 @csrf_exempt
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
-    project = models.get_project(request.POST['project_id'], manager)
+    project = Project.load(manager.database, request.POST['project_id'])
     [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
     project.save(manager)
     return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
@@ -710,7 +710,7 @@ def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
-        project = models.get_project(project_id, manager)
+        project = Project.load(manager.database, project_id)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         existing_questions = json.dumps(fields, default=field_to_json)
@@ -768,18 +768,11 @@ def _create_django_form_from_form_model(form_model):
     properties.update({'form_code': forms.CharField(widget=HiddenInput, initial=form_model.form_code)})
     return type('QuestionnaireForm', (Form, ), properties)
 
-def _lookup(code, value):
-    if value == "Answer for question " + str(code) + " is required":
-        return "This field is required"
-    return value
-
-def _lookup_in_list(code, values):
-    return [_lookup(code,value) for value in values]
 
 def _to_list(errors):
     error_dict = dict()
     for key, value in errors.items():
-        error_dict.update({key: [_lookup(key, value)] if not isinstance(value, list) else _lookup_in_list(key, value)})
+        error_dict.update({key: [value] if not isinstance(value, list) else value})
     return error_dict
 
 
@@ -802,7 +795,7 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
 @is_datasender_allowed
 def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
 
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
@@ -845,7 +838,7 @@ def questionnaire_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         previous_link = reverse(subjects_wizard, args=[project_id])
-        project = models.get_project(project_id, manager)
+        project = Project.load(manager.database, project_id)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
         project_links = _make_project_links(project, form_model.form_code)
@@ -883,7 +876,7 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
 @login_required(login_url='/login')
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
@@ -901,7 +894,7 @@ def subject_registration_form_preview(request, project_id=None):
 @login_required(login_url='/login')
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
-    project = models.get_project(project_id, manager)
+    project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
