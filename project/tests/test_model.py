@@ -4,7 +4,7 @@ from datetime import date
 import unittest
 from mock import Mock, patch
 from datawinners.main.utils import create_views
-from datawinners.project.models import Project, get_all_projects, get_project, ProjectState
+from datawinners.project.models import Project, get_all_projects, ProjectState
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager, DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import attributes
