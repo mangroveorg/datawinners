@@ -108,9 +108,11 @@ def create_datasender(request):
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         message= _process_form(dbm, form)
+        if message is not None:
+            form = ReporterRegistrationForm()
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message},
-                                      context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
 
 def create_type(request):
     success = False
