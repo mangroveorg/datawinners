@@ -13,7 +13,7 @@ from django.utils.translation import  ugettext
 import models
 import xlwt
 from datetime import datetime
-from mangrove.transport.submissions import ENTITY_QUESTION_DISPLAY_CODE, Submission, get_submissions
+from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
