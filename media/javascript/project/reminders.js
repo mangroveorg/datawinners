@@ -108,6 +108,8 @@ function viewModel() {
             this.remindersToSave = [];
             return;
         }
+        else
+            this.reminders = [];
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
             $('.success-message-box').show().html("The reminders has been saved").fadeOut(10000);
         })
