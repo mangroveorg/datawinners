@@ -70,3 +70,6 @@ label.error {
   -moz-border-radius: 5px;
   -webkit-moz-border-radius: 5px;
   opacity: 0.8; }
+
+.half-width {
+  width: 50%; }

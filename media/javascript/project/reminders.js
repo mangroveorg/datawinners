@@ -11,7 +11,7 @@ $(document).ready(function(){
             }else{
                 $('.add_reminder').removeClass('none');
             }
-            $('.success_message').show().html(message).fadeOut(10000);
+            $('.success-message-box').show().html(message).fadeOut(10000);
         });
     });
 
@@ -109,7 +109,7 @@ function viewModel() {
             return;
         }
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
-            $('.success_message').show().html("The reminders has been saved").fadeOut(10000);
+            $('.success-message-box').show().html("The reminders has been saved").fadeOut(10000);
         })
     }
 
