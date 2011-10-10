@@ -5,6 +5,7 @@ $(document).ready(function(){
     }
     else{
          DW.current_activity_report = $('#id_activity_report_1').val();
+        $('#create_type_section').show();
     }
     DW.current_type = $('#id_entity_type').val();
 
@@ -102,6 +103,13 @@ $(document).ready(function(){
         $('#deadline_example').text(deadline_example)
     }
 
+    $('input[name=activity_report]').change(function(){
+        if($('#id_activity_report_1').attr('checked')){
+            $('#create_type_section').show();
+        }else{
+            $('#create_type_section').hide();
+        }
+    });
 });
 
 function show_element(element,should_show){

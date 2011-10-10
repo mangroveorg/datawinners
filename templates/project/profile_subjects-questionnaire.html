@@ -18,7 +18,9 @@
         {{ form.entity_type.label_tag }}
         {{ form.entity_type }}
         {{ form.entity_type.errors }}
-        {% include 'entity/create_type.html' %}
+        <div id="create_type_section" style="display: none;">
+            {% include 'entity/create_type.html' %}
+        </div>
     </li>
 
     <li class="{{ form.devices.css_classes  }} form-row-10px">
