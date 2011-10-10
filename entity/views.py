@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from datawinners import utils
+from django.utils.translation import ugettext as _
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender, is_new_user
 from datawinners.entity import helper
@@ -95,6 +95,7 @@ def submit(request):
         entity_id = response.datarecord_id
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel="web")
+        message = _("Please add subject type and then add a subject") if message == "t should be present" else message
         success = False
         entity_id = None
     return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
