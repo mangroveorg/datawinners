@@ -53,7 +53,7 @@ def get_location_groups_for_country(country, start_with):
     search_string = start_with.lower().encode('utf-8')
 
     data_dict = {}
-    data_dict['like'] = psycopg2.Binary(search_string + '%')
+    data_dict['like'] = search_string + '%'
     sql = """
     (select distinct 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
