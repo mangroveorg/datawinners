@@ -11,7 +11,14 @@ $(document).ready(function() {
             $("#error_table").hide();
             $("#subject_table tbody").html('');
             $.each(responseJSON.all_data, function(index, element) {
-                $("#subject_table tbody").append("<tr><td>" + element.short_name + "</td><td>" + element.name + "</td><td>"  + element.type + "</td><td>" + element.location + "</td><td>"+ element.geocode + "</td><td>" + element.description + "</td><td>" + element.mobile_number + "</td></tr>")
+                $("#subject_table tbody").append("<tr>" +
+                        "<td>" + element.short_name + "</td>" +
+                        "<td>" + element.name + "</td>" +
+                        "<td>"  + element.type + "</td>" +
+                        "<td>" + element.location + "</td>" +
+                        "<td>"+ element.geocode + "</td>" +
+                        "<td>" + element.description + "</td>" +
+                        "<td>" + element.mobile_number + "</td></tr>")
             });
             if (responseJSON.success == true) {
                 $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
