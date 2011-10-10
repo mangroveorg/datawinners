@@ -17,7 +17,7 @@ from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import ProjectProfile
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.forms import SubjectUploadForm
@@ -237,9 +237,8 @@ def delete_project(request, project_id):
     project = Project.load(manager.database, project_id)
     helper.delete_project(manager, project)
     undelete_link = reverse(undelete_project, args=[project_id])
-    print undelete_link
-    print type(undelete_link)
-    messages.info(request, undelete_link)
+    if len(get_all_projects(manager)) > 0:
+        messages.info(request, undelete_link)
     return HttpResponseRedirect(reverse(index))
 
 def undelete_project(request, project_id):
