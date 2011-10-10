@@ -36,39 +36,4 @@ $(document).ready(function(){
         $(".add_subject_form").dialog("close");
     });
 
-    $('#register_entity').unbind('click').click(function() {
-        if ($('#question_form').valid()) {
-            var message = {'form_code':'reg',
-                't':$('#id_entity_type').val(),
-                's':$('#short_name').val(),
-                'l':$('#id_location').val(),
-                'd':$('#description').val(),
-                'm':$('#mobile_number').val(),
-                'n':$('#entity_name').val(),
-                'g':$('#geo_code').val()
-            };
-            var data = {'message':message,'transport': 'web','source': 'web','destination': 'mangrove'};
-            $.post('/submit', {'format': 'json', 'data': JSON.stringify(data, null, 1)},
-                    function(response) {
-                        var d = JSON.parse(response);
-                        $('#message').remove();
-                        if (d.success) {
-                            $('<div id="message" class="success_message success-message-box">' + d.message + '</span>').insertBefore($('#question_form'));
-                            $("#entity_name").val('');
-                            $("#id_location").val('');
-                            $("#geo_code").val('');
-                            $("#description").val('');
-                            $("#mobile_number").val('');
-                            $("#short_name").val('');
-                            $('#id_entity_type').val(0);
-                            $('#message').delay(10000).fadeOut();
-                        }
-                        else {
-                            $('<div id="message" class="error_message message-box">' + d.message + '</span>').insertBefore($('#question_form'));
-                        }
-                    }
-            );
-        }
-    }
-    );
 });

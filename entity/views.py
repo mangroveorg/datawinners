@@ -30,7 +30,7 @@ from mangrove.utils.types import is_empty
 COUNTRY = ',MADAGASCAR'
 
 def _associate_data_sender_to_project(dbm, project_id, response):
-    project = Project.load(dbm.manager, project_id)
+    project = Project.load(dbm.database, project_id)
     project.data_senders.append(response.short_code)
     project.save(dbm)
 
