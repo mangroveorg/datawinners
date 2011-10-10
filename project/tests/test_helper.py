@@ -257,10 +257,15 @@ class TestHelper(unittest.TestCase):
         self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
         self.assertEqual(2, len(form_model.fields))
-        self.assertEqual(True, form_model.fields[0].is_entity_field)
-        self.assertEqual(True, form_model.fields[0].is_required())
+
+        self.assertTrue(form_model.fields[0].is_entity_field)
+        self.assertTrue(form_model.fields[0].is_required())
+        self.assertEqual('q1',form_model.fields[0].code)
+
         activity_period_question = form_model.fields[1]
-        self.assertEqual(False, activity_period_question.is_required())
+        self.assertTrue(activity_period_question.is_required())
+        self.assertEqual('q2',activity_period_question.code)
+
         self.assertEqual(["Water Point"], form_model.entity_type)
         self.assertFalse(form_model.is_active())
         patcher.stop()
@@ -286,13 +291,19 @@ class TestHelper(unittest.TestCase):
 
         self.create_ddtype_mock.assert_called_twice_with(dbm=dbm, name=NAME, slug=SLUG,
                                                          primitive_type=TYPE, description=LABEL)
-        self.assertEqual(expected_data_dict, form_model.fields[0].ddtype)
 
         self.assertEqual(2, len(form_model.fields))
-        self.assertEqual(True, form_model.fields[0].is_entity_field)
-        self.assertEqual(False, form_model.fields[0].is_required())
+
+        entity_id_field = form_model.fields[0]
+        self.assertEqual(expected_data_dict, entity_id_field.ddtype)
+        self.assertTrue(entity_id_field.is_entity_field)
+        self.assertTrue(entity_id_field.is_required())
+        self.assertEqual(NAME, entity_id_field.code)
+
         activity_period_question = form_model.fields[1]
-        self.assertEqual(False, activity_period_question.is_required())
+        self.assertTrue(activity_period_question.is_required())
+        self.assertEqual('q1',activity_period_question.code)
+
         self.assertFalse(form_model.is_active())
         patcher.stop()
 
@@ -310,7 +321,7 @@ class TestHelper(unittest.TestCase):
         form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1, question2],
                                entity_type=["reporter"], type="survey")
         form_model2 = helper.update_questionnaire_with_questions(form_model, [post], dbm)
-        self.assertEquals(1, len(form_model2.fields))
+        self.assertEquals(2, len(form_model2.fields))
 
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")

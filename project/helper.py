@@ -60,36 +60,59 @@ def create_question(post_dict, dbm):
         return _create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
 
 
-def create_entity_id_question(dbm,entity_type):
+def _create_entity_id_question(dbm, entity_id_question_code):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
     name = "Which subject are you reporting on?"
-    entity_id_question = TextField(name=name, code="q1",
+    entity_id_question = TextField(name=name, code=entity_id_question_code,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
-                                   constraints=[TextLengthConstraint(min=1, max=12)],required=(
-        entity_type != [REPORTER]))
+                                   constraints=[TextLengthConstraint(min=1, max=12)])
     return entity_id_question
 
 
-def create_questionnaire(post, dbm):
+def _create_questionnaire(dbm, post,entity_type,entity_id_question_code, activity_report_question_code):
+    entity_id_question = _create_entity_id_question(dbm, entity_id_question_code)
+
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
                                                          primitive_type="date",
                                                          description="activity reporting period")
-    entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
-    entity_id_question = create_entity_id_question(dbm,entity_type)
-    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code="q2",
+    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code=activity_report_question_code,
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
-                                         date_format="dd.mm.yyyy",required=False)
+                                         date_format="dd.mm.yyyy")
+
     fields = [entity_id_question, activity_report_question]
     return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
-                     form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE, language=post['language'])
+                     form_code=generate_questionnaire_code(dbm), type='survey', state=attributes.INACTIVE_STATE,
+                     language=post['language'])
+
+
+def _create_activity_report_questionnaire(dbm, post, entity_type):
+    return _create_questionnaire(dbm,post,entity_type,'eid','q1')
+
+def _create_subject_questionnaire(dbm, post, entity_type):
+    return _create_questionnaire(dbm,post,entity_type,'q1','q2')
+
+
+def create_questionnaire(post, dbm):
+    entity_type = [post["entity_type"]] if is_string(post["entity_type"]) else post["entity_type"]
+    if entity_type == [REPORTER]:
+        return _create_activity_report_questionnaire(dbm,post,entity_type)
+    return _create_subject_questionnaire(dbm, post, entity_type)
 
 def update_questionnaire_with_questions(form_model, question_set, dbm):
     form_model.delete_all_fields()
+
+    if form_model.entity_defaults_to_reporter():
+        form_model.add_field(_create_entity_id_question(dbm, 'eid'))
+
     for question in question_set:
         form_model.add_field(create_question(question, dbm))
     return form_model
+
+
+def hide_entity_question(fields):
+    return [each for each in fields if not each.is_entity_field]
 
 def _create_text_question(post_dict, ddtype):
     max_length_from_post = post_dict.get("max_length")
