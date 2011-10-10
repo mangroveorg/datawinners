@@ -32,7 +32,7 @@ def _tabulate_data(entity):
     id = entity.id
     geocode = entity.geometry.get('coordinates')
     geocode_string = ", ".join([str(i) for i in geocode]) if geocode is not None else "--"
-    location = _format(sequence_to_str(entity.location_path))
+    location = _format(sequence_to_str(entity.location_path, u", "))
     name = _format(entity.value(NAME_FIELD))
     mobile_number = _format(entity.value(MOBILE_NUMBER_FIELD))
     description = _format(entity.value(DESCRIPTION_FIELD))
