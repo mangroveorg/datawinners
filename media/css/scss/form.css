@@ -184,7 +184,7 @@ select {
   /* for webkit browsers */
   background: -moz-linear-gradient(top, #feea89, #ffd857);
   /* for firefox 3.6+ */
-  color: #6F451D;
+  color: #6F451D !important;
   font-family: "Arial";
   font-weight: bold;
   padding: 6px 23px 6px 22px;
