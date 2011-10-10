@@ -1,0 +1,37 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Nos réussites {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "success" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/fr">Accueil</a> &gt; Nos réussites
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>Nos réussites</h1>
+    <ul>
+        <li><a href="/fr/success-story/msi">Prestations en Planification Familiale
+            et en Santé de la Reproduction</a></li>
+        <li><a href="/fr/success-story/santenet2">Santé Maternelle et
+            Infantile</a></li>
+        <li><a href="/fr/success-story/bngrc">Gestion des Risques et Catastrophes</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <div class="left_content">
+
+        </div>
+        <div class="right_content">
+            
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

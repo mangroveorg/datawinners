@@ -1,0 +1,50 @@
+{% extends 'public_secondary_fr.html' %}
+{% block page_title %} Qu’est-ce que DataWinners  {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "datawinners" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/fr">Accueil</a> &gt; Qu’est-ce que DataWinners
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>QU'EST-CE QUE DATAWINNERS</h1>
+    <ul>
+        <li><a href="/fr/what-is-datawinners/how-it-works">Comment Est-ce Que Cela Marche ?</a></li>
+        <li><a href="/fr/what-is-datawinners/benefits">Benefits</a></li>
+        <li><a href="/fr/what-is-datawinners/features">Features</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <p>DataWinners est un service mobile de collecte de données en ligne conçu et créé pour les professionnels du développement. Avec DataWinners, vous collectez et analysez les données dont vous avez besoin en utilisant des équipements déjà en votre possession - un ordinateur, l'Internet et des téléphones portables ordinaires.</p>
+        <h2>L’objectif de DataWinners est de vous aider </h2>
+        <div id="use_dw">
+            <div class="content" style="height: 126px;">
+                <p><strong>Ouvrir des lignes de communication entre vous qui travaillez au siège et le personnel/les bénéficiaires sur terrain. </strong></p>
+            </div>
+            <div class="arrow" style="height: 126px;">&nbsp;</div>
+            <div class="content" style="height: 126px;">
+                <p><strong>Obtenir une meilleure compréhension de la situation actuelle de votre projet.</strong></p>
+            </div>
+            <div class="arrow" style="height: 126px;">&nbsp;</div>
+            <div class="content" style="height: 126px;">
+                <p><strong>Vous pouvez prendre des décisions éclairées. </strong></p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <h2>En savoir plus</h2>
+        <p>
+            <a href="/fr/what-is-datawinners/how-it-works">Comment Est-ce Que Cela Marche ?</a><br/>
+            <a href="/fr/what-is-datawinners/benefits">Benefits</a><br/>
+            <a href="/fr/what-is-datawinners/features">Features</a><br/>
+        </p>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

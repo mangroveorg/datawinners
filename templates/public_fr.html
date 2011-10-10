@@ -1,0 +1,27 @@
+{% extends 'public_master.html' %}
+{% block layout_scss %}
+{% endblock %}
+
+{% block body %}
+    {% block header %}
+    <div id="container_header">
+        <div id="header_public">
+            {% include 'public_header_wizard_fr.html' %}
+            {% include 'public_main_navigation_fr.html' %}
+        </div>
+    </div>
+    {% endblock %}
+
+    <div id="container_content">
+        {% block main_content %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+    <div id="container_footer">
+        <div id="footer_public">
+            {% include 'public_footer_fr.html' %}
+        </div>
+    </div>
+    {% endblock %}
+{% endblock %}

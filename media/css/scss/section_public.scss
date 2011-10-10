@@ -105,13 +105,13 @@ body{
             position:relative;
             .container_carousel{
                 width:270px;
-                height:210px;
+                height:220px;
                 position:relative;
                 float:left;
                 .carousel{
                     margin:0 auto;
                     width:216px;
-                    height:210px;
+                    height:220px;
                     overflow:hidden;
                     text-align:left;
                     color:#043e6a;
@@ -388,7 +388,7 @@ body{
     .content{
         float:left;
         width:180px;
-        height:70px;
+        height:95px;
         background:#E3EDF4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top;
         p{
             margin:0 !important;
@@ -403,7 +403,7 @@ body{
     .arrow{
         float:left;
         width:90px;
-        height:70px;
+        height:95px;
         background:url("/media/images/dw_arrow_green.gif") no-repeat center center;
     }
 }

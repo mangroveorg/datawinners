@@ -1,0 +1,50 @@
+{% extends 'public_secondary_en.html' %}
+{% block page_title %} What is DataWinners {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "datawinners" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/en">Home</a> &gt; What is DataWinners
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>WHAT IS DATAWINNERS</h1>
+    <ul>
+        <li><a href="/en/what-is-datawinners/how-it-works">How it Works</a></li>
+        <li><a href="/en/what-is-datawinners/benefits">Benefits</a></li>
+        <li><a href="/en/what-is-datawinners/features">Features</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <p>DataWinners is an online mobile data collection service designed and built for development professionals. With DataWinners, you collect and analyze the data you need using the equipment you already have – a computer, the Internet and basic mobile phones.</p>
+        <h2>DataWinners’ goal is to help you</h2>
+        <div id="use_dw">
+            <div class="content">
+                <p><strong>Open lines of communication between you at headquarters and field staff/beneficiaries.</strong></p>
+            </div>
+            <div class="arrow">&nbsp;</div>
+            <div class="content">
+                <p><strong>Get a better understanding of your project’s current situation.</strong></p>
+            </div>
+            <div class="arrow">&nbsp;</div>
+            <div class="content">
+                <p><strong>You can make informed decisions.</strong><br/></p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <h2>Learn more</h2>
+        <p>
+            <a href="/en/what-is-datawinners/how-it-works">How it Works</a><br/>
+            <a href="/en/what-is-datawinners/benefits">Benefits</a><br/>
+            <a href="/en/what-is-datawinners/features">Features</a><br/>
+        </p>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

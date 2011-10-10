@@ -1,0 +1,30 @@
+{% extends 'public_secondary_fr.html' %}
+{% block page_title %} Partenaires {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "about" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/fr">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous ?</a> &gt; Partenaires
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>QUI SOMMES-NOUS ?</h1>
+        <ul>
+            <li><a href="/fr/about-us/blog">Blog</a></li>
+            <li class="active"><a href="/fr/about-us/partners">Partenaires</a></li>
+            <li><a href="/fr/about-us/clients">Clients</a></li>
+            <li><a href="/fr/about-us/contact-us">Nous contacter</a>
+        </ul>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

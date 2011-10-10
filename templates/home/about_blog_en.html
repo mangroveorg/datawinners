@@ -1,0 +1,30 @@
+{% extends 'public_secondary_en.html' %}
+{% block page_title %} Blog {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "about" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/en">Home</a> &gt; <a href="/en/about-us">About us</a> &gt; Blog
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>ABOUT US</h1>
+        <ul>
+            <li class="active"><a href="/en/about-us/blog">Blog</a></li>
+            <li><a href="/en/about-us/partners">Partners</a></li>
+            <li><a href="/en/about-us/clients">Clients</a></li>
+            <li><a href="/en/about-us/contact-us">Contact us</a>
+        </ul>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

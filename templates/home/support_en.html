@@ -1,0 +1,24 @@
+{% extends 'public_secondary_en.html' %}
+{% block page_title %} Support {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/en">Accueil</a> &gt; Support
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>SUPPORT</h1>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

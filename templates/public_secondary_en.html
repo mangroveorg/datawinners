@@ -1,0 +1,45 @@
+{% extends 'public_master.html' %}
+{% block layout_scss %}
+{% endblock %}
+
+{% block body %}
+    {% block header %}
+    <div id="container_header">
+        <div id="header_public">
+            {% include 'public_header_wizard_en.html' %}
+            {% include 'public_main_navigation_en.html' %}
+        </div>
+    </div>
+    {% endblock %}
+
+    <div id="container_secondary_content">
+        <div id="container_page_title">
+            <div class="container_24">
+                <div id="page_title">
+                    <span class="theme">{% block page_theme %}{% endblock %}</span>
+                    <h1>{% block page_title %}{% endblock %}</h1>
+                </div>
+            </div>
+        </div>
+        <div id="container_breadcrumbs">
+            <div class="container_24">
+                <div id="page_breadcrumbs">
+                    {% block page_breadcrumbs %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div id="container_main_content" class="container_24">
+            {% block main_content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block footer %}
+    <div id="container_footer">
+        <div id="footer_public">
+            {% include 'public_footer_en.html' %}
+        </div>
+    </div>
+    {% endblock %}
+{% endblock %}

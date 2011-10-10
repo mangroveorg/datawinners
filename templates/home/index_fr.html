@@ -1,0 +1,290 @@
+{% extends 'public_fr.html' %}
+{% block page_title %} DataWinners {% endblock %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="/media/javascript/home/index.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block main_content %}
+<div id="container_home_intro">
+    <div id="home_intro_bg">
+        <div id="home_intro" class="container_24">
+            <div class="grid_14 alpha omega">
+                <img src="/media/images/dw_mobile.jpg" width="530" height="393"
+                     style="margin-left: 44px" alt=""/>
+            </div>
+            <div class="grid_10 alpha omega">
+                <div class="content">
+                    <p class="title">Get timely data via SMS.<br/>
+                        Anywhere a mobile phone works.<br/>
+                        Just pennies per report.</p>
+
+                    <p>
+                        Get all the data you need using the technology you
+                        already have.
+                    </p>
+                    <a href="{% url registration.views.register %}"
+                       class="intro_try_button">Essai gratuit</a>
+                    <a href="/fr/what-is-datawinners"
+                       class="intro_learn_button">En savoir plus</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div id="container_home_carousel">
+<div id="home_carousel" class="container_24 text_align_center">
+<div id="carousel_title">
+    <div><a href="/fr/success-stories">view all stories &raquo;</a>
+    </div>
+    <h1>Make better decisions to change lives</h1>
+</div>
+<div id="carousel">
+    <div class="container_carousel">
+        <div class="carousel">
+            <div class="container_photo">
+                <div class="photo">
+                    <a href="javascript:void(0)" rel="popup1"><img
+                            src="/media/images/dw_carous_msi.jpg"
+                            alt="MSM" width="189" height="123"/></a>
+                </div>
+            </div>
+            <div class="text">
+                <h2>Santé Publique, Madagascar</h2>
+                <a href="javascript:void(0)" rel="popup1">Prestations
+                    en Planification Familiale et en Santé de la
+                    Reproduction</a>
+            </div>
+        </div>
+        <div class="plus"><a href="javascript:void(0)"
+                             rel="popup1"><img
+                src="/media/images/dw_popup_plus.png" width="40"
+                height="40" alt=""/></a></div>
+    </div>
+    <div class="container_carousel">
+        <div class="carousel">
+            <div class="container_photo">
+                <div class="photo">
+                    <a href="javascript:void(0)" rel="popup2"><img
+                            src="/media/images/dw_carous_sn.jpg"
+                            alt="Santenet2" width="189" height="123"/></a>
+                </div>
+            </div>
+            <div class="text">
+                <h2>Santé Publique, Madagascar</h2>
+                <a href="javascript:void(0)" rel="popup2">Soins de
+                    Santé Maternelle et Infantile</a>
+            </div>
+        </div>
+        <div class="plus"><a href="javascript:void(0)"
+                             rel="popup2"><img
+                src="/media/images/dw_popup_plus.png" width="40"
+                height="40" alt=""/></a></div>
+    </div>
+    <div class="container_carousel">
+        <div class="carousel">
+            <div class="container_photo">
+                <div class="photo">
+                    <a href="javascript:void(0)" rel="popup3"><img
+                            src="/media/images/dw_carous_bngrc.jpg"
+                            alt="BNGRC" width="189" height="123"/></a>
+                </div>
+            </div>
+            <div class="text">
+                <h2>Humanitaire, Madagascar</h2>
+                <a href="javascript:void(0)" rel="popup3">Gestion des
+                    Risques et Catastrophes</a>
+            </div>
+        </div>
+        <div class="plus"><a href="javascript:void(0)"
+                             rel="popup3"><img
+                src="/media/images/dw_popup_plus.png" width="40"
+                height="40" alt=""/></a></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div id="popup1" class="carousel_popup">
+    <img src="/media/images/dw_popup_bd1.png" width="600" height="15"
+         alt=""/>
+
+    <div class="carousel_popup_content">
+        <div class="carousel_popup_left">
+            <h2>Santé Publique</h2>
+
+            <h1>Planification familiale<br/>et Santé de la Reproduction
+            </h1>
+            En 2010, Marie Stopes Madagascar (MSM) a commencé à
+            collecter et à stocker les informations émanant des
+            médecins affiliés à son réseau de cliniques médicales
+            "BlueStar" par le biais des téléphones mobiles.
+            <br/>En utilisant la simple technologie SMS, les
+            médecins du réseau envoient mensuellement les données
+            concernant les services de Planification Familiale
+            réalisés.
+            <br/>Toutes les données sont agrégées dans une base de
+            données centrale, accessible au personnel du siège, où
+            elles peuvent être vérifiées, filtrées et exportées pour
+            analyse.
+            <br/><br/><a href="/fr/success-story/msi" class="more">En
+            savoir plus &raquo;</a>
+        </div>
+        <div class="carousel_popup_right">
+            <img src="/media/images/dw_popup_m.kemplay.gif"
+                 alt="Miles Kemplay" width="65" height="65"/><br/>
+
+            <p>
+                "Grâce à HNI, nous avons pu recueillir par mois des données
+                pertinentes, précises et complètes, et analyser lequel de nos
+                efforts de marketing a accru le volume de la clientèle.
+                <br/>Maintenant, nous avons une bien meilleure idée sur la
+                façon dont nous devrons utiliser nos ressources limitées."
+                <br/><span>Miles Kemplay, Directeur Résident de MSM </span>
+                <br/><img src="/media/images/dw_popup_logo_msi.gif"
+                          width="123" height="51" alt=""/>
+            </p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <img src="/media/images/dw_popup_bd3.png" width="600" height="15"
+         alt=""/>
+
+    <div class="close"><a href="javascript:void(0)"><img
+            src="/media/images/dw_popup_close.png" width="40"
+            height="40" alt=""/></a></div>
+</div>
+<div id="popup2" class="carousel_popup">
+    <img src="/media/images/dw_popup_bd1.png" width="600" height="15"
+         alt=""/>
+
+    <div class="carousel_popup_content">
+        <div class="carousel_popup_left">
+            <h2>Santé Publique</h2>
+
+            <h1>Soins de Santé Maternelle et Infantile</h1>
+            <br/>En 2010, le Projet RTI/Santénet2 financé par l'USAID a
+            adopté un système de compte-rendu par téléphone mobile pour
+            collecter les données sur les services de santé fournis par
+            le projet.
+            <br/><br/>Par l’utilisation de la plateforme de collecte et
+            de communication de données de HNI, RTI/Santénet 2 a pu
+            recueillir des informations fiables concernant
+            <ul>
+                <li>La santé maternelle et la Planification Familiale
+                </li>
+                <li>La malnutrition infantile</li>
+                <li>La diarrhée, les infections respiratoires et le
+                    paludisme
+                </li>
+            </ul>
+            <a href="/fr/success-story/santenet2" class="more">En
+                savoir plus &raquo;</a>
+        </div>
+        <div class="carousel_popup_right">
+            <img src="/media/images/dw_popup_v.cakir.gif"
+                 alt="V. Cakir" width="65" height="65"/><br/>
+
+            <p>
+                "Grâce au partenariat que nous avons contracté avec
+                HNI, et au travail acharné que nos cadres supérieurs
+                ont effectué, nous avons maintenant les données dont
+                nous avons besoin pour le rapport que nous devons
+                soumettre à l'USAID sur les macro-indicateurs."
+                <br/><span>Dr. Volkan Cakir, Chef du Groupe, Projet Santénet2 Project</span>
+                <br/><br/><img src="/media/images/dw_popup_logo_sn.gif"
+                               width="90" height="44"
+                               alt="RTI Santenet2 USAID"/>
+            </p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <img src="/media/images/dw_popup_bd3.png" width="600" height="15"
+         alt=""/>
+
+    <div class="close"><a href="javascript:void(0)"><img
+            src="/media/images/dw_popup_close.png" width="40"
+            height="40" alt=""/></a></div>
+</div>
+<div id="popup3" class="carousel_popup">
+    <img src="/media/images/dw_popup_bd1.png" width="600" height="15"
+         alt=""/>
+
+    <div class="carousel_popup_content">
+        <div class="carousel_popup_left">
+            <h2>Volet Humanitaire</h2>
+
+            <h1>Gestion des Risques et des Catastrophes</h1>
+            <br/>En 2010, le Bureau National de Gestion des Risques et
+            des Catastrophes (BNGRC) a commencé à effectuer les
+            préparatifs de mise en place de la collecte de données par
+            SMS auprès des subdivisions administratives de base
+            malgaches.
+            <br/><br/>A l’aide de simples SMS, les responsables locaux
+            peuvent envoyer leurs premières données post-cycloniques
+            des régions touchées vers le Bureau et obtenir des tableaux
+            et des cartes pour la prise de décisions et les
+            interventions.
+            <br/><br/><a href="/fr/success-story/bngrc" class="more">En
+            savoir plus &raquo;</a>
+        </div>
+        <div class="carousel_popup_right">
+            <img src="/media/images/dw_popup_n.raonivelo.gif"
+                 alt="Nianja Raonivelo" width="65" height="65"/><br/>
+
+            <p>
+                "Maintenant, l’envoi, le traitement des données et leur
+                compilation peuvent être effectués rapidement.
+                <br/>On peut envoyer des messages de sensibilisation
+                pour les préparatifs avant aléa. "
+                <br/><span>Nianja Raonivelo, webmaster/analyste de données de BNGRC</span>
+                <br/><img src="/media/images/dw_popup_logo_bngrc.gif"
+                          width="39" height="51" alt=""/>
+            </p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <img src="/media/images/dw_popup_bd3.png" width="600" height="15"
+         alt=""/>
+
+    <div class="close"><a href="javascript:void(0)"><img
+            src="/media/images/dw_popup_close.png" width="40"
+            height="40" alt=""/></a></div>
+</div>
+</div>
+</div>
+<div id="container_home_how">
+    <div id="home_how" class="container_24">
+        <div class="grid_4 alpha omega">
+            <img src="/media/images/dw_home_how.png" alt="How it works"
+                 width="140" height="25" class="title"/><br/>
+            <a href="/fr/what-is-datawinners/how-it-works">En savoir plus &raquo;</a>
+        </div>
+        <div class="grid_20 alpha omega">
+            <img src="/media/images/dw_home_how_schema.gif" alt="How it works"
+                 width="800" height="106"/>
+
+            <div class="grid_5 alpha omega text_align_center">
+                <p>
+                    <strong>Créer votre Questionnaire</strong>.
+                </p>
+            </div>
+            <div class="grid_6 alpha omega text_align_center">
+                <p>
+                    <strong>Recevoir des<br/>données Précises</strong>.
+                </p>
+            </div>
+            <div class="grid_4 alpha omega text_align_center">
+                <p>
+                    <strong>Consulter vos résultats</strong>
+                </p>
+            </div>
+            <div class="grid_5 alpha omega margin_left_20 text_align_center">
+                <p class="margin_left_20">
+                    <strong>Prendre des décisions éclairées</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

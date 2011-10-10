@@ -1,0 +1,136 @@
+{% extends 'public_secondary_fr.html' %}
+{% block page_title %} Santé Maternelle et Infantile {% endblock %}
+{% block page_theme %} Santé Publique, Madagascar {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "success" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/fr">Accueil</a> &gt; <a href="/fr/success-stories">Nos réussites</a> &gt; Santenet2
+{% endblock %}
+
+{% block main_content %}
+<div id="nav_content">
+    <h1>NOS REUSSITES</h1>
+    <ul>
+        <li><a href="/fr/success-story/msi">Prestations en Planification Familiale
+            et en Santé de la Reproduction</a></li>
+        <li class="active"><a href="/fr/success-story/santenet2">Santé Maternelle
+            et Infantile</a></li>
+        <li><a href="/fr/success-story/bngrc">Gestion des Risques et
+            Catastrophes</a></li>
+    </ul>
+</div>
+<div id="main_content">
+    <div class="margin_left_20">
+        <div class="left_content">
+            <div align="center">
+                <img src="/media/images/dw_ss_santenet.jpg" width="400"
+                     height="300" alt="Santenet2"/><br/>
+                <em>&copy; RTI/Santénet2: Un Agent de Santé Communautaire avec
+                    un patient</em>
+            </div>
+            <h2>A Propos du Projet</h2>
+
+            <p>Le projet Santénet2 est une importante initiative de santé
+                publique mise en œuvre à Madagascar par RTI International et
+                financée par l'USAID.
+                <br/>L'échelle et la portée du projet sont énormes. Les zones
+                d'intervention couvrent plus de 60% du territoire de Madagascar
+                et comprennent 6000 villages situés, pour la plupart, dans des
+                zones rurales reculées.
+            </p>
+
+            <p>Le personnel du projet a formé plus de 12 000 agents de santé
+                communautaires pour:</p>
+            <ul>
+                <li>Améliorer la survie de l'enfant, la santé maternelle et la
+                    nutrition;
+                </li>
+                <li>Réduire les grossesses non désirées et améliorer les
+                    comportements de reproduction sain;
+                </li>
+                <li>Réduire la transmission et l'impact du VIH/SIDA.</li>
+            </ul>
+            <h2>Le Défi </h2>
+
+            <p>Le projet RTI/Santénet2 a d’importantes exigences en matière de
+                compte-rendu, mais la faiblesse des infrastructures de
+                Madagascar rend difficile la collecte des données.
+                <br/>Chaque mois, chacun des 12 000 agents de santé
+                communautaires remplit sur papier, un formulaire résumant les
+                résultats de ses activités mensuelles (par exemple: Le nombre
+                d'enfants malades visités).
+                <br/>Puis, 200 superviseurs visitent 4-5 communes chaque mois
+                pour récapituler ces données et en envoyer les résultats par
+                e-mail auprès du siège de RTI/Santénet2.
+                <br/>Les taux de compte-rendu étaient faibles; moins de 5% de
+                l'ensemble des données de santé sont arrivés au siège du
+                projet. Depuis le début, le Dr Volkan Cakir, Directeur du
+                Projet, a reconnu la nécessité d’un changement: «Depuis le
+                début, nous savions que nous devions innover pour être en
+                mesure de rendre compte de notre succès."
+                ”</p>
+
+            <h2>Mesures Prises</h2>
+
+            <p>Comme dans beaucoup de pays en Afrique, la couverture de
+                Madagascar en téléphone mobile est bonne; La plupart des 200
+                superviseurs possèdent un téléphone bon marché.
+                <br/>Aussi, le personnel de RTI/Santénet2 a-t-il décidé
+                d’utiliser la technologie mobile dans le cadre de leur travail.
+                Ils ont embauché HNI pour créer un système de compte-rendu par
+                téléphonie mobile et les aider à sélectionner 12 indicateurs
+                clés (par exemple: Le nombre d'enfants diagnostiqués comme
+                ayant le Paludisme). Ils ont formé les 200 superviseurs à
+                envoyer mensuellement par SMS vers la base de données du siège
+                de RTI/Santénet2, les données agrégées au niveau de la commune.
+            </p>
+
+            <h2>Le Résultat </h2>
+
+            <p>Depuis le lancement de la nouvelle initiative de collecte de
+                données en Juin 2010, 97% des superviseurs du projet ont, au
+                moins une fois, rapporté des données par SMS. C'est une
+                réalisation impressionnante comparée au taux de compte-rendu de
+                5% observé auparavant.
+                <br/>Maintenant, les deux-tiers des superviseurs font leurs
+                rapports de manière cohérente et le taux de soumission réussi
+                s'améliore de mois en mois.
+            </p>
+
+            <p>“Grâce au partenariat que nous avons contracté avec HNI, et au
+                travail acharné que nos cadres supérieurs ont effectué, nous
+                avons maintenant les données dont nous avons besoin pour le
+                rapport que nous devons soumettre à l'USAID sur les
+                macro-indicateurs.
+                <br/>Nous n'avons plus besoin d'extrapoler; les données venant
+                du terrain montrent que nos agents de santé communautaires ont
+                pu traiter plus de 100.000 cas de maladies infantiles en douze
+                mois, et à peu près 80.000 femmes sont en train d’utiliser des
+                services communautaires de Planification Familiale”.
+                - Dr. Volkan Cakir, Directeur du Projet Santénet2</p>
+        </div>
+        <div class="right_content">
+            <div>
+                <div class="block_1">
+                    <h1>A Propos de RTI</h1>
+
+                    <p>
+                        RTI International est un institut de recherche
+                        indépendant à but non lucratif qui fournit des services
+                        techniques au profit des gouvernements et des clients
+                        commerciaux du monde entier.
+                        <br/><a href="http://www.rti.org" target="_blank">www.rti.org</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock %}

@@ -93,13 +93,13 @@ body {
       position: relative; }
       #container_home_carousel #home_carousel #carousel .container_carousel {
         width: 270px;
-        height: 210px;
+        height: 220px;
         position: relative;
         float: left; }
         #container_home_carousel #home_carousel #carousel .container_carousel .carousel {
           margin: 0 auto;
           width: 216px;
-          height: 210px;
+          height: 220px;
           overflow: hidden;
           text-align: left;
           color: #043e6a;
@@ -315,7 +315,7 @@ body {
   #use_dw .content {
     float: left;
     width: 180px;
-    height: 70px;
+    height: 95px;
     background: #e3edf4 url("/media/images/dw_sec_bg_right1.gif") repeat-x left top; }
     #use_dw .content p {
       margin: 0 !important;
@@ -327,7 +327,7 @@ body {
   #use_dw .arrow {
     float: left;
     width: 90px;
-    height: 70px;
+    height: 95px;
     background: url("/media/images/dw_arrow_green.gif") no-repeat center center; }
 
 #how_menu {
