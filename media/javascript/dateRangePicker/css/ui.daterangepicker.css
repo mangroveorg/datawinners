@@ -72,6 +72,7 @@
 }
 .ui-daterangepicker .ui-datepicker-inline {
 	font-size: 1em;
+    display: inline-block;
 }
 .ui-daterangepicker-arrows {
 	padding: 2px;
