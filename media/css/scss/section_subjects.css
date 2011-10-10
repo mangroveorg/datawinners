@@ -42,7 +42,8 @@
     .add_subject_form ul li .location_section .error_arrow {
       max-width: 170px; }
     .add_subject_form ul li #add_subject_type {
-      margin-left: 120px; }
+      margin-left: 120px;
+      width: 75% !important; }
       .add_subject_form ul li #add_subject_type .message-box {
         float: left !important;
         font-size: 12px; }

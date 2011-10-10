@@ -33,3 +33,12 @@
   .add_entity_form #add_subject_type .message-box {
     float: left;
     font-size: 12px; }
+
+#type_message {
+  float: left;
+  clear: both; }
+
+#add_subject_type {
+  float: right;
+  clear: both;
+  width: 82% !important; }
