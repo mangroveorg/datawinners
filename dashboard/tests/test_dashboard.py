@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.utils import unittest
 from django.test import Client
-from datawinners.tests.test_login_setup_class import TestSetup
 
 class TestDashboard(unittest.TestCase):
 
