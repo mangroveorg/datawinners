@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django.contrib.flatpages',
     'south',
+    'datawinners.home',
 )
 
 COMPILER_FORMATS = {
