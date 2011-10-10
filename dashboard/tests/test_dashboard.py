@@ -3,9 +3,11 @@ from django.utils import unittest
 from django.test import Client
 from datawinners.tests.test_login_setup_class import TestSetup
 
-class TestDashboard(unittest.TestCase,TestSetup):
+class TestDashboard(unittest.TestCase):
 
     fixtures = ['initial_data.json']
+    def setUp(self):
+        self.client = Client()
 
     def test_should_redirect_if_not_logged_in(self):
         response = self.client.post('/dashboard/')
