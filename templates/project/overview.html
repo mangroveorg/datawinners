@@ -39,13 +39,6 @@
             <div class="tooltip"><p>
                 {% blocktrans %}Review the basic information for your project. Click "View" to see the whole profile or "Edit profile" to make changes.{% endblocktrans %}
             </p></div>
-            <div class="grid_17 margin_top_5">
-                <a href="#">{% trans "View"%}</a>
-                {% if project.state != 'Active' %}
-                    <span>|</span>
-                    <a href={{ project_profile_link }}>{% trans "edit profile" %}</a>
-                {% endif %}
-            </div>
         </div>
         <div class="custom_model grid_23 alpha omega">
             <h4>{% trans "Status: Complete"%}</h4>
