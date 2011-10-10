@@ -1,6 +1,10 @@
 $(document).ready(function() {
     $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
 
+    $("#add_new_subject_type").live("click", function(){
+        $("#type_message").html('');
+        $("#type_message").removeClass("message-box");
+    });
 
     $("#add_type").live("click", function(){
         $("#type_message").html("<span class='ajax_loader_small'></span>");
@@ -22,7 +26,6 @@ $(document).ready(function() {
                     }
                     else{
                         $('#id_entity_type').val(new_type.toLowerCase());
-                        $("#add_subject_type").accordion({collapsible: false,autoHeight:false, active:2});
                         $("#type_message").html(data.message);
                         $("#type_message").addClass("message-box");
                     }
