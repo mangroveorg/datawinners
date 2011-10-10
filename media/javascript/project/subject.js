@@ -15,7 +15,7 @@ $(document).ready(function(){
 
     $(".add_subject_form").dialog({
         autoOpen: false,
-        width: 575,
+        width: 600,
         modal: true,
         title: gettext('Add A Subject'),
         close: function() {
