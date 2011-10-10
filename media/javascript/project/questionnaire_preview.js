@@ -14,5 +14,6 @@ $(document).ready(function() {
     );
     $(".preview").bind("click", function() {
         $(".questionnaire_preview").dialog("open");
+        return false;
     });
 });

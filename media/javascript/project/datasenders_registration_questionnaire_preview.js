@@ -16,6 +16,7 @@ $(document).ready(function() {
 
     $(".preview_sender_registration_form").bind("click", function() {
         $(".sender_registration_preview").dialog("open");
+        return false;
     });
 
 });

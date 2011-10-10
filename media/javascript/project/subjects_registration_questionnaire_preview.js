@@ -15,6 +15,7 @@ $(document).ready(function() {
 
         $(".preview_subject_registration_form").bind("click", function(){
            $(".subject_registration_preview").dialog("open");
+            return false;
         });
 
 });
