@@ -170,11 +170,12 @@ def _get_project_association(projects):
     return project_association
 
 
-def _get_all_datasenders(manager, projects):
+def _get_all_datasenders(manager, projects, user):
     all_data_senders = import_module.load_all_subjects_of_type(manager)
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
-        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_name'])
+        org_id = NGOUserProfile.objects.get(user=user).org_id
+        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_name'], org_id = org_id)
         datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
         association = project_association.get(datasender['short_name'])
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
@@ -217,10 +218,10 @@ def all_datasenders(request):
     projects = models.get_all_projects(manager)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        all_data_senders = _get_all_datasenders(manager, projects)
+        all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps({'success': is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
-    all_data_senders = _get_all_datasenders(manager, projects)
+    all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects},
                               context_instance=RequestContext(request))
 
