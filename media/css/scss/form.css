@@ -207,6 +207,15 @@ select {
   cursor: pointer;
   cursor: hand; }
 
+#type_message {
+  float: left;
+  clear: both; }
+
+#add_subject_type {
+  float: right;
+  clear: both;
+  width: 78% !important; }
+
 /* File up loader */
 #file-uploader {
   width: 360px;
