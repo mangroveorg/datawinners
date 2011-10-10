@@ -15,7 +15,6 @@ $(document).ready(function() {
         }
     });
     $('#register_entity').unbind('click').click(function() {
-                console.log("Hello World");
         if ($('#question_form').valid()) {
             $(this).after("<span class='ajax_loader_small'></span>");
             DW.viewModel.message.l($('#id_location').val());
