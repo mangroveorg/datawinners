@@ -25,7 +25,7 @@ def tabulate_failures(rows):
 
 
 def _format(value):
-    return value if value else "--"
+    return value if value is not None else "--"
 
 
 def _tabulate_data(entity):
