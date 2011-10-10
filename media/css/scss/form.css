@@ -74,7 +74,7 @@ form ul li {
 
 span.error_arrow, #questionnaire-code-error, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 7px;
-  float: left !important; }
+  display: inline-block; }
   span.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
     float: none;
     color: #FFFFFF;
