@@ -15,43 +15,42 @@
   <fieldset>
       {% csrf_token %}
       <ul>
-          <li class="{{ form.first_name.css_classes }} form-row-10px">
-              {{ form.first_name.label_tag }}
-              {{ form.first_name }}
-              {{ form.first_name.errors }}
-          </li>
-          <li class="{{ form.telephone_number.css_classes }} form-row-10px">
-              {{ form.telephone_number.label_tag }}
-              {{ form.telephone_number }}
-              {{ form.telephone_number.errors }}
-          </li>
+            <li class="{{ form.first_name.css_classes }} form-row-10px">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </li>
+            <li class="{{ form.telephone_number.css_classes }} form-row-10px">
+                {{ form.telephone_number.label_tag }}
+                {{ form.telephone_number }}
+                {{ form.telephone_number.errors }}
+            </li>
+            <li class="{{ form.location.css_classes }} form-row-10px">
+                <label>Location</label>
+                <ul class="location_section">
+                    <li>
+                        {{ form.location.label_tag }}
+                        {{ form.location }}
+                        <div>{{ form.location.errors }}</div>
+                    </li>
+                    <li>
+                        <label>or</label>
+                    </li>
+                    <li class="{{ form.geo_code.css_classes }} form-row-10px">
+                        {{ form.geo_code.label_tag }}
+                        {{ form.geo_code }}
+                        <div>{{ form.geo_code.errors }}</div>
+                    </li>
+                    <li>
+                        {{ form.project_id.as_hidden }}
+                    </li>
 
-          <li class="{{ form.location.css_classes }} form-row-10px">
-              <label>Location</label>
-            <ul class="location_section">
-              <li>
-               {{ form.location.label_tag }}
-              {{ form.location }}
-              {{ form.location.errors }}
-              </li>
-                <li>
-                   <label>or</label>
-                </li>
-                <li class="{{ form.geo_code.css_classes }} form-row-10px">
-              {{ form.geo_code.label_tag }}
-              {{ form.geo_code }}
-              {{ form.geo_code.errors }}
-                </li>
-                <li>
-                    {{ form.project_id.as_hidden }}
-                </li>
-
-            </ul>
-          </li>
-          <li class="button_block">
-              <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
-              <input type="button" id="id_register_button" value="{% trans 'Add' %}" class="button margin_top_20"/>
-          </li>
-      </ul>
-  </fieldset>
-  </form>
+                </ul>
+            </li>
+            <li class="button_block">
+                <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
+                <input type="button" id="id_register_button" value="{% trans 'Add' %}" class="button margin_top_20"/>
+            </li>
+        </ul>
+    </fieldset>
+</form>
