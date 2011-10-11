@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-11 14:08+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:38
+msgid "Survey project: I want to collect data from the field"
+msgstr ""
+
+#: forms.py:39
+msgid "Public information: I want to send information"
+msgstr ""
+
+#: forms.py:41
+msgid "Work performed by the data sender (eg. monthly activity report)"
+msgstr ""
+
+#: forms.py:41 forms.py:50
+msgid "Other Subject"
+msgstr ""
+
+#: forms.py:42
+msgid "Open Data Sender Group. Anyone can send in data without registering"
+msgstr ""
+
+#: forms.py:42
+msgid ""
+"Closed Data Sender Group. Only registered data sender will be able to send "
+"data"
+msgstr ""
+
+#: forms.py:43
+msgid "Whenever a data sender has data for us"
+msgstr ""
+
+#: forms.py:43
+msgid "Every"
+msgstr ""
+
+#: forms.py:46
+msgid "Name this Project"
+msgstr ""
+
+#: forms.py:47
+msgid "Project Description"
+msgstr ""
+
+#: forms.py:48
+msgid "Project Type"
+msgstr ""
+
+#: forms.py:49
+msgid "Open or Closed Group"
+msgstr ""
+
+#: forms.py:50
+msgid "What is this questionnaire about?"
+msgstr ""
+
+#: forms.py:51
+msgid "Other Subjects"
+msgstr ""
+
+#: forms.py:52
+msgid "Device"
+msgstr ""
+
+#: forms.py:54
+msgid ""
+"Choose your language for the questionnaire and automatic messages to Data "
+"Senders?"
+msgstr ""
+
+#: forms.py:56
+msgid "How often do you need the data?"
+msgstr ""
+
+#: forms.py:58
+msgid "Week"
+msgstr ""
+
+#: forms.py:58
+msgid "Month"
+msgstr ""
+
+#: forms.py:59
+msgid "Do you want to set a deadline?"
+msgstr ""
+
+#: forms.py:59 forms.py:63
+msgid "No"
+msgstr ""
+
+#: forms.py:59 forms.py:63
+msgid "Yes"
+msgstr ""
+
+#: forms.py:62
+msgid "That"
+msgstr ""
+
+#: forms.py:62
+msgid "Following"
+msgstr ""
+
+#: forms.py:63
+msgid "Do you want to remind DataSenders to send in their data?"
+msgstr ""
+
+#: forms.py:70
+msgid "Enter a project name"
+msgstr ""
+
+#: forms.py:71
+msgid "Describe what your team hopes to achieve by collecting this data"
+msgstr ""
+
+#: forms.py:76
+msgid "This field is required"
+msgstr ""
+
+#: views.py:830
+msgid "Successfully submitted"
+msgstr ""

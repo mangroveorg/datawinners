@@ -242,3 +242,10 @@ msgstr "Ajouter un sujet"
 #: media/javascript/project/subjects_registration_questionnaire_preview.js:3
 msgid "Subject Registration Preview"
 msgstr "Aperçu du sujet"
+
+
+msgid "Which subject are you reporting on?"
+msgstr "Quel sujet vous rendre compte?"
+
+msgid "What is the reporting period for the activity?"
+msgstr "Quelle est la période de déclaration pour l'activité?"

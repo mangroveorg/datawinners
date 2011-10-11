@@ -234,3 +234,9 @@ msgstr ""
 #: media/javascript/project/subjects_registration_questionnaire_preview.js:3
 msgid "Subject Registration Preview"
 msgstr ""
+
+msgid "Which subject are you reporting on?"
+msgstr ""
+
+msgid "What is the reporting period for the activity?"
+msgstr ""

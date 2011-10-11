@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-06 14:23+0300\n"
+"POT-Creation-Date: 2011-10-11 14:06+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,2196 +17,472 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accountmanagement/forms.py:17
-msgid "* Organization name"
-msgstr ""
-
-#: accountmanagement/forms.py:19
-msgid "Public Health"
-msgstr ""
-
-#: accountmanagement/forms.py:19
-msgid "Other"
-msgstr ""
-
-#: accountmanagement/forms.py:20 accountmanagement/forms.py:88
-msgid "Organization Sector"
-msgstr ""
-
-#: accountmanagement/forms.py:21 accountmanagement/forms.py:89
-msgid "* Address"
-msgstr ""
-
-#: accountmanagement/forms.py:22 accountmanagement/forms.py:90
-msgid "* City"
-msgstr ""
-
-#: accountmanagement/forms.py:23 accountmanagement/forms.py:91
-msgid "State / Province"
-msgstr ""
-
-#: accountmanagement/forms.py:24 accountmanagement/forms.py:92
-msgid "* Country"
-msgstr ""
-
-#: accountmanagement/forms.py:25 accountmanagement/forms.py:95
-msgid "* Postal / Zip Code"
-msgstr ""
-
-#: accountmanagement/forms.py:27 accountmanagement/forms.py:97
-msgid "Office Phone Number"
-msgstr ""
-
-#: accountmanagement/forms.py:28 accountmanagement/forms.py:51
-#: accountmanagement/forms.py:53 accountmanagement/forms.py:80
-#: accountmanagement/forms.py:82 accountmanagement/forms.py:98
-msgid "Please enter a valid phone number"
-msgstr ""
-
-#: accountmanagement/forms.py:29 accountmanagement/forms.py:99
-msgid "Website Url"
-msgstr ""
-
-#: accountmanagement/forms.py:46
-msgid "* First name"
-msgstr ""
-
-#: accountmanagement/forms.py:47
-msgid "* Last name"
-msgstr ""
-
-#: accountmanagement/forms.py:48
-msgid "* Email"
-msgstr ""
-
-#: accountmanagement/forms.py:49 accountmanagement/forms.py:76
-msgid "Enter a valid email address. Example:name@organization.com"
-msgstr ""
-
-#: accountmanagement/forms.py:50 accountmanagement/forms.py:79
-msgid "Office Phone"
-msgstr ""
-
-#: accountmanagement/forms.py:52 accountmanagement/forms.py:81
-msgid "Mobile Phone"
-msgstr ""
-
-#: accountmanagement/forms.py:60
-msgid ""
-"This email address is already in use. Please supply a different email address"
-msgstr ""
-
-#: accountmanagement/forms.py:75
-msgid "* Email address"
-msgstr ""
-
-#: accountmanagement/forms.py:85
-msgid "* Organization Name"
-msgstr ""
-
-#: accountmanagement/forms.py:94
-msgid "Please enter a valid Postal / Zip code"
-msgstr ""
-
-#: accountmanagement/forms.py:106
-msgid "The two password fields didn't match."
-msgstr ""
-
-#: accountmanagement/forms.py:136
-msgid "Please enter a correct email and password."
-msgstr ""
-
-#: accountmanagement/forms.py:138
-msgid "This account is inactive."
-msgstr ""
-
-#: dashboard/views.py:86 templates/main_navigation.html:13
-#: templates/accountmanagement/account/users_list.html:29
-#: templates/entity/datasenders_table.html:11
-msgid "Projects"
-msgstr ""
-
-#: dashboard/views.py:86 templates/main_navigation.html:16
-#: templates/step_wizard.html:34 templates/entity/all_datasenders.html:3
-#: templates/entity/all_datasenders.html:6
-#: templates/project/datasenders_wizard.html:3
-#: templates/project/datasenders_wizard.html:44
-#: templates/project/finish_and_test.html:121
-#: templates/project/profile_datasenders.html:3
-#: templates/project/reminders_wizard.html:54
-#: templates/project/tab_navigation.html:56
-msgid "Data Senders"
-msgstr ""
-
-#: dashboard/views.py:87 templates/main_navigation.html:19
-#: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
-#: templates/entity/all_subjects.html:5
-#: templates/project/finish_and_test.html:81
-#: templates/project/questionnaire_wizard.html:138
-#: templates/project/subjects.html:33 templates/project/subjects_wizard.html:3
-#: templates/project/subjects_wizard.html:43
-#: templates/project/tab_navigation.html:50
-msgid "Subjects"
-msgstr ""
-
-#: dashboard/views.py:87
-msgid "Data Records"
-msgstr ""
-
-#: entity/forms.py:20
+#: forms.py:20
 msgid ""
 "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
 msgstr ""
 
-#: entity/forms.py:22
+#: forms.py:22
 msgid "* Name"
 msgstr ""
 
-#: entity/forms.py:23
+#: forms.py:23
 msgid "* Mobile Number"
 msgstr ""
 
-#: entity/forms.py:24
+#: forms.py:24
 msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
 msgstr ""
 
-#: entity/forms.py:25
+#: forms.py:25
 msgid "GPS: Enter Lat Long"
 msgstr ""
 
-#: entity/forms.py:26
+#: forms.py:26
 msgid "Enter location"
 msgstr ""
 
-#: entity/forms.py:31
+#: forms.py:31
 msgid "Enter Data Sender's name"
 msgstr ""
 
-#: entity/forms.py:32
+#: forms.py:32
 msgid "Enter Data Sender's number eg: "
 msgstr ""
 
-#: entity/forms.py:33
+#: forms.py:33
 msgid "Enter region, district or commune"
 msgstr ""
 
-#: entity/forms.py:34
+#: forms.py:34
 msgid "Enter lat and long eg: 19.3 42.37"
 msgstr ""
 
-#: entity/forms.py:55
+#: forms.py:55
 msgid ""
 "Incorrect GPS format. The GPS coordinates must be in the following format: "
 "xx.xxxx yy.yyyy. Example -18.8665 47.5315"
 msgstr ""
 
-#: entity/forms.py:67
+#: forms.py:67
 msgid "Please fill out at least one location field correctly."
 msgstr ""
 
-#: project/forms.py:37
-msgid "Survey project: I want to collect data from the field"
-msgstr ""
-
-#: project/forms.py:38
-msgid "Public information: I want to send information"
-msgstr ""
-
-#: project/forms.py:40
-msgid "Work performed by the data sender (eg. monthly activity report)"
-msgstr ""
-
-#: project/forms.py:40 project/forms.py:48
-msgid "Other Subject"
-msgstr ""
-
-#: project/forms.py:41
-msgid "Open Data Sender Group. Anyone can send in data without registering"
-msgstr ""
-
-#: project/forms.py:41
-msgid ""
-"Closed Data Sender Group. Only registered data sender will be able to send "
-"data"
-msgstr ""
-
-#: project/forms.py:42
-msgid "Whenever a data sender has data for us"
-msgstr ""
-
-#: project/forms.py:42
-msgid "Every"
-msgstr ""
-
-#: project/forms.py:44
-msgid "Name this Project"
-msgstr ""
-
-#: project/forms.py:45
-msgid "Project Description"
-msgstr ""
-
-#: project/forms.py:46
-msgid "Project Type"
-msgstr ""
-
-#: project/forms.py:47
-msgid "Open or Closed Group"
-msgstr ""
-
-#: project/forms.py:48
-msgid "What is this questionnaire about?"
-msgstr ""
-
-#: project/forms.py:49
-msgid "Other Subjects"
-msgstr ""
-
-#: project/forms.py:50
-msgid "Device"
-msgstr ""
-
-#: project/forms.py:52
-msgid "How often do you want the data?"
-msgstr ""
-
-#: project/forms.py:54
-msgid "Weekly"
-msgstr ""
-
-#: project/forms.py:54
-msgid "Monthly"
-msgstr ""
-
-#: project/forms.py:55
-msgid "Do you want to set a deadline?"
-msgstr ""
-
-#: project/forms.py:55 project/forms.py:59
-msgid "No"
-msgstr ""
-
-#: project/forms.py:55 project/forms.py:59
-msgid "Yes"
-msgstr ""
-
-#: project/forms.py:58
-msgid "That"
-msgstr ""
-
-#: project/forms.py:58
-msgid "Following"
-msgstr ""
-
-#: project/forms.py:59
-msgid "Do you want to remind DataSenders to send in their data?"
-msgstr ""
-
-#: project/forms.py:66
-msgid "Enter a project name"
-msgstr ""
-
-#: project/forms.py:67
-msgid "Describe what your team hopes to achieve by collecting this data"
-msgstr ""
-
-#: project/forms.py:72
-msgid "This field is required"
-msgstr ""
-
-#: project/helper.py:79
-msgid "What is the reporting period for the activity?"
-msgstr ""
-
-#: project/views.py:780
-msgid "Successfully submitted"
-msgstr ""
-
-#: templates/datasender_form.html:51 templates/step_wizard.html:20
-#: templates/step_wizard.html.py:27 templates/subject_form.html:60
-#: templates/project/index.html:46 templates/project/profile.html:49
-#: templates/project/tab_navigation.html:36
-msgid "Cancel"
-msgstr ""
-
-#: templates/datasender_form.html:52 templates/subject_form.html:61
-#: templates/entity/create_type.html:6
-msgid "Add"
-msgstr ""
-
-#: templates/entity_question_panel.html:7 templates/project/overview.html:52
-#: templates/project/questionnaire.html:97
-#: templates/project/questionnaire_wizard.html:93
-msgid "Questions"
-msgstr ""
-
-#: templates/entity_question_panel.html:10
-#: templates/entity_question_panel.html:19
-#: templates/entity/all_datasenders.html:14
-#: templates/entity/all_datasenders.html:62
-#: templates/entity/all_subjects.html:10 templates/entity/all_subjects.html:63
-#: templates/project/datasenders_wizard.html:46
-#: templates/project/datasenders_wizard.html:65
-#: templates/project/datasenders_wizard.html:78
-#: templates/project/finish_and_test.html:154
-#: templates/project/profile_background.html:12
-#: templates/project/profile_background.html:25
-#: templates/project/profile_datasenders.html:11
-#: templates/project/profile_subjects-questionnaire.html:11
-#: templates/project/profile_subjects-questionnaire.html:31
-#: templates/project/question_detail_panel.html:12
-#: templates/project/question_detail_panel.html:25
-#: templates/project/question_detail_panel.html:128
-#: templates/project/questionnaire.html:82
-#: templates/project/questionnaire.html:113
-#: templates/project/questionnaire_wizard.html:76
-#: templates/project/questionnaire_wizard.html:107
-#: templates/project/reminders_wizard.html:35
-#: templates/project/subjects_wizard.html:45
-#: templates/project/subjects_wizard.html:63
-#: templates/project/subjects_wizard.html:76
-msgid "What is this?"
-msgstr ""
-
-#: templates/entity_question_panel.html:11
-msgid "q_tooltip_question_panel_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
-"subject of your questionnaire.  For example, Clinic Name, Location, Phone "
-"Number."
-
-#: templates/entity_question_panel.html:13
-#: templates/entity_question_panel.html:22
-#: templates/entity/all_datasenders.html:17
-#: templates/entity/all_datasenders.html:65
-#: templates/entity/all_subjects.html:12 templates/entity/all_subjects.html:66
-#: templates/project/datasenders_wizard.html:48
-#: templates/project/datasenders_wizard.html:68
-#: templates/project/datasenders_wizard.html:81
-#: templates/project/finish_and_test.html:157
-#: templates/project/profile_background.html:14
-#: templates/project/profile_background.html:28
-#: templates/project/profile_datasenders.html:14
-#: templates/project/profile_subjects-questionnaire.html:13
-#: templates/project/profile_subjects-questionnaire.html:34
-#: templates/project/question_detail_panel.html:14
-#: templates/project/question_detail_panel.html:28
-#: templates/project/question_detail_panel.html:130
-#: templates/project/questionnaire.html:85
-#: templates/project/questionnaire.html:116
-#: templates/project/questionnaire_wizard.html:79
-#: templates/project/questionnaire_wizard.html:110
-#: templates/project/reminders_wizard.html:38
-#: templates/project/subjects_wizard.html:48
-#: templates/project/subjects_wizard.html:66
-#: templates/project/subjects_wizard.html:79
-msgid "What do I need to do?"
-msgstr ""
-
-#: templates/entity_question_panel.html:14
-msgid "r_tooltip_question_panel_subject"
-msgstr "Review the questions by clicking on each question in order."
-
-#: templates/entity_question_panel.html:20
-msgid "q_tooltip_question_panel_data_sender"
-msgstr "Decide what information you need to collect about each Data Sender."
-
-#: templates/entity_question_panel.html:23
-msgid "r_tooltip_question_panel_data_sender"
-msgstr "Review the questions by clicking on each"
-
-#: templates/entity_question_panel.html:44
-msgid "Question:"
-msgstr ""
-
-#: templates/entity_question_panel.html:46
-msgid "Code:"
-msgstr ""
-
-#: templates/header.html:6
-msgid "Logout"
-msgstr ""
-
-#: templates/header_wizard.html:9
-msgid ""
-"You can view and edit your user profile and manage your organization's "
-"account (if you are authorized)."
-msgstr ""
-
-#: templates/header_wizard.html:11
-msgid "Welcome"
-msgstr ""
-
-#: templates/header_wizard.html:12
-#: templates/accountmanagement/profile/index.html:3
-#: templates/accountmanagement/profile/index.html:4
-msgid "Your Profile"
-msgstr ""
-
-#: templates/header_wizard.html:14
-msgid "wizard_account"
-msgstr "Account"
-
-#: templates/header_wizard.html:16 templates/registration/logout.html:3
-msgid "Sign out"
-msgstr ""
-
-#: templates/header_wizard.html:17
-msgid "Help"
-msgstr ""
-
-#: templates/header_wizard.html:24 templates/registration/activate.html:11
-#: templates/registration/activation_complete.html:9
-#: templates/registration/login.html:45
-#: templates/registration/password_reset_complete.html:9
-msgid "Sign in"
-msgstr ""
-
-#: templates/header_wizard.html:25
-msgid "Sign up"
-msgstr ""
-
-#: templates/layout_master.html:50
-msgid "Javascript is disabled in your browser, Please enable it."
-msgstr ""
-
-#: templates/layout_registration.html:31
-msgid "about_DW"
-msgstr ""
-"<h5>About DataWinners</h5><p>DataWinners is an online mobile data"
-"\tcollection service designed and\tbuilt for development professionals. </"
-"p><p>With DataWinners, you collect and analyze the data you need using the "
-"equipment you already have – a computer, the Internet and basic mobile "
-"phones. </p>"
-
-#: templates/layout_wizard.html:32
-msgid "Previous Step:"
-msgstr ""
-
-#: templates/main_navigation.html:10 templates/dashboard/home.html:3
-#: templates/dashboard/home.html.py:4
-msgid "Dashboard"
-msgstr ""
-
-#: templates/main_navigation.html:22
-#: templates/alldata/failed_submissions.html:3 templates/alldata/index.html:3
-#: templates/alldata/index.html.py:5
-msgid "All Data"
-msgstr ""
-
-#: templates/main_navigation.html:25
-msgid "Guide"
-msgstr ""
-
-#: templates/step_wizard.html:19 templates/dashboard/home.html:30
-#: templates/project/index.html:20
-msgid "Create a new project"
-msgstr "Create a new project"
-
-#: templates/step_wizard.html:25
-msgid "Are you sure you want to cancel this project?"
-msgstr ""
-
-#: templates/step_wizard.html:26
-msgid "(your previous steps are saved)"
-msgstr ""
-
-#: templates/step_wizard.html:28
-msgid "Confirm"
-msgstr ""
-
-#: templates/step_wizard.html:31 templates/project/profile.html:3
-#: templates/project/profile.html.py:25
-#: templates/project/subjects_wizard.html:102
-msgid "Define Project"
-msgstr ""
-
-#: templates/step_wizard.html:33 templates/project/datasenders_wizard.html:102
-#: templates/project/finish_and_test.html:104
-#: templates/project/questionnaire.html:67
-#: templates/project/questionnaire_wizard.html:3
-#: templates/project/questionnaire_wizard.html:61
-#: templates/project/tab_navigation.html:53
-msgid "Questionnaire"
-msgstr ""
-
-#: templates/step_wizard.html:35
-msgid "Reminder"
-msgstr ""
-
-#: templates/step_wizard.html:36 templates/project/finish_and_test.html:3
-msgid "Review & Test"
-msgstr ""
-
-#: templates/subject_form.html:9 templates/subject_table.html:6
-#: templates/alldata/index.html:29 templates/entity/datasenders_table.html:7
-#: templates/project/index.html:26
-#: templates/project/registered_datasenders.html:36
-#: templates/project/registered_subjects.html:30
-msgid "Type"
-msgstr ""
-
-#: templates/subject_form.html:21 templates/subject_table.html:5
-#: templates/alldata/index.html:27 templates/entity/datasenders_table.html:6
-#: templates/project/index.html:24
-#: templates/project/registered_datasenders.html:35
-#: templates/project/registered_subjects.html:29
-msgid "Name"
-msgstr ""
-
-#: templates/subject_form.html:22
-msgid "Enter a subject name"
-msgstr ""
-
-#: templates/subject_form.html:25
-msgid "Unique Identification Number(ID)"
-msgstr ""
-
-#: templates/subject_form.html:29
-msgid "Let us generate an ID for you"
-msgstr ""
-
-#: templates/subject_form.html:35 templates/subject_table.html:7
-#: templates/entity/datasenders_table.html:8
-msgid "Location"
-msgstr ""
-
-#: templates/subject_form.html:38
-msgid "Location Name:"
-msgstr ""
-
-#: templates/subject_form.html:39
-msgid "Enter a region, district or commune"
-msgstr ""
-
-#: templates/subject_form.html:42
-msgid "or"
-msgstr ""
-
-#: templates/subject_form.html:46
-msgid "Enter lat and long eg: 20.6 47.3"
-msgstr ""
-
-#: templates/subject_form.html:51 templates/subject_table.html:9
-msgid "Description"
-msgstr ""
-
-#: templates/subject_form.html:52
-msgid "Describe your subject in more details (optional)"
-msgstr ""
-
-#: templates/subject_form.html:55
-msgid "Mobile Number"
-msgstr ""
-
-#: templates/subject_form.html:56
-msgid "Enter the subject's Number"
-msgstr ""
-
-#: templates/subject_table.html:8 templates/entity/datasenders_table.html:9
-msgid "Geocode"
-msgstr ""
-
-#: templates/subject_table.html:10 templates/entity/datasenders_table.html:10
-#: templates/project/registered_datasenders.html:37
-#: templates/project/registered_subjects.html:31
-msgid "Contact info"
-msgstr ""
-
-#: templates/accountmanagement/account/add_user.html:3
-#: templates/accountmanagement/account/org_settings.html:3
-#: templates/accountmanagement/account/users_list.html:3
-msgid "Account"
-msgstr ""
-
-#: templates/accountmanagement/account/add_user.html:16
-#: templates/accountmanagement/account/users_list.html:13
-msgid "Add Users"
-msgstr ""
-
-#: templates/accountmanagement/account/add_user.html:17
-#: templates/accountmanagement/account/users_list.html:14
-msgid "All Users"
-msgstr ""
-
-#: templates/accountmanagement/account/add_user.html:26
-msgid "Point of Contact"
-msgstr ""
-
-#: templates/accountmanagement/account/add_user.html:26
-msgid "Account Administrator"
-msgstr ""
-
-#: templates/accountmanagement/account/index.html:3
-#: templates/accountmanagement/account/index.html:4
-msgid "Account Settings"
-msgstr ""
-
-#: templates/accountmanagement/account/index.html:11
-msgid "Your Organization Account"
-msgstr ""
-
-#: templates/accountmanagement/account/index.html:14
-msgid "Users"
-msgstr ""
-
-#: templates/accountmanagement/account/org_settings.html:82
-#: templates/accountmanagement/profile/edit_profile.html:66
-msgid "Save Changes"
-msgstr ""
-
-#: templates/accountmanagement/account/users_list.html:20
-msgid "First Name"
-msgstr ""
-
-#: templates/accountmanagement/account/users_list.html:23
-msgid "Last Name"
-msgstr ""
-
-#: templates/accountmanagement/account/users_list.html:26
-msgid "Email"
-msgstr ""
-
-#: templates/accountmanagement/profile/index.html:11
-msgid "Contact Info"
-msgstr ""
-
-#: templates/admin/base_site.html:4
-msgid "Datawinner site admin"
-msgstr ""
-
-#: templates/admin/base_site.html:7
-msgid "Datawinner administration"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:5
-msgid "Failed Submissions"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:7
-msgid "View All Data"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:27
-msgid "Questionnaire Code"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:28
-#: templates/project/log_table.html:17
-msgid "From"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:29
-#: templates/project/log_table.html:14
-msgid "To"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:30
-msgid "Message"
-msgstr ""
-
-#: templates/alldata/failed_submissions.html:31
-#: templates/entity/all_datasenders.html:75
-#: templates/entity/all_subjects.html:76
-#: templates/project/import_section_in_wizard.html:17
-msgid "Error"
-msgstr ""
-
-#: templates/alldata/index.html:7
-msgid "View all failed submissions"
-msgstr ""
-
-#: templates/alldata/index.html:28 templates/project/index.html:25
-msgid "Created On"
-msgstr ""
-
-#: templates/alldata/index.html:30
-msgid "View Report"
-msgstr ""
-
-#: templates/alldata/index.html:37 templates/project/tab_navigation.html:81
-msgid "Summary"
-msgstr ""
-
-#: templates/alldata/index.html:38 templates/project/data_analysis.html:64
-#: templates/project/tab_navigation.html:84
-msgid "Analysis"
-msgstr ""
-
-#: templates/alldata/index.html:39 templates/project/tab_navigation.html:87
-msgid "All Data Records"
-msgstr ""
-
-#: templates/dashboard/home.html:31
-msgid "help_project_creation"
-msgstr "Follow the easy step-by-step process to create a new project."
-
-#: templates/dashboard/home.html:40
-msgid "How to use Datawinners"
-msgstr ""
-
-#: templates/dashboard/home.html:41
-msgid "Get more information on what you can do with DataWinners."
-msgstr ""
-
-#: templates/dashboard/home.html:44
-msgid "help_how_to_use_dw"
-msgstr ""
-"DataWinners is the do-it-yourself Data Collection and Communication tool you "
-"need to make better decisions.<br />Click on the Create a New Project button "
-"to get started."
-
-#: templates/dashboard/home.html:49
-msgid "Your projects"
-msgstr ""
-
-#: templates/dashboard/home.html:54
-msgid "successful"
-msgstr ""
-
-#: templates/dashboard/home.html:55
-msgid "error"
-msgstr ""
-
-#: templates/dashboard/home.html:58
-msgid "go to this project"
-msgstr ""
-
-#: templates/dashboard/home.html:71
-msgid "No submissions present for this project"
-msgstr ""
-
-#: templates/dashboard/home.html:74
-msgid "This project is inactive"
-msgstr ""
-
-#: templates/dashboard/home.html:79
-msgid "view all projects"
-msgstr ""
-
-#: templates/dashboard/start.html:17
-#, python-format
-msgid ""
-" Once you have created projects, a list of your %(text)s will appear here."
-msgstr ""
-
-#: templates/dashboard/start.html:19
-msgid "To get started with DataWinners"
-msgstr ""
-
-#: templates/dashboard/start.html:19
-msgid "order_to_create_project"
-msgstr "create a new project"
-
-#: templates/entity/all_datasenders.html:9
-msgid "Add a data sender"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:15
-msgid "q_all_datasenders_add_manually"
-msgstr "Add Data Sender one-by-one using the online registration form"
-
-#: templates/entity/all_datasenders.html:18
-msgid "r_all_datasenders_add_manually"
-msgstr ""
-"Click the blue \"Add a Data Sender\" link and follow the step-by-step "
-"instructions"
-
-#: templates/entity/all_datasenders.html:56
-#: templates/entity/all_subjects.html:56
-#: templates/project/import_section_in_wizard.html:5
-msgid "Please enable JavaScript to use file uploader."
-msgstr ""
-
-#: templates/entity/all_datasenders.html:59
-#: templates/entity/all_subjects.html:59
-msgid "Upload a CSV or a XL file"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:63
-msgid "q_all_datasenders_import"
-msgstr ""
-"Add a list of Data Senders all at once by importing an Excel (.xls) or a "
-"comma separated value (.csv) file"
-
-#: templates/entity/all_datasenders.html:66
-msgid "r_all_datasenders_import"
-msgstr ""
-"Follow these five easy steps to import a list of Data Senders<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG.  In "
-"cell B2, type Data Sender.  In cell C2, type the name of your Data Sender"
-"(example:  John Smith).  In cell D2, type the mobile telephone number of the "
-"Data Sender.In cell E2, type a unique ID code for the Data Sender."
-"DataWinners will automatically generate a unique ID number if you leave this "
-"cell blank.In cell F2, type the location of the Data Sender.In cell G2 type "
-"the GPS coordinates of the Data Sender (Right click on cell G2, choose "
-"\"Format Cells\",Choose \"Text\", then click \"OK\".  Then enter the GPS "
-"coordinates in the following format: 16.8665 47.53150.Remember do not "
-"include a comma).  In cell F2 type a short description of the Data Sender."
-"<br />3. Repeat step #2 for each Data Sender starting in cell A3.  Every "
-"Data Sender thereafter will occupy anew row (A4, A5, A6 etc.)<br />4. Save "
-"the file as (.csv) or (.xls)<br />5. Click on \"Import List\" button and "
-"follow instructions"
-
-#: templates/entity/all_datasenders.html:73
-#: templates/entity/all_subjects.html:74
-#: templates/project/import_section_in_wizard.html:15
-msgid "Row Number"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:74
-#: templates/entity/all_subjects.html:75
-#: templates/project/import_section_in_wizard.html:16
-msgid "Row"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:83
-msgid "Projects:"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:90
-#: templates/project/registered_datasenders.html:26
-msgid "Actions:"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:93
-msgid "Associate"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:94
-#: templates/project/registered_datasenders.html:29
-msgid "Dis-Associate"
-msgstr ""
-
-#: templates/entity/all_datasenders.html:97
-msgid "All Data Senders"
-msgstr ""
-
-#: templates/entity/all_subjects.html:7
-msgid "Add a subject"
-msgstr ""
-
-#: templates/entity/all_subjects.html:11
-msgid "Add subjects one-by-one using the online registration form"
-msgstr ""
-
-#: templates/entity/all_subjects.html:13
-msgid ""
-"Click the blue \"Add a subject\" link and follow the step-by-step "
-"instructions"
-msgstr ""
-
-#: templates/entity/all_subjects.html:64
-msgid "q_all_subjects"
-msgstr ""
-"Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
-"Separated Value (.csv) file"
-
-#: templates/entity/all_subjects.html:67
-msgid "r_all_subjects"
-msgstr ""
-"Follow these five easy steps to import a list of Subjects:<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. In cell "
-"B2, type the Subject type (example: Clinic). In cell C2, type the nameof "
-"your Subject (example:  Northern Clinic). In cell D2, type the mobile "
-"telephone number of the Subject.In cell E2, type a unique ID code for the "
-"Subject. DataWinners will automatically generate a unique ID number if you "
-"leave this cell blank.In cell F2, type the location of the Subject. In "
-"cellG2 type the GPS coordinates of the Subject (Right click on cell G2, "
-"choose \"Format Cells\", Choose \"Text\",then click \"OK\". Then enter the "
-"GPS coordinates in the following format: 16.8665 47.53150. Remember do "
-"notinclude a comma).  In cell F2 type a short description of the Subject."
-"<br />3. Repeat step #2 for each Subject starting in cell A3. Every Subject "
-"thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. Save the file as "
-"(.csv) or (.xls)<br />5. Click on \"Upload a file\" button and follow "
-"instructions"
-
-#: templates/entity/all_subjects.html:85
-msgid "All Subjects"
-msgstr ""
-
-#: templates/entity/create_datasender.html:3
-#: templates/entity/create_datasender.html:4
-msgid "Add A Data Sender"
-msgstr ""
-
-#: templates/entity/create_subject.html:3
-#: templates/entity/create_subject.html:4
-msgid "Add A Subject"
-msgstr ""
-
-#: templates/entity/create_type.html:3
-msgid "Add a new subject type"
-msgstr ""
-
-#: templates/entity/create_type.html:7
-msgid "New Subject(eg clinic, waterpoint etc)"
-msgstr ""
-
-#: templates/project/data_analysis.html:3
-msgid "Data Analysis"
-msgstr ""
-
-#: templates/project/data_analysis.html:54
-msgid "This Project is not yet active. Data displayed is test data."
-msgstr ""
-
-#: templates/project/data_analysis.html:54 templates/project/results.html:46
-msgid "Click Here to Activate"
-msgstr ""
-
-#: templates/project/data_analysis.html:58 templates/project/results.html:57
-msgid "export"
-msgstr ""
-
-#: templates/project/data_analysis.html:59 templates/project/results.html:58
-msgid "print"
-msgstr ""
-
-#: templates/project/data_analysis.html:60 templates/project/results.html:59
-msgid "e-mail"
-msgstr ""
-
-#: templates/project/data_analysis.html:76 templates/project/results.html:67
-msgid "Show data for:"
-msgstr ""
-
-#: templates/project/data_analysis.html:77 templates/project/results.html:68
-msgid "Click to select a date range"
-msgstr ""
-
-#: templates/project/data_analysis.html:78 templates/project/results.html:69
-msgid "Filter"
-msgstr ""
-
-#: templates/project/data_analysis.html:84
-msgid "View Data By:"
-msgstr ""
-
-#: templates/project/data_analysis.html:87
-msgid "View Style:"
-msgstr ""
-
-#: templates/project/data_analysis.html:89
-msgid "List"
-msgstr ""
-
-#: templates/project/data_analysis.html:90
-msgid "Chart"
-msgstr ""
-
-#: templates/project/data_analysis.html:91
-msgid "Map"
-msgstr ""
-
-#: templates/project/datasenders.html:3
-#: templates/project/registered_datasenders.html:3
-msgid "Projects - Data Senders"
-msgstr ""
-
-#: templates/project/datasenders.html:34
-msgid "Preview Data sender's questionnaire"
-msgstr ""
-
-#: templates/project/datasenders.html:37
-#: templates/project/finish_and_test.html:179
-#: templates/project/finish_and_test.html:182
-#: templates/project/finish_and_test.html:185
-#: templates/project/questionnaire.html:134 templates/project/subjects.html:44
-msgid "Generating the questionnaire preview."
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:44
-msgid "Step4"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:47
-msgid "q_tooltip_datasenders_sender"
-msgstr ""
-"<strong>Data Senders</strong> are important because they are the people who "
-"send you answers to yourquestionnaire. They are usually based in the field."
-"<br /><br />You can <strong>register Data Senders</strong> by entering some "
-"basic information (name, location,telephone number) about each Data Sender."
-"DataWinners will use the Data Sender's telephone number as the "
-"<strong>Unique Identification Number</strong>.By registering your Data "
-"Senders now they won't have to send you this information (example: name) "
-"each timethey respond to your questionnaire. DataWinners will recognize each "
-"Data Sender by his or her registeredtelephone number.<br /><br />"
-
-#: templates/project/datasenders_wizard.html:49
-msgid "r_tooltip_datasenders_sender"
-msgstr ""
-"Decide what information you want to collect for each Data Sender (first "
-"name, last name, location, mobilephone number, etc.) You then have three "
-"ways to register this information: 1) Manually enter the detailsusing the "
-"<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
-"Print out the DataSender Registration Questionnaire, give it to your Data "
-"Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
-"Don’t worry, you can always edit this information later."
-
-#: templates/project/datasenders_wizard.html:51
-msgid ""
-"Register and manage approved Data Senders by editing the registration form "
-"below. You can also do this at a later time."
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:59
-msgid "Add Data Senders now"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:60
-#: templates/project/subjects_wizard.html:58
-msgid "(Optional)"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:63
-#: templates/project/datasenders_wizard.html:73
-msgid "Add Data Senders Manually"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:66
-msgid "q_tooltip_datasenders_add_manually"
-msgstr "Add Data Senders one-by-one using the online registration form"
-
-#: templates/project/datasenders_wizard.html:69
-msgid "r_tooltip_datasenders_add_manually"
-msgstr "Click the blue \"Add Data Senders Manually\" button"
-
-#: templates/project/datasenders_wizard.html:72
-msgid "Enter your Data Senders individually"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:76
-msgid "Import a List of Data Senders"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:79
-msgid "q_tooltip_datasenders_import"
-msgstr ""
-"Add a list of Data Senders all at once by importing an Excel (.xls) or a "
-"comma separated value (.csv) file"
-
-#: templates/project/datasenders_wizard.html:82
-msgid "r_tooltip_datasenders_import"
-msgstr ""
-"Follow these five easy steps to import a list of Data Senders<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG.  In "
-"cell B2, type Data Sender.  In cell C2, type the name of your Data Sender"
-"(example:  John Smith).  In cell D2, type the mobile telephone number of the "
-"Data Sender.In cell E2, type a unique ID code for the Data Sender."
-"DataWinners will automatically generate a unique ID number if you leave this "
-"cell blank.In cell F2, type the location of the Data Sender.In cell G2 type "
-"the GPS coordinates of the Data Sender (Right click on cell G2, choose "
-"\"Format Cells\",Choose \"Text\", then click \"OK\".  Then enter the GPS "
-"coordinates in the following format: 16.8665 47.53150.Remember do not "
-"include a comma).  In cell F2 type a short description of the Data Sender."
-"<br />3. Repeat step #2 for each Data Sender starting in cell A3.  Every "
-"Data Sender thereafter will occupy anew row (A4, A5, A6 etc.)<br />4. Save "
-"the file as (.csv) or (.xls)<br />5. Click on blue \"Import List\" button "
-"and follow instructions"
-
-#: templates/project/datasenders_wizard.html:84
-msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:85
-#: templates/project/subjects_wizard.html:85
-msgid "Import List"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:97
-msgid "Next Step: Reminders"
-msgstr ""
-
-#: templates/project/finish_and_test.html:40
-msgid "Step 6:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:40
-msgid "Review and Test"
-msgstr ""
-
-#: templates/project/finish_and_test.html:41
-msgid ""
-"Congratulations! You have created your project. Review your project details "
-"and test if you can send in data."
-msgstr ""
-
-#: templates/project/finish_and_test.html:47
-msgid "Review"
-msgstr ""
-
-#: templates/project/finish_and_test.html:48
-msgid "Review and verify the summary of your project on this page."
-msgstr ""
-
-#: templates/project/finish_and_test.html:49
-msgid "Verify the specifications of your project"
-msgstr ""
-
-#: templates/project/finish_and_test.html:52
-#: templates/project/overview.html:30
-msgid "Project Profile"
-msgstr ""
-
-#: templates/project/finish_and_test.html:59
-msgid "Name:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:63
-msgid "Project Type:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:67
-msgid "Project Description:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:71
-msgid "Devices:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:75
-#: templates/project/finish_and_test.html:98
-#: templates/project/finish_and_test.html:115
-#: templates/project/finish_and_test.html:131
-#: templates/project/finish_and_test.html:145
-msgid "edit"
-msgstr ""
-
-#: templates/project/finish_and_test.html:76
-#: templates/project/finish_and_test.html:99
-#: templates/project/finish_and_test.html:116
-#: templates/project/finish_and_test.html:132
-#: templates/project/finish_and_test.html:147
-msgid "Click \"edit\" to make any required changes."
-msgstr ""
-
-#: templates/project/finish_and_test.html:87
-msgid "Type:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:92
-msgid "Number of subjects:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:107
-msgid "Questions:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:126
-msgid "Number of data senders :"
-msgstr ""
-
-#: templates/project/finish_and_test.html:137
-#: templates/project/finish_and_test.html:199
-#: templates/project/reminders_wizard.html:3
-#: templates/project/reminders_wizard.html:33
-#: templates/project/tab_navigation.html:62
-msgid "Reminders"
-msgstr ""
-
-#: templates/project/finish_and_test.html:142
-#, python-format
-msgid "Reminders are <strong>%(is_reminder)s</strong> for this project"
-msgstr ""
-
-#: templates/project/finish_and_test.html:152
-msgid "Test This Questionnaire"
-msgstr ""
-
-#: templates/project/finish_and_test.html:155
-msgid "q_tooltip_finish_test"
-msgstr ""
-"The <strong>Test This Questionnaire</strong> feature allows you to simulate "
-"the collection of data to see how yourquestionnaire works. After the test, "
-"you can view the data collected by selecting the \"All Data\" tab in thetop "
-"right hand corner of this page. Test This Questionnaire can provide you "
-"helpful information to editquestions and answer types."
-
-#: templates/project/finish_and_test.html:158
-msgid "r_tooltip_finish_test"
-msgstr ""
-"Choose either the Test Web Form or Test SMS and follow the on-screen "
-"instructions to complete the test."
-
-#: templates/project/finish_and_test.html:162
-#: templates/project/finish_and_test.html:164
-msgid "SMS Questionnaire"
-msgstr ""
-
-#: templates/project/finish_and_test.html:163
-msgid "Test your Questionnaire by this SMS tester"
-msgstr ""
-
-#: templates/project/finish_and_test.html:167
-msgid "Web Questionnaire"
-msgstr ""
-
-#: templates/project/finish_and_test.html:169
-msgid "Preview and print your questionnaire"
-msgstr ""
-
-#: templates/project/finish_and_test.html:171
-msgid "Data Sender"
-msgstr ""
-
-#: templates/project/finish_and_test.html:172
-msgid "Subject"
-msgstr ""
-
-#: templates/project/finish_and_test.html:173
-msgid "Web"
-msgstr ""
-
-#: templates/project/finish_and_test.html:194
-msgid "Go to Project Overview"
-msgstr ""
-
-#: templates/project/import_section_in_wizard.html:8
-msgid "Upload a CSV or a XLS file"
-msgstr ""
-
-#: templates/project/index.html:3 templates/project/index.html.py:4
-msgid "All Projects"
-msgstr ""
-
-#: templates/project/index.html:27
-msgid "State"
-msgstr ""
-
-#: templates/project/index.html:28 templates/project/results.html:74
-#: templates/project/results.html.py:75
-msgid "Actions"
-msgstr ""
-
-#: templates/project/index.html:38 templates/project/index.html.py:47
-#: templates/project/tab_navigation.html:37
-msgid "Activate"
-msgstr ""
-
-#: templates/project/index.html:45 templates/project/tab_navigation.html:35
-msgid "Warning: Activating the project will remove all existing test data."
-msgstr ""
-
-#: templates/project/log_table.html:20
-msgid "Date Received"
-msgstr ""
-
-#: templates/project/log_table.html:23
-msgid "Submission Status"
-msgstr ""
-
-#: templates/project/log_table.html:26
-msgid "Deleted Record"
-msgstr ""
-
-#: templates/project/overview.html:3
-msgid "Projects - Overview"
-msgstr ""
-
-#: templates/project/overview.html:25
-msgid "Edit this project"
-msgstr ""
-
-#: templates/project/overview.html:32
-msgid ""
-"Review the basic information for your project. Click \"View\" to see the "
-"whole profile or \"Edit profile\" to make changes."
-msgstr ""
-
-#: templates/project/overview.html:35
-msgid "View"
-msgstr ""
-
-#: templates/project/overview.html:38
-msgid "edit profile"
-msgstr ""
-
-#: templates/project/overview.html:43
-msgid "Status: Complete"
-msgstr ""
-
-#: templates/project/overview.html:46
-msgid "What"
-msgstr ""
-
-#: templates/project/overview.html:48
-msgid "Template"
-msgstr ""
-
-#: templates/project/overview.html:49
-msgid "No template"
-msgstr ""
-
-#: templates/project/overview.html:53
-msgid "questions defined"
-msgstr ""
-
-#: templates/project/overview.html:57
-msgid "Who"
-msgstr ""
-
-#: templates/project/overview.html:59
-msgid "Sender Group"
-msgstr ""
-
-#: templates/project/overview.html:60 templates/project/overview.html.py:82
-#: templates/project/overview.html:89 templates/project/overview.html.py:93
-msgid "No Data"
-msgstr ""
-
-#: templates/project/overview.html:63
-msgid "Data sender Registration"
-msgstr ""
-
-#: templates/project/overview.html:64
-msgid "No data"
-msgstr ""
-
-#: templates/project/overview.html:67
-msgid "Languages"
-msgstr ""
-
-#: templates/project/overview.html:68
-msgid "No language specified"
-msgstr ""
-
-#: templates/project/overview.html:72
-msgid "How"
-msgstr ""
-
-#: templates/project/overview.html:74
-msgid "Cell Phone"
-msgstr ""
-
-#: templates/project/overview.html:81
-msgid "Computer"
-msgstr ""
-
-#: templates/project/overview.html:86
-#: templates/project/reminder_content.html:20
-msgid "When"
-msgstr ""
-
-#: templates/project/overview.html:88
-msgid "How often"
-msgstr ""
-
-#: templates/project/overview.html:92
-msgid "Deadline"
-msgstr ""
-
-#: templates/project/profile.html:24
-msgid "Step 1"
-msgstr ""
-
-#: templates/project/profile.html:26
-msgid "Fill out the following information to create your project"
-msgstr ""
-
-#: templates/project/profile.html:48
-msgid ""
-"Warning: Updating the associated type of the project questionnaire will "
-"remove all existing data."
-msgstr ""
-
-#: templates/project/profile.html:50
-msgid "Continue"
-msgstr ""
-
-#: templates/project/profile.html:60
-msgid "Save & Create Project"
-msgstr ""
-
-#: templates/project/profile_background.html:4
-msgid "Background"
-msgstr ""
-
-#: templates/project/profile_background.html:13
-msgid "q_tooltip_project_profile_background"
-msgstr ""
-"DataWinners stores projects by the <strong>Project Name</strong>. It is "
-"important to give each ofyour projects a separate name so when you have many "
-"projects running at the same time youcan easily track each project."
-
-#: templates/project/profile_background.html:15
-msgid "r_tooltip_project_profile_background"
-msgstr ""
-"Name your project by typing a short descriptive phrase in the Name this "
-"Project box. Don't worry,you can always edit your project name later."
-
-#: templates/project/profile_background.html:26
-msgid "q_tooltip_project_profile_project_type"
-msgstr ""
-"DataWinners offers two <strong>Project Types</strong>. You can collect data "
-"from people by choosingthe <strong>Data Collection</strong> option. Or, you "
-"can send messages to people by choosing<strong>Public Communication</strong>."
-
-#: templates/project/profile_background.html:29
-msgid "r_tooltip_project_profile_project_type"
-msgstr ""
-"Click the radio button next the <strong>Project Type</strong> you are "
-"creating. We will providestep-by-step instructions for your choice. Don't "
-"worry, you can always change your mind later."
-
-#: templates/project/profile_datasenders.html:12
-msgid "q_tooltip_profile_data_senders"
-msgstr ""
-"DataWinners allows you to chose who you collect your data from. With Open "
-"Data Sender Groups anyone cansend you data if you provide them your phone "
-"number. With Closed Data Sender Groups only those peoplewho you register "
-"will be able to send data to your number."
-
-#: templates/project/profile_datasenders.html:15
-msgid "r_tooltip_profile_data_senders"
-msgstr ""
-"Click the radio button next to your choice. Don’t worry, you can always "
-"change your mind later."
-
-#: templates/project/profile_deadline.html:3
-msgid "When do we need the data"
-msgstr ""
-
-#: templates/project/profile_deadline_month_block.html:8
-msgid "month"
-msgstr ""
-
-#: templates/project/profile_deadline_week_block.html:8
-msgid "week"
-msgstr ""
-
-#: templates/project/profile_subjects-questionnaire.html:3
-msgid "Subjects and Questionnaire"
-msgstr ""
-
-#: templates/project/profile_subjects-questionnaire.html:12
-msgid "q_tooltip_profile_subjects"
-msgstr ""
-"<strong>Subjects</strong> are very important. They are the topic of your "
-"data collectionquestionnaires. Subjects are often <strong>people</strong> "
-"(patients, farmers, children under five)or <strong>things</strong> (health "
-"clinics, retail shops, water points). Subjects can also be peoplewho send "
-"you their monthly activity reports.<br/><br/>"
-
-#: templates/project/profile_subjects-questionnaire.html:14
-msgid "r_tooltip_profile_subjects"
-msgstr ""
-"Click one of the radio buttons to tell us the subject of your questionnaire. "
-"DataWinners willprovide you the step-by-step instructions for your choice. "
-"Don’t worry, you can always decideor change your mind later."
-
-#: templates/project/profile_subjects-questionnaire.html:32
-msgid "q_tooltip_profile_devices"
-msgstr ""
-"Devices are important because you can choose the <strong>communication "
-"channel</strong> people will use tosend you your data. Your choice depends "
-"on two questions: 1) How much data do you need to collectand 2) what devices "
-"do people already have. A good general rule is you can collect answers "
-"forabout 15 questions using SMS. For more extensive data collection needs in "
-"the field, we recommendusing a smart phone with the Android Operating "
-"system. If you have regional offices with goodinternet connectivity, you can "
-"also create your own online form."
-
-#: templates/project/profile_subjects-questionnaire.html:35
-msgid "r_tooltip_profile_devices"
-msgstr ""
-"Choose one, two or all three channels by clicking on the boxes. Don't worry, "
-"you can alwayschange your mind later."
-
-#: templates/project/question_detail_panel.html:4
-#: templates/project/question_table.html:5
-msgid "Question"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:9
-#: templates/project/question_table.html:6
-msgid "Code"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:13
-msgid "q_tooltip_question_detail_code"
-msgstr ""
-"Each question in a questionnaire is identified by its own "
-"unique<strong>Question Code</strong>. This Question Code tells DataWinners "
-"whatquestion is answered by the Data Sender.<br/><br/>"
-
-#: templates/project/question_detail_panel.html:15
-msgid "r_tooltip_question_detail_code"
-msgstr ""
-"Enter a 1 or 2 character code (letters, numbers or both). Your Data "
-"Senderstype the \"+\" code followed by the question code (example: +rpd) for "
-"each question.This will tell DataWinners what question the Data Sender is "
-"answering."
-
-#: templates/project/question_detail_panel.html:22
-msgid "Answer Type"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:26
-msgid "q_tooltip_question_detail_type"
-msgstr ""
-"Questionnaires collect data in several formats: numbers, text, multiple "
-"choiceand dates. The <strong>Answer Type</strong> identifies which format "
-"the DataSender must use when answering the question."
-
-#: templates/project/question_detail_panel.html:29
-msgid "r_tooltip_question_detail_type"
-msgstr ""
-"Select the <strong>Answer Type</strong> that the Data Sender will use "
-"whenanswering the question. Answers can be numbers, text, multiple choice, "
-"or dates.<br/>When using the <strong>Multiple Choice option</strong>, Data "
-"Senders will typein the letter (A, B, C etc.) that corresponds to the "
-"correct answer NOT the textin the answer field."
-
-#: templates/project/question_detail_panel.html:31
-msgid "Select what kind of answer you want from your Data Senders."
-msgstr ""
-
-#: templates/project/question_detail_panel.html:34
-msgid "Word or Phrase"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:37
-msgid "Number"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:40
-msgid "Date"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:44
-msgid "List of Choices"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:48
-msgid "GPS Coordinates"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:55
-msgid "Select Date Format"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:61
-msgid "month.year"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:64
-msgid "day.month.year"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:67
-msgid "month.day.year"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:79
-msgid "Add Answer Choice"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:84
-msgid "only one answer"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:87
-msgid "multiple answers are permitted"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:93
-msgid "Min:"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:99
-msgid "Max:"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:109
-msgid "No, answer has no character limit"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:115
-msgid "Yes, maximum number of characters should be"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:124
-msgid "Instructions"
-msgstr ""
-
-#: templates/project/question_detail_panel.html:129
-msgid "q_tooltip_question_detail_instruction"
-msgstr ""
-"When you print the Questionnaire and give it to your Data Senders, "
-"these<strong>Instructions</strong> will appear below each question. They "
-"providebackground or other important information to help Data Senders answer "
-"thequestionnaire.<br/><br/>"
-
-#: templates/project/question_detail_panel.html:131
-msgid "r_tooltip_question_detail_instruction"
-msgstr ""
-"Type in any specific information that may be important to help the Data "
-"Sender answer the question."
-
-#: templates/project/question_table.html:4
-msgid "Question Number"
-msgstr ""
-
-#: templates/project/questionnaire.html:4
-#: templates/project/questionnaire_preview.html:3
-msgid "Project - Questionnaire"
-msgstr ""
-
-#: templates/project/questionnaire.html:67
-#: templates/project/questionnaire_wizard.html:61
-msgid "Step 3:"
-msgstr ""
-
-#: templates/project/questionnaire.html:68
-msgid "Review the question by clicking on each"
-msgstr ""
-
-#: templates/project/questionnaire.html:71
-msgid "Preview Questionnaire"
-msgstr ""
-
-#: templates/project/questionnaire.html:77
-msgid "Questionnaire Code :"
-msgstr ""
-
-#: templates/project/questionnaire.html:83
-msgid "q_tooltip_questionnaire_code"
-msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctly identify your questionnaire. Use the recommended "
-"code or change it if you like."
-
-#: templates/project/questionnaire.html:86
-msgid "r_tooltip_questionnaire_code"
-msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
-
-#: templates/project/questionnaire.html:102
-#: templates/project/questionnaire_wizard.html:98
-msgid "Add another Question"
-msgstr ""
-
-#: templates/project/questionnaire.html:114
-#: templates/project/questionnaire_wizard.html:108
-msgid "q_tooltip_question_sms"
-msgstr ""
-"<strong>1 SMS is limited to 160 characters.</strong><br />The Running Count "
-"tallies the questionnaire code, all question codes andthe maximum lengths of "
-"all answers and keeps a running count of how many characters you have used "
-"out of 160."
-
-#: templates/project/questionnaire.html:117
-#: templates/project/questionnaire_wizard.html:111
-msgid "r_tooltip_question_sms"
-msgstr ""
-"Use this count to determine how many questions you can add to the "
-"questionnaire and still keep the response within 1 SMS (160 characters)."
-"Don't worry, you can go beyond 160 characters. However, more than one SMS "
-"will be required to answer all the questions in your questionnaire."
-
-#: templates/project/questionnaire.html:125
-msgid "submit"
-msgstr ""
-
-#: templates/project/questionnaire_preview.html:8
-msgid "Print"
-msgstr ""
-
-#: templates/project/questionnaire_preview.html:11
-msgid "Project Name:"
-msgstr ""
-
-#: templates/project/questionnaire_preview.html:15
-msgid "Questionnarie Code:"
-msgstr ""
-
-#: templates/project/questionnaire_preview.html:19
-msgid "Example SMS:"
-msgstr ""
-
-#: templates/project/questionnaire_wizard.html:36
-#: templates/project/questionnaire_wizard.html:47
-#: templates/project/results.html:75
-msgid "Delete"
-msgstr ""
-
-#: templates/project/questionnaire_wizard.html:62
-msgid "Define the questions you want your Data Senders to answer."
-msgstr ""
-
-#: templates/project/questionnaire_wizard.html:70
-msgid "Questionnaire Code:"
-msgstr ""
-
-#: templates/project/questionnaire_wizard.html:77
-msgid "q_tooltip_question_code"
-msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctlyidentify your questionnaire. Use the recommended "
-"code or change it if you like."
-
-#: templates/project/questionnaire_wizard.html:80
-msgid "r_tooltip_question_code"
-msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
-
-#: templates/project/questionnaire_wizard.html:128
-msgid ""
-"Warning: Changing the questionnaire code will remove all existing test data."
-msgstr ""
-
-#: templates/project/questionnaire_wizard.html:129
-msgid "OK"
-msgstr ""
-
-#: templates/project/questionnaire_wizard.html:134
-msgid "Next Step: Data Senders"
-msgstr ""
-
-#: templates/project/registered_datasenders.html:33
-msgid "Select"
-msgstr ""
-
-#: templates/project/registered_datasenders.html:34
-#: templates/project/registered_subjects.html:28
-msgid "Unique ID"
-msgstr ""
-
-#: templates/project/registered_subjects.html:3
-#: templates/project/subjects.html:3
-msgid "Projects - Subjects"
-msgstr ""
-
-#: templates/project/reminder_content.html:8
-msgid "Add Reminder"
-msgstr ""
-
-#: templates/project/reminder_content.html:9
-msgid "Save the reminders"
-msgstr ""
-
-#: templates/project/reminder_content.html:12
-msgid ""
-"Reminders are not enabled for this project Please proceed to the next "
-"<a>step</a>"
-msgstr ""
-
-#: templates/project/reminder_content.html:24
-msgid "day(s) <strong>before</strong> the deadline"
-msgstr ""
-
-#: templates/project/reminder_content.html:26
-msgid "On the deadline"
-msgstr ""
-
-#: templates/project/reminder_content.html:29
-msgid "day(s) <strong>after</strong> the deadline"
-msgstr ""
-
-#: templates/project/reminder_content.html:36
-msgid "To Whom"
-msgstr ""
-
-#: templates/project/reminder_content.html:38
-msgid "All chosen DS type"
-msgstr "Everyone"
-
-#: templates/project/reminder_content.html:39
-msgid "Anyone who hasn't sent data"
-msgstr "Anyone who has not sent data"
-
-#: templates/project/reminder_content.html:47
-msgid "The message count is"
-msgstr ""
-
-#: templates/project/reminder_content.html:50
-msgid "Remove"
-msgstr ""
-
-#: templates/project/reminders.html:3
-msgid "Project - Reminders"
-msgstr ""
-
-#: templates/project/reminders_wizard.html:33
-msgid "Step5:"
-msgstr ""
-
-#: templates/project/reminders_wizard.html:36
-msgid "q_tooltip_reminders"
-msgstr ""
-"<strong>Reminders</strong> are important because they are the people who "
-"send you answers to yourquestionnaire. They are usually based in the field."
-"<br /><br />You can <strong>register Data Senders</strong> by entering some "
-"basic information (name, location,telephone number) about each Data Sender."
-"DataWinners will use the Data Sender's telephone number as the "
-"<strong>Unique Identification Number</strong>.By registering your Data "
-"Senders now they won't have to send you this information (example: name) "
-"each timethey respond to your questionnaire. DataWinners will recognize each "
-"Data Sender by his or her registeredtelephone number."
-
-#: templates/project/reminders_wizard.html:39
-msgid "r_tooltip_reminders"
-msgstr ""
-"Decide what information you want to collect for each Data Sender (first "
-"name, last name, location, mobilephone number, etc.) You then have three "
-"ways to register this information: 1) Manually enter the detailsusing the "
-"<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
-"Print out the DataSender Registration Questionnaire, give it to your Data "
-"Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
-"Don’t worry, you can always edit this information later."
-
-#: templates/project/reminders_wizard.html:49
-msgid "Next Step: Review and Test"
-msgstr ""
-
-#: templates/project/results.html:3
-msgid "All Data records"
-msgstr ""
-
-#: templates/project/results.html:46
-msgid "This Project is not yet active. Data displayed is test data"
-msgstr ""
-
-#: templates/project/results.html:63
-msgid "Results"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:7
-msgid "Test the SMS Questionnaire"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:9
-msgid "Verify you can send in test answers"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:12
-msgid "Send in your test answers."
-msgstr ""
-
-#: templates/project/sms_tester_form.html:14
-msgid "Refer to the Web Questionnaire Preview for a sample SMS"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:17
-msgid "sms_tester_form"
-msgstr ""
-"<p>Note : When you activate this project, all the test data will be removed "
-"automatically.</p><p>You have 2 options</p><p>A. Click on the mobile phone "
-"screen and type your test answers.</p><p>B. Register yourself as a Data "
-"Sender. Then sms your test answers to the telephone number provided by "
-"DataWinners.</p>"
-
-#: templates/project/sms_tester_form.html:25
-msgid "Send SMS"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:26
-msgid "Clear"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:31
-msgid "See the data you received"
-msgstr ""
-
-#: templates/project/sms_tester_form.html:33
-#, python-format
-msgid ""
-"See if DataWinners received your SMS. (Go to <a href="
-"\"%(project_links.log_link)s\">All Data\n"
-"                Records</a> page to view submission status)"
-msgstr ""
-
-#: templates/project/subjects.html:33
-msgid "Step3:"
-msgstr ""
-
-#: templates/project/subjects.html:34
-#: templates/project/subjects_wizard.html:51
-msgid "Review the questions by clicking on each"
-msgstr ""
-
-#: templates/project/subjects.html:41
-msgid "Preview Subject's questionnaire"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:43
-msgid "Step 2:"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:46
-msgid "q_tooltip_subject_wizard_subject"
-msgstr ""
-"Your Data Senders collect data about <strong>Subjects</strong>, which are "
-"often people (patients, farmers)or things (health clinics, retail shops). "
-"<strong>Subjects</strong> can also be staff who send you theirmonthly "
-"activity reports.<br /><br />DataWinners gives you the option to "
-"<strong>Register Subjects</strong> by entering basic data (name,location, "
-"subject type) about each subject. DataWinners will then give each subject a "
-"<strong>UniqueIdentification Number ('ID')</strong>. Data Senders will "
-"always identify <strong>Subjects by</strong> theirID. This saves time and "
-"space in the SMS because Data Senders will not have to type the name, "
-"location andother information about the subject each time they send data."
-
-#: templates/project/subjects_wizard.html:49
-msgid "r_tooltip_subject_wizard_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
-"<strong>Subject</strong> ( For example:first name, last name, location, "
-"mobile phone number, etc.). You then have three ways to register "
-"thisinformation: 1) Manually enter the details using the <strong>online "
-"form</strong>, 2) <strong>import a list</strong>; or, 3) Print out the "
-"Subject Registration Questionnaire, give it to your Data Sendersand ask your "
-"<strong>Data</strong> <strong>Senders to register Subjects</strong> "
-"themselves. Don’t worry, youcan always edit this information later."
-
-#: templates/project/subjects_wizard.html:57
-msgid "Add Subjects now"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:61
-#: templates/project/subjects_wizard.html:71
-msgid "Add Subjects Manually"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:64
-msgid "q_tooltip_subject_wizard_add_manually"
-msgstr "Add subjects one-by-one using the online registration form"
-
-#: templates/project/subjects_wizard.html:67
-msgid "r_tooltip_subject_wizard_add_manually"
-msgstr ""
-"Click the blue \"Add Subjects Manually\" button and follow the step-by-step "
-"instructions."
-
-#: templates/project/subjects_wizard.html:70
-msgid "Enter your Subjects individually"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:74
-msgid "Import a List of Subjects"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:77
-msgid "q_tooltip_subject_wizard_import"
-msgstr ""
-"Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
-"Separated Value (.csv) file"
-
-#: templates/project/subjects_wizard.html:80
-msgid "r_tooltip_subject_wizard_import"
-msgstr ""
-"Follow these five easy steps to import a list of Subjects:<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. In cell "
-"B2, type the Subject type (example: Clinic). In cell C2, type the nameof "
-"your Subject (example:  Northern Clinic). In cell D2, type the mobile "
-"telephone number of the Subject.In cell E2, type a unique ID code for the "
-"Subject.DataWinners will automatically generate a unique ID number if you "
-"leave this cell blank.In cell F2, type the location of the Subject. In "
-"cellG2 type the GPS coordinates of the Subject (Right click on cell G2, "
-"choose \"Format Cells\", Choose \"Text\",then click \"OK\". Then enter the "
-"GPS coordinates in the following format: 16.8665 47.53150. Remember do "
-"notinclude a comma).  In cell F2 type a short description of the Subject."
-"<br />3. Repeat step #2 for each Subject starting in cell A3. Every Subject "
-"thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. Save the file as "
-"(.csv) or (.xls)<br />5. Click on blue \"Import List\" button and follow "
-"instructions"
-
-#: templates/project/subjects_wizard.html:83
-msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:97
-msgid "Next Step: Questionnaire"
-msgstr ""
-
-#: templates/project/tab_navigation.html:14
-msgid "Project status:"
-msgstr ""
-
-#: templates/project/tab_navigation.html:21
-msgid ""
-"Your project status is Test. You need to click on 'Activate Project' to "
-"activate it."
-msgstr ""
-
-#: templates/project/tab_navigation.html:23
-#: templates/project/tab_navigation.html:30
-msgid "Activate Project"
-msgstr ""
-
-#: templates/project/tab_navigation.html:24
-msgid "Test SMS Questionnaire"
-msgstr ""
-
-#: templates/project/tab_navigation.html:28
-msgid ""
-"Your project is inactive. You need to complete the Profile to activate it."
-msgstr ""
-
-#: templates/project/tab_navigation.html:46
-msgid "Overview"
-msgstr ""
-
-#: templates/project/tab_navigation.html:59
-msgid "Web Submission"
-msgstr ""
-
-#: templates/project/tab_navigation.html:67
-msgid "Data"
-msgstr ""
-
-#: templates/project/tab_navigation.html:79
-msgid "tooltip_tab_navigation"
-msgstr ""
-"View, analyze and export your collected Data. Create an alert to be aware "
-"when something importanthappens.<br/>There are 3 main areas:<br/><strong>1. "
-"Summary</strong><br/>Look at the summary of each individual question to get "
-"a first impression ofyour Data.<br/><strong>2. Analysis</strong><br/>View "
-"your Data as a list, chart or map. Choose the sum, minimum or averageof a "
-"specific answer or see what which one was the most frequent.<br/><strong>3. "
-"All Data Records</strong><br/>View the list of all Data Records you have "
-"received from your Data Senders. Filter and export your list toExcel."
-
-#: templates/project/tab_navigation.html:95
-msgid "Registered Subjects"
-msgstr ""
-
-#: templates/project/tab_navigation.html:98
-msgid "Registration Subjects"
-msgstr ""
-
-#: templates/project/tab_navigation.html:106
-msgid "Registered Data Senders"
-msgstr ""
-
-#: templates/project/tab_navigation.html:109
-msgid "Registration Questionnaire"
-msgstr ""
-
-#: templates/registration/activate.html:3
-#: templates/registration/activate.html:4
-msgid "Activation Confirmation"
-msgstr ""
-
-#: templates/registration/activate.html:11
-msgid "Account successfully activated"
-msgstr ""
-
-#: templates/registration/activate.html:15
-msgid "Account activation failed"
-msgstr ""
-
-#: templates/registration/activation_complete.html:3
-#: templates/registration/activation_complete.html:4
-msgid "Activation Complete"
-msgstr ""
-
-#: templates/registration/activation_complete.html:9
-msgid "You have successfully activated your account"
-msgstr ""
-
-#: templates/registration/login.html:3
-msgid "Login"
-msgstr ""
-
-#: templates/registration/login.html:4
-msgid "Sign In to Your Account on DataWinners"
-msgstr ""
-
-#: templates/registration/login.html:46
-#: templates/registration/password_reset_form.html:27
-msgid "Not registered?"
-msgstr ""
-
-#: templates/registration/login.html:46
-#: templates/registration/password_reset_form.html:27
-msgid "Create an account"
-msgstr ""
-
-#: templates/registration/login.html:46
-msgid "Reset Password"
-msgstr ""
-
-#: templates/registration/logout.html:8
-msgid "You have successfully signed out. Thanks for your visit."
-msgstr ""
-
-#: templates/registration/logout.html:8
-msgid "Sign in again"
-msgstr ""
-
-#: templates/registration/password_reset_complete.html:3
-#: templates/registration/password_reset_complete.html:4
-msgid "Password Reset"
-msgstr ""
-
-#: templates/registration/password_reset_complete.html:9
-msgid "Password reset successfully"
-msgstr ""
-
-#: templates/registration/password_reset_confirm.html:3
-#: templates/registration/password_reset_confirm.html:4
-msgid "Password Reset Confirm"
-msgstr ""
-
-#: templates/registration/password_reset_confirm.html:22
-msgid "Submit"
-msgstr ""
-
-#: templates/registration/password_reset_done.html:3
-#: templates/registration/password_reset_done.html:4
-msgid "Password Reset Done"
-msgstr ""
-
-#: templates/registration/password_reset_done.html:8
-msgid "Email with password reset instructions has been sent"
-msgstr ""
-
-#: templates/registration/password_reset_form.html:3
-msgid "Password reset"
-msgstr ""
-
-#: templates/registration/password_reset_form.html:4
-msgid "Forgot Your Password?"
-msgstr ""
-
-#: templates/registration/password_reset_form.html:14
-msgid ""
-"Type the full email address you use to sign in to your DataWinners Account."
-msgstr ""
-
-#: templates/registration/password_reset_form.html:15
-msgid "We will email you a code to this Email."
-msgstr ""
-
-#: templates/registration/password_reset_form.html:26
-msgid "Get Password"
-msgstr ""
-
-#: templates/registration/registration_complete.html:3
-#: templates/registration/registration_complete.html:4
-msgid "Registration Confirmation"
-msgstr ""
-
-#: templates/registration/registration_complete.html:11
-msgid "You have successfully registered"
-msgstr ""
-
-#: templates/registration/registration_complete.html:12
-msgid ""
-"An activation email has been sent to your email address. Please activate "
-"before login."
-msgstr ""
+#: views.py:98
+msgid "Please add subject type and then add a subject"
+msgstr ""
+
+#~ msgid "q_tooltip_question_panel_subject"
+#~ msgstr ""
+#~ "Decide what information you want to use to identify and register each "
+#~ "subject of your questionnaire.  For example, Clinic Name, Location, Phone "
+#~ "Number."
+
+#~ msgid "r_tooltip_question_panel_subject"
+#~ msgstr "Review the questions by clicking on each question in order."
+
+#~ msgid "q_tooltip_question_panel_data_sender"
+#~ msgstr "Decide what information you need to collect about each Data Sender."
+
+#~ msgid "r_tooltip_question_panel_data_sender"
+#~ msgstr "Review the questions by clicking on each"
+
+#~ msgid "wizard_account"
+#~ msgstr "Account"
+
+#~ msgid "about_DW"
+#~ msgstr ""
+#~ "<h5>About DataWinners</h5><p>DataWinners is an online mobile data"
+#~ "\tcollection service designed and\tbuilt for development professionals. </"
+#~ "p><p>With DataWinners, you collect and analyze the data you need using "
+#~ "the equipment you already have – a computer, the Internet and basic "
+#~ "mobile phones. </p>"
+
+#~ msgid "Create a new project"
+#~ msgstr "Create a new project"
+
+#~ msgid "help_project_creation"
+#~ msgstr "Follow the easy step-by-step process to create a new project."
+
+#~ msgid "help_how_to_use_dw"
+#~ msgstr ""
+#~ "DataWinners is the do-it-yourself Data Collection and Communication tool "
+#~ "you need to make better decisions.<br />Click on the Create a New Project "
+#~ "button to get started."
+
+#~ msgid "order_to_create_project"
+#~ msgstr "create a new project"
+
+#~ msgid "q_all_datasenders_add_manually"
+#~ msgstr "Add Data Sender one-by-one using the online registration form"
+
+#~ msgid "r_all_datasenders_add_manually"
+#~ msgstr ""
+#~ "Click the blue \"Add a Data Sender\" link and follow the step-by-step "
+#~ "instructions"
+
+#~ msgid "q_all_datasenders_import"
+#~ msgstr ""
+#~ "Add a list of Data Senders all at once by importing an Excel (.xls) or a "
+#~ "comma separated value (.csv) file"
+
+#~ msgid "r_all_datasenders_import"
+#~ msgstr ""
+#~ "Follow these five easy steps to import a list of Data Senders<br />1) "
+#~ "Open a new Excel spreadsheet. In cell A1, type form_code.  In cell B1, "
+#~ "type T.  In cell C1 type N.  In cell D1 type M.In cell E1 type S.  In "
+#~ "cell F1 type L.  In cell G1 type G.  In cell H1 type D.<br />2) In cell "
+#~ "A2, type REG.  In cell B2, type Data Sender.  In cell C2, type the name "
+#~ "of your Data Sender(example:  John Smith).  In cell D2, type the mobile "
+#~ "telephone number of the Data Sender.In cell E2, type a unique ID code for "
+#~ "the Data Sender.DataWinners will automatically generate a unique ID "
+#~ "number if you leave this cell blank.In cell F2, type the location of the "
+#~ "Data Sender.In cell G2 type the GPS coordinates of the Data Sender (Right "
+#~ "click on cell G2, choose \"Format Cells\",Choose \"Text\", then click \"OK"
+#~ "\".  Then enter the GPS coordinates in the following format: 16.8665 "
+#~ "47.53150.Remember do not include a comma).  In cell F2 type a short "
+#~ "description of the Data Sender.<br />3. Repeat step #2 for each Data "
+#~ "Sender starting in cell A3.  Every Data Sender thereafter will occupy "
+#~ "anew row (A4, A5, A6 etc.)<br />4. Save the file as (.csv) or (.xls)<br /"
+#~ ">5. Click on \"Import List\" button and follow instructions"
+
+#~ msgid "q_all_subjects"
+#~ msgstr ""
+#~ "Add a list of subjects all at once by importing an Excel (.xls) or a "
+#~ "Comma Separated Value (.csv) file"
+
+#~ msgid "r_all_subjects"
+#~ msgstr ""
+#~ "Follow these five easy steps to import a list of Subjects:<br />1) Open a "
+#~ "new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  "
+#~ "In cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type "
+#~ "L.  In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. "
+#~ "In cell B2, type the Subject type (example: Clinic). In cell C2, type the "
+#~ "nameof your Subject (example:  Northern Clinic). In cell D2, type the "
+#~ "mobile telephone number of the Subject.In cell E2, type a unique ID code "
+#~ "for the Subject. DataWinners will automatically generate a unique ID "
+#~ "number if you leave this cell blank.In cell F2, type the location of the "
+#~ "Subject. In cellG2 type the GPS coordinates of the Subject (Right click "
+#~ "on cell G2, choose \"Format Cells\", Choose \"Text\",then click \"OK\". "
+#~ "Then enter the GPS coordinates in the following format: 16.8665 47.53150. "
+#~ "Remember do notinclude a comma).  In cell F2 type a short description of "
+#~ "the Subject.<br />3. Repeat step #2 for each Subject starting in cell A3. "
+#~ "Every Subject thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. "
+#~ "Save the file as (.csv) or (.xls)<br />5. Click on \"Upload a file\" "
+#~ "button and follow instructions"
+
+#~ msgid "q_tooltip_datasenders_sender"
+#~ msgstr ""
+#~ "<strong>Data Senders</strong> are important because they are the people "
+#~ "who send you answers to yourquestionnaire. They are usually based in the "
+#~ "field.<br /><br />You can <strong>register Data Senders</strong> by "
+#~ "entering some basic information (name, location,telephone number) about "
+#~ "each Data Sender.DataWinners will use the Data Sender's telephone number "
+#~ "as the <strong>Unique Identification Number</strong>.By registering your "
+#~ "Data Senders now they won't have to send you this information (example: "
+#~ "name) each timethey respond to your questionnaire. DataWinners will "
+#~ "recognize each Data Sender by his or her registeredtelephone number.<br /"
+#~ "><br />"
+
+#~ msgid "r_tooltip_datasenders_sender"
+#~ msgstr ""
+#~ "Decide what information you want to collect for each Data Sender (first "
+#~ "name, last name, location, mobilephone number, etc.) You then have three "
+#~ "ways to register this information: 1) Manually enter the detailsusing the "
+#~ "<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
+#~ "Print out the DataSender Registration Questionnaire, give it to your Data "
+#~ "Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
+#~ "Don’t worry, you can always edit this information later."
+
+#~ msgid "q_tooltip_datasenders_add_manually"
+#~ msgstr "Add Data Senders one-by-one using the online registration form"
+
+#~ msgid "r_tooltip_datasenders_add_manually"
+#~ msgstr "Click the blue \"Add Data Senders Manually\" button"
+
+#~ msgid "q_tooltip_datasenders_import"
+#~ msgstr ""
+#~ "Add a list of Data Senders all at once by importing an Excel (.xls) or a "
+#~ "comma separated value (.csv) file"
+
+#~ msgid "r_tooltip_datasenders_import"
+#~ msgstr ""
+#~ "Follow these five easy steps to import a list of Data Senders<br />1) "
+#~ "Open a new Excel spreadsheet. In cell A1, type form_code.  In cell B1, "
+#~ "type T.  In cell C1 type N.  In cell D1 type M.In cell E1 type S.  In "
+#~ "cell F1 type L.  In cell G1 type G.  In cell H1 type D.<br />2) In cell "
+#~ "A2, type REG.  In cell B2, type Data Sender.  In cell C2, type the name "
+#~ "of your Data Sender(example:  John Smith).  In cell D2, type the mobile "
+#~ "telephone number of the Data Sender.In cell E2, type a unique ID code for "
+#~ "the Data Sender.DataWinners will automatically generate a unique ID "
+#~ "number if you leave this cell blank.In cell F2, type the location of the "
+#~ "Data Sender.In cell G2 type the GPS coordinates of the Data Sender (Right "
+#~ "click on cell G2, choose \"Format Cells\",Choose \"Text\", then click \"OK"
+#~ "\".  Then enter the GPS coordinates in the following format: 16.8665 "
+#~ "47.53150.Remember do not include a comma).  In cell F2 type a short "
+#~ "description of the Data Sender.<br />3. Repeat step #2 for each Data "
+#~ "Sender starting in cell A3.  Every Data Sender thereafter will occupy "
+#~ "anew row (A4, A5, A6 etc.)<br />4. Save the file as (.csv) or (.xls)<br /"
+#~ ">5. Click on blue \"Import List\" button and follow instructions"
+
+#~ msgid "q_tooltip_finish_test"
+#~ msgstr ""
+#~ "The <strong>Test This Questionnaire</strong> feature allows you to "
+#~ "simulate the collection of data to see how yourquestionnaire works. After "
+#~ "the test, you can view the data collected by selecting the \"All Data\" "
+#~ "tab in thetop right hand corner of this page. Test This Questionnaire can "
+#~ "provide you helpful information to editquestions and answer types."
+
+#~ msgid "r_tooltip_finish_test"
+#~ msgstr ""
+#~ "Choose either the Test Web Form or Test SMS and follow the on-screen "
+#~ "instructions to complete the test."
+
+#~ msgid "q_tooltip_project_profile_background"
+#~ msgstr ""
+#~ "DataWinners stores projects by the <strong>Project Name</strong>. It is "
+#~ "important to give each ofyour projects a separate name so when you have "
+#~ "many projects running at the same time youcan easily track each project."
+
+#~ msgid "r_tooltip_project_profile_background"
+#~ msgstr ""
+#~ "Name your project by typing a short descriptive phrase in the Name this "
+#~ "Project box. Don't worry,you can always edit your project name later."
+
+#~ msgid "q_tooltip_project_profile_project_type"
+#~ msgstr ""
+#~ "DataWinners offers two <strong>Project Types</strong>. You can collect "
+#~ "data from people by choosingthe <strong>Data Collection</strong> option. "
+#~ "Or, you can send messages to people by choosing<strong>Public "
+#~ "Communication</strong>."
+
+#~ msgid "r_tooltip_project_profile_project_type"
+#~ msgstr ""
+#~ "Click the radio button next the <strong>Project Type</strong> you are "
+#~ "creating. We will providestep-by-step instructions for your choice. Don't "
+#~ "worry, you can always change your mind later."
+
+#~ msgid "q_tooltip_profile_data_senders"
+#~ msgstr ""
+#~ "DataWinners allows you to chose who you collect your data from. With Open "
+#~ "Data Sender Groups anyone cansend you data if you provide them your phone "
+#~ "number. With Closed Data Sender Groups only those peoplewho you register "
+#~ "will be able to send data to your number."
+
+#~ msgid "r_tooltip_profile_data_senders"
+#~ msgstr ""
+#~ "Click the radio button next to your choice. Don’t worry, you can always "
+#~ "change your mind later."
+
+#~ msgid "q_tooltip_profile_subjects"
+#~ msgstr ""
+#~ "<strong>Subjects</strong> are very important. They are the topic of your "
+#~ "data collectionquestionnaires. Subjects are often <strong>people</strong> "
+#~ "(patients, farmers, children under five)or <strong>things</strong> "
+#~ "(health clinics, retail shops, water points). Subjects can also be "
+#~ "peoplewho send you their monthly activity reports.<br/><br/>"
+
+#~ msgid "r_tooltip_profile_subjects"
+#~ msgstr ""
+#~ "Click one of the radio buttons to tell us the subject of your "
+#~ "questionnaire. DataWinners willprovide you the step-by-step instructions "
+#~ "for your choice. Don’t worry, you can always decideor change your mind "
+#~ "later."
+
+#~ msgid "q_tooltip_profile_devices"
+#~ msgstr ""
+#~ "Devices are important because you can choose the <strong>communication "
+#~ "channel</strong> people will use tosend you your data. Your choice "
+#~ "depends on two questions: 1) How much data do you need to collectand 2) "
+#~ "what devices do people already have. A good general rule is you can "
+#~ "collect answers forabout 15 questions using SMS. For more extensive data "
+#~ "collection needs in the field, we recommendusing a smart phone with the "
+#~ "Android Operating system. If you have regional offices with goodinternet "
+#~ "connectivity, you can also create your own online form."
+
+#~ msgid "r_tooltip_profile_devices"
+#~ msgstr ""
+#~ "Choose one, two or all three channels by clicking on the boxes. Don't "
+#~ "worry, you can alwayschange your mind later."
+
+#~ msgid "q_tooltip_question_detail_code"
+#~ msgstr ""
+#~ "Each question in a questionnaire is identified by its own "
+#~ "unique<strong>Question Code</strong>. This Question Code tells "
+#~ "DataWinners whatquestion is answered by the Data Sender.<br/><br/>"
+
+#~ msgid "r_tooltip_question_detail_code"
+#~ msgstr ""
+#~ "Enter a 1 or 2 character code (letters, numbers or both). Your Data "
+#~ "Senderstype the \"+\" code followed by the question code (example: +rpd) "
+#~ "for each question.This will tell DataWinners what question the Data "
+#~ "Sender is answering."
+
+#~ msgid "q_tooltip_question_detail_type"
+#~ msgstr ""
+#~ "Questionnaires collect data in several formats: numbers, text, multiple "
+#~ "choiceand dates. The <strong>Answer Type</strong> identifies which format "
+#~ "the DataSender must use when answering the question."
+
+#~ msgid "r_tooltip_question_detail_type"
+#~ msgstr ""
+#~ "Select the <strong>Answer Type</strong> that the Data Sender will use "
+#~ "whenanswering the question. Answers can be numbers, text, multiple "
+#~ "choice, or dates.<br/>When using the <strong>Multiple Choice option</"
+#~ "strong>, Data Senders will typein the letter (A, B, C etc.) that "
+#~ "corresponds to the correct answer NOT the textin the answer field."
+
+#~ msgid "q_tooltip_question_detail_instruction"
+#~ msgstr ""
+#~ "When you print the Questionnaire and give it to your Data Senders, "
+#~ "these<strong>Instructions</strong> will appear below each question. They "
+#~ "providebackground or other important information to help Data Senders "
+#~ "answer thequestionnaire.<br/><br/>"
+
+#~ msgid "r_tooltip_question_detail_instruction"
+#~ msgstr ""
+#~ "Type in any specific information that may be important to help the Data "
+#~ "Sender answer the question."
+
+#~ msgid "q_tooltip_questionnaire_code"
+#~ msgstr ""
+#~ "All questionnaires have a Unique Questionnaire Code. DataWinners uses "
+#~ "this unique code to correctly identify your questionnaire. Use the "
+#~ "recommended code or change it if you like."
+
+#~ msgid "r_tooltip_questionnaire_code"
+#~ msgstr ""
+#~ "Enter a 3 letter code (letters and numbers). This questionnaire code will "
+#~ "appear on the printed versionof your questionnaire. Your Data Senders "
+#~ "will type in this code first when sending in their data."
+
+#~ msgid "q_tooltip_question_sms"
+#~ msgstr ""
+#~ "<strong>1 SMS is limited to 160 characters.</strong><br />The Running "
+#~ "Count tallies the questionnaire code, all question codes andthe maximum "
+#~ "lengths of all answers and keeps a running count of how many characters "
+#~ "you have used out of 160."
+
+#~ msgid "r_tooltip_question_sms"
+#~ msgstr ""
+#~ "Use this count to determine how many questions you can add to the "
+#~ "questionnaire and still keep the response within 1 SMS (160 characters)."
+#~ "Don't worry, you can go beyond 160 characters. However, more than one SMS "
+#~ "will be required to answer all the questions in your questionnaire."
+
+#~ msgid "q_tooltip_question_code"
+#~ msgstr ""
+#~ "All questionnaires have a Unique Questionnaire Code. DataWinners uses "
+#~ "this unique code to correctlyidentify your questionnaire. Use the "
+#~ "recommended code or change it if you like."
+
+#~ msgid "r_tooltip_question_code"
+#~ msgstr ""
+#~ "Enter a 3 letter code (letters and numbers). This questionnaire code will "
+#~ "appear on the printed versionof your questionnaire. Your Data Senders "
+#~ "will type in this code first when sending in their data."
+
+#~ msgid "All chosen DS type"
+#~ msgstr "Everyone"
+
+#~ msgid "Anyone who hasn't sent data"
+#~ msgstr "Anyone who has not sent data"
+
+#~ msgid "q_tooltip_reminders"
+#~ msgstr ""
+#~ "<strong>Reminders</strong> are important because they are the people who "
+#~ "send you answers to yourquestionnaire. They are usually based in the "
+#~ "field.<br /><br />You can <strong>register Data Senders</strong> by "
+#~ "entering some basic information (name, location,telephone number) about "
+#~ "each Data Sender.DataWinners will use the Data Sender's telephone number "
+#~ "as the <strong>Unique Identification Number</strong>.By registering your "
+#~ "Data Senders now they won't have to send you this information (example: "
+#~ "name) each timethey respond to your questionnaire. DataWinners will "
+#~ "recognize each Data Sender by his or her registeredtelephone number."
+
+#~ msgid "r_tooltip_reminders"
+#~ msgstr ""
+#~ "Decide what information you want to collect for each Data Sender (first "
+#~ "name, last name, location, mobilephone number, etc.) You then have three "
+#~ "ways to register this information: 1) Manually enter the detailsusing the "
+#~ "<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
+#~ "Print out the DataSender Registration Questionnaire, give it to your Data "
+#~ "Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
+#~ "Don’t worry, you can always edit this information later."
+
+#~ msgid "sms_tester_form"
+#~ msgstr ""
+#~ "<p>Note : When you activate this project, all the test data will be "
+#~ "removed automatically.</p><p>You have 2 options</p><p>A. Click on the "
+#~ "mobile phone screen and type your test answers.</p><p>B. Register "
+#~ "yourself as a Data Sender. Then sms your test answers to the telephone "
+#~ "number provided by DataWinners.</p>"
+
+#~ msgid "q_tooltip_subject_wizard_subject"
+#~ msgstr ""
+#~ "Your Data Senders collect data about <strong>Subjects</strong>, which are "
+#~ "often people (patients, farmers)or things (health clinics, retail shops). "
+#~ "<strong>Subjects</strong> can also be staff who send you theirmonthly "
+#~ "activity reports.<br /><br />DataWinners gives you the option to "
+#~ "<strong>Register Subjects</strong> by entering basic data (name,location, "
+#~ "subject type) about each subject. DataWinners will then give each subject "
+#~ "a <strong>UniqueIdentification Number ('ID')</strong>. Data Senders will "
+#~ "always identify <strong>Subjects by</strong> theirID. This saves time and "
+#~ "space in the SMS because Data Senders will not have to type the name, "
+#~ "location andother information about the subject each time they send data."
+
+#~ msgid "r_tooltip_subject_wizard_subject"
+#~ msgstr ""
+#~ "Decide what information you want to use to identify and register each "
+#~ "<strong>Subject</strong> ( For example:first name, last name, location, "
+#~ "mobile phone number, etc.). You then have three ways to register "
+#~ "thisinformation: 1) Manually enter the details using the <strong>online "
+#~ "form</strong>, 2) <strong>import a list</strong>; or, 3) Print out the "
+#~ "Subject Registration Questionnaire, give it to your Data Sendersand ask "
+#~ "your <strong>Data</strong> <strong>Senders to register Subjects</strong> "
+#~ "themselves. Don’t worry, youcan always edit this information later."
+
+#~ msgid "q_tooltip_subject_wizard_add_manually"
+#~ msgstr "Add subjects one-by-one using the online registration form"
+
+#~ msgid "r_tooltip_subject_wizard_add_manually"
+#~ msgstr ""
+#~ "Click the blue \"Add Subjects Manually\" button and follow the step-by-"
+#~ "step instructions."
+
+#~ msgid "q_tooltip_subject_wizard_import"
+#~ msgstr ""
+#~ "Add a list of subjects all at once by importing an Excel (.xls) or a "
+#~ "Comma Separated Value (.csv) file"
+
+#~ msgid "r_tooltip_subject_wizard_import"
+#~ msgstr ""
+#~ "Follow these five easy steps to import a list of Subjects:<br />1) Open a "
+#~ "new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  "
+#~ "In cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type "
+#~ "L.  In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. "
+#~ "In cell B2, type the Subject type (example: Clinic). In cell C2, type the "
+#~ "nameof your Subject (example:  Northern Clinic). In cell D2, type the "
+#~ "mobile telephone number of the Subject.In cell E2, type a unique ID code "
+#~ "for the Subject.DataWinners will automatically generate a unique ID "
+#~ "number if you leave this cell blank.In cell F2, type the location of the "
+#~ "Subject. In cellG2 type the GPS coordinates of the Subject (Right click "
+#~ "on cell G2, choose \"Format Cells\", Choose \"Text\",then click \"OK\". "
+#~ "Then enter the GPS coordinates in the following format: 16.8665 47.53150. "
+#~ "Remember do notinclude a comma).  In cell F2 type a short description of "
+#~ "the Subject.<br />3. Repeat step #2 for each Subject starting in cell A3. "
+#~ "Every Subject thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. "
+#~ "Save the file as (.csv) or (.xls)<br />5. Click on blue \"Import List\" "
+#~ "button and follow instructions"
+
+#~ msgid "tooltip_tab_navigation"
+#~ msgstr ""
+#~ "View, analyze and export your collected Data. Create an alert to be aware "
+#~ "when something importanthappens.<br/>There are 3 main areas:<br/"
+#~ "><strong>1. Summary</strong><br/>Look at the summary of each individual "
+#~ "question to get a first impression ofyour Data.<br/><strong>2. Analysis</"
+#~ "strong><br/>View your Data as a list, chart or map. Choose the sum, "
+#~ "minimum or averageof a specific answer or see what which one was the most "
+#~ "frequent.<br/><strong>3. All Data Records</strong><br/>View the list of "
+#~ "all Data Records you have received from your Data Senders. Filter and "
+#~ "export your list toExcel."
