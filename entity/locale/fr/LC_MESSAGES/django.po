@@ -69,11 +69,11 @@ msgstr ""
 
 #: forms.py:67
 msgid "Please fill out at least one location field correctly."
-msgstr ""
+msgstr "S'il vous plaît remplir au moins un champ de localisation correctement."
 
 #: views.py:98
 msgid "Please add subject type and then add a subject"
-msgstr ""
+msgstr "S'il vous plaît ajoutez type de sujet et d'ajouter ensuite un sujet"
 
 #~ msgid "* Organization name"
 #~ msgstr "* Nom de l'organisation"
