@@ -2430,3 +2430,7 @@ msgstr "Erreur. Erreur interne. S'il vous plaît appelez l'assistance technique"
 
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
 msgstr "Erreur. Soumission invalide. Reportez-vous au questionnaire imprimé. Renvoyer l'ID de questions et réponses pour les %s"
+
+msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
+msgstr "Erreur: Mauvais SMS. Revue imprimée questionnaire et le renvoyer par SMS."
+

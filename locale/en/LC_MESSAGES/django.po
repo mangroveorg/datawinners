@@ -2371,3 +2371,6 @@ msgstr ""
 
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for %s"
 msgstr ""
+
+msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
+msgstr ""

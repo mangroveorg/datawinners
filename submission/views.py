@@ -58,6 +58,7 @@ def sms(request):
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
         log.save()
+        return HttpResponse(message)
     try:
         form_model = get_form_model_by_code(dbm, form_code)
     except FormModelDoesNotExistsException as exception:
