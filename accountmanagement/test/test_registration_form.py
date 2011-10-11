@@ -7,12 +7,6 @@ from datawinners.accountmanagement.forms import RegistrationForm
 
 
 class TestRegistrationForm(unittest.TestCase):
-    def setup(self):
-        pass
-
-    def teardown(self):
-        pass
-
     def test_email_is_converted_to_lower_case(self):
         uppercase_email_id = 'A@b.com'
         base_form = {'first_name': 'a',

@@ -2,10 +2,7 @@
 import unittest
 from unittest.case import SkipTest
 import couchdb
-import django
-from django.db.backends.postgresql_psycopg2.base import DatabaseCreation
 from django.test import Client
-from django.test.utils import setup_test_environment, teardown_test_environment
 from datawinners import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from registration.models import RegistrationProfile
@@ -17,14 +14,6 @@ from mangrove.transport import reporter
 
 @SkipTest
 class TestMultiTenancy(unittest.TestCase):
-    def setUp(self):
-        setup_test_environment()
-        self.b = DatabaseCreation(django.db.connection)
-        self.test_db = self.b.create_test_db(autoclobber=True)
-
-    def tearDown(self):
-        teardown_test_environment()
-        self.b.destroy_test_db(self.test_db)
 
     def test_should_create_organization_setting_with_document_store_on_create_organization(self):
         c = Client()

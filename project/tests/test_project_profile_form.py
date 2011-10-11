@@ -3,11 +3,6 @@ from datawinners.project.forms import ProjectProfile
 
 
 class TestProjectProfile(unittest.TestCase):
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
 
     def test_creates_project_profile_form(self):
         base_form = {'name': 'Test Project', 'goals': 'Test Goals', 'project_type': 'survey', 'entity_type': 'Reporter',

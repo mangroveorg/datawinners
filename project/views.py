@@ -776,7 +776,7 @@ def _create_django_form_from_form_model(form_model):
 
 def _lookup(code, value):
     if value == "Answer for question " + str(code) + " is required":
-        return "This field is required"
+        return _("This field is required")
     return value
 
 def _lookup_in_list(code, values):
