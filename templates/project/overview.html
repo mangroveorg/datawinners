@@ -27,6 +27,7 @@
 {% endblock %}
 
 {% block content %}
+    <span id="project_id" style="display: none;">{{ project.id }}</span>
     <div class="span-18 box">
         {% if project.state != 'Active' %}
             <div class="grid_23 margin_bottom_20 margin_top_20 alpha">

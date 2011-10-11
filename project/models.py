@@ -177,6 +177,9 @@ class Project(DocumentBase):
         self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
         self.language = language
 
+    def is_activity_report(self):
+        return self.activity_report == "yes"
+    
     def get_data_senders(self, dbm):
         all_data = load_all_subjects_of_type(dbm)
         return [data for data in all_data if data['short_name'] in self.data_senders]

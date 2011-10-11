@@ -1,5 +1,6 @@
 
        var map, layer;
+       var project_id = $('#project_id').html();
 
        function init(entity_type){
            map = new OpenLayers.Map({
@@ -33,7 +34,7 @@
                strategies: [new OpenLayers.Strategy.Fixed()],
                projection: new OpenLayers.Projection("EPSG:4326"),
                protocol: new OpenLayers.Protocol.HTTP({
-                     url: '/get_geojson/entity_type?id='+entity_type,
+                     url: '/get_geojson/entity_type?id='+entity_type+'&project_id='+project_id,
                      format: new OpenLayers.Format.GeoJSON()
                }),
                        styleMap:myStyles

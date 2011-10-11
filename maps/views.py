@@ -3,13 +3,20 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.main.utils import get_database_manager
+from datawinners.project.models import Project
 from datawinners.settings import api_keys
 import helper
+from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.queries import get_entities_by_type
 
 
 def map_entities(request):
-    entity_list = get_entities_by_type(get_database_manager(request.user), request.GET['id'])
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, request.GET['project_id'])
+    if project.is_activity_report():
+        entity_list = [get_by_short_code(dbm, short_code, ["reporter"]) for short_code in project.data_senders]
+    else:
+        entity_list = get_entities_by_type(dbm, request.GET['id'])
     location_geojson = helper.create_location_geojson(entity_list)
     return HttpResponse(location_geojson)
 
