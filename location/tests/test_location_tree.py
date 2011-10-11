@@ -46,3 +46,7 @@ class TestLocationTree(TestCase):
         self.assertEqual(None, self.tree.get_centroid(location='pune', level='3'))
 
 
+        
+
+
+

@@ -181,6 +181,7 @@ def _get_all_datasenders(manager, projects, user):
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
     return all_data_senders
 
+@login_required(login_url='/login')
 @csrf_view_exempt
 def create_web_users(request):
     org_id = request.user.get_profile().org_id

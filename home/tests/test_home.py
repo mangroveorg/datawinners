@@ -8,6 +8,6 @@ class TestHome(unittest.TestCase):
         self.client_stub = Client()
 
     def test_should_render_home_view(self):
-        response = self.client_stub.get('/home')
-        self.assertEquals(response.status_code,301)
+        response = self.client_stub.get('/home/')
+        self.assertEquals(response.status_code,200)
 
