@@ -1,5 +1,5 @@
 {% extends 'public_secondary_fr.html' %}
-{% block page_title %} Tarifs {% endblock %}
+{% block page_title %} Tarification {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/fr">Accueil</a> &gt; Tarifs
+<a href="/home/fr">Accueil</a> &gt; Tarification
 {% endblock %}
 
 {% block main_content %}
@@ -26,16 +26,17 @@
                 <div class="container_plan">
                     <div class="plan">
                         <div class="padding_10">
-                            <h2>30 Day Test Drive</h2>
-                            free
-                            <a href="javascript:void(0)" class="try_button">Try it free</a>
+                            <h2>Offre pour 30 Jours d’Essai </h2>
+                            A l’échelle mondiale<br />
+                            Gratuit
+                            <a href="javascript:void(0)" class="try_button">Essai gratuit</a>
                             <ul>
-                                <li>Same online functionality as paid subscription</li>
-                                <li>International telephone number for test purposes</li>
-                                <li>10 SMS submissions*</li>
-                                <li>10 Web submissions</li>
+                                <li>Les mêmes fonctionnalités en ligne qu'un abonnement payé</li>
+                                <li>Un numéro de téléphone international à des fins d’essai</li>
+                                <li>10 soumissions SMS *</li>
+                                <li>10 soumissions par Web</li>
                             </ul>
-                            <em><small>* International SMS rates apply  (for Test  Drive only)</small></em>
+                            <em><small>* La tarification internationale s'applique pour les SMS (pour l’Offre d’Essai seulement)</small></em>
                         </div>
                     </div>
                     <div class="badge">
@@ -47,16 +48,16 @@
                 <div class="container_plan">
                     <div class="plan">
                         <div class="padding_10">
-                            <h2>Ready to Work</h2>
-                            $850 <small>per month</small>
-                            <a href="javascript:void(0)" class="try_button">Suscribe now</a>
+                            <h2>Prêt à l’Emploi</h2>
+                            $850 <small>par mois</small>
+                            <a href="javascript:void(0)" class="try_button">Abonnez-vous</a>
                             <ul>
-                                <li>Full access to online data collection tool</li>
-                                <li>Local telephone number for your organization</li>
-                                <li>Packet of 5000 SMS</li>
-                                <li>Unlimited Web submissions</li>
+                                <li>Accès complet à l'outil de collecte de données en ligne</li>
+                                <li>Un numéro de téléphone local pour votre organisation</li>
+                                <li>Un paquet de 5000 SMS</li>
+                                <li>Soumissions Web illimitées</li>
                             </ul>
-                            Save 10% <a id="learn_more" href="#a3">learn more</a>
+                            Économisez 10% <a id="learn_more" href="#a3">En savoir plus </a>
                         </div>
                     </div>
                     <div class="badge">
@@ -66,54 +67,63 @@
             </div>
             <div class="clear"></div>
         </div>
-        <h2>More Details</h2>
+        <h2>Plus d'informations</h2>
         <ul class="bulleted">
-            <li><a href="#a1">Where DataWinners is available</a></li>
-            <li><a href="#a2">Key details of Monthly Subscription</a></li>
-            <li><a href="#a3">Monthly Subscription Costs</a></li>
-            <li><a href="#a4">Payment</a></li>
-            <li><a href="#a5">Need help getting started?</a></li>
+            <li><a href="#a1">Où est-ce que la plateforme DataWinners est-elle disponible</a></li>
+            <li><a href="#a2">Détails Importants sur l'Abonnement Mensuel</a></li>
+            <li><a href="#a3">Frais d'Abonnement Mensuel</a></li>
+            <li><a href="#a4">Paiement</a></li>
+            <li><a href="#a5">Besoin d'aide pour démarrer ?</a></li>
         </ul>
-        <a name="a1"></a><h2>Where DataWinners is available</h2>
+        <a name="a1"></a><h2>Où est-ce que la plateforme DataWinners est-elle disponible</h2>
         <ul class="bulleted">
-            <li>DataWinners is currently available in Madagascar</li>
-            <li>It will be available worldwide starting in early 2012</li>
-            <li>Free Test Drive account is available anywhere</li>
+            <li>DataWinners est actuellement disponible à Madagascar</li>
+            <li>Elle sera disponible dans le monde entier à partir du début de 2012</li>
+            <li>Un compte gratuit pour l’Offre d’Essai disponible partout</li>
         </ul>
-        <a name="a2"></a><h2>Key Details of Monthly Subscription</h2>
+        <a name="a2"></a><h2>Détails Importants sur l'Abonnement Mensuel</h2>
         <ul class="bulleted">
-            <li>1 Subscription per organization per country</li>
-            <li>Local number provided by HNI</li>
-            <li>5000 SMS included</li>
-            <li>Overage: $50 for 500 additional SMS</li>
-            <li>Coverage: Airtel</li>
-            <li>Reverse SMS Billing</li>
+            <li>Une souscription par organisation par pays</li>
+            <li>Un numéro local fourni par HNI</li>
+            <li>5000 SMS inclus <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
+                <div class="tooltip"><p>
+                    Le paquet mensuel de 5000 SMS inclut à la fois :<br/>
+                    &bull;&nbsp;les SMS <strong>entrants</strong> (vous recevez des SMS de vos personnels de terrain)<br/>
+                    &bull;&nbsp;les SMS <strong>sortants</strong> (vous envoyez des SMS à vos personnels de terrain)
+                </p></div>
+            </li>
+            <li>Excédents : 50 $ pour 500 SMS supplémentaires</li>
+            <li>Couverture : Airtel</li>
+            <li>Facturation SMS Inversée <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
+                <div class="tooltip"><p>
+                    Les personnels de terrain ne paient rien pour l’envoi de leurs données via SMS. Ces SMS sortants sont déduits de votre paquet mensuel de 5000 SMS. 
+                </p></div>
+            </li>
         </ul>
-        <a name="a3"></a><h2>Monthly Subscription Costs</h2>
+        <a name="a3"></a><h2>Frais d'Abonnement Mensuel</h2>
         <table width="500" class="pricelist">
             <tr>
-                <td width="400">Price per month:</td>
+                <td width="400">Prix par mois :</td>
                 <td width="100">$ 850</td>
             </tr>
             <tr>
-                <td>- 10% Discount:<br/><em><small>Pay 6 months in advance and save 10%</small></em></td>
+                <td>- Remise de 10% :<br/><em><small>Payez 6 mois d’abonnement à l'avance et économisez 10%</small></em></td>
                 <td>- $ 85</td>
             </tr>
             <tr>
-                <td><strong>Price per month</strong> (with Discount):</td>
+                <td><strong>Prix par mois</strong> (avec remise):</td>
                 <td><strong>$ 765</strong></td>
             </tr>
         </table>
-        <a name="a4"></a><h2>Payment</h2>
+        <a name="a4"></a><h2>Paiement</h2>
         <ol>
-            <li><strong>Wire transfer</strong></li>
-            <li><strong>Credit card</strong><br/>Call us directly and we can securely process your credit card payment over the phone</li>
-            <li><strong>Pay via ACH</strong><br/>Securely transfer funds between your US-based bank account and ours (normally free of charge).</li>
+            <li><strong>Virement</strong></li>
+            <li><strong>Carte de crédit</strong><br/>Appelez-nous directement et nous pouvons par téléphone, procéder à votre paiement par carte de crédit en toute sécurité</li>
+            <li><strong>Paiement par transfert ACH </strong><br/>Transfert de fonds direct et sécurisé entre deux comptes bancaires basés aux États-Unis (gratuit , normalement).</li>
         </ol>
-        <a name="a5"></a><h2>Need help getting started? </h2>
-        <p>If you need help getting started or have an ambitious data collection project that requires a DataWinners custom solution, contact us at
-        info@datawinners.com</p>
-        <p>Our team has extensive experience developing mobile data collection systems. See our <a href="/fr/success-stories">Success Stories.</a></p>
+        <a name="a5"></a><h2>Besoin d'aide pour démarrer ?</h2>
+        <p>Si vous avez besoin d'aide pour démarrer, ou avez un projet de collecte de données ambitieux qui nécessite une solution personnalisée de la part de DataWinners, contactez-nous au info@datawinners.com ou utilisez notre formulaire de contact. </p>
+        <p>Notre équipe possède une vaste expérience dans le développement des systèmes mobiles de collecte de données. Voir <a href="/fr/success-stories">Nos réussites.</a></p>
     </div>
 </div>
 <div class="clear"></div>
