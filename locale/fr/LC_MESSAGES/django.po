@@ -2434,3 +2434,5 @@ msgstr "Erreur. Soumission invalide. Reportez-vous au questionnaire imprimé. Re
 msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
 msgstr "Erreur: Mauvais SMS. Revue imprimée questionnaire et le renvoyer par SMS."
 
+msgid "Error. Incorrect answer for question %s. Please resend entire message."
+msgstr "Erreur. Mauvaise réponse à la question %s. S'il vous plaît renvoyer la totalité du message."
