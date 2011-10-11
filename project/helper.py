@@ -9,7 +9,6 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_sequence, is_not_empty, is_string, sequence_to_str
 from mangrove.datastore import aggregrate as aggregate_module
-from django.utils.translation import  ugettext
 import models
 import xlwt
 from datetime import datetime
@@ -77,7 +76,7 @@ def _create_questionnaire(dbm, post,entity_type,entity_id_question_code, activit
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
                                                          primitive_type="date",
                                                          description="activity reporting period")
-    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code=activity_report_question_code,
+    activity_report_question = DateField(name="What is the reporting period for the activity?", code=activity_report_question_code,
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy")
 

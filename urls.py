@@ -8,7 +8,12 @@ from django.conf.urls.defaults import patterns, include, url
 import settings
 from django.contrib import admin
 
+js_info_dict = {
+    'packages': ('datawinners.project',),
+}
+
 urlpatterns = patterns('',
+                       (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
                        (r'', include('datawinners.accountmanagement.urls')),
                        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
                        (r'', include('datawinners.project.urls')),
