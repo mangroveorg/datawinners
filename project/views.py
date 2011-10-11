@@ -746,9 +746,9 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
 
 def _create_select_field(field, choices):
     if field.single_select_flag:
-        return forms.ChoiceField(choices=choices, required=False, label=field.name, initial=field.value, help_text=field.instruction)
+        return forms.ChoiceField(choices=choices, required=field.is_required(), label=field.name, initial=field.value, help_text=field.instruction)
     return forms.MultipleChoiceField(label=field.name, widget=forms.CheckboxSelectMultiple, choices=choices,
-                                  initial=field.value, required=False, help_text=field.instruction)
+                                  initial=field.value, required=field.is_required(), help_text=field.instruction)
 
 
 def _create_choices(field):
@@ -761,7 +761,7 @@ def _create_choices(field):
 def _get_django_field(field):
     if isinstance(field, SelectField):
         return  _create_select_field(field, _create_choices(field))
-    display_field = forms.CharField(label=field.name, initial=field.value, required=False, help_text=field.instruction)
+    display_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(), help_text=field.instruction)
     display_field.widget.attrs["watermark"] = field.get_constraint_text()
     display_field.widget.attrs['style'] = 'padding-top: 7px;'
     #    display_field.widget.attrs["watermark"] = "18 - 1"
@@ -774,18 +774,10 @@ def _create_django_form_from_form_model(form_model):
     return type('QuestionnaireForm', (Form, ), properties)
 
 
-def _lookup(code, value):
-    if value == "Answer for question " + str(code) + " is required":
-        return _("This field is required")
-    return value
-
-def _lookup_in_list(code, values):
-    return [_lookup(code,value) for value in values]
-
 def _to_list(errors):
     error_dict = dict()
     for key, value in errors.items():
-        error_dict.update({key: [_lookup(key, value)] if not isinstance(value, list) else _lookup_in_list(key, value)})
+        error_dict.update({key: [value] if not isinstance(value, list) else value})
     return error_dict
 
 

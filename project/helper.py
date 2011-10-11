@@ -152,7 +152,6 @@ def _create_select_question(post_dict, single_select_flag, ddtype):
                        options=options, single_select_flag=single_select_flag, ddtype=ddtype,
                        instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
-
 def adapt_submissions_for_template(questions, submissions):
     assert is_sequence(questions)
     assert is_sequence(submissions)
@@ -160,9 +159,10 @@ def adapt_submissions_for_template(questions, submissions):
         assert type(s) is Submission and s._doc is not None
     formatted_list = []
     for each in submissions:
+        case_insensitive_dict = {key.lower():value for key,value in each.values.items()}
         formatted_list.append(
             [each.uuid, each.destination, each.source, each.created, each.errors, each.status]+
-            [each.data_record.is_void() if each.data_record is not None else True] + [each.values.get(q.code.lower()) for q in questions])
+            [each.data_record.is_void() if each.data_record is not None else True] + [case_insensitive_dict.get(q.code.lower(), '--') for q in questions])
 
     return [tuple(each) for each in formatted_list]
 
