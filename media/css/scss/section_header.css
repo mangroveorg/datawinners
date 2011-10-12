@@ -44,6 +44,10 @@
     #container_header_application #main_tab ul li {
       padding: 10px 34px 10px 10px;
       float: left; }
+      #container_header_application #main_tab ul li label {
+        font-size: 14px;
+        color: #feea89;
+        font-weight: bold; }
       #container_header_application #main_tab ul li a {
         font-size: 14px;
         color: #feea89;
