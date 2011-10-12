@@ -22,7 +22,8 @@ $(document).ready(function(){
    $("#add_datasenders").unbind('click').click(function() {
        $(".add_datasender_form").dialog("open");
    });
-   $(".cancel_link").unbind('click').click(function(event) {
+   
+   $(".cancel_link").live("click", function(event){
        event.preventDefault();
        $(".add_datasender_form").dialog("close");
    });
