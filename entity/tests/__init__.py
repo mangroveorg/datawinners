@@ -1,3 +1,1 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from test_entity_logged_in import *
-from test_entity_not_logged_in import *
