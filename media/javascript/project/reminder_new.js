@@ -1,16 +1,18 @@
 $(document).ready(function() {
+    $('#message_count').html($('#message').val().length);
     $("#new_reminder").dialog({
         autoOpen: false,
         modal: true,
         title: 'Reminder',
         width:450,
+
         beforeClose: function() {
-            $('#message_count').html("0");
             $('#days_before_deadline').attr("disabled", "disabled");
             $('#days_after_deadline').attr("disabled", "disabled");
             $('#reminder_form')[0].reset();
             var validator = $('#reminder_form').validate();
             validator.resetForm();
+            $('#message_count').html($('#message').val().length);
         }
     });
 
