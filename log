@@ -1,0 +1,79 @@
+nosetests --verbosity 2 entity
+Creating test database for alias 'default' ('test_geodjango')...
+Syncing...
+Creating tables ...
+Creating table auth_permission
+Creating table auth_group_permissions
+Creating table auth_group
+Creating table auth_user_user_permissions
+Creating table auth_user_groups
+Creating table auth_user
+Creating table auth_message
+Creating table django_content_type
+Creating table django_session
+Creating table django_site
+Creating table registration_registrationprofile
+Creating table django_admin_log
+Creating table django_flatpage_sites
+Creating table django_flatpage
+Creating table south_migrationhistory
+Installing custom SQL ...
+Installing indexes ...
+Migrating...
+Running migrations for accountmanagement:
+ - Migrating forwards to 0005_auto__del_datasenderprofile__add_field_ngouserprofile_reporter_id.
+ > accountmanagement:0001_initial
+ > accountmanagement:0002_auto__add_datasenderprofile
+ > accountmanagement:0003_auto__del_field_datasenderprofile_org_id
+ > accountmanagement:0004_auto__add_field_datasenderprofile_organization
+ > accountmanagement:0005_auto__del_datasenderprofile__add_field_ngouserprofile_reporter_id
+ - Loading initial data for accountmanagement.
+Installed 22 object(s) from 1 fixture(s)
+Running migrations for project:
+ - Migrating forwards to 0008_auto__chg_field_reminder_remind_to.
+ > project:0001_initial
+ > project:0002_auto__add_field_reminder_reminder_mode
+ > project:0003_auto__add_field_reminder_day__add_field_reminder_relative
+ > project:0004_auto__del_field_reminder_day_of_the_month
+ > project:0005_auto__del_field_reminder_relative
+ > project:0006_auto__add_field_reminder_voided
+ > project:0007_auto__add_field_reminder_remind_to
+ > project:0008_auto__chg_field_reminder_remind_to
+ - Loading initial data for project.
+No fixtures found.
+Running migrations for location:
+ - Migrating forwards to 0001_initial.
+ > location:0001_initial
+ - Loading initial data for location.
+No fixtures found.
+Running migrations for submission:
+ - Migrating forwards to 0001_initial.
+ > submission:0001_initial
+ - Loading initial data for submission.
+No fixtures found.
+
+Synced:
+ > django.contrib.auth
+ > django.contrib.contenttypes
+ > django.contrib.sessions
+ > django.contrib.sites
+ > django.contrib.messages
+ > django.contrib.staticfiles
+ > django.contrib.gis
+ > registration
+ > django.contrib.admin
+ > compressor
+ > datawinners.dashboard
+ > datawinners.entity
+ > django_extensions
+ > django.contrib.flatpages
+ > south
+ > datawinners.home
+
+Migrated:
+ - datawinners.accountmanagement
+ - datawinners.project
+ - datawinners.location
+ - datawinners.submission
+Installed 22 object(s) from 1 fixture(s)
+Destroying test database for alias 'default' ('test_geodjango')...

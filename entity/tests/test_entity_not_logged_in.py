@@ -1,9 +1,9 @@
-from django.utils import unittest
+from django.test import TestCase
 from django.test import Client
 
 
 
-class TestEntityNotLoggedIn(unittest.TestCase):
+class TestEntityNotLoggedIn(TestCase):
 
 
     def setUp(self):

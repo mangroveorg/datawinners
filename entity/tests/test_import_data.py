@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-import unittest
+from django.test import TestCase
 from datawinners.entity.import_data import load_subject_registration_data
 from datawinners.location.LocationTree import get_location_tree
 from mangrove import initializer
@@ -11,7 +11,7 @@ from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
 
-class TestImportData(unittest.TestCase):
+class TestImportData(TestCase):
     def setUp(self):
         self.dbm = get_db_manager(database='mangrove-test')
         self._create_entities()

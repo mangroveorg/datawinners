@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
 from mock import Mock
+from django.test import TestCase
 from datawinners.entity.import_data import import_data
 from mangrove import initializer
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.queries import get_entity_count_for_type
 
-class TestImport(unittest.TestCase):
+class TestImport(TestCase):
     def setUp(self):
         self.dbm = get_db_manager(database='mangrove-test')
         self.csv_data = """
