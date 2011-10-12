@@ -1,5 +1,33 @@
+DW.set_deadline_example = function(){
+        var deadline_example = "";
+        var frequency = $('#id_frequency_period').val();
+        var deadline_type_value = $('#id_deadline_type:not(:disabled)').val();
+
+        if (frequency == 'week'){
+            // Monday of the following week
+            // Monday of the week
+            var selected_weekday_text = $('#id_deadline_week option:selected').text();
+            if (deadline_type_value == 'Following'){
+                deadline_example = interpolate("%(day)s of the week following the reporting week ",{ day : selected_weekday_text},true);
+            }else{
+                deadline_example = interpolate("%(day)s of the reporting week",{ day : selected_weekday_text },true);
+            }
+        }else if (frequency == 'month')
+        {
+            // 5th day of October for September report
+            // 5th day of October for October report
+            var selected_month_day_text = $('#id_deadline_month option:selected').text();
+            if (deadline_type_value == 'Following'){
+                deadline_example = interpolate("%(day)s of October for September report",{ day : selected_month_day_text },true);
+            }else{
+                deadline_example = interpolate("%(day)s of October for October report",{ day : selected_month_day_text },true);
+            }
+        }
+        $('#deadline_example').text(deadline_example)
+    };
+
 $(document).ready(function(){
-    if ($('#id_activity_report_0').attr('checked')==true) {
+    if ($('#id_activity_report_0').attr('checked')) {
              $('#id_entity_type').attr('disabled', true);
         DW.current_activity_report = $('#id_activity_report_0').val();
     }
@@ -26,7 +54,7 @@ $(document).ready(function(){
     $("#id_activity_report_1").live("click", function(){
         $("#id_entity_type").attr("disabled", false);
         DW.open_activity_report_warning();
-    })
+    });
     $("#profile_warning_message").dialog({
         title: gettext("Warning !!"),
         modal: true,
@@ -55,7 +83,7 @@ $(document).ready(function(){
 
     DW.open_activity_report_warning = function(){
         $("#profile_warning_message").dialog("open");
-    }
+    };
 
     deadline_init();
     $($('input[name="frequency_enabled"]')).change(function(){
@@ -74,34 +102,6 @@ $(document).ready(function(){
     $('#id_deadline_week,#id_deadline_month,#id_deadline_type,#id_frequency_period').change(function(){
         DW.set_deadline_example();
     });
-
-    DW.set_deadline_example = function(){
-        var deadline_example = "";
-        var frequency = $('#id_frequency_period').val();
-        var deadline_type_value = $('#id_deadline_type:not(:disabled)').val();
-
-        if (frequency == 'week'){
-            // Monday of the following week
-            // Monday of the week
-            var selected_weekday_text = $('#id_deadline_week option:selected').text();
-            if (deadline_type_value == 'Following'){
-                deadline_example = interpolate("%(day)s of the week following the reporting week ",{ day : selected_weekday_text},true);
-            }else{
-                deadline_example = interpolate("%(day)s of the reporting week",{ day : selected_weekday_text },true);
-            }
-        }else if (frequency == 'month')
-        {
-            // 5th day of October for September report
-            // 5th day of October for October report
-            var selected_month_day_text = $('#id_deadline_month option:selected').text();
-            if (deadline_type_value == 'Following'){
-                deadline_example = interpolate("%(day)s of October for September report",{ day : selected_month_day_text },true);
-            }else{
-                deadline_example = interpolate("%(day)s of October for October report",{ day : selected_month_day_text },true);
-            }
-        }
-        $('#deadline_example').text(deadline_example)
-    }
 
     $('input[name=activity_report]').change(function(){
         if($('#id_activity_report_1').attr('checked')){
