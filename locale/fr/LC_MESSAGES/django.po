@@ -206,7 +206,7 @@ msgstr ""
 
 #: entity/forms.py:67
 msgid "Please fill out at least one location field correctly."
-msgstr ""
+msgstr "S'il vous plaît remplir au moins un champ de localisation correctement."
 
 # message_provider/message_handler.py:43
 #: messageprovider/message_handler.py:44
