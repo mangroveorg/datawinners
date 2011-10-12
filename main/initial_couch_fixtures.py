@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.models import User, Group
 from mock import patch
 from datawinners import initializer, settings
-from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, RemindTo, ReminderMode
@@ -191,6 +191,8 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
 
 
 def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
+    organization = Organization.objects.get(pk='SLX364903')
+    Reminder.objects.filter(organization = organization).delete()
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
     # Entity id is a default type in the system.
     entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
