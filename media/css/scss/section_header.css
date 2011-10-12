@@ -26,6 +26,8 @@
       border-right: 1px solid #474747; }
       #container_header_application #container_header_wizard #header .login span a {
         color: #C1C1C1; }
+    #container_header_application #container_header_wizard #header .login .help {
+      color: #C1C1C1; }
     #container_header_application #container_header_wizard #header .login .welcome {
       font-weight: bold; }
 #container_header_application #main_tab {
