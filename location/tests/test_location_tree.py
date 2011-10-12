@@ -1,12 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from unittest.case import SkipTest
-from datawinners.location.LocationTree import get_locations_for_country, get_location_groups_for_country, get_location_tree
+from datawinners.location.LocationTree import get_location_groups_for_country, get_location_tree
 
 class TestLocationTree(unittest.TestCase):
     def setUp(self):
         self.tree = get_location_tree()
-
 
     def tearDown(self):
         pass
@@ -22,10 +21,6 @@ class TestLocationTree(unittest.TestCase):
         self.assertTrue(self.tree._exists("amboanjo"))
         self.assertFalse(self.tree._exists("XYZ"))
 
-    def test_should_get_lowest_admin_location_for_geocode(self):
-        self.assertEqual("fkt ambaribe", self.tree._get_location_for_geocode(lat=-18.777180, long=46.854321).lower())
-        self.assertFalse(self.tree._exists("XYZ"))
-
     def test_should_get_location_hierarchy_for_geocode(self):
         self.assertEqual([u'madagascar', u'itasy', u'miarinarivo', u'ambatomanjaka', u'fkt ambaribe'],
                                                                                                      self.tree.get_location_hierarchy_for_geocode(
@@ -39,12 +34,6 @@ class TestLocationTree(unittest.TestCase):
                                                                                                                lat=-18.7415362448
                                                                                                                ,
                                                                                                                long=47.7765977667))
-
-    @SkipTest
-    #TODO: USe this test and the related piece of code when the functionality gets used
-    def test_should_get_filtered_list_lowest_levels(self):
-        self.assertEqual(['ZOMA BEALOKA, ANTANANARIVO', 'ZAZAFOTSY, FIANARANTSOA'], get_locations_for_country(
-            country="Madagascar", start_with="z"))
 
     def test_should_get_filtered_list_group_by_levels(self):
         expected_location_group = {u'LEVEL3': [u'SOASERANA,MANJA,MENABE', u'SOASERANA,BETIOKY ATSIMO,ATSIMO ANDREFANA']}
