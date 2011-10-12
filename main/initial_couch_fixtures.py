@@ -26,13 +26,17 @@ from mangrove.transport.submissions import Submission
 class DateTimeMocker(object):
     def __init__(self):
         self.datetime_patcher = patch("mangrove.datastore.entity.utcnow")
+        self.submission_date_patcher = patch("mangrove.datastore.documents.utcnow")
+        self.submission_date_mock = self.submission_date_patcher.start()
         self.datetime_mock = self.datetime_patcher.start()
 
     def set_date_time_now(self, val):
         self.datetime_mock.return_value = val
+        self.submission_date_mock.return_value = val
 
     def end_mock(self):
         self.datetime_patcher.stop()
+        self.submission_date_patcher.stop()
 
 
 def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
@@ -237,29 +241,112 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                                    question8],
                            entity_type=CLINIC_ENTITY_TYPE
     )
-    try:
-        qid = form_model.save()
-    except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "cli001").delete()
-        qid = form_model.save()
-    project9 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
-                      reminder_and_deadline={'frequency_enabled':'False', 'reminders_enabled': 'False'})
-    project9.qid = qid
-    project9.state = ProjectState.ACTIVE
-    try:
-        project9.save(manager)
-    except Exception:
-        pass
 
     weekly_reminder_and_deadline = {
             "reminders_enabled": "True",
-            "deadline_week": "6",
+            "deadline_week": "5",
             "deadline_type": "That",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "week"
         }
+
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli001").delete()
+        qid = form_model.save()
+    project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                      reminder_and_deadline=weekly_reminder_and_deadline)
+    project1.qid = qid
+    project1.state = ProjectState.ACTIVE
+    try:
+        project1.save(manager)
+    except Exception:
+        pass
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=1,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "1 day is remainning to deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=2,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "2 days are remainning to deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=3,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "3 days are remainning to deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=4,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "4 days are remainning to deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=5,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "5 days are remainning to deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "Today is the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=1,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "1 day is overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=2,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "2 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=3,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "3 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=4,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "4 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=5,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "5 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=6,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "6 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Create reminders for project1
+    reminder = Reminder(project_id = project1.id,day=7,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "7 days are overdue the deadline. Please send your data for Clinic Test Project.")
+    reminder.save()
+
+    # Associate datasenders/reporters with project 1
+    project1.data_senders.extend(["rep5","rep6","rep1"])
+    project1.save(manager)
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
                             form_code="cli002", type='survey',
@@ -405,16 +492,16 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
             "frequency_period": "week"
         }
 
-    form_model = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
+    form_model10 = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
                             form_code="cli009", type='survey',
                             fields=[question1, question2, question3, question4, question5, question6, question7,
                                     question8],
                             entity_type=CLINIC_ENTITY_TYPE)
     try:
-        qid = form_model.save()
+        qid = form_model10.save()
     except DataObjectAlreadyExists as e:
         get_form_model_by_code(manager, "cli009").delete()
-        qid = form_model.save()
+        qid = form_model10.save()
     project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation", project_type="survey",
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
                        reminder_and_deadline=weekly_reminder_and_following_deadline)
@@ -440,6 +527,341 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     submission._doc.event_time = datetime(2011,9,16)
     submission.save()
 
+    form_model10 = FormModel(manager, name="AIDS", label="Aids form_model",
+                           form_code="cli010", type='survey',
+                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
+                           entity_type=CLINIC_ENTITY_TYPE
+    )
+
+    weekly_reminder_and_deadline = {
+            "reminders_enabled": "True",
+            "deadline_week": "5",
+            "deadline_type": "Following",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
+
+    try:
+        qid10 = form_model10.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli010").delete()
+        qid10 = form_model10.save()
+    project10 = Project(name="Clinic10 Test Project", goals="This project is for automation", project_type="survey",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                      reminder_and_deadline=weekly_reminder_and_deadline)
+    project10.qid = qid10
+    project10.state = ProjectState.ACTIVE
+    try:
+        project10.save(manager)
+    except Exception:
+        pass
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=1,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "1 day is remainning to deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=2,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "2 days are remainning to deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=3,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "3 days are remainning to deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=4,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "4 days are remainning to deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=5,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "5 days are remainning to deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "Today is the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=1,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "1 day is overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=2,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "2 days are overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=3,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "3 days are overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=4,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "4 days are overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=5,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "5 days are overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=6,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "6 days are overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Create reminders for project10
+    reminder = Reminder(project_id = project10.id,day=7,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS,organization_id = 'SLX364903',
+             message = "7 days are overdue the deadline. Please send your data for Clinic10 Test Project.")
+    reminder.save()
+
+    # Associate datasenders/reporters with project 1
+    project10.data_senders.extend(["rep5","rep6","rep7"])
+    project10.save(manager)
+
+    form_model11 = FormModel(manager, name="AIDS", label="Aids form_model",
+                           form_code="cli011", type='survey',
+                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
+                           entity_type=CLINIC_ENTITY_TYPE
+    )
+
+    weekly_reminder_and_deadline = {
+            "reminders_enabled": "True",
+            "deadline_week": "5",
+            "deadline_type": "Following",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
+
+    try:
+        qid11 = form_model11.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli011").delete()
+        qid11 = form_model11.save()
+    project11 = Project(name="Clinic11 Test Project", goals="This project is for automation", project_type="survey",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                      reminder_and_deadline=weekly_reminder_and_deadline)
+    project11.qid = qid11
+    project11.state = ProjectState.ACTIVE
+    try:
+        project11.save(manager)
+    except Exception:
+        pass
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=1,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "1 day is remainning to deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=2,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "2 days are remainning to deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=3,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "3 days are remainning to deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=4,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "4 days are remainning to deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=5,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "5 days are remainning to deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "Today is the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=1,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "1 day is overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=2,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "2 days are overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=3,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "3 days are overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=4,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "4 days are overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=5,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "5 days are overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=6,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "6 days are overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Create reminders for project11
+    reminder = Reminder(project_id = project11.id,day=7,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "7 days are overdue the deadline. Please send your data for Clinic11 Test Project.")
+    reminder.save()
+
+    # Associate datasenders/reporters with project 1
+    project11.data_senders.extend(["rep5","rep6","rep7"])
+    project11.save(manager)
+
+    form_model12 = FormModel(manager, name="AIDS", label="Aids form_model",
+                           form_code="cli012", type='survey',
+                           fields=[question1, question2, question3, question4, question5, question6, question7, question8],
+                           entity_type=CLINIC_ENTITY_TYPE
+    )
+
+    weekly_reminder_and_deadline = {
+            "reminders_enabled": "True",
+            "deadline_week": "5",
+            "deadline_type": "That",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
+
+    try:
+        qid12 = form_model12.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli012").delete()
+        qid12 = form_model12.save()
+    project12 = Project(name="Clinic12 Test Project", goals="This project is for automation", project_type="survey",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                      reminder_and_deadline=weekly_reminder_and_deadline)
+    project12.qid = qid12
+    project12.state = ProjectState.ACTIVE
+    try:
+        project12.save(manager)
+    except Exception:
+        pass
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=1,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "1 day is remainning to deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=2,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "2 days are remainning to deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=3,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "3 days are remainning to deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=4,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "4 days are remainning to deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=5,reminder_mode=ReminderMode.BEFORE_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "5 days are remainning to deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=0,reminder_mode=ReminderMode.ON_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "Today is the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=1,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "1 day is overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=2,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "2 days are overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=3,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "3 days are overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=4,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "4 days are overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=5,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "5 days are overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=6,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "6 days are overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Create reminders for project12
+    reminder = Reminder(project_id = project12.id,day=7,reminder_mode=ReminderMode.AFTER_DEADLINE,
+             remind_to=RemindTo.ALL_DATASENDERS,organization_id = 'SLX364903',
+             message = "7 days are overdue the deadline. Please send your data for Clinic12 Test Project.")
+    reminder.save()
+
+    # Associate datasenders/reporters with project 1
+    project12.data_senders.extend(["rep5","rep6","rep7"])
+    project12.save(manager)
 
 
 def load_sms_data_for_cli001(manager):
@@ -448,6 +870,7 @@ def load_sms_data_for_cli001(manager):
     DEC_2010 = datetime(2010, 12, 28, hour=00, minute=00, second=59, tzinfo=UTC)
     NOV_2010 = datetime(2010, 11, 26, hour=23, minute=59, second=59, tzinfo=UTC)
     today = datetime.today()
+    LAST_WEEK = today - timedelta(days=7)
     THIS_MONTH = datetime(today.year, today.month, 1, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=8)
     sms_player = SMSPlayer(manager, get_location_tree())
@@ -619,6 +1042,67 @@ def load_sms_data_for_cli001(manager):
     message1 = "cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233 -28.3324"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
+    FROM_NUMBER = '919970059125'
+    TO_NUMBER = '919880734937'
+    transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
+
+    datetime_mocker2 = DateTimeMocker()
+    datetime_mocker2.set_date_time_now(LAST_WEEK)
+    last_week_date = str(LAST_WEEK.day) + "." + str(LAST_WEEK.month) + "." + str(LAST_WEEK.year)
+    # Total number of identical records = 4
+    message1 = "cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+
+    # Total number of identical records = 4
+    message1 = "cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+
+    # Total number of identical records = 4
+    message1 = "cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+
+    datetime_mocker2.end_mock()
+
+    FROM_NUMBER = '917798987102'
+    TO_NUMBER = '919880734937'
+    transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
+
+    today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
+    # Total number of identical records = 3
+    message1 = "cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+
+    # Total number of identical records = 3
+    message1 = "cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+
+    # Total number of identical records = 3
+    message1 = "cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
+    message1 = "cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
+    response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
 def load_data():
     manager = load_manager_for_default_test_account()
@@ -643,17 +1127,27 @@ def load_data():
              location=[u'Madagascar', u'Haute matsiatra', u'Ambohimahasoa', u'Camp Robin'],
              short_code="rep2", geometry={"type": "Point", "coordinates": [-20.9027586764, 47.165034158]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567891", phone_number_type),
-            (NAME_FIELD, "Mr. Reporter 3", first_name_type)],
+            (NAME_FIELD, "Shilpa", first_name_type)],
              location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
              short_code="rep3", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
     register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567892", phone_number_type),
-        (NAME_FIELD, "Ms. Reporter 4", first_name_type)],
+        (NAME_FIELD, "Asif", first_name_type)],
          location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
          short_code="rep4", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
-
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919970059125", phone_number_type),
+        (NAME_FIELD, "Ritesh", first_name_type)],
+         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+         short_code="rep5", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987116", phone_number_type),
+        (NAME_FIELD, "RiteshY", first_name_type)],
+         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+         short_code="rep6", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "917798987102", phone_number_type),
+        (NAME_FIELD, "AkshaY", first_name_type)],
+         location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+         short_code="rep7", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
-
 
 def load_all_managers():
     managers = []
