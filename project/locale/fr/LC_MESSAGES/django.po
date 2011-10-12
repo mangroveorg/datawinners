@@ -83,8 +83,8 @@ msgstr ""
 #: forms.py:54
 msgid ""
 "Choose your language for the questionnaire and automatic messages to Data "
-"Senders?"
-msgstr ""
+"Senders"
+msgstr "Choisissez votre langue pour le questionnaire et les messages automatiques aux expéditeurs de données"
 
 #: forms.py:56
 msgid "How often do you need the data?"

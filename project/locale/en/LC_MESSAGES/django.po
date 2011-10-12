@@ -82,7 +82,7 @@ msgstr ""
 #: forms.py:54
 msgid ""
 "Choose your language for the questionnaire and automatic messages to Data "
-"Senders?"
+"Senders"
 msgstr ""
 
 #: forms.py:56
