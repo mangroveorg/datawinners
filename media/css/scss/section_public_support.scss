@@ -1,0 +1,32 @@
+#support-acc{
+    .ui-accordion-header{
+        font-family:Helvetica,Arial,sans-serif;
+        font-size:13px;
+        font-weight:normal;
+        margin:0;
+        padding:0;
+        a{
+            padding:5px 0 0 22px;
+            &:hover{
+                text-decoration:none !important;
+            }
+        }
+    }
+    .ui-state-default, .ui-state-active, .ui-widget-content{
+        background:none;
+        border:none;
+    }
+    .ui-widget-content{
+        font-family:Helvetica,Arial,sans-serif;
+        font-size:13px;
+        padding:0;
+    }
+    .ui-icon{
+        background:url('/media/images/dw_acc_arrow.gif') no-repeat left top;
+    }
+    .ui-state-active{
+        .ui-icon{
+            background:url('/media/images/dw_acc_arrow.gif') no-repeat left -20px;
+        }
+    }
+}

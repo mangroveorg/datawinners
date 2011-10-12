@@ -7,17 +7,93 @@
 {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $( "#support-acc" ).accordion({ collapsible: true, active: false, autoHeight: false });
+        })
+    </script>
+{% endblock %}
+
 {% block page_breadcrumbs %}
 <a href="/home/en">Accueil</a> &gt; Support
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>SUPPORT</h1>
     </div>
     <div id="main_content">
         <div class="margin_left_20">
+            <div class="left_content">
+                <h2>Get Started</h2>
+                <p>These tutorials will help you get stared with DataWinners.</p>
+                <p>
+                    <a href="javascript:void(0)" target="_blank">What can I do with DataWinners</a> (PDF, 12 pages, 432 KB)<br/>
+                    <em>A complete picture of the data collection process and how DataWinners helps you to collect information straight from the field.</em>
+                </p>
+                <p>
+                    <a href="javascript:void(0)" target="_blank">Get an overview </a>(PDF, 12 pages, 432 KB)<br/>
+                    <em>You have created an account. What can you do after you log in.</em>
+                </p>
+                <p>
+                    <a href="javascript:void(0)" target="_blank">Create a new project</a> (PDF, 12 pages, 432 KB)<br/>
+                    <em>You want to create a new project. Let us take you through the process, step-by-step.</em>
+                </p>
+                <h2>Find answers</h2>
+                <div id="support-acc">
+                    <h3><a href="#">I can't send in a SMS answer</a></h3>
+                    <div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        </p>
+                    </div>
+                    <h3><a href="#">I want to import a list</a></h3>
+                    <div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        </p>
+                    </div>
+                </div>
+                <h2>Ask Us</h2>
+                <p>We will try our best to respond within ﻿24 hours<p>
+                <ul class="bulleted">
+                    <li>Email: support@datawinners.com</li>
+                    <li><a href="javascript:void(0)">Online form</a></li>
+                    <li>Hotline in Madagascar: +261 (0)20 12 345 67</li>
+                </ul>
+            </div>
+            <div class="right_content">
+                <div class="block_1">
+                    <h1>Let us help you</h1>
+                    <p>
+                        If you need help getting started or have an ambitious data collection project that requires a DataWinners custom solution,
+                        <a href="/en/about-us/contact-us">contact us</a>
+                    </p>
+                </div>
 
+                <div class="block_2">
+                    <h1>How it works</h1>
+                    <p>
+                        Get a quick overview of the the data collection process.
+                        <br/><br/>See <a href="/en/what-is-datawinners/how-it-works">How it Works </a>
+                    </p>
+                </div>
+
+                <div class="block_2">
+                    <h1>Have an idea?</h1>
+                    <p>
+                        If you have a great idea for a tutorial you would like, let us know.
+                        <a href="/en/about-us/contact-us">let us know.</a>
+                    </p>
+                </div>
+            </div>
+            <div class="clear"></div>
         </div>
     </div>
     <div class="clear"></div>

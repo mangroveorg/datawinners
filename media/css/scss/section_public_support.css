@@ -1,0 +1,21 @@
+#support-acc .ui-accordion-header {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  margin: 0;
+  padding: 0; }
+  #support-acc .ui-accordion-header a {
+    padding: 5px 0 0 22px; }
+    #support-acc .ui-accordion-header a:hover {
+      text-decoration: none !important; }
+#support-acc .ui-state-default, #support-acc .ui-state-active, #support-acc .ui-widget-content {
+  background: none;
+  border: none; }
+#support-acc .ui-widget-content {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  padding: 0; }
+#support-acc .ui-icon {
+  background: url("/media/images/dw_acc_arrow.gif") no-repeat left top; }
+#support-acc .ui-state-active .ui-icon {
+  background: url("/media/images/dw_acc_arrow.gif") no-repeat left -20px; }
