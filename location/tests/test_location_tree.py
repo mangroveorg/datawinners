@@ -1,12 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.test import TestCase
 from nose.plugins.skip import SkipTest
-from datawinners.location.LocationTree import get_location_groups_for_country, get_location_tree
+from datawinners.location.LocationTree import get_location_groups_for_country, LocationTree
 
 class TestLocationTree(TestCase):
     fixtures = ['test_location_level.json']
     def setUp(self):
-        self.tree = get_location_tree()
+        self.tree = LocationTree()
 
     def tearDown(self):
         pass
