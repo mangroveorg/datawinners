@@ -113,7 +113,7 @@ msgid "Answer must be a date in the following format: %s. Example: %s"
 msgstr ""
 
 #: media/javascript/project/questionnaire_helper.js:12
-msgid "Choose 1 answer from the above list. Example: a"
+msgid "Choose 1 answer from the list. Example: a"
 msgstr ""
 
 #: media/javascript/project/questionnaire_helper.js:13

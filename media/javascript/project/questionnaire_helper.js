@@ -8,7 +8,7 @@ DW.instruction_template = {
     "text":gettext("Answer must be a word or phrase"),
     "max_text":gettext("Answer must be a word or phrase %d characters maximum"),
     "date":gettext("Answer must be a date in the following format: %s. Example: %s"),
-    "single_select":gettext("Choose 1 answer from the above list. Example: a"),
+    "single_select":gettext("Choose 1 answer from the list. Example: a"),
     "multi_select":gettext("Choose 1 or more answers from the above list. Example: a or ab "),
     "gps":gettext("Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324, 27.6547 "),
     "dd.mm.yyyy": "25.12.2011",
