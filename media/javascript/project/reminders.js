@@ -126,6 +126,7 @@ function viewModel() {
         });
         self.reminders(mappedReminders);
         $("#review_section").accordion({header:'.header',collapsible: true});
+        $('#review_section').accordion("activate", -1);
     });
 }
 
