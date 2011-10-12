@@ -24,9 +24,7 @@ class TestEntityLoggedIn(TestCase):
     def test_should_add_data_sender_with_appropriate_email(self):
         email1 = "r12@a1.com"
         email2 = "r122@a2.com"
-        response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email": email1,"reporter_id":"rep4"},{"email": email2
-            ,"reporter_id":"test"}])})
-        print response.content
+        response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email": email1,"reporter_id":"rep4"},{"email": email2,"reporter_id":"test"}])})
         self.assertEquals(response.status_code,200)
 
         response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email":email1,"reporter_id":"rep4"}])})

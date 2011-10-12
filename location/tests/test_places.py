@@ -10,8 +10,5 @@ class TestPlaces(TestCase):
         response = client.get('/places', {'term': "amb"})
         grouped_places = json.loads(response.content)
 
-        self.assertEqual('Commune',grouped_places[0]['category'])
-        self.assertEqual('AMBATOMANJAKA,MIARINARIVO,ITASY',grouped_places[0]['label'])
-
-        self.assertEqual('Commune',grouped_places[1]['category'])
-        self.assertEqual('AMBOANJO,MANAKARA ATSIMO,VATOVAVY FITOVINANY',grouped_places[1]['label'])
+        self.assertTrue({u'category': u'Commune', u'label': u'AMBOANJO,MANAKARA ATSIMO,VATOVAVY FITOVINANY'} in grouped_places)
+        self.assertTrue({u'category': u'Commune', u'label': u'AMBATOMANJAKA,MIARINARIVO,ITASY'} in grouped_places)
