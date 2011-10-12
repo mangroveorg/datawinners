@@ -1,9 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import unittest
-from unittest.case import SkipTest
+from django.test import TestCase
+from nose.plugins.skip import SkipTest
 from datawinners.location.LocationTree import get_location_groups_for_country, get_location_tree
 
-class TestLocationTree(unittest.TestCase):
+class TestLocationTree(TestCase):
+    fixtures = ['test_location_level.json']
     def setUp(self):
         self.tree = get_location_tree()
 
@@ -28,16 +29,9 @@ class TestLocationTree(unittest.TestCase):
                                                                                                          long=46.854321))
         self.assertFalse(self.tree._exists("XYZ"))
 
-    def test_should_get_location_hierarchy_to_the_lowest_level_for_geocode(self):
-        self.assertEqual([u'madagascar', u'analamanga', u'manjakandriana', u'ambohitrony', u'ambohijanaka'],
-                                                                                                           self.tree.get_location_hierarchy_for_geocode(
-                                                                                                               lat=-18.7415362448
-                                                                                                               ,
-                                                                                                               long=47.7765977667))
-
     def test_should_get_filtered_list_group_by_levels(self):
-        expected_location_group = {u'LEVEL3': [u'SOASERANA,MANJA,MENABE', u'SOASERANA,BETIOKY ATSIMO,ATSIMO ANDREFANA']}
-        actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="soas")
+        expected_location_group = {u'LEVEL3': [u'AMBOANJO,MANAKARA ATSIMO,VATOVAVY FITOVINANY', u'AMBATOMANJAKA,MIARINARIVO,ITASY']}
+        actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="amb")
         self.assertEqual(expected_location_group, actual_location_groups)
 
     @SkipTest
