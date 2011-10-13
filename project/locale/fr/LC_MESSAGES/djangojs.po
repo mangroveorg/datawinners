@@ -118,7 +118,7 @@ msgid "Choose 1 answer from the list. Example: a"
 msgstr "Choisissez une réponse de la liste. Exemple: a"
 
 #: media/javascript/project/questionnaire_helper.js:13
-msgid "Choose 1 or more answers from the above list. Example: a or ab "
+msgid "Choose 1 or more answers from the list. Example: a or ab "
 msgstr ""
 "Choisissez 1 ou plusieurs réponses dans la liste suivante. Exemple : a ou ab"
 
