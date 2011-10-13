@@ -37,7 +37,7 @@ class MyRadioSelect(forms.RadioSelect):
 class ProjectProfile(Form):
     PROJECT_TYPE_CHOICES = (('survey', _('Survey project: I want to collect data from the field')),
                             ('public information', _('Public information: I want to send information')))
-    DEVICE_CHOICES = (('sms', 'SMS'),)
+    DEVICE_CHOICES = (('sms', 'SMS'),('web','WEB'))
     SUBJECT_TYPE_CHOICES = (('yes',_('Work performed by the data sender (eg. monthly activity report)')),('no',_('Other Subject')))
     GROUP_TYPE_CHOICES = (('open',_('Open Data Sender Group. Anyone can send in data without registering')),('close',_('Closed Data Sender Group. Only registered data sender will be able to send data')))
     FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
