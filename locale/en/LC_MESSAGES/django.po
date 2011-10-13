@@ -1519,7 +1519,7 @@ msgstr ""
 "change your mind later."
 
 #: templates/project/profile_deadline.html:3
-msgid "When do we need the data"
+msgid "Deadlines and Reminders"
 msgstr ""
 
 #: templates/project/profile_deadline_month_block.html:8

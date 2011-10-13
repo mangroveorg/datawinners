@@ -1553,8 +1553,8 @@ msgstr ""
 "change your mind later."
 
 #: templates/project/profile_deadline.html:3
-msgid "When do we need the data"
-msgstr "Qu'est ce que je dois faire ?"
+msgid "Deadlines and Reminders"
+msgstr "Délais et rappels"
 
 #: templates/project/profile_deadline_month_block.html:8
 msgid "month"
