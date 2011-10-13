@@ -799,9 +799,7 @@ msgstr ""
 #: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
 msgstr ""
-"DataWinners is the do-it-yourself Data Collection and Communication tool you "
-"need to make better decisions.<br />Click on the Create a New Project button "
-"to get started.."
+"DataWinners est un service mobile de collecte de données en ligne conçu et créé pour les professionnels du développement. Avec DataWinners, vous collectez et analysez les données dont vous avez besoin en utilisant des équipements déjà en votre possession - un ordinateur, l'Internet et des téléphones portables ordinaires."
 
 #: templates/dashboard/home.html:49
 msgid "Your projects"
