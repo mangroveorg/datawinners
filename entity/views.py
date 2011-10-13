@@ -154,7 +154,7 @@ def all_subjects(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         subjects_data = import_module.load_all_subjects(request)
-        return HttpResponse(json.dumps({'success': error_message is None, 'message': success_message, 'error_message': error_message,
+        return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': subjects_data}))
 
     subjects_data = import_module.load_all_subjects(request)
@@ -221,7 +221,7 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
-        return HttpResponse(json.dumps({'success': error_message is None, 'message': success_message, 'error_message': error_message,
+        return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects},
@@ -267,5 +267,5 @@ def import_subjects_from_project_wizard(request):
     error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
     if project_id is not None:
         _associate_data_senders_to_project(imported_entities, manager, project_id)
-    return HttpResponse(json.dumps({'success': error_message is None, 'message': success_message, 'error_message': error_message,
+    return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
