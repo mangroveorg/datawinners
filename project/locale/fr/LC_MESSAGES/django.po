@@ -111,7 +111,7 @@ msgid "Yes"
 msgstr ""
 
 #: forms.py:62
-msgid "That"
+msgid "Same"
 msgstr ""
 
 #: forms.py:62
