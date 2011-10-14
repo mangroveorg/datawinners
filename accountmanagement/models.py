@@ -5,7 +5,6 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
-
 class Organization(models.Model):
     name = models.TextField()
     sector = models.TextField()
@@ -54,6 +53,12 @@ class Organization(models.Model):
         self.organization_setting = organization_setting
         return self
 
+        
+class DataSenderOnTrialAccount(models.Model):
+    mobile_number = models.TextField(unique=True, primary_key=True)
+    organization = models.ForeignKey(Organization)
+
+
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     title = models.TextField()
@@ -66,6 +71,7 @@ class NGOUserProfile(models.Model):
     @property
     def reporter(self):
         return self.reporter_id is not None
+
 
 class SMSC(models.Model):
     vumi_username = models.TextField()

@@ -11,7 +11,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount,Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user
 from datawinners.entity import helper
 from datawinners.location.LocationTree import get_location_tree
@@ -35,10 +35,24 @@ def _associate_data_sender_to_project(dbm, project_id, response):
     project.save(dbm)
 
 
-def _process_form(dbm, form):
+def _add_data_sender_to_trial_organization(telephone_number, org_id):
+    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
+                                                         organization=Organization.objects.get(org_id=org_id))
+    data_sender.save()
+
+
+def _process_form(dbm, form, org_id):
     message = None
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
+        organization = Organization.objects.get(org_id=org_id)
+        if organization.in_trial_mode:
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
+                form._errors['telephone_number'] = form.error_class([(u"Sorry, this number has already been used for a different DataWinners trial account.")])
+                return message
+            else:
+                _add_data_sender_to_trial_organization(telephone_number,org_id)
+
         if not helper.unique(dbm, telephone_number):
             form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
             return message
@@ -46,7 +60,7 @@ def _process_form(dbm, form):
         try:
             web_player = WebPlayer(dbm, get_location_tree())
             response = web_player.accept(Request(message=_get_data(form.cleaned_data),
-                        transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
+                                                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
             project_id = form.cleaned_data["project_id"]
             if not is_empty(project_id):
@@ -109,7 +123,8 @@ def create_datasender(request):
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
-        message= _process_form(dbm, form)
+        org_id = request.user.get_profile().org_id
+        message= _process_form(dbm, form, org_id)
         if message is not None:
             form = ReporterRegistrationForm()
         return render_to_response('datasender_form.html',

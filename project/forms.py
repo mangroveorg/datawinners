@@ -39,14 +39,19 @@ class ProjectProfile(Form):
                             ('public information', _('Public information: I want to send information')))
     DEVICE_CHOICES = (('sms', 'SMS'),('web','WEB'))
     SUBJECT_TYPE_CHOICES = (('yes',_('Work performed by the data sender (eg. monthly activity report)')),('no',_('Other Subject')))
-    GROUP_TYPE_CHOICES = (('open',_('Open Data Sender Group. Anyone can send in data without registering')),('close',_('Closed Data Sender Group. Only registered data sender will be able to send data')))
+    sender_close_group_description = 'Closed Data Sender Group. Only registered data sender will be able to send data'
+    sender_open_group_description = 'Open Data Sender Group. Anyone can send in data without registering'
+    GROUP_TYPE_CHOICES = (('open',_(sender_open_group_description)),('close',_(
+        sender_close_group_description)))
     FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
     LANGUAGES = (('en', 'English'), ('fr', 'French'))
     id = CharField(required=False)
     name = CharField(required=True, label=_("Name this Project"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Project Description'), required=False)
     project_type = ChoiceField(label=_('Project Type'), widget=MyRadioSelect, choices=PROJECT_TYPE_CHOICES)
-    sender_group = ChoiceField(label=_('Open or Closed Group'), widget=MyRadioSelect, choices=GROUP_TYPE_CHOICES)
+    sender_open_close_group_header = 'Open or Closed Group'
+    sender_close_group_header = 'Closed Group'
+    sender_group = ChoiceField(label=_(sender_open_close_group_header), widget=MyRadioSelect, choices=GROUP_TYPE_CHOICES)
     activity_report = ChoiceField(label=_("What is this questionnaire about?"), widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=('no',_('Other Subject')))
     entity_type = ChoiceField(label=_("Other Subjects"), required=False)
     devices = MultipleChoiceField(label=_('Device'), widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
