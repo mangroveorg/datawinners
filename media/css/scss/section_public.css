@@ -278,6 +278,11 @@ body {
     #container_main_content #main_content h2 {
       margin: 20px 0 0 0;
       font-size: 16px; }
+    #container_main_content #main_content h4 {
+      font-size: 11px;
+      color: #555;
+      margin: 0;
+      text-transform: uppercase; }
     #container_main_content #main_content p {
       margin: 10px 0; }
     #container_main_content #main_content .left_content {
