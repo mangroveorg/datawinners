@@ -11,6 +11,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = patterns('',
                        (r'^register/$', 'registration.views.register', {'form_class': RegistrationForm, 'template_name': 'registration/register.html', 'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
+                       (r'^register/trial/$', 'registration.views.register', {'form_class': RegistrationForm, 'template_name': 'registration/register_for_trial.html', 'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
                        url(r'^login/$', custom_login, {'template_name': 'registration/login.html', 'authentication_form': LoginForm}, name='auth_login'),
                        url(r'^$', custom_login, {'template_name': 'registration/login.html', 'authentication_form': LoginForm}, name='auth_login'),
                        url(r'^password/reset/$', auth_views.password_reset, {'password_reset_form': ResetPasswordForm}, name='auth_password_reset'),
