@@ -18,10 +18,8 @@ class Organization(models.Model):
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
+    in_trial_mode = models.BooleanField(False)
     active_date = models.DateTimeField(blank=True, null=True)
-    
-    def in_trial_mode(self):
-        return True
 
     def is_expired(self, current_time = datetime.datetime.now()):
         #TODO: Always return the last value when logged once. If you do not restart the server, the value can not been changed!
@@ -29,6 +27,40 @@ class Organization(models.Model):
             return False
         diff_days = (current_time - self.active_date).days
         return diff_days >= datawinners.settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
+
+    @classmethod
+    def create_organization(cls, org_details):
+        organization = Organization(name=org_details.get('organization_name'),
+                                sector=org_details.get('organization_sector'),
+                                address=org_details.get('organization_address'),
+                                city=org_details.get('organization_city'),
+                                state=org_details.get('organization_state'),
+                                country=org_details.get('organization_country'),
+                                zipcode=org_details.get('organization_zipcode'),
+                                office_phone=org_details.get('organization_office_phone'),
+                                website=org_details.get('organization_website'),
+                                org_id=OrganizationIdCreator().generateId()
+        )
+        return organization._organization_setting_configuration()
+
+    @classmethod
+    def create_trial_organization(cls, org_details):
+        organization = Organization(name=org_details.get('organization_name'),
+                                sector=org_details.get('organization_sector'),
+                                city=org_details.get('organization_city'),
+                                country=org_details.get('organization_country'),
+                                org_id=OrganizationIdCreator().generateId(),
+                                in_trial_mode = True
+        )
+        return organization._organization_setting_configuration()
+
+
+    def _organization_setting_configuration(self):
+        organization_setting = OrganizationSetting()
+        organization_setting.organization = self
+        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
+        self.organization_setting = organization_setting
+        return self
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -61,21 +93,7 @@ class OrganizationSetting(models.Model):
         return self.organization.name
 
 
-def create_organization(org_details):
-    organization = Organization(name=org_details.get('organization_name'),
-                                sector=org_details.get('organization_sector'),
-                                address=org_details.get('organization_address'),
-                                city=org_details.get('organization_city'),
-                                state=org_details.get('organization_state'),
-                                country=org_details.get('organization_country'),
-                                zipcode=org_details.get('organization_zipcode'),
-                                office_phone=org_details.get('organization_office_phone'),
-                                website=org_details.get('organization_website'),
-                                org_id=OrganizationIdCreator().generateId()
-    )
-    organization.save()
-    organization_setting = OrganizationSetting()
-    organization_setting.organization = organization
-    organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", organization.name, organization.org_id))
-    organization_setting.save()
-    return organization
+
+
+
+

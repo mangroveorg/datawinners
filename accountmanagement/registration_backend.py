@@ -8,8 +8,7 @@ from django.contrib.auth.models import Group
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import create_organization
-
+from datawinners.accountmanagement.models import Organization
 
 class RegistrationBackend(object):
     """
@@ -52,6 +51,30 @@ class RegistrationBackend(object):
     """
 
 
+    def registration_allowed(self, request):
+        """
+        Indicate whether account registration is currently permitted,
+        based on the value of the setting ``REGISTRATION_OPEN``. This
+        is determined as follows:
+
+        * If ``REGISTRATION_OPEN`` is not specified in settings, or is
+          set to ``True``, registration is permitted.
+
+        * If ``REGISTRATION_OPEN`` is both specified and set to
+          ``False``, registration is not permitted.
+
+        """
+        return getattr(settings, 'REGISTRATION_OPEN', True)
+
+    def get_form_class(self, request):
+        """
+        Return the default form class used for user registration.
+
+        """
+        return RegistrationForm
+
+
+
     def register(self, request, **kwargs):
         """
         Given a username, email address and password, register a new
@@ -89,7 +112,9 @@ class RegistrationBackend(object):
         group = Group.objects.filter(name="NGO Admins")
         new_user.groups.add(group[0])
         new_user.save()
-        organization = create_organization(kwargs)
+        organization = self.create_respective_organization( kwargs)
+        organization.save()
+        organization.organization_setting.save()
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
@@ -98,27 +123,12 @@ class RegistrationBackend(object):
                                      reporter_id= kwargs.get('reporter_id'))
         return new_user
 
-    def registration_allowed(self, request):
-        """
-        Indicate whether account registration is currently permitted,
-        based on the value of the setting ``REGISTRATION_OPEN``. This
-        is determined as follows:
-
-        * If ``REGISTRATION_OPEN`` is not specified in settings, or is
-          set to ``True``, registration is permitted.
-
-        * If ``REGISTRATION_OPEN`` is both specified and set to
-          ``False``, registration is not permitted.
-
-        """
-        return getattr(settings, 'REGISTRATION_OPEN', True)
-
-    def get_form_class(self, request):
-        """
-        Return the default form class used for user registration.
-
-        """
-        return RegistrationForm
+    def create_respective_organization(self, kwargs ):
+        if 'organization_address' in kwargs and 'organization_zipcode' in kwargs:
+            organization = Organization.create_organization(kwargs)
+        else:
+            organization = Organization.create_trial_organization(kwargs)
+        return organization
 
     def post_registration_redirect(self, request, user):
         """
@@ -127,3 +137,5 @@ class RegistrationBackend(object):
 
         """
         return '/registration_complete', (), {}
+
+

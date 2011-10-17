@@ -28,11 +28,12 @@ DW.set_deadline_example = function(){
 
 $(document).ready(function(){
     if ($('#id_activity_report_0').attr('checked')) {
-             $('#id_entity_type').attr('disabled', true);
+        $('#id_entity_type').attr('disabled', true);
         DW.current_activity_report = $('#id_activity_report_0').val();
+        $('#create_type_section').hide();
     }
-    else{
-         DW.current_activity_report = $('#id_activity_report_1').val();
+    else {
+        DW.current_activity_report = $('#id_activity_report_1').val();
         $('#create_type_section').show();
     }
     DW.current_type = $('#id_entity_type').val();

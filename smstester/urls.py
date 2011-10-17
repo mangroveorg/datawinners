@@ -4,5 +4,5 @@ from django.conf.urls.defaults import patterns
 from datawinners.smstester.views import index
 
 urlpatterns = patterns('',
-    (r'^smstester$', index),
+    (r'^smstester/?$', index),
                        )

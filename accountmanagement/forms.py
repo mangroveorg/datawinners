@@ -66,8 +66,7 @@ class EditUserProfileForm(UserProfileForm):
     def clean_username(self):
         return self.cleaned_data.get('username')
 
-
-class RegistrationForm(RegistrationFormUniqueEmail):
+class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False)
@@ -75,29 +74,23 @@ class RegistrationForm(RegistrationFormUniqueEmail):
                                                                                     maxlength=75)),
                              label=_("* Email address"),
                              error_messages={'invalid': _('Enter a valid email address. Example:name@organization.com')})
+    password1 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
+                                label=_("* Password"))
+    password2 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
+                                label=_("* Password (again)"))
+
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
                                     error_message=_("Please enter a valid phone number"))
     mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Mobile Phone"),
                                     error_message=_("Please enter a valid phone number"))
-    skype = forms.CharField(max_length=30, required=False, label="Skype")
-
     organization_name = forms.CharField(required=True, max_length=30, label=_('* Organization Name'))
     organization_sector = forms.CharField(widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))),
                                           label=_('Organization Sector'))
-    organization_address = forms.CharField(required=True, max_length=30, label=_('* Address'))
     organization_city = forms.CharField(max_length=30, required=True, label=_('* City'))
-    organization_state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     organization_country = forms.CharField(max_length=30, required=True, label=_('* Country'))
-    organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
-                                            error_message=_("Please enter a valid Postal / Zip code"),
-                                            label=_('* Postal / Zip Code'))
-    organization_office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
-                                                 label=_("Office Phone Number"),
-                                                 error_message=_("Please enter a valid phone number"))
-    organization_website = forms.URLField(required=False, label=_('Website Url'))
     username = forms.CharField(max_length=30, required=False)
 
     def clean(self):
@@ -113,6 +106,17 @@ class RegistrationForm(RegistrationFormUniqueEmail):
         if email is not None:
             self.cleaned_data['email'] = email.lower()
 
+class FullRegistrationForm(MinimalRegistrationForm):
+    skype = forms.CharField(max_length=30, required=False, label="Skype")
+    organization_address = forms.CharField(required=True, max_length=30, label=_('* Address'))
+    organization_state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
+    organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
+                                            error_message=_("Please enter a valid Postal / Zip code"),
+                                            label=_('* Postal / Zip Code'))
+    organization_office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
+                                                 label=_("Office Phone Number"),
+                                                 error_message=_("Please enter a valid phone number"))
+    organization_website = forms.URLField(required=False, label=_('Website Url'))
 
 class LoginForm(AuthenticationForm):
     required_css_class = 'required'

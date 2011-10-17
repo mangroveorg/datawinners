@@ -3,10 +3,10 @@
 import unittest
 
 from mock import patch
-from datawinners.accountmanagement.forms import RegistrationForm
+from datawinners.accountmanagement.forms import FullRegistrationForm
 
 
-class TestRegistrationForm(unittest.TestCase):
+class TestFullRegistrationForm(unittest.TestCase):
     def test_email_is_converted_to_lower_case(self):
         uppercase_email_id = 'A@b.com'
         base_form = {'first_name': 'a',
@@ -17,9 +17,9 @@ class TestRegistrationForm(unittest.TestCase):
                      'organization_zipcode': 'asd', 'organization_sector': 'Other'
         }
 
-        form = RegistrationForm(base_form)
-        with patch.object(RegistrationForm, 'clean_email') as get_clean_email:
-            with patch.object(RegistrationForm, 'clean_username') as get_clean_username:
+        form = FullRegistrationForm(base_form)
+        with patch.object(FullRegistrationForm, 'clean_email') as get_clean_email:
+            with patch.object(FullRegistrationForm, 'clean_username') as get_clean_username:
                 get_clean_email.return_value = uppercase_email_id
                 get_clean_username.return_value = None
                 self.assertTrue(form.is_valid())
@@ -38,9 +38,9 @@ class TestRegistrationForm(unittest.TestCase):
                      'organization_zipcode': 'asd',
                      'organization_sector': 'Other'
         }
-        form = RegistrationForm(base_form)
-        with patch.object(RegistrationForm, 'clean_email') as get_clean_email:
-            with patch.object(RegistrationForm, 'clean_username') as get_clean_username:
+        form = FullRegistrationForm(base_form)
+        with patch.object(FullRegistrationForm, 'clean_email') as get_clean_email:
+            with patch.object(FullRegistrationForm, 'clean_username') as get_clean_username:
                 get_clean_email.return_value = 'A@b.com'
                 get_clean_username.return_value = None
                 self.assertFalse(form.is_valid())
