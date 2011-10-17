@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 import datawinners
+from datawinners.accountmanagement.errors.trial_account_expired_exception import TrialAccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from django.contrib.auth.views import login
@@ -21,7 +22,12 @@ def custom_login(request, template_name, authentication_form):
     if request.user.is_authenticated():
         return HttpResponseRedirect(datawinners.settings.LOGIN_REDIRECT_URL)
     else:
-        return login(request, template_name=template_name, authentication_form=authentication_form)
+        try:
+            return login(request, template_name=template_name, authentication_form=authentication_form)
+        except TrialAccountExpiredException as exception:
+            #TODO: make the Login redirect to the warning page
+            print "trial account exception has been raised!"
+            pass
 
 
 def is_admin(f):

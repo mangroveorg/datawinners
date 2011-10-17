@@ -19,6 +19,12 @@ class Organization(models.Model):
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
 
+    def in_trial_mode(self):
+        return True
+    def is_expired(self):
+        #TODO: Always return the last value when logged once. If you do not restart the server, the value can not been changed!
+        return True
+
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
