@@ -31,20 +31,20 @@
         <p class="margin_bottom_10">{% trans "Select what kind of answer you want from your Data Senders." %}</p>
 
         <div><input type="radio" name="type" value="text"
-                    data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"/>{% trans "Word or Phrase" %}
+                    data-bind="checked: selectedQuestion().type, enable: viewModel.isTypeEnabled()"/>{% trans "Word or Phrase" %}
         </div>
         <div><input type="radio" name="type" value="integer"
-                    data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"/>{% trans "Number" %}
+                    data-bind="checked: selectedQuestion().type, enable: viewModel.isTypeEnabled()"/>{% trans "Number" %}
         </div>
         <div><input type="radio" name="type" value="date"
-                    data-bind="checked: selectedQuestion().type,enable: viewModel.isEnabled()"/>{% trans "Date" %}
+                    data-bind="checked: selectedQuestion().type,enable: viewModel.isTypeEnabled()"/>{% trans "Date" %}
         </div>
         <div><input type="radio" name="type" value="choice"
-                    data-bind="checked: selectedQuestion().isAChoiceTypeQuestion, enable: viewModel.isEnabled()"
+                    data-bind="checked: selectedQuestion().isAChoiceTypeQuestion, enable: viewModel.isTypeEnabled()"
                     class="choice-question-checkbox"/>{% trans "List of Choices" %}
         </div>
         <div><input type="radio" name="type" value="geocode"
-                    data-bind="checked: selectedQuestion().type, enable: viewModel.isEnabled()"
+                    data-bind="checked: selectedQuestion().type, enable: viewModel.isTypeEnabled()"
                 />{% trans "GPS Coordinates" %}
         </div>
     </li>
