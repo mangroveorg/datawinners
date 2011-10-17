@@ -67,46 +67,25 @@ function viewModel() {
             $("#review_section").accordion("activate",this.reminders().length -1);
     }
     this.save = function() {
-        var shouldSave = true;
+        this.remindersToSave = [];
         for(var i = 0; i < this.reminders().length; i++){
             var newReminder = {};
-            newReminder['targetDataSenders'] = this.reminders()[i].targetDataSenders()
-            if (this.reminders()[i].message() === "") {
-                $('#newMessage_err').show().html(gettext("Can't be blank."));
-                shouldSave = false
-            } else {
-                newReminder['message'] = this.reminders()[i].message();
-            }
+            newReminder['targetDataSenders'] = this.reminders()[i].targetDataSenders();
+            newReminder['message'] = this.reminders()[i].message();
             if (this.reminders()[i].reminderMode() == 'before_deadline') {
-                if (this.reminders()[i].beforeDay() === "") {
-                    $('#newDay_err').show().html(gettext("Day Can't be blank."))
-                    shouldSave = false;
-                } else {
-                    newReminder['reminderMode'] = 'before_deadline';
-                    newReminder['day'] = this.reminders()[i].beforeDay();
-                }
+                newReminder['reminderMode'] = 'before_deadline';
+                newReminder['day'] = this.reminders()[i].beforeDay();
             }
             if (this.reminders()[i].reminderMode() == 'after_deadline') {
-                if (this.reminders()[i].afterDay() === "") {
-                    $('#newDay_err').show().html(gettext("Day Can't be blank."))
-                    shouldSave = false;
-                } else {
-                    newReminder['reminderMode'] = 'after_deadline';
-                    newReminder['day'] = this.reminders()[i].afterDay();
-                }
+                newReminder['reminderMode'] = 'after_deadline';
+                newReminder['day'] = this.reminders()[i].afterDay();
             }
             if(this.reminders()[i].reminderMode() == "on_deadline"){
                 newReminder['reminderMode'] = 'on_deadline'
                 newReminder['day'] = 0
             }
             this.remindersToSave.push(newReminder);
-        };
-        if (!shouldSave) {
-            this.remindersToSave = [];
-            return;
         }
-        else
-            this.reminders = [];
         $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
             $('.success-message-box').show().html("The reminders has been saved").fadeOut(10000);
         })
