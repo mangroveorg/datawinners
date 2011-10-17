@@ -113,6 +113,8 @@ class RegistrationBackend(object):
         new_user.groups.add(group[0])
         new_user.save()
         organization = self.create_respective_organization( kwargs)
+        organization.save()
+        organization.organization_setting.save()
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
@@ -122,10 +124,10 @@ class RegistrationBackend(object):
         return new_user
 
     def create_respective_organization(self, kwargs ):
-        if kwargs.get('organization_address')== None and kwargs.get('organization_zipcode') == None:
-            organization = Organization.create_trial_organization(kwargs)
-        else:
+        if 'organization_address' in kwargs and 'organization_zipcode' in kwargs:
             organization = Organization.create_organization(kwargs)
+        else:
+            organization = Organization.create_trial_organization(kwargs)
         return organization
 
     def post_registration_redirect(self, request, user):

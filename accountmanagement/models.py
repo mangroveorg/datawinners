@@ -20,8 +20,8 @@ class Organization(models.Model):
     org_id = models.TextField(primary_key=True)
     in_trial_mode = models.BooleanField(False)
  
-    @staticmethod
-    def create_organization(org_details):
+    @classmethod
+    def create_organization(cls, org_details):
         organization = Organization(name=org_details.get('organization_name'),
                                 sector=org_details.get('organization_sector'),
                                 address=org_details.get('organization_address'),
@@ -33,26 +33,26 @@ class Organization(models.Model):
                                 website=org_details.get('organization_website'),
                                 org_id=OrganizationIdCreator().generateId()
         )
-        return Organization.organization_setting_configuration(organization)
+        return organization._organization_setting_configuration()
 
-    @staticmethod
-    def create_trial_organization(org_details):
+    @classmethod
+    def create_trial_organization(cls, org_details):
         organization = Organization(name=org_details.get('organization_name'),
                                 sector=org_details.get('organization_sector'),
                                 city=org_details.get('organization_city'),
                                 country=org_details.get('organization_country'),
                                 org_id=OrganizationIdCreator().generateId(),
-                                in_trial_mode = (True)
+                                in_trial_mode = True
         )
-        return Organization.organization_setting_configuration(organization)
+        return organization._organization_setting_configuration()
 
-    def organization_setting_configuration(organization):
-        organization.save()
+
+    def _organization_setting_configuration(self):
         organization_setting = OrganizationSetting()
-        organization_setting.organization = organization
-        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", organization.name, organization.org_id))
-        organization_setting.save()
-        return organization
+        organization_setting.organization = self
+        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
+        self.organization_setting = organization_setting
+        return self
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)

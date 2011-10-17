@@ -1,8 +1,6 @@
 import unittest
 from datawinners.accountmanagement.registration_backend import RegistrationBackend
 
-__author__ = 'Thoughtworks'
-
 class TestRegistrationBackend(unittest.TestCase):
     def test_creation_of_trial_organization(self):
         registration_backend = RegistrationBackend()
