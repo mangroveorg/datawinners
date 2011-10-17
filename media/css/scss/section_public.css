@@ -416,6 +416,20 @@ body {
     top: 0;
     left: 110px; }
 
+.try_button {
+  display: block;
+  width: 158px;
+  height: 46px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 46px;
+  color: #6f451b !important;
+  text-shadow: #FFF2B2 0 1px 1px;
+  background: url("/media/images/dw_home_button1.png") no-repeat left top;
+  margin: 10px auto;
+  text-align: center;}
+
 #pricing .container_plan {
   margin: 0 auto;
   padding: 30px 0 20px 0;
@@ -438,18 +452,6 @@ body {
         list-style-type: disc; }
     #pricing .container_plan .plan small {
       font-size: 10px; }
-    #pricing .container_plan .plan .try_button {
-      display: block;
-      width: 158px;
-      height: 46px;
-      overflow: hidden;
-      font-size: 16px;
-      font-weight: bold;
-      line-height: 46px;
-      color: #6f451b !important;
-      text-shadow: #FFF2B2 0 1px 1px;
-      background: url("/media/images/dw_home_button1.png") no-repeat left top;
-      margin: 10px auto; }
   #pricing .container_plan .badge {
     position: absolute;
     right: 0;

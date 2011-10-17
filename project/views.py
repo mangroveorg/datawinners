@@ -11,6 +11,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
+from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -33,7 +34,7 @@ from mangrove.form_model.field import field_to_json, SelectField, TextField, Int
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import Submission, get_submissions, submission_count
+from mangrove.transport.submissions import Submission, get_submissions, submission_count, count_valid_web_submissions
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
@@ -764,7 +765,8 @@ def _create_submission_request(form_model, request):
 def _make_form_context(questionnaire_form, project, form_code, disable_link_class):
     return {'questionnaire_form': questionnaire_form, 'project': project,
             'project_links': _make_project_links(project, form_code),
-            'disable_link_class': disable_link_class}
+            'disable_link_class': disable_link_class,
+            }
 
 
 def _create_select_field(field, choices):
@@ -839,6 +841,11 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
                               context_instance=RequestContext(request))
 
 
+def _get_trial_web_submission_count(user, manager, form_code):
+    ngoup = NGOUserProfile.objects.filter(id=user.id)[0]
+    organization = Organization.objects.filter(org_id=ngoup.org_id)[0];
+    return count_valid_web_submissions(manager, form_code, 0, datetime.datetime.now())
+
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
@@ -846,9 +853,9 @@ def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
-
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
+
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
@@ -875,6 +882,7 @@ def web_questionnaire(request, project_id=None):
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=player.Channel.WEB))
+
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})

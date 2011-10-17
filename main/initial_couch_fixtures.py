@@ -257,7 +257,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close",
                       reminder_and_deadline=weekly_reminder_and_deadline)
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
@@ -772,10 +772,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli012").delete()
         qid12 = form_model12.save()
     project12 = Project(name="Clinic DS W/O Submission (That)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms"], activity_report='no', sender_group="close",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close",
                       reminder_and_deadline=weekly_reminder_and_deadline)
     project12.qid = qid12
     project12.state = ProjectState.ACTIVE
+
     try:
         project12.save(manager)
     except Exception:
@@ -1104,6 +1105,78 @@ def load_sms_data_for_cli001(manager):
     message1 = "cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
+def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk):
+    organization = Organization.objects.get(pk=trial_org_pk)
+    Reminder.objects.filter(organization = organization).delete()
+    name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
+    # Entity id is a default type in the system.
+    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
+    age_type = create_data_dict(manager, name='Age Type', slug='age', primitive_type='integer')
+    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
+    select_type = create_data_dict(manager, name='Choice Type', slug='choice', primitive_type='select')
+    geo_code_type = create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
+    question1 = TextField(label="entity_question", code="EID", name="What is associatéd entity?",
+                          language="en", entity_question_flag=True, ddtype=entity_id_type,
+                          constraints=[TextLengthConstraint(min=1, max=12)],
+                          instruction="Answer must be a word or phrase 12 characters maximum")
+    question2 = TextField(label="Name", code="NA", name="What is your namé?",
+                          constraints=[TextLengthConstraint(min=1, max=10)],
+                          defaultValue="some default value", language="en", ddtype=name_type,
+                          instruction="Answer must be a word or phrase 10 characters maximum")
+    question3 = IntegerField(label="Father age", code="FA", name="What is age öf father?",
+                             constraints=[NumericRangeConstraint(min=18, max=100)], ddtype=age_type,
+                             instruction="Answer must be a number between 18-100.")
+    question4 = DateField(label="Report date", code="RD", name="What is réporting date?",
+                          date_format="dd.mm.yyyy", ddtype=date_type,
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+    question5 = SelectField(label="Blood Group", code="BG", name="What is your blood group?",
+                            options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
+                            ddtype=select_type, instruction="Choose 1 answer from the list.")
+    question6 = SelectField(label="Symptoms", code="SY", name="What aré symptoms?",
+                            options=[("Rapid weight loss", "a"), ("Dry cough", "b"), ("Pneumonia", "c"),
+                                    ("Memory loss", "d"), ("Neurological disorders ", "e")], single_select_flag=False,
+                            ddtype=select_type,
+                            instruction="Choose 1 or more answers from the list.")
+    question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
+                             label="What is the GPS code for clinic?",
+                             language="en", ddtype=geo_code_type,
+                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547")
+    question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
+                            options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
+                            single_select_flag=False,
+                            ddtype=select_type,
+                            instruction="Choose 1 or more answers from the list.", required=False)
+    form_model = FormModel(manager, name="AIDS", label="Aids form_model",
+                           form_code="cli001", type='survey',
+                           fields=[question1, question2, question3, question4, question5, question6, question7,
+                                   question8],
+                           entity_type=CLINIC_ENTITY_TYPE
+    )
+
+    weekly_reminder_and_deadline = {
+            "reminders_enabled": "True",
+            "deadline_week": "5",
+            "deadline_type": "That",
+            "frequency_enabled": "True",
+            "has_deadline": "True",
+            "frequency_period": "week"
+        }
+
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli001").delete()
+        qid = form_model.save()
+    project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close",
+                      reminder_and_deadline=weekly_reminder_and_deadline)
+    project1.qid = qid
+    project1.state = ProjectState.ACTIVE
+    try:
+        project1.save(manager)
+    except Exception:
+        pass
+
 def load_data():
     manager = load_manager_for_default_test_account()
     initializer.run(manager)
@@ -1149,8 +1222,24 @@ def load_data():
 
     load_sms_data_for_cli001(manager)
 
+    create_trial_test_organization('chinatwu@gmail.com','COJ00000')
+    create_trial_test_organization('chinatwu2@gmail.com','COJ00001')
+    create_trial_test_organization('chinatwu3@gmail.com','COJ00002')
+    create_trial_test_organization('chinatwu4@gmail.com','COJ00003')
+
+def create_trial_test_organization(email, org_id):
+    manager = get_database_manager(User.objects.get(username=email))
+    initializer.run(manager)
+    CLINIC_ENTITY_TYPE = [u"clinic"]
+    WATER_POINT_ENTITY_TYPE = [u"waterpoint"]
+    create_entity_types(manager, [CLINIC_ENTITY_TYPE, WATER_POINT_ENTITY_TYPE])
+    load_datadict_types(manager)
+    load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
+    load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
+    create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, org_id)
+
 def load_test_managers():
-    test_emails = ['tester150411@gmail.com', 'chinatwu@gmail.com']
+    test_emails = ['tester150411@gmail.com', 'chinatwu@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'chinatwu4@gmail.com']
     return [get_database_manager(User.objects.get(username=email)) for email in test_emails]
 
 def load_all_managers():
