@@ -19,6 +19,8 @@ class Organization(models.Model):
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
 
+    def in_trial_mode(self):
+        return getattr(self, 'name').startswith("Trial")
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
