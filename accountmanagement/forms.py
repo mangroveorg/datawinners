@@ -73,6 +73,11 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
                                                                                     maxlength=75)),
                              label=_("* Email address"),
                              error_messages={'invalid': _('Enter a valid email address. Example:name@organization.com')})
+    password1 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
+                                label=_("* Password"))
+    password2 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
+                                label=_("* Password (again)"))
+
     first_name = forms.CharField(max_length=30, required=True, label='* First name')
     last_name = forms.CharField(max_length=30, required=True, label='* Last name')
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
