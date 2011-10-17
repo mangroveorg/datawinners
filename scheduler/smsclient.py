@@ -7,4 +7,5 @@ class SMSClient(object):
         self.client = VumiClient(None, None, connection=Connection(settings.VUMI_USER, settings.VUMI_PASSWORD, base_url=settings.VUMI_API_URL))
 
     def send_sms(self,from_tel,to_tel, message):
+        #The encoding of the message to utf-8 is temporary and the fix should ideally be in vumi client.
         self.client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
