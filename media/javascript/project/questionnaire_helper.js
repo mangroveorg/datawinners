@@ -43,7 +43,8 @@ DW.question = function(question) {
         },
         date_format: "mm.yyyy",
         instruction: gettext("Answer must be a text"),
-        loaded: true
+        loaded: true,
+        event_time_field_flag: false
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
@@ -57,6 +58,7 @@ DW.question.prototype = {
         var q = this.options;
         this.loaded = ko.observable(q.loaded);
         this.range_min = ko.observable(q.range.min);
+        this.event_time_field_flag = ko.observable(q.event_time_field_flag);
 
         //This condition required especially because in DB range_max is a mandatory field
         this.range_max = ko.observable(q.range.max);
