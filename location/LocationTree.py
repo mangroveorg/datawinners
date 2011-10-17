@@ -52,17 +52,17 @@ def get_location_hierarchy(lowest_level):
     cursor = connection.cursor()
     sql = """(select distinct 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1||','||name_0 as NAME from location_locationlevel l where name_4=UPPER('%s') limit 10)
     union
-    (select distinct 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1 as NAME from location_locationlevel l where name_3=UPPER('%s') limit 10)
+    (select distinct 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1||','||name_0 as NAME from location_locationlevel l where name_3=UPPER('%s') limit 10)
     union
-    (select distinct 'LEVEL2' as LEVEL,  name_2||','||name_1 as NAME from location_locationlevel l where name_2=UPPER('%s') limit 5)
-    union (select distinct 'LEVEL1' as LEVEL,  name_1 as NAME from location_locationlevel l where name_1=UPPER('%s') limit 5)
+    (select distinct 'LEVEL2' as LEVEL,  name_2||','||name_1||','||name_0 as NAME from location_locationlevel l where name_2=UPPER('%s') limit 5)
+    union (select distinct 'LEVEL1' as LEVEL,  name_1||','||name_0 as NAME from location_locationlevel l where name_1=UPPER('%s') limit 5)
     union (select distinct 'LEVEL0' as LEVEL,  name_0 as NAME from location_locationlevel l where name_0=UPPER('%s') limit 5) order by LEVEL;""" % (lowest_level, lowest_level, lowest_level, lowest_level, lowest_level)
     cursor.execute(sql)
     rows = cursor.fetchall()
     location_hierarchy = []
     for level, location in rows:
         location_hierarchy.append(location.split(','))
-    return location_hierarchy[0] if len(location_hierarchy) > 0 else []
+    return location_hierarchy[0] if len(location_hierarchy) > 0 else [lowest_level]
 
 _tree = None
 _tree_lock = Lock()
