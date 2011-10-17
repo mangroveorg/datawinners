@@ -3,8 +3,6 @@ from _collections import defaultdict
 from threading import Lock
 from django.contrib.gis.geos.point import Point
 from django.db import connection
-from networkx import *
-import psycopg2
 from datawinners.location.models import LocationLevel
 
 
@@ -15,8 +13,7 @@ def get_location_groups_for_country(country, start_with):
     cursor = connection.cursor()
     search_string = start_with.lower().encode('utf-8')
 
-    data_dict = {}
-    data_dict['like'] = search_string + '%'
+    data_dict = {'like': search_string + '%'}
     sql = """
     (select distinct 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
@@ -43,6 +40,30 @@ order by LEVEL
         location_dict[level].append(location)
     return location_dict
 
+def get_location_hierarchy(lowest_level):
+    """
+    The reason why we are using UPPER and not ILIKE -
+    Using UPPER() or LOWER() to change the case of the field before comparison;
+    this approach can be better than 1) or 2) because these functions may be
+    indexed, and thus if you are doing a "begins with" or "exact match" search
+    your query may be indexed:
+	SELECT * FROM sometable WHERE UPPER(textfield) LIKE (UPPER('value') || '%');
+    """
+    cursor = connection.cursor()
+    sql = """(select distinct 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1||','||name_0 as NAME from location_locationlevel l where name_4=UPPER('%s') limit 10)
+    union
+    (select distinct 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1 as NAME from location_locationlevel l where name_3=UPPER('%s') limit 10)
+    union
+    (select distinct 'LEVEL2' as LEVEL,  name_2||','||name_1 as NAME from location_locationlevel l where name_2=UPPER('%s') limit 5)
+    union (select distinct 'LEVEL1' as LEVEL,  name_1 as NAME from location_locationlevel l where name_1=UPPER('%s') limit 5)
+    union (select distinct 'LEVEL0' as LEVEL,  name_0 as NAME from location_locationlevel l where name_0=UPPER('%s') limit 5) order by LEVEL;""" % (lowest_level, lowest_level, lowest_level, lowest_level, lowest_level)
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    location_hierarchy = []
+    for level, location in rows:
+        location_hierarchy.append(location.split(','))
+    return location_hierarchy[0] if len(location_hierarchy) > 0 else []
+
 _tree = None
 _tree_lock = Lock()
 
@@ -56,33 +77,6 @@ def get_location_tree():
 
 
 class LocationTree(object):
-    def __init__(self):
-        self.tree = DiGraph()
-        self.loadfromdb()
-
-    def loadfromdb(self):
-        rows = LocationLevel.objects.values('name_0', 'name_1', 'name_2', 'name_3', 'name_4')
-        for row in rows:
-            path_list = ['root']
-            i = 0
-            while 1:
-                field = "name_%s" % (i,)
-                try:
-                    value = row[field]
-                except KeyError as e:
-                    break
-                i += 1
-                path_list.append(value.lower())
-            self.tree.add_path(path_list)
-
-    def get_hierarchy_path(self, location_name):
-        try:
-            return nx.shortest_path(self.tree, ROOT, location_name.lower())[1:]
-        except NetworkXError:
-            return [location_name]
-
-    def _exists(self, location):
-        return location.lower() in self.tree.nodes()
 
     def get_location_hierarchy_for_geocode(self, lat, long):
         row = self._get_location_level_row_for_geo_code(lat, long)
