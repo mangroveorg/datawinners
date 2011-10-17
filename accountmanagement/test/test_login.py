@@ -3,7 +3,7 @@ from nose.tools import raises
 from datawinners.accountmanagement.forms import LoginForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, OrganizationSetting
 from django.contrib.auth.models import User
-from datawinners.accountmanagement.errors.trial_account_expired_exception import TrialAccountExpiredException
+from mangrove.errors.MangroveException import TrialAccountExpiredException
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
 import unittest

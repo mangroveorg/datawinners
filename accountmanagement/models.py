@@ -4,8 +4,8 @@ from django.contrib.auth.models import  User
 from django.db import models
 from django.template.defaultfilters import slugify
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-
-
+import datawinners
+import datetime
 class Organization(models.Model):
     name = models.TextField()
     sector = models.TextField()
@@ -18,13 +18,17 @@ class Organization(models.Model):
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
-
+    active_date = models.DateTimeField(blank=True, null=True)
+    
     def in_trial_mode(self):
         return True
-    def is_expired(self):
-        #TODO: Always return the last value when logged once. If you do not restart the server, the value can not been changed!
-        return True
 
+    def is_expired(self, current_time = datetime.datetime.now()):
+        #TODO: Always return the last value when logged once. If you do not restart the server, the value can not been changed!
+        if self.active_date is None:
+            return False
+        diff_days = (current_time - self.active_date).days
+        return diff_days >= datawinners.settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)

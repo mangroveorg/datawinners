@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from datawinners.accountmanagement.errors.trial_account_expired_exception import TrialAccountExpiredException
+from mangrove.errors.MangroveException import TrialAccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
 
@@ -127,7 +127,6 @@ class LoginForm(AuthenticationForm):
         password = self.cleaned_data.get('password')
 
         self.check_for_username_and_password(password, username)
-        self.check_trial_account_expired()
         self.check_for_test_cookie()
         return self.cleaned_data
 
@@ -139,11 +138,12 @@ class LoginForm(AuthenticationForm):
             elif not self.user_cache.is_active:
                 raise forms.ValidationError(_("This account is inactive."))
 
+            self.check_trial_account_expired()
+
     def check_trial_account_expired(self):
         org = Organization.objects.get(org_id = self.user_cache.get_profile().org_id)
-
         if org.is_expired():
-            raise TrialAccountExpiredException("This account is expired")
+            raise TrialAccountExpiredException()
 
 class ResetPasswordForm(PasswordResetForm):
     required_css_class = 'required'
