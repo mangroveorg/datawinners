@@ -26,7 +26,7 @@ function reminder(projectName,message, beforeDay, afterDay, reminderMode, ownerV
         ownerViewModel.reminders.remove(this);
     }
     this.defaultMessage = function(){
-        return "We have not received your data yet for " + this.projectName + ".Please send it to us by the deadline. Thank you.";
+        return "Hello. We have not received your data for " + this.projectName + ".Please send it to us today. Thank you.";
     }
 
     if (message == null) message = this.defaultMessage();
