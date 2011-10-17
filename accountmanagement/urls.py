@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from django.conf.urls.defaults import patterns, include, url
-from datawinners.accountmanagement.forms import RegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm
+from datawinners.accountmanagement.forms import FullRegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm, MinimalRegistrationForm
 from django.contrib import admin
 from views import settings, new_user, edit_user, users, custom_login,registration_complete
 
@@ -10,8 +10,8 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = patterns('',
-                       (r'^register/$', 'registration.views.register', {'form_class': RegistrationForm, 'template_name': 'registration/register.html', 'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
-                       (r'^register/trial/$', 'registration.views.register', {'form_class': RegistrationForm, 'template_name': 'registration/register_for_trial.html', 'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
+                       (r'^register/$', 'registration.views.register', {'form_class': FullRegistrationForm, 'template_name': 'registration/register.html', 'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
+                       (r'^register/trial/$', 'registration.views.register', {'form_class': MinimalRegistrationForm, 'template_name': 'registration/register_for_trial.html', 'backend': 'datawinners.accountmanagement.registration_backend.RegistrationBackend'}),
                        url(r'^login/$', custom_login, {'template_name': 'registration/login.html', 'authentication_form': LoginForm}, name='auth_login'),
                        url(r'^$', custom_login, {'template_name': 'registration/login.html', 'authentication_form': LoginForm}, name='auth_login'),
                        url(r'^password/reset/$', auth_views.password_reset, {'password_reset_form': ResetPasswordForm}, name='auth_password_reset'),

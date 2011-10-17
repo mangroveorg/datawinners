@@ -18,9 +18,41 @@ class Organization(models.Model):
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
+    in_trial_mode = models.BooleanField(False)
+ 
+    @staticmethod
+    def create_organization(org_details):
+        organization = Organization(name=org_details.get('organization_name'),
+                                sector=org_details.get('organization_sector'),
+                                address=org_details.get('organization_address'),
+                                city=org_details.get('organization_city'),
+                                state=org_details.get('organization_state'),
+                                country=org_details.get('organization_country'),
+                                zipcode=org_details.get('organization_zipcode'),
+                                office_phone=org_details.get('organization_office_phone'),
+                                website=org_details.get('organization_website'),
+                                org_id=OrganizationIdCreator().generateId()
+        )
+        return Organization.organization_setting_configuration(organization)
 
-    def in_trial_mode(self):
-        return getattr(self, 'name').startswith("Trial")
+    @staticmethod
+    def create_trial_organization(org_details):
+        organization = Organization(name=org_details.get('organization_name'),
+                                sector=org_details.get('organization_sector'),
+                                city=org_details.get('organization_city'),
+                                country=org_details.get('organization_country'),
+                                org_id=OrganizationIdCreator().generateId(),
+                                in_trial_mode = (True)
+        )
+        return Organization.organization_setting_configuration(organization)
+
+    def organization_setting_configuration(organization):
+        organization.save()
+        organization_setting = OrganizationSetting()
+        organization_setting.organization = organization
+        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", organization.name, organization.org_id))
+        organization_setting.save()
+        return organization
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -53,21 +85,7 @@ class OrganizationSetting(models.Model):
         return self.organization.name
 
 
-def create_organization(org_details):
-    organization = Organization(name=org_details.get('organization_name'),
-                                sector=org_details.get('organization_sector'),
-                                address=org_details.get('organization_address'),
-                                city=org_details.get('organization_city'),
-                                state=org_details.get('organization_state'),
-                                country=org_details.get('organization_country'),
-                                zipcode=org_details.get('organization_zipcode'),
-                                office_phone=org_details.get('organization_office_phone'),
-                                website=org_details.get('organization_website'),
-                                org_id=OrganizationIdCreator().generateId()
-    )
-    organization.save()
-    organization_setting = OrganizationSetting()
-    organization_setting.organization = organization
-    organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", organization.name, organization.org_id))
-    organization_setting.save()
-    return organization
+
+
+
+
