@@ -26,7 +26,7 @@ VUMI_PASSWORD = "vumi"
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = None
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -188,8 +188,8 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
-SCHEDULER_HOUR=18
-SCHEDULER_MINUTES=10
+SCHEDULER_HOUR=21
+SCHEDULER_MINUTES=34
 api_keys = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',

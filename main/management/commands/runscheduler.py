@@ -10,8 +10,9 @@ logger = logging.getLogger("django")
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        sched = Scheduler(daemonic=False)
-        sched.add_cron_job(send_reminders, hours=SCHEDULER_HOUR,minute=SCHEDULER_MINUTES)
-        sched.start()
+        scheduler = Scheduler(daemonic=False)
+        logger.info("started the scheduler")
+        scheduler.add_cron_job(send_reminders,  hour=SCHEDULER_HOUR,minute=SCHEDULER_MINUTES)
+        scheduler.start()
 
 
