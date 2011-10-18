@@ -107,4 +107,8 @@ To stop Bluepill: bluepill stop
 To load configuration: bluepill load <path-to-source>/mangrove /src/datawinners/deployment/bluepill.rb
 To stop Bluepill: bluepill start
 
+Scheduler
+
+to start the scheudler  : supervisord -c deployment/supervisord.scheduler
+
 
