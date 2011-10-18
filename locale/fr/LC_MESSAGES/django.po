@@ -1705,7 +1705,7 @@ msgstr ""
 
 #: templates/project/question_detail_panel.html:22
 msgid "Answer Type"
-msgstr "Type de réponse"
+msgstr "Type de réponse "
 
 #: templates/project/question_detail_panel.html:26
 msgid "q_tooltip_question_detail_type"
