@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.http import HttpResponse
+from django.utils import translation
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import gettext as _
@@ -69,11 +70,8 @@ def sms(request):
                             error=message)
         log.save()
         return HttpResponse(message)
-    try:
-        getattr(request, 'session')
-        request.session['django_language'] = form_model.activeLanguages[0]
-    except AttributeError:
-        setattr(request, 'session', {'django_language' : form_model.activeLanguages[0]})
+    translation.activate(form_model.activeLanguages[0])
+
     try:
         sms_player = SMSPlayer(dbm, get_location_tree())
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
