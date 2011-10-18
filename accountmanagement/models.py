@@ -81,7 +81,6 @@ class SMSC(models.Model):
     def __unicode__(self):
         return self.vumi_username
 
-
 class OrganizationSetting(models.Model):
     organization = models.ForeignKey(Organization, unique=True)
     document_store = models.TextField()

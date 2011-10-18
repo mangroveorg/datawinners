@@ -15,6 +15,7 @@ def create_org_database(sender, user, request, **kwargs):
         return None
 
     active_date = org.active_date
+
     if active_date is None:
         org.active_date = datetime.datetime.now(tz=datawinners.settings.TIME_ZONE)
         org.save()

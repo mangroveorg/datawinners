@@ -25,8 +25,6 @@ def custom_login(request, template_name, authentication_form):
         try:
             return login(request, template_name=template_name, authentication_form=authentication_form)
         except TrialAccountExpiredException:
-            print "trial expired"
-#            return  render_to_response("registration/trail_account_expired_message.html")
             return HttpResponseRedirect(datawinners.settings.TRIAL_EXPIRED_URL)
 
 def is_admin(f):
