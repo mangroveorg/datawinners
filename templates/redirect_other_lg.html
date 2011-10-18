@@ -1,0 +1,5 @@
+    {% load i18n %}
+    <script language="javascript">
+        if("{% trans "en" %}" != "{{ flatpage.url|slice:"1:3"}}")
+            location.href = "/{% trans "en" %}{{ flatpage.url|slice:"3:" }}";
+    </script>
