@@ -137,3 +137,14 @@ msgstr "Ce champ est obligatoire"
 #: views.py:830
 msgid "Successfully submitted"
 msgstr ""
+
+#: templates/project/sms_tester_form.html:39
+#, python-format
+msgid "See if DataWinners received your SMS. (Go to "
+msgstr "Verifiez si DataWinners a reçu votre message. (Allez à la page "
+
+msgid "All Data Records "
+msgstr "Toutes les données "
+
+msgid "page to view submission status)"
+msgstr "pour voir l'état de votre envoi)"

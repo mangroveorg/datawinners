@@ -191,6 +191,8 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
+SCHEDULER_HOUR=8
+
 api_keys = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',

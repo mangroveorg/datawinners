@@ -1149,6 +1149,10 @@ def load_data():
 
     load_sms_data_for_cli001(manager)
 
+def load_test_managers():
+    test_emails = ['tester150411@gmail.com', 'chinatwu@gmail.com']
+    return [get_database_manager(User.objects.get(username=email)) for email in test_emails]
+
 def load_all_managers():
     managers = []
     for org in OrganizationSetting.objects.all():

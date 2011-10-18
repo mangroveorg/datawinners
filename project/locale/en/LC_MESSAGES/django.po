@@ -136,3 +136,14 @@ msgstr ""
 #: views.py:830
 msgid "Successfully submitted"
 msgstr ""
+
+#: templates/project/sms_tester_form.html:39
+#, python-format
+msgid "See if DataWinners received your SMS. (Go to "
+msgstr ""
+
+msgid "All Data Records "
+msgstr ""
+
+msgid "page to view submission status)"
+msgstr ""

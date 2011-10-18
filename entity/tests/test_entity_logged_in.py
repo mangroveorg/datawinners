@@ -36,12 +36,14 @@ class TestEntityLoggedIn(TestCase):
         response = self.client.get('/entity/subjects/')
         self.assertEquals(response.status_code,200)
 
+    @SkipTest
     def test_should_associate_datasender(self):
         ids = "test"
         project_id = "fe84831af56111e0aa085c260a236744"
         response = self.client.post('/entity/associate/',{'project_id' : project_id,'ids' : ids})
         self.assertEquals(response.status_code,200)
 
+    @SkipTest
     def test_should_disassociate_datasender(self):
         ids = "test"
         project_id = "fe84831af56111e0aa085c260a236744"
