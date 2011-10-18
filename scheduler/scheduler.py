@@ -15,18 +15,20 @@ def send_reminders():
     """
     Entry point for the scheduler. Sends out reminders for the day.
     """
-    send_reminders_scheduled_on(datetime.now(),SMSClient())
+    now = datetime.now()
+    send_reminders_scheduled_on(date(now.year, now.month, now.day),SMSClient())
 
 def send_reminders_scheduled_on(on_date,sms_client):
     """
     Sends out reminders scheduled for the given date, for each organization.
     """
+    assert isinstance(on_date, date)
     try:
         logger.info("Sending reminders for date:- %s" % on_date)
         for org in Organization.objects.all():
             send_reminders_for_an_organization(org,on_date,sms_client)
         logger.info("Done sending reminders." )
-    except Exception:
+    except Exception as e:
         logger.exception("Exception while sending reminders")
 
 def send_reminders_for_an_organization(org,on_date,sms_client):
@@ -79,5 +81,5 @@ def _get_reminders_grouped_by_project_for_organization(organization_id):
     return reminders_grouped_project_id
 
 if __name__ == "__main__":
-    send_reminders_scheduled_on( date(2011,10,04),SMSClient())
+    send_reminders_scheduled_on( date(2011,10,18),SMSClient())
 

@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 
 
 COUCH_DB_SERVER = "http://localhost:5984"
-VUMI_API_URL = "http://10.253.50.2:7000"
+VUMI_API_URL = "http://178.79.161.90:7000"
 VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
 
@@ -188,7 +188,7 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
-SCHEDULER_HOUR=8
+SCHEDULER_HOUR=16
 
 api_keys = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
