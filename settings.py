@@ -196,6 +196,8 @@ api_keys = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
+USE_ORDERED_SMS_PARSER = False
+
 try:
     from local_settings import *
 except ImportError, e:
