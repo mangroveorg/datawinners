@@ -1,27 +1,26 @@
 {% load dw_tabs %}
-{% load i18n %}
 {% block main_navigation %}
 <div id="container_main_tab">
     <div id="main_tab" class="container_24">
-        <div class="grid_4 alpha">
+        <div class="grid_5 alpha">
             <a href="{% url datawinners.home.views.index %}"><img src="/media/images/logo_dw.png" alt="DataWinners" width="137" height="22"/></a>
         </div>
-        <div class="grid_20 float_right">
+        <div class="grid_19 float_right">
             <ul>
                 <li class ="{% ifactivetab 'main_nav' 'datawinners' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="/{% trans "en" %}/what-is-datawinners">{% trans "What is DataWinners" %}</a>
+                    <a href="/what-is-datawinners">What is DataWinners</a>
                 </li>
                 <li class ="{% ifactivetab 'main_nav' 'success' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="/{% trans "en" %}/success-stories">{% trans "Success Stories" %}</a>
+                    <a href="/success-stories">Success Stories</a>
                 </li>
                 <li class ="{% ifactivetab 'main_nav' 'pricing' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="/{% trans "en" %}/pricing">{% trans "Pricing" %}</a>
+                    <a href="/pricing">Pricing</a>
                 </li>
                 <li class ="{% ifactivetab 'main_nav' 'support' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="javascript:void(0)">{% trans "Support" %}</a>
+                    <a href="javascript:void(0)">Support</a>
                 </li>
                 <li class ="{% ifactivetab 'main_nav' 'about' %}active{% else %}inactive{% endifactivetab %}">
-                    <a href="/{% trans "en" %}/about-us">{% trans "About us" %}</a>
+                    <a href="/about-us">About us</a>
                 </li>
             </ul>
         </div>
@@ -29,4 +28,3 @@
     </div>
 </div>
 {% endblock %}
-

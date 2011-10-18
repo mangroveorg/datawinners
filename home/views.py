@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.shortcuts import render_to_response, redirect, HttpResponse
+from django.shortcuts import render_to_response, redirect
 
 
 def index(request):
@@ -12,7 +12,4 @@ def switch_language(request, language):
         referer= '/' + '/'.join(request.META['HTTP_REFERER'].split('/')[3:])
     else:
         referer= '/'
-
-    if referer[1:3] in ["fr", "en"]:
-        referer = "/%s/%s" % (language, referer[4:])
     return redirect(referer)
