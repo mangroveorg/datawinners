@@ -1,19 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners import settings
 from django.core.management.base import BaseCommand
-from datawinners.main.initial_couch_fixtures import load_data, load_manager_for_default_test_account,  load_all_managers
+from datawinners.main.initial_couch_fixtures import load_data, load_test_managers,  load_all_managers
 import mangrove
 from mangrove.datastore.database import _delete_db_and_remove_db_manager, get_db_manager
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        managers = []
         if "syncall" in args:
             managers = load_all_managers()
         else:
-            manager = load_manager_for_default_test_account()
-            managers.append(manager)
+            managers = load_test_managers()
 
         for manager in managers:
             print ("Database %s") % (manager.database_name,)
