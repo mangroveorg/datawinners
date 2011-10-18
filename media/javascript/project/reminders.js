@@ -46,10 +46,13 @@ $(document).ready(function() {
         this.reminders = ko.observableArray([]);
         this.remindersToSave = [];
         this.addReminder = function() {
-            this.reminders.push(new reminder($("#project_name").text(), null, "", "", "on_deadline", this, 'all_datasenders'));
-            $("#review_section").accordion("destroy").accordion({header:'.header',collapsible: true});
-            if (this.reminders().length > 1)
-                $("#review_section").accordion("activate", this.reminders().length - 1);
+            if($("#reminder_form").valid()){
+                this.reminders.push(new reminder($("#project_name").text(), null, "", "", "on_deadline", this, 'all_datasenders'));
+                $("#review_section").accordion("destroy").accordion({header:'.header',collapsible: true});
+                if (this.reminders().length > 1) {
+                    $("#review_section").accordion("activate", this.reminders().length - 1);
+                }
+            }
         };
         this.save = function() {
             this.remindersToSave = [];
@@ -98,9 +101,11 @@ $(document).ready(function() {
     ko.applyBindings(viewmodel);
 
     // calls viewmodel.save only on jquery validate success.
-    $("#reminder_form").validate({ submitHandler: function () {
-        viewmodel.save()
-    } });
+    $("#reminder_form").validate({
+        submitHandler: function () {
+            viewmodel.save()
+        }
+    });
 
 });
 
