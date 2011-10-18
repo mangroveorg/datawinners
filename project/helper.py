@@ -78,7 +78,7 @@ def _create_questionnaire(dbm, post,entity_type,entity_id_question_code, activit
                                                          description="activity reporting period")
     activity_report_question = DateField(name="What is the reporting period for the activity?", code=activity_report_question_code,
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
-                                         date_format="dd.mm.yyyy")
+                                         date_format="dd.mm.yyyy", event_time_field_flag=True)
 
     fields = [entity_id_question, activity_report_question]
     return FormModel(dbm, entity_type=entity_type, name=post["name"], fields=fields,
@@ -138,7 +138,7 @@ def _create_integer_question(post_dict, ddtype):
 
 def _create_date_question(post_dict, ddtype):
     return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
-                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"))
+                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False))
 
 
 def _create_geo_code_question(post_dict, ddtype):

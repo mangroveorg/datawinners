@@ -43,6 +43,8 @@ def _get_from_and_to_numbers(request):
 def sms(request):
     _message = request.POST["message"]
     _from, _to = _get_from_and_to_numbers(request)
+    if _to is None:
+        return HttpResponse(_("Your organization does not have a telephone number assigned. Please contact DataWinners Support."))
     try:
         form_code, values = SMSParser().parse(_message)
     except (SubmissionParseException,SMSParserInvalidFormatException,) as exception:

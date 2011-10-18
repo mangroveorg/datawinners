@@ -108,5 +108,8 @@ var viewModel =
         }
         else
             return true;
+    },
+    isTypeEnabled: function(){
+        return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag()
     }
 };
