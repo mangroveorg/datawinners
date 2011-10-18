@@ -147,3 +147,6 @@ msgstr ""
 
 msgid "page to view submission status)"
 msgstr ""
+
+msgid "Choose your language for success and error messages to Data Senders"
+msgstr ""

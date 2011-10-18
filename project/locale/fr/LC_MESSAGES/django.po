@@ -148,3 +148,6 @@ msgstr "Toutes les données "
 
 msgid "page to view submission status)"
 msgstr "pour voir l'état de votre envoi)"
+
+msgid "Choose your language for success and error messages to Data Senders"
+msgstr "Choisissez votre langue pour le succès et les messages d'erreur aux expéditeurs de données"
