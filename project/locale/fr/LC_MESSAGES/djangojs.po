@@ -249,3 +249,39 @@ msgstr "Quel sujet vous rendre compte?"
 
 msgid "What is the reporting period for the activity?"
 msgstr "Quelle est la période de déclaration pour l'activité?"
+
+
+msgid "What is associated subject type?"
+msgstr "Quel est associée type de sujet?"
+
+msgid "What is the subject's name?"
+msgstr "Quel est le nom du sujet?"
+
+msgid "What is the subject's Unique ID Number"
+msgstr "Quel est le numéro du sujet Unique ID"
+
+msgid "What is the subject's location?"
+msgstr "Quel est l'emplacement du sujet?"
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr "Qu'est-ce que le GPS du sujet coordonnées?"
+
+msgid "Describe the subject"
+msgstr "Décrire l'objet"
+
+msgid "What is the mobile number associated with the subject?"
+msgstr "Quel est le numéro de téléphone portable associé à l'objet?"
+
+msgid "What is the data sender's name?"
+msgstr "Quel est le nom de l'expéditeur données?"
+
+msgid "What is the data sender's location?"
+msgstr "Quel est l'emplacement de l'émetteur données?"
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr "Quel est le GPS de l'expéditeur des données de coordonnées?"
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+"Quel est le numéro de téléphone portable associé à l'expéditeur des "
+"données?"

@@ -136,7 +136,7 @@ msgstr "Ce champ est obligatoire"
 
 #: views.py:830
 msgid "Successfully submitted"
-msgstr ""
+msgstr "soumis avec succès"
 
 #: templates/project/sms_tester_form.html:39
 #, python-format
