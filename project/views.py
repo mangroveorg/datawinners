@@ -623,6 +623,7 @@ def finish(request, project_id=None):
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
         is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
+        devices = ",".join(project.devices)
         return render_to_response('project/finish_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': _make_links_for_finish_page(
                                                                        project_id, form_model),
@@ -630,7 +631,8 @@ def finish(request, project_id=None):
                                                                    ,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "previous": previous_link,
-                                                                   "is_reminder": is_reminder},
+                                                                   "is_reminder": is_reminder,
+                                                                   "devices": devices},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(project_overview, args=[project_id]))

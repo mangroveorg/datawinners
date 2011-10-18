@@ -69,7 +69,7 @@
                 </li>
                 <li><label>
                     {% trans "Devices:" %}</label>
-                    {% for each in project.devices %}<p id="devices">{{ each }}</p> {% endfor %}
+                    <p id="devices">{{ devices }}</p>
                 </li>
             </ul>
             <a id="project_edit_link" href="{{project_links.edit_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
