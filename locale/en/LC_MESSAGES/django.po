@@ -2356,3 +2356,7 @@ msgstr ""
 
 msgid "The questionnaire does not exist."
 msgstr ""
+
+msgid "*indicates required field"
+msgstr ""
+

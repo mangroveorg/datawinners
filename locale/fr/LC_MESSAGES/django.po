@@ -2604,3 +2604,7 @@ msgstr "S'il vous plaît remplir au moins un champ de localisation"
 
 msgid "The questionnaire does not exist."
 msgstr "Le questionnaire n'existe pas."
+
+msgid "*indicates required field"
+msgstr "*indique champs obligatoire"
+
