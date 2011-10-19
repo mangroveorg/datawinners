@@ -276,3 +276,20 @@ msgstr ""
 
 msgid "What is the mobile number associated with the data sender?"
 msgstr ""
+
+#: media/javascript/project/sms_preview.js:9
+msgid "number"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:12
+msgid "text"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:20
+#: media/javascript/project/sms_preview.js:24
+msgid "list of choices"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:28
+msgid "geo code"
+msgstr ""
