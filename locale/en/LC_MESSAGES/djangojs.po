@@ -346,22 +346,6 @@ msgstr ""
 msgid "Are you sure you want to delete the selected record/s?"
 msgstr ""
 
-#: media/javascript/project/sms_preview.js:9
-msgid " &lt;number&gt;"
-msgstr ""
-
-#: media/javascript/project/sms_preview.js:12
-msgid " &lt;text&gt;"
-msgstr ""
-
-#: media/javascript/project/sms_preview.js:20
-#: media/javascript/project/sms_preview.js:24
-msgid " &lt;list of choices&gt;"
-msgstr ""
-
-#: media/javascript/project/sms_preview.js:28
-msgid " &lt;geo code&gt;"
-msgstr ""
 
 #: media/javascript/project/subject.js:20
 msgid "Add A Subject"

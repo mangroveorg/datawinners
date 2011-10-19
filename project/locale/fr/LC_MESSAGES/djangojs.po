@@ -205,21 +205,21 @@ msgid "default"
 msgstr "valeur par défaut"
 
 #: media/javascript/project/sms_preview.js:9
-msgid " &lt;number&gt;"
-msgstr " &lt;nombre&gt;"
+msgid "number"
+msgstr "nombre"
 
 #: media/javascript/project/sms_preview.js:12
-msgid " &lt;text&gt;"
-msgstr " &lt;texte&gt;"
+msgid "text"
+msgstr "texte"
 
 #: media/javascript/project/sms_preview.js:20
 #: media/javascript/project/sms_preview.js:24
-msgid " &lt;list of choices&gt;"
-msgstr " &lt;liste de choix&gt;"
+msgid "list of choices"
+msgstr "liste de choix"
 
 #: media/javascript/project/sms_preview.js:28
-msgid " &lt;geo code&gt;"
-msgstr " &lt;code geo&gt;"
+msgid "geo code"
+msgstr "code geo"
 
 #: media/javascript/project/register_entity_validation.js:17
 msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"

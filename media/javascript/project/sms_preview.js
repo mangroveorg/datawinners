@@ -2,14 +2,14 @@ DW.smsPreview = function() {
     var sms_preview = '' + $('#questionnaire-code').val()
     for (var i = 0; i < viewModel.questions().length; i++) {
         var current_question = viewModel.questions()[i];
-        sms_preview += ' .'+current_question.code()
+        sms_preview += ' .'+current_question.code();
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':
-                sms_preview += gettext(' &lt;number&gt;')
+                sms_preview += ' &lt;' + gettext('number') + '&gt;'
                 break;
             case 'text':
-                sms_preview += gettext(' &lt;text&gt;')
+                sms_preview += ' &lt;' + gettext('text') + '&gt;'
                 break;
 
             case 'date':
@@ -17,15 +17,15 @@ DW.smsPreview = function() {
                 break;
 
             case 'select':
-                sms_preview += gettext(' &lt;list of choices&gt;')
+                sms_preview += ' &lt;' + gettext('list of choices') + '&gt;'
                 break;
 
             case 'select1':
-                sms_preview += gettext(' &lt;list of choices&gt;')
+                sms_preview += ' &lt;' + gettext('list of choices') + '&gt;'
                 break;
 
             case 'geocode':
-                sms_preview += gettext(' &lt;geo code&gt;')
+                sms_preview += ' &lt;' + gettext('geo code') + '&gt;'
         }
     }
 
