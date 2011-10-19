@@ -151,3 +151,24 @@ msgstr "pour voir l'état de votre envoi)"
 
 msgid "Choose your language for success and error messages to Data Senders"
 msgstr "Choisissez votre langue pour le succès et les messages d'erreur aux expéditeurs de données"
+
+msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
+msgstr "Ce %s n'est pas encore enregistrée dans le système. S'il vous plaît vérifiez le %s du numéro d'identification unique et réessayez"
+
+msgid "Answer %s for question %s is longer than allowed."
+msgstr "Réponse à la question %s %s est plus long que permis."
+
+msgid "Answer %s for question %s is %s than allowed."
+msgstr "Réponse %s pour %s question est %s que permis."
+
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+msgstr "Format incorrect GPS Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx yy.yyyy Exemple -18.8665 47.5315"
+
+msgid "greater"
+msgstr "une plus grande"
+
+msgid "smaller"
+msgstr "petits"
+
+msgid "Answer %s for question %s is invalid. Expected date in %s format"
+msgstr "%s %s Réponse pour la question n'est pas valide. Date prévue dans le format %s"

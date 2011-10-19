@@ -29,7 +29,7 @@ from mangrove.datastore.queries import get_entity_count_for_type
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
-from mangrove.form_model.field import field_to_json, SelectField
+from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
@@ -779,11 +779,31 @@ def _create_django_form_from_form_model(form_model):
     return type('QuestionnaireForm', (Form, ), properties)
 
 
-def _to_list(errors):
+def _to_list(errors, fields):
     error_dict = dict()
     for key, value in errors.items():
         error_dict.update({key: [value] if not isinstance(value, list) else value})
-    return error_dict
+    return translate_messages(error_dict, fields)
+
+def translate_messages(error_dict, fields):
+    errors = dict()
+
+    for field in fields:
+        if field.code in error_dict:
+            error = error_dict[field.code][0]
+            if type(field) == TextField:
+                text, code = error.split(' ')[1], field.code
+                errors[code] = [_("Answer %s for question %s is longer than allowed.") % (text, code)]
+            if type(field) == IntegerField:
+                number, error_context = error.split(' ')[1], error.split(' ')[6]
+                errors[field.code] = [_("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
+            if type(field) == GeoCodeField:
+                errors[field.code] = [_("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")]
+            if type(field) == DateField:
+                answer, format = error.split(' ')[1], field.date_format
+                errors[field.code] = [_("Answer %s for question %s is invalid. Expected date in %s format") % (answer, field.code, format)]
+            
+    return errors
 
 
 def _create_request(questionnaire_form, username):
@@ -827,15 +847,15 @@ def web_questionnaire(request, project_id=None):
                 success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
             else:
-                questionnaire_form._errors = _to_list(response.errors)
+                questionnaire_form._errors = _to_list(response.errors, form_model.fields)
                 return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
         except DataObjectNotFound as exception:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
-            error_message = message % (form_model.entity_type[0], form_model.entity_type[0])
+            error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
-            error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
+            error_message = _(get_exception_message_for(exception=exception, channel=player.Channel.WEB))
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})
