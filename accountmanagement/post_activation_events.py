@@ -11,14 +11,7 @@ def create_org_database(sender, user, request, **kwargs):
 
     profile = user.get_profile()
     org = Organization.objects.get(org_id=profile.org_id)
-    if org is None:
-        return None
-
-    active_date = org.active_date
-
-    if active_date is None:
-        org.active_date = datetime.datetime.now
-        org.save()  
+    active_organization(org)
 
     org_settings = OrganizationSetting.objects.get(organization=org)
     db_name = org_settings.document_store
@@ -28,5 +21,13 @@ def create_org_database(sender, user, request, **kwargs):
     manager = get_db_manager(server=datawinners.settings.COUCH_DB_SERVER, database=db_name)
     assert manager, "Could not create database manager for %s " % (db_name,)
     run(manager)
+    
+def active_organization(org):
+    if org is None:
+        return None
 
+    active_date = org.active_date
 
+    if active_date is None:
+        org.active_date = datetime.datetime.now().replace(microsecond=0)
+        org.save()
