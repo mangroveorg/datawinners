@@ -1681,7 +1681,7 @@ msgstr "Question"
 #: templates/project/question_detail_panel.html:9
 #: templates/project/question_table.html:6
 msgid "Code"
-msgstr "Code :"
+msgstr "Code"
 
 #: templates/project/question_detail_panel.html:13
 msgid "q_tooltip_question_detail_code"
