@@ -45,6 +45,11 @@ def _process_form(dbm, form, org_id):
     message = None
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
+        
+        if not helper.unique(dbm, telephone_number):
+            form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
+            return message
+
         organization = Organization.objects.get(org_id=org_id)
         if organization.in_trial_mode:
             if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
@@ -53,9 +58,6 @@ def _process_form(dbm, form, org_id):
             else:
                 _add_data_sender_to_trial_organization(telephone_number,org_id)
 
-        if not helper.unique(dbm, telephone_number):
-            form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
-            return message
 
         try:
             web_player = WebPlayer(dbm, get_location_tree())
