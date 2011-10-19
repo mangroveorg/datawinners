@@ -133,8 +133,7 @@ def import_data(request, manager):
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
-        error_message = 'We could not import your data ! \
-                        You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!'
+        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!")
     except Exception:
         error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
         if settings.DEBUG:

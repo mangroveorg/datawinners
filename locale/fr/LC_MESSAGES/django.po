@@ -2628,3 +2628,9 @@ msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
 
 msgid "Please send it to us today. Thank you."
 msgstr "Veuillez l'envoyer aujourd'hui. Merci"
+
+msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
+msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
+
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
+msgstr "Nous ne pouvions pas importer vos données! Vous utilisez un format de document nous ne pouvons pas importer. S'il vous plaît utilisez un Comma Separated Values ​​(.csv) ou un Excel (.xls)!"

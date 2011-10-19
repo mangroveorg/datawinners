@@ -2360,3 +2360,8 @@ msgstr ""
 msgid "Settings have been updated successfully"
 msgstr ""
 
+msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
+msgstr ""
+
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
+msgstr ""
