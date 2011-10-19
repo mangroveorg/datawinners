@@ -2323,3 +2323,13 @@ msgid ""
 "An activation email has been sent to your email address. Please activate "
 "before login."
 msgstr ""
+
+msgid "Only letters and numbers are valid"
+msgstr ""
+
+msgid "Entity definition successful"
+msgstr ""
+
+msgid "%s already registered as a subject type. Please select %s from the drop down menu."
+msgstr ""
+

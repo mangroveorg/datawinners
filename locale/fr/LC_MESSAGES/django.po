@@ -1021,6 +1021,15 @@ msgstr "Ajouter un nouveau type de sujet"
 msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr "Nouveau sujet (ex : clinique, point d'eau, etc...)"
 
+msgid "Only letters and numbers are valid"
+msgstr "Seules les lettres et les chiffres sont valables"
+
+msgid "Entity definition successful"
+msgstr "Définition de l'entité réussie"
+
+msgid "%s already registered as a subject type. Please select %s from the drop down menu."
+msgstr "%s déjà inscrit comme type de sujet. S'il vous plaît choisissez% s de la liste déroulante."
+
 #: templates/project/data_analysis.html:3
 msgid "Data Analysis"
 msgstr "Analyse"

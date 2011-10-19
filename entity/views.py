@@ -144,13 +144,13 @@ def create_type(request):
         try:
             manager = get_database_manager(request.user)
             define_type(manager, entity_name)
-            message = "Entity definition successful"
+            message = _("Entity definition successful")
             success = True
         except EntityTypeAlreadyDefined:
-            message = "%s already registered as a subject type. Please select %s from the drop down menu." %  (entity_name[0], entity_name[0])
+            message = _("%s already registered as a subject type. Please select %s from the drop down menu.") %  (entity_name[0], entity_name[0])
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
-    return HttpResponse(json.dumps({'success': success, 'message': message}))
+    return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
 @login_required(login_url='/login')
 def create_subject(request):
