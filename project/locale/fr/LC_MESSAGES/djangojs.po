@@ -328,3 +328,6 @@ msgstr "S'il vous plaît sélectionner au moins 1 expéditeur des données"
 
 msgid "Please select atleast 1 Project"
 msgstr "S'il vous plaît sélectionner au moins 1 Projet"
+
+msgid "Delete this Project?"
+msgstr "Supprimer ce projet?"
