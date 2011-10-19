@@ -8,9 +8,9 @@ DW.set_deadline_example = function(){
             // Monday of the week
             var selected_weekday_text = $('#id_deadline_week option:selected').text();
             if (deadline_type_value == 'Following'){
-                deadline_example = interpolate("%(day)s of the week following the reporting week ",{ day : selected_weekday_text},true);
+                deadline_example = interpolate(gettext("%(day)s of the week following the reporting week"),{ day : selected_weekday_text},true);
             }else{
-                deadline_example = interpolate("%(day)s of the reporting week",{ day : selected_weekday_text },true);
+                deadline_example = interpolate(gettext("%(day)s of the reporting week"),{ day : selected_weekday_text },true);
             }
         }else if (frequency == 'month')
         {
@@ -18,9 +18,9 @@ DW.set_deadline_example = function(){
             // 5th day of October for October report
             var selected_month_day_text = $('#id_deadline_month option:selected').text();
             if (deadline_type_value == 'Following'){
-                deadline_example = interpolate("%(day)s of October for September report",{ day : selected_month_day_text },true);
+                deadline_example = interpolate(gettext("%(day)s of October for September report"),{ day : selected_month_day_text },true);
             }else{
-                deadline_example = interpolate("%(day)s of October for October report",{ day : selected_month_day_text },true);
+                deadline_example = interpolate(gettext("%(day)s of October for October report"),{ day : selected_month_day_text },true);
             }
         }
         $('#deadline_example').text(deadline_example)

@@ -72,6 +72,23 @@ msgstr "Aperçu de l'ajout d'envoyeur"
 msgid "Import a List"
 msgstr "Importer une liste"
 
+#: media/javascript/project/project_profile.js:11
+msgid "%(day)s of the week following the reporting week"
+msgstr "%(day)s de la semaine après la semaine d'envoi du rapport"
+
+#: media/javascript/project/project_profile.js:13
+msgid "%(day)s of the reporting week"
+msgstr "%(day)s de la semaine d'envoi du rapport"
+
+#: media/javascript/project/project_profile.js:21
+msgid "%(day)s of October for September report"
+msgstr "%(day)s d'octobre pour le rapport de septembre"
+
+#: media/javascript/project/project_profile.js:23
+msgid "%(day)s of October for October report"
+msgstr "%(day)s d'october pour le rapport d'octobre"
+
+
 #: media/javascript/project/project_profile.js:30
 msgid "Warning !!"
 msgstr "Attention !!"
@@ -125,10 +142,10 @@ msgstr ""
 #: media/javascript/project/questionnaire_helper.js:14
 msgid ""
 "Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy "
-"Example: -18.1324, 27.6547 "
+"Example: -18.1324 27.6547 "
 msgstr ""
 "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : xx."
-"xxxx yy.yyyy. Exemple -18.8665 47.5315"
+"xxxx yy.yyyy. Exemple -18.8665 27.6547"
 
 #: media/javascript/project/questionnaire_helper.js:21
 msgid "day.month.year"
@@ -182,6 +199,27 @@ msgstr "Le questionnaire comporte une erreur"
 #: media/javascript/project/questionnaire_wizard.js:134
 msgid "The question has been saved."
 msgstr "Vous devez enregistrer le questionnaire."
+
+#: media/javascript/project/questionnaire_wizard.js:158
+msgid "default"
+msgstr "valeur par défaut"
+
+#: media/javascript/project/sms_preview.js:9
+msgid "number"
+msgstr "nombre"
+
+#: media/javascript/project/sms_preview.js:12
+msgid "text"
+msgstr "texte"
+
+#: media/javascript/project/sms_preview.js:20
+#: media/javascript/project/sms_preview.js:24
+msgid "list of choices"
+msgstr "liste de choix"
+
+#: media/javascript/project/sms_preview.js:28
+msgid "geo code"
+msgstr "code geo"
 
 #: media/javascript/project/register_entity_validation.js:17
 msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
@@ -245,43 +283,42 @@ msgstr "Aperçu du sujet"
 
 
 msgid "Which subject are you reporting on?"
-msgstr "Quel sujet vous rendre compte?"
+msgstr "Votre rapport concerne quel sujet ?"
 
 msgid "What is the reporting period for the activity?"
-msgstr "Quelle est la période de déclaration pour l'activité?"
-
+msgstr "Votre rapport concerne quelle période ?"
 
 msgid "What is associated subject type?"
-msgstr "Quel est associée type de sujet?"
+msgstr "Quel est le type de sujet associé?"
 
 msgid "What is the subject's name?"
-msgstr "Quel est le nom du sujet?"
+msgstr "Quel est le nom du sujet ?"
 
 msgid "What is the subject's Unique ID Number"
-msgstr "Quel est le numéro du sujet Unique ID"
+msgstr "Quel est l'ID unique du sujet"
 
 msgid "What is the subject's location?"
-msgstr "Quel est l'emplacement du sujet?"
+msgstr "Quel est la localité du sujet?"
 
 msgid "What is the subject's GPS co-ordinates?"
-msgstr "Qu'est-ce que le GPS du sujet coordonnées?"
+msgstr "Quelles sont les coordonnées GPS de la localité de sujet ?"
 
 msgid "Describe the subject"
-msgstr "Décrire l'objet"
+msgstr "Décrivez le sujet"
 
 msgid "What is the mobile number associated with the subject?"
-msgstr "Quel est le numéro de téléphone portable associé à l'objet?"
+msgstr "Quel est le numéro de téléphone portable associé au sujet?"
 
 msgid "What is the data sender's name?"
-msgstr "Quel est le nom de l'expéditeur données?"
+msgstr "Quel est le nom de l'envoyeur données?"
 
 msgid "What is the data sender's location?"
-msgstr "Quel est l'emplacement de l'émetteur données?"
+msgstr "Quel est la localité de l'envoyeur de données ?"
 
 msgid "What is the data sender's GPS co-ordinates?"
-msgstr "Quel est le GPS de l'expéditeur des données de coordonnées?"
+msgstr "Quel sont les coordonnées GPS de l'envoyeur de données ?"
 
 msgid "What is the mobile number associated with the data sender?"
 msgstr ""
-"Quel est le numéro de téléphone portable associé à l'expéditeur des "
-"données?"
+"Quel est le numéro de téléphone portable associé à l'envoyeur de "
+"données ?"

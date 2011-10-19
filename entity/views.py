@@ -21,7 +21,7 @@ from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER
 from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -109,6 +109,9 @@ def submit(request):
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id
+    except DataObjectAlreadyExists as exception:
+        message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
+        success, entity_id = False, None
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel="web")
         message = _("Please add subject type and then add a subject") if message == "t should be present" else message
@@ -144,13 +147,13 @@ def create_type(request):
         try:
             manager = get_database_manager(request.user)
             define_type(manager, entity_name)
-            message = "Entity definition successful"
+            message = _("Entity definition successful")
             success = True
         except EntityTypeAlreadyDefined:
-            message = "%s already registered as a subject type. Please select %s from the drop down menu." %  (entity_name[0], entity_name[0])
+            message = _("%s already registered as a subject type. Please select %s from the drop down menu.") %  (entity_name[0], entity_name[0])
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
-    return HttpResponse(json.dumps({'success': success, 'message': message}))
+    return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
 @login_required(login_url='/login')
 def create_subject(request):

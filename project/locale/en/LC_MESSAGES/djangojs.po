@@ -123,7 +123,7 @@ msgstr ""
 #: media/javascript/project/questionnaire_helper.js:14
 msgid ""
 "Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy "
-"Example: -18.1324, 27.6547 "
+"Example: -18.1324 27.6547 "
 msgstr ""
 
 #: media/javascript/project/questionnaire_helper.js:21
@@ -275,4 +275,21 @@ msgid "What is the data sender's GPS co-ordinates?"
 msgstr ""
 
 msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:9
+msgid "number"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:12
+msgid "text"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:20
+#: media/javascript/project/sms_preview.js:24
+msgid "list of choices"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:28
+msgid "geo code"
 msgstr ""

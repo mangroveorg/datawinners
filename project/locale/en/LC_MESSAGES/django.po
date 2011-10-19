@@ -110,6 +110,10 @@ msgid "Yes"
 msgstr ""
 
 #: forms.py:62
+msgid "Same"
+msgstr ""
+
+#: forms.py:62
 msgid "Following"
 msgstr ""
 
@@ -168,14 +172,10 @@ msgstr ""
 msgid "Answer %s for question %s is invalid. Expected date in %s format"
 msgstr ""
 
-
 msgid "of the"
 msgstr ""
 
 msgid "Always on"
-msgstr ""
-
-msgid "Same"
 msgstr ""
 
 msgid "Monday"

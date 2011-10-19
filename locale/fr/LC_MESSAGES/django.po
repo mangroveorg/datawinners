@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-18 08:41+0300\n"
+"POT-Creation-Date: 2011-10-19 12:28+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,19 +30,19 @@ msgstr "Santé publique"
 msgid "Other"
 msgstr "Autre"
 
-#: accountmanagement/forms.py:20 accountmanagement/forms.py:88
+#: accountmanagement/forms.py:20 accountmanagement/forms.py:90
 msgid "Organization Sector"
 msgstr "Secteur de l'organisation"
 
-#: accountmanagement/forms.py:21 accountmanagement/forms.py:89
+#: accountmanagement/forms.py:21 accountmanagement/forms.py:110
 msgid "* Address"
 msgstr "* Adresse"
 
-#: accountmanagement/forms.py:22 accountmanagement/forms.py:90
+#: accountmanagement/forms.py:22 accountmanagement/forms.py:91
 msgid "* City"
 msgstr "* Ville"
 
-#: accountmanagement/forms.py:23 accountmanagement/forms.py:91
+#: accountmanagement/forms.py:23 accountmanagement/forms.py:111
 msgid "State / Province"
 msgstr "Etat / Province"
 
@@ -50,21 +50,21 @@ msgstr "Etat / Province"
 msgid "* Country"
 msgstr "* Pays"
 
-#: accountmanagement/forms.py:25 accountmanagement/forms.py:95
+#: accountmanagement/forms.py:25 accountmanagement/forms.py:114
 msgid "* Postal / Zip Code"
 msgstr "* Code postal"
 
-#: accountmanagement/forms.py:27 accountmanagement/forms.py:97
+#: accountmanagement/forms.py:27 accountmanagement/forms.py:116
 msgid "Office Phone Number"
 msgstr "Numéro du bureau"
 
 #: accountmanagement/forms.py:28 accountmanagement/forms.py:51
-#: accountmanagement/forms.py:53 accountmanagement/forms.py:80
-#: accountmanagement/forms.py:82 accountmanagement/forms.py:98
+#: accountmanagement/forms.py:53 accountmanagement/forms.py:84
+#: accountmanagement/forms.py:86 accountmanagement/forms.py:117
 msgid "Please enter a valid phone number"
 msgstr "Veuillez saisir un numéro de téléphone valide"
 
-#: accountmanagement/forms.py:29 accountmanagement/forms.py:99
+#: accountmanagement/forms.py:29 accountmanagement/forms.py:118
 msgid "Website Url"
 msgstr "Url du site web"
 
@@ -80,15 +80,15 @@ msgstr "* Nom"
 msgid "* Email"
 msgstr ""
 
-#: accountmanagement/forms.py:49 accountmanagement/forms.py:76
+#: accountmanagement/forms.py:49 accountmanagement/forms.py:75
 msgid "Enter a valid email address. Example:name@organization.com"
 msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
 
-#: accountmanagement/forms.py:50 accountmanagement/forms.py:79
+#: accountmanagement/forms.py:50 accountmanagement/forms.py:83
 msgid "Office Phone"
 msgstr "Numéro du bureau"
 
-#: accountmanagement/forms.py:52 accountmanagement/forms.py:81
+#: accountmanagement/forms.py:52 accountmanagement/forms.py:85
 msgid "Mobile Phone"
 msgstr "Numéro de mobile"
 
@@ -98,32 +98,40 @@ msgid ""
 msgstr ""
 "Cette adresse email est déja utilisée. Veuillez saisir une adresse différente"
 
-#: accountmanagement/forms.py:75
+#: accountmanagement/forms.py:74
 msgid "* Email address"
 msgstr "* Adresse email"
 
-#: accountmanagement/forms.py:85
+#: accountmanagement/forms.py:77
+msgid "* Password"
+msgstr "* Mot de passe"
+
+#: accountmanagement/forms.py:79
+msgid "* Password (again)"
+msgstr "* Mot de passe (à nouveau)"
+
+#: accountmanagement/forms.py:87
 msgid "* Organization Name"
 msgstr "* Nom de l'organisation"
 
-#: accountmanagement/forms.py:94
-msgid "Please enter a valid Postal / Zip code"
-msgstr "Veuillez entrer code postal valide"
-
-#: accountmanagement/forms.py:106
+#: accountmanagement/forms.py:99
 msgid "The two password fields didn't match."
 msgstr "Les deux champs mots de passe ne concordent pas."
 
-#: accountmanagement/forms.py:136
+#: accountmanagement/forms.py:113
+msgid "Please enter a valid Postal / Zip code"
+msgstr "Veuillez entrer code postal valide"
+
+#: accountmanagement/forms.py:140
 msgid "Please enter a correct email and password."
 msgstr "Veuillez entrer un email et un mot de passe valide"
 
-#: accountmanagement/forms.py:138
+#: accountmanagement/forms.py:142
 msgid "This account is inactive."
 msgstr "Ce compte est désactivé"
 
 #: dashboard/views.py:89 templates/main_navigation.html:13
-#: templates/accountmanagement/account/users_list.html:29
+#: templates/accountmanagement/account/users_list.html:28
 #: templates/entity/datasenders_table.html:11
 msgid "Projects"
 msgstr "Projets"
@@ -206,7 +214,8 @@ msgstr ""
 
 #: entity/forms.py:67
 msgid "Please fill out at least one location field correctly."
-msgstr "S'il vous plaît remplir au moins un champ de localisation correctement."
+msgstr ""
+"S'il vous plaît remplir au moins un champ de localisation correctement."
 
 #: entity/views.py:98
 msgid "Please add subject type and then add a subject"
@@ -272,7 +281,7 @@ msgstr "A chaque fois que l'envoyeur a des données à communiquer"
 
 #: project/forms.py:43
 msgid "Every"
-msgstr "Tous les"
+msgstr "Tous/toutes les"
 
 #: project/forms.py:46
 msgid "Name this Project"
@@ -303,23 +312,22 @@ msgid "Device"
 msgstr "Canal"
 
 #: project/forms.py:54
-#, fuzzy
-msgid ""
-"Choose your language for the questionnaire and automatic messages to Data "
-"Senders"
+msgid "Choose your language for success and error messages to Data Senders"
 msgstr ""
-"Choisissez votre langue pour le questionnaire et les messages automatiques "
-"aux expéditeurs de données?"
+"Choisissez votre langue pour message de succès ou d'erreurs à retourner aux "
+"envoyeur de données?"
+
+#: project/forms.py:56
+msgid "How often do you need the data?"
+msgstr "A quelle fréquence voulez-vous collecter les données"
 
 #: project/forms.py:58
-#, fuzzy
 msgid "Week"
-msgstr "Toutes les semaines"
+msgstr "Semaines"
 
 #: project/forms.py:58
-#, fuzzy
 msgid "Month"
-msgstr "Tous les mois"
+msgstr "Mois"
 
 #: project/forms.py:59
 msgid "Do you want to set a deadline?"
@@ -335,7 +343,7 @@ msgstr "Oui"
 
 #: project/forms.py:62
 msgid "Same"
-msgstr ""
+msgstr "Même"
 
 #: project/forms.py:62
 msgid "Following"
@@ -357,8 +365,14 @@ msgstr "Décrivez le résultat attendu de ce cette collete de données"
 msgid "This field is required"
 msgstr "Ce champ est obligatoire"
 
-#: project/views.py:822
+#: project/views.py:824
 msgid "Successfully submitted"
+msgstr "Envoyé avec succès"
+
+#: submission/views.py:48
+msgid ""
+"Your organization does not have a telephone number assigned. Please contact "
+"DataWinners Support."
 msgstr ""
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
@@ -501,15 +515,14 @@ msgstr "Se déconnecter"
 msgid "Help"
 msgstr "Aide"
 
-#: templates/header_wizard.html:28 templates/public_header_wizard.html:11
-#: templates/registration/activate.html:11
+#: templates/header_wizard.html:28 templates/registration/activate.html:11
 #: templates/registration/activation_complete.html:9
 #: templates/registration/login.html:45
 #: templates/registration/password_reset_complete.html:9
 msgid "Sign in"
 msgstr "S'identifier"
 
-#: templates/header_wizard.html:29 templates/public_header_wizard.html:12
+#: templates/header_wizard.html:29
 msgid "Sign up"
 msgstr "S'inscrire"
 
@@ -544,68 +557,6 @@ msgstr "Données"
 #: templates/main_navigation.html:25
 msgid "Guide"
 msgstr "Guide"
-
-#: templates/public_footer.html:5
-msgid "A part of"
-msgstr "Une partie de"
-
-#: templates/public_footer.html:5 templates/public_footer.html.py:8
-#: templates/public_footer.html:14 templates/public_footer.html.py:15
-#: templates/public_footer.html:16 templates/public_footer.html.py:17
-#: templates/public_footer.html:18 templates/public_footer.html.py:28
-#: templates/public_footer.html:29 templates/public_main_navigation.html:12
-#: templates/public_main_navigation.html:15
-#: templates/public_main_navigation.html:18
-#: templates/public_main_navigation.html:24 templates/redirect_other_lg.html:3
-#: templates/redirect_other_lg.html.py:4
-msgid "en"
-msgstr "fr"
-
-#: templates/public_footer.html:7
-msgid ""
-"HNI provides partners with the opportunity to embrace, reshape and maximize "
-"the use of information and communication technology in productive and "
-"sustainable ways."
-msgstr ""
-"HNI offre à ses partenaires l'occasion d’appréhender, de remodeler et de "
-"maximiser l'utilisation de la technologie de l'information et de la "
-"communication de manière productive et durable."
-
-#: templates/public_footer.html:8
-msgid "Learn more about us"
-msgstr "Mieux nous connaître"
-
-#: templates/public_footer.html:14 templates/public_main_navigation.html:12
-msgid "What is DataWinners"
-msgstr "Qu’est-ce que DataWinners"
-
-#: templates/public_footer.html:15 templates/public_main_navigation.html:15
-msgid "Success Stories"
-msgstr "Nos succès"
-
-#: templates/public_footer.html:16 templates/public_main_navigation.html:18
-msgid "Pricing"
-msgstr "Tarification"
-
-#: templates/public_footer.html:17 templates/public_main_navigation.html:21
-msgid "Support"
-msgstr "Assistance"
-
-#: templates/public_footer.html:18 templates/public_main_navigation.html:24
-msgid "About us"
-msgstr "Qui somme-nous"
-
-#: templates/public_footer.html:23
-msgid "Our Partners &amp; Clients"
-msgstr "Nos Partenaires &amp; Clients"
-
-#: templates/public_footer.html:28
-msgid "partners"
-msgstr "partenaires"
-
-#: templates/public_footer.html:29
-msgid "clients"
-msgstr "clients"
 
 #: templates/step_wizard.html:19 templates/dashboard/home.html:30
 #: templates/project/index.html:28
@@ -730,20 +681,14 @@ msgid "Account"
 msgstr "Compte"
 
 #: templates/accountmanagement/account/add_user.html:16
-#: templates/accountmanagement/account/users_list.html:13
-msgid "Add Users"
-msgstr "Ajouter des utilisateurs"
-
-#: templates/accountmanagement/account/add_user.html:17
-#: templates/accountmanagement/account/users_list.html:14
 msgid "All Users"
 msgstr "Tous les utilisateurs"
 
-#: templates/accountmanagement/account/add_user.html:26
+#: templates/accountmanagement/account/add_user.html:25
 msgid "Point of Contact"
 msgstr "Point focal"
 
-#: templates/accountmanagement/account/add_user.html:26
+#: templates/accountmanagement/account/add_user.html:25
 msgid "Account Administrator"
 msgstr "Gestionnaire de compte"
 
@@ -765,15 +710,19 @@ msgstr "Utilisateurs"
 msgid "Save Changes"
 msgstr "Enregistrer"
 
-#: templates/accountmanagement/account/users_list.html:20
+#: templates/accountmanagement/account/users_list.html:13
+msgid "Add Users"
+msgstr "Ajouter des utilisateurs"
+
+#: templates/accountmanagement/account/users_list.html:19
 msgid "First Name"
 msgstr "Prénom"
 
-#: templates/accountmanagement/account/users_list.html:23
+#: templates/accountmanagement/account/users_list.html:22
 msgid "Last Name"
 msgstr "Nom"
 
-#: templates/accountmanagement/account/users_list.html:26
+#: templates/accountmanagement/account/users_list.html:25
 #: templates/entity/datasenders_table.html:12
 msgid "Email"
 msgstr "Email"
@@ -849,9 +798,8 @@ msgid "All Data Records"
 msgstr "Tous les enregistrements"
 
 #: templates/alldata/index.html:40
-#, fuzzy
 msgid "Web Submissions"
-msgstr "Envoi Web"
+msgstr "Envois Web"
 
 #: templates/dashboard/home.html:31
 msgid "help_project_creation"
@@ -994,19 +942,16 @@ msgid "Actions:"
 msgstr "Actions :"
 
 #: templates/entity/all_datasenders.html:113
-#, fuzzy
 msgid "Add to project"
-msgstr "Editer ce projet"
+msgstr "Ajouter au projet"
 
 #: templates/entity/all_datasenders.html:114
-#, fuzzy
 msgid "Remove from project"
-msgstr "Vos projets"
+msgstr "Enlever des projets"
 
 #: templates/entity/all_datasenders.html:115
-#, fuzzy
 msgid "Give Web Submission Access"
-msgstr "Envoi Web"
+msgstr "Donner un accès à l'envoi web"
 
 #: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"
@@ -1075,6 +1020,15 @@ msgstr "Ajouter un nouveau type de sujet"
 #: templates/entity/create_type.html:9
 msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr "Nouveau sujet (ex : clinique, point d'eau, etc...)"
+
+msgid "Only letters and numbers are valid"
+msgstr "Seules les lettres et les chiffres sont valables"
+
+msgid "Entity definition successful"
+msgstr "Définition de l'entité réussie"
+
+msgid "%s already registered as a subject type. Please select %s from the drop down menu."
+msgstr "%s déjà inscrit comme type de sujet. S'il vous plaît choisissez% s de la liste déroulante."
 
 #: templates/project/data_analysis.html:3
 msgid "Data Analysis"
@@ -1439,14 +1393,12 @@ msgstr ""
 "enregistrées"
 
 #: templates/project/index.html:59
-#, fuzzy
 msgid "Export all submissions prior to deleting your project."
-msgstr "Aucune données pour ce projet"
+msgstr "Veuillez exporter toutes les données avant de supprimer votre projet."
 
 #: templates/project/index.html:61
-#, fuzzy
 msgid "Delete Project Now"
-msgstr "Définition du projet"
+msgstr "Supprimez le projet maintenant"
 
 #: templates/project/log_table.html:20
 msgid "Date Received"
@@ -1624,6 +1576,20 @@ msgstr ""
 #: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"
 msgstr "Délais et rappels"
+
+#: templates/project/profile_deadline.html:23
+msgid "Deadline Example:"
+msgstr "Exemple de Date limite"
+
+#: templates/project/profile_deadline_month_block.html:4
+#: templates/project/profile_deadline_week_block.html:4
+msgid "Always on"
+msgstr "Toujours le"
+
+#: templates/project/profile_deadline_month_block.html:8
+#: templates/project/profile_deadline_week_block.html:8
+msgid "of the"
+msgstr "du/de la"
 
 #: templates/project/profile_deadline_month_block.html:8
 msgid "month"
@@ -1876,9 +1842,8 @@ msgid "Print"
 msgstr "Imprimer"
 
 #: templates/project/questionnaire_preview.html:11
-#, fuzzy
 msgid "SMS your answers to"
-msgstr "Envoyez vos réponses de test"
+msgstr "Envoyez pas SMS vos réponses à"
 
 #: templates/project/questionnaire_preview.html:15
 msgid "Project Name:"
@@ -1913,6 +1878,10 @@ msgstr ""
 "Enter a 3 letter code (letters and numbers). This questionnaire code will "
 "appear on the printed versionof your questionnaire. Your Data Senders will "
 "type in this code first when sending in their data."
+
+#: templates/project/questionnaire_wizard.html:117
+msgid "SMS Preview"
+msgstr "Aperçu du SMS"
 
 #: templates/project/questionnaire_wizard.html:128
 msgid ""
@@ -2006,17 +1975,13 @@ msgid "Project - Reminders"
 msgstr "Projet - Messages de rappel"
 
 #: templates/project/reminders.html:60
-#, fuzzy
 msgid "Everyone"
-msgstr "Tous les"
+msgstr "Tous le monde"
 
 #: templates/project/reminders.html:109
 #: templates/project/sent_reminders.html:52
-#, fuzzy
 msgid "Reminders are not enabled for this project."
-msgstr ""
-"Les Messages de rappel ne sont pas activés pour ce projet. Veuillez passer à "
-"<a>l'étape suivante</a>"
+msgstr "Les Messages de rappel ne sont pas activés pour ce projet."
 
 #: templates/project/reminders_wizard.html:34
 msgid "Step5:"
@@ -2100,6 +2065,17 @@ msgstr "Effacer"
 msgid "See the data you received"
 msgstr "Voir les données que vous avez reçu"
 
+#: templates/project/sms_tester_form.html:37
+msgid "See if DataWinners received your SMS. (Go to "
+msgstr ""
+
+#: templates/project/sms_tester_form.html:38
+msgid "All Data Records "
+msgstr "Tous les enregistrements"
+
+#: templates/project/sms_tester_form.html:38
+msgid "page to view submission status)"
+msgstr "page pour voir le statut des envois)"
 
 #: templates/project/subjects.html:33
 msgid "Step3:"
@@ -2277,14 +2253,12 @@ msgid "Registration Questionnaire"
 msgstr "Enregistrer un questionnaire"
 
 #: templates/project/tab_navigation.html:121
-#, fuzzy
 msgid "Scheduled Reminders"
-msgstr "Ajouter un message de rappel"
+msgstr "Messages de rappel programmés"
 
 #: templates/project/tab_navigation.html:124
-#, fuzzy
 msgid "Sent Reminders"
-msgstr "Messages de rappel"
+msgstr "Messages de rappel envoyés"
 
 #: templates/registration/activate.html:3
 #: templates/registration/activate.html:4
@@ -2405,6 +2379,48 @@ msgstr ""
 "Un email d'activation a été envoyé sur votre adresse email. Veuillez activer "
 "votre compte avant de vous connecter."
 
+msgid "A part of"
+msgstr "Une partie de"
+
+msgid "en"
+msgstr "fr"
+
+msgid ""
+"HNI provides partners with the opportunity to embrace, reshape and "
+"maximize the use of information and communication technology in "
+"productive and sustainable ways."
+msgstr ""
+"HNI offre à ses partenaires l'occasion d’appréhender, de remodeler et de "
+"maximiser l'utilisation de la technologie de l'information et de la "
+"communication de manière productive et durable."
+
+msgid "Learn more about us"
+msgstr "Mieux nous connaître"
+
+msgid "What is DataWinners"
+msgstr "Qu’est-ce que DataWinners"
+
+msgid "Success Stories"
+msgstr "Nos succès"
+
+msgid "Pricing"
+msgstr "Tarification"
+
+msgid "Support"
+msgstr "Assistance"
+
+msgid "About us"
+msgstr "Qui somme-nous"
+
+msgid "Our Partners &amp; Clients"
+msgstr "Nos Partenaires &amp; Clients"
+
+msgid "partners"
+msgstr "partenaires"
+
+msgid "clients"
+msgstr "clients"
+
 msgid "That"
 msgstr "Ce/Cette"
 
@@ -2415,7 +2431,7 @@ msgid "View"
 msgstr "Apercu"
 
 msgid "edit profile"
-msgstr "Editer le projet"
+msgstr "Editer le profil"
 
 msgid "Projects:"
 msgstr "Projets :"
@@ -2424,66 +2440,66 @@ msgid "Associate"
 msgstr "Associer"
 
 msgid "What is associated subject type?"
-msgstr "Quel est associée type de sujet?"
+msgstr "Quel est le type de sujet associé ?"
 
 msgid "What is the subject's name?"
-msgstr "Quel est le nom du sujet?"
+msgstr "Quel est le nom du sujet ?"
 
 msgid "What is the subject's Unique ID Number"
-msgstr "Quel est le numéro du sujet Unique ID"
+msgstr "Quel l'ID unique du sujet"
 
 msgid "What is the subject's location?"
-msgstr "Quel est l'emplacement du sujet?"
+msgstr "Quel est la localité du sujet?"
 
 msgid "What is the subject's GPS co-ordinates?"
-msgstr "Qu'est-ce que le GPS du sujet coordonnées?"
+msgstr "Quel sont les coordonnées GPS de la localité du sujet ?"
 
 msgid "Describe the subject"
-msgstr "Décrire l'objet"
+msgstr "Décrire le sujet"
 
 msgid "What is the mobile number associated with the subject?"
-msgstr "Quel est le numéro de téléphone portable associé à l'objet?"
+msgstr "Quel est le numéro de téléphone portable associé au sujet ?"
 
 msgid "What is the data sender's name?"
-msgstr "Quel est le nom de l'expéditeur données?"
+msgstr "Quel est le nom de l'envoyeur de données?"
 
 msgid "What is the data sender's location?"
-msgstr "Quel est l'emplacement de l'émetteur données?"
+msgstr "Quel est la localité de l'envoyeur de données?"
 
 msgid "What is the data sender's GPS co-ordinates?"
-msgstr "Quel est le GPS de l'expéditeur des données de coordonnées?"
+msgstr ""
+"Quel sont les coordonnées GPS de la localité de l'envoyeur de données ?"
 
 msgid "What is the mobile number associated with the data sender?"
 msgstr ""
-"Quel est le numéro de téléphone portable associé à l'expéditeur des "
-"données?"
+"Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
 
 msgid "Entity identified by %s is already defined"
-msgstr "Entité identifiée par %s est déjà défini"
+msgstr "L'entité identifiée par %s est déjà définie"
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Unique "
 "Identification Number(ID) is missing."
 msgstr ""
-"Erreur. Soumission invalide. Reportez-vous au questionnaire imprimé. "
-"Numéro d'identification unique (ID) est manquant."
+"Erreur: Erreur d'envoi. Reportez-vous au questionnaire imprimé. Le numéro "
+"d'identification unique (ID) est manquant."
 
 msgid "Questionnaire ID %s doesnt exist."
-msgstr "Dotazník ID %s neexistuje."
+msgstr "L'ID du questionnaire %s n'existe pas."
 
 msgid ""
 "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
 "questionnaire and resend SMS"
 msgstr ""
-"Erreur avec questionnaire ID %s. Trouver l'ID Questionnaire sur le "
-"questionnaire imprimé et renvoyer par SMS"
+"Erreur sur l'ID du questionnaire %s. Trouvez l'ID Questionnaire sur le "
+"questionnaire imprimé et renvoyer le SMS"
 
 msgid ""
 "This entity reported on is not registered in our system. Please register "
 "entity or contact us at 033 20 426 89"
 msgstr ""
-"Cette entité rapportés ne sont pas enregistrées dans notre système. S'il "
-"vous plaît vous inscrire entité ou contactez-nous au 033 20 426 89"
+"Cette entité n'est pas enregistrées dans notre système.Veuillez "
+"enregistrer la nouvelle entité ou contactez-nous au 033 20 426 89"
 
 msgid "This telephone number is not registered in our system."
 msgstr "Ce numéro de téléphone n'est pas enregistré dans notre système."
@@ -2492,38 +2508,39 @@ msgid ""
 "This telephone number is not registered in our system. Please register or "
 "contact us at 033 20 426 89."
 msgstr ""
-"Ce numéro de téléphone n'est pas enregistré dans notre système. S'il vous "
-"plaît vous inscrire ou contactez-nous au 033 426 20 89."
+"Ce numéro de téléphone n'est pas enregistré dans notre système.Veuillez "
+"vous inscrire ou contactez-nous au 033 426 20 89."
 
 msgid "Question Code Already Exists"
-msgstr "Question de code existe déjà"
+msgstr "Ce Code Question existe déjà"
 
 msgid "Question Code %s provided already exists"
-msgstr "code de la Question %s fourni existe déjà"
+msgstr "Le Code Question %s fourni existe déjà"
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
 "question ID and answer for: %s"
 msgstr ""
-"Erreur. Soumission invalide. Reportez-vous au questionnaire imprimé. "
-"Renvoyer l'ID de questions et réponses pour: %s"
+"Erreur: Erreur d'envoi. Reportez-vous au questionnaire imprimé. Renvoyer "
+"l'ID de la question et répondez à : %s"
 
 msgid ""
 "This entity %s reported on is not registered in our system. Please "
 "register entity or contact us at 033 20 426 89."
 msgstr ""
-"Cette entité %s reported on is not registered in our system. Please "
-"register entity or contact us at 033 20 426 89."
+"L'entité %s pour laquelle vous voulez envoyer un rapport n'existe pas."
+"Veuillez enregistrer la nouvelle entité ou contactez-nous au 033 20 426 "
+"89."
 
 msgid "Invalid message format."
-msgstr "Invalid format de message."
+msgstr "Format de message non valide."
 
 msgid ""
 "Error: Invalid Submission. Locate the Questionnaire Code on the printed "
 "questionnaire and resend SMS starting with the Questionnaire Code"
 msgstr ""
-"Erreur: Soumission invalide. Repérez le code Questionnaire sur le "
-"questionnaire imprimé et renvoyer par SMS commençant par le Code "
+"Erreur: Erreur d'envoi. Repérez le code Questionnaire sur le "
+"questionnaire imprimé et renvoyer par SMS en commençant par le Code "
 "Questionnaire"
 
 msgid ""
@@ -2531,34 +2548,41 @@ msgid ""
 "Code on the printed questionnaire and resend SMS with the right Question "
 "code."
 msgstr ""
-"Erreur: Soumission invalide. Pas question valide trouvé. Vérifiez le Code "
-"Question sur le questionnaire imprimé et renvoyer un SMS avec le code de "
-"bonne question."
+"Erreur: Erreur d'envoi. Aucune question valide trouvée. Vérifiez le Code "
+"Question sur le questionnaire imprimé et renvoyer un SMS avec le bon code."
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Multiple "
 "responses have been submitted for question code : %s"
 msgstr ""
-"Erreur. Soumission invalide. Reportez-vous au questionnaire imprimé. "
-"Réponses multiples ont été soumis pour le code question: %s"
+"Erreur: Erreur d'envoi. Reportez-vous au questionnaire imprimé. Des "
+"réponses multiples ont été envoyées avec le même code question: %s"
 
 msgid ""
 "Error. This project is not yet active. Submissions can be made only for "
 "an active project."
 msgstr ""
-"Erreur. Ce projet n'est pas encore actif. Soumissions peuvent être faites "
-"uniquement pour un projet actif."
+"Erreur. Ce projet n'est pas encore actif. Les envois ne sont possibles "
+"que sur les projets actifs"
 
 msgid "Error. Internal error. Please call technical support"
 msgstr ""
-"Erreur. Erreur interne. S'il vous plaît appelez l'assistance technique"
+"Erreur: Erreur interne. S'il vous plaît appelez l'assistance technique"
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
 "question ID and answer for %s"
 msgstr ""
-"Erreur. Soumission invalide. Reportez-vous au questionnaire imprimé. "
-"Renvoyer l'ID de questions et réponses pour les %s"
+"Erreur d'envoi. Reportez-vous au questionnaire imprimé. Renvoyer l'ID de "
+"la question et la réponse pour %s"
 
 msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
-msgstr "Erreur: Mauvais SMS. Revue imprimée questionnaire et le renvoyer par SMS."
+msgstr ""
+"Erreur: SMS erroné. Reportez-vous au questionnaire imprimé et renvoyez le "
+"SMS."
+
+msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgstr "Entité avec numéro d'identification unique (ID) =% s existe déjà."
+
+msgid "answer"
+msgstr "réponse"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-28 07:25-0500\n"
+"POT-Creation-Date: 2011-10-19 12:39+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,10 +18,111 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#: media/javascript/datasenders/index.js:90
+#: media/admin/js/SelectFilter2.js:77
+msgid "Clear all"
+msgstr ""
+
+#: media/admin/js/actions.js:18
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: media/admin/js/actions.js:109
+msgid ""
+"You have unsaved changes on individual editable fields. If you run an "
+"action, your unsaved changes will be lost."
+msgstr ""
+
+#: media/admin/js/actions.js:121 media/admin/js/actions.min.js:6
+msgid ""
+"You have selected an action, but you haven't saved your changes to "
+"individual fields yet. Please click OK to save. You'll need to re-run the "
+"action."
+msgstr ""
+
+#: media/admin/js/actions.js:123 media/admin/js/actions.min.js:6
+msgid ""
+"You have selected an action, and you haven't made any changes on individual "
+"fields. You're probably looking for the Go button rather than the Save "
+"button."
+msgstr ""
+
+#: media/admin/js/calendar.js:24 media/admin/js/dateparse.js:32
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+
+#: media/admin/js/calendar.js:25
+msgid "S M T W T F S"
+msgstr ""
+
+#: media/admin/js/collapse.js:9 media/admin/js/collapse.js.py:21
+#: media/admin/js/collapse.min.js:1
+msgid "Show"
+msgstr ""
+
+#: media/admin/js/collapse.js:16 media/admin/js/collapse.min.js:1
+msgid "Hide"
+msgstr ""
+
+#: media/admin/js/dateparse.js:33
+msgid "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:49
+#: media/admin/js/admin/DateTimeShortcuts.js:84
+msgid "Now"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:53
+msgid "Clock"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:80
+msgid "Choose a time"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:85
+msgid "Midnight"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:86
+msgid "6 a.m."
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:87
+msgid "Noon"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:91
+#: media/admin/js/admin/DateTimeShortcuts.js:188
+#: media/javascript/file_uploader/fileuploader.js:489
+msgid "Cancel"
+msgstr "Annuler"
+
+#: media/admin/js/admin/DateTimeShortcuts.js:133
+#: media/admin/js/admin/DateTimeShortcuts.js:182
+msgid "Today"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:137
+msgid "Calendar"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:180
+msgid "Yesterday"
+msgstr ""
+
+#: media/admin/js/admin/DateTimeShortcuts.js:184
+msgid "Tomorrow"
+msgstr ""
+
+#: media/javascript/datasenders/index.js:103
 #: media/javascript/project/data_analysis.js:73
 #: media/javascript/project/data_analysis.js:100
-#: media/javascript/project/register_reporter.js:4
+#: media/javascript/project/register_reporter.js:5
 msgid "Just a moment"
 msgstr "Veuillez patienter"
 
@@ -32,10 +133,6 @@ msgstr "Glisser les fichiers à télécharger ici"
 #: media/javascript/file_uploader/fileuploader.js:481
 msgid "Upload a file"
 msgstr "Télécharger un fichier"
-
-#: media/javascript/file_uploader/fileuploader.js:489
-msgid "Cancel"
-msgstr "Annuler"
 
 #: media/javascript/file_uploader/fileuploader.js:490
 msgid "Failed"
@@ -70,15 +167,30 @@ msgid "Data Sender Registration Preview"
 msgstr "Aperçu de l'ajout d'envoyeur"
 
 #: media/javascript/project/delete_project.js:3
-#, fuzzy
 msgid "Delete this Project?"
-msgstr "Activer ce projet ?"
+msgstr "Supprimer ce projet ?"
 
 #: media/javascript/project/import_section.js:7
 msgid "Import a List"
 msgstr "Importer une liste"
 
-#: media/javascript/project/project_profile.js:30
+#: media/javascript/project/project_profile.js:11
+msgid "%(day)s of the week following the reporting week"
+msgstr "%(day)s de la semaine après la semaine d'envoi du rapport"
+
+#: media/javascript/project/project_profile.js:13
+msgid "%(day)s of the reporting week"
+msgstr "%(day)s de la semaine d'envoi du rapport"
+
+#: media/javascript/project/project_profile.js:21
+msgid "%(day)s of October for September report"
+msgstr "%(day)s d'octobre pour le rapport de septembre"
+
+#: media/javascript/project/project_profile.js:23
+msgid "%(day)s of October for October report"
+msgstr "%(day)s d'october pour le rapport d'octobre"
+
+#: media/javascript/project/project_profile.js:60
 msgid "Warning !!"
 msgstr "Attention !!"
 
@@ -131,7 +243,7 @@ msgstr ""
 #: media/javascript/project/questionnaire_helper.js:14
 msgid ""
 "Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy "
-"Example: -18.1324, 27.6547 "
+"Example: -18.1324 27.6547 "
 msgstr ""
 "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : xx."
 "xxxx yy.yyyy. Exemple -18.8665 47.5315"
@@ -148,9 +260,17 @@ msgstr "mois.jour.année"
 msgid "month.year"
 msgstr "mois.année"
 
-#: media/javascript/project/questionnaire_helper.js:45
+#: media/javascript/project/questionnaire_helper.js:46
 msgid "Answer must be a text"
 msgstr "La réponse doit être un texte"
+
+#: media/javascript/project/questionnaire_helper.js:67
+msgid ""
+"name));\n"
+"        this"
+msgstr ""
+"nom));\n"
+"        this"
 
 #: media/javascript/project/questionnaire_preview.js:3
 msgid "Questionnaire Preview"
@@ -220,15 +340,6 @@ msgstr "Veuillez patienter"
 msgid "Please select at least 1 data sender"
 msgstr "Veuillez remplir au moins un champ de localité"
 
-#: media/javascript/project/reminders.js:69
-msgid "Can't be blank."
-msgstr "Ne peut être vide"
-
-#: media/javascript/project/reminders.js:76
-#: media/javascript/project/reminders.js:85
-msgid "Day Can't be blank."
-msgstr "Le jour doit être saisi"
-
 #: media/javascript/project/results.js:96
 msgid "Please select atleast one undeleted record"
 msgstr "Veuillez remplir au moins un champ de localité"
@@ -249,3 +360,8 @@ msgstr "Ajouter un sujet"
 msgid "Subject Registration Preview"
 msgstr "Aperçu du sujet"
 
+msgid "Can't be blank."
+msgstr "Ne peut être vide"
+
+msgid "Day Can't be blank."
+msgstr "Le jour doit être saisi"

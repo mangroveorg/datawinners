@@ -20,65 +20,65 @@ msgstr ""
 
 #: forms.py:38
 msgid "Survey project: I want to collect data from the field"
-msgstr ""
+msgstr "Enquête : Je veux collecter les données du terrain"
 
 #: forms.py:39
 msgid "Public information: I want to send information"
-msgstr ""
+msgstr "Information publique : Je veux communiquer des informations"
 
 #: forms.py:41
 msgid "Work performed by the data sender (eg. monthly activity report)"
-msgstr ""
+msgstr "Activité de l'envoyeur (ex : rapport d'activité mensuelle)"
 
 #: forms.py:41 forms.py:50
 msgid "Other Subject"
-msgstr ""
+msgstr "Autre sujet"
 
 #: forms.py:42
 msgid "Open Data Sender Group. Anyone can send in data without registering"
-msgstr ""
+msgstr "Information publique : Je veux communiquer des informations"
 
 #: forms.py:42
 msgid ""
 "Closed Data Sender Group. Only registered data sender will be able to send "
 "data"
-msgstr ""
+msgstr "Restreint. Seuls les personnes enregistrées peuvent envoyer des données"
 
 #: forms.py:43
 msgid "Whenever a data sender has data for us"
-msgstr ""
+msgstr "A chaque fois que l'envoyeur a des données à communiquer"
 
 #: forms.py:43
 msgid "Every"
-msgstr ""
+msgstr "Tous/toutes les"
 
 #: forms.py:46
 msgid "Name this Project"
-msgstr ""
+msgstr "Donnez un nom au projet"
 
 #: forms.py:47
 msgid "Project Description"
-msgstr ""
+msgstr "Description du projet"
 
 #: forms.py:48
 msgid "Project Type"
-msgstr ""
+msgstr "Type du projet"
 
 #: forms.py:49
 msgid "Open or Closed Group"
-msgstr ""
+msgstr "Public ou restreint"
 
 #: forms.py:50
 msgid "What is this questionnaire about?"
-msgstr ""
+msgstr "Quel est l'objet du questionnaire"
 
 #: forms.py:51
 msgid "Other Subjects"
-msgstr ""
+msgstr "Autres sujets"
 
 #: forms.py:52
 msgid "Device"
-msgstr ""
+msgstr "Canal"
 
 #: forms.py:54
 msgid ""
@@ -92,39 +92,39 @@ msgstr "A quelle fréquence voulez-vous collecter les données"
 
 #: forms.py:58
 msgid "Week"
-msgstr "la semaine"
+msgstr "Semaines"
 
 #: forms.py:58
 msgid "Month"
-msgstr "mois"
+msgstr "Mois"
 
 #: forms.py:59
 msgid "Do you want to set a deadline?"
-msgstr ""
+msgstr "Voulez-vous définir une date limite"
 
 #: forms.py:59 forms.py:63
 msgid "No"
-msgstr "pas"
+msgstr "Non"
 
 #: forms.py:59 forms.py:63
 msgid "Yes"
-msgstr "oui"
+msgstr "Oui"
 
 #: forms.py:62
-msgid "Following"
-msgstr ""
+msgid "Same"
+msgstr "Le/la même"
 
 #: forms.py:63
 msgid "Do you want to remind DataSenders to send in their data?"
-msgstr ""
+msgstr "Voulez-vous envoyer des massages de rappel aux envoyeurs de données ?"
 
 #: forms.py:70
 msgid "Enter a project name"
-msgstr ""
+msgstr "Entrez le nom du projet"
 
 #: forms.py:71
 msgid "Describe what your team hopes to achieve by collecting this data"
-msgstr ""
+msgstr "Décrivez ce que votre équipe attend de cette collecte de données"
 
 #: forms.py:76 views.py:779
 msgid "This field is required"
@@ -132,7 +132,7 @@ msgstr "Ce champ est obligatoire"
 
 #: views.py:830
 msgid "Successfully submitted"
-msgstr "soumis avec succès"
+msgstr "Envoyé avec succès"
 
 #: templates/project/sms_tester_form.html:39
 #, python-format
@@ -161,22 +161,19 @@ msgid "Incorrect GPS format. The GPS coordinates must be in the following format
 msgstr "Format incorrect GPS Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx yy.yyyy Exemple -18.8665 47.5315"
 
 msgid "greater"
-msgstr "une plus grande"
+msgstr "supérieur à"
 
 msgid "smaller"
-msgstr "petits"
+msgstr "inférieur à"
 
 msgid "Answer %s for question %s is invalid. Expected date in %s format"
 msgstr "%s %s Réponse pour la question n'est pas valide. Date prévue dans le format %s"
 
 msgid "of the"
-msgstr "de l'"
+msgstr "du/de la"
 
 msgid "Always on"
-msgstr "toujours sur"
-
-msgid "Same"
-msgstr "Idem"
+msgstr "Toujours le"
 
 msgid "Monday"
 msgstr "lundi"
