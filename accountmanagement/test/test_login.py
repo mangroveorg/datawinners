@@ -10,6 +10,9 @@ from datawinners.accountmanagement.organization_id_creator import OrganizationId
 import unittest
 
 class FakeUser(User):
+    class Meta:
+        proxy = True
+    
     def __init__(self, org_id):
         self.org_id = org_id
 
