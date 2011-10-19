@@ -290,10 +290,6 @@ msgstr ""
 msgid "Choose your language for the questionnaire and automatic messages to Data Senders?"
 msgstr ""
 
-#: project/forms.py:61
-msgid "How often do you need the data?"
-msgstr ""
-
 #: project/forms.py:63
 msgid "Week"
 msgstr ""

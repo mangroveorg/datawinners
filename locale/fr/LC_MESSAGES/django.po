@@ -311,11 +311,6 @@ msgstr ""
 "Choisissez votre langue pour le questionnaire et les messages automatiques "
 "aux expéditeurs de données?"
 
-#: project/forms.py:56
-#, fuzzy
-msgid "How often do you need the data?"
-msgstr "A quelle fréquence voulez-vous collecter les données"
-
 #: project/forms.py:58
 #, fuzzy
 msgid "Week"

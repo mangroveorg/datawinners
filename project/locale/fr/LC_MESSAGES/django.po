@@ -88,15 +88,15 @@ msgstr "Choisissez votre langue pour le questionnaire et les messages automatiqu
 
 #: forms.py:56
 msgid "How often do you need the data?"
-msgstr ""
+msgstr "A quelle fréquence voulez-vous collecter les données"
 
 #: forms.py:58
 msgid "Week"
-msgstr ""
+msgstr "la semaine"
 
 #: forms.py:58
 msgid "Month"
-msgstr ""
+msgstr "mois"
 
 #: forms.py:59
 msgid "Do you want to set a deadline?"
@@ -104,15 +104,11 @@ msgstr ""
 
 #: forms.py:59 forms.py:63
 msgid "No"
-msgstr ""
+msgstr "pas"
 
 #: forms.py:59 forms.py:63
 msgid "Yes"
-msgstr ""
-
-#: forms.py:62
-msgid "Same"
-msgstr ""
+msgstr "oui"
 
 #: forms.py:62
 msgid "Following"
@@ -172,3 +168,33 @@ msgstr "petits"
 
 msgid "Answer %s for question %s is invalid. Expected date in %s format"
 msgstr "%s %s Réponse pour la question n'est pas valide. Date prévue dans le format %s"
+
+msgid "of the"
+msgstr "de l'"
+
+msgid "Always on"
+msgstr "toujours sur"
+
+msgid "Same"
+msgstr "Idem"
+
+msgid "Monday"
+msgstr "lundi"
+
+msgid "Tuesday"
+msgstr "mardi"
+
+msgid "Wednesday"
+msgstr "mercredi"
+
+msgid "Thursday"
+msgstr "jeudi"
+
+msgid "Friday"
+msgstr "vendredi"
+
+msgid "Saturday"
+msgstr "samedi"
+
+msgid "Sunday"
+msgstr "dimanche"
