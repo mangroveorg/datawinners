@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners import settings
 
 from django.contrib.auth.models import  User
 from django.db import models
@@ -32,7 +33,8 @@ class Organization(models.Model):
                                 website=org_details.get('organization_website'),
                                 org_id=OrganizationIdCreator().generateId()
         )
-        return organization._organization_setting_configuration()
+        organization._configure_organization_settings()
+        return organization
 
     @classmethod
     def create_trial_organization(cls, org_details):
@@ -43,15 +45,17 @@ class Organization(models.Model):
                                 org_id=OrganizationIdCreator().generateId(),
                                 in_trial_mode = True
         )
-        return organization._organization_setting_configuration()
+        organization_setting = organization._configure_organization_settings()
+        organization_setting.sms_tel_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER
+        return organization
 
 
-    def _organization_setting_configuration(self):
+    def _configure_organization_settings(self):
         organization_setting = OrganizationSetting()
         organization_setting.organization = self
-        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
         self.organization_setting = organization_setting
-        return self
+        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
+        return organization_setting
 
         
 class DataSenderOnTrialAccount(models.Model):
