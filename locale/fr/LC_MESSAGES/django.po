@@ -369,10 +369,6 @@ msgstr "Ce champ est obligatoire"
 msgid "Successfully submitted"
 msgstr "Envoyé avec succès"
 
-msgid "Your organization does not have a telephone number assigned. Please "
-"contact DataWinners Support."
-msgstr "Aucun numéro de téléphone n’a été attribué à votre organisation. "
-"Veuillez contacter le Service d’Assistance de DataWinners."
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
