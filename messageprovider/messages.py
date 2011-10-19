@@ -69,7 +69,7 @@ exception_messages = {
 
     },
     ex.MultipleSubmissionsForSameCodeException: {
-        DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Multiple responses have been submitted for question code : %s"
+        DEFAULT: u"Error. Incorrect answer for question %s. Please resend entire message."
     },
     ex.InactiveFormModelException: {
         DEFAULT: u"Error. This project is not yet active. Submissions can be made only for an active project."

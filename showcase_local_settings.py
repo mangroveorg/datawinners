@@ -2,6 +2,9 @@ SITE_ID = 2
 DEBUG = False
 TEMPLATE_DEBUG = False
 
+SCHEDULER_HOUR=23
+SCHEDULER_MINUTES=30
+
 ADMINS = (
     ('TW', 'apgeorge@thoughtworks.com'),
 )

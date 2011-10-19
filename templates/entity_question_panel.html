@@ -43,7 +43,7 @@
             {% for each in fields %}
                 <div class="answer{{ forloop.counter }}">
                     <h4>{% trans "Question:" %} </h4>
-                    <span>{{ each.label.en }}</span>
+                    <span>{% trans each.label.en %}</span>
                     <h4>{% trans "Code:" %} </h4>
                     <span>{{ each.code }}</span>
                     <span class="selected_question_arrow"></span>

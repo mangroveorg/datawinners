@@ -248,3 +248,4 @@ msgstr "Ajouter un sujet"
 #: media/javascript/project/subjects_registration_questionnaire_preview.js:3
 msgid "Subject Registration Preview"
 msgstr "Aperçu du sujet"
+
