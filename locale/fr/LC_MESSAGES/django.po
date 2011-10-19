@@ -533,11 +533,11 @@ msgstr "Javascript est désactivé dans votre navigateur, Veuillez l'activer."
 #: templates/layout_registration.html:31
 msgid "about_DW"
 msgstr ""
-"<h5>About DataWinners</h5><p>DataWinners is an online mobile data"
-"\tcollection service designed and\tbuilt for development professionals. </"
-"p><p>With DataWinners, you collect and analyze the data you need using the "
-"equipment you already have – a computer, the Internet and basic mobile "
-"phones. </p>"
+"<h5>À propos DataWinners</h5><p>DataWinners est une des données en ligne mobile"
+"\tservice de collecte conçu et\tconstruit pour les professionnels du développement. </"
+"p><p>Avec DataWinners, vous recueillir et analyser les données dont vous avez besoin en utilisant les"
+"l'équipement que vous avez déjà - un ordinateur, l'Internet et mobile de base"
+"téléphones. </p>"
 
 #: templates/layout_wizard.html:32
 msgid "Previous Step:"
