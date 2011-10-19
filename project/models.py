@@ -258,6 +258,7 @@ class Project(DocumentBase):
     def update_questionnaire(self, dbm):
         form_model = self._load_form(dbm)
         form_model.name = self.name
+        form_model.activeLanguages = [self.language]
         form_model.entity_type = [self.entity_type] if is_string(self.entity_type) else self.entity_type
         form_model.save()
 
