@@ -2580,3 +2580,6 @@ msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
 msgstr ""
 "Erreur: SMS erroné. Reportez-vous au questionnaire imprimé et renvoyez le "
 "SMS."
+
+msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgstr "Entité avec numéro d'identification unique (ID) =% s existe déjà."

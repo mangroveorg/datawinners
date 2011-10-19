@@ -2333,3 +2333,6 @@ msgstr ""
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
 msgstr ""
 
+msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgstr ""
+
