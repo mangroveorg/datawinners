@@ -2583,3 +2583,6 @@ msgstr ""
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
 msgstr "Entité avec numéro d'identification unique (ID) =% s existe déjà."
+
+msgid "answer"
+msgstr "réponse"
