@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $(document).ajaxStop($.unblockUI);
     $(".sms_tester_form").dialog({
         autoOpen: false,
         width: 1200,
@@ -18,8 +19,8 @@ $(document).ready(function() {
         return false;
     });
 
-
     $("#send_sms").unbind('click').click(function() {
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
         $.post('/submission', {'message':$("#id_message").val(), 'test_mode':true}, function(response) {
                     $("#id_message").val(response);
                 });
