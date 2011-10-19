@@ -88,15 +88,15 @@ msgstr "Choisissez votre langue pour le questionnaire et les messages automatiqu
 
 #: forms.py:56
 msgid "How often do you need the data?"
-msgstr ""
+msgstr "A quelle fréquence voulez-vous collecter les données"
 
 #: forms.py:58
 msgid "Week"
-msgstr ""
+msgstr "la semaine"
 
 #: forms.py:58
 msgid "Month"
-msgstr ""
+msgstr "mois"
 
 #: forms.py:59
 msgid "Do you want to set a deadline?"
@@ -104,15 +104,11 @@ msgstr ""
 
 #: forms.py:59 forms.py:63
 msgid "No"
-msgstr ""
+msgstr "pas"
 
 #: forms.py:59 forms.py:63
 msgid "Yes"
-msgstr ""
-
-#: forms.py:62
-msgid "Same"
-msgstr ""
+msgstr "oui"
 
 #: forms.py:62
 msgid "Following"
@@ -148,3 +144,61 @@ msgstr "Toutes les données "
 
 msgid "page to view submission status)"
 msgstr "pour voir l'état de votre envoi)"
+
+msgid "Choose your language for success and error messages to Data Senders"
+msgstr "Choisissez votre langue pour le succès et les messages d'erreur aux expéditeurs de données"
+
+msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
+msgstr "Ce %s n'est pas encore enregistrée dans le système. S'il vous plaît vérifiez le %s du numéro d'identification unique et réessayez"
+
+msgid "Answer %s for question %s is longer than allowed."
+msgstr "Réponse à la question %s %s est plus long que permis."
+
+msgid "Answer %s for question %s is %s than allowed."
+msgstr "Réponse %s pour %s question est %s que permis."
+
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+msgstr "Format incorrect GPS Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx yy.yyyy Exemple -18.8665 47.5315"
+
+msgid "greater"
+msgstr "une plus grande"
+
+msgid "smaller"
+msgstr "petits"
+
+msgid "Answer %s for question %s is invalid. Expected date in %s format"
+msgstr "%s %s Réponse pour la question n'est pas valide. Date prévue dans le format %s"
+
+msgid "of the"
+msgstr "de l'"
+
+msgid "Always on"
+msgstr "toujours sur"
+
+msgid "Same"
+msgstr "Idem"
+
+msgid "Monday"
+msgstr "lundi"
+
+msgid "Tuesday"
+msgstr "mardi"
+
+msgid "Wednesday"
+msgstr "mercredi"
+
+msgid "Thursday"
+msgstr "jeudi"
+
+msgid "Friday"
+msgstr "vendredi"
+
+msgid "Saturday"
+msgstr "samedi"
+
+msgid "Sunday"
+msgstr "dimanche"
+
+msgid "Warning: Changing the subject type will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"
+msgstr "Attention: Modification du type de l'objet va supprimer toutes les questions de votre questionnaire ainsi que toutes les données collectées vous. Etes-vous sûr de vouloir continuer?"
+

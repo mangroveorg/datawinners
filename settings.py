@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 
 
 COUCH_DB_SERVER = "http://localhost:5984"
-VUMI_API_URL = "http://10.253.50.2:7000"
+VUMI_API_URL = "http://178.79.161.90:7000"
 VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
 
@@ -26,7 +26,7 @@ VUMI_PASSWORD = "vumi"
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = None
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -117,10 +117,16 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'accountmanagement.context_processors.add_feature_flags',
+)
+
 HOME_PAGE = '/dashboard'
 DATASENDER_DASHBOARD = '/alldata/'
 LOGIN_REDIRECT_URL = (HOME_PAGE)
 ACCOUNT_ACTIVATION_DAYS = 7
+TRIAL_ACCOUNT_PHONE_NUMBER = '1-775-237-4679'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -188,8 +194,8 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
-SCHEDULER_HOUR=8
-
+SCHEDULER_HOUR=21
+SCHEDULER_MINUTES=34
 api_keys = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',
@@ -197,6 +203,8 @@ api_keys = {
     'www.datawinners.com': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxQ8GGxJxguR34iYHuX8XtwD2LSt7hRQsh6kJBqUuxoZTzQoqdnULvVCxg'}
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+TRIAL_REGISTRATION_ENABLED = False
 
 try:
     from local_settings import *
