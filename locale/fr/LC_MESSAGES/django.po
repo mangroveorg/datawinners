@@ -2613,3 +2613,6 @@ msgstr "Le profil a été mis à jour avec succès"
 
 msgid "Settings have been updated successfully"
 msgstr "Paramètres ont été mis à jour avec succès"
+
+msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
+msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
