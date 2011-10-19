@@ -2608,3 +2608,8 @@ msgstr "Le questionnaire n'existe pas."
 msgid "*indicates required field"
 msgstr "*indique champs obligatoire"
 
+msgid "Profile has been updated successfully"
+msgstr "Le profil a été mis à jour avec succès"
+
+msgid "Settings have been updated successfully"
+msgstr "Paramètres ont été mis à jour avec succès"

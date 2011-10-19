@@ -2360,3 +2360,8 @@ msgstr ""
 msgid "*indicates required field"
 msgstr ""
 
+msgid "Profile has been updated successfully"
+msgstr ""
+
+msgid "Settings have been updated successfully"
+msgstr ""
