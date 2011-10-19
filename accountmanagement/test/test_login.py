@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.template.defaultfilters import slugify
 from nose.tools import raises
 from datawinners.accountmanagement.forms import LoginForm
@@ -32,7 +33,9 @@ class TestLogin(unittest.TestCase):
                                     'organization_zipcode',
                                     'organization_office_phone',
                                     'organization_website',
-                                    org_id = self.org_id)
+                                    org_id = self.org_id,
+                                    in_trial_mode = True,
+                                    active_date = datetime(2011,07,11))
         organization.save()
         self.organization_setting = OrganizationSetting()
         self.organization_setting.organization = organization
@@ -43,9 +46,7 @@ class TestLogin(unittest.TestCase):
     def test_should_raise_a_trial_account_expired_exception_if_trial_account_is_expired(self):
         self.org_id=OrganizationIdCreator().generateId()
         self.create_organization()
-
         form = FakeForm(org_id = self.org_id)
-        
         form.check_trial_account_expired()
 
     def tearDown(self):

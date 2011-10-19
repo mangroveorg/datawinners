@@ -17,8 +17,8 @@ def create_org_database(sender, user, request, **kwargs):
     active_date = org.active_date
 
     if active_date is None:
-        org.active_date = datetime.datetime.now(tz=datawinners.settings.TIME_ZONE)
-        org.save()
+        org.active_date = datetime.datetime.now
+        org.save()  
 
     org_settings = OrganizationSetting.objects.get(organization=org)
     db_name = org_settings.document_store
