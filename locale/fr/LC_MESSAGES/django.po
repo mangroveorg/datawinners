@@ -2586,3 +2586,21 @@ msgstr "Entité avec numéro d'identification unique (ID) =% s existe déjà."
 
 msgid "answer"
 msgstr "réponse"
+
+msgid "Answer for question %s is required"
+msgstr "Réponse pour %s la question est nécessaire"
+
+msgid "The answer %s must be between %s and %s"
+msgstr "La réponse %s doit être comprise entre %s et %s"
+
+msgid "Patern should be ^[0-9]+$"
+msgstr "Patern devrait être ^[0-9]+$"
+
+msgid "Mobile number is missing"
+msgstr "Numéro de mobile est manquante"
+
+msgid "Please fill out atleast one location field"
+msgstr "S'il vous plaît remplir au moins un champ de localisation"
+
+msgid "The questionnaire does not exist."
+msgstr "Le questionnaire n'existe pas."
