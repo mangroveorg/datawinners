@@ -2360,5 +2360,3 @@ msgstr ""
 msgid "Settings have been updated successfully"
 msgstr ""
 
-msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
-msgstr ""

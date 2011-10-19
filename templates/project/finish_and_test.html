@@ -139,7 +139,7 @@
             <div>
                 <ul>
                 <li>
-                    {% blocktrans %}Reminders are <strong>{{ is_reminder }}</strong> for this project{% endblocktrans %}
+                    {% trans "Reminders are" %} <strong>{% trans is_reminder %}</strong> {%trans "for this project" %}
                 </li>
             </ul>
             <a id="remider_edit_link" href="{{project_links.reminder_link}}">{% trans "edit" %}</a>

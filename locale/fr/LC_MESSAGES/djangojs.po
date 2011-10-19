@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-19 12:39+0530\n"
+"POT-Creation-Date: 2011-10-19 15:32+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,6 +123,7 @@ msgstr ""
 #: media/javascript/project/data_analysis.js:73
 #: media/javascript/project/data_analysis.js:100
 #: media/javascript/project/register_reporter.js:5
+#: media/javascript/project/sms_tester.js:23
 msgid "Just a moment"
 msgstr "Veuillez patienter"
 
@@ -309,6 +310,10 @@ msgstr "Le questionnaire comporte une erreur"
 msgid "The question has been saved."
 msgstr "Vous devez enregistrer le questionnaire."
 
+#: media/javascript/project/questionnaire_wizard.js:158
+msgid "default"
+msgstr ""
+
 #: media/javascript/project/register_entity_validation.js:17
 msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
 msgstr ""
@@ -340,6 +345,11 @@ msgstr "Veuillez patienter"
 msgid "Please select at least 1 data sender"
 msgstr "Veuillez remplir au moins un champ de localité"
 
+#: media/javascript/project/reminders.js:78
+#, fuzzy
+msgid "The reminders has been saved"
+msgstr "Vous devez enregistrer le questionnaire."
+
 #: media/javascript/project/results.js:96
 msgid "Please select atleast one undeleted record"
 msgstr "Veuillez remplir au moins un champ de localité"
@@ -365,3 +375,11 @@ msgstr "Ne peut être vide"
 
 msgid "Day Can't be blank."
 msgstr "Le jour doit être saisi"
+
+#: media/javascript/project/reminders.js:14
+msgid "Hello. We have not received your data for "
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
+
+#: media/javascript/project/reminders.js:14
+msgid ".Please send it to us today. Thank you."
+msgstr ". Veuillez l'envoyer aujourd'hui. Merci."

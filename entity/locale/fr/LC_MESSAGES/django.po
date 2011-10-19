@@ -1267,7 +1267,7 @@ msgid "Questionnarie Code:"
 msgstr "Code Questionnaire"
 
 msgid "Example SMS:"
-msgstr "Example de SMS :"
+msgstr "Exemple de SMS :"
 
 msgid "Delete"
 msgstr "Supprimer"
@@ -1400,16 +1400,13 @@ msgstr "Vérifier que vous pouvez envoyer vos réponses de test"
 msgid "Send in your test answers."
 msgstr "Envoyez vos réponses de test"
 
-msgid "Refer to the Web Questionnaire Preview for a sample SMS"
-msgstr "Référez-vous à l'aperçu du questionnaire Web pour un example de SMS"
-
 msgid "sms_tester_form"
 msgstr ""
-"<p>Note : When you activate this project, all the test data will be "
-"removed automatically.</p><p>You have 2 options</p><p>A. Click on the "
-"mobile phone screen and type your test answers.</p><p>B. Register "
-"yourself as a Data Sender. Then sms your test answers to the telephone "
-"number provided by DataWinners.</p>"
+"<p>Remarque : Quand vous activez un projet, toutes les données de test sont "
+"supprimées automatiquement.</p><p>Vous avez 2 options</p><p>A. Cliquez sur "
+"l'écran du mobile et saisissez votre message de test.</p><p>B. Enregistrez-"
+"vous en tant qu'envoyeur de données. Puis envoyez par SMS votre sms de test"
+"au numéro de téléphone donné par DataWinners.</p>"
 
 msgid "Send SMS"
 msgstr "Envoyez un SMS"
@@ -1658,3 +1655,46 @@ msgid ""
 msgstr ""
 "Un email d'activation a été envoyé sur votre adresse email. Veuillez "
 "activer votre compte avant de vous connecter."
+
+msgid "%s .%s <answer> .... .%s <answer>"
+msgstr "%s .%s <réponse> .... .%s <réponse>"
+
+msgid "Enter a type for the subject"
+msgstr "Entrez un type pour le sujet"
+
+msgid "Enter a id, or allow us to generate it"
+msgstr "Entrer un id, ou laissez-nous en générer un"
+
+msgid "Enter a region, district, or commune"
+msgstr "Entrez une région, un district ou une commune"
+
+msgid "Enter lat and long. Eg 20.6, 47.3"
+msgstr "Entrez lat et long. Ex 20.6, 47.3"
+
+msgid "Enter the subject's number"
+msgstr "Entrez le numéro du sujet"
+
+msgid "What is associated Data sender type?"
+msgstr "Quel est le type d'envoyeurs de données"
+
+msgid "Enter a type for the Data sender"
+msgstr "Entrez le type d'envoyeur de données."
+
+msgid "What is the Data sender's name?"
+msgstr "Quel est le nom de l'envoyeur de données ?"
+
+msgid "Enter a Data sender name"
+msgstr "Entrez le nom de l'envoyeur de données"
+
+msgid "What is the Data sender's location?"
+msgstr "Quelle est la localité de l'envoyeur de données"
+
+msgid "What is the Data sender's GPS co-ordinates?"
+msgstr "Quelles sont les coordonnées GPS de la localité de l'envoyeur de "
+"données ?"
+
+msgid "What is the mobile number associated with the Data sender?"
+msgstr "Quelle est le numéro de mobile associé à l'envoyeur de données ?"
+
+msgid "Enter the Data sender's number"
+msgstr "Entrez le numéro de mobile de l'envoyeur de données."

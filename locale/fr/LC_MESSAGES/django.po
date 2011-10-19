@@ -369,6 +369,10 @@ msgstr "Ce champ est obligatoire"
 msgid "Successfully submitted"
 msgstr "Envoyé avec succès"
 
+msgid "Your organization does not have a telephone number assigned. Please "
+"contact DataWinners Support."
+msgstr "Aucun numéro de téléphone n’a été attribué à votre organisation. "
+"Veuillez contacter le Service d’Assistance de DataWinners."
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
@@ -1219,7 +1223,8 @@ msgstr "Résumé & Test"
 msgid ""
 "Congratulations! You have created your project. Review your project details "
 "and test if you can send in data."
-msgstr ""
+msgstr "Félicitations! Vous venez de créer votre projet. Revoyez les détails "
+"de votre projet et testez si vous pouvez envoyer des données."
 
 #: templates/project/finish_and_test.html:47
 msgid "Review"
@@ -1299,6 +1304,15 @@ msgstr "Messages de rappel"
 msgid "Reminders are <strong>%(is_reminder)s</strong> for this project"
 msgstr ""
 "Les Messages de rappel sont <strong>%(is_reminder)s</strong> pour ce projet."
+
+msgid "Reminders are"
+msgstr "Les messages de rappel sont"
+
+msgid "for this project"
+msgstr "pour ce projet."
+
+msgid "enabled"
+msgstr "activés"
 
 #: templates/project/finish_and_test.html:152
 msgid "Test This Questionnaire"
@@ -1850,7 +1864,7 @@ msgstr "Code Questionnaire"
 
 #: templates/project/questionnaire_preview.html:23
 msgid "Example SMS:"
-msgstr "Example de SMS :"
+msgstr "Exemple de SMS :"
 
 #: templates/project/questionnaire_wizard.html:62
 msgid "Define the questions you want your Data Senders to answer."
@@ -2042,11 +2056,11 @@ msgstr "Référez-vous à l'aperçu du questionnaire Web pour un example de SMS"
 #: templates/project/sms_tester_form.html:20
 msgid "sms_tester_form"
 msgstr ""
-"<p>Note : When you activate this project, all the test data will be removed "
-"automatically.</p><p>You have 2 options</p><p>A. Click on the mobile phone "
-"screen and type your test answers.</p><p>B. Register yourself as a Data "
-"Sender. Then sms your test answers to the telephone number provided by "
-"DataWinners.</p>"
+"<p>Remarque : Quand vous activez un projet, toutes les données de test sont "
+"supprimées automatiquement.</p><p>Vous avez 2 options</p><p>A. Cliquez sur "
+"l'écran du mobile et saisissez votre message de test.</p><p>B. Enregistrez-"
+"vous en tant qu'envoyeur de données. Puis envoyez par SMS votre sms de test"
+"au numéro de téléphone donné par DataWinners.</p>"
 
 #: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
@@ -2062,7 +2076,7 @@ msgstr "Voir les données que vous avez reçu"
 
 #: templates/project/sms_tester_form.html:37
 msgid "See if DataWinners received your SMS. (Go to "
-msgstr ""
+msgstr "Vérifier que Datawinners a reçu votre SMS. (Allez à la page "
 
 #: templates/project/sms_tester_form.html:38
 msgid "All Data Records "
@@ -2070,7 +2084,7 @@ msgstr "Tous les enregistrements"
 
 #: templates/project/sms_tester_form.html:38
 msgid "page to view submission status)"
-msgstr "page pour voir le statut des envois)"
+msgstr "pour voir le statut des envois)"
 
 #: templates/project/subjects.html:33
 msgid "Step3:"
@@ -2145,8 +2159,8 @@ msgstr "Importez la liste des sujets"
 #: templates/project/subjects_wizard.html:77
 msgid "q_tooltip_subject_wizard_import"
 msgstr ""
-"Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
-"Separated Value (.csv) file"
+"Ajoutez une liste de sujets en une seule fois en important un fichier Excel "
+"(.xls) ou un fichier CSV (.csv)"
 
 #: templates/project/subjects_wizard.html:80
 msgid "r_tooltip_subject_wizard_import"
@@ -2592,22 +2606,25 @@ msgid "Patern should be ^[0-9]+$"
 msgstr "Patern devrait être ^[0-9]+$"
 
 msgid "Mobile number is missing"
-msgstr "Numéro de mobile est manquante"
+msgstr "Numéro de mobile est manquant"
 
 msgid "Please fill out atleast one location field"
-msgstr "S'il vous plaît remplir au moins un champ de localisation"
+msgstr "Veuillez remplir au moins un champ de localisation"
 
 msgid "The questionnaire does not exist."
 msgstr "Le questionnaire n'existe pas."
 
 msgid "*indicates required field"
-msgstr "*indique champs obligatoire"
+msgstr "*indique un champ obligatoire"
 
 msgid "Profile has been updated successfully"
 msgstr "Le profil a été mis à jour avec succès"
 
 msgid "Settings have been updated successfully"
-msgstr "Paramètres ont été mis à jour avec succès"
+msgstr "Les paramètres ont été mis à jour avec succès"
 
-msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
-msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
+msgid "Hello. We have not received your data for"
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
+
+msgid "Please send it to us today. Thank you."
+msgstr "Veuillez l'envoyer aujourd'hui. Merci"
