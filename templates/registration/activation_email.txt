@@ -1,8 +1,8 @@
 Hello,
 
 Welcome to DataWinners!
-You can now send in your data via the Internet. {{ phone_number }}
-If you have any questions, please contact your supervisor.
+You can now send in your data via the Internet. If you have any
+questions, please contact your supervisor.
 
 Click on this link to activate your DataWinners account:
 http://{{ site.domain }}{% url registration_activate activation_key %}
