@@ -1,4 +1,6 @@
 {% extends 'accountmanagement/profile/index.html' %}
+
+{% load field_tags %}
 {% load i18n %}
 {% block page_title %} Profile {% endblock %}
 
@@ -29,36 +31,36 @@
 
           <ul class="organization">
             <li class="{{ form.title.css_classes }} form-row-10px">
-              {{ form.title.label_tag }}
+              {{ form.title|field_label }}
               {{ form.title }}
               {{ form.title.errors }}
             </li>
             <li class="{{ form.first_name.css_classes  }} form-row-10px">
-              {{ form.first_name.label_tag }}
+              {{ form.first_name|field_label }}
               {{ form.first_name }}
               {{ form.first_name.errors }}
             </li>
             <li class="{{ form.last_name.css_classes  }} form-row-10px">
-              {{ form.last_name.label_tag }}
+              {{ form.last_name|field_label }}
               {{ form.last_name }}
               {{ form.last_name.errors }}
             </li>
               <li class="form-row-10px">
-              {{ form.username.label_tag }}
+              {{ form.username|field_label }}
               {{ form.username }}
             </li>
               <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-              {{ form.office_phone.label_tag }}
+              {{ form.office_phone|field_label }}
               {{ form.office_phone }}
               {{ form.office_phone.errors }}
             </li>
               <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
-              {{ form.mobile_phone.label_tag }}
+              {{ form.mobile_phone|field_label }}
               {{ form.mobile_phone }}
               {{ form.mobile_phone.errors }}
             </li>
               <li class="{{ form.skype.css_classes  }} form-row-10px">
-              {{ form.skype.label_tag }}
+              {{ form.skype|field_label }}
               {{ form.skype }}
               {{ form.skype.errors }}
             </li>
