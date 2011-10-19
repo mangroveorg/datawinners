@@ -80,10 +80,7 @@
   #error_table table {
     width: 100%; }
   #error_table th {
-    color: #000000;
     text-align: center; }
-  #error_table td {
-    color: #FF0000; }
 
 .import_subjects .browse_subjects label {
   float: none; }
