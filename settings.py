@@ -119,11 +119,17 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'accountmanagement.context_processors.add_feature_flags',
+)
+
 HOME_PAGE = '/dashboard'
 DATASENDER_DASHBOARD = '/alldata/'
 LOGIN_REDIRECT_URL = (HOME_PAGE)
 TRIAL_EXPIRED_URL = '/trial/expired/'
 ACCOUNT_ACTIVATION_DAYS = 7
+TRIAL_ACCOUNT_PHONE_NUMBER = '1-775-237-4679'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -200,6 +206,8 @@ api_keys = {
     'www.datawinners.com': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxQ8GGxJxguR34iYHuX8XtwD2LSt7hRQsh6kJBqUuxoZTzQoqdnULvVCxg'}
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+TRIAL_REGISTRATION_ENABLED = False
 
 try:
     from local_settings import *

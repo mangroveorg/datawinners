@@ -24,8 +24,10 @@
                         Get all the data you need using the technology you
                         already have.
                     </p>
-                    <a href="/register/trial"
-                       class="intro_try_button">Try it Free</a>
+                    {% if TRIAL_REGISTRATION_ENABLED %}
+                        <a href="/register/trial"
+                           class="intro_try_button">Try it Free</a>
+                    {% endif %}
                     <a href="/en/what-is-datawinners" class="intro_learn_button">Learn
                         More</a>
                 </div>

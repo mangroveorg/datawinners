@@ -56,3 +56,5 @@ LOGGING = {
         },
     }
 }
+
+TRIAL_REGISTRATION_ENABLED = False

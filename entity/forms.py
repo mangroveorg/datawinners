@@ -1,6 +1,6 @@
 from django.forms import HiddenInput
 from django.forms.fields import RegexField, CharField, FileField
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
 
@@ -9,8 +9,8 @@ class EntityTypeForm(Form):
     required_css_class = 'required'
 
     entity_type_regex = RegexField(regex="^[A-Za-z\d\s]+$", max_length=20,
-                                   error_message="Only letters and numbers are valid", required=True,
-                                   label="New Subject(eg clinic, waterpoint etc)")
+                                   error_message=_("Only letters and numbers are valid"), required=True,
+                                   label=_("New Subject(eg clinic, waterpoint etc)"))
 
 
 class ReporterRegistrationForm(Form):

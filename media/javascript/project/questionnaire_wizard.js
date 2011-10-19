@@ -154,7 +154,7 @@ $(document).ready(function() {
                 viewModel.selectedQuestion().max_length("");
                 viewModel.selectedQuestion().length_limiter("length_unlimited");
                 viewModel.selectedQuestion().choices([
-                    {text:"default", val:'a'}
+                    {text:gettext("default"), val:'a'}
                 ]);
             }
     );

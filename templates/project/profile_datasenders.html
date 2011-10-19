@@ -2,9 +2,15 @@
 <fieldset>
     <legend>{% trans "Data Senders" %}</legend>
     <li class="{{ form.sender_group.css_classes  }} form-row-10px">
-        {{ form.sender_group.label_tag }}
-        {{ form.sender_group }}
-        {{ form.sender_group.errors }}
+        {% if is_trial_account %}
+            <label>{{ form.sender_close_group_header }}</label>
+            {{ form.sender_close_group_description }}
+            <div style="display: none">{{ form.sender_group }}</div>
+        {% else %}
+            {{ form.sender_group.label_tag }}
+            {{ form.sender_group }}
+            {{ form.sender_group.errors }}
+        {% endif %}
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
 
         <div class="tooltip"><p>

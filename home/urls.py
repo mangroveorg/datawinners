@@ -1,13 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns
 from django.views.generic.base import TemplateView
-from datawinners.home.views import index, switch_language
+from datawinners.home.views import index, switch_language, FeatureAwareTemplateView
 
 urlpatterns = patterns('',
         (r'^home/$', index),
         (r'^switch/(?P<language>.{2}?)/$', switch_language),
-        (r'^home/en/$', TemplateView.as_view(template_name='home/index_en.html')),
-        (r'^home/fr/$', TemplateView.as_view(template_name='home/index_fr.html')),
+        (r'^home/en/$', FeatureAwareTemplateView.as_view(template_name='home/index_en.html')),
+        (r'^home/fr/$', FeatureAwareTemplateView.as_view(template_name='home/index_fr.html')),
 
         (r'^en/what-is-datawinners/$', TemplateView.as_view(template_name='home/what-is-datawinners_en.html')),
         (r'^en/what-is-datawinners/features/$', TemplateView.as_view(template_name='home/datawinners_features_en.html')),
@@ -27,8 +27,8 @@ urlpatterns = patterns('',
         (r'^fr/success-story/msi/$', TemplateView.as_view(template_name='home/success_story_msi_fr.html')),
         (r'^fr/success-story/santenet2/$', TemplateView.as_view(template_name='home/success_story_santenet2_fr.html')),
 
-        (r'^en/pricing/$', TemplateView.as_view(template_name='home/pricing_en.html')),
-        (r'^fr/pricing/$', TemplateView.as_view(template_name='home/pricing_fr.html')),
+        (r'^en/pricing/$', FeatureAwareTemplateView.as_view(template_name='home/pricing_en.html')),
+        (r'^fr/pricing/$', FeatureAwareTemplateView.as_view(template_name='home/pricing_fr.html')),
 
         (r'^en/support/$', TemplateView.as_view(template_name='home/support_en.html')),
         (r'^fr/support/$', TemplateView.as_view(template_name='home/support_fr.html')),

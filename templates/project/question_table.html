@@ -9,7 +9,7 @@
     {% for each in fields %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ each.label.en }}</td>
+            <td>{% trans each.label.en %}</td>
             <td>.{{ each.code }}</td>
         </tr>
     {% endfor %}
