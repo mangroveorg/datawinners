@@ -96,7 +96,7 @@ $(document).ready(function() {
             projects.push($(this).val());
         });
         if (projects.length == 0) {
-            $('<div class="message-box" id="error">Please select atleast 1 Project</div>').insertBefore($("#all_projects"))
+            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project") + '</div>').insertBefore($("#all_projects"))
         }
         else {
             var url = '/entity/' + $('#action').val() + '/'
@@ -113,7 +113,7 @@ $(document).ready(function() {
         var allIds = updateIds();
         $('#error').remove();
         if (allIds.length == 0) {
-            $('<div class="message-box" id="error">Please select atleast 1 data sender</div>').insertAfter($(this));
+            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender') + '</div>').insertAfter($(this));
             $('#project').val('');
             $(this).val("");
             return;

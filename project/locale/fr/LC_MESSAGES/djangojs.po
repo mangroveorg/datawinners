@@ -322,3 +322,9 @@ msgid "What is the mobile number associated with the data sender?"
 msgstr ""
 "Quel est le numéro de téléphone portable associé à l'envoyeur de "
 "données ?"
+
+msgid "Please select atleast 1 data sender"
+msgstr "S'il vous plaît sélectionner au moins 1 expéditeur des données"
+
+msgid "Please select atleast 1 Project"
+msgstr "S'il vous plaît sélectionner au moins 1 Projet"

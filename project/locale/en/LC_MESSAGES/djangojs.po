@@ -293,3 +293,9 @@ msgstr ""
 #: media/javascript/project/sms_preview.js:28
 msgid "geo code"
 msgstr ""
+
+msgid "Please select atleast 1 data sender"
+msgstr ""
+
+msgid "Please select atleast 1 Project"
+msgstr ""
