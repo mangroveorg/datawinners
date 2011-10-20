@@ -51,7 +51,7 @@ class ProjectProfile(Form):
     GROUP_TYPE_CHOICES = (('open',_(sender_open_group_description)),('close',_(
         sender_close_group_description)))
     FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
-    LANGUAGES = (('en', 'English'), ('fr', 'French'))
+    LANGUAGES = (('en', 'English'), ('fr', 'Françis'))
     id = CharField(required=False)
     name = CharField(required=True, label=_("Name this Project"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Project Description'), required=False)
