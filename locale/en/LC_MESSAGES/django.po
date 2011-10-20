@@ -2368,3 +2368,6 @@ msgstr ""
 
 msgid "vtrue,vfalse"
 msgstr "True,False"
+
+msgid "Register"
+msgstr ""
