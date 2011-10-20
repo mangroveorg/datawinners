@@ -69,8 +69,9 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
 def _send_reminder(from_number, on_date, project, reminder, sms_client,dbm):
     count = 0
     for datasender in reminder.get_sender_list(project, on_date,dbm):
-        sms_client.send_sms(from_number, datasender["mobile_number"], reminder.message)
-        count += 1
+        sms_sent = sms_client.send_sms(from_number, datasender["mobile_number"], reminder.message)
+        if sms_sent:
+            count += 1
         logger.info("Reminder sent for %s, Message: %s" % (datasender["mobile_number"],reminder.message,) )
     return count
 
@@ -81,5 +82,5 @@ def _get_reminders_grouped_by_project_for_organization(organization_id):
     return reminders_grouped_project_id
 
 if __name__ == "__main__":
-    send_reminders_scheduled_on( date(2011,10,18),SMSClient())
+    send_reminders_scheduled_on( date(2011,10,20),SMSClient())
 

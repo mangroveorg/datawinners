@@ -11,6 +11,8 @@ $(document).ready(function(){
             num_display_entries : 5,
             num_edge_entries:2,
             load_first_page:false,
+            next_text: gettext("Next"),
+            prev_text: gettext("Prev"),
             callback : function(page_number) {
                 new DW.show_data(page_number + 1);
                 DW.current_page = page_number + 1

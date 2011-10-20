@@ -30,7 +30,7 @@ class TestEntityLoggedIn(TestCase):
         self.assertEquals(response.status_code,200)
 
         response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email":email1,"reporter_id":"rep4"}])})
-        self.assertEquals(response.status_code,400)
+        self.assertEquals(response.status_code,200)
 
     def test_should_render_all_subjects_view_if_logged_in(self):
         response = self.client.get('/entity/subjects/')

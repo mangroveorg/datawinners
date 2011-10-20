@@ -180,6 +180,7 @@ $(document).ready(function() {
                         $("#web_user_block").dialog("close");
                         window.location.reload();
                     } else {
+                        $.unblockUI();
                         var html = "";
                         for (var i = 0; i < json_data.errors.length; i++) {
                             html += "<tr><td>" + json_data.errors[i] + "</td></tr>";
