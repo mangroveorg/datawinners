@@ -75,7 +75,7 @@ $(document).ready(function() {
                 this.remindersToSave.push(newReminder);
             }
             $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
-                $('.success-message-box').show().html(gettext("The reminders has been saved")).fadeOut(10000);
+                $('.success-message-box').show().html(gettext('The reminders has been saved')).fadeOut(10000);
             })
         };
 

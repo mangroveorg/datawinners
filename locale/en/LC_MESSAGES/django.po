@@ -2401,3 +2401,12 @@ msgstr ""
 
 msgid "The selected records have been deleted"
 msgstr ""
+
+msgid "Enter each data sender's email address below. Each can submit data via the internet"
+msgstr ""
+
+msgid "Reporter ID"
+msgstr ""
+
+msgid "Contact"
+msgstr ""

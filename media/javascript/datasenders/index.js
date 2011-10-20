@@ -70,7 +70,7 @@ $(document).ready(function() {
     $("#web_user_block").dialog({
         autoOpen: false,
         modal: true,
-        title: 'Give Web Submission Access',
+        title: gettext('Give Web Submission Access'),
         zIndex:1100,
         width: 900,
         beforeClose: function() {
@@ -121,6 +121,7 @@ $(document).ready(function() {
         var action = $(this).val();
         if(action=='makewebuser'){
             populate_dialog_box_for_web_users();
+            return false;
         }else{
             $("#all_project_block").dialog("open");
         }
@@ -156,15 +157,15 @@ $(document).ready(function() {
             var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
             if (email.trim() == "") {
                 $('#web_user_error').show();
-                $('#web_user_error').html('Emails are mandatory');
+                $('#web_user_error').html(gettext('Emails are mandatory'));
                 should_post = false;
-                return;
+                return false;
             }
             if(email.trim().search(emailRegEx) == -1){
                 $('#web_user_error').show();
-                $('#web_user_error').html(email + ": is not a valid email");
+                $('#web_user_error').html(email + gettext(": is not a valid email"));
                 should_post = false;
-                return;
+                return false;
             }
             var reporter_id = $($(this).parent().parent().children()[0]).html();
             post_data.push({email: email, reporter_id: reporter_id});
@@ -183,7 +184,10 @@ $(document).ready(function() {
                         $.unblockUI();
                         var html = "";
                         for (var i = 0; i < json_data.errors.length; i++) {
-                            html += "<tr><td>" + json_data.errors[i] + "</td></tr>";
+                            console.log(json_data);
+                            var email_in_error = json_data.errors[i].split(' ')[3];
+                            var error_message = gettext('User with email ') + email_in_error + gettext(' already exists')
+                            html += "<tr><td>" + error_message + "</td></tr>";
                         }
                         $('#web_user_error').html(html);
                         $('#web_user_error').show();

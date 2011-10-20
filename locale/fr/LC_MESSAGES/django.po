@@ -927,10 +927,6 @@ msgstr "Numéro de ligne"
 msgid "Row"
 msgstr "Ligne"
 
-#: templates/entity/all_datasenders.html:108
-msgid "Give Access"
-msgstr ""
-
 #: templates/entity/all_datasenders.html:110
 #: templates/project/registered_datasenders.html:26
 msgid "Actions:"
@@ -2666,3 +2662,15 @@ msgstr "Ajouter un message de rappel"
 
 msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
+
+msgid "Enter each data sender's email address below. Each can submit data via the internet"
+msgstr "Entrez l'adresse e-mail chaque expéditeur des données ci-dessous. Chacun peut soumettre des données via Internet"
+
+msgid "Reporter ID"
+msgstr "ID Reporter"
+
+msgid "Contact"
+msgstr "Contactez"
+
+msgid "Give Access"
+msgstr "Donne accès"
