@@ -2458,3 +2458,10 @@ msgstr ""
 
 msgid "Minimum"
 msgstr ""
+
+
+msgid "All fields are required unless marked optional."
+msgstr ""
+
+msgid "Optional"
+msgstr ""

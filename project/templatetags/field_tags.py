@@ -2,6 +2,7 @@
 
 from django import template
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()
 
@@ -17,7 +18,7 @@ def field_label(value):
     if required:
         return mark_safe("<label>%s</label>" % label)
     else:
-        return mark_safe("<label>%s<span class='optional_field'> Optional</span></label>" % label)
+        return mark_safe("<label>%s<span class='optional_field'> %s</span></label>" % (label,_("Optional")))
 
 @register.filter(name='widget_type')
 def widget_type(value):

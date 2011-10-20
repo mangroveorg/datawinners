@@ -2722,3 +2722,9 @@ msgstr "caractère"
 
 msgid "Minimum"
 msgstr "minimale"
+
+msgid "All fields are required unless marked optional."
+msgstr "Tous les champs sont obligatoires sauf indication \"optionnel\"."
+
+msgid "Optional"
+msgstr "Optionnel"
