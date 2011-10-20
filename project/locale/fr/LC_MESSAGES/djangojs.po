@@ -389,7 +389,7 @@ msgid "Search:"
 msgstr "Recherche:"
 
 msgid "First"
-msgstr "Premier"
+msgstr "Premiere"
 
 msgid "Previous"
 msgstr "Préc."

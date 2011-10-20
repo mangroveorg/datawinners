@@ -2635,4 +2635,27 @@ msgid "vtrue,vfalse"
 msgstr "Oui,Non"
 
 msgid "Register"
-msgstr "Enregistrer"
+msgstr "S'inscrire"
+
+
+
+msgid "Sign Up to Try DataWinners Free"
+msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
+
+msgid "Your Organization"
+msgstr "Votre organisation"
+
+msgid "Point of Contact / Account Administrator"
+msgstr "Point de contact / Administrateur du compte"
+
+msgid "Already registered?"
+msgstr "Vous avez déjà un compte?"
+
+msgid "Sign in here"
+msgstr "Identifiez vous ici"
+
+msgid "Sign Up To Start Using DataWinners Now"
+msgstr "Inscrivez vous pour commencer à utiliser DataWinners maintenant"
+
+msgid "Sign Up"
+msgstr "S'inscrire"

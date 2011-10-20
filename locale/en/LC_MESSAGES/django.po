@@ -2371,3 +2371,25 @@ msgstr "True,False"
 
 msgid "Register"
 msgstr ""
+
+
+msgid "Sign Up to Try DataWinners Free"
+msgstr ""
+
+msgid "Your Organization"
+msgstr ""
+
+msgid "Point of Contact / Account Administrator"
+msgstr ""
+
+msgid "Already registered?"
+msgstr ""
+
+msgid "Sign in here"
+msgstr ""
+
+msgid "Sign Up To Start Using DataWinners Now"
+msgstr ""
+
+msgid "Sign Up"
+msgstr ""
