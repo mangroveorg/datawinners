@@ -59,7 +59,27 @@ $(document).ready(function() {
 //        "sScrollX": "100%",
 //        "sScrollXInner": "100%",
 //        "bScrollCollapse": true,
-            "aaData": data
+            "aaData": data,
+            "oLanguage":{
+                "sProcessing": gettext("Processing..."),
+                    "sLengthMenu": gettext("Show _MENU_ Data records"),
+                    "sZeroRecords": gettext("No matching records found"),
+                    "sEmptyTable": gettext("No data available in table"),
+                    "sLoadingRecords": gettext("Loading..."),
+                    "sInfo": gettext("Showing _START_ to _END_ of _TOTAL_ Data records"),
+                    "sInfoEmpty": gettext("Showing 0 to 0 of 0 Data records"),
+                    "sInfoFiltered": gettext("(filtered from _MAX_ total Data records)"),
+                    "sInfoPostFix": "",
+                    "sSearch": gettext("Search:"),
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst":    gettext("First"),
+                        "sPrevious": gettext("Previous"),
+                        "sNext":     gettext("Next"),
+                        "sLast":     gettext("Last")
+                    },
+                    "fnInfoCallback": null
+            }
         });
     }
 

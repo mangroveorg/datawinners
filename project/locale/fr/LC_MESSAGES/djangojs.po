@@ -301,7 +301,6 @@ msgstr "Ajouter un sujet"
 msgid "Subject Registration Preview"
 msgstr "Aperçu du sujet"
 
-
 msgid "Which subject are you reporting on?"
 msgstr "Votre rapport concerne quel sujet ?"
 
@@ -344,10 +343,10 @@ msgstr ""
 "données ?"
 
 msgid "Please select atleast 1 data sender"
-msgstr "S'il vous plaît sélectionner au moins 1 expéditeur des données"
+msgstr "Veuillez sélectionner au moins 1 expéditeur des données"
 
 msgid "Please select atleast 1 Project"
-msgstr "S'il vous plaît sélectionner au moins 1 Projet"
+msgstr "Veuillez sélectionner au moins 1 Projet"
 
 msgid "Delete this Project?"
 msgstr "Supprimer ce projet?"
@@ -357,3 +356,43 @@ msgstr "Suiv."
 
 msgid "Prev"
 msgstr "Préc."
+
+
+
+
+
+msgid "Processing..."
+msgstr "Traitement en cours..."
+
+msgid "Show _MENU_ Data records"
+msgstr "Afficher _MENU_ enregistrements"
+
+msgid "No matching records found"
+msgstr "Aucun enregistrement trouvé"
+
+msgid "No data available in table"
+msgstr "Aucune données disponible dans la table"
+
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
+msgstr "Affiche _START_ à _END_ de _TOTAL_ enregistrements"
+
+msgid "Showing 0 to 0 of 0 Data records"
+msgstr "Affiche 0 à 0 de 0 enregistrements"
+
+msgid "(filtered from _MAX_ total Data records)"
+msgstr "(filtrée de _MAX_ d'enregistrements)"
+
+msgid "Search:"
+msgstr "Recherche:"
+
+msgid "First"
+msgstr "Premier"
+
+msgid "Previous"
+msgstr "Préc."
+
+msgid "Last"
+msgstr "Dernière"

@@ -2633,3 +2633,6 @@ msgstr "Nous ne pouvions pas importer vos données! Vous utilisez un format de d
 
 msgid "vtrue,vfalse"
 msgstr "Oui,Non"
+
+msgid "Register"
+msgstr "Enregistrer"
