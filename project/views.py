@@ -41,6 +41,7 @@ from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from datawinners.settings import api_keys
 
 import logging
@@ -412,12 +413,12 @@ def export_log(request):
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
     count, submissions, error_message = _get_submissions(manager, questionnaire_code, request, paginate=False)
 
-    header_list = ["To", "From", "Date Received", "Submission status", "Deleted Record", "Errors"]
+    header_list = [ugettext("To"), ugettext("From"), ugettext("Date Received"), ugettext("Submission status"), ugettext("Deleted Record"), ugettext("Errors")]
     header_list.extend([field.code for field in questionnaire.fields])
     raw_data_list = [header_list]
     if count:
-        raw_data_list.extend([[submission.destination, submission.source, submission.created, submission.status,
-                                   submission.data_record.is_void() if submission.data_record is not None else True, submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
+        raw_data_list.extend([[submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
+                                   ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)), submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)

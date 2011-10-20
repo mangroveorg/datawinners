@@ -2698,3 +2698,9 @@ msgstr "Nombre"
 
 msgid "Average"
 msgstr "Moyenne"
+
+msgid "True"
+msgstr "Oui"
+
+msgid "False"
+msgstr "Non"

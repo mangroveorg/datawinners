@@ -2434,3 +2434,9 @@ msgstr ""
 
 msgid "Average"
 msgstr ""
+
+msgid "True"
+msgstr ""
+
+msgid "False"
+msgstr ""
