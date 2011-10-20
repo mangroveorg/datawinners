@@ -25,8 +25,7 @@
         <ul class="administrative">
           <li>
             <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
-            <h6 class="section_description">{% trans 'All fields are required unless marked optional.' %}</h6>
-          </li>
+            <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>          </li>
           <li class="{{ form.title.css_classes  }} form-row-10px">
             {{ profile_form.title|field_label }}
             {{ profile_form.title }}
