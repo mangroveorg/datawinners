@@ -11,7 +11,7 @@ $(document).ready(function() {
             ownerViewModel.reminders.remove(this);
         };
         this.defaultMessage = function() {
-            return "Hello. We have not received your data for " + this.projectName + ".Please send it to us today. Thank you.";
+            return gettext("Hello. We have not received your data for ") + this.projectName + gettext(".Please send it to us today. Thank you.");
         };
 
         if (message == null) message = this.defaultMessage();
@@ -19,11 +19,11 @@ $(document).ready(function() {
         var self = this;
         this.header = ko.dependentObservable(function() {
             if (self.reminderMode() === "before_deadline") {
-                return self.beforeDay() + " days before deadline";
+                return self.beforeDay() + gettext(" days before deadline");
             } else if (self.reminderMode() === "after_deadline") {
-                return self.afterDay() + " days after deadline";
+                return self.afterDay() + gettext(" days after deadline");
             } else {
-                return "On the deadline";
+                return gettext("On the deadline");
             }
         }, this);
         this.selectBeforeDay = ko.dependentObservable(function() {
@@ -75,7 +75,7 @@ $(document).ready(function() {
                 this.remindersToSave.push(newReminder);
             }
             $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
-                $('.success-message-box').show().html("The reminders has been saved").fadeOut(10000);
+                $('.success-message-box').show().html(gettext("The reminders has been saved")).fadeOut(10000);
             })
         };
 

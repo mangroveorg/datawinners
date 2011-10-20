@@ -12,6 +12,7 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from django.contrib.auth.views import login
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
+from django.utils.translation import ugettext as _
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -81,7 +82,7 @@ def settings(request):
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance=organization).update()
-        message = "" if organization_form.errors else 'Settings have been updated successfully'
+        message = "" if organization_form.errors else _('Settings have been updated successfully')
         return render_to_response("accountmanagement/account/org_settings.html",
                 {'organization_form': organization_form, 'message': message}, context_instance=RequestContext(request))
 
@@ -155,6 +156,6 @@ def edit_user(request):
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
             ngo_user_profile.skype = form.cleaned_data['skype']
             ngo_user_profile.save()
-            message = 'Profile has been updated successfully'
+            message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
                                   context_instance=RequestContext(request))

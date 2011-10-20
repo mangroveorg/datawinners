@@ -629,6 +629,8 @@ qq.extend(qq.FileUploader.prototype, {
         qq.setText(fileElement, this._formatFileName(fileName));
         this._find(item, 'size').style.display = 'none';        
 
+        while(n = this._listElement.firstChild)
+            this._listElement.removeChild(n);
         this._listElement.appendChild(item);
     },
     _getItemByFileId: function(id){

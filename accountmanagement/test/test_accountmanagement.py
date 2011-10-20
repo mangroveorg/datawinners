@@ -43,23 +43,22 @@ class TestAccountManagement(TestCase):
         response = self.client.get('/profile/')
         self.assertEquals(response.status_code,302)
 
-    @SkipTest
-    def test_should_render_profile_view_if_not_logged_in(self):
+    def test_should_render_profile_view_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
         response = self.client.get('/profile/')
         self.assertEquals(response.status_code,200)
 
-    @SkipTest
     def test_should_render_account_users_view_if_not_logged_in(self):
         response = self.client.post('/account/users/')
         self.assertEquals(response.status_code, 302)
-#        self.assertRedirects(response,'/login')
 
+    @SkipTest
     def test_should_render_account_users_view_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
-        response = self.client.post('/account/users/')
+        response = self.client.get('/account/users/')
         self.assertEquals(response.status_code, 302)
-
+#        self.assertRedirects(response,'/dashboard/',status_code=302,target_status_code=200)
+        
     @SkipTest
     def test_should_render_account_user_new_view_if_not_logged_in(self):
         response = self.client.post('/account/user/new/')

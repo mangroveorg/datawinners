@@ -11,7 +11,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount,Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user
 from datawinners.entity import helper
 from datawinners.location.LocationTree import get_location_tree
@@ -21,7 +21,7 @@ from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER
 from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -35,18 +35,34 @@ def _associate_data_sender_to_project(dbm, project_id, response):
     project.save(dbm)
 
 
-def _process_form(dbm, form):
+def _add_data_sender_to_trial_organization(telephone_number, org_id):
+    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
+                                                         organization=Organization.objects.get(org_id=org_id))
+    data_sender.save()
+
+
+def _process_form(dbm, form, org_id):
     message = None
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
+        
         if not helper.unique(dbm, telephone_number):
             form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
             return message
 
+        organization = Organization.objects.get(org_id=org_id)
+        if organization.in_trial_mode:
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
+                form._errors['telephone_number'] = form.error_class([(u"Sorry, this number has already been used for a different DataWinners trial account.")])
+                return message
+            else:
+                _add_data_sender_to_trial_organization(telephone_number,org_id)
+
+
         try:
             web_player = WebPlayer(dbm, get_location_tree())
             response = web_player.accept(Request(message=_get_data(form.cleaned_data),
-                        transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
+                                                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
             project_id = form.cleaned_data["project_id"]
             if not is_empty(project_id):
@@ -93,6 +109,9 @@ def submit(request):
         else:
             message = get_submission_error_message_for(response.errors)
         entity_id = response.datarecord_id
+    except DataObjectAlreadyExists as exception:
+        message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
+        success, entity_id = False, None
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel="web")
         message = _("Please add subject type and then add a subject") if message == "t should be present" else message
@@ -109,7 +128,8 @@ def create_datasender(request):
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
-        message= _process_form(dbm, form)
+        org_id = request.user.get_profile().org_id
+        message= _process_form(dbm, form, org_id)
         if message is not None:
             form = ReporterRegistrationForm()
         return render_to_response('datasender_form.html',
@@ -127,13 +147,13 @@ def create_type(request):
         try:
             manager = get_database_manager(request.user)
             define_type(manager, entity_name)
-            message = "Entity definition successful"
+            message = _("Entity definition successful")
             success = True
         except EntityTypeAlreadyDefined:
-            message = "%s already registered as a subject type. Please select %s from the drop down menu." %  (entity_name[0], entity_name[0])
+            message = _("%s already registered as a subject type. Please select %s from the drop down menu.") %  (entity_name[0], entity_name[0])
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
-    return HttpResponse(json.dumps({'success': success, 'message': message}))
+    return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
 
 @login_required(login_url='/login')
 def create_subject(request):

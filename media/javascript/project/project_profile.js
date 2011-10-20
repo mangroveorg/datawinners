@@ -8,9 +8,9 @@ DW.set_deadline_example = function(){
             // Monday of the week
             var selected_weekday_text = $('#id_deadline_week option:selected').text();
             if (deadline_type_value == 'Following'){
-                deadline_example = interpolate("%(day)s of the week following the reporting week ",{ day : selected_weekday_text},true);
+                deadline_example = interpolate(gettext("%(day)s of the week following the reporting week"),{ day : selected_weekday_text},true);
             }else{
-                deadline_example = interpolate("%(day)s of the reporting week",{ day : selected_weekday_text },true);
+                deadline_example = interpolate(gettext("%(day)s of the reporting week"),{ day : selected_weekday_text },true);
             }
         }else if (frequency == 'month')
         {
@@ -18,9 +18,9 @@ DW.set_deadline_example = function(){
             // 5th day of October for October report
             var selected_month_day_text = $('#id_deadline_month option:selected').text();
             if (deadline_type_value == 'Following'){
-                deadline_example = interpolate("%(day)s of October for September report",{ day : selected_month_day_text },true);
+                deadline_example = interpolate(gettext("%(day)s of October for September report"),{ day : selected_month_day_text },true);
             }else{
-                deadline_example = interpolate("%(day)s of October for October report",{ day : selected_month_day_text },true);
+                deadline_example = interpolate(gettext("%(day)s of October for October report"),{ day : selected_month_day_text },true);
             }
         }
         $('#deadline_example').text(deadline_example)
@@ -41,9 +41,11 @@ $(document).ready(function(){
     $("#tab_items .define").addClass("current");
     set_current_tab();
     $("#id_devices_0").attr('disabled', true);
+    $("#id_devices_1").attr('disabled', true);
 
     $('#submit-button').click(function(){
        $('#id_devices_0').attr('disabled',false);
+       $('#id_devices_1').attr('disabled',false);
        $('#profile_form').submit();
     });
 
@@ -125,14 +127,14 @@ function show_element(element,should_show){
 
 function enable_timeperiod() {
     if ($('#id_frequency_period').val() == "week") {
-        show_element($('#week_block'), "True")
-        show_element($('#month_block'), "False")
+        show_element($('#week_block'), "True");
+        show_element($('#month_block'), "False");
         $('#week_block :input').attr('disabled', false);
         $('#month_block :input').attr('disabled', true);
     } else if ($('#id_frequency_period').val() == "month") {
         $('#week_block :input').attr('disabled', true);
         $('#month_block :input').attr('disabled', false);
-        show_element($('#week_block'), "False")
+        show_element($('#week_block'), "False");
         show_element($('#month_block'), "True")
     }
 }

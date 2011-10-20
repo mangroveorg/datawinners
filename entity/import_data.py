@@ -10,16 +10,42 @@ from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESC
 from mangrove.transport.player.parser import CsvParser, XlsParser
 from mangrove.transport.player.player import FilePlayer, Channel
 from mangrove.utils.types import sequence_to_str
+from django.utils.translation import ugettext as _
 
 def tabulate_failures(rows):
     tabulated_data = []
     for row in rows:
-        errors = ''
         row[1].errors['row_num'] = row[0] + 2
-        if type(row[1].errors['error']) is list:
-            for error in row[1].errors['error']:
-                errors = errors + ' ' + error
-            row[1].errors['error'] = errors
+
+        if isinstance(row[1].errors['error'], dict):
+            errors = ''
+            for key,value in row[1].errors['error'].items():
+                if key == 'n' or key == 't':
+                    code = value.split(' ')[3]
+                    errors = errors + _('Answer for question %s is required')% (code, )
+                if key == 's':
+                    errors = errors + value
+                if key == 'g':
+                    if 'xx.xxxx yy.yyyy' in value:
+                        errors = errors + _('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315')
+                    else:
+                        text = value.split(' ')[2]
+                        low = value.split(' ')[6]
+                        high = value.split(' ')[8]
+                        errors = errors + _("The answer %s must be between %s and %s") % (text, low, high)
+                if key == 'm':
+                    if 'is required' in value:
+                        code = value.split(' ')[3]
+                        errors = errors + _('Answer for question %s is required')% (code, )
+                    if 'longer' in value:
+                        text = value.split(' ')[1]
+                        errors = errors + _("Answer %s for question %s is longer than allowed.") % (text, key)
+                    else:
+                        errors = errors + _(value)
+        else:
+            errors = _(row[1].errors['error'])
+
+        row[1].errors['error'] = errors
         tabulated_data.append(row[1].errors)
     return tabulated_data
 
@@ -107,8 +133,7 @@ def import_data(request, manager):
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
-        error_message = 'We could not import your data ! \
-                        You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!'
+        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!")
     except Exception:
         error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
         if settings.DEBUG:

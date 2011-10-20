@@ -29,7 +29,7 @@ from mangrove.datastore.queries import get_entity_count_for_type
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
-from mangrove.form_model.field import field_to_json, SelectField
+from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
@@ -108,9 +108,11 @@ def create_profile(request):
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     project_summary = dict(name='New Project')
+    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
         form = ProjectProfile(entity_list=entity_list, initial={'activity_report': 'yes'})
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account
+        },
                                   context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
@@ -130,11 +132,11 @@ def create_profile(request):
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
+            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account },
                                       context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False},
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account},
                                   context_instance=RequestContext(request))
 
 
@@ -155,9 +157,10 @@ def edit_profile(request, project_id=None):
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
+    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
         form = ProjectProfile(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
                                   context_instance=RequestContext(request))
 
     form = ProjectProfile(data=request.POST, entity_list=entity_list)
@@ -624,6 +627,7 @@ def finish(request, project_id=None):
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)
         is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
+        devices = ",".join(project.devices)
         return render_to_response('project/finish_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': _make_links_for_finish_page(
                                                                        project_id, form_model),
@@ -631,7 +635,8 @@ def finish(request, project_id=None):
                                                                    ,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "previous": previous_link,
-                                                                   "is_reminder": is_reminder},
+                                                                   "is_reminder": is_reminder,
+                                                                   "devices": devices},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
@@ -775,11 +780,31 @@ def _create_django_form_from_form_model(form_model):
     return type('QuestionnaireForm', (Form, ), properties)
 
 
-def _to_list(errors):
+def _to_list(errors, fields):
     error_dict = dict()
     for key, value in errors.items():
         error_dict.update({key: [value] if not isinstance(value, list) else value})
-    return error_dict
+    return translate_messages(error_dict, fields)
+
+def translate_messages(error_dict, fields):
+    errors = dict()
+
+    for field in fields:
+        if field.code in error_dict:
+            error = error_dict[field.code][0]
+            if type(field) == TextField:
+                text, code = error.split(' ')[1], field.code
+                errors[code] = [_("Answer %s for question %s is longer than allowed.") % (text, code)]
+            if type(field) == IntegerField:
+                number, error_context = error.split(' ')[1], error.split(' ')[6]
+                errors[field.code] = [_("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
+            if type(field) == GeoCodeField:
+                errors[field.code] = [_("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")]
+            if type(field) == DateField:
+                answer, format = error.split(' ')[1], field.date_format
+                errors[field.code] = [_("Answer %s for question %s is invalid. Expected date in %s format") % (answer, field.code, format)]
+            
+    return errors
 
 
 def _create_request(questionnaire_form, username):
@@ -823,15 +848,15 @@ def web_questionnaire(request, project_id=None):
                 success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
             else:
-                questionnaire_form._errors = _to_list(response.errors)
+                questionnaire_form._errors = _to_list(response.errors, form_model.fields)
                 return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
         except DataObjectNotFound as exception:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
-            error_message = message % (form_model.entity_type[0], form_model.entity_type[0])
+            error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
-            error_message = get_exception_message_for(exception=exception, channel=player.Channel.WEB)
+            error_message = _(get_exception_message_for(exception=exception, channel=player.Channel.WEB))
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})
@@ -854,8 +879,8 @@ def questionnaire_preview(request, project_id=None):
         for field in fields:
             question = helper.get_preview_for_field(field)
             questions.append(question)
-        example_sms = "%s .%s <answer> .... .%s <answer>" % (
-            form_model.form_code, fields[0].code, fields[len(fields) - 1].code)
+        example_sms = "%s .%s <%s> .... .%s <%s>" % (
+            form_model.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links,
@@ -914,8 +939,8 @@ def sender_registration_form_preview(request, project_id=None):
                                                                                                              project,
                                                                                                              project_id,
                                                                                                              type_of_subject='Data sender')
-        example_sms = "%s .%s <answer> .... .%s <answer>" % (
-            registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
+        example_sms = "%s .%s <%s> .... .%s <%s>" % (
+            registration_questionnaire.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,

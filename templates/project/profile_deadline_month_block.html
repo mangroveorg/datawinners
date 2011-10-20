@@ -1,11 +1,11 @@
 {% load i18n %}
 <div id="month_block">
 <div id="deadline_month_block" style="float: left; margin-top: 19px; margin-left: 10px;">
-        Always on {{ form.deadline_month }}
+        {% trans "Always on" %} {{ form.deadline_month }}
         {{ form.deadline_month.errors }}
 </div>
 <div id="deadline_type_block" style="float:left; margin-left: 10px; margin-top: 19px;">
-        of the {{ form.deadline_type }} {% trans "month" %}
+        {% trans "of the" %} {{ form.deadline_type }} {% trans "month" %}
         {{ form.deadline_type.errors }}
 </div>
 </div>
