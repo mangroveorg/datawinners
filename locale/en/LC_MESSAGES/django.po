@@ -359,12 +359,6 @@ msgstr ""
 msgid "Successfully submitted"
 msgstr ""
 
-#: submission/views.py:48
-msgid ""
-"Your organization does not have a telephone number assigned. Please contact "
-"DataWinners Support."
-msgstr ""
-
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
 #: templates/entity/all_datasenders.html:89
@@ -2333,3 +2327,41 @@ msgstr ""
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
 msgstr ""
 
+msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgstr ""
+
+msgid "answer"
+msgstr ""
+
+msgid "Answer for question %s is required"
+msgstr ""
+
+msgid "The answer %s must be between %s and %s"
+msgstr ""
+
+msgid "Patern should be ^[0-9]+$"
+msgstr ""
+
+msgid "Mobile number is missing"
+msgstr ""
+
+msgid "Please fill out atleast one location field"
+msgstr ""
+
+msgid "The questionnaire does not exist."
+msgstr ""
+
+msgid "*indicates required field"
+msgstr ""
+
+msgid "Profile has been updated successfully"
+msgstr ""
+
+msgid "Settings have been updated successfully"
+msgstr ""
+
+msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
+msgstr ""
+
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
+msgstr ""

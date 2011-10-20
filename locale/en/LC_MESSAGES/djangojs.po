@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-19 12:39+0530\n"
+"POT-Creation-Date: 2011-10-19 15:32+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,6 +122,7 @@ msgstr ""
 #: media/javascript/project/data_analysis.js:73
 #: media/javascript/project/data_analysis.js:100
 #: media/javascript/project/register_reporter.js:5
+#: media/javascript/project/sms_tester.js:23
 msgid "Just a moment"
 msgstr ""
 
@@ -332,6 +333,30 @@ msgstr ""
 
 #: media/javascript/project/registered_datasenders.js:26
 msgid "Please select at least 1 data sender"
+msgstr ""
+
+#: media/javascript/project/reminders.js:14
+msgid "Hello. We have not received your data for "
+msgstr ""
+
+#: media/javascript/project/reminders.js:14
+msgid ".Please send it to us today. Thank you."
+msgstr ""
+
+#: media/javascript/project/reminders.js:22
+msgid " days before deadline"
+msgstr ""
+
+#: media/javascript/project/reminders.js:24
+msgid " days after deadline"
+msgstr ""
+
+#: media/javascript/project/reminders.js:26
+msgid "On the deadline"
+msgstr ""
+
+#: media/javascript/project/reminders.js:78
+msgid "The reminders has been saved"
 msgstr ""
 
 #: media/javascript/project/results.js:96

@@ -369,11 +369,6 @@ msgstr "Ce champ est obligatoire"
 msgid "Successfully submitted"
 msgstr "Envoyé avec succès"
 
-#: submission/views.py:48
-msgid ""
-"Your organization does not have a telephone number assigned. Please contact "
-"DataWinners Support."
-msgstr ""
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
@@ -533,11 +528,11 @@ msgstr "Javascript est désactivé dans votre navigateur, Veuillez l'activer."
 #: templates/layout_registration.html:31
 msgid "about_DW"
 msgstr ""
-"<h5>About DataWinners</h5><p>DataWinners is an online mobile data"
-"\tcollection service designed and\tbuilt for development professionals. </"
-"p><p>With DataWinners, you collect and analyze the data you need using the "
-"equipment you already have – a computer, the Internet and basic mobile "
-"phones. </p>"
+"<h5>À propos DataWinners</h5><p>DataWinners est une des données en ligne mobile"
+"\tservice de collecte conçu et\tconstruit pour les professionnels du développement. </"
+"p><p>Avec DataWinners, vous recueillir et analyser les données dont vous avez besoin en utilisant les"
+"l'équipement que vous avez déjà - un ordinateur, l'Internet et mobile de base"
+"téléphones. </p>"
 
 #: templates/layout_wizard.html:32
 msgid "Previous Step:"
@@ -1224,7 +1219,8 @@ msgstr "Résumé & Test"
 msgid ""
 "Congratulations! You have created your project. Review your project details "
 "and test if you can send in data."
-msgstr ""
+msgstr "Félicitations! Vous venez de créer votre projet. Revoyez les détails "
+"de votre projet et testez si vous pouvez envoyer des données."
 
 #: templates/project/finish_and_test.html:47
 msgid "Review"
@@ -1304,6 +1300,15 @@ msgstr "Messages de rappel"
 msgid "Reminders are <strong>%(is_reminder)s</strong> for this project"
 msgstr ""
 "Les Messages de rappel sont <strong>%(is_reminder)s</strong> pour ce projet."
+
+msgid "Reminders are"
+msgstr "Les messages de rappel sont"
+
+msgid "for this project"
+msgstr "pour ce projet."
+
+msgid "enabled"
+msgstr "activés"
 
 #: templates/project/finish_and_test.html:152
 msgid "Test This Questionnaire"
@@ -1855,7 +1860,7 @@ msgstr "Code Questionnaire"
 
 #: templates/project/questionnaire_preview.html:23
 msgid "Example SMS:"
-msgstr "Example de SMS :"
+msgstr "Exemple de SMS :"
 
 #: templates/project/questionnaire_wizard.html:62
 msgid "Define the questions you want your Data Senders to answer."
@@ -2047,11 +2052,11 @@ msgstr "Référez-vous à l'aperçu du questionnaire Web pour un example de SMS"
 #: templates/project/sms_tester_form.html:20
 msgid "sms_tester_form"
 msgstr ""
-"<p>Note : When you activate this project, all the test data will be removed "
-"automatically.</p><p>You have 2 options</p><p>A. Click on the mobile phone "
-"screen and type your test answers.</p><p>B. Register yourself as a Data "
-"Sender. Then sms your test answers to the telephone number provided by "
-"DataWinners.</p>"
+"<p>Remarque : Quand vous activez un projet, toutes les données de test sont "
+"supprimées automatiquement.</p><p>Vous avez 2 options</p><p>A. Cliquez sur "
+"l'écran du mobile et saisissez votre message de test.</p><p>B. Enregistrez-"
+"vous en tant qu'envoyeur de données. Puis envoyez par SMS votre sms de test"
+"au numéro de téléphone donné par DataWinners.</p>"
 
 #: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
@@ -2067,7 +2072,7 @@ msgstr "Voir les données que vous avez reçu"
 
 #: templates/project/sms_tester_form.html:37
 msgid "See if DataWinners received your SMS. (Go to "
-msgstr ""
+msgstr "Vérifier que Datawinners a reçu votre SMS. (Allez à la page "
 
 #: templates/project/sms_tester_form.html:38
 msgid "All Data Records "
@@ -2075,7 +2080,7 @@ msgstr "Tous les enregistrements"
 
 #: templates/project/sms_tester_form.html:38
 msgid "page to view submission status)"
-msgstr "page pour voir le statut des envois)"
+msgstr "pour voir le statut des envois)"
 
 #: templates/project/subjects.html:33
 msgid "Step3:"
@@ -2150,8 +2155,8 @@ msgstr "Importez la liste des sujets"
 #: templates/project/subjects_wizard.html:77
 msgid "q_tooltip_subject_wizard_import"
 msgstr ""
-"Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
-"Separated Value (.csv) file"
+"Ajoutez une liste de sujets en une seule fois en important un fichier Excel "
+"(.xls) ou un fichier CSV (.csv)"
 
 #: templates/project/subjects_wizard.html:80
 msgid "r_tooltip_subject_wizard_import"
@@ -2580,3 +2585,48 @@ msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
 msgstr ""
 "Erreur: SMS erroné. Reportez-vous au questionnaire imprimé et renvoyez le "
 "SMS."
+
+msgid "Entity with Unique Identification Number (ID) = %s already exists."
+msgstr "Entité avec numéro d'identification unique (ID) =% s existe déjà."
+
+msgid "answer"
+msgstr "réponse"
+
+msgid "Answer for question %s is required"
+msgstr "Réponse pour %s la question est nécessaire"
+
+msgid "The answer %s must be between %s and %s"
+msgstr "La réponse %s doit être comprise entre %s et %s"
+
+msgid "Patern should be ^[0-9]+$"
+msgstr "Patern devrait être ^[0-9]+$"
+
+msgid "Mobile number is missing"
+msgstr "Numéro de mobile est manquant"
+
+msgid "Please fill out atleast one location field"
+msgstr "Veuillez remplir au moins un champ de localisation"
+
+msgid "The questionnaire does not exist."
+msgstr "Le questionnaire n'existe pas."
+
+msgid "*indicates required field"
+msgstr "*indique un champ obligatoire"
+
+msgid "Profile has been updated successfully"
+msgstr "Le profil a été mis à jour avec succès"
+
+msgid "Settings have been updated successfully"
+msgstr "Les paramètres ont été mis à jour avec succès"
+
+msgid "Hello. We have not received your data for"
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
+
+msgid "Please send it to us today. Thank you."
+msgstr "Veuillez l'envoyer aujourd'hui. Merci"
+
+msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
+msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
+
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
+msgstr "Nous ne pouvions pas importer vos données! Vous utilisez un format de document nous ne pouvons pas importer. S'il vous plaît utilisez un Comma Separated Values ​​(.csv) ou un Excel (.xls)!"

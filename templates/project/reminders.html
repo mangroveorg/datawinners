@@ -63,7 +63,7 @@
             </ul>
 
             <div class="margin_bottom_20">
-                <textarea id='message' class="required" name="message">Hello. We have not received your data for {{ project.name }}. Please send it to us today. Thank you.</textarea>
+                <textarea id='message' class="required" name="message">{% trans "Hello. We have not received your data for" %} {{ project.name }}. {% trans "Please send it to us today. Thank you." %}</textarea>
                 <div class="margin_top_10">
                     {% trans "The message count is" %} <span id='message_count'>0</span>
                 </div>
@@ -83,13 +83,13 @@
         <div>
             <strong>Deadline: </strong>{{ project.deadline.description }}
         </div>
-        <a id='add_reminder' class="float_right margin_bottom_10">Add a Reminder</a>
+        <a id='add_reminder' class="float_right margin_bottom_10">{% trans "Add a Reminder" %}</a>
         <table class="styled_table float_left">
             <thead>
-            <th>When</th>
-            <th>To</th>
-            <th>Message</th>
-            <th>Actions</th>
+            <th>{% trans "When" %}</th>
+            <th>{% trans "To" %}</th>
+            <th>{% trans "Message" %}</th>
+            <th>{% trans "Actions" %}</th>
             </thead>
             <tbody>
             {% for reminder in reminders %}
@@ -97,8 +97,8 @@
                     <td>{{ reminder.when }}</td>
                     <td>{{ reminder.to }}</td>
                     <td>{{ reminder.message }}</td>
-                    <td><a href="#" class="edit_reminder" name="{{ reminder.id }}">Edit</a> | <a
-                            href="{{ reminder.delete_link }}">Delete</a></td>
+                    <td><a href="#" class="edit_reminder" name="{{ reminder.id }}">{% trans "Edit" %}</a> | <a
+                            href="{{ reminder.delete_link }}">{% trans "Delete" %}</a></td>
                 </tr>
             {% endfor %}
             </tbody>

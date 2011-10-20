@@ -62,7 +62,7 @@ class ProjectProfile(Form):
     activity_report = ChoiceField(label=_("What is this questionnaire about?"), widget=forms.RadioSelect, choices=SUBJECT_TYPE_CHOICES, initial=('no',_('Other Subject')))
     entity_type = ChoiceField(label=_("Other Subjects"), required=False)
     devices = MultipleChoiceField(label=_('Device'), widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
-                                  initial=DEVICE_CHOICES[0], required=False)
+                                  initial=['sms','web'], required=False)
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"), widget=forms.RadioSelect,
                                          choices=LANGUAGES, initial='en')
     frequency_enabled = ChoiceField(label = _("How often do you need the data?"),

@@ -28,10 +28,10 @@
         <ul class="questionnaire_preview">
             {% for question in questions %}
                 <li>
-                    <h6><span> .{{ question.code }}</span> {{ question.description }}</h6>
+                    <h6><span> .{{ question.code }}</span> {% trans question.description %}</h6>
                     {% if  question.instruction %}
                         <p class="instructions italic">
-                            {{ question.instruction }}
+                            {% trans question.instruction %}
                         </p>
                         <input class="displayText" disabled="disabled" type="text">
                     {% endif %}

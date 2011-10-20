@@ -204,6 +204,26 @@ msgstr "Vous devez enregistrer le questionnaire."
 msgid "default"
 msgstr "valeur par défaut"
 
+#: media/javascript/project/reminders.js:14
+msgid "Hello. We have not received your data for "
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
+
+#: media/javascript/project/reminders.js:14
+msgid ".Please send it to us today. Thank you."
+msgstr ". Veuillez l'envoyer aujourd'hui. Merci."
+
+#: media/javascript/project/reminders.js:22
+msgid " days before deadline"
+msgstr " jours avant la date limite d'envoi"
+
+#: media/javascript/project/reminders.js:24
+msgid " days after deadline"
+msgstr " jours après la date limite d'envoi"
+
+#: media/javascript/project/reminders.js:26
+msgid "On the deadline"
+msgstr "A propos de la date limite d'envoi"
+
 #: media/javascript/project/sms_preview.js:9
 msgid "number"
 msgstr "nombre"
@@ -322,3 +342,12 @@ msgid "What is the mobile number associated with the data sender?"
 msgstr ""
 "Quel est le numéro de téléphone portable associé à l'envoyeur de "
 "données ?"
+
+msgid "Please select atleast 1 data sender"
+msgstr "S'il vous plaît sélectionner au moins 1 expéditeur des données"
+
+msgid "Please select atleast 1 Project"
+msgstr "S'il vous plaît sélectionner au moins 1 Projet"
+
+msgid "Delete this Project?"
+msgstr "Supprimer ce projet?"
