@@ -377,7 +377,7 @@ msgid "Loading..."
 msgstr "Chargement..."
 
 msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
-msgstr "Affiche _START_ à _END_ de _TOTAL enregistrements"
+msgstr "Affiche _START_ à _END_ de _TOTAL_ enregistrements"
 
 msgid "Showing 0 to 0 of 0 Data records"
 msgstr "Affiche 0 à 0 de 0 enregistrements"
