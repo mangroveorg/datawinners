@@ -99,7 +99,7 @@ form{
         }
     }
 }
-span.error_arrow, #questionnaire-code-error, label.error_arrow{
+.error_arrow, span.error_arrow, #questionnaire-code-error, label.error_arrow{
             background: url(/media/images/arrow_error.png) no-repeat left 7px;
             display: inline-block;
             label{
