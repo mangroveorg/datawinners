@@ -2422,3 +2422,15 @@ msgstr ""
 
 msgid "survey"
 msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Sum"
+msgstr ""
+
+msgid "Count"
+msgstr ""
+
+msgid "Average"
+msgstr ""

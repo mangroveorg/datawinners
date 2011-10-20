@@ -2686,3 +2686,15 @@ msgstr "Non activé"
 
 msgid "survey"
 msgstr "enquête"
+
+msgid "Latest"
+msgstr "Dernier"
+
+msgid "Sum"
+msgstr "Somme"
+
+msgid "Count"
+msgstr "Nombre"
+
+msgid "Average"
+msgstr "Moyenne"
