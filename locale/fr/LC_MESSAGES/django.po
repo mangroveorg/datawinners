@@ -1435,7 +1435,7 @@ msgstr ""
 
 #: templates/project/overview.html:45
 msgid "Status: Complete"
-msgstr "Statut: Complète"
+msgstr "Statut: Terminé"
 
 #: templates/project/overview.html:48
 msgid "What"
@@ -1507,7 +1507,7 @@ msgstr "Combien de fois"
 
 #: templates/project/overview.html:94
 msgid "Deadline"
-msgstr "Date limite"
+msgstr "Date limite "
 
 #: templates/project/profile.html:24
 msgid "Step 1"
@@ -2635,4 +2635,34 @@ msgid "vtrue,vfalse"
 msgstr "Oui,Non"
 
 msgid "Register"
-msgstr "Enregistrer"
+msgstr "S'enregistrer"
+
+msgid "Sign Up to Try DataWinners Free"
+msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
+
+msgid "Your Organization"
+msgstr "Votre organisation"
+
+msgid "Point of Contact / Account Administrator"
+msgstr "Point de contact / Administrateur du compte"
+
+msgid "Already registered?"
+msgstr "Vous avez déjà un compte?"
+
+msgid "Sign in here"
+msgstr "Identifiez vous ici"
+
+msgid "Sign Up To Start Using DataWinners Now"
+msgstr "Inscrivez vous pour commencer à utiliser DataWinners maintenant"
+
+msgid "Sign Up"
+msgstr "S'inscrire"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "Add a Reminder"
+msgstr "Ajouter un message de rappel"
+
+msgid "The selected records have been deleted"
+msgstr "Les dossiers sélectionnés ont été supprimés"

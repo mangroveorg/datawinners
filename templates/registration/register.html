@@ -1,7 +1,7 @@
 {% extends 'layout_registration.html' %}
-
-{% block page_title %} Register {% endblock %}
-{% block section_title %} Sign Up To Start Using DataWinners Now {% endblock %}
+{% load i18n %}
+{% block page_title %}{%  trans "Register"%} {% endblock %}
+{% block section_title %} {%  trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
@@ -16,7 +16,7 @@
                     <div class="form-5px">
                         <ul class="organization">
                             <li>
-                                <h3 class="highlighted_title">Your Organization<br/></h3>
+                                <h3 class="highlighted_title">{%  trans "Your Organization" %}<br/></h3>
                             </li>
                             <li class="{{ form.organization_name.css_classes }} form-row-10px">
                                 {{ form.organization_name.label_tag }}
@@ -84,7 +84,7 @@
                         </ul>
                         <ul class="administrative">
                             <li>
-                                <h3 class="highlighted_title">Point of Contact / Account Administrator</h3>
+                                <h3 class="highlighted_title">{%  trans "Point of Contact / Account Administrator" %}</h3>
                             </li>
                              <li class="{{ form.title.css_classes  }} form-row-10px">
                                 {{ form.title.label_tag }}
@@ -148,8 +148,8 @@
 
                             </li>
                             <li class="margin_top_20">
-                                <input type="button" id="submit_registration_form" value="Sign Up" class="button" />
-                                <div class="grid_7 margin_top_10 last">Already registered? <a href="{% url django.contrib.auth.views.login %}">Sign in here</a></div>
+                                <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}" class="button" />
+                                <div class="grid_7 margin_top_10 last">{%  trans "Already registered?" %} <a href="{% url django.contrib.auth.views.login %}">{%  trans "Sign in here" %}</a></div>
                             </li>
                         </ul>
                     </div>
