@@ -1332,7 +1332,7 @@ msgstr "Questionnaire SMS"
 
 #: templates/project/finish_and_test.html:163
 msgid "Test your Questionnaire by this SMS tester"
-msgstr "Testez votre Questionnaire avec ce simulateur d'envoi pas SMS"
+msgstr "Testez votre Questionnaire avec ce simulateur d'envoi par SMS"
 
 #: templates/project/finish_and_test.html:167
 msgid "Web Questionnaire"
@@ -1844,7 +1844,7 @@ msgstr "Imprimer"
 
 #: templates/project/questionnaire_preview.html:11
 msgid "SMS your answers to"
-msgstr "Envoyez pas SMS vos réponses à"
+msgstr "Envoyez par SMS vos réponses à"
 
 #: templates/project/questionnaire_preview.html:15
 msgid "Project Name:"
