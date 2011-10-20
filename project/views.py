@@ -289,7 +289,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
         submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
                 {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
-                 'success_message': "The selected records have been deleted"}, context_instance=RequestContext(request))
+                 'success_message': _("The selected records have been deleted")}, context_instance=RequestContext(request))
 
 def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET

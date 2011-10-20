@@ -2664,3 +2664,5 @@ msgstr "Actif"
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
 
+msgid "The selected records have been deleted"
+msgstr "Les dossiers sélectionnés ont été supprimés"

@@ -2398,3 +2398,6 @@ msgstr ""
 
 msgid "Add a Reminder"
 msgstr ""
+
+msgid "The selected records have been deleted"
+msgstr ""

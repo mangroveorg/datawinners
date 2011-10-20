@@ -11,7 +11,7 @@ function set_current_tab(){
 }
 $(document).ready(function(){
    $("#cancel_project_block").dialog({
-        title: "Cancel this Project?",
+        title: gettext("Cancel this Project?"),
         modal: true,
         autoOpen: false,
         height: 200,

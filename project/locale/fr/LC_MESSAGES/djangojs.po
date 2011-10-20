@@ -357,10 +357,6 @@ msgstr "Suiv."
 msgid "Prev"
 msgstr "Préc."
 
-
-
-
-
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
@@ -396,3 +392,6 @@ msgstr "Préc."
 
 msgid "Last"
 msgstr "Dernière"
+
+msgid "Cancel this Project?"
+msgstr "Annuler ce projet?"
