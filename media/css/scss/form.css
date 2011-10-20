@@ -72,25 +72,31 @@ form ul li {
       -webkit-moz-border-radius: 5px;
       -webkit-border-radius: 5px; }
 
-label.error_arrow, span.error_arrow, #questionnaire-code-error, label.error_arrow {
+div.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 7px;
   display: inline-block;
   float: left!important; }
-  label.error_arrow label, span.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
-    float: none;
-    color: #FFFFFF;
-    display: inline-block !important;
-    background: #c20303;
-    padding: 3px 10px 3px 10px;
-    border: 1px solid #00000;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    width: auto;
-    margin-left: 10px !important;
-    font-size: 12px;
-    font-weight: normal;
-    max-width: 200px; }
+
+span .error_arrow, #questionnaire-code-error, label.error_arrow {
+  background: url(/media/images/arrow_error.png) no-repeat left 7px;
+  display: inline-block;
+  float: left!important; }
+
+span .error_arrow label, div.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
+  float: none;
+  color: #FFFFFF;
+  display: inline-block !important;
+  background: #c20303;
+  padding: 3px 10px 3px 10px;
+  border: 1px solid #00000;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: auto;
+  margin-left: 10px !important;
+  font-size: 12px;
+  font-weight: normal;
+  max-width: 200px; }
 
 .message-box {
   background: #fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 4px;
@@ -213,6 +219,7 @@ select {
   clear: both; }
 
 #add_subject_type {
+  float: right;
   clear: both;
   width: 78% !important; }
 
