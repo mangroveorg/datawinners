@@ -33,6 +33,7 @@ $(document).ready(function(){
 
     $(".cancel_link").unbind('click').click(function(event) {
         event.preventDefault();
+        $("#add_subject_type").accordion({active:false});
         $(".add_subject_form").dialog("close");
     });
 
