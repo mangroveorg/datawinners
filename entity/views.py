@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
@@ -213,7 +213,7 @@ def create_web_users(request):
             if len(users) > 0:
                 errors.append("User with email %s already exists" % data['email'])
         if len(errors) > 0:
-            return HttpResponseBadRequest(json.dumps(errors))
+            return HttpResponse(json.dumps({'success':False, 'errors': errors}))
 
         for data in post_data:
             user = User.objects.create_user(data['email'], data['email'], 'test123')
@@ -227,7 +227,7 @@ def create_web_users(request):
             reset_form.is_valid()
             reset_form.save()
 
-        return HttpResponse(json.dumps("Users has been created"))
+        return HttpResponse(json.dumps({'success':True, 'message':"Users has been created"}))
 
 
 @csrf_view_exempt

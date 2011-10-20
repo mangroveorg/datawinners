@@ -172,22 +172,24 @@ $(document).ready(function() {
         if(!should_post || post_data.length == 0){
             return;
         }
+        $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
         $.post('/entity/webuser/create', {post_data: JSON.stringify(post_data)},
                 function(response) {
-
-                }).success(
-                function(data) {
-                    $("#web_user_block").dialog("close");
-                    window.location.href = window.location.href;
-                }).error(function(response) {
-                    var errors = JSON.parse(response.responseText);
-                    var html = "";
-                    for (var i = 0; i < errors.length; i++) {
-                        html += "<tr><td>" + errors[i] + "</td></tr>";
+                    var json_data = JSON.parse(response);
+                    if (json_data.success) {
+                        $("#web_user_block").dialog("close");
+                        window.location.reload();
+                    } else {
+                        var html = "";
+                        for (var i = 0; i < json_data.errors.length; i++) {
+                            html += "<tr><td>" + json_data.errors[i] + "</td></tr>";
+                        }
+                        $('#web_user_error').html(html);
+                        $('#web_user_error').show();
                     }
-                    $('#web_user_error').html(html);
-                    $('#web_user_error').show();
+
                 });
+        return false;
     });
 
     var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:150px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>"
