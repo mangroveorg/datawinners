@@ -206,7 +206,7 @@ api_keys = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-TRIAL_REGISTRATION_ENABLED = False
+TRIAL_REGISTRATION_ENABLED = True
 
 try:
     from local_settings import *
