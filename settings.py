@@ -199,7 +199,7 @@ api_keys = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',
     'localhost:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',#We don't really need it
-    'www.datawinners.com': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxQ8GGxJxguR34iYHuX8XtwD2LSt7hRQsh6kJBqUuxoZTzQoqdnULvVCxg'}
+    'www.datawinners.com': 'ABQIAAAAbx2AIcJvKRHLcqmBWwtWdxTjvHtTITV0tzqHG1m2R2AKLO2mQxS0MJ8sZ4h-Ihcm6M7VNjodlrQfTg'}
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
