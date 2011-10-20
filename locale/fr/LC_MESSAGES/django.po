@@ -2635,7 +2635,7 @@ msgid "vtrue,vfalse"
 msgstr "Oui,Non"
 
 msgid "Register"
-msgstr "S'inscrire"
+msgstr "S'enregistrer"
 
 msgid "Sign Up to Try DataWinners Free"
 msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
@@ -2663,3 +2663,4 @@ msgstr "Actif"
 
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
+
