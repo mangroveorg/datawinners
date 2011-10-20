@@ -22,24 +22,24 @@
         {% endif %}
     <form method="post" action="/account/" name="form">
       {% csrf_token %}
-
+       <h6 class="section_description">All fields are required unless marked optional.</h6>
       <ul class="organization">
         <li class="{{ form.organization_name.css_classes }} form-row-10px">
           {{ organization_form.name|field_label }}
           {{ organization_form.name }}
-          
+
           {{ organization_form.name.errors }}
         </li>
         <li class="{{ form.organization_sector.css_classes  }} form-row-10px">
           {{ organization_form.sector|field_label }}
           {{ organization_form.sector }}
-          
+
           {{ organization_form.sector.errors }}
         </li>
         <li class="{{ form.organization_address.css_classes  }} form-row-10px">
           {{ organization_form.address|field_label }}
           {{ organization_form.address }}
-          
+
           {{ organization_form.address.errors }}
         </li>
         <li class="{{ form.organization_city.css_classes  }} form-row-10px">
@@ -51,31 +51,31 @@
         <li class="{{ form.organization_state.css_classes  }} form-row-10px">
           {{ organization_form.state|field_label }}
           {{ organization_form.state }}
-          
+
           {{ organization_form.state.errors }}
         </li>
         <li class="{{ form.organization_country.css_classes  }} form-row-10px">
           {{ organization_form.country|field_label }}
           {{ organization_form.country }}
-          
+
           {{ organization_form.country.errors }}
         </li>
         <li class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
           {{ organization_form.zipcode|field_label }}
           {{ organization_form.zipcode }}
-          
+
           {{ organization_form.zipcode.errors }}
         </li>
         <li class="{{ form.organization_office_phone.css_classes  }} form-row-10px">
           {{ organization_form.office_phone|field_label }}
           {{ organization_form.office_phone }}
-          
+
           {{ organization_form.office_phone.errors }}
         </li>
         <li class="{{ form.organization_website.css_classes  }} form-row-10px">
           {{ organization_form.website|field_label }}
           {{ organization_form.website }}
-          
+
           {{ organization_form.website.errors }}
         </li>
         {{ organization_form.org_id.as_hidden }}
@@ -84,7 +84,7 @@
         </li>
       </ul>
     </form>
-    
+
   </div>
 </div>
 {% endblock %}
