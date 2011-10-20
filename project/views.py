@@ -45,6 +45,7 @@ from datawinners.settings import api_keys
 
 import logging
 from mangrove.utils.types import is_empty
+from settings import USE_ORDERED_SMS_PARSER
 
 logger = logging.getLogger("django")
 
@@ -98,7 +99,7 @@ def questionnaire_wizard(request, project_id=None):
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire_wizard.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
+                 "previous": previous_link, 'project': project, "use_ordered_sms_parser" : USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -880,6 +881,14 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
     return fields, previous_link, project_links, questions, registration_questionnaire
 
 
+def get_example_sms_message(fields, registration_questionnaire):
+    example_sms = "%s <answer> .... <answer>" % (registration_questionnaire.form_code)
+    if(not USE_ORDERED_SMS_PARSER):
+        example_sms = "%s .%s <answer> .... .%s <answer>" % (
+            registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
+    return example_sms
+
+
 @login_required(login_url='/login')
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -887,10 +896,8 @@ def subject_registration_form_preview(request, project_id=None):
     if request.method == "GET":
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
-                                                                                                             project_id)
-
-        example_sms = "%s .%s <answer> .... .%s <answer>" % (
-            registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
+                                                                                                          project_id)
+        example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links,

@@ -15,7 +15,7 @@
             {% trans "r_tooltip_question_detail_code" %}
         </p></div>
         <input id="code" name="code" type="text" class="required"
-               data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+               data-bind="value: selectedQuestion().code, valueUpdate: 'keyup', enable: isEnabled()"/>
     </li>
     <li class="question_type margin_null"
         data-bind="visible: !selectedQuestion().is_entity_question()">
