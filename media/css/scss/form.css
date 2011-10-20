@@ -72,10 +72,11 @@ form ul li {
       -webkit-moz-border-radius: 5px;
       -webkit-border-radius: 5px; }
 
-.error_arrow, span.error_arrow, #questionnaire-code-error, label.error_arrow {
+label.error_arrow, span.error_arrow, #questionnaire-code-error, label.error_arrow {
   background: url(/media/images/arrow_error.png) no-repeat left 7px;
-  display: inline-block; }
-  .error_arrow label, span.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
+  display: inline-block;
+  float: left!important; }
+  label.error_arrow label, span.error_arrow label, #questionnaire-code-error label, label.error_arrow label {
     float: none;
     color: #FFFFFF;
     display: inline-block !important;
