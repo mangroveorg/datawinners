@@ -2655,7 +2655,7 @@ msgid "Sign Up"
 msgstr "S'inscrire"
 
 msgid "Active"
-msgstr "Actif"
+msgstr "Activé"
 
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
@@ -2667,10 +2667,22 @@ msgid "Enter each data sender's email address below. Each can submit data via th
 msgstr "Entrez l'adresse e-mail chaque expéditeur des données ci-dessous. Chacun peut soumettre des données via Internet"
 
 msgid "Reporter ID"
-msgstr "ID Reporter"
+msgstr "ID "
 
 msgid "Contact"
-msgstr "Contactez"
+msgstr "Contact"
 
 msgid "Give Access"
-msgstr "Donne accès"
+msgstr "Donner un accès"
+
+msgid "Your project has been deleted"
+msgstr ""
+
+msgid "Undo Delete"
+msgstr ""
+
+msgid "Inactive"
+msgstr "Non activé"
+
+msgid "survey"
+msgstr "enquête"

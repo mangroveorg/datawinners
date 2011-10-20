@@ -2410,3 +2410,15 @@ msgstr ""
 
 msgid "Contact"
 msgstr ""
+
+msgid "Your project has been deleted"
+msgstr "Votre projet a été supprimé"
+
+msgid "Undo Delete"
+msgstr "Annuler la suppression"
+
+msgid "Inactive"
+msgstr ""
+
+msgid "survey"
+msgstr ""
