@@ -355,10 +355,6 @@ msgstr ""
 msgid "On the deadline"
 msgstr ""
 
-#: media/javascript/project/reminders.js:78
-msgid "The reminders has been saved"
-msgstr ""
-
 #: media/javascript/project/results.js:96
 msgid "Please select atleast one undeleted record"
 msgstr ""

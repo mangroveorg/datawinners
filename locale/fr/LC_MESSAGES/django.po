@@ -927,10 +927,6 @@ msgstr "Numéro de ligne"
 msgid "Row"
 msgstr "Ligne"
 
-#: templates/entity/all_datasenders.html:108
-msgid "Give Access"
-msgstr ""
-
 #: templates/entity/all_datasenders.html:110
 #: templates/project/registered_datasenders.html:26
 msgid "Actions:"
@@ -2659,10 +2655,46 @@ msgid "Sign Up"
 msgstr "S'inscrire"
 
 msgid "Active"
-msgstr "Actif"
+msgstr "Activé"
 
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
 
 msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
+
+msgid "Enter each data sender's email address below. Each can submit data via the internet"
+msgstr "Entrez l'adresse e-mail chaque expéditeur des données ci-dessous. Chacun peut soumettre des données via Internet"
+
+msgid "Reporter ID"
+msgstr "ID "
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Give Access"
+msgstr "Donner un accès"
+
+msgid "Your project has been deleted"
+msgstr ""
+
+msgid "Undo Delete"
+msgstr ""
+
+msgid "Inactive"
+msgstr "Non activé"
+
+msgid "survey"
+msgstr "enquête"
+
+msgid "Latest"
+msgstr "Dernier"
+
+msgid "Sum"
+msgstr "Somme"
+
+msgid "Count"
+msgstr "Nombre"
+
+msgid "Average"
+msgstr "Moyenne"
