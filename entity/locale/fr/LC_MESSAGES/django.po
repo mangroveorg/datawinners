@@ -948,10 +948,10 @@ msgid "View"
 msgstr "Apercu"
 
 msgid "edit profile"
-msgstr "Editer le projet"
+msgstr "editer le projet"
 
 msgid "Status: Complete"
-msgstr "Statut: Complète"
+msgstr "Statut: Terminé"
 
 msgid "What"
 msgstr "Quoi"

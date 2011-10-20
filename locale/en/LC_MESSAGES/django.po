@@ -2372,7 +2372,6 @@ msgstr "True,False"
 msgid "Register"
 msgstr ""
 
-
 msgid "Sign Up to Try DataWinners Free"
 msgstr ""
 
@@ -2392,4 +2391,10 @@ msgid "Sign Up To Start Using DataWinners Now"
 msgstr ""
 
 msgid "Sign Up"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add a Reminder"
 msgstr ""
