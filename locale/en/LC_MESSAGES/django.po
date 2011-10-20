@@ -2440,3 +2440,21 @@ msgstr ""
 
 msgid "False"
 msgstr ""
+
+msgid "dd.mm.yyyy"
+msgstr ""
+
+msgid "mm.dd.yyyy"
+msgstr ""
+
+msgid "mm.yyyy"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "characters"
+msgstr ""
+
+msgid "Minimum"
+msgstr ""

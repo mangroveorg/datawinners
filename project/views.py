@@ -770,7 +770,8 @@ def _get_django_field(field):
     if isinstance(field, SelectField):
         return  _create_select_field(field, _create_choices(field))
     display_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(), help_text=field.instruction)
-    display_field.widget.attrs["watermark"] = field.get_constraint_text()
+    constrained_text = field.get_constraint_text()
+    display_field.widget.attrs["watermark"] = _(constrained_text) if type(field) is not TextField else (ugettext(constrained_text.split(' ')[0]) + " " + ''.join(constrained_text.split(' ')[1:-1]) + " " + ugettext(constrained_text.split(' ')[-1]))
     display_field.widget.attrs['style'] = 'padding-top: 7px;'
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
