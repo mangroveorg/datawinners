@@ -309,12 +309,6 @@ msgstr ""
 msgid "Prev"
 msgstr ""
 
-
-
-
-
-
-
 msgid "Processing..."
 msgstr ""
 
@@ -350,3 +344,7 @@ msgstr ""
 
 msgid "Last"
 msgstr ""
+
+msgid "Cancel this Project?"
+msgstr ""
+

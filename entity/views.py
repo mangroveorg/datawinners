@@ -131,7 +131,7 @@ def create_datasender(request):
         org_id = request.user.get_profile().org_id
         message= _process_form(dbm, form, org_id)
         if message is not None:
-            form = ReporterRegistrationForm()
+            form = ReporterRegistrationForm(initial={'project_id':form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message},
                                       context_instance=RequestContext(request))
