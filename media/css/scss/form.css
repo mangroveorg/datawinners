@@ -285,3 +285,8 @@ select {
     background: -moz-linear-gradient(top, #525252, #262626); }
     .ui-widget-content .ui-widget-header .ui-dialog-title {
       font-size: 18px; }
+
+/*Delete the project block*/
+#delete_project_block {
+  height: 110px !important;
+  width: 370px !important; }
