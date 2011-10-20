@@ -48,10 +48,11 @@
                 {{ answer.3 }}
             </td>
             <td>
-                <span title='{{ answer.4 }}'>{{ answer.5 }}</span>
+                <span title='{{ answer.4 }}'>{{ answer.5|yesno:_("vtrue,vfalse") }}
+</span>
             </td>
             <td>
-                {{ answer.6 }}
+                {{ answer.6|yesno:_("vtrue,vfalse") }}
             </td>
             {% for each in answer|slice:"7:" %}
                 <td>

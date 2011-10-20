@@ -351,3 +351,9 @@ msgstr "S'il vous plaît sélectionner au moins 1 Projet"
 
 msgid "Delete this Project?"
 msgstr "Supprimer ce projet?"
+
+msgid "Next"
+msgstr "Suiv."
+
+msgid "Prev"
+msgstr "Préc."
