@@ -308,3 +308,45 @@ msgstr ""
 
 msgid "Prev"
 msgstr ""
+
+
+
+
+
+
+
+msgid "Processing..."
+msgstr ""
+
+msgid "Show _MENU_ Data records"
+msgstr ""
+
+msgid "No matching records found"
+msgstr ""
+
+msgid "No data available in table"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
+msgstr ""
+
+msgid "Showing 0 to 0 of 0 Data records"
+msgstr ""
+
+msgid "(filtered from _MAX_ total Data records)"
+msgstr ""
+
+msgid "Search:"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Last"
+msgstr ""

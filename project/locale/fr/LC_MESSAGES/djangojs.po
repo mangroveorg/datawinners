@@ -356,3 +356,43 @@ msgstr "Suiv."
 
 msgid "Prev"
 msgstr "Préc."
+
+
+
+
+
+msgid "Processing..."
+msgstr "Traitement en cours..."
+
+msgid "Show _MENU_ Data records"
+msgstr "Afficher _MENU_ enregistrements"
+
+msgid "No matching records found"
+msgstr "Aucun enregistrement trouvé"
+
+msgid "No data available in table"
+msgstr "Aucune données disponible dans la table"
+
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
+msgstr "Affiche _START_ à _END_ de _TOTAL enregistrements"
+
+msgid "Showing 0 to 0 of 0 Data records"
+msgstr "Affiche 0 à 0 de 0 enregistrements"
+
+msgid "(filtered from _MAX_ total Data records)"
+msgstr "(filtrée de _MAX_ d'enregistrements)"
+
+msgid "Search:"
+msgstr "Recherche:"
+
+msgid "First"
+msgstr "Premier"
+
+msgid "Previous"
+msgstr "Préc."
+
+msgid "Last"
+msgstr "Dernière"
