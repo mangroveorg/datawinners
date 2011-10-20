@@ -302,3 +302,9 @@ msgstr ""
 
 msgid "Delete this Project?"
 msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Prev"
+msgstr ""

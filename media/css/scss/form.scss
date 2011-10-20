@@ -99,9 +99,10 @@ form{
         }
     }
 }
-span.error_arrow, #questionnaire-code-error, label.error_arrow{
+label.error_arrow, span.error_arrow, #questionnaire-code-error, label.error_arrow{
             background: url(/media/images/arrow_error.png) no-repeat left 7px;
             display: inline-block;
+            float: left!important;
             label{
                 float:none;
                 color:#FFFFFF;
@@ -341,4 +342,10 @@ select{
                 font-size:18px;
             }
         }
+}
+
+/*Delete the project block*/
+#delete_project_block{
+    height:110px ! important;
+    width:350px ! important;
 }

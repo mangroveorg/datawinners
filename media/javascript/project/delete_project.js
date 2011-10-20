@@ -3,8 +3,8 @@ $(document).ready(function(){
         title: gettext("Delete this Project?"),
         modal: true,
         autoOpen: false,
-        height: 200,
-        width: 300,
+        height: 150,
+        width: 370,
         closeText: 'hide'
       }
    );
@@ -16,7 +16,8 @@ $(document).ready(function(){
        $('#undelete_project_section').show().hide(50000);
        return false;
    });
-   $("#delete_project_block .cancel_link").bind("click", function(){
-         $("#delete_project_block").dialog("close");
-   });
+    $("#delete_project_block .cancel_link").bind("click", function() {
+        $("#delete_project_block").dialog("close");
+        return false;
+    });
 });
