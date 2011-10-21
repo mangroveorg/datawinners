@@ -2636,10 +2636,10 @@ msgid "Give Access"
 msgstr "Donner un accès"
 
 msgid "Your project has been deleted"
-msgstr ""
+msgstr "Votre projet a été supprimé"
 
 msgid "Undo Delete"
-msgstr ""
+msgstr "Annuler la suppression"
 
 msgid "Inactive"
 msgstr "Non activé"

@@ -2406,10 +2406,10 @@ msgid "Contact"
 msgstr ""
 
 msgid "Your project has been deleted"
-msgstr "Votre projet a été supprimé"
+msgstr ""
 
 msgid "Undo Delete"
-msgstr "Annuler la suppression"
+msgstr ""
 
 msgid "Inactive"
 msgstr ""
