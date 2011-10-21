@@ -7,6 +7,8 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
 
+EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -125,6 +127,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 HOME_PAGE = '/dashboard'
 DATASENDER_DASHBOARD = '/alldata/'
 LOGIN_REDIRECT_URL = (HOME_PAGE)
+TRIAL_EXPIRED_URL = '/trial/expired/'
 ACCOUNT_ACTIVATION_DAYS = 7
 TRIAL_ACCOUNT_PHONE_NUMBER = '1-775-237-4679'
 

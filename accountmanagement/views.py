@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 import datawinners
+from mangrove.errors.MangroveException import TrialAccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from django.contrib.auth.views import login
@@ -22,8 +23,10 @@ def custom_login(request, template_name, authentication_form):
     if request.user.is_authenticated():
         return HttpResponseRedirect(datawinners.settings.LOGIN_REDIRECT_URL)
     else:
-        return login(request, template_name=template_name, authentication_form=authentication_form)
-
+        try:
+            return login(request, template_name=template_name, authentication_form=authentication_form)
+        except TrialAccountExpiredException:
+            return HttpResponseRedirect(datawinners.settings.TRIAL_EXPIRED_URL)
 
 def is_admin(f):
     def wrapper(*args, **kw):
@@ -159,3 +162,6 @@ def edit_user(request):
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
                                   context_instance=RequestContext(request))
+
+def trial_expired(request):
+    return render_to_response("registration/trail_account_expired_message.html")
