@@ -45,7 +45,6 @@ def _process_form(dbm, form, org_id):
     message = None
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
-        
         if not helper.unique(dbm, telephone_number):
             form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
             return message
@@ -239,13 +238,16 @@ def create_web_users(request):
 def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = models.get_all_projects(manager)
+    grant_web_access = False
+    if request.method == 'GET' and int(request.GET.get('web', '0')):
+        grant_web_access = True
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects},
+    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access},
                               context_instance=RequestContext(request))
 
 @csrf_view_exempt

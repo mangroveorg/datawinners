@@ -113,6 +113,7 @@ $(document).ready(function() {
         var allIds = updateIds();
         $('#error').remove();
         if (allIds.length == 0) {
+            $('#web-access-success').remove();
             $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender') + '</div>').insertAfter($(this));
             $('#project').val('');
             $(this).val("");
@@ -179,7 +180,11 @@ $(document).ready(function() {
                     var json_data = JSON.parse(response);
                     if (json_data.success) {
                         $("#web_user_block").dialog("close");
-                        window.location.reload();
+                        redirect_url = location.href;
+                        if(redirect_url.indexOf('?web=1') == -1) {
+                            redirect_url = redirect_url + '?web=1';
+                        }
+                        window.location.href = redirect_url
                     } else {
                         $.unblockUI();
                         var html = "";

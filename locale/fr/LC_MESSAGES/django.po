@@ -2766,3 +2766,5 @@ msgstr "dimanche"
 msgid "Warning: Changing the subject type will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"
 msgstr "Attention: La modification du Type de Sujet va supprimer toutes les questions contenues dans votre Questionnaire ainsi que toutes les données que vous avez collectées. Etes-vous sûr de vouloir continuer?"
 
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de données"
