@@ -567,7 +567,7 @@ msgstr "Questionnaire"
 
 #: templates/step_wizard.html:35
 msgid "Reminder"
-msgstr "Messages de rappel"
+msgstr "Rappel"
 
 #: templates/step_wizard.html:36 templates/project/finish_and_test.html:3
 msgid "Review & Test"
