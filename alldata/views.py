@@ -28,13 +28,13 @@ def index(request):
         questionnaire_code = questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
         web_submission_link = reverse(web_questionnaire, args=[project_id])
-        if project.state == ProjectState.ACTIVE and 'web' in row['value']['devices']:
+        if project.state != ProjectState.INACTIVE:
             disabled = ""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log = reverse(project_results, args=[project_id, questionnaire_code])
 
         web_submission_link_disabled = 'disable_link'
-        if project.state == ProjectState.ACTIVE:
+        if project.state == ProjectState.ACTIVE and 'web' in row['value']['devices']:
             web_submission_link_disabled = ""
 
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
