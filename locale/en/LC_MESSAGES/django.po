@@ -2504,3 +2504,7 @@ msgstr ""
 
 msgid "Access to Web Submission has been given to your DataSenders"
 msgstr ""
+
+
+msgid "User has been added successfully"
+msgstr ""

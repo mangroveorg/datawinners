@@ -19,7 +19,11 @@
 </div>
  <div id="user_form" class="span-18 box">
     <div class = "form-5px">
-      
+      {% if add_user_success %}
+            <div class="success-box">
+                {% trans "User has been added successfully" %}
+            </div>
+        {% endif %}
       <form method="post" action="/account/user/new/" name="form">
         {% csrf_token %}
         <ul class="administrative">

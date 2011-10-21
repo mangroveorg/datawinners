@@ -2780,3 +2780,7 @@ msgstr "Attention: La modification du Type de Sujet va supprimer toutes les ques
 
 msgid "Access to Web Submission has been given to your DataSenders"
 msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de données"
+
+
+msgid "User has been added successfully"
+msgstr "L'utilisateur a été ajouté avec succès"
