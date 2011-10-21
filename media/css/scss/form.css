@@ -117,6 +117,21 @@ span .error_arrow label, div.error_arrow label, #questionnaire-code-error label,
     color: #000000;
     font-weight: normal !important; }
 
+.expired-message-box {
+    position: relative;
+    padding: 10px;
+    margin-right: 40px;
+}
+.expired-message-box p {
+    padding: 10px 0px 8px 6px;
+    font-size: 18px;
+    width: 500px;
+}
+.expired-message-box .bottom_navigation {
+    float: right;
+    font-size: 18px;
+    margin: 10px 20px;
+}
 .warning-message-box {
   position: relative;
   left: -5px;

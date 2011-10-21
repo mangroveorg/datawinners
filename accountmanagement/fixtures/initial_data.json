@@ -52,7 +52,9 @@
             "website": "https://help.org/",
             "office_phone": "919880734937",
             "state": "MH",
-            "address": "Don Bosco Road, Yerwada"
+            "address": "Don Bosco Road, Yerwada",
+            "active_date": "2011-10-17 04:54:47"
+
         }
     },
     {
@@ -68,7 +70,8 @@
             "website": "https://help.org/",
             "office_phone": "91-99766-76893",
             "state": "MH",
-            "address": "Don Bosco Road, Yerwada"
+            "address": "Don Bosco Road, Yerwada",
+            "active_date": "2011-04-17 04:54:47"
         }
     },
     {
@@ -85,7 +88,8 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true
+            "in_trial_mode": true,
+            "active_date": "2011-04-17 04:54:47"
         }
     },
     {

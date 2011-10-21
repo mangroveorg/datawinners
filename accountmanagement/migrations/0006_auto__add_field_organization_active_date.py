@@ -8,35 +8,31 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding field 'DataSenderProfile.organization'
-        db.add_column('accountmanagement_datasenderprofile', 'organization', self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['accountmanagement.Organization']), keep_default=False)
+        # Adding field 'Organization.active_date'
+        db.add_column('accountmanagement_organization', 'active_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True), keep_default=False)
+
 
     def backwards(self, orm):
         
-        # Deleting field 'DataSenderProfile.organization'
-        db.delete_column('accountmanagement_datasenderprofile', 'organization_id')
+        # Deleting field 'Organization.active_date'
+        db.delete_column('accountmanagement_organization', 'active_date')
 
 
     models = {
-        'accountmanagement.datasenderprofile': {
-            'Meta': {'object_name': 'DataSenderProfile'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"}),
-            'reporter_id': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'unique': 'True'})
-        },
         'accountmanagement.ngouserprofile': {
             'Meta': {'object_name': 'NGOUserProfile'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mobile_phone': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'office_phone': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'org_id': ('django.db.models.fields.TextField', [], {}),
+            'reporter_id': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True'}),
             'skype': ('django.db.models.fields.TextField', [], {'null': 'True'}),
             'title': ('django.db.models.fields.TextField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'unique': 'True'})
         },
         'accountmanagement.organization': {
             'Meta': {'object_name': 'Organization'},
+            'active_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'address': ('django.db.models.fields.TextField', [], {}),
             'addressline2': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'city': ('django.db.models.fields.TextField', [], {}),
