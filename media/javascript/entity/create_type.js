@@ -23,14 +23,13 @@ $(document).ready(function() {
                         $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:2});
                         $("#type_message").html('');
                         $("#type_message").removeClass("message-box")
+                        $("#id_entity_type_text").val("");
                     }
                     else{
                         $('#id_entity_type').val(new_type.toLowerCase());
                         $("#type_message").html(data.message);
                         $("#type_message").addClass("message-box");
                     }
-                    $("#id_entity_type_text").val("");
-
                 });
     });
 
