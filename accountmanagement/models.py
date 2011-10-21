@@ -46,7 +46,7 @@ class Organization(models.Model):
                                 in_trial_mode = True
         )
         organization_setting = organization._configure_organization_settings()
-        organization_setting.sms_tel_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER
+#        organization_setting.sms_tel_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER
         return organization
 
 

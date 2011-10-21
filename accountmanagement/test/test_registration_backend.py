@@ -38,10 +38,6 @@ class TestRegistrationBackend(unittest.TestCase):
         org = self.backend.create_respective_organization(self.SUBSCRIBED_ORGANIZATION_PARAMS)
         self.assertFalse(org.in_trial_mode, 'is in trial mode')
 
-    def test_sms_number_for_new_trial_organisation_is_set_to_universal_phone_number(self):
-        organization = self.backend.create_respective_organization(self.TRIAL_ORGANIZATION_PARAMS)
-        self.assertEqual(organization.organization_setting.sms_tel_number, settings.TRIAL_ACCOUNT_PHONE_NUMBER)
-
     def test_sms_number_for_new_subscribed_organisation_is_left_unset(self):
         organization = self.backend.create_respective_organization(self.SUBSCRIBED_ORGANIZATION_PARAMS)
         self.assertIsNone(organization.organization_setting.sms_tel_number)

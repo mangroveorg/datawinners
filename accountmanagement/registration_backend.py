@@ -109,17 +109,17 @@ class RegistrationBackend(object):
 
         new_user = self._create_user(site, kwargs)
 
-        extra_context = {'phone_number': "You can also send your data via sms to " + settings.TRIAL_ACCOUNT_PHONE_NUMBER} if organization.in_trial_mode else {}
+        extra_context = {
+            'phone_number': "You can also send your data via sms to " + settings.TRIAL_ACCOUNT_PHONE_NUMBER + "."} if organization.in_trial_mode else {}
         self._send_activation_email(new_user, site, extra_context)
         new_user.save()
-
 
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
                                      organization=organization, office_phone=kwargs.get("office_phone"),
                                      mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"),
-                                     reporter_id= kwargs.get('reporter_id'))
+                                     reporter_id=kwargs.get('reporter_id'))
 
         return new_user
 
@@ -150,10 +150,10 @@ class RegistrationBackend(object):
         new_user.groups.add(group[0])
         return new_user
 
-    def _send_activation_email(self, user, site, extra_context = {}):
+    def _send_activation_email(self, user, site, extra_context={}):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
-                        'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                        'site': site}
+                    'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                    'site': site}
         ctx_dict.update(extra_context)
 
         subject = render_to_string('registration/activation_email_subject.txt',
