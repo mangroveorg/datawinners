@@ -9,6 +9,7 @@ from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import Organization
+from django.template.loader import render_to_string
 
 class RegistrationBackend(object):
     """
@@ -73,8 +74,6 @@ class RegistrationBackend(object):
         """
         return RegistrationForm
 
-
-
     def register(self, request, **kwargs):
         """
         Given a username, email address and password, register a new
@@ -99,32 +98,36 @@ class RegistrationBackend(object):
         class of this backend as the sender.
 
         """
-        email, password = kwargs['email'], kwargs['password1']
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(email, email,
-                                                                    password, site)
-        #        new_user = User.objects.create_user(email,email,password)
-        new_user.first_name = kwargs.get('first_name')
-        new_user.last_name = kwargs.get('last_name')
-        group = Group.objects.filter(name="NGO Admins")
-        new_user.groups.add(group[0])
-        new_user.save()
-        organization = self.create_respective_organization( kwargs)
+
+        organization = self.create_respective_organization(kwargs)
         organization.save()
         organization.organization_setting.save()
+
+        new_user = self._create_user(site, kwargs)
+
+        extra_context = {'phone_number': "You can also send your data via sms to " + settings.TRIAL_ACCOUNT_PHONE_NUMBER} if organization.in_trial_mode else {}
+        self._send_activation_email(new_user, site, extra_context)
+        new_user.save()
+
+
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request, title=kwargs.get("title"), organization_id=organization.org_id,
                                      organization=organization, office_phone=kwargs.get("office_phone"),
                                      mobile_phone=kwargs.get("mobile_phone"), skype=kwargs.get("skype"),
                                      reporter_id= kwargs.get('reporter_id'))
+
         return new_user
 
-    def create_respective_organization(self, kwargs ):
-        if 'organization_address' in kwargs and 'organization_zipcode' in kwargs:
+    def is_subscription_registration(self, kwargs):
+        return 'organization_address' in kwargs and 'organization_zipcode' in kwargs
+
+    def create_respective_organization(self, kwargs):
+        if self.is_subscription_registration(kwargs):
             organization = Organization.create_organization(kwargs)
         else:
             organization = Organization.create_trial_organization(kwargs)
@@ -138,4 +141,27 @@ class RegistrationBackend(object):
         """
         return '/registration_complete', (), {}
 
+    def _create_user(self, site, kwargs):
+        email, password = kwargs['email'], kwargs['password1']
+        new_user = RegistrationProfile.objects.create_inactive_user(email, email, password, site, send_email=False)[0]
+        new_user.first_name = kwargs['first_name']
+        new_user.last_name = kwargs['last_name']
+        group = Group.objects.filter(name="NGO Admins")
+        new_user.groups.add(group[0])
+        return new_user
 
+    def _send_activation_email(self, user, site, extra_context = {}):
+        ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
+                        'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                        'site': site}
+        ctx_dict.update(extra_context)
+
+        subject = render_to_string('registration/activation_email_subject.txt',
+                                   ctx_dict)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+
+        message = render_to_string('registration/activation_email.txt',
+                                   ctx_dict)
+
+        user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
