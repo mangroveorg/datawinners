@@ -50,7 +50,7 @@ def sms(request):
         dbm = get_db_manager_for(_to)
     except UnknownOrganization as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
-        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, error=message)
         log.save()
         return HttpResponse(message)
     try:
@@ -60,8 +60,7 @@ def sms(request):
         form_code, values = SMSParser().parse(_message)
     except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
-        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to,
-                            error=message)
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, error=message)
         log.save()
         return HttpResponse(message)
     except FormModelDoesNotExistsException as exception:
@@ -83,7 +82,7 @@ def sms(request):
         log.save()
     except NumberNotRegisteredException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
-        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=None, error=message)
+        log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, error=message)
         log.save()
     except DataObjectNotFound as exception:
         message = exception_messages.get(DataObjectNotFound).get(SMS)
