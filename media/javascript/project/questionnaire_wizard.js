@@ -64,7 +64,7 @@ $(document).ready(function() {
                 required: "#choice_text:visible"
             }
         },
-        wrapper: "span",
+        wrapper: "div",
         errorPlacement: function(error, element) {
             offset = element.offset();
             error.insertAfter(element);

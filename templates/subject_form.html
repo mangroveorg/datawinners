@@ -1,13 +1,14 @@
 {% load i18n %}
+{% load field_tags %}
 <script type="text/javascript" src="/media/javascript/jquery.watermark.js"></script>
 <input id='post_url' type="hidden" value="{{ post_url }}" />
-
+<h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6><br>
 <form id="question_form">
     <fieldset>
         <ul>
             <li>
                 <span>
-                     <label>* {% trans "Type" %}</label>
+                    {{ form.type|field_label }}
                 </span>
                 <span>
                     <select id="id_entity_type" name="type" data-bind="value: message.t">
@@ -15,15 +16,15 @@
                             <option value="{{ entity_type.0 }}">{{ entity_type.0 }}</option>
                         {% endfor %}
                     </select>
-                     {%  include 'entity/create_type.html' %}
+                    {%  include 'entity/create_type.html' %}
                 </span>
             </li>
             <li>
-                <label>* {% trans "Name" %}</label>
+                {{ form.name|field_label }}
                 <input id="entity_name" name="entity_name" type="text" watermark="{% trans 'Enter a subject name' %}" data-bind="value: message.n"/>
             </li>
             <li>
-                <label>* {% trans "Unique Identification Number(ID)" %}</label>
+                {{ form.uniqueID|field_label }}
                 <input id="short_name" name="short_name" type="text" disabled="disabled" data-bind="value: message.s"/>
                 <span class="auto_gen_checkbox">
                     <input id="autogen" name="autogen" type="checkbox" checked=true/>
@@ -33,7 +34,7 @@
 
 
             <li>
-                <label>{% trans "Location" %}</label>
+                {{ form.location|field_label }}
                 <ul class="location_section">
                     <li>
                         <label>{% trans "Location Name:" %}</label>
@@ -49,15 +50,15 @@
                 </ul>
             </li>
             <li>
-                <label>{% trans "Description" %}</label>
+                {{ form.description|field_label }}
                 <textarea id="description" name="description" type="text" watermark="{% trans 'Describe your subject in more details (optional)' %}" data-bind="value: message.d"></textarea>
             </li>
             <li>
-                <label>{% trans "Mobile Number" %}</label>
+                {{ form.mobileNumber|field_label }}
                 <input id="mobile_number" name="mobile_number" type="text" maxlength="15" watermark="{% blocktrans %}Enter the subject's Number{% endblocktrans %}" data-bind="value: message.m"/>
             </li>
         </ul>
     </fieldset>
-<a href="/entity/subjects/" class="cancel_link">{% trans "Cancel" %}</a>
+    <a href="/entity/subjects/" class="cancel_link">{% trans "Cancel" %}</a>
     <input type="button" value="{% trans 'Add' %}" id="register_entity" class="button"/>
 </form>

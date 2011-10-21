@@ -1,14 +1,17 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
 {% block page_title %} {% trans "Account Settings" %}{% endblock %}
-{% block section_title %} {% trans "Account Settings" %} {% endblock %}
+{% block section_title %}{% trans "Account Settings" %}{% endblock %}
 
 {% load dw_tabs %}
 {% block navigation %}
 <div class="grid_24 tab_navigation">
+
   <ul>
     <li class="{% ifactivetab 'tab_nav' 'settings' %}active{% else %}inactive{% endifactivetab %}">
-      <a href="{% url datawinners.accountmanagement.views.settings %}">{% trans "Your Organization Account" %}</a>
+      <a href="{% url datawinners.accountmanagement.views.settings %}">
+          {% trans "Your Organization Account" %}
+      </a>
     </li>
     <li class="{% ifactivetab 'tab_nav' 'users' %}active{% else %}inactive{% endifactivetab %}">
       <a href="{% url datawinners.accountmanagement.views.users %}">{% trans "Users" %}</a>

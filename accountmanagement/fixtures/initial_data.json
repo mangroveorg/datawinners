@@ -36,7 +36,7 @@
         "pk": 5,
         "fields": {
             "domain": "www.datawinners.com",
-            "name": "beta system"
+            "name": "DataWinners"
         }
     },
     {
@@ -175,7 +175,7 @@
         "pk": 1,
         "model": "auth.user",
         "fields": {
-            "username": "tester150411@gmail.com",
+                "username": "tester150411@gmail.com",
             "first_name": "Tester",
             "last_name": "Pune",
             "is_active": true,

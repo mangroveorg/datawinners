@@ -99,10 +99,17 @@ form{
         }
     }
 }
-label.error_arrow, span.error_arrow, #questionnaire-code-error, label.error_arrow{
+div.error_arrow
+{
+            background: url(/media/images/arrow_error.png) no-repeat left 7px;
+            display: inline-block;
+}
+span .error_arrow,#questionnaire-code-error, label.error_arrow{
             background: url(/media/images/arrow_error.png) no-repeat left 7px;
             display: inline-block;
             float: left!important;
+}
+span .error_arrow,div.error_arrow,#questionnaire-code-error, label.error_arrow{
             label{
                 float:none;
                 color:#FFFFFF;

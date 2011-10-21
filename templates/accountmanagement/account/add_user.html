@@ -1,4 +1,6 @@
 {% extends 'accountmanagement/account/index.html' %}
+
+{% load field_tags %}
 {% load i18n %}
 {% block page_title %} {% trans "Account" %} {% endblock %}
 
@@ -23,51 +25,51 @@
         <ul class="administrative">
           <li>
             <h3 class="title">{% trans "Point of Contact" %} / {% trans "Account Administrator" %}</h3>
-          </li>
+            <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>          </li>
           <li class="{{ form.title.css_classes  }} form-row-10px">
-            {{ profile_form.title.label_tag }}
+            {{ profile_form.title|field_label }}
             {{ profile_form.title }}
             
             {{ profile_form.title.errors }}
           </li>
           <li class="{{ form.first_name.css_classes  }} form-row-10px">
-            {{ profile_form.first_name.label_tag }}
+            {{ profile_form.first_name|field_label }}
             {{ profile_form.first_name }}
             
             {{ profile_form.first_name.errors }}
           </li>
           <li class="{{ form.last_name.css_classes  }} form-row-10px">
-            {{ profile_form.last_name.label_tag }}
+            {{ profile_form.last_name|field_label }}
             {{ profile_form.last_name }}
             
             {{ profile_form.last_name.errors }}
           </li>
           <li class="{{ form.email.css_classes  }} form-row-10px">
-            {{ profile_form.username.label_tag }}
+            {{ profile_form.username|field_label }}
             {{ profile_form.username }}
             
             {{ profile_form.username.errors }}
           </li>
           <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-            {{ profile_form.office_phone.label_tag }}
+            {{ profile_form.office_phone|field_label }}
             {{ profile_form.office_phone }}
             
             {{ profile_form.office_phone.errors }}
           </li>
           <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
-            {{ profile_form.mobile_phone.label_tag }}
+            {{ profile_form.mobile_phone|field_label }}
             {{ profile_form.mobile_phone }}
             
             {{ profile_form.mobile_phone.errors }}
           </li>
           <li class="{{ form.skype.css_classes  }} form-row-10px">
-            {{ profile_form.skype.label_tag }}
+            {{ profile_form.skype|field_label }}
             {{ profile_form.skype }}
             
             {{ profile_form.skype.errors }}
           </li>
           <li class="margin_top_20">
-            <input type="submit" value="{% trans 'Register' %}" class="button" />
+            <input type="submit" value="{% trans 'Register' %}"  class="button" />
           </li>
         </ul>
       </form>

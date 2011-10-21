@@ -20,8 +20,8 @@ from datawinners.messageprovider.message_handler import get_success_msg_for_regi
 from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
-from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists
+from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm, SubjectForm
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER
 from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -131,7 +131,7 @@ def create_datasender(request):
         org_id = request.user.get_profile().org_id
         message= _process_form(dbm, form, org_id)
         if message is not None:
-            form = ReporterRegistrationForm()
+            form = ReporterRegistrationForm(initial={'project_id':form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message},
                                       context_instance=RequestContext(request))
@@ -160,7 +160,8 @@ def create_subject(request):
     db_manager = get_database_manager(request.user)
     entity_types = get_all_entity_types(db_manager)
     project_helper.remove_reporter(entity_types)
-    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types},
+    subjectForm = SubjectForm()
+    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types, "form": subjectForm},
                               context_instance=RequestContext(request))
 
 

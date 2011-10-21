@@ -69,11 +69,11 @@ $(document).ready(function(){
     };
     $("#dateRangePicker").daterangepicker({
                 presetRanges: [
-                    {text: 'Current month', dateStart: function() {
+                    {text: gettext('Current month'), dateStart: function() {
                         return Date.parse('today').moveToFirstDayOfMonth();
                     }, dateEnd: 'today' },
-                    {text: 'Last Month', dateStart: function(){return Date.parse('last month').moveToFirstDayOfMonth();}, dateEnd: function(){return Date.parse('last month').moveToLastDayOfMonth();} },
-                    {text: 'Year to date', dateStart: function() {
+                    {text: gettext('Last Month'), dateStart: function(){return Date.parse('last month').moveToFirstDayOfMonth();}, dateEnd: function(){return Date.parse('last month').moveToLastDayOfMonth();} },
+                    {text: gettext('Year to date'), dateStart: function() {
                         var x = Date.parse('today');
                         x.setMonth(0);
                         x.setDate(1);

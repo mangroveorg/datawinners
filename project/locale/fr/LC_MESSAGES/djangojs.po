@@ -357,10 +357,6 @@ msgstr "Suiv."
 msgid "Prev"
 msgstr "Préc."
 
-
-
-
-
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
@@ -389,10 +385,32 @@ msgid "Search:"
 msgstr "Recherche:"
 
 msgid "First"
-msgstr "Premier"
+msgstr "Premiere"
 
 msgid "Previous"
 msgstr "Préc."
 
 msgid "Last"
 msgstr "Dernière"
+
+msgid "Cancel this Project?"
+msgstr "Annuler ce projet?"
+
+#: media/javascript/project/reminders.js:78
+msgid "The reminders has been saved"
+msgstr "Vous devez enregistrer le questionnaire."
+
+msgid "Give Web Submission Access"
+msgstr "Envoi Web"
+
+msgid "Emails are mandatory"
+msgstr "Les emails sont obligatoires"
+
+msgid ": is not a valid email"
+msgstr ": n'est pas une adresse email valide"
+
+msgid "User with email "
+msgstr "Utilisateur avec l'email "
+
+msgid " already exists"
+msgstr " existe déjà"

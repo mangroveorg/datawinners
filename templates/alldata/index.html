@@ -33,7 +33,7 @@
                 <tr>
                     <td><a href="{{ project.link }}" class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
                     <td>{{ project.created }}</td>
-                    <td>{{ project.type }}</td>
+                    <td>{% trans project.type %}</td>
                     <td><span class="report_links"><span class="disable_link"> {% trans "Summary" %} </span> |
                         <a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
                             |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>

@@ -4,6 +4,7 @@
 
 {% block section_title %}
 {% trans "Data Senders" %}
+
 <span class="title_links">
      <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.entity.views.create_datasender %}">
         {% trans "Add a data sender" %}
@@ -90,20 +91,20 @@
             <a href="#" class="button">{% trans "Confirm" %}</a>
         </div>
         <div id="web_user_block">
-            <div class="italic">Enter each data sender's email address below. Each can submit data via the internet</div>
+            <div class="italic">{% trans "Enter each data sender's email address below. Each can submit data via the internet" %}</div>
             <div class="message-box" id="web_user_error" style="display: none;"></div>
             <table id="web_user_table">
                 <thead>
-                <th>Reporter ID</th>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Contact</th>
-                <th>Email *</th>
+                <th>{% trans "Reporter ID" %} </th>
+                <th>{% trans "Name" %} </th>
+                <th>{% trans "Location" %} </th>
+                <th>{% trans "Contact" %} </th>
+                <th>{% trans "Email" %} *</th>
                 </thead>
                 <tbody id="web_user_table_body">
 
                 </tbody>
-            </table>
+               </table>
             <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
             <a href="#" class="button" id="web_user_button">{% trans "Give Access" %}</a>
         </div>

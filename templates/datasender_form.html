@@ -11,6 +11,7 @@
            </div>
       {% endif %}
   </div>
+  <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>  <br>
   <form id="registration_form" class="" action="" method="POST">
   <fieldset>
       {% csrf_token %}
@@ -26,7 +27,7 @@
                 {{ form.telephone_number.errors }}
             </li>
             <li class="{{ form.location.css_classes }} form-row-10px">
-                <label>Location</label>
+                <label>{% trans "Location" %}</label>
                 <ul class="location_section">
                     <li>
                         {{ form.location.label_tag }}
@@ -34,7 +35,7 @@
                         <div>{{ form.location.errors }}</div>
                     </li>
                     <li>
-                        <label>or</label>
+                        <label>{% trans "or" %}</label>
                     </li>
                     <li class="{{ form.geo_code.css_classes }} form-row-10px">
                         {{ form.geo_code.label_tag }}
@@ -44,7 +45,6 @@
                     <li>
                         {{ form.project_id.as_hidden }}
                     </li>
-
                 </ul>
             </li>
             <li class="button_block">
