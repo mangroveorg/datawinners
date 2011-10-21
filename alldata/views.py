@@ -28,7 +28,7 @@ def index(request):
         questionnaire_code = questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
         web_submission_link = reverse(web_questionnaire, args=[project_id])
-        if project.state != ProjectState.INACTIVE:
+        if project.state == ProjectState.ACTIVE and 'web' in row['value']['devices']:
             disabled = ""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log = reverse(project_results, args=[project_id, questionnaire_code])
