@@ -348,3 +348,21 @@ msgstr ""
 msgid "Cancel this Project?"
 msgstr ""
 
+#: media/javascript/project/reminders.js:78
+msgid "The reminders has been saved"
+msgstr ""
+
+msgid "Give Web Submission Access"
+msgstr ""
+
+msgid "Emails are mandatory"
+msgstr ""
+
+msgid ": is not a valid email"
+msgstr ""
+
+msgid "User with email "
+msgstr ""
+
+msgid " already exists"
+msgstr ""

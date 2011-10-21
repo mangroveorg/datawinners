@@ -882,7 +882,7 @@ msgid "SMS Questionnaire"
 msgstr "Questionnaire SMS"
 
 msgid "Test your Questionnaire by this SMS tester"
-msgstr "Testez votre Questionnaire avec ce simulateur d'envoi pas SMS"
+msgstr "Testez votre Questionnaire avec ce simulateur d'envoi par SMS"
 
 msgid "Web Questionnaire"
 msgstr "Questionnaire Web"

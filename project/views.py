@@ -19,7 +19,7 @@ from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
-from datawinners.entity.forms import ReporterRegistrationForm
+from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 import helper
@@ -41,6 +41,7 @@ from mangrove.utils.json_codecs import encode_json
 from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from datawinners.settings import api_keys
 
 import logging
@@ -412,12 +413,12 @@ def export_log(request):
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
     count, submissions, error_message = _get_submissions(manager, questionnaire_code, request, paginate=False)
 
-    header_list = ["To", "From", "Date Received", "Submission status", "Deleted Record", "Errors"]
+    header_list = [ugettext("To"), ugettext("From"), ugettext("Date Received"), ugettext("Submission status"), ugettext("Deleted Record"), ugettext("Errors")]
     header_list.extend([field.code for field in questionnaire.fields])
     raw_data_list = [header_list]
     if count:
-        raw_data_list.extend([[submission.destination, submission.source, submission.created, submission.status,
-                                   submission.data_record.is_void() if submission.data_record is not None else True, submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
+        raw_data_list.extend([[submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
+                                   ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)), submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission in submissions])
 
     file_name = request.GET.get(u"project_name") + '_log'
     return _create_excel_response(raw_data_list, file_name)
@@ -434,9 +435,11 @@ def subjects_wizard(request, project_id=None):
         project = Project.load(manager.database, project_id)
         helper.remove_reporter(entity_types)
         import_subject_form = SubjectUploadForm()
+        create_subject_form = SubjectForm()
         return render_to_response('project/subjects_wizard.html',
                 {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
                  'import_subject_form': import_subject_form,
+                 'form': create_subject_form,
                  'post_url': reverse(import_subjects_from_project_wizard), 'project': project, 'step': 'subjects'},
                                   context_instance=RequestContext(request))
 
@@ -767,7 +770,8 @@ def _get_django_field(field):
     if isinstance(field, SelectField):
         return  _create_select_field(field, _create_choices(field))
     display_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(), help_text=field.instruction)
-    display_field.widget.attrs["watermark"] = field.get_constraint_text()
+    constrained_text = field.get_constraint_text()
+    display_field.widget.attrs["watermark"] = _(constrained_text) if type(field) is not TextField else (ugettext(constrained_text.split(' ')[0]) + " " + ''.join(constrained_text.split(' ')[1:-1]) + " " + ugettext(constrained_text.split(' ')[-1]))
     display_field.widget.attrs['style'] = 'padding-top: 7px;'
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field

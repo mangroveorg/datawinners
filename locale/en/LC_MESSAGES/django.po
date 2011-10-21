@@ -2401,3 +2401,67 @@ msgstr ""
 
 msgid "The selected records have been deleted"
 msgstr ""
+
+msgid "Enter each data sender's email address below. Each can submit data via the internet"
+msgstr ""
+
+msgid "Reporter ID"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Your project has been deleted"
+msgstr "Votre projet a été supprimé"
+
+msgid "Undo Delete"
+msgstr "Annuler la suppression"
+
+msgid "Inactive"
+msgstr ""
+
+msgid "survey"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Sum"
+msgstr ""
+
+msgid "Count"
+msgstr ""
+
+msgid "Average"
+msgstr ""
+
+msgid "True"
+msgstr ""
+
+msgid "False"
+msgstr ""
+
+msgid "dd.mm.yyyy"
+msgstr ""
+
+msgid "mm.dd.yyyy"
+msgstr ""
+
+msgid "mm.yyyy"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "characters"
+msgstr ""
+
+msgid "Minimum"
+msgstr ""
+
+
+msgid "All fields are required unless marked optional."
+msgstr ""
+
+msgid "Optional"
+msgstr ""

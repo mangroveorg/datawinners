@@ -20,7 +20,7 @@
         {% if messages %}
     {% for message in messages %}
     <div id="undelete_project_section" class="text_align_left success-message-box">
-    <span>Your project has been deleted. </span><a id="undo_delete_project" href="{{ message }}">Undo Delete</a>
+    <span>{% trans "Your project has been deleted" %}. </span><a id="undo_delete_project" href="{{ message }}">{% trans "Undo Delete" %}</a>
     </div>
     {% endfor %}
 {% endif %}
@@ -39,8 +39,8 @@
             <tr>
                 <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
                 <td>{{ project.created }}</td>
-                <td>{{ project.type }}</td>
-                <td>{{ project.state }}</td>
+                <td>{% trans project.type %}</td>
+                <td>{% trans project.state %}</td>
                 <td>
                     <a href="{{ project.delete_link }}" class="delete_project">{% trans "Delete" %}</a>
                     {% if  project.state  != 'Active' %}

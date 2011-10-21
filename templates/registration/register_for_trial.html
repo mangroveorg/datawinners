@@ -1,5 +1,6 @@
 {% extends 'layout_registration.html' %}
 {% load i18n %}
+{% load field_tags %}
 {% block page_title %} {% trans "Register" %}{% endblock %}
 {% block section_title %}{% trans "Sign Up to Try DataWinners Free" %} {% endblock %}
 {% block page_js %}
@@ -17,37 +18,29 @@
                         <ul class="organization">
                             <li>
                                 <h3 class="highlighted_title">{%  trans "Your Organization" %}<br/></h3>
+                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
                             </li>
                             <li class="{{ form.organization_name.css_classes }} form-row-10px">
-                                {{ form.organization_name.label_tag }}
+                                {{ form.organization_name|field_label }}
                                 {{ form.organization_name }}
-
                                     {{ form.organization_name.errors }}
-
                             </li>
                             <li class="{{ form.organization_sector.css_classes  }} form-row-10px">
-                                {{ form.organization_sector.label_tag }}
-                                {{ form.organization_sector }}
 
+                                {{ form.organization_sector|field_label }}
+                                {{ form.organization_sector }}
                                 {{ form.organization_sector.errors }}
 
                             </li>
                             <li class="{{ form.organization_city.css_classes  }} form-row-10px">
-                                {{ form.organization_city.label_tag }}
+                                {{ form.organization_city|field_label }}
                                 {{ form.organization_city }}
 
                                 {{ form.organization_city.errors }}
 
                             </li>
-                            <li class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
-                                {{ form.organization_zipcode.label_tag }}
-                                {{ form.organization_zipcode }}
-
-                                {{ form.organization_zipcode.errors }}
-
-                            </li>
                             <li class="{{ form.organization_country.css_classes  }} form-row-10px">
-                                {{ form.organization_country.label_tag }}
+                                {{ form.organization_country|field_label }}
                                 {{ form.organization_country }}
 
                                 {{ form.organization_country.errors }}
@@ -57,16 +50,17 @@
                         <ul class="administrative">
                             <li>
                                 <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}</h3>
+                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
                             </li>
                              <li class="{{ form.title.css_classes  }} form-row-10px">
-                                {{ form.title.label_tag }}
+                                {{ form.title|field_label }}
                                 {{ form.title }}
 
                                  {{ form.title.errors }}
 
                              </li>
                             <li class="{{ form.first_name.css_classes  }} form-row-10px">
-                                {{ form.first_name.label_tag }}
+                                {{ form.first_name|field_label }}
                                 {{ form.first_name }}
 
                                 {{ form.first_name.errors }}
@@ -74,47 +68,47 @@
                             </li>
 
                             <li class="{{ form.last_name.css_classes  }} form-row-10px">
-                                {{ form.last_name.label_tag }}
+                                {{ form.last_name|field_label }}
                                 {{ form.last_name }}
 
                                 {{ form.last_name.errors }}
 
                             </li>
                             <li class="{{ form.email.css_classes  }} form-row-10px">
-                                {{ form.email.label_tag }}
+                                {{ form.email|field_label }}
                                 {{ form.email }}
 
                                 {{ form.email.errors }}
 
                             </li>
                             <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-                                {{ form.office_phone.label_tag }}
+                                {{ form.office_phone|field_label }}
                                 {{ form.office_phone }}
 
                                 {{ form.office_phone.errors }}
                             </li>
                             <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
-                                {{ form.mobile_phone.label_tag }}
+                                {{ form.mobile_phone|field_label }}
                                 {{ form.mobile_phone }}
 
                                 {{ form.mobile_phone.errors }}
                             </li>
                             <li class="{{ form.password1.css_classes  }} form-row-10px">
-                                {{ form.password1.label_tag }}
+                                {{ form.password1|field_label }}
                                 {{ form.password1 }}
 
                                 {{ form.password1.errors }}
 
                             </li>
                             <li class="{{ form.password2.css_classes  }} form-row-10px">
-                                {{ form.password2.label_tag }}
+                                {{ form.password2|field_label }}
                                 {{ form.password2 }}
 
                                 {{ form.password2.errors }}
 
                             </li>
                             <li class="margin_top_20">
-                                <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %} class="button" />
+                                <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}" class="button" />
                                 <div class="grid_7 margin_top_10 last">{%  trans "Already registered?" %} <a href="{% url django.contrib.auth.views.login %}">{%  trans "Sign in here" %}</a></div>
                             </li>
                         </ul>

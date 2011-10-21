@@ -12,6 +12,16 @@ class EntityTypeForm(Form):
                                    error_message=_("Only letters and numbers are valid"), required=True,
                                    label=_("New Subject(eg clinic, waterpoint etc)"))
 
+class SubjectForm(Form):
+    required_css_class = 'required'
+    error_css_class = 'error'
+
+    type = CharField(max_length=30, required=True, label=_("Type"))
+    name = CharField(max_length=30, required=True, label=_("Name"))
+    uniqueID = CharField(max_length=100, required=True, label=_("Unique Identification Number(ID)"))
+    location = CharField(max_length=30, required=True, label=_("Location"))
+    description = CharField(max_length=30, required=False, label=_("Description"))
+    mobileNumber = CharField(max_length=30, required=False, label=_("Mobile Number"))
 
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
@@ -19,8 +29,8 @@ class ReporterRegistrationForm(Form):
     first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
                             error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- ")
                             ,
-                            label=_("* Name"))
-    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label=_("* Mobile Number"),
+                            label=_("Name"))
+    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label=_("Mobile Number"),
                                   error_message=_("Please enter a valid phone number.Only numbers and -(dash) allowed"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
     location = CharField(max_length=100, required=False, label=_("Enter location"))

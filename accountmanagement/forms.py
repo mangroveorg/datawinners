@@ -15,15 +15,15 @@ from django.contrib.auth.models import User
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
 
-    name = forms.CharField(required=True, label=_('* Organization name'))
-    sector = forms.CharField(widget=(
+    name = forms.CharField(required=True, label=_('Organization name'))
+    sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', _('Public Health')), ('Other', _('Other'))))),
                              label=_('Organization Sector'))
-    address = forms.CharField(required=True, max_length=30, label=_('* Address'))
-    city = forms.CharField(max_length=30, required=True, label=_('* City'))
+    address = forms.CharField(required=True, max_length=30, label=_('Address'))
+    city = forms.CharField(max_length=30, required=True, label=_('City'))
     state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
-    country = forms.CharField(max_length=30, required=True, label=_('* Country'))
-    zipcode = forms.CharField(max_length=30, required=True, label=_('* Postal / Zip Code'))
+    country = forms.CharField(max_length=30, required=True, label=_('Country'))
+    zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
                                     label=_("Office Phone Number"),
                                     error_message=_("Please enter a valid phone number"))
@@ -44,9 +44,9 @@ class UserProfileForm(forms.Form):
     required_css_class = 'required'
 
     title = forms.CharField(max_length=30, required=False)
-    first_name = forms.CharField(max_length=30, required=True, label=_('* First name'))
-    last_name = forms.CharField(max_length=30, required=True, label=_('* Last name'))
-    username = forms.EmailField(max_length=30, required=True, label=_("* Email"), error_messages={
+    first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
+    last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
+    username = forms.EmailField(max_length=30, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
                                     error_message=_("Please enter a valid phone number"))
@@ -72,25 +72,25 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     title = forms.CharField(max_length=30, required=False)
     email = forms.EmailField(widget=forms.TextInput(attrs=dict({'class': 'required'},
                                                                                     maxlength=75)),
-                             label=_("* Email address"),
+                             label=_("Email address"),
                              error_messages={'invalid': _('Enter a valid email address. Example:name@organization.com')})
     password1 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
-                                label=_("* Password"))
+                                label=_("Password"))
     password2 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
-                                label=_("* Password (again)"))
+                                label=_("Password (again)"))
 
-    first_name = forms.CharField(max_length=30, required=True, label='* First name')
-    last_name = forms.CharField(max_length=30, required=True, label='* Last name')
+    first_name = forms.CharField(max_length=30, required=True, label='First name')
+    last_name = forms.CharField(max_length=30, required=True, label='Last name')
     office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
                                     error_message=_("Please enter a valid phone number"))
     mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Mobile Phone"),
                                     error_message=_("Please enter a valid phone number"))
-    organization_name = forms.CharField(required=True, max_length=30, label=_('* Organization Name'))
-    organization_sector = forms.CharField(widget=(
+    organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
+    organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))),
                                           label=_('Organization Sector'))
-    organization_city = forms.CharField(max_length=30, required=True, label=_('* City'))
-    organization_country = forms.CharField(max_length=30, required=True, label=_('* Country'))
+    organization_city = forms.CharField(max_length=30, required=True, label=_('City'))
+    organization_country = forms.CharField(max_length=30, required=True, label=_('Country'))
     username = forms.CharField(max_length=30, required=False)
 
     def clean(self):
@@ -108,11 +108,11 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
 class FullRegistrationForm(MinimalRegistrationForm):
     skype = forms.CharField(max_length=30, required=False, label="Skype")
-    organization_address = forms.CharField(required=True, max_length=30, label=_('* Address'))
+    organization_address = forms.CharField(required=True, max_length=30, label=_('Address'))
     organization_state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
                                             error_message=_("Please enter a valid Postal / Zip code"),
-                                            label=_('* Postal / Zip Code'))
+                                            label=_('Postal / Zip Code'))
     organization_office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
                                                  label=_("Office Phone Number"),
                                                  error_message=_("Please enter a valid phone number"))

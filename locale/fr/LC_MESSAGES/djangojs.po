@@ -345,11 +345,6 @@ msgstr "Veuillez patienter"
 msgid "Please select at least 1 data sender"
 msgstr "Veuillez remplir au moins un champ de localité"
 
-#: media/javascript/project/reminders.js:78
-#, fuzzy
-msgid "The reminders has been saved"
-msgstr "Vous devez enregistrer le questionnaire."
-
 #: media/javascript/project/results.js:96
 msgid "Please select atleast one undeleted record"
 msgstr "Veuillez remplir au moins un champ de localité"
