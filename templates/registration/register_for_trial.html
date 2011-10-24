@@ -107,6 +107,9 @@
                                 {{ form.password2.errors }}
 
                             </li>
+                            <li>
+                                <input type="checkbox" id="agree-terms" value="1" checked="checked"/> {% trans "agree-terms" %}
+                            </li>
                             <li class="margin_top_20">
                                 <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}" class="button" />
                                 <div class="grid_7 margin_top_10 last">{%  trans "Already registered?" %} <a href="{% url django.contrib.auth.views.login %}">{%  trans "Sign in here" %}</a></div>
@@ -115,5 +118,11 @@
                     </div>
              </form>
         </fieldset>
+    </div>
+    <div id='user_should_agree_terms_block'>
+            {% trans "You have to agree terms and conditions before using DataWinners" %}
+            <br/>
+            <br/>
+            <a href="#" class="button agree_link">{% trans "Agree" %}</a>
     </div>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'public_secondary_fr.html' %}
+{% block page_title %} Termes et conditions {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+
+{{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/home/fr">Accueil</a> &gt; Termes et conditions
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>Termes et conditions</h1>
+        <ul>
+            <li class="active"><a href="/fr/terms-and-conditions/">Termes et conditions</a>
+        </ul>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

@@ -2508,3 +2508,12 @@ msgstr ""
 
 msgid "User has been added successfully"
 msgstr ""
+
+msgid "agree-terms"
+msgstr "I agree to the DataWinners <a target=\"_blank\" href=\"/en/terms-and-conditions\">Terms and Conditions</a>"
+
+msgid "Agree"
+msgstr ""
+
+msgid "You have to agree terms and conditions before using DataWinners"
+msgstr ""
