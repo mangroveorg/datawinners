@@ -34,7 +34,7 @@ def index(request):
             log = reverse(project_results, args=[project_id, questionnaire_code])
 
         web_submission_link_disabled = 'disable_link'
-        if project.state == ProjectState.ACTIVE:
+        if project.state == ProjectState.ACTIVE and 'web' in row['value']['devices']:
             web_submission_link_disabled = ""
 
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],

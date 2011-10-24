@@ -93,6 +93,7 @@ def settings(request):
 @login_required(login_url='/login')
 @is_admin
 def new_user(request):
+    add_user_success = False
     if request.method == 'GET':
         profile_form = UserProfileForm()
         return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form},
@@ -119,9 +120,9 @@ def new_user(request):
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
                 reset_form.save()
-                return HttpResponseRedirect('/account/users')
+                add_user_success = True
 
-        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': form},
+        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': form, 'add_user_success': add_user_success},
                                   context_instance=RequestContext(request))
 
 

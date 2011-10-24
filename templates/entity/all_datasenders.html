@@ -51,6 +51,11 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        {% if grant_web_access %}
+            <div id="web-access-success" class="success-box">
+                {% trans "Access to Web Submission has been given to your DataSenders" %}
+            </div>
+        {% endif %}
         <div class="import_subject_form">
             <div id="file-uploader">
                 <noscript>

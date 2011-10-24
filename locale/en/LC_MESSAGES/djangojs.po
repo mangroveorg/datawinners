@@ -375,3 +375,141 @@ msgstr ""
 #: media/javascript/project/subjects_registration_questionnaire_preview.js:3
 msgid "Subject Registration Preview"
 msgstr ""
+
+#: media/javascript/project/reminders.js:49
+msgid "Can't be blank."
+msgstr ""
+
+#: media/javascript/project/reminders.js:56
+#: media/javascript/project/reminders.js:65
+msgid "Day Can't be blank."
+msgstr ""
+
+msgid "Which subject are you reporting on?"
+msgstr ""
+
+msgid "What is the reporting period for the activity?"
+msgstr ""
+
+msgid "What is associated subject type?"
+msgstr ""
+
+msgid "What is the subject's name?"
+msgstr ""
+
+msgid "What is the subject's Unique ID Number"
+msgstr ""
+
+msgid "What is the subject's location?"
+msgstr ""
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the subject"
+msgstr ""
+
+msgid "What is the mobile number associated with the subject?"
+msgstr ""
+
+msgid "What is associatéd entity?"
+msgstr ""
+
+msgid "What is the data sender's name?"
+msgstr ""
+
+msgid "What is the data sender's location?"
+msgstr ""
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:9
+msgid "number"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:12
+msgid "text"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:20
+#: media/javascript/project/sms_preview.js:24
+msgid "list of choices"
+msgstr ""
+
+#: media/javascript/project/sms_preview.js:28
+msgid "geo code"
+msgstr ""
+
+msgid "Please select atleast 1 data sender"
+msgstr ""
+
+msgid "Please select atleast 1 Project"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Processing..."
+msgstr ""
+
+msgid "Show _MENU_ Data records"
+msgstr ""
+
+msgid "No matching records found"
+msgstr ""
+
+msgid "No data available in table"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Showing _START_ to _END_ of _TOTAL_ Data records"
+msgstr ""
+
+msgid "Showing 0 to 0 of 0 Data records"
+msgstr ""
+
+msgid "(filtered from _MAX_ total Data records)"
+msgstr ""
+
+msgid "Search:"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Last"
+msgstr ""
+
+msgid "Cancel this Project?"
+msgstr ""
+
+#: media/javascript/project/reminders.js:78
+msgid "The reminders has been saved"
+msgstr ""
+
+msgid "Give Web Submission Access"
+msgstr ""
+
+msgid "Emails are mandatory"
+msgstr ""
+
+msgid ": is not a valid email"
+msgstr ""
+
+msgid "User with email "
+msgstr ""
+
+msgid " already exists"
+msgstr ""

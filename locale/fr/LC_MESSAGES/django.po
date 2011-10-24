@@ -108,7 +108,7 @@ msgstr "* Mot de passe"
 
 #: accountmanagement/forms.py:79
 msgid "* Password (again)"
-msgstr "* Mot de passe (à nouveau)"
+msgstr "* Mot de passe (ressaisir)"
 
 #: accountmanagement/forms.py:87
 msgid "* Organization Name"
@@ -128,7 +128,7 @@ msgstr "Veuillez entrer un email et un mot de passe valide"
 
 #: accountmanagement/forms.py:142
 msgid "This account is inactive."
-msgstr "Ce compte est désactivé"
+msgstr "Ce compte n'est pas activé"
 
 #: dashboard/views.py:89 templates/main_navigation.html:13
 #: templates/accountmanagement/account/users_list.html:28
@@ -206,37 +206,31 @@ msgstr "Entrez région, district ou commune"
 msgid "Enter lat and long eg: 19.3 42.37"
 msgstr "Entrez lat et long ex : 20.6 47.3"
 
-#: entity/forms.py:55
-msgid ""
-"Incorrect GPS format. The GPS coordinates must be in the following format: "
-"xx.xxxx yy.yyyy. Example -18.8665 47.5315"
-msgstr ""
-
 #: entity/forms.py:67
 msgid "Please fill out at least one location field correctly."
 msgstr ""
-"S'il vous plaît remplir au moins un champ de localisation correctement."
+"Veuillez remplir correctement au moins un champ de localisation."
 
 #: entity/views.py:98
 msgid "Please add subject type and then add a subject"
-msgstr "S'il vous plaît ajouter le type de sujet puis le sujet"
+msgstr "Veuillez ajouter le type puis le sujet"
 
 # message_provider/message_handler.py:43
 #: messageprovider/message_handler.py:49
 msgid "Unique identification number(ID) is:"
-msgstr "Numéro d'identification unique (ID) est:"
+msgstr "Le numéro d'identification unique (ID) est :"
 
 # message_provider/message_handler.py:48
 #: messageprovider/message_handler.py:52 messageprovider/messages.py:86
 msgid "We received : "
-msgstr "Nous avons reçu: "
+msgstr "Nous avons reçu : "
 
 #: messageprovider/messages.py:83
 #, python-format
 msgid "Error. Incorrect answer for question %s. Please resend entire message."
 msgstr ""
-"Erreur. Mauvaise réponse à la question %s. S'il vous plaît renvoyer la "
-"totalité du message."
+"Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité "
+"du message."
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
@@ -266,7 +260,7 @@ msgstr "Autre sujet"
 
 #: project/forms.py:42
 msgid "Open Data Sender Group. Anyone can send in data without registering"
-msgstr "Ouvert. Tous le monde peut envoyer des données sans être enregistrée"
+msgstr "Ouvert. Tous le monde peut envoyer des données sans s'être enregistré"
 
 #: project/forms.py:42
 msgid ""
@@ -301,7 +295,7 @@ msgstr "Public ou restreint"
 
 #: project/forms.py:50
 msgid "What is this questionnaire about?"
-msgstr "Quel est l'objet du questionnaire"
+msgstr "Quel est l'objet du questionnaire ?"
 
 #: project/forms.py:51
 msgid "Other Subjects"
@@ -311,15 +305,9 @@ msgstr "Autres sujets"
 msgid "Device"
 msgstr "Canal"
 
-#: project/forms.py:54
-msgid "Choose your language for success and error messages to Data Senders"
-msgstr ""
-"Choisissez votre langue pour message de succès ou d'erreurs à retourner aux "
-"envoyeur de données?"
-
 #: project/forms.py:56
 msgid "How often do you need the data?"
-msgstr "A quelle fréquence voulez-vous collecter les données"
+msgstr "A quelle fréquence voulez-vous collecter les données ?"
 
 #: project/forms.py:58
 msgid "Week"
@@ -331,7 +319,7 @@ msgstr "Mois"
 
 #: project/forms.py:59
 msgid "Do you want to set a deadline?"
-msgstr "Voulez-vous définir une date limite d'envoi"
+msgstr "Voulez-vous définir une date limite d'envoi ?"
 
 #: project/forms.py:59 project/forms.py:63
 msgid "No"
@@ -342,24 +330,12 @@ msgid "Yes"
 msgstr "Oui"
 
 #: project/forms.py:62
-msgid "Same"
-msgstr "Même"
-
-#: project/forms.py:62
 msgid "Following"
-msgstr "Après"
-
-#: project/forms.py:63
-msgid "Do you want to remind DataSenders to send in their data?"
-msgstr "Voulez-vous envoyer des messages de rappel ?"
+msgstr "Après le/la"
 
 #: project/forms.py:70
 msgid "Enter a project name"
 msgstr "Entrez le nom du projet"
-
-#: project/forms.py:71
-msgid "Describe what your team hopes to achieve by collecting this data"
-msgstr "Décrivez le résultat attendu de ce cette collete de données"
 
 #: project/forms.py:76
 msgid "This field is required"
@@ -389,7 +365,7 @@ msgstr "Ajouter"
 #: templates/project/questionnaire.html:97
 #: templates/project/questionnaire_wizard.html:93
 msgid "Questions"
-msgstr "Questionnaire"
+msgstr ""
 
 #: templates/entity_question_panel.html:10
 #: templates/entity_question_panel.html:19
@@ -426,6 +402,9 @@ msgstr ""
 "Decide what information you want to use to identify and register each "
 "subject of your questionnaire.  For example, Clinic Name, Location, Phone "
 "Number."
+"Veuillez identifier par quelle critère vous voulez identifier et "
+"enregistrer chaque sujet de votre questionnaire. Exemple : nom d'une "
+"clinique, localité, numéro de téléphone."
 
 #: templates/entity_question_panel.html:13
 #: templates/entity_question_panel.html:22
@@ -458,15 +437,15 @@ msgstr "Qu'est ce que je dois faire ?"
 
 #: templates/entity_question_panel.html:14
 msgid "r_tooltip_question_panel_subject"
-msgstr "Review the questions by clicking on each question in order."
+msgstr "Vérifiez les questions en cliquant sur chacune d'elle dans l'ordre."
 
 #: templates/entity_question_panel.html:20
 msgid "q_tooltip_question_panel_data_sender"
-msgstr "Decide what information you need to collect about each Data Sender."
+msgstr "Identifiez les informations que vous voulez collecter sur chaque envoyeur."
 
 #: templates/entity_question_panel.html:23
 msgid "r_tooltip_question_panel_data_sender"
-msgstr "Review the questions by clicking on each"
+msgstr "Vérifiez les questions en cliquant sur chacune d'elle dans l'ordre."
 
 #: templates/entity_question_panel.html:45
 msgid "Question:"
@@ -485,8 +464,8 @@ msgid ""
 "You can view and edit your user profile and manage your organization's "
 "account (if you are authorized)."
 msgstr ""
-"Vous pouvez voir et modifier votre profil et le compte de votre organisation "
-"(si vous avez les autorisations requises)"
+"Vous pouvez voir et modifier votre profil et gérer le compte de votre "
+"organisation (si vous y êtes autorisé)"
 
 #: templates/header_wizard.html:11
 msgid "Welcome"
@@ -528,11 +507,11 @@ msgstr "Javascript est désactivé dans votre navigateur, Veuillez l'activer."
 #: templates/layout_registration.html:31
 msgid "about_DW"
 msgstr ""
-"<h5>À propos DataWinners</h5><p>DataWinners est une des données en ligne mobile"
-"\tservice de collecte conçu et\tconstruit pour les professionnels du développement. </"
-"p><p>Avec DataWinners, vous recueillir et analyser les données dont vous avez besoin en utilisant les"
-"l'équipement que vous avez déjà - un ordinateur, l'Internet et mobile de base"
-"téléphones. </p>"
+"<h5>À propos DataWinners</h5><p>DataWinners est un service de collecte de données "
+"par téléphonie mobile; Conçu et construit pour les professionnels du développement. "
+"</p><p>Avec DataWinners, vous recueillez et analysez les données dont vous avez besoin "
+"en utilisant les équipements déja en votre possession - un ordinateur, l'internet et "
+"les téléphones mobiles de base.</p>"
 
 #: templates/layout_wizard.html:32
 msgid "Previous Step:"
@@ -560,7 +539,7 @@ msgstr "Ajouter un nouveau projet"
 
 #: templates/step_wizard.html:25
 msgid "Are you sure you want to cancel this project?"
-msgstr "Etes-vous sûr de vouloir annuler ?"
+msgstr "Etes-vous sûr de vouloir annuler ce projet ?"
 
 #: templates/step_wizard.html:26
 msgid "(your previous steps are saved)"
@@ -588,7 +567,7 @@ msgstr "Questionnaire"
 
 #: templates/step_wizard.html:35
 msgid "Reminder"
-msgstr "Rappels"
+msgstr "Rappel"
 
 #: templates/step_wizard.html:36 templates/project/finish_and_test.html:3
 msgid "Review & Test"
@@ -661,13 +640,13 @@ msgstr "Entrez le numéro du sujet"
 
 #: templates/subject_table.html:8 templates/entity/datasenders_table.html:9
 msgid "Geocode"
-msgstr "Code géo"
+msgstr "Géocode"
 
 #: templates/subject_table.html:10 templates/entity/datasenders_table.html:10
 #: templates/project/registered_datasenders.html:37
 #: templates/project/registered_subjects.html:31
 msgid "Contact info"
-msgstr "Informations sur le contact"
+msgstr "Infos sur le contact"
 
 #: templates/accountmanagement/account/add_user.html:3
 #: templates/accountmanagement/account/org_settings.html:3
@@ -681,11 +660,11 @@ msgstr "Tous les utilisateurs"
 
 #: templates/accountmanagement/account/add_user.html:25
 msgid "Point of Contact"
-msgstr "Point focal"
+msgstr "Personne à contacter"
 
 #: templates/accountmanagement/account/add_user.html:25
 msgid "Account Administrator"
-msgstr "Gestionnaire de compte"
+msgstr "Gestionnaire du compte"
 
 #: templates/accountmanagement/account/index.html:3
 #: templates/accountmanagement/account/index.html:4
@@ -728,7 +707,7 @@ msgstr "Informations sur le contact"
 
 #: templates/admin/base_site.html:4
 msgid "Datawinner site admin"
-msgstr "Administration de DataWinners"
+msgstr "Site d'administration de DataWinners"
 
 #: templates/admin/base_site.html:7
 msgid "Datawinner administration"
@@ -736,7 +715,7 @@ msgstr "Administration de DataWinners"
 
 #: templates/alldata/failed_submissions.html:5
 msgid "Failed Submissions"
-msgstr "Voir les erreurs d'envoi"
+msgstr "Erreurs d'envoi"
 
 #: templates/alldata/failed_submissions.html:7
 msgid "View All Data"
@@ -807,7 +786,7 @@ msgstr "Comment utiliser Datawinners"
 #: templates/dashboard/home.html:41
 msgid "Get more information on what you can do with DataWinners."
 msgstr ""
-"Obetenir plus d'information sur ce que vous pouvez faire avec DataWinners."
+"Obtenir plus d'information sur ce que vous pouvez faire avec DataWinners."
 
 #: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
@@ -836,11 +815,11 @@ msgstr "Aller à ce projet"
 
 #: templates/dashboard/home.html:71
 msgid "No submissions present for this project"
-msgstr "Aucune données pour ce projet"
+msgstr "Aucunes données pour ce projet"
 
 #: templates/dashboard/home.html:74
 msgid "This project is inactive"
-msgstr "Ce projet est inactif"
+msgstr "Ce projet n'est pas activé"
 
 #: templates/dashboard/home.html:79
 msgid "view all projects"
@@ -851,8 +830,8 @@ msgstr "Voir tous les projets"
 msgid ""
 " Once you have created projects, a list of your %(text)s will appear here."
 msgstr ""
-"Une fois que vous avez créé un projet, la liste de vos %(text)s apparaitront "
-"ici."
+"Une fois que vous avez créé des projets, la liste de vos %(text)s apparaitront "
+"à cet endroit."
 
 #: templates/dashboard/start.html:19
 msgid "To get started with DataWinners"
@@ -868,13 +847,16 @@ msgstr "Ajoutez des Envoyeurs"
 
 #: templates/entity/all_datasenders.html:15
 msgid "q_all_datasenders_add_manually"
-msgstr "Add Data Sender one-by-one using the online registration form"
+msgstr "Ajouter les envoyeurs un par un en utilisant le formulaire d'enregistrment "
+"en ligne"
 
 #: templates/entity/all_datasenders.html:18
 msgid "r_all_datasenders_add_manually"
 msgstr ""
 "Click the blue \"Add a Data Sender\" link and follow the step-by-step "
 "instructions"
+"Cliquez sur le bouton bleu \" Ajouter un envoyeur \" et suivez les instructions "
+"étape par étape"
 
 #: templates/entity/all_datasenders.html:56
 #: templates/entity/all_subjects.html:56
@@ -891,29 +873,29 @@ msgstr "Télécharger un fichier CSV ou XLS"
 #: templates/entity/all_datasenders.html:63
 msgid "q_all_datasenders_import"
 msgstr ""
-"Add a list of Data Senders all at once by importing an Excel (.xls) or a "
-"comma separated value (.csv) file"
+"Ajouter les envoyeurs dans une lister en une seule opération en important un "
+"fichier Excel (.xls) ou un fichier CSV (.csv)"
 
 #: templates/entity/all_datasenders.html:66
 msgid "r_all_datasenders_import"
 msgstr ""
-"Follow these five easy steps to import a list of Data Senders<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG.  In "
-"cell B2, type Data Sender.  In cell C2, type the name of your Data Sender"
-"(example:  John Smith).  In cell D2, type the mobile telephone number of the "
-"Data Sender.In cell E2, type a unique ID code for the Data Sender."
-"DataWinners will automatically generate a unique ID number if you leave this "
-"cell blank.In cell F2, type the location of the Data Sender.In cell G2 type "
-"the GPS coordinates of the Data Sender (Right click on cell G2, choose "
-"\"Format Cells\",Choose \"Text\", then click \"OK\".  Then enter the GPS "
-"coordinates in the following format: 16.8665 47.53150.Remember do not "
-"include a comma).  In cell F2 type a short description of the Data Sender."
-"<br />3. Repeat step #2 for each Data Sender starting in cell A3.  Every "
-"Data Sender thereafter will occupy anew row (A4, A5, A6 etc.)<br />4. Save "
-"the file as (.csv) or (.xls)<br />5. Click on \"Import List\" button and "
-"follow instructions"
+"Suivez ces cinq étapes faciles pour importer vos envoyeurs<br /> Ouvrez un "
+"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
+"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
+"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
+"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
+"saisissez REG. Dans la cellule B2, saisissez Data Sender. Dans la cellule C2 "
+"saississez le nom de l'envoyeur (exemple : John Smith). Dans la cellule D2, "
+"saisissez son numéro de mobile. Dans la cellule E2, saisissez son ID "
+"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
+"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
+"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
+"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
+"virgule). Dans la cellule F2 saisissez une description courte de votre envoyeur. "
+"<br/>3. Répétez l'étape #2 pour chaque envoyeur à partir de la cellule A3. "
+"Chaque envoyeur sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
+"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
+"\"Importez la liste\" et suivez les instructions."
 
 #: templates/entity/all_datasenders.html:73
 #: templates/entity/all_subjects.html:74
@@ -934,15 +916,15 @@ msgstr "Actions :"
 
 #: templates/entity/all_datasenders.html:113
 msgid "Add to project"
-msgstr "Ajouter au projet"
+msgstr "Relier à un projet"
 
 #: templates/entity/all_datasenders.html:114
 msgid "Remove from project"
-msgstr "Enlever des projets"
+msgstr "Retirer d'un projet"
 
 #: templates/entity/all_datasenders.html:115
 msgid "Give Web Submission Access"
-msgstr "Donner un accès à l'envoi web"
+msgstr "Autoriser l'accès à l'envoi web"
 
 #: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"
@@ -961,34 +943,35 @@ msgid ""
 "Click the blue \"Add a subject\" link and follow the step-by-step "
 "instructions"
 msgstr ""
-"Cliquez sur le bouton \"Ajouter un sujet\" et suivez les étapes pas à pas."
+"Cliquez sur le bouton \"Ajouter un sujet\" et suivez les instructions "
+"étape par étape."
 
 #: templates/entity/all_subjects.html:64
 msgid "q_all_subjects"
 msgstr ""
-"Add a list of subjects all at once by importing an Excel (.xls) or a Comma "
-"Separated Value (.csv) file"
+"Ajouter une liste de sujets en une seule opération en important un fichier "
+"Excel (.xls) ou CSV (.csv)"
 
 #: templates/entity/all_subjects.html:67
 msgid "r_all_subjects"
 msgstr ""
-"Follow these five easy steps to import a list of Subjects:<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. In cell "
-"B2, type the Subject type (example: Clinic). In cell C2, type the nameof "
-"your Subject (example:  Northern Clinic). In cell D2, type the mobile "
-"telephone number of the Subject.In cell E2, type a unique ID code for the "
-"Subject. DataWinners will automatically generate a unique ID number if you "
-"leave this cell blank.In cell F2, type the location of the Subject. In "
-"cellG2 type the GPS coordinates of the Subject (Right click on cell G2, "
-"choose \"Format Cells\", Choose \"Text\",then click \"OK\". Then enter the "
-"GPS coordinates in the following format: 16.8665 47.53150. Remember do "
-"notinclude a comma).  In cell F2 type a short description of the Subject."
-"<br />3. Repeat step #2 for each Subject starting in cell A3. Every Subject "
-"thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. Save the file as "
-"(.csv) or (.xls)<br />5. Click on \"Upload a file\" button and follow "
-"instructions"
+"Suivez ces cinq étapes faciles pour importer vos sujets :<br /> Ouvrez un "
+"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
+"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
+"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
+"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
+"saisissez REG. Dans la cellule B2, saisissez Subject Type. Dans la cellule C2 "
+"saississez le nom du sujet (exemple : Clinique du Nord). Dans la cellule D2, "
+"saisissez le numéro de mobile attaché au sujet. Dans la cellule E2, saisissez son ID "
+"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
+"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
+"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
+"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
+"virgule). Dans la cellule F2 saisissez une description courte du sujet. "
+"<br/>3. Répétez l'étape #2 pour chaque sujet à partir de la cellule A3. "
+"Chaque sujet sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
+"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
+"\"Importez la liste\" et suivez les instructions."
 
 #: templates/entity/all_subjects.html:85
 msgid "All Subjects"
@@ -1013,17 +996,17 @@ msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr "Nouveau sujet (ex : clinique, point d'eau, etc...)"
 
 msgid "Only letters and numbers are valid"
-msgstr "Seules les lettres et les chiffres sont valables"
+msgstr "Seuls les lettres et les chiffres sont valides"
 
 msgid "Entity definition successful"
-msgstr "Définition de l'entité réussie"
+msgstr "Entité ajoutée avec succès"
 
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
-msgstr "%s déjà inscrit comme type de sujet. S'il vous plaît choisissez% s de la liste déroulante."
+msgstr "%s existe déja type de sujet. Veuillez choiir %s dans la liste déroulante."
 
 #: templates/project/data_analysis.html:3
 msgid "Data Analysis"
-msgstr "Analyse"
+msgstr "Analyse des données"
 
 #: templates/project/data_analysis.html:54
 msgid "This Project is not yet active. Data displayed is test data."
@@ -1085,7 +1068,7 @@ msgstr "Projet - Envoyeurs"
 
 #: templates/project/datasenders.html:34
 msgid "Preview Data sender's questionnaire"
-msgstr "Faites un aperçu du questionnaire Envoyeurs"
+msgstr "Faites un aperçu du questionnaire \"Envoyeurs\""
 
 #: templates/project/datasenders.html:37
 #: templates/project/finish_and_test.html:179
@@ -1093,7 +1076,7 @@ msgstr "Faites un aperçu du questionnaire Envoyeurs"
 #: templates/project/finish_and_test.html:185
 #: templates/project/questionnaire.html:134 templates/project/subjects.html:44
 msgid "Generating the questionnaire preview."
-msgstr "Générez un aperçu du questionnaire"
+msgstr "Voir un aperçu du questionnaire"
 
 #: templates/project/datasenders_wizard.html:44
 msgid "Step4"
@@ -1102,26 +1085,27 @@ msgstr "Etape 4"
 #: templates/project/datasenders_wizard.html:47
 msgid "q_tooltip_datasenders_sender"
 msgstr ""
-"<strong>Data Senders</strong> are important because they are the people who "
-"send you answers to yourquestionnaire. They are usually based in the field."
-"<br /><br />You can <strong>register Data Senders</strong> by entering some "
-"basic information (name, location,telephone number) about each Data Sender."
-"DataWinners will use the Data Sender's telephone number as the "
-"<strong>Unique Identification Number</strong>.By registering your Data "
-"Senders now they won't have to send you this information (example: name) "
-"each timethey respond to your questionnaire. DataWinners will recognize each "
-"Data Sender by his or her registeredtelephone number.<br /><br />"
+"Les <strong>Envoyeurs</strong> sont important car ce sont les personnes qui "
+"vont répondre à votre questionnaire. Ils sont généralement basés sur le "
+"terrain. <br/><br/>Vous pouvez <strong>enregistrer les Envoyeurs</strong> "
+"en entrant quelques informations élémentaires (nom, localité, numéro de "
+"téléphone) à propos de chacun d'eux. DataWinners utilisera le numéro de "
+"téléphone de l'envoyeur comme son <strong>\" identifiant unique \"</strong>."
+"En enregistrant vos Envoyeurs, ils n'ont plus besoin d'envoyer certaines "
+"informations (exemple : nom) chaque fois qu'il répondent à un questionnaire. "
+"DataWinners identifiera chaque Envoyeur à partir de son numéro de téléphone."
+
 
 #: templates/project/datasenders_wizard.html:49
 msgid "r_tooltip_datasenders_sender"
 msgstr ""
-"Decide what information you want to collect for each Data Sender (first "
-"name, last name, location, mobilephone number, etc.) You then have three "
-"ways to register this information: 1) Manually enter the detailsusing the "
-"<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
-"Print out the DataSender Registration Questionnaire, give it to your Data "
-"Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
-"Don’t worry, you can always edit this information later."
+"Identifiez chaque information que vous voulez collecter sur vos Envoyeurs "
+"(nom, prénom, localité, numéro de téléphone, etc.) Vous aurez alors trois "
+"façons de les enregistrer : 1) Saisissez manuellement les détails en utilisant "
+"le <strong>formulaire en ligne</strong>, 2) <strong>Importez la liste</strong>; ou "
+"3) Imprimez le questionnaire \"Envoyeur\", donnez le à l'Envoyeur et <strong> "
+"demandez-lui de d'enregistrer</strong>. N'ayez aucune crainte, vous pourrez "
+"toujours éditer ces informations ultérieurement."
 
 #: templates/project/datasenders_wizard.html:51
 msgid ""
@@ -1129,7 +1113,7 @@ msgid ""
 "below. You can also do this at a later time."
 msgstr ""
 "Enregistrez et gérez les Envoyeurs en remplissant le formulaire ci-dessous. "
-"Vous pouvez également le faire ultérieurement"
+"Vous pourrez également le faire ultérieurement"
 
 #: templates/project/datasenders_wizard.html:59
 msgid "Add Data Senders now"
@@ -1170,28 +1154,28 @@ msgstr ""
 #: templates/project/datasenders_wizard.html:82
 msgid "r_tooltip_datasenders_import"
 msgstr ""
-"Follow these five easy steps to import a list of Data Senders<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG.  In "
-"cell B2, type Data Sender.  In cell C2, type the name of your Data Sender"
-"(example:  John Smith).  In cell D2, type the mobile telephone number of the "
-"Data Sender.In cell E2, type a unique ID code for the Data Sender."
-"DataWinners will automatically generate a unique ID number if you leave this "
-"cell blank.In cell F2, type the location of the Data Sender.In cell G2 type "
-"the GPS coordinates of the Data Sender (Right click on cell G2, choose "
-"\"Format Cells\",Choose \"Text\", then click \"OK\".  Then enter the GPS "
-"coordinates in the following format: 16.8665 47.53150.Remember do not "
-"include a comma).  In cell F2 type a short description of the Data Sender."
-"<br />3. Repeat step #2 for each Data Sender starting in cell A3.  Every "
-"Data Sender thereafter will occupy anew row (A4, A5, A6 etc.)<br />4. Save "
-"the file as (.csv) or (.xls)<br />5. Click on blue \"Import List\" button "
-"and follow instructions"
+"Suivez ces cinq étapes faciles pour importer vos envoyeurs<br /> Ouvrez un "
+"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
+"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
+"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
+"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
+"saisissez REG. Dans la cellule B2, saisissez Data Sender. Dans la cellule C2 "
+"saississez le nom de l'envoyeur (exemple : John Smith). Dans la cellule D2, "
+"saisissez son numéro de mobile. Dans la cellule E2, saisissez son ID "
+"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
+"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
+"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
+"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
+"virgule). Dans la cellule F2 saisissez une description courte de votre envoyeur. "
+"<br/>3. Répétez l'étape #2 pour chaque envoyeur à partir de la cellule A3. "
+"Chaque envoyeur sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
+"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
+"\"Importez la liste\" et suivez les instructions."
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
 msgstr ""
-"Télécharger un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
+"TéléchargeZ un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
 "liste de vos Envoyeurs"
 
 #: templates/project/datasenders_wizard.html:85
@@ -1220,11 +1204,11 @@ msgstr "Félicitations! Vous venez de créer votre projet. Revoyez les détails 
 
 #: templates/project/finish_and_test.html:47
 msgid "Review"
-msgstr "Résumé"
+msgstr "Vérifiez"
 
 #: templates/project/finish_and_test.html:48
 msgid "Review and verify the summary of your project on this page."
-msgstr "Vérifier le résumé de votre projet sur cette page"
+msgstr "Vérifier et voyez le récapitulatif de votre projet sur cette page"
 
 #: templates/project/finish_and_test.html:49
 msgid "Verify the specifications of your project"
@@ -1249,7 +1233,7 @@ msgstr "Description du projet :"
 
 #: templates/project/finish_and_test.html:71
 msgid "Devices:"
-msgstr "Canal :"
+msgstr "Canaaux :"
 
 #: templates/project/finish_and_test.html:75
 #: templates/project/finish_and_test.html:98
@@ -1313,11 +1297,12 @@ msgstr "Tester ce questionnaire"
 #: templates/project/finish_and_test.html:155
 msgid "q_tooltip_finish_test"
 msgstr ""
-"The <strong>Test This Questionnaire</strong> feature allows you to simulate "
-"the collection of data to see how yourquestionnaire works. After the test, "
-"you can view the data collected by selecting the \"All Data\" tab in thetop "
-"right hand corner of this page. Test This Questionnaire can provide you "
-"helpful information to editquestions and answer types."
+"La fonction <strong>Tester ce questionnaire</strong> vous autorise à simuler "
+"une collecte de données et voir par vous même si le questionnaire est efficace. "
+"Après le test vous pouvez voir les données collectées en cliquant sur le menu "
+"\"Données\" en haut à droite sur cette page. Tester le questionnaire peut vous "
+"donner des information pour affiner et améliorer les questions et les types de "
+"réponses"
 
 #: templates/project/finish_and_test.html:158
 msgid "r_tooltip_finish_test"
@@ -1426,12 +1411,12 @@ msgid ""
 "Review the basic information for your project. Click \"View\" to see the "
 "whole profile or \"Edit profile\" to make changes."
 msgstr ""
-"Vérifiez les informations de base pour votre projet.Cliquez sur \"Voir\" "
-"pour voirs le profil du projet ou \"Modifier\" pour faire des changements."
+"Vérifiez les informations de base sur votre projet. Cliquez sur \"Voir\" "
+"pour consulter le profil du projet ou \"Modifier\" pour opérer des changements."
 
 #: templates/project/overview.html:45
 msgid "Status: Complete"
-msgstr "Statut: Terminé"
+msgstr "Statut : Terminé"
 
 #: templates/project/overview.html:48
 msgid "What"
@@ -1460,24 +1445,24 @@ msgstr "Groupe d'envoyeur"
 #: templates/project/overview.html:62 templates/project/overview.html.py:84
 #: templates/project/overview.html:91 templates/project/overview.html.py:95
 msgid "No Data"
-msgstr "Aucune données"
+msgstr "Aucunes données"
 
 #: templates/project/overview.html:65
 msgid "Data sender Registration"
-msgstr "Enregistrement d'un envoyeur"
+msgstr "Ajout d'un envoyeur"
 
 #: templates/project/overview.html:66
 msgid "No data"
-msgstr "Aucune données"
+msgstr "Aucunes données"
 
 #: templates/project/overview.html:69
 #: templates/project/profile_languages.html:3
 msgid "Languages"
-msgstr "Langue"
+msgstr "Langues"
 
 #: templates/project/overview.html:70
 msgid "No language specified"
-msgstr "Aucune langue spécifiée"
+msgstr "Langue non spécifiée"
 
 #: templates/project/overview.html:74
 msgid "How"
@@ -1518,7 +1503,7 @@ msgid ""
 "Warning: Updating the associated type of the project questionnaire will "
 "remove all existing data."
 msgstr ""
-"Attention : Le changement de type de projet va supprimer toutes les données "
+"Attention : Le changement du type de projet va supprimer toutes les données "
 "enregistrées"
 
 #: templates/project/profile.html:51
@@ -1527,7 +1512,7 @@ msgstr "Continuer"
 
 #: templates/project/profile.html:61
 msgid "Save & Create Project"
-msgstr "Ajouter un nouveau projet"
+msgstr "Enregistrer & créez projet"
 
 #: templates/project/profile_background.html:4
 msgid "Background"
@@ -1536,65 +1521,62 @@ msgstr "Données de base"
 #: templates/project/profile_background.html:13
 msgid "q_tooltip_project_profile_background"
 msgstr ""
-"DataWinners stores projects by the <strong>Project Name</strong>. It is "
-"important to give each ofyour projects a separate name so when you have many "
-"projects running at the same time youcan easily track each project."
+"DataWinners identifie les projets par leur <strong>Nom</strong>. Il est "
+"important de donner à chaque projet un nom distinctif pour que vous "
+"puissiez les distinguer et les suivre aisément."
 
 #: templates/project/profile_background.html:15
 msgid "r_tooltip_project_profile_background"
 msgstr ""
-"Name your project by typing a short descriptive phrase in the Name this "
-"Project box. Don't worry,you can always edit your project name later."
+"Donnez un nom à votre projet en saisissant un court descriptif dans ce champ. "
+"Ne vous inquiétez pas, vous pourrez toujours le changer plus tard."
 
 #: templates/project/profile_background.html:26
 msgid "q_tooltip_project_profile_project_type"
 msgstr ""
-"DataWinners offers two <strong>Project Types</strong>. You can collect data "
-"from people by choosingthe <strong>Data Collection</strong> option. Or, you "
-"can send messages to people by choosing<strong>Public Communication</strong>."
+"DataWinners gère deux <strong>types de projets</strong>. Vous pouvez collecter "
+"des données en choisissant l'option <strong>Collecte de données</strong>. "
+"Ou bien envoyer des messages à des personnes choisies avec l'option <strong> "
+"Communication publique</strong>"
 
 #: templates/project/profile_background.html:29
 msgid "r_tooltip_project_profile_project_type"
 msgstr ""
-"Click the radio button next the <strong>Project Type</strong> you are "
-"creating. We will providestep-by-step instructions for your choice. Don't "
-"worry, you can always change your mind later."
+"Cliquez sur le bouton radio à côté de <strong>Type de projet</strong> "
+"Nous vous guiderons étape par étape selon votre choix. Ne vous inquiétez "
+"pas, vous pourrez toujours changer votre choix plus tard."
 
 #: templates/project/profile_datasenders.html:12
 msgid "q_tooltip_profile_data_senders"
 msgstr ""
-"DataWinners allows you to chose who you collect your data from. With Open "
-"Data Sender Groups anyone cansend you data if you provide them your phone "
-"number. With Closed Data Sender Groups only those peoplewho you register "
-"will be able to send data to your number."
+"DataWinners vous permet de choisir les personnes qui vont vous envoyer des données."
+"Avec l'option \" Ouvert \", tout le monde peut vous envoyer des données du moment "
+"que vous leur communiquez votre numéro. Avec l'option \" Restreint \", seules "
+"les personnes enregistrées seront autorisées à envoyer des données."
 
 #: templates/project/profile_datasenders.html:15
 msgid "r_tooltip_profile_data_senders"
 msgstr ""
-"Click the radio button next to your choice. Don’t worry, you can always "
-"change your mind later."
+"Cliquez sur le bouton radio à côté de votre choix. Ne vous inquiétez pas, "
+"vous pourrez toujours changer votre choix plus tard."
 
 #: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"
-msgstr "Délais et rappels"
+msgstr "Dates limites et messages de rappel"
 
 #: templates/project/profile_deadline.html:23
 msgid "Deadline Example:"
-msgstr "Exemple de Date limite"
+msgstr "Exemple de date limite"
 
 #: templates/project/profile_deadline_month_block.html:4
 #: templates/project/profile_deadline_week_block.html:4
 msgid "Always on"
-msgstr "Toujours le"
+msgstr "Toujours le/la"
 
 #: templates/project/profile_deadline_month_block.html:8
 #: templates/project/profile_deadline_week_block.html:8
 msgid "of the"
 msgstr "du/de la"
-
-#: templates/project/profile_deadline_month_block.html:8
-msgid "month"
-msgstr "mois"
 
 #: templates/project/profile_deadline_week_block.html:8
 msgid "week"
@@ -2066,18 +2048,6 @@ msgstr "Effacer"
 msgid "See the data you received"
 msgstr "Voir les données que vous avez reçu"
 
-#: templates/project/sms_tester_form.html:37
-msgid "See if DataWinners received your SMS. (Go to "
-msgstr "Vérifier que Datawinners a reçu votre SMS. (Allez à la page "
-
-#: templates/project/sms_tester_form.html:38
-msgid "All Data Records "
-msgstr "Tous les enregistrements"
-
-#: templates/project/sms_tester_form.html:38
-msgid "page to view submission status)"
-msgstr "pour voir le statut des envois)"
-
 #: templates/project/subjects.html:33
 msgid "Step3:"
 msgstr "Etape 3 :"
@@ -2132,13 +2102,12 @@ msgstr "Ajouter des sujets manuellement"
 
 #: templates/project/subjects_wizard.html:64
 msgid "q_tooltip_subject_wizard_add_manually"
-msgstr "Add subjects one-by-one using the online registration form"
+msgstr "Ajoutez les sujets un par un depuis le formulaire en ligne."
 
 #: templates/project/subjects_wizard.html:67
 msgid "r_tooltip_subject_wizard_add_manually"
 msgstr ""
-"Click the blue \"Add Subjects Manually\" button and follow the step-by-step "
-"instructions."
+"Cliquez sur le bouton bleu \"Ajouter les Envoyeurs manuellement\""
 
 #: templates/project/subjects_wizard.html:70
 msgid "Enter your Subjects individually"
@@ -2157,23 +2126,23 @@ msgstr ""
 #: templates/project/subjects_wizard.html:80
 msgid "r_tooltip_subject_wizard_import"
 msgstr ""
-"Follow these five easy steps to import a list of Subjects:<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG. In cell "
-"B2, type the Subject type (example: Clinic). In cell C2, type the nameof "
-"your Subject (example:  Northern Clinic). In cell D2, type the mobile "
-"telephone number of the Subject.In cell E2, type a unique ID code for the "
-"Subject.DataWinners will automatically generate a unique ID number if you "
-"leave this cell blank.In cell F2, type the location of the Subject. In "
-"cellG2 type the GPS coordinates of the Subject (Right click on cell G2, "
-"choose \"Format Cells\", Choose \"Text\",then click \"OK\". Then enter the "
-"GPS coordinates in the following format: 16.8665 47.53150. Remember do "
-"notinclude a comma).  In cell F2 type a short description of the Subject."
-"<br />3. Repeat step #2 for each Subject starting in cell A3. Every Subject "
-"thereafter will occupy a new row (A4, A5, A6 etc.)<br />4. Save the file as "
-"(.csv) or (.xls)<br />5. Click on blue \"Import List\" button and follow "
-"instructions"
+"Suivez ces cinq étapes faciles pour importer vos sujets :<br /> Ouvrez un "
+"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
+"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
+"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
+"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
+"saisissez REG. Dans la cellule B2, saisissez Subject Type. Dans la cellule C2 "
+"saississez le nom du sujet (exemple : Clinique du Nord). Dans la cellule D2, "
+"saisissez le numéro de mobile attaché au sujet. Dans la cellule E2, saisissez son ID "
+"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
+"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
+"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
+"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
+"virgule). Dans la cellule F2 saisissez une description courte du sujet. "
+"<br/>3. Répétez l'étape #2 pour chaque sujet à partir de la cellule A3. "
+"Chaque sujet sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
+"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
+"\"Importez la liste\" et suivez les instructions."
 
 #: templates/project/subjects_wizard.html:83
 msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"
@@ -2281,7 +2250,7 @@ msgstr "Activation terminée"
 
 #: templates/registration/activation_complete.html:9
 msgid "You have successfully activated your account"
-msgstr "Vous avez activé votre compte"
+msgstr "Vous avez activé votre compte avec succès"
 
 #: templates/registration/login.html:3
 msgid "Login"
@@ -2447,7 +2416,7 @@ msgid "What is the subject's name?"
 msgstr "Quel est le nom du sujet ?"
 
 msgid "What is the subject's Unique ID Number"
-msgstr "Quel l'ID unique du sujet"
+msgstr "Quel est l'ID unique du sujet"
 
 msgid "What is the subject's location?"
 msgstr "Quel est la localité du sujet?"
@@ -2499,7 +2468,7 @@ msgid ""
 "This entity reported on is not registered in our system. Please register "
 "entity or contact us at 033 20 426 89"
 msgstr ""
-"Cette entité n'est pas enregistrées dans notre système.Veuillez "
+"Cette entité n'est pas enregistrée dans notre système. Veuillez "
 "enregistrer la nouvelle entité ou contactez-nous au 033 20 426 89"
 
 msgid "This telephone number is not registered in our system."
@@ -2563,12 +2532,12 @@ msgid ""
 "Error. This project is not yet active. Submissions can be made only for "
 "an active project."
 msgstr ""
-"Erreur. Ce projet n'est pas encore actif. Les envois ne sont possibles "
-"que sur les projets actifs"
+"Erreur. Ce projet n'est pas encore activé. Les envois ne sont possibles "
+"que sur les projets activés"
 
 msgid "Error. Internal error. Please call technical support"
 msgstr ""
-"Erreur: Erreur interne. S'il vous plaît appelez l'assistance technique"
+"Erreur: Erreur interne. Veuillez appelez l'assistance technique"
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
@@ -2583,19 +2552,19 @@ msgstr ""
 "SMS."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
-msgstr "Entité avec numéro d'identification unique (ID) =% s existe déjà."
+msgstr "L'ntité avec le numéro d'identification unique (ID) =% s existe déjà."
 
 msgid "answer"
 msgstr "réponse"
 
 msgid "Answer for question %s is required"
-msgstr "Réponse pour %s la question est nécessaire"
+msgstr "Réponse pour %s la question est obligatoire"
 
 msgid "The answer %s must be between %s and %s"
 msgstr "La réponse %s doit être comprise entre %s et %s"
 
 msgid "Patern should be ^[0-9]+$"
-msgstr "Patern devrait être ^[0-9]+$"
+msgstr "Le modèle devrait être ^[0-9]+$"
 
 msgid "Mobile number is missing"
 msgstr "Numéro de mobile est manquant"
@@ -2616,16 +2585,18 @@ msgid "Settings have been updated successfully"
 msgstr "Les paramètres ont été mis à jour avec succès"
 
 msgid "Hello. We have not received your data for"
-msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour"
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour "
 
 msgid "Please send it to us today. Thank you."
 msgstr "Veuillez l'envoyer aujourd'hui. Merci"
 
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
-msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
+msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. "
+"Veuillez contacter le Service d’Assistance de DataWinners."
 
 msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
-msgstr "Nous ne pouvions pas importer vos données! Vous utilisez un format de document nous ne pouvons pas importer. S'il vous plaît utilisez un Comma Separated Values ​​(.csv) ou un Excel (.xls)!"
+msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. "
+"Veuillez utiliser un fichier CSV ​​(.csv) ou un Excel (.xls)!"
 
 msgid "vtrue,vfalse"
 msgstr "Oui,Non"
@@ -2640,16 +2611,16 @@ msgid "Your Organization"
 msgstr "Votre organisation"
 
 msgid "Point of Contact / Account Administrator"
-msgstr "Point de contact / Administrateur du compte"
+msgstr "Personne à contacter / Administrateur du compte"
 
 msgid "Already registered?"
-msgstr "Vous avez déjà un compte?"
+msgstr "Avez-vous un compte ?"
 
 msgid "Sign in here"
 msgstr "Identifiez vous ici"
 
 msgid "Sign Up To Start Using DataWinners Now"
-msgstr "Inscrivez vous pour commencer à utiliser DataWinners maintenant"
+msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
 
 msgid "Sign Up"
 msgstr "S'inscrire"
@@ -2664,7 +2635,7 @@ msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
 
 msgid "Enter each data sender's email address below. Each can submit data via the internet"
-msgstr "Entrez l'adresse e-mail chaque expéditeur des données ci-dessous. Chacun peut soumettre des données via Internet"
+msgstr "Entrez l'adresse e-mail chaque envoyeur de données ci-dessous. Chacun peut soumettre des données via Internet"
 
 msgid "Reporter ID"
 msgstr "ID "
@@ -2676,10 +2647,10 @@ msgid "Give Access"
 msgstr "Donner un accès"
 
 msgid "Your project has been deleted"
-msgstr ""
+msgstr "Votre projet a été supprimé"
 
 msgid "Undo Delete"
-msgstr ""
+msgstr "Annuler Supprimer"
 
 msgid "Inactive"
 msgstr "Non activé"
@@ -2688,7 +2659,7 @@ msgid "survey"
 msgstr "enquête"
 
 msgid "Latest"
-msgstr "Dernier"
+msgstr "Le dernier"
 
 msgid "Sum"
 msgstr "Somme"
@@ -2715,16 +2686,101 @@ msgid "mm.yyyy"
 msgstr "mm.aaaa"
 
 msgid "Between"
-msgstr "entre les"
+msgstr "entre le/les"
 
 msgid "characters"
 msgstr "caractère"
 
 msgid "Minimum"
-msgstr "minimale"
+msgstr "Minimum"
 
 msgid "All fields are required unless marked optional."
 msgstr "Tous les champs sont obligatoires sauf indication \"optionnel\"."
 
 msgid "Optional"
 msgstr "Optionnel"
+
+#: forms.py:54
+msgid ""
+"Choose your language for the questionnaire and automatic messages to Data "
+"Senders"
+msgstr "Choisissez la langue pour le questionnaire et les réponses automatiques aux expéditeurs de données"
+
+#: forms.py:62
+msgid "Same"
+msgstr "Le/la même"
+
+#: forms.py:63
+msgid "Do you want to remind DataSenders to send in their data?"
+msgstr "Voulez-vous envoyer des massages de rappel aux envoyeurs de données ?"
+
+#: forms.py:71
+msgid "Describe what your team hopes to achieve by collecting this data"
+msgstr "Décrivez ce que votre équipe attend de cette collecte de données"
+
+#: templates/project/sms_tester_form.html:39
+#, python-format
+msgid "See if DataWinners received your SMS. (Go to "
+msgstr "Verifiez si DataWinners a reçu votre message. (Allez à la page "
+
+msgid "All Data Records "
+msgstr "Toutes les données "
+
+msgid "page to view submission status)"
+msgstr "pour voir l'état de votre envoi)"
+
+msgid "Choose your language for success and error messages to Data Senders"
+msgstr "Choisissez votre langue pour les messages d'erreur et de succès à retourner aux envoyeurs de données"
+
+msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
+msgstr "Ce/cet %s n'est pas encore enregistré dans le système. Veuillez vérifiez le %s du numéro d'identification unique et réessayez"
+
+msgid "Answer %s for question %s is longer than allowed."
+msgstr "La réponse à la question %s %s dépasse la longueur autorisée."
+
+msgid "Answer %s for question %s is %s than allowed."
+msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
+
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx yy.yyyy Exemple -18.8665 47.5315"
+
+msgid "greater"
+msgstr "supérieur à"
+
+msgid "smaller"
+msgstr "inférieur à"
+
+msgid "Answer %s for question %s is invalid. Expected date in %s format"
+msgstr "La réponse %s pour la question %s n'est pas valide. Format de date attendu %s"
+
+msgid "Monday"
+msgstr "lundi"
+
+msgid "Tuesday"
+msgstr "mardi"
+
+msgid "Wednesday"
+msgstr "mercredi"
+
+msgid "Thursday"
+msgstr "jeudi"
+
+msgid "Friday"
+msgstr "vendredi"
+
+msgid "Saturday"
+msgstr "samedi"
+
+msgid "Sunday"
+msgstr "dimanche"
+
+msgid "Warning: Changing the subject type will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?"
+msgstr "Attention: La modification du Type de Sujet va supprimer toutes les questions contenues dans votre Questionnaire ainsi que toutes les données que vous avez "
+"collectées. Etes-vous sûr de vouloir continuer ?"
+
+msgid "Access to Web Submission has been given to your DataSenders"
+msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de données"
+
+
+msgid "User has been added successfully"
+msgstr "L'utilisateur a été ajouté avec succès"

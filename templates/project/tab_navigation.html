@@ -85,7 +85,7 @@
     <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.submission_log_link }}" class="{{ disable_link_class }}">{% trans "All Data Records" %}</a>
     </li>
-    {% if project.state == 'Active' %}
+    {% if project.state == 'Active' and project_links.test_questionnaire_link != "" %}
     <li class="{% ifactivetab 'secondary_tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.test_questionnaire_link }}">{% trans "Web Submission" %}</a>
     </li>

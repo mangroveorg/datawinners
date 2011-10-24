@@ -72,7 +72,10 @@ def _make_project_links(project, questionnaire_code):
 
     if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
-        project_links['test_questionnaire_link'] = reverse(web_questionnaire, args=[project_id])
+        if 'web' in project.devices:
+            project_links['test_questionnaire_link'] = reverse(web_questionnaire, args=[project_id])
+        else:
+            project_links['test_questionnaire_link'] = ""
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
