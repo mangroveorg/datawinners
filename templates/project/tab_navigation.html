@@ -7,6 +7,7 @@
     <script src="/media/javascript/project/activate_project.js" type="text/javascript"></script>
     <script src="/media/javascript/project/sms_tester.js" type="text/javascript"></script>
     <script src="/media/javascript/project/questionnaire_preview.js" type="text/javascript"></script>
+    <script src="/media/javascript/project/broadcast_sms.js" type="text/javascript"></script>
 {% endblock %}
 
 
@@ -22,20 +23,22 @@
                 <div class="tooltip">
                     <p>{% trans "Your project status is Test. You need to click on 'Activate Project' to activate it." %}</p>
                 </div>
-                <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Activate Project" %}</a>
+                <a href="{{ project_links.activate_project_link }}"
+                   class="activate_project">{% trans "Activate Project" %}</a>
                 <a href="#" id='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
                 {% include 'project/sms_tester_form.html' %}
             {% else %}
                 <div class="tooltip">
                     <p>{% trans "Your project is inactive. You need to complete the Profile to activate it." %}</p>
                 </div>
-                <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Activate Project" %}</a>
+                <a href="{{ project_links.activate_project_link }}"
+                   class="activate_project">{% trans "Activate Project" %}</a>
             {% endif %}
         {% endif %}
     </div>
     <div id="activate_project_block">
         <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
-        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
         <a href="#" class="button" id="confirm">{% trans "Activate" %}</a>
     </div>
 
@@ -52,13 +55,17 @@
             <a href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "Subjects" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.questionnaire_link }}" class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
+            <a href="{{ project_links.questionnaire_link }}"
+               class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.datasenders_link }}" class="{{ disable_link_class }}">{% trans "Data Senders" %}</a>
+            <a href="{{ project_links.datasenders_link }}"
+               class="{{ disable_link_class }}">{% trans "Data Senders" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
+            <a href="{{ project_links.broadcast_message_link }}" class="messages_and_reminders_tab {{ disable_link_class }}">
+                {% trans "Messages & Reminders" %}
+            </a>
         </li>
         {% endif %}
         {% if project.state != 'Inactive' %}
@@ -74,6 +81,7 @@
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
+
         <div class="tooltip"><p>
             {% trans "tooltip_tab_navigation" %}
         </p></div>
@@ -83,7 +91,8 @@
         <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Analysis" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'activity_log' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.submission_log_link }}" class="{{ disable_link_class }}">{% trans "All Data Records" %}</a>
+        <a href="{{ project_links.submission_log_link }}"
+           class="{{ disable_link_class }}">{% trans "All Data Records" %}</a>
     </li>
     {% if project.state == 'Active' and project_links.test_questionnaire_link != "" %}
     <li class="{% ifactivetab 'secondary_tab_nav' 'web_questionnaire' %}active{% else %}inactive{% endifactivetab %}">
@@ -117,11 +126,15 @@
 
 {% block secondary_navigation_reminders %}
 <ul class="secondary_tab">
+    <li class="{% ifactivetab 'secondary_tab_nav' 'message' %}active{% else %}inactive{% endifactivetab %}">
+        <a href="{{ project_links.broadcast_message_link }}">{% trans "Send a Message" %}</a>
+    </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'scheduled' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.reminders_link }}">{% trans "Scheduled Reminders" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'sent' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.sent_reminders_link }}">{% trans "Sent Reminders" %}</a>
     </li>
+
 </ul>
 {% endblock %}
