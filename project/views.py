@@ -952,5 +952,5 @@ def _get_organization_telephone_number(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    return organization_settings.sms_tel_number
+    return organization_settings.get_organisation_sms_number()
 

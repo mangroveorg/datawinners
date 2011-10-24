@@ -23,7 +23,8 @@ def _test_mode_numbers(request):
     profile = request.user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    _to = organization_settings.sms_tel_number
+#    _to = organization_settings.sms_tel_number
+    _to = organization_settings.get_organisation_sms_number()
     _from = TEST_REPORTER_MOBILE_NUMBER
     return _from, _to
 

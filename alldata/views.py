@@ -49,9 +49,9 @@ def _get_organization_sms_number_for(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    org_number = organization_settings.sms_tel_number
+#    org_number = organization_settings.sms_tel_number
+    org_number = organization_settings.get_organisation_sms_number()
     return org_number
-
 
 @login_required(login_url='/login')
 def failed_submissions(request):
