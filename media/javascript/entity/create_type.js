@@ -26,7 +26,6 @@ $(document).ready(function() {
                         $("#id_entity_type_text").val("");
                     }
                     else{
-                        $('#id_entity_type').val(new_type.toLowerCase());
                         $("#type_message").html(data.message);
                         $("#type_message").addClass("message-box");
                     }
