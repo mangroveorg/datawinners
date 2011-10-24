@@ -57,7 +57,6 @@ def sms(request):
         form_code = SMSParser().form_code(_message)
         form_model = get_form_model_by_code(dbm, form_code)
         translation.activate(form_model.activeLanguages[0])
-        form_code, values = SMSParser().parse(_message)
     except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, error=message)
