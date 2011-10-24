@@ -118,3 +118,6 @@ fieldset {
 #questions-panel {
   background: #F0F0F0 !important;
   width: auto; }
+
+.create_new_subject {
+  display: none; }
