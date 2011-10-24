@@ -15,11 +15,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-
-COUCH_DB_SERVER = "http://localhost:5984"
-VUMI_API_URL = "http://178.79.161.90:7000"
-VUMI_USER = "vumi"
-VUMI_PASSWORD = "vumi"
+VUMI_API_URL = "http://178.79.145.58:7000"
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -198,8 +194,6 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
-SCHEDULER_HOUR=21
-SCHEDULER_MINUTES=34
 api_keys = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',
