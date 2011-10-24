@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
+from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
@@ -24,9 +25,7 @@ class OrganizationForm(ModelForm):
     state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     country = forms.CharField(max_length=30, required=True, label=_('Country'))
     zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
-    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
-                                    label=_("Office Phone Number"),
-                                    error_message=_("Please enter a valid phone number"))
+    office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
     website = forms.URLField(required=False, label=_('Website Url'))
 
     class Meta:
@@ -48,10 +47,8 @@ class UserProfileForm(forms.Form):
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
     username = forms.EmailField(max_length=30, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
-    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
-                                    error_message=_("Please enter a valid phone number"))
-    mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Mobile Phone"),
-                                    error_message=_("Please enter a valid phone number"))
+    mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
+    office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
 
@@ -81,10 +78,8 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
     first_name = forms.CharField(max_length=30, required=True, label='First name')
     last_name = forms.CharField(max_length=30, required=True, label='Last name')
-    office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Office Phone"),
-                                    error_message=_("Please enter a valid phone number"))
-    mobile_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15, label=_("Mobile Phone"),
-                                    error_message=_("Please enter a valid phone number"))
+    office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
+    mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))),
@@ -113,9 +108,7 @@ class FullRegistrationForm(MinimalRegistrationForm):
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
                                             error_message=_("Please enter a valid Postal / Zip code"),
                                             label=_('Postal / Zip Code'))
-    organization_office_phone = forms.RegexField(required=False, regex="^[^a-zA-Z]*[0-9]+$", max_length=15,
-                                                 label=_("Office Phone Number"),
-                                                 error_message=_("Please enter a valid phone number"))
+    organization_office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
     organization_website = forms.URLField(required=False, label=_('Website Url'))
 
 class LoginForm(AuthenticationForm):

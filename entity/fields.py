@@ -5,15 +5,16 @@ from django.utils.translation import ugettext as _
 
 EMPTY_VALUES = (None, '', [], (), {})
 
-PHONE_NUMBER_REGEX = "^[0-9-]+$"
+PHONE_NUMBER_REGEX = "^[\+]?[0-9-]+$"
 PHONE_NUMBER_MAX_LENGTH = 15
+PHONE_NUMBER_MIN_LENGTH = 5
 
 class PhoneNumberField(RegexField):
-    def __init__(self, max_length=None, min_length=None, *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, error_message=None, *args, **kwargs):
         super(PhoneNumberField, self).__init__(PHONE_NUMBER_REGEX,
-                                               (max_length or PHONE_NUMBER_MAX_LENGTH),
-                                               min_length,
-                                               _("Please enter a valid phone number.Only numbers and -(dash) allowed"),
+                                               max_length or PHONE_NUMBER_MAX_LENGTH,
+                                               min_length or PHONE_NUMBER_MIN_LENGTH,
+                                               error_message or _("Please enter a valid phone number."),
                                                *args,
                                                **kwargs)
 
