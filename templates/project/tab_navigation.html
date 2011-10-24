@@ -12,29 +12,13 @@
 
 
 {% block section_title %}
-    <h2 class="project_title">{{ project.name }}</h2>
     <div class="project_detail">
-        <span class="project_status">{% trans "Project status:" %}
-            <span class="{{ project.state }}_state">{% trans project.state %}</span>
+        <h2 class="project_title"> project name
+        <img src="/media/images/help_button.png" align="right"/></h2>
+        <span class="project_status">{% trans "Project status: Active" %}
+            <a href="#">Archive this Project</a>
+            <a href="#">Delete this Project</a>
         </span>
-        {% if  project.state  != 'Active' %}
-            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
-            {% if project.state == 'Test' %}
-                <div class="tooltip">
-                    <p>{% trans "Your project status is Test. You need to click on 'Activate Project' to activate it." %}</p>
-                </div>
-                <a href="{{ project_links.activate_project_link }}"
-                   class="activate_project">{% trans "Activate Project" %}</a>
-                <a href="#" id='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
-                {% include 'project/sms_tester_form.html' %}
-            {% else %}
-                <div class="tooltip">
-                    <p>{% trans "Your project is inactive. You need to complete the Profile to activate it." %}</p>
-                </div>
-                <a href="{{ project_links.activate_project_link }}"
-                   class="activate_project">{% trans "Activate Project" %}</a>
-            {% endif %}
-        {% endif %}
     </div>
     <div id="activate_project_block">
         <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
