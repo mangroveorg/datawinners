@@ -3,7 +3,7 @@ from django.forms.fields import RegexField, CharField, FileField
 from django.utils.translation import ugettext as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
-
+from datawinners.entity.fields import PhoneNumberField
 class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
@@ -30,8 +30,7 @@ class ReporterRegistrationForm(Form):
                             error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- ")
                             ,
                             label=_("Name"))
-    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label=_("Mobile Number"),
-                                  error_message=_("Please enter a valid phone number.Only numbers and -(dash) allowed"))
+    telephone_number = PhoneNumberField(required=True,label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
     location = CharField(max_length=100, required=False, label=_("Enter location"))
     project_id = CharField(required=False, widget=HiddenInput())
