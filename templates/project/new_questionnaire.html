@@ -1,0 +1,20 @@
+<div class="questionnare_content grid_23 alpha omega">
+        <div id="message-label" class="message-box none">
+        </div>
+
+        <div>
+            <div id="questions-panel" class="grid_8 alpha">
+                <h4>Questions</h4>
+                <div data-bind="template: 'question-list-template'" class="">
+                </div>
+                <div class="add_question">
+                    <a class="add_link" href="new_questionnaire.html#"
+                       data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">Add another Question</a>
+                </div>
+            </div>
+
+            <div id="question-detail-panel">
+                {% include 'project/question_detail_panel.html' %}
+            </div>
+        </div>
+</div>

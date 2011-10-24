@@ -1,0 +1,100 @@
+{% extends 'new_layout_wizard.html' %}
+{% block page_title %} Create Project {% endblock %}
+{% block section_title %}
+    <h2 class="project_title">Create a New Project
+    <img src="/media/images/help_button.png" align="right"/></h2>
+        <a href="#" class="cancel_link">cancel</a>
+{% endblock %}
+
+{% load dw_tabs %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block wizard %}
+    <div class="wizard_heading">Create your project below in a few easy steps.</div>
+    <div style="border-bottom: 1px solid #ccbf97;"></div>
+    <div class="w_content">
+        <p>1. Name your project and provide basic information about it.</p>
+        <p>2. Write and edit your questions.</p>
+        <p>3. Save and activate your project.</p>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="clear_both">
+        <fieldset>
+            <legend>1. Basic Information</legend>
+        </fieldset>
+        <div style="border-bottom: 1px solid #ccbf97;"></div>
+        <li class="form-row-10px">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            <img src="/media/images/help_icon.png" class="help_icon" />
+
+            <p><i>Example: Teacher attendance in Antananarivo</i></p>
+            {{ form.name.errors }}
+        </li>
+        <li>
+            {{ form.goals.label_tag }}
+            {{ form.goals }}
+            {{ form.goals.errors }}
+            <p><i>Example: Collect data from 100 primary school in Antananarivo in an effort to increase
+                teacher attendance from 50% to 80%</i></p>
+        </li>
+        <li>
+            {{ form.frequency_enabled.label_tag }}
+            <p>How often do you need the data (answer to your questions)?</p>
+            {{ form.frequency_enabled }}
+            {{ form.frequency_enabled.errors }}
+            {{ form.frequency_period }}
+            {{ form.frequency_period.errors }}
+        </li>
+        <li>
+            {{ form.questionnaire.label_tag }}
+            {{ form.questionnaire }}
+            <img src="/media/images/help_icon.png" class="help_icon" />
+            <br><i> {{ form.questionnaire.help_text }}</i>
+        </li>
+        <li>
+            {{ form.about_questionnaire.label_tag }}
+            {{ form.about_questionnaire.help_text }}
+            {{ form.about_questionnaire }}
+            {{ form.category }}
+            {{ form.subject }}
+        </li>
+    </div>
+
+    <div class="clear_both">
+        <fieldset>
+        <legend>2. Questions </legend>
+        </fieldset>
+        <div class="line"></div>
+        <p><i>We have provided you with example questions below. You can use the provided question, edit them, delete
+            them or write your own.</i></p>
+        {% include 'project/new_questionnaire.html' %}
+    </div>
+    <div class="clear_both">
+        <fieldset>
+             <legend>3. Save and Activate</legend>
+        </fieldset>
+
+        <div class="right_aligned_button">
+            <a href="#" class="cancel_link"> Cancel </a>
+            <a href="#" class="draft_button" id="save_as_draft"> Save as Test</a>
+            <a href="#" class="draft_button" id="save_as_test"> Save as Draft</a>
+            <a href="#" class="button" id="save_activate"> Save and Activate</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+

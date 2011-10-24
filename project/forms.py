@@ -95,3 +95,24 @@ class ProjectProfile(Form):
                 self.errors['entity_type'] = ""
 
         return self.cleaned_data
+
+    
+class CreateProject(Form):
+    name = CharField(required=True, label=_("Name"))
+    goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
+
+    FREQUENCY_CHOICES = ((False, _("Whenever my data sender have data")), (True, _("Every:")))
+    frequency_enabled = ChoiceField(label = _("Time Period"),
+                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True,initial=True)
+    frequency_period = ChoiceField(choices=(('Choose a Time Period', _('Choose a Time Period')), ('week', _('Week')), ('month', _('Month')),('quarter', _('Quarter')), ), required=False)
+
+    questionnaire = CharField(required=True, label=_("Questionnaire Code"), help_text="Use the generated code or change it to something different.")
+
+    QUESTIONNAIRE_CHOICES = ((False, _("This is general activity report.")), (True, _("I am collecting data about a specific subject.")))
+    about_questionnaire = ChoiceField(label=_("What is this questionnaire about?"),
+                                      help_text="How often do you need data (answers to your questions)?",choices=QUESTIONNAIRE_CHOICES,
+                                      widget=forms.RadioSelect, required=False, initial=True)
+    CATEGORY_CHOICE = (('Choose a category', _('Choose a category')), ('A person', _('A person')), ('A place', _('A place')), ('A thing', _('A thing')), ('An event', _('An event')), )
+    SUBJECT_CHOICE = (('Choose a subject', _('Choose a subject')), ('Patient', _('Patient')), ('Farmer', _('Farmer')), ('Child', _('Child')), ('Employee', _('Employee')), )
+    category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
+    subject = ChoiceField(choices=SUBJECT_CHOICE, required=False)
