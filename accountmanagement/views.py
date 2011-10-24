@@ -120,6 +120,7 @@ def new_user(request):
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
                 reset_form.save()
+                form = UserProfileForm()
                 add_user_success = True
 
         return render_to_response("accountmanagement/account/add_user.html", {'profile_form': form, 'add_user_success': add_user_success},
