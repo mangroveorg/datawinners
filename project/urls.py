@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 
 from datawinners.project.views import questionnaire_wizard, save_questionnaire, create_profile, index, project_overview,\
     edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project, finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview, submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, delete_reminder, sent_reminders
-from datawinners.project.wizard_view import questionnaire_wizard
+from datawinners.project.wizard_view import questionnaire_wizard,new_project_overview
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -13,6 +13,7 @@ js_info_dict = {
 urlpatterns = patterns('',
         (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
         (r'^project/wizard/new/$', questionnaire_wizard),
+        (r'^project/overview/new/$', new_project_overview),
         (r'^project/disassociate/$', disassociate_datasenders),
         (r'^project/wizard/questionnaire/(?P<project_id>.+?)/$', questionnaire_wizard),
         (r'^project/questionnaire/(?P<project_id>.+?)/$', questionnaire),
