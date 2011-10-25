@@ -47,7 +47,7 @@ def sms(request):
     if _to is None:
         return HttpResponse(_("Your organization does not have a telephone number assigned. Please contact DataWinners Support."))
     try:
-        dbm = get_db_manager_for(_to)
+        dbm = get_db_manager_for(_from, _to)
     except UnknownOrganization as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, error=message)

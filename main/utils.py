@@ -1,12 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.core.exceptions import ObjectDoesNotExist
-from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from django.conf import settings
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from mangrove.datastore.database import get_db_manager
+from django.conf import settings
 from mangrove.errors.MangroveException import UnknownOrganization
 import os
 from glob import iglob
 import string
+
 
 
 def get_database_manager(user):
@@ -22,14 +24,18 @@ def include_of_type(entity,type):
 def exclude_of_type(entity,type):
     return False if entity.type_path[0] == type else True
 
-def get_db_manager_for(org_tel_number):
+def get_db_manager_for(data_sender_phone_no, org_tel_number):
+
     try:
-        organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
+        if org_tel_number == settings.TRIAL_ACCOUNT_PHONE_NUMBER:
+            record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
+            organization_settings = OrganizationSetting.objects.get(organization=record.organization)
+        else:
+            organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
     except ObjectDoesNotExist:
         raise UnknownOrganization(org_tel_number)
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
-
 
 def create_views(dbm):
     """Creates a standard set of views in the database"""
