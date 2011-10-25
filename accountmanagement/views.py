@@ -14,6 +14,7 @@ from django.contrib.auth.views import login
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
+from datawinners.project.models import Project
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -36,6 +37,19 @@ def is_admin(f):
 
         return f(*args, **kw)
 
+    return wrapper
+
+def project_has_web_device(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        dbm = get_database_manager(user)
+        project_id = kw["project_id"]
+        project = Project.load(dbm.database, project_id)
+        if "web" not in project.devices:
+            referer = datawinners.settings.HOME_PAGE
+            return HttpResponseRedirect(referer)
+        return f(*args, **kw)
     return wrapper
 
 def is_datasender(f):
