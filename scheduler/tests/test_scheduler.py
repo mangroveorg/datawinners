@@ -44,7 +44,9 @@ class TestScheduler(unittest.TestCase):
         self.reminder3.get_sender_list.return_value = self.data_senders
 
         self.reminders = [self.reminder1, self.reminder2, self.reminder3]
-        self.sms_client = Mock(spec=SMSClient)
+        self.sms_client = SMSClient()
+        self.sms_client.send_sms=Mock()
+        self.sms_client.send_sms.return_value=True
 
 
     def tearDown(self):
