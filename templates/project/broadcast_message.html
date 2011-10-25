@@ -1,0 +1,47 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Project - Messages & Reminders" %} {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "reminders" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_broadcast_sms.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    {% block secondary_navigation_reminders %}
+        {% activetab "secondary_tab_nav" "message" %}
+        {{ block.super }}
+    {% endblock %}
+
+    <div style="position:relative;">
+        <label><h3>{% trans "Send a Message" %}</h3></label>
+        <label><h6 class="section_description">{% trans "Instruction about sending a message." %}</h6></label><br/>
+
+        <div style="position:relative;">
+            <div class='sms_title'><h5>{% trans "Text:" %}</h5></div>
+            <div class='sms_content'>
+                <textarea id="sms_content" watermark="{% trans 'Enter your SMS text' %}"></textarea>
+            </div>
+            <div class='sms_counter'>
+                <div class='sms_content_static_text'>{% trans "/160 character used (1 SMS)" %}</div>
+                <div class='counter' id='counter'>0</div>
+            </div>
+
+            <div class='send_button'>
+                <input type="button" value="{% trans 'Send' %}" id="id_send_broadcast_sms_button" class="button" onclick='clear_sms_content()'/>
+            </div>
+        </div>
+    </div>
+{% endblock %}

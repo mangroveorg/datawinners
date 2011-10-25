@@ -87,6 +87,7 @@ def _make_project_links(project, questionnaire_code):
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
         project_links['reminders_link'] = reverse(reminders, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
+        project_links['broadcast_message_link'] = reverse(broadcast_message, args=[project_id])
     return project_links
 
 
@@ -518,20 +519,6 @@ def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
 
 @login_required(login_url='/login')
-@is_datasender
-def reminders(request, project_id):
-    if request.method == 'GET':
-        dbm = get_database_manager(request.user)
-        project = Project.load(dbm.database, project_id)
-        questionnaire = FormModel.get(dbm, project.qid)
-        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
-        return render_to_response('project/reminders.html',
-                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'reminders':_format_reminders(reminders, project_id),
-                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
-                                  context_instance=RequestContext(request))
-
-@login_required(login_url='/login')
 @csrf_exempt
 def create_reminder(request, project_id):
     if is_empty(request.POST['id']):
@@ -587,6 +574,30 @@ def sent_reminders(request, project_id):
     return render_to_response('project/sent_reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':get_all_reminder_logs_for_project(project_id, dbm),
+                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
+                                  context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_datasender
+def broadcast_message(request, project_id):
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, project_id)
+    questionnaire = FormModel.get(dbm, project.qid)
+    return render_to_response('project/broadcast_message.html',
+                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code)},
+                                  context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_datasender
+def reminders(request, project_id):
+    if request.method == 'GET':
+        dbm = get_database_manager(request.user)
+        project = Project.load(dbm.database, project_id)
+        questionnaire = FormModel.get(dbm, project.qid)
+        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
+        return render_to_response('project/reminders.html',
+                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
+                 'reminders':_format_reminders(reminders, project_id),
                  'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
@@ -774,8 +785,7 @@ def _get_django_field(field):
     if isinstance(field, SelectField):
         return  _create_select_field(field, _create_choices(field))
     display_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(), help_text=field.instruction)
-    constrained_text = field.get_constraint_text()
-    display_field.widget.attrs["watermark"] = _(constrained_text) if type(field) is not TextField else (ugettext(constrained_text.split(' ')[0]) + " " + ''.join(constrained_text.split(' ')[1:-1]) + " " + ugettext(constrained_text.split(' ')[-1]))
+    display_field.widget.attrs["watermark"] = field.get_constraint_text()
     display_field.widget.attrs['style'] = 'padding-top: 7px;'
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
