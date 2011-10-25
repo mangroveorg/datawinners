@@ -515,6 +515,14 @@ msgstr ""
 "equipment you already have – a computer, the Internet and basic mobile "
 "phones. </p>"
 
+msgid "subscription_details"
+msgstr ""
+"<h5>Subscription Details</h5><p>Learn more about</p>"
+"<p><ul><li>Where DataWinners is available</li>"
+"<li>Key details of Monthly Subscription</li>"
+"<li>Our Conuslting Service</li></ul></p>"
+"<p>See our <a href='https://www.datawinners.com/en/pricing/'>Pricing page</a></p>"
+
 #: templates/layout_wizard.html:32
 msgid "Previous Step:"
 msgstr ""

@@ -51,3 +51,12 @@ form ul li input[type=text], form ul li input[type=password] {
   background: #feee96; }
   .about_datawinners p {
     margin-top: 10px; }
+
+.subscription_details {
+  float: right;
+  background: #feee96; }
+  .subscription_details p {
+    margin-top: 10px; }
+  .subscription_details li {
+    list-style-type: disc;
+    margin-left: 15px; }

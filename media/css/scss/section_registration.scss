@@ -1,7 +1,6 @@
 .organization, .administrative{
   margin-bottom: 15px;
   padding: 10px;
-  min-height:400px;
   }
 .signin{
   margin-bottom: 15px;
@@ -77,3 +76,16 @@ form{
     margin-top: 10px;
     }
 }
+
+.subscription_details {
+    float: right;
+    background: #feee96;
+    p{
+    margin-top: 10px;
+    }
+    li {
+        list-style-type: disc;
+        margin-left: 15px;
+    }
+}
+

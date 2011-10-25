@@ -13,12 +13,23 @@ from models import  Organization
 from django.contrib.auth.models import User
 
 
+def get_organization_sectors():
+    return (('', _('Please Select...')),
+            ('CommercialBusiness', _('Commercial Business')),
+            ('Education', _('Education')),
+            ('Finance', _('Finance')),
+            ('FoodSecurity', _('Food Security')),
+            ('Health', _('Health')),
+            ('HumanRights', _('Human Rights')),
+            ('Shelter', _('Shelter')),
+            ('WaterSanitation', _('Water and Sanitation')),                                                              ('Other', _('Other')))
+
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
 
     name = forms.CharField(required=True, label=_('Organization name'))
     sector = forms.CharField(required=False, widget=(
-        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', _('Public Health')), ('Other', _('Other'))))),
+        forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
                              label=_('Organization Sector'))
     address = forms.CharField(required=True, max_length=30, label=_('Address'))
     city = forms.CharField(max_length=30, required=True, label=_('City'))
@@ -82,7 +93,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
-        forms.Select(attrs={'class': 'width-200px'}, choices=(('PublicHealth', 'Public Health'), ('Other', 'Other')))),
+        forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
                                           label=_('Organization Sector'))
     organization_city = forms.CharField(max_length=30, required=True, label=_('City'))
     organization_country = forms.CharField(max_length=30, required=True, label=_('Country'))
