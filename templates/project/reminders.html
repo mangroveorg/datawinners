@@ -30,7 +30,9 @@
         {% activetab "secondary_tab_nav" "scheduled" %}
         {{ block.super }}
     {% endblock %}
-
+    {% if in_trial_mode %}
+        <div id="reminder_not_work_for_trial_msg">{% trans "Reminders will not be sent unless you subscribe to a paid account." %}</div>
+    {% endif %}
     {% if project.is_reminder_enabled %}
     <div id='new_reminder'>
         <form id='reminder_form' method="POST" action='{{ create_reminder_link }}'>
@@ -40,7 +42,7 @@
             <ul class="margin_bottom_20" id='when_block'>
                 <li>
                     <input type="radio"
-                           value="before_deadline" name="reminder_mode"><input disabled="disabled"
+                           value="before_deadline" name="reminder_mode" class="before_deadline_radio"><input disabled="disabled"
                                                                                id="days_before_deadline"
                                                                                type="text" class="required number" name="day"/> {% trans "day(s) <strong>before</strong> the deadline" %}
                 </li>

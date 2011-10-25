@@ -494,9 +494,14 @@ def reminders_wizard(request, project_id=None):
         dbm = get_database_manager(request.user)
         project = Project.load(dbm.database, project_id)
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html',
-                {"previous": previous_link, 'project': project, 'is_reminder': project.is_reminder_enabled()},
-                                  context_instance=RequestContext(request))
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        context = {"previous": previous_link,
+                 'project': project,
+                 'is_reminder': project.is_reminder_enabled(),
+                 'in_trial_mode': organization.in_trial_mode,
+        }
+        return render_to_response('project/reminders_wizard.html', context, context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
@@ -518,6 +523,25 @@ def _format_reminder(reminder, project_id):
 
 def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
+
+@login_required(login_url='/login')
+@is_datasender
+def reminders(request, project_id):
+    if request.method == 'GET':
+        dbm = get_database_manager(request.user)
+        project = Project.load(dbm.database, project_id)
+        questionnaire = FormModel.get(dbm, project.qid)
+        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        context = {
+            'project': project,
+            "project_links": _make_project_links(project, questionnaire.form_code),
+            'reminders':_format_reminders(reminders, project_id),
+            'create_reminder_link' : reverse(create_reminder, args=[project_id]),
+            'in_trial_mode': organization.in_trial_mode,
+        }
+        return render_to_response('project/reminders.html', context, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -572,9 +596,11 @@ def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
+    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     return render_to_response('project/sent_reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':get_all_reminder_logs_for_project(project_id, dbm),
+                 'in_trial_mode':is_trial_account,
                  'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
