@@ -23,10 +23,6 @@
     }
 }
 
-.gray-line{
-    border-color: gray;
-}
-
 .clear_both{
     width:93%;
     float:left;
@@ -102,7 +98,7 @@ fieldset{
 }
 
 .grid_23{
-    border: 1px solid #ccbf97;
+    border: 1px solid #ccbf97 !important;
     width:860px !important;
     margin:20px 0 15px 0;
 }
