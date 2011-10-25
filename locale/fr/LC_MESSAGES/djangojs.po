@@ -521,3 +521,5 @@ msgstr "Utilisateur avec l'email "
 msgid " already exists"
 msgstr " existe déjà"
 
+msgid "Agree terms and conditions"
+msgstr "Acceptez les termes et conditions"

@@ -99,6 +99,11 @@ class OrganizationSetting(models.Model):
     smsc = models.ForeignKey(SMSC, null=True,
                              blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
 
+    def get_organisation_sms_number(self):
+        if self.organization.in_trial_mode:
+            return settings.TRIAL_ACCOUNT_PHONE_NUMBER
+        return self.sms_tel_number
+
     def __unicode__(self):
         return self.organization.name
 

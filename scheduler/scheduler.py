@@ -37,7 +37,7 @@ def send_reminders_for_an_organization(org,on_date,sms_client):
     """
     logger.info("Organization %s" % org.name )
     org_setting = OrganizationSetting.objects.filter(organization=org)[0]
-    from_number = org_setting.sms_tel_number
+    from_number = org_setting.get_organisation_sms_number()
     dbm = get_db_manager(server=settings.COUCH_DB_SERVER, database=org_setting.document_store)
 
     # TODO: Below will be replaced by get all projects and each project should have the reminders embedded in them.

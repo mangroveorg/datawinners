@@ -3,6 +3,7 @@ from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.transport.reporter import  find_reporter_entity
 
 def unique(dbm, telephone_number):
+    telephone_number = telephone_number.replace('-','')
     try:
         find_reporter_entity(dbm, telephone_number)
     except NumberNotRegisteredException:

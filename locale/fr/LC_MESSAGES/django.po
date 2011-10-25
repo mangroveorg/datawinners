@@ -2784,3 +2784,14 @@ msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de donn
 
 msgid "User has been added successfully"
 msgstr "L'utilisateur a été ajouté avec succès"
+
+
+msgid "agree-terms"
+msgstr "J'accepte <a href=\"/fr/terms-and-conditions\" target=\"_blank\">les termes et conditions</a> de DataWinners"
+
+
+msgid "Agree"
+msgstr "Accepter"
+
+msgid "You have to agree terms and conditions before using DataWinners"
+msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinners"

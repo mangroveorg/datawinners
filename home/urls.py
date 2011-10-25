@@ -38,9 +38,13 @@ urlpatterns = patterns('',
         (r'^en/about-us/partners/$', TemplateView.as_view(template_name='home/about_partners_en.html')),
         (r'^en/about-us/clients/$', TemplateView.as_view(template_name='home/about_clients_en.html')),
         (r'^en/about-us/contact-us/$', TemplateView.as_view(template_name='home/about_contact_en.html')),
+        (r'^en/terms-and-conditions/$', TemplateView.as_view(template_name='home/terms_en.html')),
+
         (r'^fr/about-us/$', TemplateView.as_view(template_name='home/about_us_fr.html')),
         (r'^fr/about-us/blog/$', TemplateView.as_view(template_name='home/about_blog_fr.html')),
         (r'^fr/about-us/partners/$', TemplateView.as_view(template_name='home/about_partners_fr.html')),
         (r'^fr/about-us/clients/$', TemplateView.as_view(template_name='home/about_clients_fr.html')),
         (r'^fr/about-us/contact-us/$', TemplateView.as_view(template_name='home/about_contact_fr.html')),
+        (r'^fr/terms-and-conditions/$', TemplateView.as_view(template_name='home/terms_fr.html')),
+
     )

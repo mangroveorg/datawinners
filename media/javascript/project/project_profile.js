@@ -41,11 +41,10 @@ $(document).ready(function(){
     $("#tab_items .define").addClass("current");
     set_current_tab();
     $("#id_devices_0").attr('disabled', true);
-    $("#id_devices_1").attr('disabled', true);
+    
 
     $('#submit-button').click(function(){
        $('#id_devices_0').attr('disabled',false);
-       $('#id_devices_1').attr('disabled',false);
        $('#profile_form').submit();
     });
 
