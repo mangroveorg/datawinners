@@ -10,6 +10,9 @@
 .padding_bottom_null {
   padding-bottom: 0; }
 
+.padding_20 {
+  padding: 20px; }
+
 /* Margin Null */
 .margin_right_null {
   margin-right: 0; }
@@ -143,10 +146,6 @@ table {
 /* Titles */
 .highlighted_title {
   color: #C35C00; }
-
-.section_description {
-    color: #666666;
-}
 
 /* Help Icon */
 .help_icon {
