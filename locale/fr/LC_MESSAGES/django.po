@@ -177,10 +177,9 @@ msgid "* Mobile Number"
 msgstr "* Numéro de mobile"
 
 #: entity/forms.py:24
-msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
+msgid "Please enter a valid phone number."
 msgstr ""
-"Veuillez saisir un numéro de téléphone. Seuls des chiffres et -(tiret) sont "
-"autorisés"
+"Veuillez saisir un numéro de téléphone."
 
 #: entity/forms.py:25
 msgid "GPS: Enter Lat Long"

@@ -14,7 +14,7 @@ $(document).ready(function() {
             return true;
         var re = new RegExp("^[0-9-]+$");
         return re.test(text);
-    }, gettext("Please enter a valid phone number.Only numbers and -(dash) allowed"));
+    }, gettext("Please enter a valid phone number."));
 
     $.validator.addMethod('gpsrule', function(value, element, params) {
         var codes = $('#' + element.id).val();

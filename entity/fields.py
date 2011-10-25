@@ -5,8 +5,8 @@ from django.utils.translation import ugettext as _
 
 EMPTY_VALUES = (None, '', [], (), {})
 
-PHONE_NUMBER_REGEX = "^[\+]?[0-9-]+$"
-PHONE_NUMBER_MAX_LENGTH = 15
+PHONE_NUMBER_REGEX = "^(\+[0-9 ]*?)?(\(?[0-9]*?\)?)?[0-9- ]+$"
+PHONE_NUMBER_MAX_LENGTH = 20
 PHONE_NUMBER_MIN_LENGTH = 5
 
 class PhoneNumberField(RegexField):
@@ -22,7 +22,7 @@ class PhoneNumberField(RegexField):
         super(PhoneNumberField, self).clean(value)
         if value in EMPTY_VALUES:
             return u''
-        value = re.sub('(-)', '', smart_unicode(value))
+        value = re.sub('[- \(\)+]', '', smart_unicode(value))
         return value
 
 

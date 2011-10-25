@@ -175,7 +175,7 @@ msgid "* Mobile Number"
 msgstr ""
 
 #: entity/forms.py:24
-msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
+msgid "Please enter a valid phone number."
 msgstr ""
 
 #: entity/forms.py:25

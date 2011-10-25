@@ -7,17 +7,19 @@ class TestPhoneNumberField(TestCase):
     def test_should_validate_and_clean_phone_numbers(self):
         valid_cases = {
             '1112223333': '1112223333',
+            ' 1112223333 ': '1112223333',
             '111-222-3333': '1112223333',
-            '650-636-8600': '6506368600',
-            '6-50636-8600': '6506368600',
-            '+1-541-754-3010': '+15417543010',
+            '111 222 3333': '1112223333',
+            '1-11222-3333': '1112223333',
+            '(123) 456-7890': '1234567890',
+            '(1233) 456-7890': '12334567890',
+            '+611234567890': '611234567890',
+            '+61 (123) 456-7890': '611234567890',
             }
         invalid_cases = {
             '23': ['Ensure this value has at least 5 characters (it has 2).'],
-            '2234232423422433': ['Ensure this value has at most 15 characters (it has 16).'],
+            '111122223333444455556': ['Ensure this value has at most 20 characters (it has 21).'],
             'abcdefgh': ['Please enter a valid phone number.'],
-            '650 636 8600': ['Please enter a valid phone number.'],
-            '(650)6368600': ['Please enter a valid phone number.'],
             '^6506368600': ['Please enter a valid phone number.'],
             }
         assertFieldOutput(self, PhoneNumberField, valid_cases, invalid_cases)
