@@ -27,14 +27,48 @@
 {% block content %}
     <span id="project_id" style="display: none;">{{ project.id }}</span>
     <div class="span-18 box">
+        <!--Success Message div-->
         {% include 'project/success_message.html' %}
-        {% include 'maps/entity_map.html'  %}
-        <div style="height:100px;"></div>
+        <!--Collect data div-->
         <div>
-            <div class="collect_data_heading">How to Start Collecting Data</div>
-            <div class="">
-                <p></p>
+            <!--display:none in section_new_overview.html-->
+            <table id="collect_data">
+                    <tr id="collect_data_heading">
+                        <td colspan="3">
+                            <label>How to Start Collecting Data</label>
+                        </td>
+                    </tr>
+                    <tr id="collect_data_content">
+                        <td><label>How  to Distribute Questionnaire</label>
+                            Something</td>
+                        <td><label>How  to Distribute Questionnaire</label>
+                            Something</td>
+                        <td><label>How  to Distribute Questionnaire</label>
+                            Something</td>
+                    </tr>
+            </table>
+        </div>
+        <!--Project description div-->
+            <div class="left_half">
+                <label>Your Project</label>
+                <a href="#">edit</a> |
+                <a href="#">input data</a>
             </div>
+            <div class="right_half">
+                <label>Share this project
+                <input type="text" name="share_link" value="http://www.datawinners.com/etc/etc" />
+                <img src="/media/images/help_icon.png" class="help_icon" /></label>
+            </div>
+            <div class="float_left">
+                <p><b>Description:</b>
+                    This is the description of project.
+                </p>
+            </div>
+        <!--Map div-->
+        {% include 'maps/entity_map.html'  %}
+        <!--Questionnaire & DS div-->
+        <div class="margin_bottom_20 margin_top_20">
+            
         </div>
     </div>
 

@@ -12,7 +12,7 @@
 .black_italic {
   font-style: italic; }
 
-li {
+.w_content li {
   text-indent: 50px; }
 
 .grid_23 {
@@ -21,18 +21,46 @@ li {
 .project_detail {
   margin-top: 0px !important; }
 
-.collect_data_heading {
+#collect_data {
+  margin: 40px 0 40px 0; }
+
+#collect_data_heading {
   background-color: #f5f5f5;
   border: 1px solid #cfcfcf;
-  font-size: 16px;
-  font-weight: bold;
   padding-top: 9px;
   height: 35px;
-  width: 100%;
-  float: left;
-  clear: both;
-  margin: 30px 0 30px 0; }
+  width: 100%; }
+  #collect_data_heading label {
+    font-size: 16px;
+    font-weight: bold; }
+
+#collect_data_content {
+  display: none; }
+  #collect_data_content td {
+    border: 1px solid #cfcfcf;
+    padding: 20px; }
 
 #map {
   float: left;
   clear: both; }
+
+.left_half {
+  float: left;
+  clear: right;
+  width: 50%; }
+  .left_half label {
+    display: inline;
+    font-size: 16px;
+    margin: 5px; }
+
+.right_half {
+  float: right;
+  width: 50%; }
+  .right_half input {
+    width: 250px; }
+
+.float_left {
+  margin: 7px 0 30px 0; }
+  .float_left b {
+    font-size: 16px;
+    margin: 5px; }
