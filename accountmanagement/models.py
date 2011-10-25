@@ -1,12 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datawinners import settings
+import datetime
 
+from django.conf import settings
 from django.contrib.auth.models import  User
 from django.db import models
 from django.template.defaultfilters import slugify
+
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-import datawinners
-import datetime
+
+
 class Organization(models.Model):
     name = models.TextField()
     sector = models.TextField()
@@ -27,7 +29,7 @@ class Organization(models.Model):
         if self.active_date is None:
             return False
         diff_days = (current_time - self.active_date).days
-        return diff_days >= datawinners.settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
+        return diff_days >= settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
 
     @classmethod
     def create_organization(cls, org_details):

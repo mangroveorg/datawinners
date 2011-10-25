@@ -42,11 +42,11 @@ from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from datawinners.settings import api_keys
+from django.conf import settings
 
 import logging
 from mangrove.utils.types import is_empty
-from datawinners.settings import USE_ORDERED_SMS_PARSER
+
 
 logger = logging.getLogger("django")
 
@@ -104,7 +104,7 @@ def questionnaire_wizard(request, project_id=None):
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire_wizard.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project, "use_ordered_sms_parser" : USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
+                 "previous": previous_link, 'project': project, "use_ordered_sms_parser" : settings.USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -264,7 +264,7 @@ def project_overview(request, project_id=None):
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project, questionnaire.form_code)
-    map_api_key = api_keys.get(request.META['HTTP_HOST'])
+    map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
              , 'project_profile_link': link, 'number_of_questions': number_of_questions, 'map_api_key': map_api_key},

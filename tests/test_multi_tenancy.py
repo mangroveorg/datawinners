@@ -3,7 +3,7 @@ import unittest
 from unittest.case import SkipTest
 import couchdb
 from django.test import Client
-from datawinners import settings
+from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User

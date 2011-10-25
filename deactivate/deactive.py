@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from django.core.mail.message import EmailMessage
 from django.template import loader
 from django.template.context import Context
-from datawinners import settings
+from django.conf import settings
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 
 def send_deactivate_email():

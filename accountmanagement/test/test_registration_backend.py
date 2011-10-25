@@ -1,5 +1,5 @@
 import unittest
-from datawinners import settings
+from django.conf import settings
 
 from mock import Mock
 from registration import signals

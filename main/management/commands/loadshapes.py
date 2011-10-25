@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 import os
-from datawinners import settings
+from django.conf import settings
 from datawinners.location.utils import load_from_madagascar_ocha_wgs84_shp_file
 
 class Command(BaseCommand):

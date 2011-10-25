@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datawinners import settings
+from django.conf import settings
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.scheduler.vumiclient import VumiClient, Connection
 from mangrove.utils.types import is_not_empty
