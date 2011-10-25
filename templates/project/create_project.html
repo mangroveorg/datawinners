@@ -59,12 +59,6 @@
             {{ form.frequency_period.errors }}
         </li>
         <li>
-            {{ form.questionnaire.label_tag }}
-            {{ form.questionnaire }}
-            <img src="/media/images/help_icon.png" class="help_icon" />
-            <br><i> {{ form.questionnaire.help_text }}</i>
-        </li>
-        <li>
             {{ form.about_questionnaire.label_tag }}
             {{ form.about_questionnaire.help_text }}
             {{ form.about_questionnaire }}
@@ -84,12 +78,11 @@
     </div>
     <div class="clear_both">
         <fieldset>
-             <legend>3. Save and Activate</legend>
+             <legend>3. Save and Create</legend>
         </fieldset>
 
         <div class="right_aligned_button">
             <a href="#" class="cancel_link"> Cancel </a>
-            <a href="#" class="draft_button" id="save_as_draft"> Save as Test</a>
             <a href="#" class="draft_button" id="save_as_test"> Save as Draft</a>
             <a href="#" class="button" id="save_activate"> Save and Activate</a>
         </div>

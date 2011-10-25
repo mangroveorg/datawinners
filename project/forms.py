@@ -106,8 +106,6 @@ class CreateProject(Form):
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True,initial=True)
     frequency_period = ChoiceField(choices=(('Choose a Time Period', _('Choose a Time Period')), ('week', _('Week')), ('month', _('Month')),('quarter', _('Quarter')), ), required=False)
 
-    questionnaire = CharField(required=True, label=_("Questionnaire Code"), help_text="Use the generated code or change it to something different.")
-
     QUESTIONNAIRE_CHOICES = ((False, _("This is general activity report.")), (True, _("I am collecting data about a specific subject.")))
     about_questionnaire = ChoiceField(label=_("What is this questionnaire about?"),
                                       help_text="How often do you need data (answers to your questions)?",choices=QUESTIONNAIRE_CHOICES,
