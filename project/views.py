@@ -46,7 +46,7 @@ from datawinners.settings import api_keys
 
 import logging
 from mangrove.utils.types import is_empty
-from settings import USE_ORDERED_SMS_PARSER
+from datawinners.settings import USE_ORDERED_SMS_PARSER
 
 logger = logging.getLogger("django")
 
