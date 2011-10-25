@@ -35,12 +35,12 @@
             <a href="{{ project_links.overview_link }}" class="{{ disable_link_class }}">{% trans "Overview" %}</a>
         </li>
         {% if project.state == 'Active' %}
-        <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "Subjects" %}</a>
-        </li>
         <li class="{% ifactivetab 'tab_nav' 'questionnaire' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.questionnaire_link }}"
                class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
+        </li>
+        <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "Subjects" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.datasenders_link }}"
@@ -54,11 +54,11 @@
         <li class="{% ifactivetab 'tab_nav' 'training' %}active{% else %}inactive{% endifactivetab %}">
             <a href="#" class="{{ disable_link_class }}">{% trans "Training" %}</a>
         </li>
-        <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
-        </li>
         <li class="{% ifactivetab 'tab_nav' 'review_and_test' %}active{% else %}inactive{% endifactivetab %}">
             <a href="#" class="{{ disable_link_class }}">{% trans "Review and Test" %}</a>
+        </li>
+        <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
         </li>
         {% endif %}
     </ul>
