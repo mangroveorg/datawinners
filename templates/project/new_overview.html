@@ -1,0 +1,41 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %} {% trans "Projects - Overview"%} {% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "overview" %}
+{{ block.super }}
+{% endblock %}
+
+{% block body %}
+{% activetab "main_nav" "projects" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_new_overview.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+    <span id="project_id" style="display: none;">{{ project.id }}</span>
+    <div class="span-18 box">
+        {% include 'project/success_message.html' %}
+        {% include 'maps/entity_map.html'  %}
+        <div style="height:100px;"></div>
+        <div>
+            <div class="collect_data_heading">How to Start Collecting Data</div>
+            <div class="">
+                <p></p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
