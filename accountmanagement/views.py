@@ -181,4 +181,4 @@ def edit_user(request):
                                   context_instance=RequestContext(request))
 
 def trial_expired(request):
-    return render_to_response("registration/trail_account_expired_message.html")
+    return render_to_response("registration/trial_account_expired_message.html")
