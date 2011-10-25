@@ -208,6 +208,7 @@ API_KEYS = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
+SHOW_GOOGLE_MAPS = True
 USE_ORDERED_SMS_PARSER = False
 TRIAL_REGISTRATION_ENABLED = True
 
