@@ -43,3 +43,6 @@ h3 {
 
 .inactive_tab a {
   cursor: text; }
+
+.secondary_tab + * {
+  clear: both; }

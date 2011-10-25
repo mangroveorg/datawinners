@@ -56,3 +56,7 @@ h3{
            cursor:text;
         }
 }
+
+.secondary_tab + * {
+    clear: both;
+}
