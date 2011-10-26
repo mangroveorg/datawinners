@@ -24,10 +24,11 @@ class Organization(models.Model):
     in_trial_mode = models.BooleanField(False)
     active_date = models.DateTimeField(blank=True, null=True)
 
-    def is_expired(self, current_time = datetime.datetime.now()):
-        #TODO: Always return the last value when logged once. If you do not restart the server, the value can not been changed!
+    def is_expired(self, current_time = None):
         if self.active_date is None:
             return False
+        if current_time is None:
+            current_time = datetime.datetime.now()
         diff_days = (current_time - self.active_date).days
         return diff_days >= settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
 
@@ -57,7 +58,6 @@ class Organization(models.Model):
                                 in_trial_mode = True
         )
         organization_setting = organization._configure_organization_settings()
-#        organization_setting.sms_tel_number = settings.TRIAL_ACCOUNT_PHONE_NUMBER
         return organization
 
 
