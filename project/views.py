@@ -622,9 +622,11 @@ def reminders(request, project_id):
         project = Project.load(dbm.database, project_id)
         questionnaire = FormModel.get(dbm, project.qid)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
+        is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
         return render_to_response('project/reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':_format_reminders(reminders, project_id),
+                 'in_trial_mode':is_trial_account,
                  'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
