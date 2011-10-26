@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, PaymentDetails
 from django.template.loader import render_to_string
 
 class RegistrationBackend(object):
@@ -103,11 +103,18 @@ class RegistrationBackend(object):
         else:
             site = RequestSite(request)
 
+
         organization = self.create_respective_organization(kwargs)
         organization.save()
         organization.organization_setting.save()
 
         new_user = self._create_user(site, kwargs)
+
+        print "--------------------------------------"
+        print kwargs
+
+        payment_details = self._create_payment_details(organization,kwargs)
+        payment_details.save()
 
         extra_context = {
             'phone_number': "You can also send your data via sms to " + settings.TRIAL_ACCOUNT_PHONE_NUMBER + "."} if organization.in_trial_mode else {}
@@ -165,3 +172,11 @@ class RegistrationBackend(object):
                                    ctx_dict)
 
         user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+
+    def _create_payment_details(self, organization ,kwargs):
+        invoice_period = kwargs['invoice_period']
+        preferred_payment = kwargs['preferred_payment']
+
+        payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,preferred_payment= preferred_payment)
+
+        return payment_details

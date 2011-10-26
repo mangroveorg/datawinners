@@ -150,6 +150,27 @@
                                 {{ form.password2.errors }}
 
                             </li>
+                         </ul>
+                        <ul class="payment_details">
+                            <li>
+                                <h3 class="highlighted_title">{%  trans "Payment Details" %}</h3>
+                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+                            </li>
+
+                            <li class="{{ form.invoice_period.css_classes }} form-row-10px">
+                                {{ form.invoice_period|field_label }}
+                                {{ form.invoice_period }}
+                                
+                                {{ form.invoice_period.errors }}
+                            </li>
+
+                            <li class="{{ form.preferred_payment.css_classes }} form-row-10px">
+                                {{ form.preferred_payment|field_label }}
+                                {{ form.preferred_payment }}
+
+                                {{ form.preferred_payment.errors }}
+                            </li>
+
                             <li>
                                 <input type="checkbox" id="agree-terms" value="1" checked="checked"/>{% trans "agree-terms" %}
                             </li>

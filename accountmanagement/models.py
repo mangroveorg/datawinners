@@ -87,6 +87,10 @@ class NGOUserProfile(models.Model):
     def reporter(self):
         return self.reporter_id is not None
 
+class PaymentDetails(models.Model):
+    organization = models.ForeignKey(Organization)
+    invoice_period = models.TextField()
+    preferred_payment = models.TextField()
 
 class SMSC(models.Model):
     vumi_username = models.TextField()

@@ -18,7 +18,7 @@ from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
 
 def registration_complete(request, user=None):
-    return render_to_response('registration/registration_complete.html')
+    return render_to_response('registration/REGISTRATION_COMPLETE.html')
 
 
 def custom_login(request, template_name, authentication_form):
