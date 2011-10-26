@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.conf import settings
+from django.conf import settings as django_settings
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
@@ -23,18 +23,18 @@ def registration_complete(request, user=None):
 
 def custom_login(request, template_name, authentication_form):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+        return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
     else:
         try:
             return login(request, template_name=template_name, authentication_form=authentication_form)
         except TrialAccountExpiredException:
-            return HttpResponseRedirect(settings.TRIAL_EXPIRED_URL)
+            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
 
 def is_admin(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if not user.groups.filter(name="NGO Admins").count() > 0:
-            return HttpResponseRedirect(settings.HOME_PAGE)
+            return HttpResponseRedirect(django_settings.HOME_PAGE)
 
         return f(*args, **kw)
 
@@ -48,7 +48,7 @@ def project_has_web_device(f):
         project_id = kw["project_id"]
         project = Project.load(dbm.database, project_id)
         if "web" not in project.devices:
-            referer = settings.HOME_PAGE
+            referer = django_settings.HOME_PAGE
             return HttpResponseRedirect(referer)
         return f(*args, **kw)
     return wrapper
@@ -57,7 +57,7 @@ def is_datasender(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if user.groups.filter(name="Data Senders").count() > 0:
-            return HttpResponseRedirect(settings.DATASENDER_DASHBOARD)
+            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
 
         return f(*args, **kw)
 
@@ -71,7 +71,7 @@ def is_datasender_allowed(f):
         project_ids = [project.id for project in projects]
         project_id = kw['project_id']
         if not project_id in project_ids:
-            return HttpResponseRedirect(settings.DATASENDER_DASHBOARD)
+            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
 
         return f(*args, **kw)
     return wrapper
