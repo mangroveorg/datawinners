@@ -7,7 +7,7 @@ from datawinners.project.views import questionnaire_wizard, save_questionnaire, 
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, \
     reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
     delete_reminder, sent_reminders, broadcast_message
-from datawinners.project.wizard_view import questionnaire_wizard,new_project_overview
+from datawinners.project.wizard_view import new_create_project,new_project_overview
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -16,7 +16,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
         (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-        (r'^project/wizard/new/$', questionnaire_wizard),
+        (r'^project/wizard/new/$', new_create_project),
         (r'^project/overview/new/$', new_project_overview),
         (r'^project/disassociate/$', disassociate_datasenders),
         (r'^project/wizard/questionnaire/(?P<project_id>.+?)/$', questionnaire_wizard),

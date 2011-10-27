@@ -1,0 +1,35 @@
+<div class="clear_both">
+    <fieldset>
+        <legend>1. Basic Information</legend>
+    </fieldset>
+    <div style="border-bottom: 1px solid #ccbf97;"></div>
+    <li class="form-row-10px">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        <img src="/media/images/help_icon.png" class="help_icon" />
+        <p class="black_italic">Example: Teacher attendance in Antananarivo</p>
+        {{ form.name.errors }}
+    </li>
+    <li>
+        {{ form.goals.label_tag }}
+        {{ form.goals }}
+        {{ form.goals.errors }}
+        <p class="black_italic">Example: Collect data from 100 primary school in Antananarivo in an effort to increase
+            teacher attendance from 50% to 80%</p>
+    </li>
+    <li>
+        {{ form.frequency_enabled.label_tag }}
+        <p>How often do you need the data (answer to your questions)?</p>
+        {{ form.frequency_enabled }}
+        {{ form.frequency_enabled.errors }}
+        {{ form.frequency_period }}
+        {{ form.frequency_period.errors }}
+    </li>
+    <li>
+        {{ form.about_questionnaire.label_tag }}
+        {{ form.about_questionnaire.help_text }}
+        {{ form.about_questionnaire }}
+        {{ form.category }}
+        {{ form.subject }}
+    </li>
+</div>
