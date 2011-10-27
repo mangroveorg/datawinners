@@ -2730,6 +2730,10 @@ msgstr "Accepter"
 msgid "You have to agree terms and conditions before using DataWinners"
 msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinners"
 
+msgid "learn-about-partners-clients"
+msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "
+"<a href=\"/en/about-us/clients\">clients</a> &raquo;"
+
 # error messages
 msgid "An exception has occurred"
 msgstr ""
@@ -2739,18 +2743,18 @@ msgid "Entity identified by %s is already defined"
 msgstr ""
 
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
-msgstr ""
+msgstr "Diso. "
 
 msgid "This field is required."
 msgstr "Faritra tsy maintsy fenoina."
 
 #, python-format
 msgid "Error. Incorrect answer for %s. Please re-send entire message."
-msgstr ""
+msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao"
 
 #, python-format
 msgid"Questionnaire ID %s doesnt exist."
-msgstr ""
+msgstr "Tsy misy ny kaodin’ny lisitry ny fanontaniana %s"
 
 #, python-format
 msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend "
@@ -2764,11 +2768,11 @@ msgstr ""
 
 #, python-format
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
-msgstr ""
+msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny isa famantarana ID ho an'i %s ary avereno alefa ny SMS-nao"
 
 #, python-format
 msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
-msgstr ""
+msgstr "Nia %s %s dia tsy tafiditra anaty solosaina. Ampidiro ny %s na antsoy ny tompon'andraikitra"
 
 #, python-format
 msgid "This telephone number is not registered in our system."
@@ -2781,21 +2785,22 @@ msgstr "Tsy mbola tafiditra ao anatin’ny lisitra io nomerao telefaoninao io. A
 
 #, python-format
 msgid "Question Code Already Exists"
-msgstr ""
+msgstr "Efa misy mampiasa io kaodin'ny fanontaniana io"
 
 #, python-format
 msgid "Question Code %s provided already exists"
-msgstr ""
+msgstr "Ny kaodin'ny fanontaniana %s nomenao dia efa misy mampiasa"
 
 #, python-format
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
-msgstr ""
+msgstr "Diso. Tsy tafiditra ny SMS-nao. Jereo ny lisitry ny fanontaniana. Avereni alefa ny ID ny fanontaniana "
+"sy ny valiny hoan'ny: %s"
 
 msgid "Error. Incorrect answer for question t. Please resend entire message."
 msgstr "Diso ny valin’ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
 
 msgid "Invalid message format."
-msgstr ""
+msgstr "Tsy manara-penitra ny firafitry ny SMS-nao."
 
 msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
 msgstr "Diso ny SMS-nao. Avereno jerena ilay lisitry ny fanontaniana ary avereno alefa  indray  ny SMS."
@@ -2808,10 +2813,11 @@ msgstr "Tsy mbola afaka raisina ny SMS-nao. Andramo averina alefa indray ilay iz
 
 msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed "
 "questionnaire and resend SMS with the right Question code."
-msgstr ""
+msgstr "Diso: Tsy manara-penitra ny firafitry ny SMS-nao. Amarino ao amin'ny lisitry ny kaodin'ny fanontaniana "
+"ary avereno alefa sy SMS-nao"
 
 msgid "Error. This project is not yet active. Submissions can be made only for an active project."
 msgstr "Diso. Tsy mbola misokatra ny momba io tetikasa io.  Izay tetikasa efa voasokatra ihany no azo iasàna."
 
 msgid "Error. Internal error. Please call technical support"
-msgstr ""
+msgstr "Diso. Misy olana ara teknika. Azafady antsoy fangalana torohevitra"
