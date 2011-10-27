@@ -16,7 +16,6 @@ js_info_dict = {
 
 urlpatterns = patterns('',
         (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-        (r'^project/overview/new/$', new_project_overview),
         (r'^project/disassociate/$', disassociate_datasenders),
         (r'^project/wizard/questionnaire/(?P<project_id>.+?)/$', questionnaire_wizard),
         (r'^project/questionnaire/(?P<project_id>.+?)/$', questionnaire),

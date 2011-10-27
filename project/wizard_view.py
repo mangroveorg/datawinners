@@ -17,5 +17,5 @@ def new_create_project(request):
         return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
 
 def new_project_overview(request):
-    return render_to_response('project/new_overview.html')
+    return render_to_response('project/overview.html')
 

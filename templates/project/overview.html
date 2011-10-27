@@ -15,90 +15,62 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />
-    <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_overview.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-<script type="text/javascript">
-    var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
-</script>
 {% endblock %}
+
 
 {% block content %}
     <span id="project_id" style="display: none;">{{ project.id }}</span>
     <div class="span-18 box">
-        {% if project.state != 'Active' %}
-            <div class="grid_23 margin_bottom_20 margin_top_20 alpha">
-                <a id="edit_project" class="button_blue " href ={{ project_profile_link }} >{% trans "Edit this project"%}</a>
+        <!--Success Message div-->
+        {% include 'project/success_message.html' %}
+        <!--Collect data div-->
+        <div>
+            <table id="collect_data">
+                <tr id="collect_data_heading">
+                    <td colspan="3">
+                        <label>How to Start Collecting Data</label>
+                    </td>
+                </tr>
+                <!--display:none in section_new_overview.html-->
+                <tr id="collect_data_content">
+                    <td><label>How  to Distribute Questionnaire</label>
+                        Something</td>
+                    <td><label>How  to Distribute Questionnaire</label>
+                        Something</td>
+                    <td><label>How  to Distribute Questionnaire</label>
+                        Something</td>
+                </tr>
+            </table>
+        </div>
+        <!--Project description div-->
+            <div class="left_half">
+                <label>Your Project</label>
+                <a href="#">edit</a> |
+                <a href="#">input data</a>
             </div>
-        {% endif %}
-        {% if SHOW_GOOGLE_MAPS %}
-            {% include 'maps/entity_map.html'  %}
-        {% endif %}
-        <div class="grid_23 title_block">
-            <h3 class="grid_5 alpha">{% trans "Project Profile"%}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-2px;"></h3>
-            <div class="tooltip"><p>
-                {% blocktrans %}Review the basic information for your project. Click "View" to see the whole profile or "Edit profile" to make changes.{% endblocktrans %}
-            </p></div>
+            <div class="right_half">
+                <p>Share this project
+                <input type="text" name="share_link" value="http://www.datawinners.com/etc/etc" />
+                <img src="/media/images/help_icon.png" class="help_icon" /></p>
+            </div>
+            <div class="float_left">
+                <p><b>Description:</b>
+                    This is the description of project.
+                </p>
+            </div>
+        <!--Questionnaire & DS div-->
+        <div class="float_left" id="questionnaire_and_DS">
+            {% include 'project/questionnaire_and_DS.html'%}
         </div>
-        <div class="custom_model grid_23 alpha omega">
-            <h4>{% trans "Status: Complete"%}</h4>
-            <ul>
-                <li>
-                    <h5>{% trans "What" %}</h5>
-                    <div class="sub_content">
-                        <h6>{% trans "Template"%}</h6>
-                        <p>{% trans "No template" %}</p>
-                    </div>
-                    <div class="sub_content">
-                        <h6>{% trans "Questions" %}</h6>
-                        <p>{{ number_of_questions }} {% trans "questions defined" %}</p>
-                    </div>
-                </li>
-                <li>
-                    <h5>{% trans "Who" %}</h5>
-                    <div class="sub_content">
-                        <h6>{% trans "Sender Group" %}</h6>
-                        <p>{% trans "No Data" %}</p>
-                    </div>
-                    <div class="sub_content">
-                        <h6>{% trans "Data sender Registration"%}</h6>
-                        <p>{% trans "No data" %}</p>
-                    </div>
-                   <div class="sub_content">
-                        <h6>{% trans "Languages"%}</h6>
-                        <p>{% trans "No language specified"%}</p>
-                    </div>
-                </li>
-                <li>
-                    <h5>{% trans "How" %}</h5>
-                    <div class="sub_content">
-                        <h6>{% trans "Cell Phone" %}</h6>
-                         <p>{% for each in project.devices %}
-                             {{ each }} |
-                             {% endfor %}
-                         </p>
-                    </div>
-                    <div class="sub_content">
-                        <h6>{% trans "Computer" %}</h6>
-                        <p>{% trans "No Data" %}</p>
-                    </div>
-                </li>
-                <li class="last">
-                    <h5>{% trans "When" %}</h5>
-                    <div class="sub_content">
-                        <h6>{% trans "How often" %}</h6>
-                        <p>{% trans "No Data" %}</p>
-                    </div>
-                    <div class="sub_content">
-                        <h6>{% trans "Deadline" %}</h6>
-                        <p>{% trans "No Data"%}</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        <!--Map div-->
+        {% include 'maps/entity_map.html'  %}
+
     </div>
 
 {% endblock %}
