@@ -2525,3 +2525,7 @@ msgstr ""
 
 msgid "You have to agree terms and conditions before using DataWinners"
 msgstr ""
+
+msgid "learn-about-partners-clients"
+msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "
+"<a href=\"/en/about-us/clients\">clients</a> &raquo;"

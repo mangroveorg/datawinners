@@ -9,12 +9,13 @@ class TestHome(unittest.TestCase):
         self.client_stub = Client()
 
     def test_should_render_home_view(self):
-        response = self.client_stub.get('/home/')
-        self.assertEquals(response.status_code,200)
+        for url in [ '/en/home/', '/fr/home/'] :
+            response = self.client_stub.get(url)
+            self.assertEquals(response.status_code,200)
 
     def test_should_render_link_to_trial_registration(self):
         settings.TRIAL_REGISTRATION_ENABLED = True
-        for url in ['/home', '/home/en', '/home/fr'] :
+        for url in [ '/en/home/', '/fr/home/'] :
             response = self.client_stub.get(url, follow=True)
             self.assertRegexpMatches(response.content, r'href="/register/trial"')
 

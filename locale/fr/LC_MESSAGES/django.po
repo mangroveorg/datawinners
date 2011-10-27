@@ -2794,3 +2794,8 @@ msgstr "Accepter"
 
 msgid "You have to agree terms and conditions before using DataWinners"
 msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinners"
+
+
+msgid "learn-about-partners-clients"
+msgstr "Mieux connaitre nos <a href=\"/fr/about-us/partners\">partenaires</a> &amp; nos "
+"<a href=\"/fr/about-us/clients\">clients</a> &raquo;"
