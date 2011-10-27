@@ -45,6 +45,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.conf import settings
 
+""" for new UI"""
+from datawinners.project.forms import CreateProject
+
+
 import logging
 from mangrove.utils.types import is_empty
 
@@ -108,7 +112,7 @@ def questionnaire_wizard(request, project_id=None):
                  "previous": previous_link, 'project': project, "use_ordered_sms_parser" : settings.USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
 
 
-@login_required(login_url='/login')
+"""@login_required(login_url='/login')
 def create_profile(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -144,6 +148,18 @@ def create_profile(request):
     else:
         return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account},
                                   context_instance=RequestContext(request))
+"""
+
+@login_required(login_url='/login')
+def new_create_project(request):
+    if request.method == 'GET':
+        form = CreateProject()
+        return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
+    form = CreateProject(data=request.POST)
+    if form.is_valid():
+        return HttpResponseRedirect(reverse(new_project_overview))
+    else:
+        return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
 
 
 def _generate_project_info_with_deadline_and_reminders(project):

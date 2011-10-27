@@ -1,13 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
 
-from datawinners.project.views import questionnaire_wizard, save_questionnaire, create_profile, index, project_overview,\
+from datawinners.project.views import questionnaire_wizard, save_questionnaire, index, project_overview,\
     edit_profile, project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project,\
     finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview,\
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, \
     reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
-    delete_reminder, sent_reminders, broadcast_message
-from datawinners.project.wizard_view import new_create_project,new_project_overview
+    delete_reminder, sent_reminders, broadcast_message, new_create_project
+from datawinners.project.wizard_view import new_project_overview
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -16,7 +16,6 @@ js_info_dict = {
 
 urlpatterns = patterns('',
         (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-        (r'^project/wizard/new/$', new_create_project),
         (r'^project/overview/new/$', new_project_overview),
         (r'^project/disassociate/$', disassociate_datasenders),
         (r'^project/wizard/questionnaire/(?P<project_id>.+?)/$', questionnaire_wizard),
@@ -25,7 +24,7 @@ urlpatterns = patterns('',
         (r'^project/preview/questionnaire/(?P<project_id>.+?)/$', questionnaire_preview),
         (r'^project/preview/subject_registration_form/preview/(?P<project_id>.+?)/$', subject_registration_form_preview),
         (r'^project/preview/sender_registration_form/preview/(?P<project_id>.+?)/$', sender_registration_form_preview),
-        (r'^project/wizard/create$', create_profile),
+        (r'^project/wizard/create$', new_create_project),
         (r'^project/wizard/edit/(?P<project_id>.+?)/$', edit_profile),
         (r'^project/questionnaire/save$', save_questionnaire),
         (r'^project/$', index),
@@ -53,5 +52,4 @@ urlpatterns = patterns('',
         (r'^project/delete/(?P<project_id>.+?)/$', delete_project),
         (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
         (r'^project/datarecords/filter$', submissions)
-
 )

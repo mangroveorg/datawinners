@@ -13,6 +13,11 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+{%  endblock %}
+
 {% block page_scss %}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet"/>
@@ -31,6 +36,7 @@
 
 {% block content %}
     <form action="" method="POST" id="create_project_form">
+    {% csrf_token %}
     {% include 'project/basic_info.html' %}
 
     <div class="clear_both">
