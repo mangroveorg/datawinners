@@ -2468,9 +2468,6 @@ msgstr ""
 msgid "Optional"
 msgstr ""
 
-msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
-msgstr ""
-
 msgid "Answer %s for question %s is longer than allowed."
 msgstr ""
 
@@ -2529,3 +2526,56 @@ msgstr ""
 msgid "learn-about-partners-clients"
 msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "
 "<a href=\"/en/about-us/clients\">clients</a> &raquo;"
+
+#, python-format
+msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
+msgstr ""
+
+#, python-format
+msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
+msgstr ""
+
+#, python-format
+msgid "This telephone number is not registered in our system."
+msgstr ""
+
+#, python-format
+msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
+msgstr ""
+
+#, python-format
+msgid "Question Code Already Exists"
+msgstr ""
+
+#, python-format
+msgid "Question Code %s provided already exists"
+msgstr ""
+
+#, python-format
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
+msgstr ""
+
+msgid "Error. Incorrect answer for question t. Please resend entire message."
+msgstr ""
+
+msgid "Invalid message format."
+msgstr ""
+
+msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
+msgstr ""
+
+msgid "The system is experiencing a problem right now. Please try again in a few minutes"
+msgstr ""
+
+msgid "The system is unable to accept your SMS right now. Please wait one hour and resend the same message."
+msgstr ""
+
+msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire "
+"and resend SMS with the right Question code."
+msgstr ""
+
+msgid "Error. This project is not yet active. Submissions can be made only for an active project."
+msgstr ""
+
+msgid "Error. Internal error. Please call technical support"
+msgstr ""

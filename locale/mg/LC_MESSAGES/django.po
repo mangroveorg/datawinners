@@ -177,9 +177,10 @@ msgid "* Mobile Number"
 msgstr "* Numéro de mobile"
 
 #: entity/forms.py:24
-msgid "Please enter a valid phone number."
+msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
 msgstr ""
-"Veuillez saisir un numéro de téléphone."
+"Veuillez saisir un numéro de téléphone. Seuls des chiffres et -(tiret) sont "
+"autorisés"
 
 #: entity/forms.py:25
 msgid "GPS: Enter Lat Long"
@@ -2729,99 +2730,88 @@ msgstr "Accepter"
 msgid "You have to agree terms and conditions before using DataWinners"
 msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinners"
 
-msgid "learn-about-partners-clients"
-msgstr "En savoir plus sur nos <a href=\"/fr/about-us/partners\">partenaires</a> &amp; nos "
-"<a href=\"/fr/about-us/clients\">clients</a> &raquo;"
-
 # error messages
 msgid "An exception has occurred"
-msgstr "Une exception est survenue"
+msgstr ""
 
 #, python-format
 msgid "Entity identified by %s is already defined"
-msgstr "L'Entité identifié par %s est déja défini"
+msgstr ""
 
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
-msgstr "Erreur envoi non valide. Reportez-vous au questionnaire imprimé. Le numéro d'identification unique "
-"(ID) est manquant."
+msgstr ""
 
 msgid "This field is required."
-msgstr "Ce champ est obligatoire."
+msgstr "Faritra tsy maintsy fenoina."
 
 #, python-format
 msgid "Error. Incorrect answer for %s. Please re-send entire message."
-msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la totalité du message"
+msgstr ""
 
 #, python-format
 msgid"Questionnaire ID %s doesnt exist."
-msgstr "Le ID Questionnaire %s n'existe pas."
+msgstr ""
 
 #, python-format
 msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend "
 "SMS starting with this questionnaire code."
-msgstr "Erreur sur le code Questionnaire %s. Cherchez le code sur le questionnaire imprimé et envoyez de "
-"nouveau le SMS en commençant par ce code questionnaire"
+msgstr "Diso ny  kaodin’ny lisitry ny fanontaniana %s. Jereo eo amin’ny lisitry ny fanontaniana ilay izy ary "
+"alefaso indray ny SMS-nao  manomboka amin’io kaody io"
 
 msgid "This entity reported on is not registered in our system. Please register entity or contact us at "
 "033 20 426 89"
-msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer "
-"cette entité ou appelez-nous au 033 20 426 89"
+msgstr ""
 
 #, python-format
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
-msgstr "Ce/cette %s n'est pas enregistré(e) dans notre système. Vérifiez le numéro ID unique de %s et envoyez "
-"de nouveau le SMS"
+msgstr ""
 
 #, python-format
 msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
-msgstr "Ce/cette %s %s n'est pas enregistré(e) dans notre système. Veuillez enregistrer ce/cette %s "
-"ou contacter votre superviseur."
+msgstr ""
 
 #, python-format
 msgid "This telephone number is not registered in our system."
-msgstr "Ce numéro de téléphone n'est pas encore enregistré dans notre système."
+msgstr "Tsy mbola tafiditra ao anatin’ny lisitra io nomerao telefaoninao io."
 
 #, python-format
 msgid "Your telephone number is not yet registered in our system. Please contact your supervisor."
-msgstr "Votre numéro de téléphone n'est pas encore enregistré dans notre système. Veuillez contacter "
-"votre superviseur."
+msgstr "Tsy mbola tafiditra ao anatin’ny lisitra io nomerao telefaoninao io. Antsoy ny tompon’andraikitra "
+"momba izany azafady."
 
 #, python-format
 msgid "Question Code Already Exists"
-msgstr "Ce Code Question existe déja"
+msgstr ""
 
 #, python-format
 msgid "Question Code %s provided already exists"
-msgstr "Ce Code Question %s fourni existe déja"
+msgstr ""
 
 #, python-format
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
-msgstr "Erreur. Submission non valide. Reportez-vous au questionnaire imprimé. Envoyez de nouveau l'ID de "
-"la question et la réponse pour : %s"
+msgstr ""
 
 msgid "Error. Incorrect answer for question t. Please resend entire message."
-msgstr "Réponse incorrecte pour la question t. Veuillez envoyer de nouveau la totalité du message"
+msgstr "Diso ny valin’ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
 
 msgid "Invalid message format."
-msgstr "Format de message non valide."
+msgstr ""
 
 msgid "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
-msgstr "Erreur. SMS incorrect. Revoyez le questionnaire imprimé et envoyez de nouveau le SMS."
+msgstr "Diso ny SMS-nao. Avereno jerena ilay lisitry ny fanontaniana ary avereno alefa  indray  ny SMS."
 
 msgid "The system is experiencing a problem right now. Please try again in a few minutes"
-msgstr "Le système est confronté à un problème. Veuillez essayer à nouveau dans quelques minutes."
+msgstr "Mbola misy olana kely. Avereno indray azafady rehefa afaka minitra vitsy."
 
 msgid "The system is unable to accept your SMS right now. Please wait one hour and resend the same message."
-msgstr "Le système a rencontré un problème pour enregistrer votre SMS. Veuillez attendre une heure et "
-"envoyez de nouveau le même message. "
+msgstr "Tsy mbola afaka raisina ny SMS-nao. Andramo averina alefa indray ilay izy rehefa afaka adin’iray azafady."
 
 msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed "
 "questionnaire and resend SMS with the right Question code."
-msgstr "Erreur. Trouvez le code questionnaire sur le questionnaire imprimé et envoyez de nouveau le SMS en "
-"commençant par ce code questionnaire."
+msgstr ""
 
 msgid "Error. This project is not yet active. Submissions can be made only for an active project."
-msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent être effectuées  que pour un projet actif."
+msgstr "Diso. Tsy mbola misokatra ny momba io tetikasa io.  Izay tetikasa efa voasokatra ihany no azo iasàna."
 
 msgid "Error. Internal error. Please call technical support"
-msgstr "Erreur. Erreur interne. Veuillez contacter le support technique"
+msgstr ""
