@@ -16,7 +16,7 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_broadcast_sms.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_broadcast_sms.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
@@ -27,7 +27,6 @@
 
     <div style="position:relative;">
         <label><h3>{% trans "Send a Message" %}</h3></label>
-        <label><h6 class="section_description">{% trans "Instruction about sending a message." %}</h6></label><br/>
 
         <div style="position:relative;">
             <div class='sms_title'><h5>{% trans "Text:" %}</h5></div>
