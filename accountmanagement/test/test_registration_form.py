@@ -14,7 +14,7 @@ class TestFullRegistrationForm(unittest.TestCase):
                      'email': uppercase_email_id,
                      'password1': 'a', 'password2': 'a', 'organization_name': 'ad',
                      'organization_address': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
-                     'organization_zipcode': 'asd', 'organization_sector': 'Other'
+                     'organization_zipcode': 'asd', 'organization_sector': 'Other', 'invoice_period':'pay_monthly'
         }
 
         form = FullRegistrationForm(base_form)
@@ -36,7 +36,8 @@ class TestFullRegistrationForm(unittest.TestCase):
                      'organization_city': 'aaa',
                      'organization_country': 'aa',
                      'organization_zipcode': 'asd',
-                     'organization_sector': 'Other'
+                     'organization_sector': 'Other',
+                     'invoice_period':'pay_monthly'
         }
         form = FullRegistrationForm(base_form)
         with patch.object(FullRegistrationForm, 'clean_email') as get_clean_email:

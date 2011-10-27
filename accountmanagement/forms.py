@@ -131,7 +131,7 @@ def payment_details_form():
     PREFERRED_PAYMENT_CHOICES = (wire_transfer, credit_card, pay_via_ach)
 
     invoice_period = forms.ChoiceField(required=True, label=_('Invoice Period'), widget=forms.RadioSelect,
-                                       choices=INVOICE_PERIOD_CHOICES, initial='pay_monthly')
+                                       choices=INVOICE_PERIOD_CHOICES, initial='pay_monthly', help_text="O, no, Help")
 
     preferred_payment = forms.ChoiceField(required=False, label=_('Preferred Payment'), widget=forms.RadioSelect,
                                           choices=PREFERRED_PAYMENT_CHOICES, initial=False)

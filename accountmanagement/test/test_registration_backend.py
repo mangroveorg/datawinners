@@ -61,10 +61,12 @@ class TestRegistrationBackend(unittest.TestCase):
     def _stub_code_for_email_content_test(self, **kwargs):
         user = Mock()
         organization = Mock()
+        payment_details = Mock()
         registration_profile = Mock()
         registration_profile.activation_key = 'ALREADY_ACTIVATED'
         RegistrationProfile.objects.get = Mock(return_value=registration_profile)
         user.activation_key = '_not_relevant_'
+        self.backend._create_payment_details = Mock(return_value=payment_details)
         self.backend._create_user = Mock(return_value=user)
         self.backend.create_respective_organization = Mock(return_value=organization)
         organization.in_trial_mode = kwargs.get('trial_mode') or False
