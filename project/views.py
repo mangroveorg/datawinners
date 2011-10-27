@@ -176,35 +176,18 @@ def _generate_project_info_with_deadline_and_reminders(project):
 @is_datasender
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
     is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
-        form = ProjectProfile(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
+        form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)))
+        return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
                                   context_instance=RequestContext(request))
 
-    form = ProjectProfile(data=request.POST, entity_list=entity_list)
+    form = CreateProject(data=request.POST)
     if form.is_valid():
-        older_entity_type = project.entity_type
-        if older_entity_type != form.cleaned_data["entity_type"]:
-            new_questionnaire = helper.create_questionnaire(form.cleaned_data, manager)
-            new_qid = new_questionnaire.save()
-            project.qid = new_qid
-        project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
-        project.update(form.cleaned_data)
-        project.update_questionnaire(manager)
-
-        try:
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
-                                      context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
+        return render_to_response('project/overview.html')
     else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
+        return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True},
                                   context_instance=RequestContext(request))
 
 
