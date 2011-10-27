@@ -480,5 +480,12 @@
             "name": "Data Senders",
             "permissions": []
         }
+    },
+    {
+        "pk": "1234567890",
+        "model": "accountmanagement.datasenderontrialaccount",
+        "fields":{
+            "organization" : "COJ00001"
+        }
     }
 ]

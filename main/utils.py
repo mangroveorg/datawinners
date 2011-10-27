@@ -3,13 +3,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from mangrove.datastore.database import get_db_manager
+
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
+from datawinners.settings import PROJECT_DIR
+from mangrove.datastore.database import get_db_manager
+
 from django.conf import settings
 from mangrove.errors.MangroveException import UnknownOrganization
 import os
 from glob import iglob
 import string
-
-
 
 def get_database_manager(user):
     profile = user.get_profile()

@@ -1176,6 +1176,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
         project1.save(manager)
     except Exception:
         pass
+    return project1
 
 def load_data():
     manager = load_manager_for_default_test_account()
@@ -1223,7 +1224,15 @@ def load_data():
     load_sms_data_for_cli001(manager)
 
     create_trial_test_organization('chinatwu@gmail.com','COJ00000')
-    create_trial_test_organization('chinatwu2@gmail.com','COJ00001')
+    manager = create_trial_test_organization('chinatwu2@gmail.com','COJ00001')
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
+            (NAME_FIELD, "Shweta", first_name_type)],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+
+    project =
+    
+
     create_trial_test_organization('chinatwu3@gmail.com','COJ00002')
     create_trial_test_organization('chinatwu4@gmail.com','COJ00003')
 
@@ -1237,6 +1246,7 @@ def create_trial_test_organization(email, org_id):
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
     create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, org_id)
+    return manager
 
 def load_test_managers():
     test_emails = ['tester150411@gmail.com', 'chinatwu@gmail.com', 'chinatwu2@gmail.com', 'chinatwu3@gmail.com', 'chinatwu4@gmail.com']
