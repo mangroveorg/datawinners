@@ -15,5 +15,5 @@
   left: 7px;
   float: left; }
   .login_links_div span {
-    width: 200px;
-    float: right; }
+    float: right;
+    text-align: right; }
