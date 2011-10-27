@@ -2,6 +2,13 @@
     <fieldset>
         <legend>1. Basic Information</legend>
     </fieldset>
+    {% if messages %}
+        <div class="message-box">
+            {% for message in messages %}
+                <span>{{ message }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div style="border-bottom: 1px solid #ccbf97;"></div>
     <li class="form-row-10px">
         {{ form.name.label_tag }}

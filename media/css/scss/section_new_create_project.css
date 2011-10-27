@@ -31,8 +31,7 @@
       .clear_both li ul li label {
         font-weight: normal;
         margin-bottom: 20px;
-        width: 100%;
-        display: inline; }
+        width: 100%; }
     .clear_both li ul.errorlist {
       position: absolute;
       float: none;
@@ -56,10 +55,6 @@
       font-size: 15px;
       width: 200px;
       margin-left: 25px; }
-    .clear_both li select#id_frequency_period {
-      position: absolute;
-      top: 906px;
-      left: 600px; }
     .clear_both li input#id_questionnaire {
       width: 50px; }
 

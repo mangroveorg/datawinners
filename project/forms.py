@@ -104,7 +104,7 @@ class CreateProject(Form):
     FREQUENCY_CHOICES = ((False, _("Whenever my data sender have data")), (True, _("Every:")))
     frequency_enabled = ChoiceField(label = _("Time Period"),
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True,initial=True)
-    frequency_period = ChoiceField(choices=(('Choose a Time Period', _('Choose a Time Period')), ('week', _('Week')), ('month', _('Month')),('quarter', _('Quarter')), ), required=False)
+    frequency_period = ChoiceField(choices=(('Choose a Time Period', _('Choose a Time Period')), ('week', _('Week')), ('month', _('Month')),('quarter', _('Quarter')), ),widget=forms.Select(attrs={'style':'margin-left: 100px; margin-top: -58px;'}), required=False)
 
     QUESTIONNAIRE_CHOICES = ((False, _("This is general activity report.")), (True, _("I am collecting data about a specific subject.")))
     about_questionnaire = ChoiceField(label=_("What is this questionnaire about?"),
