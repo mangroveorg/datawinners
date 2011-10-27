@@ -39,16 +39,15 @@
             {{ form.name.label_tag }}
             {{ form.name }}
             <img src="/media/images/help_icon.png" class="help_icon" />
-
-            <p><i>Example: Teacher attendance in Antananarivo</i></p>
+            <p class="black_italic">Example: Teacher attendance in Antananarivo</p>
             {{ form.name.errors }}
         </li>
         <li>
             {{ form.goals.label_tag }}
             {{ form.goals }}
             {{ form.goals.errors }}
-            <p><i>Example: Collect data from 100 primary school in Antananarivo in an effort to increase
-                teacher attendance from 50% to 80%</i></p>
+            <p class="black_italic">Example: Collect data from 100 primary school in Antananarivo in an effort to increase
+                teacher attendance from 50% to 80%</p>
         </li>
         <li>
             {{ form.frequency_enabled.label_tag }}
@@ -72,8 +71,8 @@
         <legend>2. Questions </legend>
         </fieldset>
         <div class="line"></div>
-        <p><i>We have provided you with example questions below. You can use the provided question, edit them, delete
-            them or write your own.</i></p>
+        <p class="black_italic">We have provided you with example questions below. You can use the provided question, edit them, delete
+            them or write your own.</p>
         {% include 'project/new_questionnaire.html' %}
     </div>
     <div class="clear_both">
@@ -91,7 +90,7 @@
     <div class="create_new_subject">
         <label><b>Category:</b></label>
         <input type="text" name="subject" watermark="Insert a new subject" />
-        <p><i>Example: Doctor, Mother, Sister</i></p>
+        <p class="black_italic">Example: Doctor, Mother, Sister</p>
         <a href="#" class="cancel_link" id='cancel_create_subject'>Cancel</a>
         <a href="#" class="button" id="confirm">Save Subject</a>
     </div>

@@ -118,3 +118,6 @@ fieldset {
 
 .create_new_subject {
   display: none; }
+
+.black_italic {
+  font-style: italic; }
