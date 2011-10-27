@@ -25,19 +25,40 @@
   margin-bottom: 40px; }
   .clear_both li {
     list-style-type: None;
-    margin: 25px 0 50px 0; }
+    margin: 25px 0 40px 0; }
     .clear_both li ul li {
       margin: 10px 0 10px 0; }
       .clear_both li ul li label {
         font-weight: normal;
-        margin-bottom: 20px; }
+        margin-bottom: 20px;
+        width: 100%;
+        display: inline; }
+    .clear_both li ul.errorlist {
+      position: absolute;
+      float: none;
+      color: #FFFFFF;
+      display: inline;
+      background: url(/media/images/arrow_error.png) no-repeat left 10px;
+      padding: 3px 10px 3px 10px;
+      border: 1px solid #00000;
+      -moz-border-radius: 5px;
+      -webkit-moz-border-radius: 5px;
+      -webkit-border-radius: 5px; }
+      .clear_both li ul.errorlist li {
+        background: #c20303;
+        padding: 3px 10px 3px 10px;
+        margin-top: -1px;
+        border: 1px solid #00000;
+        -moz-border-radius: 5px;
+        -webkit-moz-border-radius: 5px;
+        -webkit-border-radius: 5px; }
     .clear_both li select {
       font-size: 15px;
       width: 200px;
       margin-left: 25px; }
     .clear_both li select#id_frequency_period {
       position: absolute;
-      top: 925px;
+      top: 906px;
       left: 600px; }
     .clear_both li input#id_questionnaire {
       width: 50px; }
