@@ -2579,3 +2579,7 @@ msgstr ""
 
 msgid "Error. Internal error. Please call technical support"
 msgstr ""
+
+
+msgid "Terms and Conditions"
+msgstr ""

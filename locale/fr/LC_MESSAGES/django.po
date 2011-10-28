@@ -2825,3 +2825,7 @@ msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent êt
 
 msgid "Error. Internal error. Please call technical support"
 msgstr "Erreur. Erreur interne. Veuillez contacter le support technique"
+
+
+msgid "Terms and Conditions"
+msgstr "Termes et Conditions"

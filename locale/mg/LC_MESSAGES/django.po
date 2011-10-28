@@ -2821,3 +2821,7 @@ msgstr "Diso. Tsy mbola misokatra ny momba io tetikasa io.  Izay tetikasa efa vo
 
 msgid "Error. Internal error. Please call technical support"
 msgstr "Diso. Misy olana ara teknika. Azafady antsoy fangalana torohevitra"
+
+
+msgid "Terms and Conditions"
+msgstr ""
