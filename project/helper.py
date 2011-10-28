@@ -290,6 +290,12 @@ def deadline_and_reminder(post_dict):
     _add_to_dict(dict, post_dict,'reminders_enabled')
     return dict
 
+def new_deadline_and_reminder(post_dict):
+    dict={}
+    _add_to_dict(dict, post_dict,'frequency_enabled')
+    _add_to_dict(dict, post_dict,'frequency_period')
+    return dict
+
 def get_project_data_senders(manager, project):
     all_data = load_all_subjects_of_type(manager)
     return [data for data in all_data if data['short_name'] in project.data_senders]

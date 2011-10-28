@@ -158,8 +158,10 @@ def new_create_project(request):
     if form.is_valid():
         entity_type = form.cleaned_data['entity_type']
         project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
-                          project_type='survey', entity_type=entity_type, state = "Active",
-                          language='en')
+                          project_type='survey', entity_type=entity_type,
+                          reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
+                          activity_report=form.cleaned_data['activity_report'],
+                          state = "Active",language='en')
         try:
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
@@ -185,16 +187,26 @@ def _generate_project_info_with_deadline_and_reminders(project):
 @is_datasender
 def edit_profile(request, project_id=None):
     manager = get_database_manager(request.user)
+    entity_list = get_all_entity_types(manager)
+    entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
     is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
-        form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)))
+        form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
         return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
                                   context_instance=RequestContext(request))
 
-    form = CreateProject(data=request.POST)
+    form = CreateProject(data=request.POST, entity_list=entity_list)
     if form.is_valid():
-        return render_to_response('project/overview.html')
+        project.reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data)
+        project.update(form.cleaned_data)
+        try:
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            messages.error(request, e.message)
+            return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True},
+                                      context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse(project_overview, args=[pid]))
     else:
         return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True},
                                   context_instance=RequestContext(request))

@@ -106,10 +106,10 @@ class CreateProject(Form):
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True,initial=True)
     frequency_period = ChoiceField(choices=(('Choose a Time Period', _('Choose a Time Period')), ('week', _('Week')), ('month', _('Month')),('quarter', _('Quarter')), ),widget=forms.Select(attrs={'style':'margin-left: 100px; margin-top: -58px;'}), required=False)
 
-    QUESTIONNAIRE_CHOICES = ((False, _("This is general activity report.")), (True, _("I am collecting data about a specific subject.")))
-    about_questionnaire = ChoiceField(label=_("What is this questionnaire about?"),
+    QUESTIONNAIRE_CHOICES = (('yes', _("This is general activity report.")), ('no', _("I am collecting data about a specific subject.")))
+    activity_report = ChoiceField(label=_("What is this questionnaire about?"),
                                       help_text="How often do you need data (answers to your questions)?",choices=QUESTIONNAIRE_CHOICES,
-                                      widget=forms.RadioSelect, required=False, initial=True)
+                                      widget=forms.RadioSelect, required=False, initial=('no',_('I am collecting data about a specific subject.')))
     CATEGORY_CHOICE = (('Choose a category', _('Choose a category')), ('A person', _('A person')), ('A place', _('A place')), ('A thing', _('A thing')), ('An event', _('An event')), )
     SUBJECT_CHOICE = (('Choose a subject', _('Choose a subject')), ('Patient', _('Patient')), ('Farmer', _('Farmer')), ('Child', _('Child')), ('Employee', _('Employee')), )
     category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
