@@ -113,4 +113,11 @@ class CreateProject(Form):
     CATEGORY_CHOICE = (('Choose a category', _('Choose a category')), ('A person', _('A person')), ('A place', _('A place')), ('A thing', _('A thing')), ('An event', _('An event')), )
     SUBJECT_CHOICE = (('Choose a subject', _('Choose a subject')), ('Patient', _('Patient')), ('Farmer', _('Farmer')), ('Child', _('Child')), ('Employee', _('Employee')), )
     category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
-    subject = ChoiceField(choices=SUBJECT_CHOICE, required=False)
+    entity_type = ChoiceField(required=False)
+
+    def __init__(self, entity_list,  *args, **kwargs):
+        assert isinstance(entity_list, list)
+        super(CreateProject, self).__init__(*args, **kwargs)
+        self.fields['entity_type'].choices = [(t[-1], t[-1]) for t in entity_list]
+        self.fields['name'].widget.attrs['watermark'] = _("Enter a project name")
+        self.fields['goals'].widget.attrs['watermark'] = _("Describe what your team hopes to achieve by collecting this data")

@@ -65,15 +65,11 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-def _make_project_links(project, questionnaire_code):
+def _make_project_links(project):
     project_id = project.id
     project_links = {'overview_link': reverse(project_overview, args=[project_id]),
                      'activate_project_link': reverse(activate_project, args=[project_id]),
                      'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id])}
-
-    if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
-        project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
-        project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
 
     if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
@@ -152,12 +148,25 @@ def create_profile(request):
 
 @login_required(login_url='/login')
 def new_create_project(request):
+    manager = get_database_manager(request.user)
+    entity_list = get_all_entity_types(manager)
+    entity_list = helper.remove_reporter(entity_list)
     if request.method == 'GET':
-        form = CreateProject()
+        form = CreateProject(entity_list=entity_list)
         return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
-    form = CreateProject(data=request.POST)
+    form = CreateProject(data=request.POST, entity_list=entity_list)
     if form.is_valid():
-        return HttpResponseRedirect(reverse(new_project_overview))
+        entity_type = form.cleaned_data['entity_type']
+        project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
+                          project_type='survey', entity_type=entity_type, state = "Active",
+                          language='en')
+        try:
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            messages.error(request, e.message)
+            return render_to_response('project/create_project.html', {'form': form},
+                                      context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse(project_overview, args=[pid]))
     else:
         return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
 
@@ -261,13 +270,11 @@ def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     link = reverse(edit_profile, args=[project_id])
-    questionnaire = FormModel.get(manager, project['qid'])
-    number_of_questions = len(questionnaire.fields)
-    project_links = _make_project_links(project, questionnaire.form_code)
+    project_links = _make_project_links(project)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
-             , 'project_profile_link': link, 'number_of_questions': number_of_questions, 'map_api_key': map_api_key},
+             , 'project_profile_link': link, 'number_of_questions': 0, 'map_api_key': map_api_key},
                               context_instance=RequestContext(request))
 
 
