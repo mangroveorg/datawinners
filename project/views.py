@@ -107,47 +107,8 @@ def questionnaire_wizard(request, project_id=None):
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
                  "previous": previous_link, 'project': project, "use_ordered_sms_parser" : settings.USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
 
-
-"""@login_required(login_url='/login')
-def create_profile(request):
-    manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
-    project_summary = dict(name='New Project')
-    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
-    if request.method == 'GET':
-        form = ProjectProfile(entity_list=entity_list, initial={'activity_report': 'yes'})
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account
-        },
-                                  context_instance=RequestContext(request))
-
-    form = ProjectProfile(data=request.POST, entity_list=entity_list)
-    if form.is_valid():
-        entity_type = form.cleaned_data['entity_type']
-        project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
-                          project_type=form.cleaned_data['project_type'], entity_type=entity_type,
-                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'],
-                          sender_group=form.cleaned_data['sender_group'],
-                          reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data),
-                          language=form.cleaned_data['language'])
-        form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
-        try:
-            pid = project.save(manager)
-            qid = form_model.save()
-            project.qid = qid
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account },
-                                      context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
-    else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account},
-                                  context_instance=RequestContext(request))
-"""
-
 @login_required(login_url='/login')
-def new_create_project(request):
+def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
