@@ -137,3 +137,9 @@ fieldset {
 
 .black_italic {
   font-style: italic; }
+
+.small-box {
+  width: 100px !important; }
+
+#q_code {
+  display: inline; }
