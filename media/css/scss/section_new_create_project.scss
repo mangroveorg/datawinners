@@ -89,10 +89,11 @@ fieldset{
 }
 
 #page_title{
-       padding:50px 0 0 0;
+       padding:50px 0 0 0 !important;
        width:950px;
        margin:0 auto;
        font-weight:bold;
+       font-size:14px;
        .project_title{
             font-size:30px;
             &:first-letter{
@@ -144,14 +145,6 @@ fieldset{
 .right_aligned_button{
     float:right;
     display:inline-block;
-}
-
-#page_title{
-       padding:50px 0 0 0 !important;
-       font-size:14px !important;
-       .project_title{
-            font-size:30px !important;
-       }
 }
 
 #question-detail-panel{
