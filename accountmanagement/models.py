@@ -23,6 +23,7 @@ class Organization(models.Model):
     org_id = models.TextField(primary_key=True)
     in_trial_mode = models.BooleanField(False)
     active_date = models.DateTimeField(blank=True, null=True)
+    is_deactivate_email_sent = models.BooleanField(False)
 
     def is_expired(self, current_time = None):
         if self.active_date is None:

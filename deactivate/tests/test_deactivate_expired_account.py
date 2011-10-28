@@ -3,11 +3,9 @@ import dircache
 import os
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.mail.message import EmailMessage
-from mock import patch, Mock
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
-from datawinners.deactivate.deactive import get_creator, get_expired_account_list, create_email, get_creators, send_email, send_deactivate_email
+from datawinners.deactivate.deactive import get_creator, get_expired_trial_organizations_without_deactivate_email_sent, create_email, get_creators, send_deactivate_email
 
 
 import unittest
@@ -43,6 +41,15 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.paid_organization.save()
 
     def setUp(self):
+        try:
+            User.objects.get(username = 'expired1@mail.com').delete()
+            User.objects.get(username = 'expired2@mail.com').delete()
+            Organization.objects.get(name='test_org_for_expired_organization_out_of_31_days').delete()
+            Organization.objects.get(name='test_org_for_paid_account').delete()
+            Organization.objects.get(name='test_org_for_unexpired_account').delete()
+            Organization.objects.get(name='test_org_for_expired_organization_of_30_days').delete()
+        except :
+            pass
         self.user1 = User(username='expired1@mail.com', email= 'expired1@mail.com', password='expired',first_name='first_name1',last_name='last_name1')
         self.user2 = User(username='expired2@mail.com', email= 'expired2@mail.com', password='expired',first_name='first_name2',last_name='last_name2')
         self.user1.set_password('expired')
@@ -67,17 +74,17 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.assertEqual(get_creator(self.expired_organization_of_30_days),self.user1)
 
     def test_should_not_contain_unexpired_organizations(self):
-        organizations = get_expired_account_list()
+        organizations = get_expired_trial_organizations_without_deactivate_email_sent()
         self.assertIn(self.expired_organization_of_30_days,organizations)
         self.assertNotIn(self.unexpired_organization,organizations)
 
     def test_should_not_contain_paid_organizations(self):
-        organizations = get_expired_account_list()
+        organizations = get_expired_trial_organizations_without_deactivate_email_sent()
         self.assertNotIn(self.paid_organization, organizations)
 
     def test_should_not_contain_organization_active_date_out_of_31_days(self):
-        organizations = get_expired_account_list()
-        self.assertNotIn(self.expired_organization_out_of_31_days, organizations)
+        organizations = get_expired_trial_organizations_without_deactivate_email_sent()
+        self.assertIn(self.expired_organization_out_of_31_days, organizations)
 
     def test_get_user_list_should_return_organization_creator(self):
         creators = get_creators([self.expired_organization_of_30_days])
@@ -92,8 +99,8 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
     def test_create_email_should_get_email_with_right_subject(self):
         msg1 = create_email(self.user1)
         msg2 = create_email(self.user2)
-        self.assertEqual(msg1.subject,'Please activate account email')
-        self.assertEqual(msg2.subject,'Please activate account email')
+        self.assertEqual(msg1.subject,'Account Expired')
+        self.assertEqual(msg2.subject,'Account Expired')
 
     def test_create_email_should_get_email_contain_right_user_name(self):
         msg1 = create_email(self.user1)
@@ -107,15 +114,6 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
         self.assertIn(self.user1.email,msg1.to)
         self.assertIn(self.user2.email,msg2.to)
 
-    def test_should_send_email_correct_times(self):
-        organizations = get_expired_account_list()
-        users = get_creators(organizations)
-
-        with patch.object(EmailMessage, 'send') as send:
-            send.return_value = True
-            send_email(users)
-            self.assertGreaterEqual(send.call_count, 1)
-
     def test_deactivate_email_sent(self):
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
         settings.EMAIL_FILE_PATH = 'email'
@@ -127,6 +125,16 @@ class TestDeactivateExpiredAccount(unittest.TestCase):
             os.remove('email/'+email)
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: expired1@mail.com', emails)
-        self.assertIn('Subject: Please activate account email', emails)
+        self.assertIn('Subject: Account Expired', emails)
         self.assertIn('Hello first_name1 last_name1', emails)
         self.assertNotIn('To: expired2@mail.com', emails)
+
+    def test_deactivate_email_only_sent_once(self):
+        organisation_list = get_expired_trial_organizations_without_deactivate_email_sent()
+        number_before = len(organisation_list)
+        self.assertIsNot(0, number_before)
+
+        send_deactivate_email()
+        organisation_list = get_expired_trial_organizations_without_deactivate_email_sent()
+        number_after = len(organisation_list)
+        self.assertLess(number_after, number_before)
