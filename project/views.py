@@ -65,11 +65,16 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-def _make_project_links(project):
+def _make_project_links(project,questionnaire_code):
     project_id = project.id
     project_links = {'overview_link': reverse(project_overview, args=[project_id]),
                      'activate_project_link': reverse(activate_project, args=[project_id]),
+                     'delete_project_link': reverse(delete_project, args=[project_id]),
                      'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id])}
+
+    if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
+        project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
+        project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
 
     if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
@@ -249,7 +254,7 @@ def project_overview(request, project_id=None):
     link = reverse(edit_profile, args=[project_id])
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
-    project_links = _make_project_links(project)
+    project_links = _make_project_links(project, questionnaire.form_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
