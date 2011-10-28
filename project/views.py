@@ -162,7 +162,11 @@ def new_create_project(request):
                           reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                           activity_report=form.cleaned_data['activity_report'],
                           state = "Active",language='en')
+        form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
         try:
+            pid = project.save(manager)
+            qid = form_model.save()
+            project.qid = qid
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
             messages.error(request, e.message)
@@ -282,11 +286,13 @@ def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     link = reverse(edit_profile, args=[project_id])
+    questionnaire = FormModel.get(manager, project['qid'])
+    number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
-             , 'project_profile_link': link, 'number_of_questions': 0, 'map_api_key': map_api_key},
+             , 'project_profile_link': link, 'number_of_questions': number_of_questions, 'map_api_key': map_api_key},
                               context_instance=RequestContext(request))
 
 
