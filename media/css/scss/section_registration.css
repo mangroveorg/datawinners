@@ -48,7 +48,8 @@ form ul li input[type=text], form ul li input[type=password] {
   border-color: #cccccc; }
 
 .about_datawinners {
-  background: #feee96; }
+  background: #feee96;
+  margin-bottom: 30px; }
   .about_datawinners p {
     margin-top: 10px; }
 
