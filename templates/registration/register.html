@@ -168,8 +168,9 @@
                                 {{ form.preferred_payment|field_label }}
                                 <div>
                                     <div class="choices_description">{% trans "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?" %}</div>
+                                    <ul style="margin-left:170px">
                                     {{ form.preferred_payment }}
-
+                                    </ul>
                                     {{ form.preferred_payment.errors }}
                                 </div>
 

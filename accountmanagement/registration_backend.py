@@ -110,11 +110,10 @@ class RegistrationBackend(object):
 
         new_user = self._create_user(site, kwargs)
 
-        print "--------------------------------------"
-        print kwargs
 
-        payment_details = self._create_payment_details(organization,kwargs)
-        payment_details.save()
+        if organization.in_trial_mode == False:
+            payment_details = self._create_payment_details(organization,kwargs)
+            payment_details.save()
 
         extra_context = {
             'phone_number': "You can also send your data via sms to " + settings.TRIAL_ACCOUNT_PHONE_NUMBER + "."} if organization.in_trial_mode else {}
