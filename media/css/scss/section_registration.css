@@ -82,3 +82,18 @@ form ul li input[type=text], form ul li input[type=password] {
 .radio_title {
   font-size: 14px;
   margin-bottom: 3px; }
+
+.subscribe_now {
+  display: inline-table;
+  width: 158px;
+  height: 46px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 46px;
+  color: #6f451b !important;
+  text-shadow: #FFF2B2 0 1px 1px;
+  background: url("/media/images/dw_home_button1.png") no-repeat left top;
+  margin-top: 10px;
+  margin-left: 20px;
+  text-align: center; }
