@@ -22,7 +22,6 @@ from mangrove.transport.player.player import Request, SMSPlayer, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from mangrove.transport.submissions import Submission
 
-
 class DateTimeMocker(object):
     def __init__(self):
         self.datetime_patcher = patch("mangrove.datastore.entity.utcnow")
