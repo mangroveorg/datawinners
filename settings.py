@@ -212,6 +212,8 @@ SHOW_GOOGLE_MAPS = True
 USE_ORDERED_SMS_PARSER = False
 TRIAL_REGISTRATION_ENABLED = True
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 try:
     from local_settings import *
 except ImportError, e:
