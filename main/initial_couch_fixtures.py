@@ -1105,7 +1105,7 @@ def load_sms_data_for_cli001(manager):
     message1 = "cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
     response = sms_player.accept(Request(transportInfo=transport, message=message1))
 
-def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk):
+def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
     Reminder.objects.filter(organization = organization).delete()
     name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
@@ -1176,6 +1176,10 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
         project1.save(manager)
     except Exception:
         pass
+    if(register_a_datasender):
+        project1.data_senders.extend(["rep1"])
+        project1.save(manager)
+
     return project1
 
 def load_data():
@@ -1223,20 +1227,12 @@ def load_data():
 
     load_sms_data_for_cli001(manager)
 
-    create_trial_test_organization('chinatwu@gmail.com','COJ00000')
-    manager = create_trial_test_organization('chinatwu2@gmail.com','COJ00001')
-    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", phone_number_type),
-            (NAME_FIELD, "Shweta", first_name_type)],
-             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
-             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    create_trial_test_organization('chinatwu@gmail.com','COJ00000', False)
+    create_trial_test_organization('chinatwu2@gmail.com','COJ00001', True, [phone_number_type, first_name_type])
+    create_trial_test_organization('chinatwu3@gmail.com','COJ00002', False)
+    create_trial_test_organization('chinatwu4@gmail.com','COJ00003', False)
 
-    project =
-    
-
-    create_trial_test_organization('chinatwu3@gmail.com','COJ00002')
-    create_trial_test_organization('chinatwu4@gmail.com','COJ00003')
-
-def create_trial_test_organization(email, org_id):
+def create_trial_test_organization(email, org_id, register_a_data_sender, data_types_for_datasender=None):
     manager = get_database_manager(User.objects.get(username=email))
     initializer.run(manager)
     CLINIC_ENTITY_TYPE = [u"clinic"]
@@ -1245,7 +1241,14 @@ def create_trial_test_organization(email, org_id):
     load_datadict_types(manager)
     load_clinic_entities(CLINIC_ENTITY_TYPE, manager)
     load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager)
-    create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, org_id)
+
+    if(register_a_data_sender):
+        register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "1234567890", data_types_for_datasender[0]),
+            (NAME_FIELD, "Shweta", data_types_for_datasender[1])],
+             location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+             short_code="rep1", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+
+    create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, org_id, register_a_data_sender)
     return manager
 
 def load_test_managers():

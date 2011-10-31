@@ -4,8 +4,11 @@ from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.transport.reporter import  find_reporter_entity
 from django.utils.encoding import smart_unicode
 
+def remove_hyphens(telephone_number):
+    return re.sub('[- \(\)+]', '', smart_unicode(telephone_number))
+
 def unique(dbm, telephone_number):
-    telephone_number = re.sub('[- \(\)+]', '', smart_unicode(telephone_number))
+    telephone_number = remove_hyphens(telephone_number)
     try:
         find_reporter_entity(dbm, telephone_number)
     except NumberNotRegisteredException:

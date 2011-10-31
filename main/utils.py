@@ -7,6 +7,7 @@ from mangrove.datastore.database import get_db_manager
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from datawinners.settings import PROJECT_DIR
 from mangrove.datastore.database import get_db_manager
+from datawinners.entity.helper import remove_hyphens
 
 from django.conf import settings
 from mangrove.errors.MangroveException import UnknownOrganization
@@ -28,9 +29,11 @@ def exclude_of_type(entity,type):
     return False if entity.type_path[0] == type else True
 
 def get_db_manager_for(data_sender_phone_no, org_tel_number):
+    org_tel_number = remove_hyphens(org_tel_number)
+    trial_account_phone_number = remove_hyphens(settings.TRIAL_ACCOUNT_PHONE_NUMBER)
 
     try:
-        if org_tel_number == settings.TRIAL_ACCOUNT_PHONE_NUMBER:
+        if org_tel_number == trial_account_phone_number:
             record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
             organization_settings = OrganizationSetting.objects.get(organization=record.organization)
         else:
