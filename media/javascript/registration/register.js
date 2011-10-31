@@ -27,4 +27,28 @@ $(document).ready(function() {
         $('#submit_registration_form').attr("disabled", true);
         $('#registration_form').submit();
     });
+    
+    $("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #content-terms");
+
+     $("#content_of_terms_and_conditions").dialog({
+        autoOpen: false,
+        modal: true,
+        title: gettext('Terms And Conditions'),
+        zIndex:200,
+        width: 1000,
+        beforeClose: function() {
+            $('#web_user_error').hide();
+        }
+    });
+
+    $("#link-terms-and-conditions").bind("click", function(){
+        $("#content_of_terms_and_conditions").dialog("open");
+        return false;
+    });
+
+
+
+
+
+
 });
