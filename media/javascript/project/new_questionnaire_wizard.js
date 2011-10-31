@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-    
+
     DW.charCount();
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
@@ -84,56 +84,7 @@ $(document).ready(function() {
          $("#questionnaire_code_change").dialog("close");
     });
 
-    $("#submit-button").click(function() {
 
-        var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
-        if ($.trim($("#questionnaire-code").val()) == "") {
-            $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
-            return;
-        }
-
-        var list = $.trim($('#questionnaire-code').val()).split(" ");
-        if (list.length > 1) {
-            $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("Space is not allowed in questionnaire code")+".</label>");
-            return;
-        }
-        else {
-            $('#questionnaire-code').val($.trim($('#questionnaire-code').val()))
-        }
-
-        var text = $('#questionnaire-code').val();
-        var re = new RegExp('^[A-Za-z0-9 ]+$');
-        if (!re.test(text)) {
-            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("Only letters and digits are valid") + ".</label>");
-            return;
-        }
-
-        $("#questionnaire-code-error").html("");
-
-        if (!$('#question_form').valid()) {
-            $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
-            hide_message();
-            return;
-        }
-
-        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()};
-
-        $.post('/project/questionnaire/save', post_data,
-                function(response) {
-                    $("#message-label").removeClass("none");
-                    $("#message-label").removeClass("message-box");
-                    $("#message-label").addClass("success-message-box");
-                    $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
-                    hide_message();
-                    redirect();
-                }).error(function(e) {
-                    $("#message-label").removeClass("none");
-                    $("#message-label").removeClass("success-message-box");
-                    $("#message-label").addClass("message-box");
-                    $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
-                });
-        return false;
-    });
 
     function hide_message() {
         $('#message-label').delay(5000).fadeOut();

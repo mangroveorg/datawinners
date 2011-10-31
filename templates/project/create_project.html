@@ -83,7 +83,7 @@
 
 
 {% block content %}
-    <form action="" method="POST" id="create_project_form">
+    <form id="create_project_form">
         {% csrf_token %}
         {% include 'project/basic_info.html' %}
     </form>
