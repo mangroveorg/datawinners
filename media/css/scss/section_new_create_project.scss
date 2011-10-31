@@ -94,6 +94,9 @@ fieldset{
        margin:0 auto;
        font-weight:bold;
        font-size:14px;
+       a{
+            font-size:14px;
+       }
        .project_title{
             font-size:30px;
             &:first-letter{
