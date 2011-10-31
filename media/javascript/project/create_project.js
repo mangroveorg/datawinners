@@ -45,11 +45,11 @@ $(document).ready(function() {
                 required: true
             }
         },
-        wrapper: "ul",
+        wrapper: "span",
         errorPlacement: function(error, element) {
             offset = element.offset();
             error.insertAfter(element);
-            error.addClass('error_arrow');  // add a class to the wrapper
+            error.addClass('errorlist');  // add a class to the wrapper
 
         }
 
