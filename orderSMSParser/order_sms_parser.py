@@ -5,7 +5,7 @@ from mangrove.transport.player.parser import SMSParser
 from mangrove.utils.types import is_empty, is_string
 
 class OrderSMSParser(SMSParser):
-    SEPARATOR_FOR_NO_FIELD_ID = u" "
+    MESSAGE_PREFIX_FOR_ORDERED_SMS = ur'^(\w+)\s+(\w+)'
 
     def __init__(self, dbm):
         self.dbm = dbm
@@ -26,7 +26,6 @@ class OrderSMSParser(SMSParser):
         assert is_string(message)
         try:
             form_code, tokens = self.form_code(message)
-            form_code = self._pop_form_code(tokens)
             question_codes = self._get_question_codes_from_couchdb(form_code)
             submission = self._parse_tokens(tokens, question_codes)
         except SMSParserInvalidFormatException as ex:
@@ -35,7 +34,7 @@ class OrderSMSParser(SMSParser):
 
     def form_code(self, message):
         message = self._clean(message)
-        self._validate_format(self.MESSAGE_PREFIX_NO_FIELD_ID,message)
+        self._validate_format(self.MESSAGE_PREFIX_FOR_ORDERED_SMS,message)
         tokens = message.split()
         form_code = self._pop_form_code(tokens)
         return form_code, tokens
@@ -46,3 +45,5 @@ class OrderSMSParser(SMSParser):
         for aField in questionnaire_form.fields:
             question_codes.append(aField.code)
         return question_codes
+
+
