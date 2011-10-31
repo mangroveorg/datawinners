@@ -1,8 +1,8 @@
 {% extends 'layout_registration.html' %}
 {% load i18n %}
 {% load field_tags %}
-{% block page_title %}{%  trans "Register"%} {% endblock %}
-{% block section_title %} {%  trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}
+{% block page_title %}{% trans "Register" %} {% endblock %}
+{% block section_title %} {% trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
@@ -10,183 +10,187 @@
 
 {% block content %}
     <div class="span-18 box">
-        <fieldset>
-           
-             <form id="registration_form" action="" method="POST">
-                    {% csrf_token %}
-                    <div class="form-5px">
-                        <ul class="organization">
-                            <li>
-                                <h3 class="highlighted_title">{%  trans "Your Organization" %}<br/></h3>
-                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
-                            </li>
-                            <li class="{{ form.organization_name.css_classes }} form-row-10px">
-                                {{ form.organization_name|field_label }}
-                                {{ form.organization_name }}
+    <fieldset>
 
-                                    {{ form.organization_name.errors }}
+        <form id="registration_form" action="" method="POST">
+            {% csrf_token %}
+            <div class="form-5px">
+                <ul class="organization">
+                    <li>
+                        <h3 class="highlighted_title">{% trans "Your Organization" %}<br/></h3>
+                        <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+                    </li>
+                    <li class="{{ form.organization_name.css_classes }} form-row-10px">
+                        {{ form.organization_name|field_label }}
+                        {{ form.organization_name }}
 
-                            </li>
-                            <li class="{{ form.organization_sector.css_classes  }} form-row-10px">
-                                {{ form.organization_sector|field_label }}
-                                {{ form.organization_sector }}
+                        {{ form.organization_name.errors }}
 
-                                {{ form.organization_sector.errors }}
+                    </li>
+                    <li class="{{ form.organization_sector.css_classes  }} form-row-10px">
+                        {{ form.organization_sector|field_label }}
+                        {{ form.organization_sector }}
 
-                            </li>
-                            <li class="{{ form.organization_address.css_classes  }} form-row-10px">
-                                {{ form.organization_address|field_label }}
-                                {{ form.organization_address }}
+                        {{ form.organization_sector.errors }}
 
-                                {{ form.organization_address.errors }}
+                    </li>
+                    <li class="{{ form.organization_address.css_classes  }} form-row-10px">
+                        {{ form.organization_address|field_label }}
+                        {{ form.organization_address }}
 
-                            </li>
-                            <li class="{{ form.organization_city.css_classes  }} form-row-10px">
-                                {{ form.organization_city|field_label }}
-                                {{ form.organization_city }}
+                        {{ form.organization_address.errors }}
 
-                                {{ form.organization_city.errors }}
+                    </li>
+                    <li class="{{ form.organization_city.css_classes  }} form-row-10px">
+                        {{ form.organization_city|field_label }}
+                        {{ form.organization_city }}
 
-                            </li>
-                            <li class="{{ form.organization_state.css_classes  }} form-row-10px">
-                                {{ form.organization_state|field_label }}
-                                {{ form.organization_state }}
+                        {{ form.organization_city.errors }}
 
-                                {{ form.organization_state.errors }}
+                    </li>
+                    <li class="{{ form.organization_state.css_classes  }} form-row-10px">
+                        {{ form.organization_state|field_label }}
+                        {{ form.organization_state }}
 
-                            </li>
-                            <li class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
-                                {{ form.organization_zipcode|field_label }}
-                                {{ form.organization_zipcode }}
+                        {{ form.organization_state.errors }}
 
-                                {{ form.organization_zipcode.errors }}
+                    </li>
+                    <li class="{{ form.organization_zipcode.css_classes  }} form-row-10px">
+                        {{ form.organization_zipcode|field_label }}
+                        {{ form.organization_zipcode }}
 
-                            </li>
-                            <li class="{{ form.organization_country.css_classes  }} form-row-10px">
-                                {{ form.organization_country|field_label }}
-                                {{ form.organization_country }}
+                        {{ form.organization_zipcode.errors }}
 
-                                {{ form.organization_country.errors }}
+                    </li>
+                    <li class="{{ form.organization_country.css_classes  }} form-row-10px">
+                        {{ form.organization_country|field_label }}
+                        {{ form.organization_country }}
 
-                            </li>
-                            <li class="{{ form.organization_office_phone.css_classes  }} form-row-10px">
-                                {{ form.organization_office_phone|field_label }}
-                                {{ form.organization_office_phone }}
+                        {{ form.organization_country.errors }}
 
-                                {{ form.organization_office_phone.errors }}
+                    </li>
+                    <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+                        {{ form.organization_office_phone|field_label }}
+                        <div class="country_code_phone_container">
+                            {{ form.office_phone_country_code }}
+                            {{ form.organization_office_phone }}
+                        </div>
+                        {{ form.organization_office_phone.errors }}
+                    </li>
+                    <li class="{{ form.organization_website.css_classes  }} form-row-10px">
+                        {{ form.organization_website|field_label }}
+                        {{ form.organization_website }}
 
-                            </li>
-                            <li class="{{ form.organization_website.css_classes  }} form-row-10px">
-                                {{ form.organization_website|field_label }}
-                                {{ form.organization_website }}
+                        {{ form.organization_website.errors }}
 
-                                {{ form.organization_website.errors }}
+                    </li>
+                </ul>
+                <ul class="administrative">
+                    <li>
+                        <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}</h3>
+                        <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+                    </li>
+                    <li class="{{ form.title.css_classes  }} form-row-10px">
+                        {{ form.title|field_label }}
+                        {{ form.title }}
 
-                            </li>
-                        </ul>
-                        <ul class="administrative">
-                            <li>
-                                <h3 class="highlighted_title">{%  trans "Point of Contact / Account Administrator" %}</h3>
-                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
-                            </li>
-                             <li class="{{ form.title.css_classes  }} form-row-10px">
-                                {{ form.title|field_label }}
-                                {{ form.title }}
+                        {{ form.title.errors }}
 
-                                 {{ form.title.errors }}
+                    </li>
+                    <li class="{{ form.first_name.css_classes  }} form-row-10px">
+                        {{ form.first_name|field_label }}
+                        {{ form.first_name }}
 
-                             </li>
-                            <li class="{{ form.first_name.css_classes  }} form-row-10px">
-                                {{ form.first_name|field_label }}
-                                {{ form.first_name }}
+                        {{ form.first_name.errors }}
 
-                                {{ form.first_name.errors }}
+                    </li>
 
-                            </li>
+                    <li class="{{ form.last_name.css_classes  }} form-row-10px">
+                        {{ form.last_name|field_label }}
+                        {{ form.last_name }}
 
-                            <li class="{{ form.last_name.css_classes  }} form-row-10px">
-                                {{ form.last_name|field_label }}
-                                {{ form.last_name }}
+                        {{ form.last_name.errors }}
 
-                                {{ form.last_name.errors }}
+                    </li>
+                    <li class="{{ form.email.css_classes  }} form-row-10px">
+                        {{ form.email|field_label }}
+                        {{ form.email }}
 
-                            </li>
-                            <li class="{{ form.email.css_classes  }} form-row-10px">
-                                {{ form.email|field_label }}
-                                {{ form.email }}
+                        {{ form.email.errors }}
 
-                                {{ form.email.errors }}
+                    </li>
+                    <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+                        {{ form.office_phone|field_label }}
+                        {{ form.office_phone }}
 
-                            </li>
-                            <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-                                {{ form.office_phone|field_label }}
-                                {{ form.office_phone }}
+                        {{ form.office_phone.errors }}
+                    </li>
+                    <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
+                        {{ form.mobile_phone|field_label }}
+                        {{ form.mobile_phone }}
 
-                                {{ form.office_phone.errors }}
-                            </li>
-                            <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
-                                {{ form.mobile_phone|field_label }}
-                                {{ form.mobile_phone }}
+                        {{ form.mobile_phone.errors }}
+                    </li>
+                    <li class="{{ form.skype.css_classes  }} form-row-10px">
+                        {{ form.skype|field_label }}
+                        {{ form.skype }}
 
-                                {{ form.mobile_phone.errors }}
-                            </li>
-                            <li class="{{ form.skype.css_classes  }} form-row-10px">
-                                {{ form.skype|field_label }}
-                                {{ form.skype }}
+                        {{ form.skype.errors }}
+                    </li>
+                    <li class="{{ form.password1.css_classes  }} form-row-10px">
+                        {{ form.password1|field_label }}
+                        {{ form.password1 }}
 
-                                {{ form.skype.errors }}
-                            </li>
-                            <li class="{{ form.password1.css_classes  }} form-row-10px">
-                                {{ form.password1|field_label }}
-                                {{ form.password1 }}
+                        {{ form.password1.errors }}
 
-                                {{ form.password1.errors }}
+                    </li>
+                    <li class="{{ form.password2.css_classes  }} form-row-10px">
+                        {{ form.password2|field_label }}
+                        {{ form.password2 }}
 
-                            </li>
-                            <li class="{{ form.password2.css_classes  }} form-row-10px">
-                                {{ form.password2|field_label }}
-                                {{ form.password2 }}
+                        {{ form.password2.errors }}
 
-                                {{ form.password2.errors }}
+                    </li>
+                </ul>
+                <ul class="payment_details">
+                    <li>
+                        <h3 class="highlighted_title">{% trans "Payment Details" %}</h3>
+                        <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
+                    </li>
 
-                            </li>
-                         </ul>
-                        <ul class="payment_details">
-                            <li>
-                                <h3 class="highlighted_title">{%  trans "Payment Details" %}</h3>
-                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
-                            </li>
+                    <li class="{{ form.invoice_period.css_classes }} form-row-10px">
+                        {{ form.invoice_period|field_label }}
+                        {{ form.invoice_period }}
 
-                            <li class="{{ form.invoice_period.css_classes }} form-row-10px">
-                                {{ form.invoice_period|field_label }}
-                                {{ form.invoice_period }}
-                                
-                                {{ form.invoice_period.errors }}
-                            </li>
+                        {{ form.invoice_period.errors }}
+                    </li>
 
-                            <li class="{{ form.preferred_payment.css_classes }} form-row-10px">
-                                {{ form.preferred_payment|field_label }}
-                                <div>
-                                    <div class="choices_description">{% trans "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?" %}</div>
-                                    <ul style="margin-left:170px">
-                                    {{ form.preferred_payment }}
-                                    </ul>
-                                    {{ form.preferred_payment.errors }}
-                                </div>
+                    <li class="{{ form.preferred_payment.css_classes }} form-row-10px">
+                        {{ form.preferred_payment|field_label }}
+                        <div>
+                            <div class="choices_description">{% trans "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?" %}</div>
+                            <ul style="margin-left:170px">
+                                {{ form.preferred_payment }}
+                            </ul>
+                            {{ form.preferred_payment.errors }}
+                        </div>
 
-                            </li>
+                    </li>
 
-                            <li>
-                                <input type="checkbox" id="agree-terms" value="1" checked="checked"/>{% trans "agree-terms" %}
-                            </li>
-                            <li class="margin_top_20">
-                                <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}" class="button" />
-                                <div class="grid_7 margin_top_10 last">{%  trans "Already registered?" %} <a href="{% url django.contrib.auth.views.login %}">{%  trans "Sign in here" %}</a></div>
-                            </li>
-                        </ul>
-                    </div>
-             </form>
-        </fieldset>
+                    <li>
+                        <input type="checkbox" id="agree-terms" value="1" checked="checked"/>{% trans "agree-terms" %}
+                    </li>
+                    <li class="margin_top_20">
+                        <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}"
+                               class="button"/>
+
+                        <div class="grid_7 margin_top_10 last">{% trans "Already registered?" %} <a
+                                href="{% url django.contrib.auth.views.login %}">{% trans "Sign in here" %}</a></div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </fieldset>
     </div>
     <div id='user_should_agree_terms_block'>
         {% trans "You have to agree terms and conditions before using DataWinners" %}

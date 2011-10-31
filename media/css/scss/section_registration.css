@@ -47,6 +47,17 @@ form ul li input[type=text], form ul li input[type=password] {
   height: 20px;
   border-color: #cccccc; }
 
+.country_code_phone_container select {
+  postion: relative;
+  float: left;
+  width: 80px;
+  height: 27px; }
+.country_code_phone_container #id_office_phone {
+  float: left;
+  postion: relative;
+  width: 118px;
+  height: 20px; }
+
 .about_datawinners {
   background: #feee96;
   margin-bottom: 30px; }
