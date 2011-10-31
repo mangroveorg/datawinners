@@ -1,0 +1,10 @@
+{% load i18n %}
+{% if in_trial_mode %}
+    <div id="reminder_not_work_for_trial_msg" class= "warning-message-box">
+    <span>{% trans "You can set Reminders here, however they will not be sent to your Data Senders. Sign up for a monthly subscription to enable the full Reminder functionality." %}</span>
+    <div class="link_info">
+    <a href="/en/pricing/" class="trial_web_learn_more">Learn More</a>
+    <a href="/register/" class="button">Subscribe Now</a>
+    </div>
+    </div>
+{% endif %}

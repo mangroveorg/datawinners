@@ -3,9 +3,7 @@
 <span id="project_id" style="display: none;">{{ project.id }}</span>
 <span id="project_name" style="display: none;">{{ project.name }}</span>
 <div class="success-message-box half-width" style="display: none;"></div>
-{% if in_trial_mode %}
-    <div id="reminder_not_work_for_trial_msg">{% trans "Reminders will not be sent unless you subscribe to a paid account." %}</div>
-{% endif %}
+{% include "project/reminder_note.html" %}
 <div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
     <div class="grid_23 alpha omega" id='review_section' data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0">
     </div>

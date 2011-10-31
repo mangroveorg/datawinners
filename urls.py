@@ -2,7 +2,7 @@
 
 from django.conf.urls.defaults import patterns, include, url
 
-# Uncomment the next two lines to enable the admin:
+# Uncomment the next two lines to enablSubscribe Nowe the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 import settings

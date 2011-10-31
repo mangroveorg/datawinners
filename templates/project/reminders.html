@@ -30,9 +30,7 @@
         {% activetab "secondary_tab_nav" "scheduled" %}
         {{ block.super }}
     {% endblock %}
-    {% if in_trial_mode %}
-        <div id="reminder_not_work_for_trial_msg">{% trans "Reminders will not be sent unless you subscribe to a paid account." %}</div>
-    {% endif %}
+    {% include "project/reminder_note.html" %}
     {% if project.is_reminder_enabled %}
     <div id='new_reminder'>
         <form id='reminder_form' method="POST" action='{{ create_reminder_link }}'>

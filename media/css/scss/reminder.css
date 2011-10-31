@@ -72,5 +72,15 @@ label.error {
   -webkit-border-radius: 5px;
   opacity: 0.8; }
 
+.link_info {
+  position: relative;
+  padding-right: 45px;
+  padding-top: 25px;
+  left: 700px;
+  top: -12px; }
+
+#reminder_form {
+  width: 930px; }
+
 .half-width {
   width: 50%; }

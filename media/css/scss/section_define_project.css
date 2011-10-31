@@ -1,6 +1,8 @@
 #container_content .wizard_content .content_wrapper {
-  padding-left: 30px;
   width: 900px; }
+
+#profile_form {
+  margin-left: 30px; }
 
 fieldset {
   border: 1px solid #ccc;
@@ -19,7 +21,7 @@ fieldset {
     width: 200px; }
   #add_subject_type .message-box {
     float: left;
-    font-size: 11px; }
+    font-size: 12px; }
 
 #id_entity_type {
   min-width: 130px; }
