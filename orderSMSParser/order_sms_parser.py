@@ -23,7 +23,6 @@ class OrderSMSParser(SMSParser):
         return self._parse_ordered_sms(message, question_codes)
 
     def _parse_ordered_sms(self, message, question_codes):
-        form_code = None
         try:
             message = self._clean(message)
             self._validate_format(self.MESSAGE_PREFIX_NO_FIELD_ID, message)
@@ -33,7 +32,5 @@ class OrderSMSParser(SMSParser):
 
         except SMSParserInvalidFormatException as ex:
             raise SMSParserInvalidFormatException(ex.data)
-        except MultipleSubmissionsForSameCodeException as ex:
-            raise MultipleSubmissionsForSameCodeException(ex.data[0])
 
         return form_code, submission
