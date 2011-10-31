@@ -119,7 +119,12 @@ def create_project(request):
     entity_list = helper.remove_reporter(entity_list)
     if request.method == 'GET':
         form = CreateProject(entity_list=entity_list)
-        return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
+        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
+        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
+        return render_to_response('project/create_project.html',
+                {'form':form,"activity_report_questions": repr(activity_report_questions),
+                 'subject_report_questions':repr(subject_report_questions),
+                 'existing_questions': repr(subject_report_questions), 'questionnaire_code': '000'},context_instance=RequestContext(request))
     form = CreateProject(data=request.POST, entity_list=entity_list)
     if form.is_valid():
         entity_type = form.cleaned_data['entity_type']

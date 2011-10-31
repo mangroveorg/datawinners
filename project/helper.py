@@ -307,3 +307,23 @@ def delete_project(manager, project, void = True):
     [submission.void(void) for submission in get_submissions(manager, questionnaire.form_code, None, None)]
     questionnaire.void(void)
     project.set_void(manager, void)
+
+def get_activity_report_questions(dbm):
+    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
+                                                         primitive_type="date",
+                                                         description="activity reporting period")
+    activity_report_question = DateField(name="What is the reporting period for the activity?", code='q1',
+                                         label="Period being reported on", ddtype=reporting_period_dict_type,
+                                         date_format="dd.mm.yyyy", event_time_field_flag=True)
+
+    return [activity_report_question]
+
+def get_subject_report_questions(dbm):
+    entity_id_question = _create_entity_id_question(dbm, 'q1')
+    reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
+                                                         primitive_type="date",
+                                                         description="activity reporting period")
+    activity_report_question = DateField(name="What is the reporting period for the activity?", code='q2',
+                                         label="Period being reported on", ddtype=reporting_period_dict_type,
+                                         date_format="dd.mm.yyyy", event_time_field_flag=True)
+    return [entity_id_question, activity_report_question]
