@@ -13,16 +13,30 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
+{% endblock %}
+
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
+    <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
             var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
     </script>
@@ -42,5 +56,44 @@
     {% include 'project/question_table.html' %}
     <div class="subject_registration_preview">
         {% trans "Generating the questionnaire preview." %}
+    </div>
+    <h4 class="inline">{% trans "Add Subjects now" %}</h4>
+    <span>{% trans "(Optional)" %}</span>
+    <div class="add_subjects_section alpha omega">
+        <div class="grid_11 alpha omega">
+            <h6>{% trans "Add Subjects Manually" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                                        style="margin-top:-8px;"></h6>
+
+            <div class="tooltip"><p>
+                <strong>{% trans "What is this?" %}</strong><br/>
+                {% trans "q_tooltip_subject_wizard_add_manually" %}
+                <br/><br/>
+                <strong>{% trans "What do I need to do?" %}</strong><br/>
+                {% trans "r_tooltip_subject_wizard_add_manually" %}
+            </p></div>
+
+            <p>{% trans "Enter your Subjects individually" %}</p>
+            <input id='add_subject' type="button" class="button_blue" value="{% trans 'Add Subjects Manually' %}"/>
+        </div>
+        <div class="grid_11  omega import_list">
+            <h6>{% trans "Import a List of Subjects" %}<img src="/media/images/help_icon.png" class="help_icon"
+                                                            style="margin-top:-8px;"></h6>
+
+            <div class="tooltip"><p>
+                <strong>{% trans "What is this?" %}</strong><br/>
+                {% trans "q_tooltip_subject_wizard_import" %}
+                <br/><br/>
+                <strong>{% trans "What do I need to do?" %}</strong><br/>
+                {% trans "r_tooltip_subject_wizard_import" %}
+            </p></div>
+
+            <p>{% trans "Upload an excel (.xls) or csv file (.csv) of your Subjects" %}</p>
+
+            <input id='import_subjects' type="button" class="button_blue" value="{% trans 'Import List' %}"/>
+        </div>
+        <div class="add_subject_form">
+            {% include 'subject_form.html' %}
+        </div>
+        {% include 'project/import_section_in_wizard.html' %}
     </div>
 {% endblock %}

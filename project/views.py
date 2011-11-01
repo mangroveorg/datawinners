@@ -695,8 +695,16 @@ def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    import_subject_form = SubjectUploadForm()
+    create_subject_form = SubjectForm()
+    entity_types = helper.remove_reporter(get_all_entity_types(manager))
     return render_to_response('project/subjects.html',
-            {'fields': reg_form.fields, 'project': project, 'project_links': project_links},
+            {'fields': reg_form.fields, 'project': project,
+             'project_links': project_links,
+             'import_subject_form': import_subject_form,
+             'form': create_subject_form,
+             "entity_types": entity_types,
+             'post_url': reverse(import_subjects_from_project_wizard)},
                               context_instance=RequestContext(request))
 
 

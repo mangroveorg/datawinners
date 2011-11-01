@@ -16,7 +16,7 @@
   .add_subjects_section > div input[type=button] {
     float: right; }
   .add_subjects_section .import_list {
-    padding-right: 20px;
+    padding-right: 2px;
     margin-left: 20px; }
 
 .add_subject_form ul {
