@@ -9,7 +9,6 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject
 from datawinners.project.models import Project, ProjectState
-from datawinners.project.views import project_overview
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
@@ -96,7 +95,7 @@ def save_project(request):
             messages.error(request, e.message)
             return render_to_response('project/create_project.html', {'form': form},
                                       context_instance=RequestContext(request))
-
+        from datawinners.project.views import project_overview
         return HttpResponse(json.dumps({"response": "ok", 'redirect_url': reverse(project_overview, args=[pid])}))
 
 
