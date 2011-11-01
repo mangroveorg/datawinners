@@ -145,27 +145,21 @@ def edit_profile(request, project_id=None):
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
-    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
         form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
-        return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
-                                  context_instance=RequestContext(request))
+        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
+        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
+        questionnaire = FormModel.get(manager, project.qid)
+        fields = questionnaire.fields
+        if questionnaire.entity_defaults_to_reporter():
+            fields = helper.hide_entity_question(questionnaire.fields)
+        existing_questions = json.dumps(fields, default=field_to_json)
 
-    form = CreateProject(data=request.POST, entity_list=entity_list)
-    if form.is_valid():
-        project.reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data)
-        project.update(form.cleaned_data)
-        try:
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True},
-                                      context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(project_overview, args=[pid]))
-    else:
-        return render_to_response('project/create_project.html', {'form': form, 'project': project, 'edit': True},
+        return render_to_response('project/create_project.html',
+                                  {'form':form,"activity_report_questions": repr(activity_report_questions),
+                 'subject_report_questions':repr(subject_report_questions),
+                 'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code, 'project':project},
                                   context_instance=RequestContext(request))
-
 
 @login_required(login_url='/login')
 def save_questionnaire(request):

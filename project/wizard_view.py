@@ -14,7 +14,7 @@ from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
 from django.contrib import messages
 from mangrove.form_model.form_model import REPORTER, FormModel, get_form_model_by_code
-from mangrove.utils.types import is_string
+from mangrove.utils.types import is_string, is_empty
 
 def create_questionnaire(post, manager, entity_type, name):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -34,37 +34,65 @@ def _get_form_data(post):
     return {_get_element_from(i,0): _get_element_from(i,1) for i in data_list}
 
 
+def update_questionnaire(questionnaire, post, entity_type, name, manager):
+    json_string = post['question-set']
+    question_set = json.loads(json_string)
+    questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
+    questionnaire.name = name
+    questionnaire.entity_type = entity_type
+    questionnaire.form_code = post['questionnaire-code'].lower()
+    return questionnaire
+
 @login_required()
 def save_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     form = CreateProject(data=_get_form_data(request.POST['profile_form']), entity_list=entity_list)
-    try:
-        get_form_model_by_code(manager, request.POST['questionnaire-code'])
-        return HttpResponseServerError('Questionnaire with this code already exists')
-    except FormModelDoesNotExistsException:
-        if form.is_valid():
-            entity_type = form.cleaned_data['entity_type']
-            project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
+    project_id = request.POST['pid']
+    if form.is_valid():
+        entity_type = form.cleaned_data['entity_type']
+        project_name = form.cleaned_data["name"]
+        if is_empty(project_id):
+            try:
+                get_form_model_by_code(manager, request.POST['questionnaire-code'])
+                return HttpResponseServerError('Questionnaire with this code already exists')
+            except FormModelDoesNotExistsException:
+                project = Project(name=project_name, goals=form.cleaned_data["goals"],
                               project_type='survey', entity_type=entity_type,
                               reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                               activity_report=form.cleaned_data['activity_report'],
                               state = ProjectState.TEST)
+                try:
+                    questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name)
+                except QuestionCodeAlreadyExistsException as e:
+                    return HttpResponseServerError(e)
+                except EntityQuestionAlreadyExistsException as e:
+                    return HttpResponseServerError(e.message)
+
+        else :
+            project = Project.load(manager.database, project_id)
+            questionnaire = FormModel.get(manager, project.qid)
+            project.reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data)
+            project.update(form.cleaned_data)
             try:
-                form_model = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=form.cleaned_data["name"])
+                questionnaire = update_questionnaire(questionnaire, request.POST, entity_type, project_name, manager)
             except QuestionCodeAlreadyExistsException as e:
                 return HttpResponseServerError(e)
             except EntityQuestionAlreadyExistsException as e:
                 return HttpResponseServerError(e.message)
-
-            try:
-                pid = project.save(manager)
-                qid = form_model.save()
-                project.qid = qid
-                pid = project.save(manager)
             except DataObjectAlreadyExists as e:
-                messages.error(request, e.message)
-                return render_to_response('project/create_project.html', {'form': form},
-                                          context_instance=RequestContext(request))
-            return HttpResponse(json.dumps({"response": "ok", 'redirect_url': reverse(project_overview, args=[pid])}))
+                if e.message.find("Form") >= 0:
+                    return HttpResponseServerError("Questionnaire with this code already exists")
+                return HttpResponseServerError(e.message)
+        try:
+            pid = project.save(manager)
+            qid = questionnaire.save()
+            project.qid = qid
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            messages.error(request, e.message)
+            return render_to_response('project/create_project.html', {'form': form},
+                                      context_instance=RequestContext(request))
+
+        return HttpResponse(json.dumps({"response": "ok", 'redirect_url': reverse(project_overview, args=[pid])}))
