@@ -21,11 +21,6 @@ class TestProject(TestCase):
         response = self.client.post('/project/wizard/create')
         self.assertEquals(response.status_code,302)
 
-    def test_should_render_project_wizard_view_if_logged_in(self):
-        self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
-        response = self.client.post('/project/wizard/create')
-        self.assertEquals(response.status_code,200)
-
     @SkipTest
     def test_should_render_questionary_view_if_not_logged_in(self):
         project_id = 'fe84831af56111e0aa085c260a236744'
