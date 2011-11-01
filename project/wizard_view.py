@@ -86,6 +86,7 @@ def save_project(request):
                 if e.message.find("Form") >= 0:
                     return HttpResponseServerError("Questionnaire with this code already exists")
                 return HttpResponseServerError(e.message)
+            
         try:
             pid = project.save(manager)
             qid = questionnaire.save()
@@ -97,6 +98,9 @@ def save_project(request):
                                       context_instance=RequestContext(request))
         from datawinners.project.views import project_overview
         return HttpResponse(json.dumps({"response": "ok", 'redirect_url': reverse(project_overview, args=[pid])}))
+
+    else:
+        return render_to_response('project/create_project.html', {'form': form}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
