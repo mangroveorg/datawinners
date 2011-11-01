@@ -1,6 +1,6 @@
 from django.forms import HiddenInput
 from django.forms.fields import RegexField, CharField, FileField
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
