@@ -1,9 +1,10 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponseServerError, HttpResponse
+from django.http import  HttpResponseServerError, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject
@@ -13,7 +14,8 @@ from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
 from django.contrib import messages
-from mangrove.form_model.form_model import REPORTER, FormModel, get_form_model_by_code
+from mangrove.form_model.field import field_to_json
+from mangrove.form_model.form_model import  FormModel, get_form_model_by_code
 from mangrove.utils.types import is_string, is_empty
 
 def create_questionnaire(post, manager, entity_type, name):
@@ -96,3 +98,51 @@ def save_project(request):
                                       context_instance=RequestContext(request))
 
         return HttpResponse(json.dumps({"response": "ok", 'redirect_url': reverse(project_overview, args=[pid])}))
+
+
+@login_required(login_url='/login')
+def create_project(request):
+    manager = get_database_manager(request.user)
+    entity_list = get_all_entity_types(manager)
+    entity_list = helper.remove_reporter(entity_list)
+    if request.method == 'GET':
+        form = CreateProject(entity_list=entity_list)
+        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
+        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
+        return render_to_response('project/create_project.html',
+                {'form':form,"activity_report_questions": repr(activity_report_questions),
+                 'subject_report_questions':repr(subject_report_questions),
+                 'existing_questions': repr(subject_report_questions), 'questionnaire_code': helper.generate_questionnaire_code(manager)},context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_datasender
+def edit_project(request, project_id=None):
+    manager = get_database_manager(request.user)
+    entity_list = get_all_entity_types(manager)
+    entity_list = helper.remove_reporter(entity_list)
+    project = Project.load(manager.database, project_id)
+    if request.method == 'GET':
+        form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
+        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
+        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
+        questionnaire = FormModel.get(manager, project.qid)
+        fields = questionnaire.fields
+        if questionnaire.entity_defaults_to_reporter():
+            fields = helper.hide_entity_question(questionnaire.fields)
+        existing_questions = json.dumps(fields, default=field_to_json)
+
+        return render_to_response('project/create_project.html',
+                                  {'form':form,"activity_report_questions": repr(activity_report_questions),
+                 'subject_report_questions':repr(subject_report_questions),
+                 'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code, 'project':project},
+                                  context_instance=RequestContext(request))
+
+
+def _generate_project_info_with_deadline_and_reminders(project):
+    project_info = {}
+    for key, value in project.items():
+        project_info[key] = value
+    for key, value in project['reminder_and_deadline'].items():
+        project_info[key] = value
+    del project_info['reminder_and_deadline']
+    return project_info

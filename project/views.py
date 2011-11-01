@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
-from datawinners.accountmanagement.models import NGOUserProfile, Organization
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -23,6 +23,7 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
+from datawinners.project.wizard_view import edit_project
 import helper
 from datawinners.project import models
 from mangrove.datastore.data import EntityAggregration
@@ -44,7 +45,6 @@ import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.conf import settings
-from datawinners.project.forms import CreateProject
 
 
 import logging
@@ -112,18 +112,41 @@ def questionnaire_wizard(request, project_id=None):
                  "previous": previous_link, 'project': project, "use_ordered_sms_parser" : settings.USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
-def create_project(request):
+def create_profile(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
+    project_summary = dict(name='New Project')
+    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
-        form = CreateProject(entity_list=entity_list)
-        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
-        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
-        return render_to_response('project/create_project.html',
-                {'form':form,"activity_report_questions": repr(activity_report_questions),
-                 'subject_report_questions':repr(subject_report_questions),
-                 'existing_questions': repr(subject_report_questions), 'questionnaire_code': helper.generate_questionnaire_code(manager)},context_instance=RequestContext(request))
+        form = ProjectProfile(entity_list=entity_list, initial={'activity_report': 'yes'})
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account
+        },
+                                  context_instance=RequestContext(request))
+
+    form = ProjectProfile(data=request.POST, entity_list=entity_list)
+    if form.is_valid():
+        entity_type = form.cleaned_data['entity_type']
+        project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
+                          project_type=form.cleaned_data['project_type'], entity_type=entity_type,
+                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'],
+                          sender_group=form.cleaned_data['sender_group'],
+                          reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data),
+                          language=form.cleaned_data['language'])
+        form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
+        try:
+            pid = project.save(manager)
+            qid = form_model.save()
+            project.qid = qid
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            messages.error(request, e.message)
+            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account },
+                                      context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
+    else:
+        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account},
+                                  context_instance=RequestContext(request))
 
 
 def _generate_project_info_with_deadline_and_reminders(project):
@@ -143,20 +166,32 @@ def edit_profile(request, project_id=None):
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
+    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     if request.method == 'GET':
-        form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
-        activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
-        subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
-        questionnaire = FormModel.get(manager, project.qid)
-        fields = questionnaire.fields
-        if questionnaire.entity_defaults_to_reporter():
-            fields = helper.hide_entity_question(questionnaire.fields)
-        existing_questions = json.dumps(fields, default=field_to_json)
+        form = ProjectProfile(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
+                                  context_instance=RequestContext(request))
 
-        return render_to_response('project/create_project.html',
-                                  {'form':form,"activity_report_questions": repr(activity_report_questions),
-                 'subject_report_questions':repr(subject_report_questions),
-                 'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code, 'project':project},
+    form = ProjectProfile(data=request.POST, entity_list=entity_list)
+    if form.is_valid():
+        older_entity_type = project.entity_type
+        if older_entity_type != form.cleaned_data["entity_type"]:
+            new_questionnaire = helper.create_questionnaire(form.cleaned_data, manager)
+            new_qid = new_questionnaire.save()
+            project.qid = new_qid
+        project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
+        project.update(form.cleaned_data)
+        project.update_questionnaire(manager)
+
+        try:
+            pid = project.save(manager)
+        except DataObjectAlreadyExists as e:
+            messages.error(request, e.message)
+            return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
+                                      context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
+    else:
+        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
                                   context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
@@ -230,7 +265,7 @@ def undelete_project(request, project_id):
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    link = reverse(edit_profile, args=[project_id])
+    link = reverse(edit_project, args=[project_id])
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project, questionnaire.form_code)
