@@ -53,8 +53,8 @@
         </li>
         {% endif %}
         {% if project.state != 'Inactive' %}
-        <li class="{% ifactivetab 'tab_nav' 'messages_and_reminders' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="#" class="{{ disable_link_class }}">{% trans "Messages and Reminders" %}</a>
+        <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
+            <a href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'training' %}active{% else %}inactive{% endifactivetab %}">
             <a href="#" class="{{ disable_link_class }}">{% trans "Training" %}</a>
