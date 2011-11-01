@@ -84,12 +84,6 @@ $(document).ready(function() {
          $("#questionnaire_code_change").dialog("close");
     });
 
-
-
-    function hide_message() {
-        $('#message-label').delay(5000).fadeOut();
-    }
-
     $('input[name=type]:radio').change(
             function() {
                 viewModel.selectedQuestion().range_min("");

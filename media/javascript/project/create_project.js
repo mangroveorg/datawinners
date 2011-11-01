@@ -29,12 +29,10 @@ $(document).ready(function() {
     $($('input[name="activity_report"]')).change(function() {
         if (this.value == "no") {
             DW.init_view_model(subject_report_questions);
-            $('#id_category').attr('disabled', false);
             $('#id_entity_type').attr('disabled', false);
         }
         else {
             DW.init_view_model(activity_report_questions);
-            $('#id_category').attr('disabled', true);
             $('#id_entity_type').attr('disabled', true);
         }
     });
@@ -84,22 +82,23 @@ $(document).ready(function() {
         var is_questionnaire_form_valid = $('#question_form').valid();
         if (!is_questionnaire_form_valid){
             $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
-//            hide_message();
+            hide_message();
         }
         if (!is_questionnaire_form_valid || !is_project_form_valid){
             return;
         }
 
-        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()};
+        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val(),
+                        'profile_form': $('#create_project_form').serialize()};
 
-        $.post('#', post_data,
+        $.post('/project/save/', post_data,
                 function(response) {
                     $("#message-label").removeClass("none");
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
                     hide_message();
-                    redirect();
+                    window.location.href = $.parseJSON(response).redirect_url;
                 }).error(function(e) {
                     $("#message-label").removeClass("none");
                     $("#message-label").removeClass("success-message-box");
@@ -108,4 +107,8 @@ $(document).ready(function() {
                 });
         return false;
     });
+
+    function hide_message() {
+        $('#message-label').delay(5000).fadeOut();
+    }
 });

@@ -135,7 +135,10 @@ class CreateProject(Form):
                                   help_text="How often do you need data (answers to your questions)?",
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='no')
-    category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
+
+#TO-DO introduce this when we introduce categories
+#    category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
+
     entity_type = ChoiceField(required=False)
 
     def __init__(self, entity_list, *args, **kwargs):

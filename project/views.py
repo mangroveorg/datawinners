@@ -125,28 +125,7 @@ def create_project(request):
         return render_to_response('project/create_project.html',
                 {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
-                 'existing_questions': repr(subject_report_questions), 'questionnaire_code': '000'},context_instance=RequestContext(request))
-    form = CreateProject(data=request.POST, entity_list=entity_list)
-    if form.is_valid():
-        entity_type = form.cleaned_data['entity_type']
-        project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
-                          project_type='survey', entity_type=entity_type,
-                          reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
-                          activity_report=form.cleaned_data['activity_report'],
-                          state = "Active",language='en')
-        form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
-        try:
-            pid = project.save(manager)
-            qid = form_model.save()
-            project.qid = qid
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/create_project.html', {'form': form},
-                                      context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(project_overview, args=[pid]))
-    else:
-        return render_to_response('project/create_project.html', {'form':form},context_instance=RequestContext(request))
+                 'existing_questions': repr(subject_report_questions), 'questionnaire_code': helper.generate_questionnaire_code(manager)},context_instance=RequestContext(request))
 
 
 def _generate_project_info_with_deadline_and_reminders(project):
