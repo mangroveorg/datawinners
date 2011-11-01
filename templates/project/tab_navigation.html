@@ -16,8 +16,11 @@
     <div class="project_detail">
         <h2 class="project_title"> project name
         <img src="/media/images/help_button.png" align="right"/></h2>
-        <span class="project_status">{% trans "Project status: Active" %}
-            <a href="{{ project_links.activate_project_link }}" class="activate_project">Activate this Project</a>
+        <span class="project_status">{% trans "Project status:" %} {{ project.state }}
+            {% if project.state == 'Test' %}
+                <a href="{{ project_links.activate_project_link }}" class="activate_project">Activate this Project</a>
+            {% endif %}
+
             <a href="{{ project_links.delete_project_link }}" class="delete_project">Delete this Project</a>
         </span>
     </div>

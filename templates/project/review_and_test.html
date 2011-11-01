@@ -66,8 +66,6 @@
                     <p id="devices">{{ devices }}</p>
                 </li>
             </ul>
-            <a id="project_edit_link" href="{{project_links.edit_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-            <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %}</p></div>
         </div>
         </div>
         <div id='subjects'>
@@ -89,7 +87,7 @@
                 </li>
 
             </ul>
-             <a id="subjects_edit_link" href="{{project_links.subject_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+             <a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
             <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
             </div>
         </div>
@@ -122,7 +120,7 @@
                 </li>
 
             </ul>
-            <a id="datasenders_edit_link" href="{{project_links.data_senders_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
             <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
         </div>
         </div>
@@ -136,7 +134,7 @@
                     {% trans "Reminders are" %} <strong>{% trans is_reminder %}</strong> {%trans "for this project" %}
                 </li>
             </ul>
-            <a id="remider_edit_link" href="{{project_links.reminder_link}}">{% trans "edit" %}</a>
+            <a id="remider_edit_link" href="{{project_links.reminders_link}}">{% trans "edit" %}</a>
             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
             <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
         </div>
