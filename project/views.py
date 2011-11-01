@@ -94,6 +94,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['reminders_link'] = reverse(reminders, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
         project_links['broadcast_message_link'] = reverse(broadcast_message, args=[project_id])
+        project_links['finish_link'] = reverse(review_and_test, args=[project_id])
     return project_links
 
 
@@ -682,6 +683,27 @@ def finish(request, project_id=None):
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
+@login_required(login_url='/login')
+def review_and_test(request, project_id=None):
+    manager = get_database_manager(request.user)
+    project = Project.load(manager.database, project_id)
+    form_model = FormModel.get(manager, project.qid)
+    if request.method == 'GET':
+        number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
+        number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
+        fields = form_model.fields
+        if form_model.entity_defaults_to_reporter():
+            fields = helper.hide_entity_question(form_model.fields)
+        is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
+        devices = ",".join(project.devices)
+        return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
+                                                                   'project_links': _make_links_for_finish_page(
+                                                                       project_id, form_model),
+                                                                   'number_of_datasenders': number_of_registered_datasenders,
+                                                                   'number_of_subjects': number_of_registered_subjects,
+                                                                   "is_reminder": is_reminder,
+                                                                   "devices": devices},
+                                  context_instance=RequestContext(request))
 
 def _get_project_and_project_link(manager, project_id):
     project = Project.load(manager.database, project_id)

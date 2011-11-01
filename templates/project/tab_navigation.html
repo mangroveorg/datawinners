@@ -60,7 +60,7 @@
             <a href="#" class="{{ disable_link_class }}">{% trans "Training" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'review_and_test' %}active{% else %}inactive{% endifactivetab %}">
-            <a href="#" class="{{ disable_link_class }}">{% trans "Review and Test" %}</a>
+            <a href="{{ project_links.finish_link }}" class="{{ disable_link_class }}">{% trans "Review and Test" %}</a>
         </li>
         <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>

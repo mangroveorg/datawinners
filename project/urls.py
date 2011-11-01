@@ -6,7 +6,7 @@ from datawinners.project.views import questionnaire_wizard, save_questionnaire, 
     finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview,\
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, \
     reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
-    delete_reminder, sent_reminders, broadcast_message, create_project
+    delete_reminder, sent_reminders, broadcast_message, create_project, review_and_test
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -49,5 +49,6 @@ urlpatterns = patterns('',
         (r'^project/export/log$', export_log),
         (r'^project/delete/(?P<project_id>.+?)/$', delete_project),
         (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
-        (r'^project/datarecords/filter$', submissions)
+        (r'^project/datarecords/filter$', submissions),
+        (r'^project/finish/(?P<project_id>.+?)/$', review_and_test)
 )

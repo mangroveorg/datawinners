@@ -99,7 +99,7 @@
   .SMS_tester_section > div input[type=button] {
     float: right; }
   .SMS_tester_section .import_list {
-    padding-right: 20px;
+    padding-right: 2px;
     margin-left: 20px; }
   .SMS_tester_section .sms_questionnaire {
     background: url(/media/images/mobile_icons.png) no-repeat left 4px;
