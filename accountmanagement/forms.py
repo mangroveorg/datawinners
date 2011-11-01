@@ -194,8 +194,6 @@ class LoginForm(AuthenticationForm):
 
     def check_trial_account_expired(self):
         org = Organization.objects.get(org_id=self.user_cache.get_profile().org_id)
-        if org.in_trial_mode == False:
-            return
         if org.is_expired():
             raise TrialAccountExpiredException()
 

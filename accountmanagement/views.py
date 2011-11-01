@@ -3,10 +3,11 @@
 from django.conf import settings as django_settings
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpRequest
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.test.client import RequestFactory
 
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
@@ -85,6 +86,17 @@ def is_new_user(f):
 
         return f(*args, **kw)
 
+    return wrapper
+
+def is_expired(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        org = Organization.objects.get(org_id=user.get_profile().org_id)
+        if org.is_expired():
+            request.session.clear()
+            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
+        return f(*args, **kw)
     return wrapper
 
 @login_required(login_url='/login')

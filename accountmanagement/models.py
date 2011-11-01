@@ -26,7 +26,7 @@ class Organization(models.Model):
     is_deactivate_email_sent = models.BooleanField(False)
 
     def is_expired(self, current_time = None):
-        if self.active_date is None:
+        if not self.in_trial_mode or self.active_date is None:
             return False
         if current_time is None:
             current_time = datetime.datetime.now()
