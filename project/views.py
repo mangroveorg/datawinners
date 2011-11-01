@@ -44,8 +44,6 @@ import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.conf import settings
-
-""" for new UI"""
 from datawinners.project.forms import CreateProject
 
 
@@ -199,6 +197,8 @@ def index(request):
     for row in rows:
         project_id = row['value']['_id']
         link = reverse(project_overview, args=[project_id])
+        if row['value']['_id'] == 'Inactive':
+            link = reverse(edit_profile, args=[project_id])
         activate_link = reverse(activate_project, args=[project_id])
         delete_link = reverse(delete_project, args=[project_id])
         project = dict(delete_link=delete_link,name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
