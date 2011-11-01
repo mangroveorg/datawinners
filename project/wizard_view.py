@@ -42,7 +42,7 @@ def save_project(request):
     form = CreateProject(data=_get_form_data(request.POST['profile_form']), entity_list=entity_list)
     try:
         get_form_model_by_code(manager, request.POST['questionnaire-code'])
-        return HttpResponseServerError('ERROR!!!')
+        return HttpResponseServerError('Questionnaire with this code already exists')
     except FormModelDoesNotExistsException:
         if form.is_valid():
             entity_type = form.cleaned_data['entity_type']
