@@ -10,7 +10,6 @@
     {% include 'header_wizard.html' %}
   </div>
 </div>
-
 {% endblock %}
 {% block main_content %}
 {% load i18n %}
@@ -31,8 +30,12 @@
             {% trans "about_DW" %}
             </div>
         {% endblock  %}
+        {% block right_second_hand_section %}
+            <div class="grid_7 right_hand_section alpha omega subscription_details">
+            {% trans "subscription_details" %}
+            </div>
+        {% endblock  %}
     </div>
-
 
   </div>
 </div>

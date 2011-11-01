@@ -48,6 +48,53 @@ form ul li input[type=text], form ul li input[type=password] {
   border-color: #cccccc; }
 
 .about_datawinners {
-  background: #feee96; }
+  background: #feee96;
+  margin-bottom: 30px; }
   .about_datawinners p {
     margin-top: 10px; }
+
+.subscription_details {
+  float: right;
+  background: #feee96; }
+  .subscription_details p {
+    margin-top: 10px; }
+  .subscription_details li {
+    list-style-type: disc;
+    margin-left: 15px; }
+
+.about_datawinners p {
+  margin-top: 10px; }
+
+.subtitle_for_radio_button {
+  display: block;
+  font-size: 12px;
+  width: 300px;
+  border-color: #cccccc;
+  text-align: left;
+  margin-left: 3px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  color: #666; }
+
+.choices_description {
+  line-height: 14px;
+  margin-bottom: 10px; }
+
+.radio_title {
+  font-size: 14px;
+  margin-bottom: 3px; }
+
+.subscribe_now {
+  display: inline-table;
+  width: 158px;
+  height: 46px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 46px;
+  color: #6f451b !important;
+  text-shadow: #FFF2B2 0 1px 1px;
+  background: url("/media/images/dw_home_button1.png") no-repeat left top;
+  margin-top: 10px;
+  margin-left: 20px;
+  text-align: center; }

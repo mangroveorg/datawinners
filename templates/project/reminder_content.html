@@ -3,6 +3,7 @@
 <span id="project_id" style="display: none;">{{ project.id }}</span>
 <span id="project_name" style="display: none;">{{ project.name }}</span>
 <div class="success-message-box half-width" style="display: none;"></div>
+{% include "project/reminder_note.html" %}
 <div class="add_reminder {% if is_reminder %}{% else %}none{% endif %}">
     <div class="grid_23 alpha omega" id='review_section' data-bind="template: { name: 'reminderTemplate', foreach: reminders }, visible: reminders().length > 0">
     </div>
@@ -25,9 +26,9 @@
             <span>{% trans "When" %}</span>
         <ul>
             <li>
-                <input type="radio" value="before_deadline" data-bind="checked: reminderMode">
+                <input type="radio" value="before_deadline" class="before_deadline_radio" data-bind="checked: reminderMode">
                 <input
-                    data-bind="value: beforeDay, valueUpdate:'keyup', enable: selectBeforeDay,uniqueName:true" class="required number"/> {% trans "day(s) <strong>before</strong> the deadline" %}
+                    data-bind="value: beforeDay, valueUpdate:'keyup', enable: selectBeforeDay,uniqueName:true" class="before_deadline_text required number"/> {% trans "day(s) <strong>before</strong> the deadline" %}
             </li>
             <li><input type="radio" value="on_deadline" data-bind="checked: reminderMode">{% trans "On the deadline" %}
             </li>

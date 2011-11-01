@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Project - Reminders" %} {% endblock %}
+{% block page_title %}{% trans "Project - Messages & Reminders" %} {% endblock %}
 
 {% load dw_tabs %}
 
@@ -25,6 +25,7 @@
         {% activetab "secondary_tab_nav" "sent" %}
         {{ block.super }}
     {% endblock %}
+    {% include "project/reminder_note.html" %}
     {% if project.is_reminder_enabled %}
         <div class="margin_bottom_20">
             <strong>Deadline: </strong>{{ project.deadline.description }}

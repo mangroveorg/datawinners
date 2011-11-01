@@ -34,7 +34,9 @@
                 <a id="edit_project" class="button_blue " href ={{ project_profile_link }} >{% trans "Edit this project"%}</a>
             </div>
         {% endif %}
-       {% include 'maps/entity_map.html'  %}
+        {% if SHOW_GOOGLE_MAPS %}
+            {% include 'maps/entity_map.html'  %}
+        {% endif %}
         <div class="grid_23 title_block">
             <h3 class="grid_5 alpha">{% trans "Project Profile"%}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-2px;"></h3>
             <div class="tooltip"><p>

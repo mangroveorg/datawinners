@@ -1,4 +1,5 @@
 from datetime import date
+from datawinners.accountmanagement.models import Organization
 from django.utils import unittest
 from mock import Mock,patch
 from datawinners.project.models import  Reminder, Project, RemindTo
@@ -9,6 +10,7 @@ from datawinners.scheduler.scheduler import   send_reminders_on
 #TODO: exception scenarios
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.database import DatabaseManager
+from scheduler.scheduler import _get_paid_organization, send_reminders
 
 class TestScheduler(unittest.TestCase):
 
@@ -42,11 +44,16 @@ class TestScheduler(unittest.TestCase):
         self.reminder3.get_sender_list.return_value = self.data_senders
 
         self.reminders = [self.reminder1, self.reminder2, self.reminder3]
-        self.sms_client = Mock(spec=SMSClient)
+        self.sms_client = SMSClient()
+        self.sms_client.send_sms=Mock()
+        self.sms_client.send_sms.return_value=True
 
 
     def tearDown(self):
-        pass
+        try:
+            self.organization.delete()
+        except :
+            pass
 
     def test_should_return_reminders_scheduled_for_the_day(self):
         reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
@@ -91,17 +98,14 @@ class TestScheduler(unittest.TestCase):
         self.reminder3.log.assert_called_once()
         self.assertEqual(0,self.reminder2.log.call_count)
 
+    def test_get_paid_org_should_return_only_paid_org(self):
 
-#    def test_should_send_reminders_for_all_projects_in_an_org(self):
-#        all_projects = [ Mock(spec=Project),Mock(spec=Project),Mock(spec=Project) ]
-#        all_reminders =  [[Reminder()],[Reminder()],[Reminder()], ]
-#        reminders_per_project = { project.id: reminders  for project, reminders in zip(all_projects, all_reminders)}
-#
-#        Reminder.get_reminders_grouped_by_project.return_value = reminders_per_project
-#
-#        send_reminders_for_all_projects_for_org()
-#
-#        self.assertEqual(3,send_reminders_on.call_count)
-#        for i,proj in enumerate(all_projects):
-#            self.assertEqual(((proj,reminders_per_project[proj.id], self.mock_date,self.sms_client),{}),send_reminders_on.call_args_list[i])
-
+        TRIAL_ORGANIZATION_PARAMS = {'organization_name': 'myCompany',
+                                 'organization_sector': 'Public Health',
+                                 'organization_city': 'xian',
+                                 'organization_country': 'china',
+                                 }
+        self.organization = Organization.create_trial_organization(TRIAL_ORGANIZATION_PARAMS)
+        self.organization.save()
+        organizations = _get_paid_organization()
+        self.assertNotIn(self.organization,organizations)

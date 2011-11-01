@@ -18,15 +18,19 @@
     <script type="text/javascript" src="/media/javascript/project/view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript">
         var question_list = $.parseJSON({{existing_questions|safe}});
         $(document).ready(function(){
             $("#tab_items .questionnaire").addClass("current");
             set_current_tab();
         });
+        var use_ordered_sms_parser = false
+        {% if use_ordered_sms_parser %}
+            use_ordered_sms_parser = true
+        {% endif %}
     </script>
+    <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>

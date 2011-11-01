@@ -309,7 +309,7 @@ msgid "default"
 msgstr ""
 
 #: media/javascript/project/register_entity_validation.js:17
-msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
+msgid "Please enter a valid phone number."
 msgstr ""
 
 #: media/javascript/project/register_entity_validation.js:31
@@ -512,4 +512,8 @@ msgid "User with email "
 msgstr ""
 
 msgid " already exists"
+msgstr ""
+
+
+msgid "Agree terms and conditions"
 msgstr ""

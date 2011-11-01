@@ -4,8 +4,6 @@
   padding-right: 17px;
   min-height: 400px;
   margin-bottom: 20px; }
-.wizard_content .content_wrapper .step_number {
-  margin-left: 30px; }
 .wizard_content .content_wrapper h6 {
   margin: 20px 0 0 10px; }
 
@@ -35,7 +33,7 @@
         font-weight: normal; }
       #review_section ul li p {
         font-weight: bold;
-        width: 550px; }
+        width: 650px; }
   #review_section h4 {
     border-bottom: 1px solid #CCCCCC; }
   #review_section .ui-accordion-content {

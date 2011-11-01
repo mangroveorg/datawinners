@@ -28,13 +28,13 @@ def index(request):
         questionnaire_code = questionnaire.form_code
         link = reverse(project_overview, args=[project_id])
         web_submission_link = reverse(web_questionnaire, args=[project_id])
-        if project.state == ProjectState.ACTIVE and 'web' in row['value']['devices']:
+        if project.state != ProjectState.INACTIVE:
             disabled = ""
             analysis = reverse(project_data, args=[project_id, questionnaire_code])
             log = reverse(project_results, args=[project_id, questionnaire_code])
 
         web_submission_link_disabled = 'disable_link'
-        if project.state == ProjectState.ACTIVE:
+        if project.state == ProjectState.ACTIVE and 'web' in row['value']['devices']:
             web_submission_link_disabled = ""
 
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
@@ -49,9 +49,8 @@ def _get_organization_sms_number_for(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    org_number = organization_settings.sms_tel_number
+    org_number = organization_settings.get_organisation_sms_number()
     return org_number
-
 
 @login_required(login_url='/login')
 def failed_submissions(request):

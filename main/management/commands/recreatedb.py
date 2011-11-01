@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datawinners import settings
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import load_data, load_test_managers,  load_all_managers
 import mangrove

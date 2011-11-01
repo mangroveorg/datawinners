@@ -1,9 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.core.exceptions import ObjectDoesNotExist
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
-from datawinners.settings import PROJECT_DIR
+from django.conf import settings
 from mangrove.datastore.database import get_db_manager
-from  datawinners import settings
 from mangrove.errors.MangroveException import UnknownOrganization
 import os
 from glob import iglob
@@ -64,7 +63,7 @@ def exists_view(aggregation, database_manager):
 
 def find_views():
     views = {}
-    for fn in iglob(os.path.join(PROJECT_DIR, 'main', 'couchview', '*.js')):
+    for fn in iglob(os.path.join(settings.PROJECT_DIR, 'main', 'couchview', '*.js')):
         try:
             func, name = string.split(os.path.splitext(os.path.basename(fn))[0], '_', 1)
             with open(fn) as f:

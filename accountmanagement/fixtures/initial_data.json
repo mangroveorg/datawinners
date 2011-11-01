@@ -91,6 +91,57 @@
             "in_trial_mode": true,
             "active_date": "2011-04-17 04:54:47"
         }
+    },    {
+        "pk": "COJ00001",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian University",
+            "country": "CHN",
+            "org_id": "COJ00001",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "in_trial_mode": true,
+            "active_date": "2020-11-17 04:54:47"
+        }
+    },    {
+        "pk": "COJ00002",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian College",
+            "country": "CHN",
+            "org_id": "COJ00002",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "in_trial_mode": true,
+            "active_date": "2020-10-17 04:54:47"
+        }
+    }, {
+        "pk": "COJ00003",
+        "model": "accountmanagement.organization",
+        "fields": {
+            "sector": "PublicHealth",
+            "city": "Xi'an",
+            "name": "Trial-Xian School",
+            "country": "CHN",
+            "org_id": "COJ00003",
+            "zipcode": "445676",
+            "website": "https://help.org/",
+            "office_phone": "91-99766-76893",
+            "state": "SH",
+            "address": "Don Bosco Road, Yerwada",
+            "in_trial_mode": true,
+            "active_date": "2020-10-17 04:54:47"
+        }
     },
     {
         "pk": 1,
@@ -133,6 +184,32 @@
         }
     },
     {
+        "pk": 5,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00001",
+            "user": 6
+        }
+    },
+    {
+        "pk": 6,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00002",
+            "user": 7
+        }
+    },    {
+        "pk": 7,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "title": "Mr",
+            "org_id": "COJ00003",
+            "user": 8
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.organizationsetting",
         "fields": {
@@ -157,6 +234,31 @@
             "organization": "COJ00000",
             "document_store": "hni_testorg_coj00000",
             "sms_tel_number": "987654321"
+        }
+    },    {
+        "pk": 4,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00001",
+            "document_store": "hni_testorg_coj00001",
+            "sms_tel_number": "987654322"
+        }
+    },    {
+        "pk": 5,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00002",
+            "document_store": "hni_testorg_coj00002",
+            "sms_tel_number": "987654323"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "accountmanagement.organizationsetting",
+        "fields": {
+            "organization": "COJ00003",
+            "document_store": "hni_testorg_coj00003",
+            "sms_tel_number": "987654324"
         }
     },
     {
@@ -281,6 +383,70 @@
             "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
             "email": "chinatwu@gmail.com",
             "date_joined": "2011-04-17 04:46:57"
+        }
+    },{
+        "pk": 6,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu2@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-10-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu2@gmail.com",
+            "date_joined": "2020-10-17 04:46:57"
+        }
+    },{
+        "pk": 7,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu3@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-10-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu3@gmail.com",
+            "date_joined": "2020-10-17 04:46:57"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "auth.user",
+        "fields": {
+            "username": "chinatwu4@gmail.com",
+            "first_name": "Trial",
+            "last_name": "User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-10-17 04:46:57",
+            "groups": [
+
+            ],
+            "user_permissions": [
+
+            ],
+            "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
+            "email": "chinatwu4@gmail.com",
+            "date_joined": "2020-10-17 04:46:57"
         }
     },
     {

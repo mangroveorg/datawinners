@@ -39,7 +39,6 @@ $(document).ready(function() {
                             $('#mobile_number').trigger('blur');
                             DW.viewModel.message.g('');
                             $('#geo_code').trigger('blur');
-                            $('#id_entity_type').val(0);
                         }
                         else {
                             $(".ajax_loader_small").hide();

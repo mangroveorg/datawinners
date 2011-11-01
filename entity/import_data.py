@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import os
-from datawinners import settings
+from django.conf import settings
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException

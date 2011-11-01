@@ -3,7 +3,8 @@
   padding: 0 0px 0 0;
   margin: 10px; }
   #container_content .wizard_content .content_wrapper .step_number {
-    margin-bottom: 20px; }
+    margin-bottom: 20px;
+    margin-left: 30px; }
 
 .wizard #step_wizard {
   margin: 15px 0 0 40px;

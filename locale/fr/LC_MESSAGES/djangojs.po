@@ -348,10 +348,9 @@ msgid "geo code"
 msgstr "code geo"
 
 #: media/javascript/project/register_entity_validation.js:17
-msgid "Please enter a valid phone number.Only numbers and -(dash) allowed"
+msgid "Please enter a valid phone number."
 msgstr ""
-"Veuillez saisir un numéro de téléphone valide. Seuls des chiffres et des -"
-"(tirets) sont autorisés"
+"Veuillez saisir un numéro de téléphone valide."
 
 #: media/javascript/project/register_entity_validation.js:31
 msgid ""
@@ -521,3 +520,5 @@ msgstr "Utilisateur avec l'email "
 msgid " already exists"
 msgstr " existe déjà"
 
+msgid "Agree terms and conditions"
+msgstr "Acceptez les termes et conditions"

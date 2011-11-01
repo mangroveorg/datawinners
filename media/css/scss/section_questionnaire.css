@@ -33,8 +33,6 @@
   border-color: #CCCCCC; }
 .wizard_content .content_wrapper .questionnaire_code h5 {
   margin-bottom: 10px; }
-.wizard_content .content_wrapper .step_number {
-  margin-left: 30px; }
 .wizard_content .content_wrapper .questionnaire_code li > label {
   display: inline;
   margin-left: 30px; }

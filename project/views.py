@@ -10,7 +10,8 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user
+from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
+from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -33,7 +34,7 @@ from mangrove.form_model.field import field_to_json, SelectField, TextField, Int
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import Submission, get_submissions, submission_count
+from mangrove.transport.submissions import Submission, get_submissions, submission_count, count_valid_web_submissions
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
@@ -42,10 +43,11 @@ from django.core.urlresolvers import reverse
 import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from datawinners.settings import api_keys
+from django.conf import settings
 
 import logging
 from mangrove.utils.types import is_empty
+
 
 logger = logging.getLogger("django")
 
@@ -86,6 +88,7 @@ def _make_project_links(project, questionnaire_code):
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
         project_links['reminders_link'] = reverse(reminders, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
+        project_links['broadcast_message_link'] = reverse(broadcast_message, args=[project_id])
     return project_links
 
 
@@ -102,7 +105,7 @@ def questionnaire_wizard(request, project_id=None):
         existing_questions = json.dumps(fields, default=field_to_json)
         return render_to_response('project/questionnaire_wizard.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project}, context_instance=RequestContext(request))
+                 "previous": previous_link, 'project': project, "use_ordered_sms_parser" : settings.USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -262,7 +265,7 @@ def project_overview(request, project_id=None):
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project, questionnaire.form_code)
-    map_api_key = api_keys.get(request.META['HTTP_HOST'])
+    map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     return render_to_response('project/overview.html',
             {'project': project, 'entity_type': project['entity_type'], 'project_links': project_links
              , 'project_profile_link': link, 'number_of_questions': number_of_questions, 'map_api_key': map_api_key},
@@ -491,9 +494,14 @@ def reminders_wizard(request, project_id=None):
         dbm = get_database_manager(request.user)
         project = Project.load(dbm.database, project_id)
         previous_link = reverse(datasenders_wizard, args=[project_id])
-        return render_to_response('project/reminders_wizard.html',
-                {"previous": previous_link, 'project': project, 'is_reminder': project.is_reminder_enabled()},
-                                  context_instance=RequestContext(request))
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        context = {"previous": previous_link,
+                 'project': project,
+                 'is_reminder': project.is_reminder_enabled(),
+                 'in_trial_mode': organization.in_trial_mode,
+        }
+        return render_to_response('project/reminders_wizard.html', context, context_instance=RequestContext(request))
     if request.method == 'POST':
         return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
@@ -524,11 +532,16 @@ def reminders(request, project_id):
         project = Project.load(dbm.database, project_id)
         questionnaire = FormModel.get(dbm, project.qid)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
-        return render_to_response('project/reminders.html',
-                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'reminders':_format_reminders(reminders, project_id),
-                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
-                                  context_instance=RequestContext(request))
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        context = {
+            'project': project,
+            "project_links": _make_project_links(project, questionnaire.form_code),
+            'reminders':_format_reminders(reminders, project_id),
+            'create_reminder_link' : reverse(create_reminder, args=[project_id]),
+            'in_trial_mode': organization.in_trial_mode,
+        }
+        return render_to_response('project/reminders.html', context, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -583,9 +596,37 @@ def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
+    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
     return render_to_response('project/sent_reminders.html',
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':get_all_reminder_logs_for_project(project_id, dbm),
+                 'in_trial_mode':is_trial_account,
+                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
+                                  context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_datasender
+def broadcast_message(request, project_id):
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, project_id)
+    questionnaire = FormModel.get(dbm, project.qid)
+    return render_to_response('project/broadcast_message.html',
+                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code)},
+                                  context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_datasender
+def reminders(request, project_id):
+    if request.method == 'GET':
+        dbm = get_database_manager(request.user)
+        project = Project.load(dbm.database, project_id)
+        questionnaire = FormModel.get(dbm, project.qid)
+        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
+        is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
+        return render_to_response('project/reminders.html',
+                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
+                 'reminders':_format_reminders(reminders, project_id),
+                 'in_trial_mode':is_trial_account,
                  'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
@@ -752,7 +793,8 @@ def _create_submission_request(form_model, request):
 def _make_form_context(questionnaire_form, project, form_code, disable_link_class):
     return {'questionnaire_form': questionnaire_form, 'project': project,
             'project_links': _make_project_links(project, form_code),
-            'disable_link_class': disable_link_class}
+            'disable_link_class': disable_link_class,
+            }
 
 
 def _create_select_field(field, choices):
@@ -773,8 +815,7 @@ def _get_django_field(field):
     if isinstance(field, SelectField):
         return  _create_select_field(field, _create_choices(field))
     display_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(), help_text=field.instruction)
-    constrained_text = field.get_constraint_text()
-    display_field.widget.attrs["watermark"] = _(constrained_text) if type(field) is not TextField else (ugettext(constrained_text.split(' ')[0]) + " " + ''.join(constrained_text.split(' ')[1:-1]) + " " + ugettext(constrained_text.split(' ')[-1]))
+    display_field.widget.attrs["watermark"] = field.get_constraint_text()
     display_field.widget.attrs['style'] = 'padding-top: 7px;'
     #    display_field.widget.attrs["watermark"] = "18 - 1"
     return display_field
@@ -828,15 +869,21 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
                               context_instance=RequestContext(request))
 
 
+def _get_trial_web_submission_count(user, manager, form_code):
+    ngoup = NGOUserProfile.objects.filter(id=user.id)[0]
+    organization = Organization.objects.filter(org_id=ngoup.org_id)[0];
+    return count_valid_web_submissions(manager, form_code, 0, datetime.datetime.now())
+
 @login_required(login_url='/login')
 @is_datasender_allowed
+@project_has_web_device
 def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
-
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
+
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
@@ -863,6 +910,7 @@ def web_questionnaire(request, project_id=None):
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=player.Channel.WEB))
+
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})
@@ -912,6 +960,14 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
     return fields, previous_link, project_links, questions, registration_questionnaire
 
 
+def get_example_sms_message(fields, registration_questionnaire):
+    example_sms = "%s <answer> .... <answer>" % (registration_questionnaire.form_code)
+    if(not USE_ORDERED_SMS_PARSER):
+        example_sms = "%s .%s <answer> .... .%s <answer>" % (
+            registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
+    return example_sms
+
+
 @login_required(login_url='/login')
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -919,10 +975,8 @@ def subject_registration_form_preview(request, project_id=None):
     if request.method == "GET":
         fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
-                                                                                                             project_id)
-
-        example_sms = "%s .%s <%s> .... .%s <%s>" % (
-            registration_questionnaire.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
+                                                                                                          project_id)
+        example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                  "previous": previous_link, 'project': project, 'project_links': project_links,
@@ -952,5 +1006,5 @@ def _get_organization_telephone_number(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
-    return organization_settings.sms_tel_number
+    return organization_settings.get_organisation_sms_number()
 

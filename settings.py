@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'registration',
     'django.contrib.admin',
     'compressor',
+    'datawinners',
     'datawinners.main',
     'datawinners.project',
     'datawinners.dashboard',
@@ -198,8 +199,8 @@ EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
 SCHEDULER_HOUR=21
-SCHEDULER_MINUTES=34
-api_keys = {
+SCHEDULER_MINUTES=30
+API_KEYS = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',
     'localhost:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',#We don't really need it
@@ -207,7 +208,11 @@ api_keys = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
+SHOW_GOOGLE_MAPS = True
+USE_ORDERED_SMS_PARSER = False
 TRIAL_REGISTRATION_ENABLED = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 try:
     from local_settings import *

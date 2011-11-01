@@ -3,7 +3,7 @@ from django.forms.fields import RegexField, CharField, FileField
 from django.utils.translation import ugettext as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
-
+from datawinners.entity.fields import PhoneNumberField
 class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
@@ -27,11 +27,9 @@ class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
     first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
-                            error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- ")
-                            ,
+                            error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
                             label=_("Name"))
-    telephone_number = RegexField(required=True, regex="^[0-9-]+$", max_length=15, label=_("Mobile Number"),
-                                  error_message=_("Please enter a valid phone number.Only numbers and -(dash) allowed"))
+    telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
     location = CharField(max_length=100, required=False, label=_("Enter location"))
     project_id = CharField(required=False, widget=HiddenInput())
@@ -39,7 +37,7 @@ class ReporterRegistrationForm(Form):
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
-        self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number eg: ")
+        self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number eg: +61 (123) 456-7890 ")
         self.fields['location'].widget.attrs['watermark'] = _("Enter region, district or commune")
         self.fields['geo_code'].widget.attrs['watermark'] = _("Enter lat and long eg: 19.3 42.37")
 

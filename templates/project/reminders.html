@@ -1,6 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Project - Reminders" %} {% endblock %}
+{% block page_title %}{% trans "Project - Messages & Reminders" %} {% endblock %}
 
 {% load dw_tabs %}
 
@@ -30,6 +30,7 @@
         {% activetab "secondary_tab_nav" "scheduled" %}
         {{ block.super }}
     {% endblock %}
+    {% include "project/reminder_note.html" %}
     {% if project.is_reminder_enabled %}
     <div id='new_reminder'>
         <form id='reminder_form' method="POST" action='{{ create_reminder_link }}'>
@@ -39,7 +40,7 @@
             <ul class="margin_bottom_20" id='when_block'>
                 <li>
                     <input type="radio"
-                           value="before_deadline" name="reminder_mode"><input disabled="disabled"
+                           value="before_deadline" name="reminder_mode" class="before_deadline_radio"><input disabled="disabled"
                                                                                id="days_before_deadline"
                                                                                type="text" class="required number" name="day"/> {% trans "day(s) <strong>before</strong> the deadline" %}
                 </li>

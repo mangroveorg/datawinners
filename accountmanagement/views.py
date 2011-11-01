@@ -1,12 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
+from django.conf import settings as django_settings
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-import datawinners
+
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
@@ -14,6 +15,7 @@ from django.contrib.auth.views import login
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
+from datawinners.project.models import Project
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -21,28 +23,41 @@ def registration_complete(request, user=None):
 
 def custom_login(request, template_name, authentication_form):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(datawinners.settings.LOGIN_REDIRECT_URL)
+        return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
     else:
         try:
             return login(request, template_name=template_name, authentication_form=authentication_form)
         except TrialAccountExpiredException:
-            return HttpResponseRedirect(datawinners.settings.TRIAL_EXPIRED_URL)
+            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
 
 def is_admin(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if not user.groups.filter(name="NGO Admins").count() > 0:
-            return HttpResponseRedirect(datawinners.settings.HOME_PAGE)
+            return HttpResponseRedirect(django_settings.HOME_PAGE)
 
         return f(*args, **kw)
 
+    return wrapper
+
+def project_has_web_device(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        dbm = get_database_manager(user)
+        project_id = kw["project_id"]
+        project = Project.load(dbm.database, project_id)
+        if "web" not in project.devices:
+            referer = django_settings.HOME_PAGE
+            return HttpResponseRedirect(referer)
+        return f(*args, **kw)
     return wrapper
 
 def is_datasender(f):
     def wrapper(*args, **kw):
         user = args[0].user
         if user.groups.filter(name="Data Senders").count() > 0:
-            return HttpResponseRedirect(datawinners.settings.DATASENDER_DASHBOARD)
+            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
 
         return f(*args, **kw)
 
@@ -56,7 +71,7 @@ def is_datasender_allowed(f):
         project_ids = [project.id for project in projects]
         project_id = kw['project_id']
         if not project_id in project_ids:
-            return HttpResponseRedirect(datawinners.settings.DATASENDER_DASHBOARD)
+            return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
 
         return f(*args, **kw)
     return wrapper
@@ -93,6 +108,7 @@ def settings(request):
 @login_required(login_url='/login')
 @is_admin
 def new_user(request):
+    add_user_success = False
     if request.method == 'GET':
         profile_form = UserProfileForm()
         return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form},
@@ -119,9 +135,10 @@ def new_user(request):
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
                 reset_form.save()
-                return HttpResponseRedirect('/account/users')
+                form = UserProfileForm()
+                add_user_success = True
 
-        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': form},
+        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': form, 'add_user_success': add_user_success},
                                   context_instance=RequestContext(request))
 
 
@@ -164,4 +181,4 @@ def edit_user(request):
                                   context_instance=RequestContext(request))
 
 def trial_expired(request):
-    return render_to_response("registration/trail_account_expired_message.html")
+    return render_to_response("registration/trial_account_expired_message.html")
