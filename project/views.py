@@ -758,8 +758,10 @@ def datasenders(request, project_id=None):
     reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     _format_field_description_for_data_senders(reg_form.fields)
     cleaned_up_fields = _get_questions_for_datasenders_registration_for_print_preview(reg_form.fields)
+    import_reporter_form = ReporterRegistrationForm(initial={'project_id': project_id})
     return render_to_response('project/datasenders.html',
-            {'fields': cleaned_up_fields, 'project': project, 'project_links': project_links},
+            {'fields': cleaned_up_fields, 'project': project, 'project_links': project_links,
+             'form': import_reporter_form, 'post_url': _get_imports_subjects_post_url(project_id)},
                               context_instance=RequestContext(request))
 
 
