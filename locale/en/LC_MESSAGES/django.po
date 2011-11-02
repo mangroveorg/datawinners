@@ -2584,3 +2584,9 @@ msgstr ""
 
 msgid "Terms and Conditions"
 msgstr ""
+
+msgid "Activate this Project"
+msgstr ""
+
+msgid "Delete this Project"
+msgstr ""
