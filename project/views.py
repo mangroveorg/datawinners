@@ -651,7 +651,7 @@ def activate_project(request, project_id=None):
 
 
 def _make_links_for_finish_page(project_id, form_model):
-    project_links = {'edit_link': reverse(edit_profile, args=[project_id]),
+    project_links = {'edit_link': reverse(edit_project, args=[project_id]),
                      'subject_link': reverse(subjects_wizard, args=[project_id]),
                      'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
                      'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
