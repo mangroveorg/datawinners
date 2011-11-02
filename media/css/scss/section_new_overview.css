@@ -10,7 +10,7 @@
   margin-bottom: 20px; }
 
 .w_content li {
-  text-indent: 50px; }
+  margin-left: 50px; }
 
 .grid_23 {
   margin-top: 0px !important; }
@@ -20,25 +20,6 @@
 
 .project_detail {
   margin-top: 0px !important; }
-
-#collect_data {
-  margin: 40px 0 40px 0; }
-
-#collect_data_heading {
-  background-color: #f5f5f5;
-  border: 1px solid #cfcfcf;
-  padding-top: 9px;
-  height: 35px;
-  width: 100%; }
-  #collect_data_heading label {
-    font-size: 16px;
-    font-weight: bold; }
-
-#collect_data_content {
-  display: none; }
-  #collect_data_content td {
-    border: 1px solid #cfcfcf;
-    padding: 20px; }
 
 #map {
   float: left;
@@ -83,3 +64,42 @@
   height: 225px;
   margin-bottom: 30px;
   font-size: 14px; }
+
+#how_to {
+  width: 100% !important;
+  margin: 40px 0 40px 0; }
+  #how_to .ui-widget-content {
+    border: 1px solid #CCCCCC; }
+  #how_to h3 {
+    background: #F5F5F5 !important;
+    padding: 10px;
+    color: #000000 !important;
+    border: 1px solid #ccc !important; }
+    #how_to h3 .title {
+      background: url(/media/images/accordion_arrows.png) no-repeat left -13px;
+      padding-left: 15px; }
+  #how_to h3.ui-state-active .title {
+    background: url(/media/images/accordion_arrows.png) no-repeat left -52px;
+    padding-left: 15px; }
+
+.padding_0 {
+  padding: 0px !important;
+  height: auto !important; }
+
+#collect_data {
+  margin: 0px; }
+
+#collect_data_heading {
+  background-color: #f5f5f5;
+  border-right: 1px solid #cfcfcf;
+  padding-top: 9px;
+  height: 35px;
+  width: 100%; }
+  #collect_data_heading label {
+    font-size: 16px;
+    font-weight: bold; }
+
+#collect_data_content td {
+  border: 1px solid #cfcfcf;
+  padding: 20px;
+  margin: 5px 0 5px 0; }

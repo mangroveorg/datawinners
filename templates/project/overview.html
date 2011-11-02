@@ -21,6 +21,11 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $( "#how_to" ).accordion({ collapsible: true, active: 0 });
+        })
+    </script>
 {% endblock %}
 
 
@@ -29,35 +34,28 @@
     <div class="span-18 box">
         <!--Success Message div-->
         {% include 'project/success_message.html' %}
-        <!--Collect data div-->
-        <div>
-            <table id="collect_data">
-                <tr id="collect_data_heading">
-                    <td colspan="3">
-                        <label>How to Start Collecting Data</label>
-                    </td>
-                </tr>
-                <!--display:none in section_new_overview.html-->
-                <tr id="collect_data_content">
-                    <td><label>How  to Distribute Questionnaire</label>
-                        Something</td>
-                    <td><label>How  to Distribute Questionnaire</label>
-                        Something</td>
-                    <td><label>How  to Distribute Questionnaire</label>
-                        Something</td>
-                </tr>
-            </table>
+        <!--Collect data an accordian div-->
+        <div id="how_to">
+            <h3><span class="title">How to Start Collecting Data</span>
+            </h3>
+            <div class="padding_0">
+                <table id="collect_data">
+                    <tr id="collect_data_content">
+                        <td><label>How to Distribute Questionnaire</label>
+                            Something</td>
+                        <td><label>How to Collect Data</label>
+                            Something</td>
+                        <td><label>Training datasender</label>
+                            Something & link</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <!--Project description div-->
             <div class="left_half">
                 <label>Your Project</label>
                 <a href="{% url edit_project project.id %}">edit</a> |
                 <a href="#">input data</a>
-            </div>
-            <div class="right_half">
-                <p>Share this project
-                <input type="text" name="share_link" value="http://www.datawinners.com/etc/etc" />
-                <img src="/media/images/help_icon.png" class="help_icon" /></p>
             </div>
             <div class="float_left">
                 <p><b>Description:</b>
