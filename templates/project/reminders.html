@@ -22,7 +22,10 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/project/reminder_new.js"></script>
+{#    <script type="text/javascript" src="/media/javascript/project/view_model.js"></script>#}
+
+    <script type="text/javascript" src="/media/javascript/project/deadline_and_reminder.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -30,6 +33,7 @@
         {% activetab "secondary_tab_nav" "scheduled" %}
         {{ block.super }}
     {% endblock %}
+    {% include "project/profile_deadline.html" %}
     {% include "project/reminder_note.html" %}
     {% if project.is_reminder_enabled %}
     <div id='new_reminder'>

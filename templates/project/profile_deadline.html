@@ -1,36 +1,37 @@
 {% load i18n %}
-<fieldset>
-    <legend>{% trans "Deadlines and Reminders" %}</legend>
-    <li class="{{ form.frequency_enabled.css_classes  }} form-row-10px">
-        {{ form.frequency_enabled.label_tag }}
-        {{ form.frequency_enabled }}
-        {{ form.frequency_enabled.errors }}
-        {{ form.frequency_period }}
-        {{ form.frequency_period.errors }}
-    </li>
-    <div id="deadline_block">
-        <div id="has_deadline_block">
-            <li class="{{ form.has_deadline.css_classes  }} form-row-10px">
-                {{ form.has_deadline.label_tag }}
-                {{ form.has_deadline }}
-                {{ form.has_deadline.errors }}
-                <div id="time_period">
-                    {% include 'project/profile_deadline_month_block.html' %}
-                    {% include 'project/profile_deadline_week_block.html' %}
-                </div>
-            </li>
-            <li id="deadline_example_block">
-                <label>{% trans "Deadline Example:" %}</label>
-                <div id="deadline_example" />
-            </li>
+<form action="" method="POST" id="reminder_deadline_form">
+    {% csrf_token %}
+    <fieldset>
+        <legend>{% trans "Deadlines and Reminders" %}</legend>
+        <li class="{{ form.frequency_enabled.css_classes  }} form-row-10px">
+            {{ form.frequency_enabled.label_tag }}
+            {{ form.frequency_enabled }}
+            {{ form.frequency_enabled.errors }}
+            {{ form.frequency_period }}
+            {{ form.frequency_period.errors }}
+        </li>
+        <div id="deadline_block">
+            <div id="has_deadline_block">
+                <li class="{{ form.has_deadline.css_classes  }} form-row-10px">
+                    {{ form.has_deadline.label_tag }}
+                    {{ form.has_deadline }}
+                    {{ form.has_deadline.errors }}
+                    <div id="time_period">
+                        {% include 'project/profile_deadline_month_block.html' %}
+                        {% include 'project/profile_deadline_week_block.html' %}
+                    </div>
+                </li>
+                <li id="deadline_example_block">
+                    <label>{% trans "Deadline Example:" %}</label>
+                    <div id="deadline_example"/>
+                </li>
+            </div>
         </div>
 
-    </div>
-
-
-    <li class="{{ form.reminders_enabled.css_classes  }} form-row-10px">
-        {{ form.reminders_enabled.label_tag }}
-        {{ form.reminders_enabled }}
-        {{ form.reminders_enabled.errors }}
-    </li>
-</fieldset>
+        <li class="{{ form.reminders_enabled.css_classes  }} form-row-10px">
+            {{ form.reminders_enabled.label_tag }}
+            {{ form.reminders_enabled }}
+            {{ form.reminders_enabled.errors }}
+        </li>
+    </fieldset>
+</form>

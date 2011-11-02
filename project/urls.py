@@ -5,9 +5,9 @@ from datawinners.project.views import questionnaire_wizard, save_questionnaire, 
     project_results, project_data, subjects_wizard, datasenders, export_data, export_log, activate_project,\
     finish, subjects, datasenders_wizard, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview,\
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, reminders_wizard, \
-    reminders, manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
+    manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
     delete_reminder, sent_reminders, broadcast_message, review_and_test
-from datawinners.project.wizard_view import save_project, create_project, edit_project
+from datawinners.project.wizard_view import save_project, create_project, edit_project, reminders
 
 js_info_dict = {
     'domain': 'djangojs',

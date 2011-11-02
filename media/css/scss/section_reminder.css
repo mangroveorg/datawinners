@@ -21,3 +21,42 @@ label.error {
 
 .half-width {
   width: 50%; }
+
+#reminder_deadline_form li {
+  overflow: hidden;
+  margin-bottom: 15px;
+  padding-bottom: 5px; }
+  #reminder_deadline_form li label {
+    font-size: 14px;
+    display: block;
+    float: left;
+    width: 170px;
+    argin-right: 10px;
+    font-weight: bold; }
+  #reminder_deadline_form li ul {
+    float: left; }
+    #reminder_deadline_form li ul li {
+      margin-bottom: 0px; }
+      #reminder_deadline_form li ul li label {
+        font-size: 12px;
+        display: inline;
+        font-weight: normal;
+        width: auto; }
+      #reminder_deadline_form li ul li label.error {
+        margin-left: 0px; }
+#reminder_deadline_form select {
+  width: auto;
+  height: 25px;
+  border-color: #cccccc;
+  background: #FFFFFF; }
+
+fieldset {
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  width: 95%;
+  padding: 20px;
+  margin-bottom: 20px; }
+  fieldset legend {
+    color: #C35C00;
+    font-weight: bold; }

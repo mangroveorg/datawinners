@@ -23,7 +23,6 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
-from datawinners.project.wizard_view import edit_project
 import helper
 from datawinners.project import models
 from mangrove.datastore.data import EntityAggregration
@@ -650,7 +649,8 @@ def activate_project(request, project_id=None):
 
 
 def _make_links_for_finish_page(project_id, form_model):
-    project_links = {'edit_link': reverse(edit_project, args=[project_id]),
+    #TODO fix edit project link
+    project_links = {'edit_link': "",
                      'subject_link': reverse(subjects_wizard, args=[project_id]),
                      'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
                      'data_senders_link': reverse(datasenders_wizard, args=[project_id]),

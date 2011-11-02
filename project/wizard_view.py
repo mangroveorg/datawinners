@@ -4,11 +4,13 @@ from django.core.urlresolvers import reverse
 from django.http import  HttpResponseServerError, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
-from datawinners.project.forms import CreateProject
-from datawinners.project.models import Project, ProjectState
+from datawinners.project.forms import CreateProject, ReminderForm
+from datawinners.project.models import Project, ProjectState, Reminder
+from datawinners.project.views import  _format_reminders, create_reminder
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
 from django.contrib import messages
@@ -151,3 +153,21 @@ def _generate_project_info_with_deadline_and_reminders(project):
         project_info[key] = value
     del project_info['reminder_and_deadline']
     return project_info
+
+@login_required(login_url='/login')
+@is_datasender
+def reminders(request, project_id):
+    if request.method == 'GET':
+        dbm = get_database_manager(request.user)
+        project = Project.load(dbm.database, project_id)
+        questionnaire = FormModel.get(dbm, project.qid)
+        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        form = ReminderForm()
+        return render_to_response('project/reminders.html',
+                {'project': project, 
+                 'reminders':_format_reminders(reminders, project_id),
+                 'in_trial_mode':organization.in_trial_mode,'form':form,
+                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
+                                  context_instance=RequestContext(request))
