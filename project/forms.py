@@ -141,6 +141,19 @@ class CreateProject(Form):
 
     entity_type = ChoiceField(required=False)
 
+    def clean(self):
+
+        if self.cleaned_data.get('entity_type') == "" and self.cleaned_data.get("activity_report") == 'no':
+            self.errors['entity_type'] = _("This field is required")
+
+        if self.cleaned_data.get("activity_report") == 'yes':
+            self.cleaned_data['entity_type'] = REPORTER
+            if self.errors.get('entity_type') is not None:
+                self.errors['entity_type'] = ""
+
+        return self.cleaned_data
+
+
     def __init__(self, entity_list, *args, **kwargs):
         assert isinstance(entity_list, list)
         super(CreateProject, self).__init__(*args, **kwargs)
