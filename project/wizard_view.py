@@ -10,7 +10,6 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder
-from datawinners.project.views import  _format_reminders, create_reminder
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
 from django.contrib import messages
@@ -161,13 +160,17 @@ def reminders(request, project_id):
         dbm = get_database_manager(request.user)
         project = Project.load(dbm.database, project_id)
         questionnaire = FormModel.get(dbm, project.qid)
+        from datawinners.project.views import _make_project_links
+        project_links = _make_project_links(project, questionnaire.form_code)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
         form = ReminderForm()
+        from datawinners.project.views import  _format_reminders, create_reminder
         return render_to_response('project/reminders.html',
                 {'project': project, 
                  'reminders':_format_reminders(reminders, project_id),
                  'in_trial_mode':organization.in_trial_mode,'form':form,
-                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
+                 'create_reminder_link' : reverse(create_reminder, args=[project_id]),
+                 'project_links': project_links},
                                   context_instance=RequestContext(request))
