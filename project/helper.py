@@ -294,6 +294,7 @@ def new_deadline_and_reminder(post_dict):
     dict={}
     _add_to_dict(dict, post_dict,'frequency_enabled')
     _add_to_dict(dict, post_dict,'frequency_period')
+    dict['reminders_enabled'] = False
     return dict
 
 def get_project_data_senders(manager, project):
