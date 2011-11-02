@@ -54,7 +54,7 @@ $(document).ready(function() {
     });
 
 
-    $("#save_in_test_mode").click(function() {
+    $('.right_aligned_button input:button').click(function() {
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
@@ -87,10 +87,9 @@ $(document).ready(function() {
         if (!is_questionnaire_form_valid || !is_project_form_valid){
             return;
         }
-
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val(),
-                        'profile_form': $('#create_project_form').serialize()};
-
+                        'profile_form': $('#create_project_form').serialize(), 'state':this.id};
+       
         $.post('/project/save/', post_data,
                 function(response) {
                     $("#message-label").removeClass("none");

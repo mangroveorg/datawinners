@@ -9,7 +9,6 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject
 from datawinners.project.models import Project, ProjectState
-from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
 from django.contrib import messages
@@ -22,7 +21,7 @@ def create_questionnaire(post, manager, entity_type, name):
     questionnaire_code = post['questionnaire-code']
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=attributes.TEST_STATE, fields=[], form_code=questionnaire_code)
+    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['state'], fields=[], form_code=questionnaire_code)
     return helper.update_questionnaire_with_questions(form_model, question_set, manager)
 
 
@@ -40,7 +39,7 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager):
     question_set = json.loads(json_string)
     questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
     questionnaire.name = name
-    questionnaire.entity_type = entity_type
+    questionnaire.entity_type = [entity_type] if is_string(entity_type) else entity_type
     questionnaire.form_code = post['questionnaire-code'].lower()
     return questionnaire
 
@@ -51,6 +50,7 @@ def save_project(request):
     entity_list = helper.remove_reporter(entity_list)
     form = CreateProject(data=_get_form_data(request.POST['profile_form']), entity_list=entity_list)
     project_id = request.POST['pid']
+    project_state = request.POST['state']
     if form.is_valid():
         entity_type = form.cleaned_data['entity_type']
         project_name = form.cleaned_data["name"]
@@ -63,7 +63,7 @@ def save_project(request):
                               project_type='survey', entity_type=entity_type,
                               reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                               activity_report=form.cleaned_data['activity_report'],
-                              state = ProjectState.TEST)
+                              state =project_state)
                 try:
                     questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name)
                 except QuestionCodeAlreadyExistsException as e:
@@ -74,6 +74,10 @@ def save_project(request):
         else :
             project = Project.load(manager.database, project_id)
             questionnaire = FormModel.get(manager, project.qid)
+            if project.state == ProjectState.INACTIVE:
+                if project_state == ProjectState.TEST:
+                    project.state = ProjectState.TEST
+                    questionnaire.set_test_mode()
             project.reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data)
             project.update(form.cleaned_data)
             try:
@@ -95,8 +99,10 @@ def save_project(request):
             messages.error(request, e.message)
             return render_to_response('project/create_project.html', {'form': form},
                                       context_instance=RequestContext(request))
-        from datawinners.project.views import project_overview
-        return HttpResponse(json.dumps({"response": "ok", 'redirect_url': reverse(project_overview, args=[pid])}))
+        from datawinners.project.views import project_overview, index
+        if project.state == ProjectState.INACTIVE:
+            return HttpResponse(json.dumps({'redirect_url': reverse(index)}))
+        return HttpResponse(json.dumps({'redirect_url': reverse(project_overview, args=[pid])}))
 
 
 @login_required(login_url='/login')
