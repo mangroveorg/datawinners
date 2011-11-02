@@ -164,7 +164,9 @@
         </fieldset>
         <div class="right_aligned_button">
             <a href="/project/" class="cancel_link"> Cancel </a>
-            <input type="button" class="draft_button" id="save_in_inactive_mode" value="Save as Draft">
+            {% if project.state != 'Test' %}
+                <input type="button" class="draft_button" id="save_in_inactive_mode" value="Save as Draft">
+            {% endif %}
             <input type="button" class="button" id="save_in_test_mode" value="Save and Create Project"/>
         </div>
     </div>
