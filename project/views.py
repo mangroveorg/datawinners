@@ -73,18 +73,17 @@ def _make_project_links(project,questionnaire_code):
     if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
         project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
         project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
+        project_links['finish_link'] = reverse(review_and_test, args=[project_id])
+        project_links['reminders_link'] = reverse(reminders, args=[project_id])
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
-
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
-        project_links['reminders_link'] = reverse(reminders, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
         project_links['broadcast_message_link'] = reverse(broadcast_message, args=[project_id])
-        project_links['finish_link'] = reverse(review_and_test, args=[project_id])
 
     if project.state == ProjectState.ACTIVE:
         project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
@@ -92,7 +91,6 @@ def _make_project_links(project,questionnaire_code):
             project_links['test_questionnaire_link'] = reverse(web_questionnaire, args=[project_id])
         else:
             project_links['test_questionnaire_link'] = ""
-
 
     return project_links
 
