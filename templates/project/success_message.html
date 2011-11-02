@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% block page_scss %}
     <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet" />
     <link href="/media/css/scss/section_application.scss" rel="stylesheet" />
@@ -10,11 +12,11 @@
         <div class="line"></div>
         <div class="w_content">
             <div class="gray_text">Now you can...</div>
-            <li><a href="#">Register the data senders</a>
+            <li><a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">Register the data senders</a>
             <p class="black_italic">Here's a link for information & instructions. Registering the data senders is very important.</p></li>
-            <li><a href="#">Register the subjects</a>
+            <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">Register the subjects</a>
             <p class="black_italic">Here's a link for information & instructions. Registering the subjects is such a very good idea.</p></li>
-            <li><a href="#">Set reminders</a>
+            <li><a id="remider_edit_link" href="{{project_links.reminders_link}}">Set reminders</a>
             <p class="black_italic">Here's a link for information & instructions. Setting reminders ensures lots of usable data.</p></li>
             <div class="gray_text">...or just start collecting data.</div>
         </div>
