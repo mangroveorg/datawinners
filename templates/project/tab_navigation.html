@@ -14,7 +14,7 @@
 
 {% block section_title %}
     <div class="project_detail">
-        <h2 class="project_title"> project name
+        <h2 class="project_title"> {{ project.name }}
         <img src="/media/images/help_button.png" align="right"/></h2>
         <span class="project_status">{% trans "Project status:" %} {{ project.state }}
             {% if project.state == 'Test' %}
@@ -48,6 +48,8 @@
             <a href="{{ project_links.questionnaire_link }}"
                class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
         </li>
+        {% endif %}
+        {% if project.state != 'Inactive' %}
         <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "Subjects" %}</a>
         </li>
@@ -55,8 +57,6 @@
             <a href="{{ project_links.datasenders_link }}"
                class="{{ disable_link_class }}">{% trans "Data Senders" %}</a>
         </li>
-        {% endif %}
-        {% if project.state != 'Inactive' %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
