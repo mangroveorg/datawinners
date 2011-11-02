@@ -1,5 +1,4 @@
 import unittest
-from django.conf import settings
 
 from mock import Mock
 from registration import signals

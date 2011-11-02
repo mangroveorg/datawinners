@@ -10,10 +10,12 @@ class OrderSMSParser(SMSParser):
     def __init__(self, dbm):
         self.dbm = dbm
 
-    def _parse_tokens(self, tokens, question_codes):
+    def _parse_ordered_tokens(self, tokens, question_codes):
         submission = OrderedDict()
 
         if len(tokens) != len(question_codes):
+            print tokens
+            print question_codes
             raise SMSParserWrongNumberOfAnswersException()
 
         for token_index in range(len(tokens)):
@@ -27,7 +29,7 @@ class OrderSMSParser(SMSParser):
         try:
             form_code, tokens = self.form_code(message)
             question_codes = self._get_question_codes_from_couchdb(form_code)
-            submission = self._parse_tokens(tokens, question_codes)
+            submission = self._parse_ordered_tokens(tokens, question_codes)
         except SMSParserInvalidFormatException as ex:
             raise SMSParserInvalidFormatException(ex.data)
         return form_code, submission
@@ -42,7 +44,12 @@ class OrderSMSParser(SMSParser):
     def _get_question_codes_from_couchdb(self,form_code):
         questionnaire_form = get_form_model_by_code(self.dbm, form_code)
         question_codes = []
-        for aField in questionnaire_form.fields:
+        form_fields = questionnaire_form.fields
+        print questionnaire_form.entity_type[0]
+        print questionnaire_form.entity_type[0] == 'reporter'
+        if questionnaire_form.entity_type[0] == 'reporter':
+            form_fields.remove(form_fields[0])
+        for aField in form_fields:
             question_codes.append(aField.code)
         return question_codes
 

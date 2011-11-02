@@ -811,7 +811,7 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
 
 def get_example_sms_message(fields, registration_questionnaire):
     example_sms = "%s <answer> .... <answer>" % (registration_questionnaire.form_code)
-    if(not USE_ORDERED_SMS_PARSER):
+    if not USE_ORDERED_SMS_PARSER:
         example_sms = "%s .%s <answer> .... .%s <answer>" % (
             registration_questionnaire.form_code, fields[0].code, fields[len(fields) - 1].code)
     return example_sms

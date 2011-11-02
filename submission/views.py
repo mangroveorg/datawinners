@@ -56,7 +56,11 @@ def sms(request):
         log.save()
         return HttpResponse(message)
     try:
-        form_code = SMSParser().form_code(_message)
+        if settings.USE_ORDERED_SMS_PARSER:
+            sms_parser = OrderSMSParser(dbm)
+        else:
+            sms_parser = SMSParser()
+        form_code, token = sms_parser.form_code(_message)
         form_model = get_form_model_by_code(dbm, form_code)
         translation.activate(form_model.activeLanguages[0])
     except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
@@ -72,10 +76,7 @@ def sms(request):
         return HttpResponse(message)
 
     try:
-        if settings.USE_ORDERED_SMS_PARSER:
-            sms_player = SMSPlayer(dbm, get_location_tree(), OrderSMSParser(dbm))
-        else:
-            sms_player = SMSPlayer(dbm, get_location_tree())
+        sms_player = SMSPlayer(dbm, get_location_tree(), sms_parser)
         transportInfo = TransportInfo(transport=SMS, source=_from, destination=_to)
         response = sms_player.accept(Request(transportInfo=transportInfo, message=_message))
         message = SMSResponse(response).text()

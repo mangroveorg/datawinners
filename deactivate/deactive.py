@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from django.core.mail.message import EmailMessage
 from django.template import loader
 from django.template.context import Context
