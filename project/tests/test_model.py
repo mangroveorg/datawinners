@@ -39,11 +39,12 @@ class TestProjectModel(unittest.TestCase):
         self.assertEquals(Project.load(self.dbm.database, self.project1_id)['_id'], self.project1_id)
 
     def test_should_update_project(self):
-        self.project1.update(dict(name='Test1', devices=['web', 'sms'], goals="New goals"))
+        self.project1.update(dict(name='Test1', devices=['web', 'sms'], goals="New goals", sms_simple_format=False))
         self.project1.save(self.dbm)
         self.assertEquals(self.project1.name, 'test1')
         self.assertEquals(self.project1.goals, 'New goals')
         self.assertEquals(self.project1.devices, ['web', 'sms'])
+        self.assertEquals(self.project1.sms_simple_format, False)
 
     def test_project_name_should_be_unique(self):
         project = Project(name="Test2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
