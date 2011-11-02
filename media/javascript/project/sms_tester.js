@@ -13,7 +13,7 @@ $(document).ready(function() {
             });
         }
     });
-    $("#sms_tester").unbind('click').click(function() {
+    $(".sms_tester").unbind('click').click(function() {
         $(".sms_tester_form").removeClass("none");
         $(".sms_tester_form").dialog("open");
         return false;
