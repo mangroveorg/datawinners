@@ -1,4 +1,5 @@
 import json
+import urlparse
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import  HttpResponseServerError, HttpResponse
@@ -26,15 +27,6 @@ def create_questionnaire(post, manager, entity_type, name):
     return helper.update_questionnaire_with_questions(form_model, question_set, manager)
 
 
-def _get_element_from(data, index):
-    return data.split('=')[index]
-
-
-def _get_form_data(post):
-    data_list = post.split('&')
-    return {_get_element_from(i,0): _get_element_from(i,1) for i in data_list}
-
-
 def update_questionnaire(questionnaire, post, entity_type, name, manager):
     json_string = post['question-set']
     question_set = json.loads(json_string)
@@ -49,7 +41,8 @@ def save_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-    form = CreateProject(data=_get_form_data(request.POST['profile_form']), entity_list=entity_list)
+
+    form = CreateProject(data=dict(urlparse.parse_qsl(request.POST['profile_form'])), entity_list=entity_list)
     project_id = request.POST['pid']
     project_state = request.POST['state']
     if form.is_valid():
