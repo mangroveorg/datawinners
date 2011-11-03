@@ -23,7 +23,7 @@ from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.settings import USE_ORDERED_SMS_PARSER
-from datawinners.project.wizard_view import edit_project, reminder_settings
+from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 import helper
 from datawinners.project import models, wizard_view
 from mangrove.datastore.data import EntityAggregration
@@ -74,7 +74,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
         project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
         project_links['finish_link'] = reverse(review_and_test, args=[project_id])
-        project_links['reminders_link'] = reverse(wizard_view.reminders, args=[project_id])
+        project_links['reminders_link'] = reverse(reminders, args=[project_id])
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
@@ -387,25 +387,6 @@ def _format_reminder(reminder, project_id):
 
 def _format_reminders(reminders, project_id):
     return [_format_reminder(reminder, project_id) for reminder in reminders]
-
-@login_required(login_url='/login')
-@is_datasender
-def reminders(request, project_id):
-    if request.method == 'GET':
-        dbm = get_database_manager(request.user)
-        project = Project.load(dbm.database, project_id)
-        questionnaire = FormModel.get(dbm, project.qid)
-        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
-        context = {
-            'project': project,
-            "project_links": _make_project_links(project, questionnaire.form_code),
-            'reminders':_format_reminders(reminders, project_id),
-            'create_reminder_link' : reverse(create_reminder, args=[project_id]),
-            'in_trial_mode': organization.in_trial_mode,
-        }
-        return render_to_response('project/reminders.html', context, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @csrf_exempt

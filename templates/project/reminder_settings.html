@@ -30,5 +30,14 @@
         {% activetab "secondary_tab_nav" "settings" %}
         {{ block.super }}
     {% endblock %}
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-message-box reminder-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
     {% include "project/profile_deadline.html" %}
 {% endblock %}

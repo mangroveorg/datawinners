@@ -112,10 +112,6 @@ fieldset {
   .footer_link a {
     word-spacing: 0.1em; }
 
-.right_aligned_button {
-  float: right;
-  display: inline-block; }
-
 #question-detail-panel {
   width: 525px !important;
   border: 1px solid #ccbf97;

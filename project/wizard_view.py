@@ -175,16 +175,26 @@ def reminders(request, project_id):
                  'project_links': project_links},
                                   context_instance=RequestContext(request))
 
+
 @login_required(login_url='/login')
 @is_datasender
 def reminder_settings(request, project_id):
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, project_id)
+    questionnaire = FormModel.get(dbm, project.qid)
+    from datawinners.project.views import _make_project_links
+    project_links = _make_project_links(project, questionnaire.form_code)
     if request.method == 'GET':
-        dbm = get_database_manager(request.user)
-        project = Project.load(dbm.database, project_id)
-        questionnaire = FormModel.get(dbm, project.qid)
-        from datawinners.project.views import _make_project_links
-        project_links = _make_project_links(project, questionnaire.form_code)
-        form = ReminderForm()
+        form = ReminderForm(data=(_generate_project_info_with_deadline_and_reminders(project)))
+        return render_to_response('project/reminder_settings.html',
+                {'project_links': project_links,'project': project,
+                 'form':form},context_instance=RequestContext(request))
+
+    form = ReminderForm(data=request.POST)
+    if form.is_valid():
+        project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
+        project.save(dbm)
+        messages.success(request, 'Reminder settings saved successfully')
         return render_to_response('project/reminder_settings.html',
                 {'project_links': project_links,'project': project,
                  'form':form},context_instance=RequestContext(request))
