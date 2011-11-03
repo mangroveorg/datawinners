@@ -8,9 +8,12 @@
         <a href="{{ project_links.test_questionnaire_link }}">Input data</a>
     </div>
     <div class="right_half padding_20">
-        <li><b>7</b> Questions</li>
+        <li><b>{{ number_of_questions }}</b> Questions</li>
         <div class="line"></div>
         <li><img src="/media/images/mini_mobile.png" />sms<a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a></li>
+        {% if project.state != 'Test' %}
+            {% include 'project/sms_tester_form.html' %}
+        {% endif %}
         <div class="line"></div>
         <li><img src="/media/images/mini_computer.png" />Internet
             <a href="#">test</a></li>
