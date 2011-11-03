@@ -3,38 +3,3 @@
     padding-top: 15px;
     padding-left: 10px;
 }
-#to-section ul li label
-{
-    width: 240px;
-}
-#text-label, #id_text, #to-label, #to-section, #id_others, #others-label
-{
-    float: left;
-}
-
-#message-submit
-{
-    clear: both;
-    float: right;
-}
-
-span.errorlist{
-    float:none;
-    color:#FFFFFF;
-    display:inline-block;
-    background:url(/media/images/arrow_error.png) no-repeat left 10px;
-    padding:3px 10px 3px 10px;
-    border:1px solid #00000;
-    label{
-        height: 20px;
-        color:#FFFFFF;
-        font-weight:normal;
-        background:#c20303;
-        padding:3px 10px 3px 10px;
-        margin-top:-1px;
-        border:1px solid #00000;
-        -moz-border-radius:5px;
-        -webkit-moz-border-radius:5px;
-        -webkit-border-radius:5px;
-    }
-}
