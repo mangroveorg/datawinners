@@ -11,13 +11,11 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
-from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.forms import ProjectProfile
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
@@ -35,7 +33,7 @@ from mangrove.form_model.field import field_to_json, SelectField, TextField, Int
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
 from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
-from mangrove.transport.submissions import Submission, get_submissions, submission_count, count_valid_web_submissions
+from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
@@ -95,104 +93,6 @@ def _make_project_links(project,questionnaire_code):
 
     return project_links
 
-
-@login_required(login_url='/login')
-def questionnaire_wizard(request, project_id=None):
-    manager = get_database_manager(request.user)
-    if request.method == 'GET':
-        previous_link = reverse(subjects_wizard, args=[project_id])
-        project = Project.load(manager.database, project_id)
-        form_model = FormModel.get(manager, project.qid)
-        fields = form_model.fields
-        if form_model.entity_defaults_to_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
-        existing_questions = json.dumps(fields, default=field_to_json)
-        return render_to_response('project/questionnaire_wizard.html',
-                {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project, "use_ordered_sms_parser" : settings.USE_ORDERED_SMS_PARSER}, context_instance=RequestContext(request))
-
-@login_required(login_url='/login')
-def create_profile(request):
-    manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
-    project_summary = dict(name='New Project')
-    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
-    if request.method == 'GET':
-        form = ProjectProfile(entity_list=entity_list, initial={'activity_report': 'yes'})
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account
-        },
-                                  context_instance=RequestContext(request))
-
-    form = ProjectProfile(data=request.POST, entity_list=entity_list)
-    if form.is_valid():
-        entity_type = form.cleaned_data['entity_type']
-        project = Project(name=form.cleaned_data["name"], goals=form.cleaned_data["goals"],
-                          project_type=form.cleaned_data['project_type'], entity_type=entity_type,
-                          devices=form.cleaned_data['devices'], activity_report=form.cleaned_data['activity_report'],
-                          sender_group=form.cleaned_data['sender_group'],
-                          reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data),
-                          language=form.cleaned_data['language'])
-        form_model = helper.create_questionnaire(post=form.cleaned_data, dbm=manager)
-        try:
-            pid = project.save(manager)
-            qid = form_model.save()
-            project.qid = qid
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account },
-                                      context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
-    else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project_summary, 'edit': False, 'is_trial_account': is_trial_account},
-                                  context_instance=RequestContext(request))
-
-
-def _generate_project_info_with_deadline_and_reminders(project):
-    project_info = {}
-    for key, value in project.items():
-        project_info[key] = value
-    for key, value in project['reminder_and_deadline'].items():
-        project_info[key] = value
-    del project_info['reminder_and_deadline']
-    return project_info
-
-
-@login_required(login_url='/login')
-@is_datasender
-def edit_profile(request, project_id=None):
-    manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
-    project = Project.load(manager.database, project_id)
-    is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
-    if request.method == 'GET':
-        form = ProjectProfile(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True, 'is_trial_account':is_trial_account},
-                                  context_instance=RequestContext(request))
-
-    form = ProjectProfile(data=request.POST, entity_list=entity_list)
-    if form.is_valid():
-        older_entity_type = project.entity_type
-        if older_entity_type != form.cleaned_data["entity_type"]:
-            new_questionnaire = helper.create_questionnaire(form.cleaned_data, manager)
-            new_qid = new_questionnaire.save()
-            project.qid = new_qid
-        project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
-        project.update(form.cleaned_data)
-        project.update_questionnaire(manager)
-
-        try:
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
-                                      context_instance=RequestContext(request))
-        return HttpResponseRedirect(reverse(subjects_wizard, args=[pid]))
-    else:
-        return render_to_response('project/profile.html', {'form': form, 'project': project, 'edit': True},
-                                  context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def save_questionnaire(request):
@@ -435,29 +335,6 @@ def export_log(request):
     return _create_excel_response(raw_data_list, file_name)
 
 
-@login_required(login_url='/login')
-@is_datasender
-def subjects_wizard(request, project_id=None):
-    if request.method == 'GET':
-        manager = get_database_manager(request.user)
-        reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-        previous_link = reverse(edit_profile, args=[project_id])
-        entity_types = get_all_entity_types(manager)
-        project = Project.load(manager.database, project_id)
-        helper.remove_reporter(entity_types)
-        import_subject_form = SubjectUploadForm()
-        create_subject_form = SubjectForm()
-        return render_to_response('project/subjects_wizard.html',
-                {'fields': reg_form.fields, "previous": previous_link, "entity_types": entity_types,
-                 'import_subject_form': import_subject_form,
-                 'form': create_subject_form,
-                 'post_url': reverse(import_subjects_from_project_wizard), 'project': project, 'step': 'subjects'},
-                                  context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse(questionnaire_wizard, args=[project_id]))
-
-
 def _format_field_description_for_data_senders(reg_form_fields):
     for field in reg_form_fields:
         if field.code == 't':
@@ -471,44 +348,23 @@ def _get_imports_subjects_post_url(project_id=None):
     import_url = reverse(import_subjects_from_project_wizard)
     return import_url if project_id is None else ("%s?project_id=%s" % (import_url, project_id))
 
-
-@login_required(login_url='/login')
-@is_datasender
-def datasenders_wizard(request, project_id=None):
-    if request.method == 'GET':
-        manager = get_database_manager(request.user)
-        reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-        previous_link = reverse(questionnaire_wizard, args=[project_id])
-        project = Project.load(manager.database, project_id)
-        import_reporter_form = ReporterRegistrationForm(initial={'project_id': project_id})
-        _format_field_description_for_data_senders(reg_form.fields)
-        cleaned_up_fields = _get_questions_for_datasenders_registration_for_wizard(reg_form.fields)
-        return render_to_response('project/datasenders_wizard.html',
-                {'fields': cleaned_up_fields, "previous": previous_link,
-                 'form': import_reporter_form,
-                 'post_url': _get_imports_subjects_post_url(project_id), 'project': project, 'step': 'datasenders'},
-                                  context_instance=RequestContext(request))
-
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse(reminders_wizard, args=[project_id]))
-
-
-@login_required(login_url='/login')
-def reminders_wizard(request, project_id=None):
-    if request.method == 'GET':
-        dbm = get_database_manager(request.user)
-        project = Project.load(dbm.database, project_id)
-        previous_link = reverse(datasenders_wizard, args=[project_id])
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
-        context = {"previous": previous_link,
-                 'project': project,
-                 'is_reminder': project.is_reminder_enabled(),
-                 'in_trial_mode': organization.in_trial_mode,
-        }
-        return render_to_response('project/reminders_wizard.html', context, context_instance=RequestContext(request))
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse(finish, args=[project_id]))
+#todo Leaving this commented for reference
+#@login_required(login_url='/login')
+#def reminders_wizard(request, project_id=None):
+#    if request.method == 'GET':
+#        dbm = get_database_manager(request.user)
+#        project = Project.load(dbm.database, project_id)
+#        previous_link = reverse(datasenders_wizard, args=[project_id])
+#        profile = request.user.get_profile()
+#        organization = Organization.objects.get(org_id=profile.org_id)
+#        context = {"previous": previous_link,
+#                 'project': project,
+#                 'is_reminder': project.is_reminder_enabled(),
+#                 'in_trial_mode': organization.in_trial_mode,
+#        }
+#        return render_to_response('project/reminders_wizard.html', context, context_instance=RequestContext(request))
+#    if request.method == 'POST':
+#        return HttpResponseRedirect(reverse(finish, args=[project_id]))
 
 def _format_string_for_reminder_table(value):
     return (' '.join(value.split('_'))).title()
@@ -621,22 +477,6 @@ def broadcast_message(request, project_id):
 
 @login_required(login_url='/login')
 @is_datasender
-def reminders(request, project_id):
-    if request.method == 'GET':
-        dbm = get_database_manager(request.user)
-        project = Project.load(dbm.database, project_id)
-        questionnaire = FormModel.get(dbm, project.qid)
-        reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
-        is_trial_account = Organization.objects.get(org_id=request.user.get_profile().org_id).in_trial_mode
-        return render_to_response('project/reminders.html',
-                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
-                 'reminders':_format_reminders(reminders, project_id),
-                 'in_trial_mode':is_trial_account,
-                 'create_reminder_link' : reverse(create_reminder, args=[project_id])},
-                                  context_instance=RequestContext(request))
-
-@login_required(login_url='/login')
-@is_datasender
 def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -649,48 +489,6 @@ def activate_project(request, project_id=None):
         submission.void()
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
-
-def _make_links_for_finish_page(project_id, form_model):
-    project_links = {'edit_link': reverse(edit_project, args=[project_id]),
-                     'subject_link': reverse(subjects_wizard, args=[project_id]),
-                     'questionnaire_link': reverse(questionnaire_wizard, args=[project_id]),
-                     'data_senders_link': reverse(datasenders_wizard, args=[project_id]),
-                     'log_link': reverse(project_results, args=[project_id, form_model.form_code]),
-                     'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
-                     'subject_registration_preview_link': reverse(subject_registration_form_preview, args=[project_id]),
-                     'sender_registration_preview_link': reverse(sender_registration_form_preview, args=[project_id]),
-                     'reminder_link': reverse(reminders_wizard, args=[project_id])
-    }
-    return project_links
-
-
-@login_required(login_url='/login')
-def finish(request, project_id=None):
-    manager = get_database_manager(request.user)
-    project = Project.load(manager.database, project_id)
-    form_model = FormModel.get(manager, project.qid)
-    if request.method == 'GET':
-        project.to_test_mode(manager)
-        number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
-        number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
-        previous_link = reverse(reminders_wizard, args=[project_id])
-        fields = form_model.fields
-        if form_model.entity_defaults_to_reporter():
-            fields = helper.hide_entity_question(form_model.fields)
-        is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
-        devices = ",".join(project.devices)
-        return render_to_response('project/finish_and_test.html', {'project': project, 'fields': fields,
-                                                                   'project_links': _make_links_for_finish_page(
-                                                                       project_id, form_model),
-                                                                   'number_of_datasenders': number_of_registered_datasenders
-                                                                   ,
-                                                                   'number_of_subjects': number_of_registered_subjects,
-                                                                   "previous": previous_link,
-                                                                   "is_reminder": is_reminder,
-                                                                   "devices": devices},
-                                  context_instance=RequestContext(request))
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 @login_required(login_url='/login')
 def review_and_test(request, project_id=None):
@@ -706,8 +504,6 @@ def review_and_test(request, project_id=None):
         is_reminder = "enabled" if project.reminder_and_deadline['reminders_enabled'] == 'True' else "disabled"
         devices = ",".join(project.devices)
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
-                                                                   'finish_links': _make_links_for_finish_page(
-                                                                       project_id, form_model),
                                                                    'project_links': _make_project_links(project, form_model.form_code),
                                                                    'number_of_datasenders': number_of_registered_datasenders,
                                                                    'number_of_subjects': number_of_registered_subjects,
@@ -801,7 +597,6 @@ def datasenders(request, project_id=None):
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
-        previous_link = reverse(subjects_wizard, args=[project_id])
         project = Project.load(manager.database, project_id)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
@@ -811,7 +606,7 @@ def questionnaire(request, project_id=None):
         project_links = _make_project_links(project, form_model.form_code)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links},
+                 'project': project, 'project_links': project_links},
                                   context_instance=RequestContext(request))
 
 
@@ -906,11 +701,6 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
                               context_instance=RequestContext(request))
 
 
-def _get_trial_web_submission_count(user, manager, form_code):
-    ngoup = NGOUserProfile.objects.filter(id=user.id)[0]
-    organization = Organization.objects.filter(org_id=ngoup.org_id)[0];
-    return count_valid_web_submissions(manager, form_code, 0, datetime.datetime.now())
-
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
@@ -959,7 +749,6 @@ def web_questionnaire(request, project_id=None):
 def questionnaire_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
-        previous_link = reverse(subjects_wizard, args=[project_id])
         project = Project.load(manager.database, project_id)
         form_model = FormModel.get(manager, project.qid)
         fields = form_model.fields
@@ -974,7 +763,7 @@ def questionnaire_preview(request, project_id=None):
             form_model.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links,
+                 'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
 
@@ -985,7 +774,6 @@ def _get_preview_for_field_in_registration_questionnaire(field):
 
 
 def _get_registration_form(manager, project, project_id, type_of_subject='subject'):
-    previous_link = reverse(subjects_wizard, args=[project_id])
     registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = registration_questionnaire.fields
     project_links = _make_project_links(project, registration_questionnaire.form_code)
@@ -994,7 +782,7 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
         question = _get_preview_for_field_in_registration_questionnaire(field)
         question = {k: v.replace('subject', type_of_subject) for (k, v) in question.items()}
         questions.append(question)
-    return fields, previous_link, project_links, questions, registration_questionnaire
+    return fields, project_links, questions, registration_questionnaire
 
 
 def get_example_sms_message(fields, registration_questionnaire):
@@ -1010,13 +798,13 @@ def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
-        fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
+        fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
                                                                                                           project_id)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links,
+                'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
 
@@ -1026,7 +814,7 @@ def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
-        fields, previous_link, project_links, questions, registration_questionnaire = _get_registration_form(manager,
+        fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                                              project,
                                                                                                              project_id,
                                                                                                              type_of_subject='Data sender')
@@ -1035,7 +823,7 @@ def sender_registration_form_preview(request, project_id=None):
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
-                 "previous": previous_link, 'project': project, 'project_links': project_links,
+                'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
 
