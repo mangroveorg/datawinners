@@ -60,15 +60,19 @@
             </div>
             <div class="float_left">
                 <p><b>Description:</b>
-                    This is the description of project.
+                    {% if project.goals %}
+                        {{ project.goals }}
+                    {% else %}
+                        --
+                    {% endif %}
                 </p>
             </div>
+        <!--Map div-->
+        {% include 'maps/entity_map.html'  %}
         <!--Questionnaire & DS div-->
         <div class="float_left" id="questionnaire_and_DS">
             {% include 'project/questionnaire_and_DS.html'%}
         </div>
-        <!--Map div-->
-        {% include 'maps/entity_map.html'  %}
 
     </div>
 
