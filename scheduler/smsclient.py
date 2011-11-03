@@ -25,4 +25,3 @@ class SMSClient(object):
                 count += 1
             logger.info("Reminder sent for %s, Message: %s" % (data_sender["mobile_number"],reminder.message,) )
         return count
-
