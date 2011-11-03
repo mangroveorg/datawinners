@@ -9,6 +9,7 @@ from datawinners.accountmanagement.views import is_datasender
 
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState
+from datawinners.project.wizard_view import edit_project
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.player import player
 from mangrove.transport.reporter import find_reporter
@@ -72,6 +73,8 @@ def dashboard(request):
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=4)
     for row in rows:
         link = reverse("project-overview", args=(row['value']['_id'],))
+        if row['value']['state'] == ProjectState.INACTIVE:
+            link = reverse(edit_project,args=(row['value']['_id'],))
 
         form_model = manager.get(row['value']['qid'], FormModel)
         submissions, success, errors = get_submissions(manager, form_model.form_code)
