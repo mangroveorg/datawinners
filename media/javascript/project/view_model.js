@@ -29,11 +29,16 @@ var viewModel =
     removeQuestion: function(question) {
         var index = $.inArray(question, viewModel.questions());
         viewModel.questions.remove(question);
+        if(viewModel.questions().length == 0){
+            DW.current_code = 1;
+            viewModel.addQuestion();
+            return;
+        }
         var next_index = (index) % viewModel.questions().length;
-        viewModel.changeSelectedQuestion(viewModel.questions()[next_index]);
         if(index == viewModel.questions().length){
             DW.current_code -= 1;
         }
+        viewModel.changeSelectedQuestion(viewModel.questions()[next_index]);
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {
