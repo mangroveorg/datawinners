@@ -134,3 +134,8 @@ fieldset {
 
 #q_code {
   display: inline; }
+
+#add_subject_type {
+  width: 50% !important;
+  float: none;
+  padding-left: 20px; }
