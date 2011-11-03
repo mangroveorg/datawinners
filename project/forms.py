@@ -16,7 +16,7 @@ class BroadcastMessageForm(forms.Form):
     text = CharField(label="Text:", required=True, max_length=160, widget=forms.Textarea)
     to = ChoiceField(label="To:",choices=(("Associated", "Data Senders from my project"), ("All", "All Data Senders")),
                      widget=forms.RadioSelect, initial=("Associated"))
-    others = CharField(label="Other People:", required=True, max_length=160, widget=forms.Textarea)
+    others = CharField(label="Other People:", max_length=160, widget=forms.Textarea, required=False)
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):

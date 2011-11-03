@@ -26,12 +26,17 @@
         {{ block.super }}
     {% endblock %}
     <div>
+    {% if success %}
+        <span class="success-message-box">Your message has been sent successfully. View your message in <a href="#">Sent Messages</a></span>
+    {% endif %}
     <label>Send a Message</label>
         <div id="broadcast-form">
-        <form>
+        <form method="POST" action="">
+            {% csrf_token %}
             <div>
                 <label for="id_text" id="text-label">Text:</label>
                 {{ form.text }}
+                <span class="errorlist"><label>{{ form.text.errors }}</label></span>
             </div>
             <div style="clear: both;">
                 <label for="id_to" id="to-label">To:</label>
@@ -48,7 +53,7 @@
             </div>
             <div id="message-submit">
                 <input type="button" value="Clear" class="button">
-                <input type="button" value="Send" class="button">
+                <input type="submit" value="Send" class="button">
             </div>
         </form>
         </div>

@@ -455,11 +455,27 @@ def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
-    form = BroadcastMessageForm()
-    return render_to_response('project/broadcast_message.html',
-                {'project': project,
-                 "project_links": _make_project_links(project, questionnaire.form_code), "form": form},
-                                  context_instance=RequestContext(request))
+    if request.method == 'GET':
+        form = BroadcastMessageForm()
+        return render_to_response('project/broadcast_message.html',
+                    {'project': project,
+                     "project_links": _make_project_links(project, questionnaire.form_code), "form": form},
+                                      context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = BroadcastMessageForm(request.POST)
+        if form.is_valid():
+            form = BroadcastMessageForm()
+            return render_to_response('project/broadcast_message.html',
+                    {'project': project,
+                     "project_links": _make_project_links(project, questionnaire.form_code), "form": form,
+                     'success': True},
+                                      context_instance=RequestContext(request))
+
+        return render_to_response('project/broadcast_message.html',
+                    {'project': project,
+                     "project_links": _make_project_links(project, questionnaire.form_code), "form": form,
+                     'success': False},
+                                      context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @is_datasender
