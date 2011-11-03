@@ -21,8 +21,8 @@ from datawinners.accountmanagement.models import Organization, OrganizationSetti
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
-from datawinners.project.wizard_view import edit_project
 from datawinners.settings import USE_ORDERED_SMS_PARSER
+from datawinners.project.wizard_view import edit_project, reminder_settings
 import helper
 from datawinners.project import models, wizard_view
 from mangrove.datastore.data import EntityAggregration
@@ -83,6 +83,7 @@ def _make_project_links(project,questionnaire_code):
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
+        project_links['setting_reminders_link'] = reverse(reminder_settings, args=[project_id])
         project_links['broadcast_message_link'] = reverse(broadcast_message, args=[project_id])
 
     if project.state == ProjectState.ACTIVE:

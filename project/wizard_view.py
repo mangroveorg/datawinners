@@ -174,3 +174,17 @@ def reminders(request, project_id):
                  'create_reminder_link' : reverse(create_reminder, args=[project_id]),
                  'project_links': project_links},
                                   context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_datasender
+def reminder_settings(request, project_id):
+    if request.method == 'GET':
+        dbm = get_database_manager(request.user)
+        project = Project.load(dbm.database, project_id)
+        questionnaire = FormModel.get(dbm, project.qid)
+        from datawinners.project.views import _make_project_links
+        project_links = _make_project_links(project, questionnaire.form_code)
+        form = ReminderForm()
+        return render_to_response('project/reminder_settings.html',
+                {'project_links': project_links,'project': project,
+                 'form':form},context_instance=RequestContext(request))

@@ -1,0 +1,34 @@
+{% extends 'project/tab_navigation.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Project - Messages & Reminders" %} {% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "reminders" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_reminder.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/deadline_and_reminder.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% block secondary_navigation_reminders %}
+        {% activetab "secondary_tab_nav" "settings" %}
+        {{ block.super }}
+    {% endblock %}
+    {% include "project/profile_deadline.html" %}
+{% endblock %}
