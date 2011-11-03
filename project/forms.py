@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import calendar
+from django.db.models.fields import TextField
 
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.core.exceptions import ValidationError
@@ -9,6 +10,13 @@ from django.forms.widgets import RadioFieldRenderer, RadioInput
 from django import forms
 from datawinners.utils import convert_to_ordinal
 from mangrove.form_model.form_model import REPORTER
+
+class BroadcastMessageForm(forms.Form):
+
+    text = CharField(label="Text:", required=True, max_length=160, widget=forms.Textarea)
+    to = ChoiceField(label="To:",choices=(("Associated", "Data Senders from my project"), ("All", "All Data Senders")),
+                     widget=forms.RadioSelect, initial=("Associated"))
+    others = CharField(label="Other People:", required=True, max_length=160, widget=forms.Textarea)
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):

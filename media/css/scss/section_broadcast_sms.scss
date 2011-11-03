@@ -1,34 +1,19 @@
-.sms_title{
-    position:absolute;
-    left:0px;
-    width:10%;
+#broadcast-form
+{
+    padding-top: 15px;
+    padding-left: 10px;
+}
+#to-section ul li label
+{
+    width: 240px;
+}
+#text-label, #id_text, #to-label, #to-section, #id_others, #others-label
+{
+    float: left;
 }
 
-.sms_content{
-    position:absolute;
-    right:0px;
-    width:90%;
-    height:50%;
-}
-
-.sms_counter{
-    position:absolute;
-    top:110px;
-    left:270px;
-    height:40%;
-}
-
-.sms_content_static_text{
-    position: relative;
+#message-submit
+{
+    clear: both;
     float: right;
-}
-
-.counter{
-    position: relative;
-    float: right;
-}
-
-.send_button{
-    float: right;
-    margin-top: 500px;
 }

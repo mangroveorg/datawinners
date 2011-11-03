@@ -25,23 +25,32 @@
         {% activetab "secondary_tab_nav" "message" %}
         {{ block.super }}
     {% endblock %}
-
-    <div style="position:relative;">
-        <label><h3>{% trans "Send a Message" %}</h3></label>
-
-        <div style="position:relative;">
-            <div class='sms_title'><h5>{% trans "Text:" %}</h5></div>
-            <div class='sms_content'>
-                <textarea id="sms_content" watermark="{% trans 'Enter your SMS text' %}"></textarea>
+    <div>
+    <label>Send a Message</label>
+        <div id="broadcast-form">
+        <form>
+            <div>
+                <label for="id_text" id="text-label">Text:</label>
+                {{ form.text }}
             </div>
-            <div class='sms_counter'>
-                <div class='sms_content_static_text'>{% trans "/160 character used (1 SMS)" %}</div>
-                <div class='counter' id='counter'>0</div>
-            </div>
+            <div style="clear: both;">
+                <label for="id_to" id="to-label">To:</label>
+                <div>
+                    <div id="to-section">
+                        {{ form.to }}
+                    </div>
+                    <div style="clear: both;">
+                    <label for="id_others" id="others-label">Others:</label>
+                    {{ form.others }}
+                    </div>
 
-            <div class='send_button'>
-                <input type="button" value="{% trans 'Send' %}" id="id_send_broadcast_sms_button" class="button" onclick='clear_sms_content()'/>
+                </div>
             </div>
+            <div id="message-submit">
+                <input type="button" value="Clear" class="button">
+                <input type="button" value="Send" class="button">
+            </div>
+        </form>
         </div>
     </div>
 {% endblock %}

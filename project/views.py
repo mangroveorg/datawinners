@@ -16,6 +16,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
+from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
@@ -473,8 +474,10 @@ def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
+    form = BroadcastMessageForm()
     return render_to_response('project/broadcast_message.html',
-                {'project': project, "project_links": _make_project_links(project, questionnaire.form_code)},
+                {'project': project,
+                 "project_links": _make_project_links(project, questionnaire.form_code), "form": form},
                                   context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
