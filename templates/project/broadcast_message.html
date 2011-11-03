@@ -34,18 +34,20 @@
         <form method="POST" action="">
             {% csrf_token %}
             <div>
-                <label for="id_text" id="text-label">Text:</label>
+                <label for="id_text" id="text-label">{{ form.text.label }}</label>
                 {{ form.text }}
-                <span class="errorlist"><label>{{ form.text.errors }}</label></span>
+                {% if form.text.errors %}
+                    <span class="errorlist"><label>{{ form.text.errors }}</label></span>
+                {% endif %}
             </div>
             <div style="clear: both;">
-                <label for="id_to" id="to-label">To:</label>
+                <label for="id_to" id="to-label">{{ form.to.label }}</label>
                 <div>
                     <div id="to-section">
                         {{ form.to }}
                     </div>
                     <div style="clear: both;">
-                    <label for="id_others" id="others-label">Others:</label>
+                    <label for="id_others" id="others-label">{{ form.others.label }}</label>
                     {{ form.others }}
                     </div>
 

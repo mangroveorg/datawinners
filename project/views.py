@@ -18,7 +18,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
-from datawinners.accountmanagement.models import Organization, OrganizationSetting
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
@@ -464,6 +464,11 @@ def broadcast_message(request, project_id):
     if request.method == 'POST':
         form = BroadcastMessageForm(request.POST)
         if form.is_valid():
+            data_senders = load_all_subjects_of_type(dbm) if form.cleaned_data['to'] == "All" else project.get_data_senders(dbm)
+            profile = NGOUserProfile.objects.get(user = request.user)
+            organization = Organization.objects.get(org_id = profile.org_id)
+            organization_setting = OrganizationSetting.objects.get(organization = organization)
+            helper.send_message(data_senders, form.cleaned_data['text'], organization_setting)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,

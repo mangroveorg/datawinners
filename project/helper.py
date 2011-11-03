@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
@@ -328,3 +329,10 @@ def get_subject_report_questions(dbm):
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy", event_time_field_flag=True)
     return [entity_id_question, activity_report_question]
+
+
+def send_message(data_senders, message, organization_setting):
+    for data_sender in data_senders:
+        phone_number = data_sender.value('mobile_number')
+        sms_client = SMSClient()
+        sms_client.send_sms(organization_setting.sms_tel_number, phone_number, message)
