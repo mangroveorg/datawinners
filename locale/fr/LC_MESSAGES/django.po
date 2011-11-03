@@ -2854,3 +2854,15 @@ msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détai
 msgid "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Expéditeurs de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
 
+#create_project.html
+msgid "Create your project in a few easy steps."
+msgstr "Créer votre projet en quelques étapes faciles."
+
+msgid "Name your project and provide basic information about it."
+msgstr "Nommer votre projet et en fournir des informations élémentaires."
+
+msgid "Write and edit your questions."
+msgstr "Saisir et éditer vos questions."
+
+msgid "Save and create your project."
+msgstr "Sauvegarder et créer votre projet."
