@@ -22,6 +22,7 @@ from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project
+from datawinners.settings import USE_ORDERED_SMS_PARSER
 import helper
 from datawinners.project import models, wizard_view
 from mangrove.datastore.data import EntityAggregration
@@ -799,12 +800,12 @@ def subject_registration_form_preview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
-                                                                                                             project,
-                                                                                                          project_id)
+                                                                                              project,
+                                                                                              project_id)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
-                'project': project, 'project_links': project_links,
+                 'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
                                   context_instance=RequestContext(request))
 
