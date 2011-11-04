@@ -331,8 +331,11 @@ def get_subject_report_questions(dbm):
     return [entity_id_question, activity_report_question]
 
 
-def send_message(data_senders, message, organization_setting):
+def broadcast_message(data_senders, message, organization_tel_number, other_numbers):
+    sms_client = SMSClient()
     for data_sender in data_senders:
         phone_number = data_sender.value('mobile_number')
-        sms_client = SMSClient()
-        sms_client.send_sms(organization_setting.sms_tel_number, phone_number, message)
+        sms_client.send_sms(organization_tel_number, phone_number, message)
+
+    for number in other_numbers:
+        sms_client.send_sms(organization_tel_number, number.strip(), message)
