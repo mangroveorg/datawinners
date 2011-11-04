@@ -168,16 +168,26 @@ def undelete_project(request, project_id):
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    form_model = FormModel.get(manager, project.qid)
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
     project_links = _make_project_links(project, questionnaire.form_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
+    number_data_sender = len(project.get_data_senders(manager))
+    number_records = submission_count(manager, form_model.form_code, None, None)
+    number_reminders = Reminder.objects.filter(project_id = project.id).count()
+    links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id])}
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': project,
         'entity_type': project['entity_type'],
         'project_links': project_links,
         'number_of_questions': number_of_questions,
-        'map_api_key': map_api_key}))
+        'map_api_key': map_api_key,
+        'number_data_sender': number_data_sender,
+        'number_records': number_records,
+        'number_reminders': number_reminders,
+        'links': links
+    }))
 
 
 @login_required(login_url='/login')
