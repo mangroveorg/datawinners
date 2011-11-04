@@ -84,6 +84,10 @@ $(document).ready(function() {
          $("#questionnaire_code_change").dialog("close");
     });
 
+    $(".cancel_link").bind("click", function(){
+         $("#questionnaire_code_change").dialog("close");
+    });
+
     $('input[name=type]:radio').change(
             function() {
                 viewModel.selectedQuestion().range_min("");

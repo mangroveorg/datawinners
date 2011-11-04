@@ -31,8 +31,8 @@ $(document).ready(function() {
         title: gettext("Warning !!"),
         modal: true,
         autoOpen: false,
-        height: 200,
-        width: 300,
+        height: 225,
+        width: 325,
         closeText: 'hide'
     });
 
