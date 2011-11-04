@@ -36,7 +36,6 @@
     clear:right;
     width:50%;
     height:30px;
-    padding:5px;
     label{
         display:inline;
         font-size:16px;
@@ -46,14 +45,7 @@
 .right_half{
     float:right;
     width:50%;
-    input{
-        width:250px;
-    }
-    li{
-        margin:10px 0 10px 0;
-        list-style-type: None;
-        height:30px;
-    }
+    height: 30px;
 }
 
 .float_left{
@@ -66,9 +58,11 @@
 }
 
 .quarter{
-    width:50%;
+    width:43%;
     float:left;
     clear:right;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
 #questionnaire_and_DS{
