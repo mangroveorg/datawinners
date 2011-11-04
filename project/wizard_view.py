@@ -20,7 +20,7 @@ from mangrove.utils.types import is_string, is_empty
 
 def create_questionnaire(post, manager, entity_type, name):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
-    questionnaire_code = post['questionnaire-code']
+    questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
     form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['state'], fields=[], form_code=questionnaire_code)
