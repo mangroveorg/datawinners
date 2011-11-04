@@ -465,12 +465,15 @@ def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
+    profile = NGOUserProfile.objects.get(user = request.user)
+    organization = Organization.objects.get(org_id = profile.org_id)
     if request.method == 'GET':
         form = BroadcastMessageForm()
-        return render_to_response('project/broadcast_message.html',
-                    {'project': project,
-                     "project_links": _make_project_links(project, questionnaire.form_code), "form": form},
-                                      context_instance=RequestContext(request))
+        html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
+        return render_to_response(html, {'project': project,
+                                         "project_links": _make_project_links(project, questionnaire.form_code),
+                                         "form": form},
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         form = BroadcastMessageForm(request.POST)
         if form.is_valid():
