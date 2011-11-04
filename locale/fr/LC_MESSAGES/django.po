@@ -2867,8 +2867,6 @@ msgstr "Saisir et éditer vos questions."
 msgid "Save and create your project."
 msgstr "Sauvegarder et créer votre projet."
 
-<<<<<<< HEAD
-
 msgid "Send A Message"
 msgstr "Envoyer un message"
 
@@ -2892,8 +2890,31 @@ msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une vi
 
 msgid "characters used"
 msgstr "caractères utilisés"
-=======
+
 #: templates/dashboard/overview.html
 msgid "Your project"
 msgstr "Vos projet"
->>>>>>> Added translations on overview page: Neetu
+
+msgid "You successfully created your questionnaire!"
+msgstr "Vous avez créé votre questionnaire avec succès"
+
+msgid "Now you can..."
+msgstr "Maintenant vous pouvez..."
+
+msgid "...or just start collecting data"
+msgstr "...ou juste commencer à colleter des données"
+
+msgid "How to start collecting data"
+msgstr "Comment commencer la collecte de données"
+
+msgid "input data"
+msgstr "donnée en entrée"
+
+msgid "How to Distribute Questionnaire"
+msgstr "Comment dissuser le questionnaire"
+
+msgid "How to Collect Data"
+msgstr "Comment collecter les données"
+
+msgid "Training datasender"
+msgstr "Former les envoyeurs de données"

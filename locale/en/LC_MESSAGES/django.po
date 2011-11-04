@@ -2623,7 +2623,6 @@ msgstr ""
 msgid "Save and create your project."
 msgstr ""
 
-<<<<<<< HEAD
 msgid "Send a Message"
 msgstr ""
 
@@ -2646,8 +2645,32 @@ msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the
 msgstr ""
 
 msgid "characters used"
-=======
+msgstr ""
+
 #: templates/dashboard/overview.html
 msgid "Your project"
->>>>>>> Added translations on overview page: Neetu
+msgstr ""
+
+msgid "You successfully created your questionnaire! "
+msgstr ""
+
+msgid "Now you can..."
+msgstr ""
+
+msgid "...or just start collecting data"
+msgstr ""
+
+msgid "How to start collecting data"
+msgstr ""
+
+msgid "input data "
+msgstr ""
+
+msgid "How to Distribute Questionnaire"
+msgstr ""
+
+msgid "How to Collect Data"
+msgstr ""
+
+msgid "Training datasender "
 msgstr ""
