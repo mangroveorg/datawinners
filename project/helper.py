@@ -334,8 +334,9 @@ def get_subject_report_questions(dbm):
 def broadcast_message(data_senders, message, organization_tel_number, other_numbers):
     sms_client = SMSClient()
     for data_sender in data_senders:
-        phone_number = data_sender.value('mobile_number')
-        sms_client.send_sms(organization_tel_number, phone_number, message)
+        phone_number = data_sender.get('mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
+        if phone_number is not None:
+            sms_client.send_sms(organization_tel_number, phone_number, message)
 
     for number in other_numbers:
         sms_client.send_sms(organization_tel_number, number.strip(), message)
