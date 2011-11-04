@@ -2867,8 +2867,6 @@ msgstr "Saisir et éditer vos questions."
 msgid "Save and create your project."
 msgstr "Sauvegarder et créer votre projet."
 
-<<<<<<< HEAD
-
 msgid "Send A Message"
 msgstr "Envoyer un message"
 
@@ -2892,8 +2890,7 @@ msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une vi
 
 msgid "characters used"
 msgstr "caractères utilisés"
-=======
+
 #: templates/dashboard/overview.html
 msgid "Your project"
 msgstr "Vos projet"
->>>>>>> Added translations on overview page: Neetu
