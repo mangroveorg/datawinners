@@ -134,7 +134,7 @@ class CreateProject(Form):
                        ('A thing', _('A thing')), ('An event', _('An event')), )
     SUBJECT_CHOICE = (('Patient', _('Patient')), ('Farmer', _('Farmer')),
                       ('Child', _('Child')), ('Employee', _('Employee')), )
-    LANGUAGES = (('en', 'English'), ('fr', 'Français'))
+    LANGUAGES = (('en', 'English'), ('fr', 'Français'),('mg', 'Malagasy'))
 
     name = CharField(required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
