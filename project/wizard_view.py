@@ -158,12 +158,11 @@ def reminders(request, project_id):
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
-        form = ReminderForm()
         from datawinners.project.views import  _format_reminders, create_reminder
         return render_to_response('project/reminders.html',
                 {'project': project, 
                  'reminders':_format_reminders(reminders, project_id),
-                 'in_trial_mode':organization.in_trial_mode,'form':form,
+                 'in_trial_mode':organization.in_trial_mode,
                  'create_reminder_link' : reverse(create_reminder, args=[project_id]),
                  'project_links': project_links},
                                   context_instance=RequestContext(request))
