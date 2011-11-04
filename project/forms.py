@@ -5,7 +5,7 @@ from django.db.models.fields import TextField
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.core.exceptions import ValidationError
 from django.forms.forms import Form
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django.forms.widgets import RadioFieldRenderer, RadioInput
 from django import forms
 from datawinners.utils import convert_to_ordinal
@@ -13,10 +13,15 @@ from mangrove.form_model.form_model import REPORTER
 
 class BroadcastMessageForm(forms.Form):
 
-    text = CharField(label="Text:", required=True, max_length=160, widget=forms.Textarea)
-    to = ChoiceField(label="To:",choices=(("Associated", "Data Senders from my project"), ("All", "All Data Senders")),
+    text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
+    to = ChoiceField(label=ugettext_lazy("To:"),choices=(("Associated", ugettext_lazy("Data Senders from my project")), ("All", ugettext_lazy("All Data Senders"))),
                      widget=forms.RadioSelect, initial=("Associated"))
-    others = CharField(label="Other People:", max_length=160, widget=forms.Textarea, required=False)
+    others = CharField(label=ugettext_lazy("Other People:"), max_length=160, widget=forms.Textarea, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(BroadcastMessageForm, self).__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
+        self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers.')
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):

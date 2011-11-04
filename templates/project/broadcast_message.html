@@ -20,44 +20,51 @@
     <link href="/media/css/scss/section_broadcast_sms.scss" rel="stylesheet"/>
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
+{% endblock %}
+
 {% block content %}
     {% block secondary_navigation_reminders %}
         {% activetab "secondary_tab_nav" "message" %}
         {{ block.super }}
     {% endblock %}
     <div>
-    {% if success %}
-        <span class="success-message-box">Your message has been sent successfully. View your message in <a href="#">Sent Messages</a></span>
-    {% endif %}
-    <label>Send a Message</label>
-        <div id="broadcast-form">
-        <form method="POST" action="">
-            {% csrf_token %}
-            <div>
-                <label for="id_text" id="text-label">{{ form.text.label }}</label>
-                {{ form.text }}
-                {% if form.text.errors %}
-                    <span class="errorlist"><label>{{ form.text.errors }}</label></span>
-                {% endif %}
-            </div>
-            <div style="clear: both;">
-                <label for="id_to" id="to-label">{{ form.to.label }}</label>
-                <div>
-                    <div id="to-section">
-                        {{ form.to }}
-                    </div>
-                    <div style="clear: both;">
-                    <label for="id_others" id="others-label">{{ form.others.label }}</label>
-                    {{ form.others }}
-                    </div>
+        {% if success %}
+            <div class="success-message-box">Your message has been sent successfully. View your message in <a href="#">Sent
+                Messages</a></div>
+        {% endif %}
+        <label>{% trans "Send A Message" %}</label>
 
-                </div>
-            </div>
-            <div id="message-submit">
-                <input type="button" value="Clear" class="button">
-                <input type="submit" value="Send" class="button">
-            </div>
-        </form>
+        <div id="broadcast-form">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <ul>
+                    <li class="{{ form.text.css_classes }} form-row-10px">
+                        {{ form.text.label_tag }}
+                        {{ form.text }}
+                        {{ form.text.errors }}
+                    </li>
+                    <div id="message_count">Message Count: <span id="message-count"></span>/160</div>
+
+                    <li class="{{ form.to.css_classes }} form-row-10px">
+                        {{ form.to.label_tag }}
+                        {{ form.to }}
+                        {{ form.to.errors }}
+                    </li>
+
+                    <li class="{{ form.others.css_classes }} form-row-10px">
+                        {{ form.others.label_tag }}
+                        {{ form.others }}
+                        {{ form.others.errors }}
+                    </li>
+                    <div id="message-submit" class="float_right">
+                        <input type="reset" value="{% trans "Clear" %}" class="button">
+                        <input type="submit" value="{% trans "Send" %}" class="button">
+                    </div>
+                </ul>
+            </form>
         </div>
     </div>
 {% endblock %}

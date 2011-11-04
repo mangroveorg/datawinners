@@ -2590,3 +2590,56 @@ msgstr ""
 
 msgid "Delete this Project"
 msgstr ""
+
+#overview.html page
+msgid "Add data senders"
+msgstr ""
+
+msgid "Add subjects"
+msgstr ""
+
+msgid "Set reminders"
+msgstr ""
+
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
+msgstr ""
+
+msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
+msgstr ""
+
+msgid "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data."
+msgstr ""
+
+#create_project.html
+msgid "Create your project in a few easy steps."
+msgstr ""
+
+msgid "Name your project and provide basic information about it."
+msgstr ""
+
+msgid "Write and edit your questions."
+msgstr ""
+
+msgid "Save and create your project."
+msgstr ""
+
+msgid "Send a Message"
+msgstr ""
+
+msgid "Text:"
+msgstr ""
+
+msgid "To:"
+msgstr ""
+
+msgid "Other People:"
+msgstr ""
+
+msgid "Data Senders from my project"
+msgstr ""
+
+msgid "Enter your SMS text"
+msgstr ""
+
+msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
+msgstr ""

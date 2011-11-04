@@ -2834,3 +2834,57 @@ msgstr "Activez ce projet"
 
 msgid "Delete this Project"
 msgstr "Supprimer ce projet"
+
+#messages on overview.html page
+msgid "Add data senders"
+msgstr "Ajouter des Envoyeur de Données"
+
+msgid "Add subjects"
+msgstr "Ajouter des Sujets"
+
+msgid "Set reminders"
+msgstr "Définir des Messages de Rappel"
+
+msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
+msgstr "Enregistrer chaque Envoyeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
+
+msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
+msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détail, village) pour lesquel vous avez besoin de collecter des données et que vous souhaitez suivre sur une carte."
+
+msgid "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data."
+msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Envoyeur de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
+
+#create_project.html
+msgid "Create your project in a few easy steps."
+msgstr "Créer votre projet en quelques étapes faciles."
+
+msgid "Name your project and provide basic information about it."
+msgstr "Nommer votre projet et en fournir des informations élémentaires."
+
+msgid "Write and edit your questions."
+msgstr "Saisir et éditer vos questions."
+
+msgid "Save and create your project."
+msgstr "Sauvegarder et créer votre projet."
+
+
+msgid "Send A Message"
+msgstr "Envoyer un message"
+
+msgid "Text:"
+msgstr "texte:"
+
+msgid "To:"
+msgstr "Pour:"
+
+msgid "Other People:"
+msgstr "Autres Personnes:"
+
+msgid "Data Senders from my project"
+msgstr "Les expéditeurs de données de mon projet"
+
+msgid "Enter your SMS text"
+msgstr "Entrez votre texte SMS"
+
+msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
+msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une virgule (,) pour séparer les numéros."

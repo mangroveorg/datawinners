@@ -468,7 +468,8 @@ def broadcast_message(request, project_id):
             profile = NGOUserProfile.objects.get(user = request.user)
             organization = Organization.objects.get(org_id = profile.org_id)
             organization_setting = OrganizationSetting.objects.get(organization = organization)
-            helper.send_message(data_senders, form.cleaned_data['text'], organization_setting)
+            other_numbers = form.cleaned_data['others'].strip().split(',')
+            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.sms_tel_number, other_numbers)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
