@@ -126,7 +126,7 @@ class ProjectProfile(Form):
 
 
 class CreateProject(Form):
-    FREQUENCY_CHOICES = ((False, _("Whenever my data sender have data")), (True, _("Every:")))
+    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
 
     QUESTIONNAIRE_CHOICES = (('yes', _("This is general activity report.")),
                              ('no', _("I am collecting data about a specific subject.")))
@@ -140,13 +140,13 @@ class CreateProject(Form):
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
 
     frequency_enabled = ChoiceField(label=_("Time Period"),
+                                     help_text="How often do you need data?",
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=True)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),
                                             ('quarter', _('Quarter')), ), widget=forms.Select(
         attrs={'style': 'margin-left: 100px; margin-top: -58px; position: absolute'}),
                                    required=False, )
     activity_report = ChoiceField(label=_("What is this questionnaire about?"),
-                                  help_text="How often do you need data (answers to your questions)?",
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='no')
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
@@ -181,7 +181,7 @@ class CreateProject(Form):
 
 
 class ReminderForm(Form):
-    FREQUENCY_CHOICES = ((False, _("Whenever my data sender have data")), (True, _("Every:")))
+    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
     frequency_enabled = ChoiceField(label=_("Time Period"),
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=False)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),

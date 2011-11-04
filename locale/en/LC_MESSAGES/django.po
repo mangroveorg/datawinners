@@ -545,7 +545,7 @@ msgstr ""
 #: templates/step_wizard.html:19 templates/dashboard/home.html:30
 #: templates/project/index.html:28
 msgid "Create a new project"
-msgstr "Create a new project"
+msgstr ""
 
 #: templates/step_wizard.html:25
 msgid "Are you sure you want to cancel this project?"
