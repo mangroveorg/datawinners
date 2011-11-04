@@ -2622,3 +2622,24 @@ msgstr ""
 
 msgid "Save and create your project."
 msgstr ""
+
+msgid "Send a Message"
+msgstr ""
+
+msgid "Text:"
+msgstr ""
+
+msgid "To:"
+msgstr ""
+
+msgid "Other People:"
+msgstr ""
+
+msgid "Data Senders from my project"
+msgstr ""
+
+msgid "Enter your SMS text"
+msgstr ""
+
+msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
+msgstr ""

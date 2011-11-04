@@ -13,10 +13,10 @@ from mangrove.form_model.form_model import REPORTER
 
 class BroadcastMessageForm(forms.Form):
 
-    text = CharField(label="Text:", required=True, max_length=160, widget=forms.Textarea)
-    to = ChoiceField(label="To:",choices=(("Associated", "Data Senders from my project"), ("All", "All Data Senders")),
+    text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
+    to = ChoiceField(label=ugettext_lazy("To:"),choices=(("Associated", ugettext_lazy("Data Senders from my project")), ("All", ugettext_lazy("All Data Senders"))),
                      widget=forms.RadioSelect, initial=("Associated"))
-    others = CharField(label="Other People:", max_length=160, widget=forms.Textarea, required=False)
+    others = CharField(label=ugettext_lazy("Other People:"), max_length=160, widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)

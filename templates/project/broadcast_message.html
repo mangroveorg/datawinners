@@ -30,7 +30,7 @@
             <div class="success-message-box">Your message has been sent successfully. View your message in <a href="#">Sent
                 Messages</a></div>
         {% endif %}
-        <label>Send A Message</label>
+        <label>{% trans "Send A Message" %}</label>
 
         <div id="broadcast-form">
             <form method="POST" action="">
@@ -54,8 +54,8 @@
                         {{ form.others.errors }}
                     </li>
                     <div id="message-submit" class="float_right">
-                        <input type="reset" value="Clear" class="button">
-                        <input type="submit" value="Send" class="button">
+                        <input type="reset" value="{% trans "Clear" %}" class="button">
+                        <input type="submit" value="{% trans "Send" %}" class="button">
                     </div>
                 </ul>
             </form>

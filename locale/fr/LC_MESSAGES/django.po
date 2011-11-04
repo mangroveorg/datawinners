@@ -2866,3 +2866,25 @@ msgstr "Saisir et éditer vos questions."
 
 msgid "Save and create your project."
 msgstr "Sauvegarder et créer votre projet."
+
+
+msgid "Send A Message"
+msgstr "Envoyer un message"
+
+msgid "Text:"
+msgstr "texte:"
+
+msgid "To:"
+msgstr "Pour:"
+
+msgid "Other People:"
+msgstr "Autres Personnes:"
+
+msgid "Data Senders from my project"
+msgstr "Les expéditeurs de données de mon projet"
+
+msgid "Enter your SMS text"
+msgstr "Entrez votre texte SMS"
+
+msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
+msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une virgule (,) pour séparer les numéros."
