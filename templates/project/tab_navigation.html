@@ -18,15 +18,20 @@
 {% block section_title %}
     <div class="project_detail">
         <h2 class="project_title"> {{ project.name }}
-        <img src="/media/images/help_button.png" align="right"/></h2>
-        <span class="project_status">{% trans "Project status:" %} {{ project.state }}
+            <img src="/media/images/help_button.png" align="right"/></h2>
+        <div class="project_detail">
+            <span class="project_status">{% trans "Project status:" %}
+                    <span class="{{ project.state }}_state">{{ project.state }}</span>
+                </span>
             {% if project.state == 'Test' %}
-                <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Activate this Project" %}</a>
+                <a href="{{ project_links.activate_project_link }}"
+                   class="activate_project">{% trans "Activate this Project" %}</a>
                 <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
                 {% include 'project/sms_tester_form.html' %}
             {% endif %}
-            <a href="{{ project_links.delete_project_link }}" class="delete_project">{% trans "Delete this Project" %}</a>
-        </span>
+            <a href="{{ project_links.delete_project_link }}"
+               class="delete_project">{% trans "Delete this Project" %}</a>
+        </div>
     </div>
     <div id="activate_project_block">
         <p class="warning_message">{% trans "Warning: Activating the project will remove all existing test data." %}</p>
