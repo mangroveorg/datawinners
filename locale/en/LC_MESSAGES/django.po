@@ -2643,3 +2643,6 @@ msgstr ""
 
 msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
 msgstr ""
+
+msgid "characters used"
+msgstr ""

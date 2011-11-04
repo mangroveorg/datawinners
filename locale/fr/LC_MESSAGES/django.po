@@ -2888,3 +2888,6 @@ msgstr "Entrez votre texte SMS"
 
 msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
 msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une virgule (,) pour séparer les numéros."
+
+msgid "characters used"
+msgstr "caractères utilisés"
