@@ -135,7 +135,7 @@ table{
 
 /* List styles */
 .alpha_list li{
-    list-style-type:upper-alpha;
+    list-style-type:upper-alpha !important;
     overflow:visible;
 }
 
