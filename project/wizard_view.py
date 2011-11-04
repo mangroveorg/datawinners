@@ -57,7 +57,7 @@ def save_project(request):
                               project_type='survey', entity_type=entity_type,
                               reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                               activity_report=form.cleaned_data['activity_report'],
-                              state =project_state)
+                              state =project_state, devices=[])
                 try:
                     questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name)
                 except QuestionCodeAlreadyExistsException as e:
