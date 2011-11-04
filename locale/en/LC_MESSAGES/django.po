@@ -2623,6 +2623,7 @@ msgstr ""
 msgid "Save and create your project."
 msgstr ""
 
+<<<<<<< HEAD
 msgid "Send a Message"
 msgstr ""
 
@@ -2645,4 +2646,8 @@ msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the
 msgstr ""
 
 msgid "characters used"
+=======
+#: templates/dashboard/overview.html
+msgid "Your project"
+>>>>>>> Added translations on overview page: Neetu
 msgstr ""
