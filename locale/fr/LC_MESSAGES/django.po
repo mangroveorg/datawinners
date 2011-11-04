@@ -2837,7 +2837,7 @@ msgstr "Supprimer ce projet"
 
 #messages on overview.html page
 msgid "Add data senders"
-msgstr "Ajouter des Expéditeurs de Données"
+msgstr "Ajouter des Envoyeur de Données"
 
 msgid "Add subjects"
 msgstr "Ajouter des Sujets"
@@ -2846,13 +2846,13 @@ msgid "Set reminders"
 msgstr "Définir des Messages de Rappel"
 
 msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
-msgstr "Enregistrer chaque Expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
+msgstr "Enregistrer chaque Envoyeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
 
 msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
 msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détail, village) pour lesquel vous avez besoin de collecter des données et que vous souhaitez suivre sur une carte."
 
 msgid "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data."
-msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Expéditeurs de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
+msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Envoyeur de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
 
 #create_project.html
 msgid "Create your project in a few easy steps."
