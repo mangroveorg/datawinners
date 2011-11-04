@@ -84,6 +84,9 @@ $(document).ready(function() {
         rules: {
             name:{
                 required: true
+            },
+            entity_type:{
+                required:true
             }
         },
         wrapper: "span",
