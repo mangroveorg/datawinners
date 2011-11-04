@@ -55,8 +55,12 @@
         <!--Project description div-->
             <div class="left_half">
                 <label>Your Project</label>
-                <a href="{% url edit_project project.id %}">edit</a> |
-                <a href="#">input data</a>
+                {%  if project.state != "Active" %}
+                <a href="{% url edit_project project.id %}">edit</a>
+                {% endif %}
+                {%  if project.state == "Active" %}
+                    <a href="#">input data</a>
+                {% endif %}
             </div>
             <div class="float_left">
                 <p><b>Description:</b>
