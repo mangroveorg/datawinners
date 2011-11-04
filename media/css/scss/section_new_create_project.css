@@ -145,3 +145,6 @@ fieldset {
 
 .message-box {
   font-size: 13px; }
+
+.alpha_list input {
+  width: 300px !important; }
