@@ -51,7 +51,11 @@
 						left:"3px",
 						top : parseInt(o.el.css("paddingTop")),
 						display:"inline",
-						cursor:"text"
+						cursor:"text",
+                        fontSize:"12px",
+                        fontStyle:"normal",
+                        fontWeight:"400"
+
 					});
 					
 					if(o.el.is("TEXTAREA")) {
