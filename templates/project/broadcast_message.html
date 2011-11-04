@@ -46,7 +46,7 @@
                         {{ form.text }}
                         {{ form.text.errors }}
                     </li>
-                    <div id="message_count">Message Count: <span id="message-count"></span>/160</div>
+                    <div id="message_count"><span id="messageCount"></span> {% trans "characters used" %}</div>
 
                     <li class="{{ form.to.css_classes }} form-row-10px">
                         {{ form.to.label_tag }}

@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import logging
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
@@ -22,7 +23,7 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest"]
 TEST_FLAG = 'TEST'
-
+logger = logging.getLogger("datawinners.reminders")
 
 def get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     try:
@@ -336,7 +337,10 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
     for data_sender in data_senders:
         phone_number = data_sender.get('mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
         if phone_number is not None:
+            logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
             sms_client.send_sms(organization_tel_number, phone_number, message)
 
     for number in other_numbers:
-        sms_client.send_sms(organization_tel_number, number.strip(), message)
+        number = number.strip()
+        logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
+        sms_client.send_sms(organization_tel_number, number, message)

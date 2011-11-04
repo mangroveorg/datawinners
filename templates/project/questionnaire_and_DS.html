@@ -1,22 +1,45 @@
 {% load i18n %}
+<h4>Status: Complete</h4>
 <div id="questionnaire" class="left_half">
-    <div class="quarter padding_20">
+    <div class="quarter">
         <div>
-            <label>QUESTIONNAIRE</label>
+            <div class="text-content">QUESTIONNAIRE</div><div class="text-content-right-arrow"></div>
+            <div class="clear-both">
+                <a href="{{ project_links.questionnaire_link }}" class="{% if project.state == 'Test' %} disable_link {% endif %}">{% trans "View" %} </a> |
+                <a href="{{ project_links.test_questionnaire_link }}" class="{% if project.state == 'Test' %} disable_link {% endif %}">{% trans "Input Data" %}</a>
+            </div>
         </div>
-        <a href="{{ project_links.questionnaire_link }}">View</a> |
-        <a href="{{ project_links.test_questionnaire_link }}">Input data</a>
     </div>
-    <div class="right_half padding_20">
+    <div class="quarter">
+    <ul>
         <li><b>{{ number_of_questions }}</b> Questions</li>
         <div class="line"></div>
-        <li><img src="/media/images/mini_mobile.png" />sms<a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a></li>
+        <li><img src="/media/images/mini_mobile.png" />sms{% if project.state == 'Test' %}<a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a></li>{% endif %}
         {% if project.state != 'Test' %}
             {% include 'project/sms_tester_form.html' %}
         {% endif %}
         <div class="line"></div>
-        <li><img src="/media/images/mini_computer.png" />Internet</li>
+        <li><img src="/media/images/mini_computer.png"/>Internet</li>
+    </ul>
+    </div>
+</div>
+<div id="datasender-section" class="right_half">
+    <div class="quarter">
+        <div>
+            <div class="text-content">DATA SENDERS</div><div class="text-content-right-arrow"></div>
+            <div class="clear-both">
+            <a href="{{ links.registered_data_senders }}">View</a> |
+            <a href="/entity/datasender/create">Add Senders</a>
+                </div>
+        </div>
+    </div>
+    <div class="quarter">
+    <ul>
+        <li><b>{{ number_data_sender }}</b> Data Senders associated</li>
         <div class="line"></div>
-        <li><img src="" />smartphone</li>
+        <li><b>{{ number_records }}</b> records submitted</li>
+        <div class="line"></div>
+        <li><b>{{ number_reminders }}</b> Reminders set for Data Senders</li>
+    </ul>
     </div>
 </div>

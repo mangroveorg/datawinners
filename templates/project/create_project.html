@@ -2,9 +2,9 @@
 {% load i18n %}
 {% block page_title %} Create Project {% endblock %}
 {% block section_title %}
-    <h2 class="project_title">Create a New Project
+    <h2 class="project_title">{% trans "Create a New Project" %}
         <img src="/media/images/help_button.png" align="right"/></h2>
-    <a href="/project/" class="cancel_link">cancel</a>
+    <a href="/project/" class="cancel_link">{% trans "Cancel" %}</a>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -67,7 +67,7 @@
 {% endblock %}
 
 {% block wizard %}
-    <div class="wizard_heading">Create your project below in a few easy steps.</div>
+    <div class="wizard_heading">{% trans "Create your project in a few easy steps." %}</div>
     <div class="line"></div>
     <div class="w_content">
         <p>1. {% trans "Name your project and provide basic information about it." %}</p>
@@ -170,11 +170,11 @@
             <legend>3. Save and Create</legend>
         </fieldset>
         <div class="right_aligned_button">
-            <a href="/project/" class="cancel_link"> Cancel </a>
+            <a href="/project/" class="cancel_link">{% trans "Cancel" %} </a>
             {% if project.state != 'Test' %}
-                <input type="button" class="draft_button" id="Inactive" value="Save as Draft">
+                <input type="button" class="draft_button" id="Inactive" value="{% trans "Save as Draft" %}">
             {% endif %}
-            <input type="button" class="button" id="Test" value="Save and Create Project"/>
+            <input type="button" class="button" id="Test" value="{% trans "Save & Create Project" %}"/>
         </div>
     </div>
 

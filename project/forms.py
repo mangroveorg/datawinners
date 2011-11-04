@@ -126,7 +126,7 @@ class ProjectProfile(Form):
 
 
 class CreateProject(Form):
-    FREQUENCY_CHOICES = ((False, _("Whenever my data sender have data")), (True, _("Every:")))
+    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
 
     QUESTIONNAIRE_CHOICES = (('yes', _("This is general activity report.")),
                              ('no', _("I am collecting data about a specific subject.")))
@@ -134,34 +134,24 @@ class CreateProject(Form):
                        ('A thing', _('A thing')), ('An event', _('An event')), )
     SUBJECT_CHOICE = (('Patient', _('Patient')), ('Farmer', _('Farmer')),
                       ('Child', _('Child')), ('Employee', _('Employee')), )
+    LANGUAGES = (('en', 'English'), ('fr', 'Français'))
 
     name = CharField(required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
 
     frequency_enabled = ChoiceField(label=_("Time Period"),
+                                     help_text="How often do you need data?",
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=True)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),
                                             ('quarter', _('Quarter')), ), widget=forms.Select(
         attrs={'style': 'margin-left: 100px; margin-top: -58px; position: absolute'}),
                                    required=False, )
     activity_report = ChoiceField(label=_("What is this questionnaire about?"),
-                                  help_text="How often do you need data (answers to your questions)?",
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='no')
-
-    has_deadline = ChoiceField(label=_("Do you want to set a deadline?"), widget=forms.RadioSelect,
-                               choices=((False, _('No')), (True, _('Yes'))), required=False, initial=False)
-    deadline_month = ChoiceField(
-        choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, 'Last Day')])), widget=forms.Select,
-        required=False)
-    deadline_week = ChoiceField(choices=(get_translated_weekdays()), widget=forms.Select(attrs={'data-bind': 'random'}),
-                                required=False)
-    deadline_type = ChoiceField(choices=(('Same', _('Same')), ('Following', _('Following'))), widget=forms.Select,
-                                required=False)
-    reminders_enabled = ChoiceField(choices=((False, _('No')), (True, _('Yes'))),
-                                    label=_("Do you want to remind DataSenders to send in their data?"), required=False,
-                                    initial=False, widget=forms.RadioSelect)
-
+    language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
+                           widget=forms.RadioSelect,
+                           choices=LANGUAGES, initial='en')
 
 #TO-DO introduce this when we introduce categories
 #    category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
@@ -191,7 +181,7 @@ class CreateProject(Form):
 
 
 class ReminderForm(Form):
-    FREQUENCY_CHOICES = ((False, _("Whenever my data sender have data")), (True, _("Every:")))
+    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
     frequency_enabled = ChoiceField(label=_("Time Period"),
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=False)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),

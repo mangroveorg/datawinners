@@ -37,7 +37,7 @@
         {% include 'project/success_message.html' %}
         <!--Collect data an accordian div-->
         <div id="how_to">
-            <h3><span class="title">How to Start Collecting Data</span>
+            <h3><span class="title">How to start collecting data</span>
             </h3>
             <div class="padding_0">
                 <table id="collect_data">
@@ -54,16 +54,16 @@
         </div>
         <!--Project description div-->
             <div class="left_half">
-                <label>Your Project</label>
+                <label> {% trans "Your project" %}</label>
                 {%  if project.state != "Active" %}
-                <a href="{% url edit_project project.id %}">edit</a>
+                    <a href="{% url edit_project project.id %}">{% trans "edit" %}</a> |
                 {% endif %}
                 {%  if project.state == "Active" %}
-                    <a href="#">input data</a>
+                    <a href="#">{% trans "input data" %} </a>
                 {% endif %}
             </div>
             <div class="float_left">
-                <p><b>Description:</b>
+                <p><b>{% trans "Description" %} </b>
                     {% if project.goals %}
                         {{ project.goals }}
                     {% else %}

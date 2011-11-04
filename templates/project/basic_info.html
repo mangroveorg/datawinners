@@ -26,8 +26,7 @@
     </li>
     <li>
         {{ form.frequency_enabled.label_tag }}
-        <p>How often do you need the data (answer to your questions)?</p>
-
+        {{ form.frequency_enabled.help_text }}
         {{ form.frequency_enabled }}
         {{ form.frequency_enabled.errors }}
         {{ form.frequency_period }}
@@ -35,8 +34,12 @@
     </li>
 
     <li>
+        {{ form.language.label_tag }}
+        {{ form.language }}
+        {{ form.language.error }}
+    </li>
+    <li>
         {{ form.activity_report.label_tag }}
-        {{ form.activity_report.help_text }}
         {{ form.activity_report }}
         {{ form.entity_type }}
         {%  include 'entity/create_type.html' %}

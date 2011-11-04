@@ -291,8 +291,10 @@ span.tooltip {
 .loading {
   font-size: 15px; }
 
-.optional_field{
-    display: block;
-    color: #666666;
-    font-size: 10px;
-}
+.optional_field {
+  display: block;
+  color: #666666;
+  font-size: 12px; }
+
+.clear-both {
+  clear: both; }

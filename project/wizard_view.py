@@ -20,7 +20,7 @@ from mangrove.utils.types import is_string, is_empty
 
 def create_questionnaire(post, manager, entity_type, name):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
-    questionnaire_code = post['questionnaire-code']
+    questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
     form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['state'], fields=[], form_code=questionnaire_code)
@@ -57,7 +57,7 @@ def save_project(request):
                               project_type='survey', entity_type=entity_type,
                               reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                               activity_report=form.cleaned_data['activity_report'],
-                              state =project_state)
+                              state =project_state, devices=[])
                 try:
                     questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name)
                 except QuestionCodeAlreadyExistsException as e:
@@ -158,12 +158,11 @@ def reminders(request, project_id):
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         profile = request.user.get_profile()
         organization = Organization.objects.get(org_id=profile.org_id)
-        form = ReminderForm()
         from datawinners.project.views import  _format_reminders, create_reminder
         return render_to_response('project/reminders.html',
                 {'project': project, 
                  'reminders':_format_reminders(reminders, project_id),
-                 'in_trial_mode':organization.in_trial_mode,'form':form,
+                 'in_trial_mode':organization.in_trial_mode,
                  'create_reminder_link' : reverse(create_reminder, args=[project_id]),
                  'project_links': project_links},
                                   context_instance=RequestContext(request))
