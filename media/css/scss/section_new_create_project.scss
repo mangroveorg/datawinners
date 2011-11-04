@@ -27,10 +27,10 @@
     width:93%;
     float:left;
     clear:both;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     li{
         list-style-type:None;
-        margin:25px 0 40px 0;
+        margin:25px 0 25px 0;
         ul{
             li{
                 margin: 10px 0 10px 0;
@@ -177,4 +177,12 @@ fieldset{
 width: 50% !important;
 float: none;
 padding-left: 20px;
+}
+
+#id_entity_type_text {
+    width:280px;
+}
+
+.message-box{
+    font-size:13px;
 }
