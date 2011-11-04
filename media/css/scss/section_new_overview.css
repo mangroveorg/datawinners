@@ -29,7 +29,8 @@
   float: left;
   clear: right;
   width: 50%;
-  height: 30px; }
+  height: 30px;
+  padding: 5px; }
   .left_half label {
     display: inline;
     font-size: 16px; }
@@ -52,7 +53,7 @@
     font-size: 14px; }
 
 .quarter {
-  width: 30%;
+  width: 50%;
   float: left;
   clear: right; }
 
@@ -63,6 +64,29 @@
   height: 225px;
   margin-bottom: 30px;
   font-size: 14px; }
+  #questionnaire_and_DS h4 {
+    background-color: #525252;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+    background: -moz-linear-gradient(top, #525252, #262626);
+    color: #FFFFFF;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: normal; }
+
+.text-content-right-arrow {
+  width: 0;
+  height: 0;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 16px solid white;
+  float: left; }
+
+.text-content {
+  background: white;
+  float: left;
+  height: 25px;
+  width: 130px;
+  padding: 6px 0px 0px 11px; }
 
 #how_to {
   width: 100% !important;
