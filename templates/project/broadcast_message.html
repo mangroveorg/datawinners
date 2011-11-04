@@ -20,6 +20,11 @@
     <link href="/media/css/scss/section_broadcast_sms.scss" rel="stylesheet"/>
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
+{% endblock %}
+
 {% block content %}
     {% block secondary_navigation_reminders %}
         {% activetab "secondary_tab_nav" "message" %}
@@ -41,6 +46,7 @@
                         {{ form.text }}
                         {{ form.text.errors }}
                     </li>
+                    <div id="message_count">Message Count: <span id="message-count"></span>/160</div>
 
                     <li class="{{ form.to.css_classes }} form-row-10px">
                         {{ form.to.label_tag }}
