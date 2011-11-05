@@ -83,7 +83,7 @@
         {% include 'project/basic_info.html' %}
     </form>
     <div id="subject_warning_message">
-        <p class="black_italic">{% trans "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own." %}</p>
+        <p class="warning_message">{% trans "Warning: Changing the subject type will remove all questions from your questionnaire as well as all your collected data. Are you sure you want to continue?" %}</p>
         <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
         <a href="#" class="button" id="continue">{% trans "Continue" %}</a>
     </div>
