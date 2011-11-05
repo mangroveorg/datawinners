@@ -129,6 +129,10 @@ $(document).ready(function() {
             hide_message();
         }
         if (!is_questionnaire_form_valid || !is_project_form_valid){
+            var location = "/project/wizard/create";
+            $('.error_arrow:visible').closest('div.clear_both').attr('id','error');
+            window.location.href = location + "#error";
+            $('div.clear_both').removeAttr('id','error');
             return;
         }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val(),
