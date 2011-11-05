@@ -32,23 +32,8 @@
         font-weight: normal;
         margin-bottom: 20px;
         width: 100%; }
-    .clear_both li span.errorlist {
-      float: none;
-      color: #FFFFFF;
-      display: inline-block;
-      background: url(/media/images/arrow_error.png) no-repeat left 10px;
-      padding: 3px 10px 3px 10px;
-      border: 1px solid #00000; }
-      .clear_both li span.errorlist label {
-        color: #FFFFFF;
-        font-weight: normal;
-        background: #c20303;
-        padding: 3px 10px 3px 10px;
-        margin-top: -1px;
-        border: 1px solid #00000;
-        -moz-border-radius: 5px;
-        -webkit-moz-border-radius: 5px;
-        -webkit-border-radius: 5px; }
+    .clear_both li div.error_arrow label {
+      font-size: 14px !important; }
     .clear_both li select {
       font-size: 15px;
       width: 200px;
