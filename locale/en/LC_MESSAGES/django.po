@@ -507,10 +507,6 @@ msgstr ""
 "<li>Our Conuslting Service</li></ul></p>"
 "<p>See our <a href='/en/pricing/'>Pricing page</a></p>"
 
-#: templates/layout_wizard.html:32
-msgid "Previous Step:"
-msgstr ""
-
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
 msgid "Dashboard"
@@ -533,10 +529,6 @@ msgstr ""
 
 #: templates/step_wizard.html:25
 msgid "Are you sure you want to cancel this project?"
-msgstr ""
-
-#: templates/step_wizard.html:26
-msgid "(your previous steps are saved)"
 msgstr ""
 
 #: templates/step_wizard.html:28 templates/entity/all_datasenders.html:90
@@ -915,10 +907,6 @@ msgstr ""
 
 #: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"
-msgstr ""
-
-#: templates/entity/all_subjects.html:7
-msgid "Add a subject"
 msgstr ""
 
 #: templates/entity/all_subjects.html:11

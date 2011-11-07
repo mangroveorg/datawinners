@@ -213,6 +213,11 @@ msgstr "Le numéro d'identification unique (ID) est :"
 msgid "We received : "
 msgstr "Nous avons reçu : "
 
+#: messageprovider/messages.py:83
+#, python-format
+msgid "Error. Incorrect answer for question %s. Please resend entire message."
+msgstr "Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité du message."
+
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
 msgid "Thank you"
@@ -508,10 +513,6 @@ msgstr ""
 "<li>Our Conuslting Service</li></ul></p>"
 "<p>See our <a href='/en/pricing/'>Pricing page</a></p>"
 
-#: templates/layout_wizard.html:32
-msgid "Previous Step:"
-msgstr "Etape précédente :"
-
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
 msgid "Dashboard"
@@ -535,10 +536,6 @@ msgstr "Ajouter un nouveau projet"
 #: templates/step_wizard.html:25
 msgid "Are you sure you want to cancel this project?"
 msgstr "Etes-vous sûr de vouloir annuler ce projet ?"
-
-#: templates/step_wizard.html:26
-msgid "(your previous steps are saved)"
-msgstr "(les étapes précédentes ont été enregistrées)"
 
 #: templates/step_wizard.html:28 templates/entity/all_datasenders.html:90
 #: templates/project/reminders.html:72
@@ -920,10 +917,6 @@ msgstr "Autoriser l'accès à l'envoi web"
 msgid "All Data Senders"
 msgstr "Tous les Envoyeurs"
 
-#: templates/entity/all_subjects.html:7
-msgid "Add a subject"
-msgstr "Ajouter un sujet"
-
 #: templates/entity/all_subjects.html:11
 msgid "Add subjects one-by-one using the online registration form"
 msgstr "Ajouter des sujets un par un avec le formulaire en ligne"
@@ -972,6 +965,7 @@ msgstr "Ajoutez un Envoyeur"
 
 #: templates/entity/create_subject.html:3
 #: templates/entity/create_subject.html:4
+#: templates/entity/all_subjects.html:7
 msgid "Add A Subject"
 msgstr "Ajoutez un sujet"
 
@@ -2801,7 +2795,7 @@ msgstr "Erreur envoi non valide. Reportez-vous au questionnaire imprimé. Le num
 msgid "This field is required."
 msgstr "Ce champ est obligatoire."
 
-msgid "Error. Incorrect answer for %s. Please resend entire message."
+msgid "Error. Incorrect answer for %s. Please re-send entire message."
 msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la totalité du message"
 
 msgid"Questionnaire ID %s doesnt exist."
