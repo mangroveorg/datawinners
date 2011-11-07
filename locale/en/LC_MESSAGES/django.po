@@ -405,8 +405,7 @@ msgstr ""
 
 #: templates/entity_question_panel.html:11
 msgid "q_tooltip_question_panel_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
+msgstr "Decide what information you want to use to identify and register each "
 "subject of your questionnaire.  For example, Clinic Name, Location, Phone "
 "Number."
 
@@ -856,9 +855,7 @@ msgstr "Add Data Sender one-by-one using the online registration form"
 
 #: templates/entity/all_datasenders.html:18
 msgid "r_all_datasenders_add_manually"
-msgstr ""
-"Click the blue \"Add a Data Sender\" link and follow the step-by-step "
-"instructions"
+msgstr "Click the blue \"Add a Data Sender\" link and follow the step-by-step instructions"
 
 #: templates/entity/all_datasenders.html:56
 #: templates/entity/all_subjects.html:56
@@ -1164,23 +1161,6 @@ msgstr ""
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:85
-#: templates/project/subjects_wizard.html:85
-msgid "Import List"
-msgstr ""
-
-#: templates/project/datasenders_wizard.html:97
-msgid "Next Step: Reminders"
-msgstr ""
-
-#: templates/project/finish_and_test.html:40
-msgid "Step 6:"
-msgstr ""
-
-#: templates/project/finish_and_test.html:40
-msgid "Review and Test"
 msgstr ""
 
 #: templates/project/finish_and_test.html:41
@@ -1735,11 +1715,6 @@ msgstr ""
 msgid "Project - Questionnaire"
 msgstr ""
 
-#: templates/project/questionnaire.html:67
-#: templates/project/questionnaire_wizard.html:61
-msgid "Step 3:"
-msgstr ""
-
 #: templates/project/questionnaire.html:68
 msgid "Review the question by clicking on each"
 msgstr ""
@@ -1848,10 +1823,6 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:134
-msgid "Next Step: Data Senders"
-msgstr ""
-
 #: templates/project/registered_datasenders.html:29
 msgid "Dis-Associate"
 msgstr ""
@@ -1904,10 +1875,6 @@ msgstr ""
 msgid "To Whom"
 msgstr ""
 
-#: templates/project/reminder_content.html:44
-msgid "All chosen DS type"
-msgstr "Everyone"
-
 #: templates/project/reminder_content.html:45
 #: templates/project/reminders.html:62
 msgid "Anyone who hasn't sent data"
@@ -1935,10 +1902,6 @@ msgstr ""
 msgid "Reminders are not enabled for this project."
 msgstr ""
 
-#: templates/project/reminders_wizard.html:34
-msgid "Step5:"
-msgstr ""
-
 #: templates/project/reminders_wizard.html:37
 msgid "q_tooltip_reminders"
 msgstr ""
@@ -1962,10 +1925,6 @@ msgstr ""
 "Print out the DataSender Registration Questionnaire, give it to your Data "
 "Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
 "Don’t worry, you can always edit this information later."
-
-#: templates/project/reminders_wizard.html:50
-msgid "Next Step: Review and Test"
-msgstr ""
 
 #: templates/project/results.html:3
 msgid "All Data records"
@@ -2028,10 +1987,6 @@ msgstr ""
 msgid "page to view submission status)"
 msgstr ""
 
-#: templates/project/subjects.html:33
-msgid "Step3:"
-msgstr ""
-
 #: templates/project/subjects.html:34
 #: templates/project/subjects_wizard.html:51
 msgid "Review the questions by clicking on each"
@@ -2039,10 +1994,6 @@ msgstr ""
 
 #: templates/project/subjects.html:41
 msgid "Preview Subject's questionnaire"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:43
-msgid "Step 2:"
 msgstr ""
 
 #: templates/project/subjects_wizard.html:46
@@ -2127,10 +2078,6 @@ msgstr ""
 
 #: templates/project/subjects_wizard.html:83
 msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"
-msgstr ""
-
-#: templates/project/subjects_wizard.html:97
-msgid "Next Step: Questionnaire"
 msgstr ""
 
 #: templates/project/tab_navigation.html:16
@@ -2353,9 +2300,6 @@ msgstr ""
 msgid "The questionnaire does not exist."
 msgstr ""
 
-msgid "*indicates required field"
-msgstr ""
-
 msgid "Profile has been updated successfully"
 msgstr ""
 
@@ -2461,7 +2405,6 @@ msgstr ""
 msgid "Minimum"
 msgstr ""
 
-
 msgid "All fields are required unless marked optional."
 msgstr ""
 
@@ -2484,6 +2427,9 @@ msgid "smaller"
 msgstr ""
 
 msgid "Answer %s for question %s is invalid. Expected date in %s format"
+msgstr ""
+
+msgid "Monday"
 msgstr ""
 
 msgid "Tuesday"
@@ -2580,7 +2526,6 @@ msgstr ""
 
 msgid "Error. Internal error. Please call technical support"
 msgstr ""
-
 
 msgid "Terms and Conditions"
 msgstr ""
@@ -2691,4 +2636,165 @@ msgid "How to Collect Data"
 msgstr ""
 
 msgid "Training datasender "
+msgstr ""
+
+
+msgid "A part of"
+msgstr ""
+
+msgid "en"
+msgstr ""
+
+msgid "HNI provides partners with the opportunity to embrace, reshape and "
+"maximize the use of information and communication technology in "
+"productive and sustainable ways."
+msgstr ""
+
+msgid "Learn more about us"
+msgstr ""
+
+msgid "What is DataWinners"
+msgstr ""
+
+msgid "Success Stories"
+msgstr ""
+
+msgid "Pricing"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "About us"
+msgstr ""
+
+msgid "Our Partners &amp; Clients"
+msgstr ""
+
+msgid "partners"
+msgstr ""
+
+msgid "clients"
+msgstr ""
+
+msgid "That"
+msgstr ""
+
+msgid "What is the reporting period for the activity?"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "edit profile"
+msgstr ""
+
+msgid "Projects:"
+msgstr ""
+
+msgid "Associate"
+msgstr ""
+
+msgid "What is associated subject type?"
+msgstr ""
+
+msgid "What is the subject's name?"
+msgstr ""
+
+msgid "What is the subject's Unique ID Number"
+msgstr ""
+
+msgid "What is the subject's location?"
+msgstr ""
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the subject"
+msgstr ""
+
+msgid "What is the mobile number associated with the subject?"
+msgstr ""
+
+msgid "What is the data sender's name?"
+msgstr ""
+
+msgid "What is the data sender's location?"
+msgstr ""
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+
+msgid ""
+"Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
+"questionnaire and resend SMS"
+msgstr ""
+
+msgid ""
+"This telephone number is not registered in our system. Please register or "
+"contact us at 033 20 426 89."
+msgstr ""
+
+msgid ""
+"This entity %s reported on is not registered in our system. Please "
+"register entity or contact us at 033 20 426 89."
+msgstr ""
+
+msgid ""
+"Error: Invalid Submission. Locate the Questionnaire Code on the printed "
+"questionnaire and resend SMS starting with the Questionnaire Code"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Multiple "
+"responses have been submitted for question code : %s"
+msgstr ""
+
+msgid ""
+"Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
+"question ID and answer for %s"
+msgstr ""
+
+msgid "Choose your language for the questionnaire and automatic messages to Data Senders"
+msgstr ""
+
+msgid "An exception has occurred"
+msgstr ""
+
+msgid "Entity identified by %s is already defined"
+msgstr ""
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+msgstr ""
+
+msgid "This field is required."
+msgstr ""
+
+msgid "Error. Incorrect answer for %s. Please re-send entire message."
+msgstr ""
+
+msgid"Questionnaire ID %s doesnt exist."
+msgstr ""
+
+msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
+msgstr ""
+
+msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
+msgstr ""
+
+msgid "Hello. We have not received your data for"
+msgstr ""
+
+msgid "Please send it to us today. Thank you."
+msgstr ""
+
+msgid "Reminders are"
+msgstr ""
+
+msgid "for this project"
+msgstr ""
+
+msgid "enabled"
 msgstr ""

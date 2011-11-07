@@ -95,8 +95,7 @@ msgstr "Numéro de mobile"
 #: accountmanagement/forms.py:60
 msgid ""
 "This email address is already in use. Please supply a different email address"
-msgstr ""
-"Cette adresse email est déja utilisée. Veuillez saisir une adresse différente"
+msgstr "Cette adresse email est déja utilisée. Veuillez saisir une adresse différente"
 
 #: accountmanagement/forms.py:74
 msgid "* Email address"
@@ -178,8 +177,7 @@ msgstr "* Numéro de mobile"
 
 #: entity/forms.py:24
 msgid "Please enter a valid phone number."
-msgstr ""
-"Veuillez saisir un numéro de téléphone."
+msgstr "Veuillez saisir un numéro de téléphone."
 
 #: entity/forms.py:25
 msgid "GPS: Enter Lat Long"
@@ -207,8 +205,7 @@ msgstr "Entrez lat et long ex : 20.6 47.3"
 
 #: entity/forms.py:67
 msgid "Please fill out at least one location field correctly."
-msgstr ""
-"Veuillez remplir correctement au moins un champ de localisation."
+msgstr "Veuillez remplir correctement au moins un champ de localisation."
 
 #: entity/views.py:98
 msgid "Please add subject type and then add a subject"
@@ -227,9 +224,7 @@ msgstr "Nous avons reçu : "
 #: messageprovider/messages.py:83
 #, python-format
 msgid "Error. Incorrect answer for question %s. Please resend entire message."
-msgstr ""
-"Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité "
-"du message."
+msgstr "Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité du message."
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
@@ -265,8 +260,7 @@ msgstr "Ouvert. Tous le monde peut envoyer des données sans s'être enregistré
 msgid ""
 "Closed Data Sender Group. Only registered data sender will be able to send "
 "data"
-msgstr ""
-"Restreint. Seuls les personnes enregistrées peuvent envoyer des données"
+msgstr "Restreint. Seuls les personnes enregistrées peuvent envoyer des données"
 
 #: project/forms.py:43
 msgid "Whenever a data sender has data for us"
@@ -304,6 +298,10 @@ msgstr "Autres sujets"
 msgid "Device"
 msgstr "Canal"
 
+#: project/forms.py:54
+msgid "Choose your language for success and error messages to Data Senders"
+msgstr "Choisissez votre langue pour les messages d'erreur et de succès à retourner aux envoyeurs de données"
+
 #: project/forms.py:56
 msgid "How often do you need the data?"
 msgstr "A quelle fréquence voulez-vous collecter les données ?"
@@ -329,12 +327,24 @@ msgid "Yes"
 msgstr "Oui"
 
 #: project/forms.py:62
+msgid "Same"
+msgstr "Le/la même"
+
+#: project/forms.py:62
 msgid "Following"
 msgstr "Après le/la"
+
+#: project/forms.py:63
+msgid "Do you want to remind DataSenders to send in their data?"
+msgstr "Voulez-vous envoyer des massages de rappel aux envoyeurs de données?"
 
 #: project/forms.py:70
 msgid "Enter a project name"
 msgstr "Entrez le nom du projet"
+
+#: project/forms.py:71
+msgid "Describe what your team hopes to achieve by collecting this data"
+msgstr "Décrivez ce que votre équipe attend de cette collecte de données"
 
 #: project/forms.py:76
 msgid "This field is required"
@@ -343,7 +353,6 @@ msgstr "Ce champ est obligatoire"
 #: project/views.py:824
 msgid "Successfully submitted"
 msgstr "Envoyé avec succès"
-
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
@@ -397,11 +406,7 @@ msgstr "Qu'est ce que c'est ?"
 
 #: templates/entity_question_panel.html:11
 msgid "q_tooltip_question_panel_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
-"subject of your questionnaire.  For example, Clinic Name, Location, Phone "
-"Number."
-"Veuillez identifier par quelle critère vous voulez identifier et "
+msgstr "Veuillez identifier par quelle critère vous voulez identifier et "
 "enregistrer chaque sujet de votre questionnaire. Exemple : nom d'une "
 "clinique, localité, numéro de téléphone."
 
@@ -448,11 +453,11 @@ msgstr "Vérifiez les questions en cliquant sur chacune d'elle dans l'ordre."
 
 #: templates/entity_question_panel.html:45
 msgid "Question:"
-msgstr "Question :"
+msgstr ""
 
 #: templates/entity_question_panel.html:47
 msgid "Code:"
-msgstr "Code :"
+msgstr ""
 
 #: templates/header.html:6
 msgid "Logout"
@@ -462,9 +467,7 @@ msgstr "Déconnexion"
 msgid ""
 "You can view and edit your user profile and manage your organization's "
 "account (if you are authorized)."
-msgstr ""
-"Vous pouvez voir et modifier votre profil et gérer le compte de votre "
-"organisation (si vous y êtes autorisé)"
+msgstr "Vous pouvez voir et modifier votre profil et gérer le compte de votre organisation (si vous y êtes autorisé)"
 
 #: templates/header_wizard.html:11
 msgid "Welcome"
@@ -511,6 +514,14 @@ msgstr ""
 "</p><p>Avec DataWinners, vous recueillez et analysez les données dont vous avez besoin "
 "en utilisant les équipements déja en votre possession - un ordinateur, l'internet et "
 "les téléphones mobiles de base.</p>"
+
+msgid "subscription_details"
+msgstr ""
+"<h5>Subscription Details</h5><p>Learn more about</p>"
+"<p><ul><li>Where DataWinners is available</li>"
+"<li>Key details of Monthly Subscription</li>"
+"<li>Our Conuslting Service</li></ul></p>"
+"<p>See our <a href='/en/pricing/'>Pricing page</a></p>"
 
 #: templates/layout_wizard.html:32
 msgid "Previous Step:"
@@ -784,8 +795,7 @@ msgstr "Comment utiliser Datawinners"
 
 #: templates/dashboard/home.html:41
 msgid "Get more information on what you can do with DataWinners."
-msgstr ""
-"Obtenir plus d'information sur ce que vous pouvez faire avec DataWinners."
+msgstr "Obtenir plus d'information sur ce que vous pouvez faire avec DataWinners."
 
 #: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
@@ -828,9 +838,7 @@ msgstr "Voir tous les projets"
 #, python-format
 msgid ""
 " Once you have created projects, a list of your %(text)s will appear here."
-msgstr ""
-"Une fois que vous avez créé des projets, la liste de vos %(text)s apparaitront "
-"à cet endroit."
+msgstr "Une fois que vous avez créé des projets, la liste de vos %(text)s apparaitront à cet endroit."
 
 #: templates/dashboard/start.html:19
 msgid "To get started with DataWinners"
@@ -846,23 +854,17 @@ msgstr "Ajoutez des Envoyeurs"
 
 #: templates/entity/all_datasenders.html:15
 msgid "q_all_datasenders_add_manually"
-msgstr "Ajouter les envoyeurs un par un en utilisant le formulaire d'enregistrment "
-"en ligne"
+msgstr "Ajouter les envoyeurs un par un en utilisant le formulaire d'enregistrment en ligne"
 
 #: templates/entity/all_datasenders.html:18
 msgid "r_all_datasenders_add_manually"
-msgstr ""
-"Click the blue \"Add a Data Sender\" link and follow the step-by-step "
-"instructions"
-"Cliquez sur le bouton bleu \" Ajouter un envoyeur \" et suivez les instructions "
-"étape par étape"
+msgstr "Cliquez sur le bouton bleu \" Ajouter un envoyeur \" et suivez les instructions étape par étape"
 
 #: templates/entity/all_datasenders.html:56
 #: templates/entity/all_subjects.html:56
 #: templates/project/import_section_in_wizard.html:5
 msgid "Please enable JavaScript to use file uploader."
-msgstr ""
-"Vous devez activer JavaScript pour utiliser le formulaire de téléchargement"
+msgstr "Vous devez activer JavaScript pour utiliser le formulaire de téléchargement"
 
 #: templates/entity/all_datasenders.html:59
 #: templates/entity/all_subjects.html:59
@@ -908,10 +910,14 @@ msgstr "Numéro de ligne"
 msgid "Row"
 msgstr "Ligne"
 
+#: templates/entity/all_datasenders.html:108
+msgid "Give Access"
+msgstr "Donner un accès"
+
 #: templates/entity/all_datasenders.html:110
 #: templates/project/registered_datasenders.html:26
 msgid "Actions:"
-msgstr "Actions :"
+msgstr "Actions:"
 
 #: templates/entity/all_datasenders.html:113
 msgid "Add to project"
@@ -941,9 +947,7 @@ msgstr "Ajouter des sujets un par un avec le formulaire en ligne"
 msgid ""
 "Click the blue \"Add a subject\" link and follow the step-by-step "
 "instructions"
-msgstr ""
-"Cliquez sur le bouton \"Ajouter un sujet\" et suivez les instructions "
-"étape par étape."
+msgstr "Cliquez sur le bouton \"Ajouter un sujet\" et suivez les instructions étape par étape."
 
 #: templates/entity/all_subjects.html:64
 msgid "q_all_subjects"
@@ -994,23 +998,13 @@ msgstr "Ajouter un nouveau type de sujet"
 msgid "New Subject(eg clinic, waterpoint etc)"
 msgstr "Nouveau sujet (ex : clinique, point d'eau, etc...)"
 
-msgid "Only letters and numbers are valid"
-msgstr "Seuls les lettres et les chiffres sont valides"
-
-msgid "Entity definition successful"
-msgstr "Entité ajoutée avec succès"
-
-msgid "%s already registered as a subject type. Please select %s from the drop down menu."
-msgstr "%s existe déja type de sujet. Veuillez choiir %s dans la liste déroulante."
-
 #: templates/project/data_analysis.html:3
 msgid "Data Analysis"
 msgstr "Analyse des données"
 
 #: templates/project/data_analysis.html:54
 msgid "This Project is not yet active. Data displayed is test data."
-msgstr ""
-"Ce projet n'est pas activé. Les données affichées sont des données de test."
+msgstr "Ce projet n'est pas activé. Les données affichées sont des données de test."
 
 #: templates/project/data_analysis.html:54 templates/project/results.html:49
 msgid "Click Here to Activate"
@@ -1094,7 +1088,6 @@ msgstr ""
 "informations (exemple : nom) chaque fois qu'il répondent à un questionnaire. "
 "DataWinners identifiera chaque Envoyeur à partir de son numéro de téléphone."
 
-
 #: templates/project/datasenders_wizard.html:49
 msgid "r_tooltip_datasenders_sender"
 msgstr ""
@@ -1173,26 +1166,8 @@ msgstr ""
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
-msgstr ""
-"TéléchargeZ un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
+msgstr "TéléchargeZ un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
 "liste de vos Envoyeurs"
-
-#: templates/project/datasenders_wizard.html:85
-#: templates/project/subjects_wizard.html:85
-msgid "Import List"
-msgstr "Importer la liste"
-
-#: templates/project/datasenders_wizard.html:97
-msgid "Next Step: Reminders"
-msgstr "Etape suivante : Messages de rappel"
-
-#: templates/project/finish_and_test.html:40
-msgid "Step 6:"
-msgstr "Etape 6 :"
-
-#: templates/project/finish_and_test.html:40
-msgid "Review and Test"
-msgstr "Résumé & Test"
 
 #: templates/project/finish_and_test.html:41
 msgid ""
@@ -1277,17 +1252,7 @@ msgstr "Messages de rappel"
 #: templates/project/finish_and_test.html:142
 #, python-format
 msgid "Reminders are <strong>%(is_reminder)s</strong> for this project"
-msgstr ""
-"Les Messages de rappel sont <strong>%(is_reminder)s</strong> pour ce projet."
-
-msgid "Reminders are"
-msgstr "Les messages de rappel sont"
-
-msgid "for this project"
-msgstr "pour ce projet."
-
-msgid "enabled"
-msgstr "activés"
+msgstr "Les Messages de rappel sont <strong>%(is_reminder)s</strong> pour ce projet."
 
 #: templates/project/finish_and_test.html:152
 msgid "Test This Questionnaire"
@@ -1373,9 +1338,7 @@ msgstr "Activer"
 
 #: templates/project/index.html:54 templates/project/tab_navigation.html:37
 msgid "Warning: Activating the project will remove all existing test data."
-msgstr ""
-"Attention : L'activation du projet va supprimer toutes ses données "
-"enregistrées"
+msgstr "Attention : L'activation du projet va supprimer toutes ses données enregistrées"
 
 #: templates/project/index.html:59
 msgid "Export all submissions prior to deleting your project."
@@ -1577,6 +1540,10 @@ msgstr "Toujours le/la"
 msgid "of the"
 msgstr "du/de la"
 
+#: templates/project/profile_deadline_month_block.html:8
+msgid "month"
+msgstr "mois"
+
 #: templates/project/profile_deadline_week_block.html:8
 msgid "week"
 msgstr "semaine"
@@ -1761,11 +1728,6 @@ msgstr "Numéro de la question"
 msgid "Project - Questionnaire"
 msgstr "Projet - Questionnaire"
 
-#: templates/project/questionnaire.html:67
-#: templates/project/questionnaire_wizard.html:61
-msgid "Step 3:"
-msgstr "Etape 3 :"
-
 #: templates/project/questionnaire.html:68
 msgid "Review the question by clicking on each"
 msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
@@ -1868,17 +1830,11 @@ msgstr "Aperçu du SMS"
 #: templates/project/questionnaire_wizard.html:128
 msgid ""
 "Warning: Changing the questionnaire code will remove all existing test data."
-msgstr ""
-"Attention : Le changement de type de projet va supprimer toutes les données "
-"enregistrées"
+msgstr "Attention : Le changement de type de projet va supprimer toutes les données enregistrées"
 
 #: templates/project/questionnaire_wizard.html:129
 msgid "OK"
 msgstr "OK"
-
-#: templates/project/questionnaire_wizard.html:134
-msgid "Next Step: Data Senders"
-msgstr "Etape suivante : Envoyeurs"
 
 #: templates/project/registered_datasenders.html:29
 msgid "Dis-Associate"
@@ -1910,9 +1866,7 @@ msgstr "Enregistrez les messages de rappels"
 msgid ""
 "Reminders are not enabled for this project Please proceed to the next "
 "<a>step</a>"
-msgstr ""
-"Les Messages de rappel ne sont pas activés pour ce projet. Veuillez passer à "
-"<a>l'étape suivante</a>"
+msgstr "Les Messages de rappel ne sont pas activés pour ce projet. Veuillez passer à <a>l'étape suivante</a>"
 
 #: templates/project/reminder_content.html:30
 #: templates/project/reminders.html:44
@@ -1933,10 +1887,6 @@ msgstr "jour(s) <strong>après</strong> la date limite"
 #: templates/project/reminders.html:57
 msgid "To Whom"
 msgstr "A qui"
-
-#: templates/project/reminder_content.html:44
-msgid "All chosen DS type"
-msgstr "Tous les types d'envoyeurs sélectionnés"
 
 #: templates/project/reminder_content.html:45
 #: templates/project/reminders.html:62
@@ -1965,10 +1915,6 @@ msgstr "Tous le monde"
 msgid "Reminders are not enabled for this project."
 msgstr "Les Messages de rappel ne sont pas activés pour ce projet."
 
-#: templates/project/reminders_wizard.html:34
-msgid "Step5:"
-msgstr "Etape 5 :"
-
 #: templates/project/reminders_wizard.html:37
 msgid "q_tooltip_reminders"
 msgstr ""
@@ -1993,18 +1939,13 @@ msgstr ""
 "Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
 "Don’t worry, you can always edit this information later."
 
-#: templates/project/reminders_wizard.html:50
-msgid "Next Step: Review and Test"
-msgstr "Etape suivante : Récapitulatif et Test"
-
 #: templates/project/results.html:3
 msgid "All Data records"
 msgstr "Tous les enregistrements"
 
 #: templates/project/results.html:49
 msgid "This Project is not yet active. Data displayed is test data"
-msgstr ""
-"Ce projet n'est pas activé. Les données affichées sont des données de test."
+msgstr "Ce projet n'est pas activé. Les données affichées sont des données de test."
 
 #: templates/project/results.html:66
 msgid "Results"
@@ -2047,9 +1988,17 @@ msgstr "Effacer"
 msgid "See the data you received"
 msgstr "Voir les données que vous avez reçu"
 
-#: templates/project/subjects.html:33
-msgid "Step3:"
-msgstr "Etape 3 :"
+#: templates/project/sms_tester_form.html:37
+msgid "See if DataWinners received your SMS. (Go to "
+msgstr "Verifiez si DataWinners a reçu votre message. (Allez à la page "
+
+#: templates/project/sms_tester_form.html:38
+msgid "All Data Records "
+msgstr "Toutes les données "
+
+#: templates/project/sms_tester_form.html:38
+msgid "page to view submission status)"
+msgstr "pour voir l'état de votre envoi)"
 
 #: templates/project/subjects.html:34
 #: templates/project/subjects_wizard.html:51
@@ -2059,10 +2008,6 @@ msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
 #: templates/project/subjects.html:41
 msgid "Preview Subject's questionnaire"
 msgstr "Faites un aperçu du questionnaire \"Sujets\""
-
-#: templates/project/subjects_wizard.html:43
-msgid "Step 2:"
-msgstr "Etape 2 :"
 
 #: templates/project/subjects_wizard.html:46
 msgid "q_tooltip_subject_wizard_subject"
@@ -2149,10 +2094,6 @@ msgstr ""
 "Télécharger un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
 "liste de vos sujets"
 
-#: templates/project/subjects_wizard.html:97
-msgid "Next Step: Questionnaire"
-msgstr "Etape suivante : Questionnaire"
-
 #: templates/project/tab_navigation.html:16
 msgid "Project status:"
 msgstr "Statut du projet :"
@@ -2177,9 +2118,7 @@ msgstr "Testez le Questionnaire SMS"
 #: templates/project/tab_navigation.html:30
 msgid ""
 "Your project is inactive. You need to complete the Profile to activate it."
-msgstr ""
-"Votre projet n'est pas activé. Vous devez terminer la définition du projet "
-"pour pouvoir l'activer."
+msgstr "Votre projet n'est pas activé. Vous devez terminer la définition du projet pour pouvoir l'activer."
 
 #: templates/project/tab_navigation.html:48
 msgid "Overview"
@@ -2348,144 +2287,14 @@ msgstr ""
 "Un email d'activation a été envoyé sur votre adresse email. Veuillez activer "
 "votre compte avant de vous connecter."
 
-msgid "A part of"
-msgstr "Une partie de"
+msgid "Only letters and numbers are valid"
+msgstr "Seuls les lettres et les chiffres sont valides"
 
-msgid "en"
-msgstr "fr"
+msgid "Entity definition successful"
+msgstr "Entité ajoutée avec succès"
 
-msgid ""
-"HNI provides partners with the opportunity to embrace, reshape and "
-"maximize the use of information and communication technology in "
-"productive and sustainable ways."
-msgstr ""
-"HNI offre à ses partenaires l'occasion d’appréhender, de remodeler et de "
-"maximiser l'utilisation de la technologie de l'information et de la "
-"communication de manière productive et durable."
-
-msgid "Learn more about us"
-msgstr "Mieux nous connaître"
-
-msgid "What is DataWinners"
-msgstr "Qu’est-ce que DataWinners"
-
-msgid "Success Stories"
-msgstr "Nos succès"
-
-msgid "Pricing"
-msgstr "Tarification"
-
-msgid "Support"
-msgstr "Assistance"
-
-msgid "About us"
-msgstr "Qui somme-nous"
-
-msgid "Our Partners &amp; Clients"
-msgstr "Nos Partenaires &amp; Clients"
-
-msgid "partners"
-msgstr "partenaires"
-
-msgid "clients"
-msgstr "clients"
-
-msgid "That"
-msgstr "Ce/Cette"
-
-msgid "What is the reporting period for the activity?"
-msgstr "Le rapport concerne quelle période ?"
-
-msgid "View"
-msgstr "Apercu"
-
-msgid "edit profile"
-msgstr "Editer le profil"
-
-msgid "Projects:"
-msgstr "Projets :"
-
-msgid "Associate"
-msgstr "Associer"
-
-msgid "What is associated subject type?"
-msgstr "Quel est le type de sujet associé ?"
-
-msgid "What is the subject's name?"
-msgstr "Quel est le nom du sujet ?"
-
-msgid "What is the subject's Unique ID Number"
-msgstr "Quel est l'ID unique du sujet"
-
-msgid "What is the subject's location?"
-msgstr "Quel est la localité du sujet?"
-
-msgid "What is the subject's GPS co-ordinates?"
-msgstr "Quel sont les coordonnées GPS de la localité du sujet ?"
-
-msgid "Describe the subject"
-msgstr "Décrire le sujet"
-
-msgid "What is the mobile number associated with the subject?"
-msgstr "Quel est le numéro de téléphone portable associé au sujet ?"
-
-msgid "What is the data sender's name?"
-msgstr "Quel est le nom de l'envoyeur de données?"
-
-msgid "What is the data sender's location?"
-msgstr "Quel est la localité de l'envoyeur de données?"
-
-msgid "What is the data sender's GPS co-ordinates?"
-msgstr ""
-"Quel sont les coordonnées GPS de la localité de l'envoyeur de données ?"
-
-msgid "What is the mobile number associated with the data sender?"
-msgstr ""
-"Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
-
-msgid ""
-"Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
-"questionnaire and resend SMS"
-msgstr ""
-"Erreur sur l'ID du questionnaire %s. Trouvez l'ID Questionnaire sur le "
-"questionnaire imprimé et renvoyer le SMS"
-
-msgid ""
-"This telephone number is not registered in our system. Please register or "
-"contact us at 033 20 426 89."
-msgstr ""
-"Ce numéro de téléphone n'est pas enregistré dans notre système.Veuillez "
-"vous inscrire ou contactez-nous au 033 426 20 89."
-
-msgid ""
-"This entity %s reported on is not registered in our system. Please "
-"register entity or contact us at 033 20 426 89."
-msgstr ""
-"L'entité %s pour laquelle vous voulez envoyer un rapport n'existe pas."
-"Veuillez enregistrer la nouvelle entité ou contactez-nous au 033 20 426 "
-"89."
-
-msgid ""
-"Error: Invalid Submission. Locate the Questionnaire Code on the printed "
-"questionnaire and resend SMS starting with the Questionnaire Code"
-msgstr ""
-"Erreur: Erreur d'envoi. Repérez le code Questionnaire sur le "
-"questionnaire imprimé et renvoyer par SMS en commençant par le Code "
-"Questionnaire"
-
-msgid ""
-"Error. Invalid Submission. Refer to printed Questionnaire. Multiple "
-"responses have been submitted for question code : %s"
-msgstr ""
-"Erreur: Erreur d'envoi. Reportez-vous au questionnaire imprimé. Des "
-"réponses multiples ont été envoyées avec le même code question: %s"
-
-msgid ""
-"Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
-"question ID and answer for %s"
-msgstr ""
-"Erreur d'envoi. Reportez-vous au questionnaire imprimé. Renvoyer l'ID de "
-"la question et la réponse pour %s"
+msgid "%s already registered as a subject type. Please select %s from the drop down menu."
+msgstr "%s existe déja type de sujet. Veuillez choiir %s dans la liste déroulante."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
 msgstr "L'ntité avec le numéro d'identification unique (ID) =% s existe déjà."
@@ -2511,28 +2320,17 @@ msgstr "Veuillez remplir au moins un champ de localisation"
 msgid "The questionnaire does not exist."
 msgstr "Le questionnaire n'existe pas."
 
-msgid "*indicates required field"
-msgstr "*indique un champ obligatoire"
-
 msgid "Profile has been updated successfully"
 msgstr "Le profil a été mis à jour avec succès"
 
 msgid "Settings have been updated successfully"
 msgstr "Les paramètres ont été mis à jour avec succès"
 
-msgid "Hello. We have not received your data for"
-msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour "
-
-msgid "Please send it to us today. Thank you."
-msgstr "Veuillez l'envoyer aujourd'hui. Merci"
-
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
-msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. "
-"Veuillez contacter le Service d’Assistance de DataWinners."
+msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
 
 msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
-msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. "
-"Veuillez utiliser un fichier CSV ​​(.csv) ou un Excel (.xls)!"
+msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser un fichier CSV ​​(.csv) ou un Excel (.xls)!"
 
 msgid "vtrue,vfalse"
 msgstr "Oui,Non"
@@ -2578,9 +2376,6 @@ msgstr "ID "
 
 msgid "Contact"
 msgstr "Contact"
-
-msgid "Give Access"
-msgstr "Donner un accès"
 
 msgid "Your project has been deleted"
 msgstr "Votre projet a été supprimé"
@@ -2636,38 +2431,6 @@ msgstr "Tous les champs sont obligatoires sauf indication \"optionnel\"."
 msgid "Optional"
 msgstr "Optionnel"
 
-#: forms.py:54
-msgid ""
-"Choose your language for the questionnaire and automatic messages to Data "
-"Senders"
-msgstr "Choisissez la langue pour le questionnaire et les réponses automatiques aux expéditeurs de données"
-
-#: forms.py:62
-msgid "Same"
-msgstr "Le/la même"
-
-#: forms.py:63
-msgid "Do you want to remind DataSenders to send in their data?"
-msgstr "Voulez-vous envoyer des massages de rappel aux envoyeurs de données ?"
-
-#: forms.py:71
-msgid "Describe what your team hopes to achieve by collecting this data"
-msgstr "Décrivez ce que votre équipe attend de cette collecte de données"
-
-#: templates/project/sms_tester_form.html:39
-#, python-format
-msgid "See if DataWinners received your SMS. (Go to "
-msgstr "Verifiez si DataWinners a reçu votre message. (Allez à la page "
-
-msgid "All Data Records "
-msgstr "Toutes les données "
-
-msgid "page to view submission status)"
-msgstr "pour voir l'état de votre envoi)"
-
-msgid "Choose your language for success and error messages to Data Senders"
-msgstr "Choisissez votre langue pour les messages d'erreur et de succès à retourner aux envoyeurs de données"
-
 msgid "Answer %s for question %s is longer than allowed."
 msgstr "La réponse à la question %s %s dépasse la longueur autorisée."
 
@@ -2718,7 +2481,6 @@ msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de donn
 msgid "User has been added successfully"
 msgstr "L'utilisateur a été ajouté avec succès"
 
-
 msgid "agree-terms"
 msgstr "J'accepte <a href=\"/fr/terms-and-conditions/\" target=\"_blank\" id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
 
@@ -2732,40 +2494,6 @@ msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinner
 msgid "learn-about-partners-clients"
 msgstr "En savoir plus sur nos <a href=\"/fr/about-us/partners\">partenaires</a> &amp; nos "
 "<a href=\"/fr/about-us/clients\">clients</a> &raquo;"
-
-# error messages
-msgid "An exception has occurred"
-msgstr "Une exception est survenue"
-
-#, python-format
-msgid "Entity identified by %s is already defined"
-msgstr "L'Entité identifié par %s est déja défini"
-
-msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
-msgstr "Erreur envoi non valide. Reportez-vous au questionnaire imprimé. Le numéro d'identification unique "
-"(ID) est manquant."
-
-msgid "This field is required."
-msgstr "Ce champ est obligatoire."
-
-#, python-format
-msgid "Error. Incorrect answer for %s. Please re-send entire message."
-msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la totalité du message"
-
-#, python-format
-msgid"Questionnaire ID %s doesnt exist."
-msgstr "Le ID Questionnaire %s n'existe pas."
-
-#, python-format
-msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend "
-"SMS starting with this questionnaire code."
-msgstr "Erreur sur le code Questionnaire %s. Cherchez le code sur le questionnaire imprimé et envoyez de "
-"nouveau le SMS en commençant par ce code questionnaire"
-
-msgid "This entity reported on is not registered in our system. Please register entity or contact us at "
-"033 20 426 89"
-msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer "
-"cette entité ou appelez-nous au 033 20 426 89"
 
 #, python-format
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
@@ -2812,13 +2540,11 @@ msgid "The system is experiencing a problem right now. Please try again in a few
 msgstr "Le système est confronté à un problème. Veuillez essayer à nouveau dans quelques minutes."
 
 msgid "The system is unable to accept your SMS right now. Please wait one hour and resend the same message."
-msgstr "Le système a rencontré un problème pour enregistrer votre SMS. Veuillez attendre une heure et "
-"envoyez de nouveau le même message. "
+msgstr "Le système a rencontré un problème pour enregistrer votre SMS. Veuillez attendre une heure et envoyez de nouveau le même message. "
 
-msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed "
-"questionnaire and resend SMS with the right Question code."
-msgstr "Erreur. Trouvez le code questionnaire sur le questionnaire imprimé et envoyez de nouveau le SMS en "
-"commençant par ce code questionnaire."
+msgid "Error: Invalid Submission. No valid question found. Check the Question Code on the printed questionnaire "
+"and resend SMS with the right Question code."
+msgstr "Erreur. Trouvez le code questionnaire sur le questionnaire imprimé et envoyez de nouveau le SMS en commençant par ce code questionnaire."
 
 msgid "Error. This project is not yet active. Submissions can be made only for an active project."
 msgstr "Erreur. Ce projet n'est pas encore actif. Les soumissions ne peuvent être effectuées  que pour un projet actif."
@@ -2936,3 +2662,183 @@ msgstr "Comment collecter les données"
 
 msgid "Training datasender"
 msgstr "Former les envoyeurs de données"
+
+msgid "A part of"
+msgstr "Une partie de"
+
+msgid "en"
+msgstr "fr"
+
+msgid "HNI provides partners with the opportunity to embrace, reshape and "
+"maximize the use of information and communication technology in "
+"productive and sustainable ways."
+msgstr ""
+"HNI offre à ses partenaires l'occasion d’appréhender, de remodeler et de "
+"maximiser l'utilisation de la technologie de l'information et de la "
+"communication de manière productive et durable."
+
+msgid "Learn more about us"
+msgstr "Mieux nous connaître"
+
+msgid "What is DataWinners"
+msgstr "Qu’est-ce que DataWinners"
+
+msgid "Success Stories"
+msgstr "Nos succès"
+
+msgid "Pricing"
+msgstr "Tarification"
+
+msgid "Support"
+msgstr "Assistance"
+
+msgid "About us"
+msgstr "Qui somme-nous"
+
+msgid "Our Partners &amp; Clients"
+msgstr "Nos Partenaires &amp; Clients"
+
+msgid "partners"
+msgstr "partenaires"
+
+msgid "clients"
+msgstr "clients"
+
+msgid "That"
+msgstr "Ce/Cette"
+
+msgid "What is the reporting period for the activity?"
+msgstr "Le rapport concerne quelle période ?"
+
+msgid "View"
+msgstr "Apercu"
+
+msgid "edit profile"
+msgstr "Editer le profil"
+
+msgid "Projects:"
+msgstr "Projets :"
+
+msgid "Associate"
+msgstr "Associer"
+
+msgid "What is associated subject type?"
+msgstr "Quel est le type de sujet associé ?"
+
+msgid "What is the subject's name?"
+msgstr "Quel est le nom du sujet ?"
+
+msgid "What is the subject's Unique ID Number"
+msgstr "Quel est l'ID unique du sujet"
+
+msgid "What is the subject's location?"
+msgstr "Quel est la localité du sujet?"
+
+msgid "What is the subject's GPS co-ordinates?"
+msgstr "Quel sont les coordonnées GPS de la localité du sujet ?"
+
+msgid "Describe the subject"
+msgstr "Décrire le sujet"
+
+msgid "What is the mobile number associated with the subject?"
+msgstr "Quel est le numéro de téléphone portable associé au sujet ?"
+
+msgid "What is the data sender's name?"
+msgstr "Quel est le nom de l'envoyeur de données?"
+
+msgid "What is the data sender's location?"
+msgstr "Quel est la localité de l'envoyeur de données?"
+
+msgid "What is the data sender's GPS co-ordinates?"
+msgstr ""
+"Quel sont les coordonnées GPS de la localité de l'envoyeur de données ?"
+
+msgid "What is the mobile number associated with the data sender?"
+msgstr ""
+"Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
+
+msgid ""
+"Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
+"questionnaire and resend SMS"
+msgstr ""
+"Erreur sur l'ID du questionnaire %s. Trouvez l'ID Questionnaire sur le "
+"questionnaire imprimé et renvoyer le SMS"
+
+msgid ""
+"This telephone number is not registered in our system. Please register or "
+"contact us at 033 20 426 89."
+msgstr ""
+"Ce numéro de téléphone n'est pas enregistré dans notre système.Veuillez "
+"vous inscrire ou contactez-nous au 033 426 20 89."
+
+msgid ""
+"This entity %s reported on is not registered in our system. Please "
+"register entity or contact us at 033 20 426 89."
+msgstr ""
+"L'entité %s pour laquelle vous voulez envoyer un rapport n'existe pas."
+"Veuillez enregistrer la nouvelle entité ou contactez-nous au 033 20 426 "
+"89."
+
+msgid ""
+"Error: Invalid Submission. Locate the Questionnaire Code on the printed "
+"questionnaire and resend SMS starting with the Questionnaire Code"
+msgstr ""
+"Erreur: Erreur d'envoi. Repérez le code Questionnaire sur le "
+"questionnaire imprimé et renvoyer par SMS en commençant par le Code "
+"Questionnaire"
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Multiple "
+"responses have been submitted for question code : %s"
+msgstr ""
+"Erreur: Erreur d'envoi. Reportez-vous au questionnaire imprimé. Des "
+"réponses multiples ont été envoyées avec le même code question: %s"
+
+msgid ""
+"Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
+"question ID and answer for %s"
+msgstr ""
+"Erreur d'envoi. Reportez-vous au questionnaire imprimé. Renvoyer l'ID de "
+"la question et la réponse pour %s"
+
+msgid "Choose your language for the questionnaire and automatic messages to Data Senders"
+msgstr "Choisissez la langue pour le questionnaire et les réponses automatiques aux expéditeurs de données"
+
+msgid "An exception has occurred"
+msgstr "Une exception est survenue"
+
+msgid "Entity identified by %s is already defined"
+msgstr "L'Entité identifié par %s est déja défini"
+
+msgid "Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing."
+msgstr "Erreur envoi non valide. Reportez-vous au questionnaire imprimé. Le numéro d'identification unique "
+"(ID) est manquant."
+
+msgid "This field is required."
+msgstr "Ce champ est obligatoire."
+
+msgid "Error. Incorrect answer for %s. Please re-send entire message."
+msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la totalité du message"
+
+msgid"Questionnaire ID %s doesnt exist."
+msgstr "Le ID Questionnaire %s n'existe pas."
+
+msgid "Error with Questionnaire code %s. Find the Questionnaire code on the printed questionnaire and resend SMS starting with this questionnaire code."
+msgstr "Erreur sur le code Questionnaire %s. Cherchez le code sur le questionnaire imprimé et envoyez de nouveau le SMS en commençant par ce code questionnaire"
+
+msgid "This entity reported on is not registered in our system. Please register entity or contact us at 033 20 426 89"
+msgstr "Cet entité pour laquelle vous avez envoyé un rapport n'existe pas sur notre système. Veuillez enregistrer cette entité ou appelez-nous au 033 20 426 89"
+
+msgid "Hello. We have not received your data for"
+msgstr "Bonjour, Nous n'avons pas reçu votre rapport pour "
+
+msgid "Please send it to us today. Thank you."
+msgstr "Veuillez l'envoyer aujourd'hui. Merci"
+
+msgid "Reminders are"
+msgstr "Les messages de rappel sont"
+
+msgid "for this project"
+msgstr "pour ce projet."
+
+msgid "enabled"
+msgstr "activés"
