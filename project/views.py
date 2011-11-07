@@ -46,7 +46,7 @@ import datawinners.utils as utils
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.conf import settings
-
+from django.utils import translation
 
 import logging
 from mangrove.utils.types import is_empty
@@ -554,7 +554,8 @@ def subjects(request, project_id=None):
              'import_subject_form': import_subject_form,
              'form': create_subject_form,
              "entity_types": entity_types,
-             'post_url': reverse(import_subjects_from_project_wizard)},
+             'post_url': reverse(import_subjects_from_project_wizard),
+             'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
 def download_subject_template(request, language):
@@ -617,7 +618,8 @@ def datasenders(request, project_id=None):
     import_reporter_form = ReporterRegistrationForm(initial={'project_id': project_id})
     return render_to_response('project/datasenders.html',
             {'fields': cleaned_up_fields, 'project': project, 'project_links': project_links,
-             'form': import_reporter_form, 'post_url': _get_imports_subjects_post_url(project_id)},
+             'form': import_reporter_form, 'post_url': _get_imports_subjects_post_url(project_id),
+             'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
 
