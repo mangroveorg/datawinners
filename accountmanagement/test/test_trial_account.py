@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from django.test.client import RequestFactory
 from django.utils import unittest
 from mock import Mock
-from accountmanagement.views import is_expired
+from datawinners.accountmanagement.views import is_expired
 from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from datetime import datetime

@@ -121,7 +121,7 @@ TEMPLATE_DIRS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
-    'accountmanagement.context_processors.add_feature_flags',
+    'datawinners.accountmanagement.context_processors.add_feature_flags',
 )
 
 HOME_PAGE = '/dashboard'

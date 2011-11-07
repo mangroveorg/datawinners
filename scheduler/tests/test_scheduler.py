@@ -10,7 +10,7 @@ from datawinners.scheduler.scheduler import   send_reminders_on
 #TODO: exception scenarios
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.database import DatabaseManager
-from scheduler.scheduler import _get_paid_organization, send_reminders
+from datawinners.scheduler.scheduler import _get_paid_organization
 
 class TestScheduler(unittest.TestCase):
 
