@@ -19,7 +19,7 @@ exception_messages = {
     ex.EntityQuestionCodeNotSubmitted: {
         DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Unique Identification Number(ID) is missing.",
         WEB: u"This field is required.",
-        SMS: u"Error. Incorrect answer for %s. Please re-send entire message."
+        SMS: u"Error. Incorrect answer for %s. Please resend entire message."
     },
 
     ex.FormModelDoesNotExistsException: {
@@ -69,7 +69,7 @@ exception_messages = {
 
     },
     ex.MultipleSubmissionsForSameCodeException: {
-        DEFAULT: u"Error. Incorrect answer for question %s. Please resend entire message."
+        DEFAULT: u"Error. Incorrect answer for %s. Please resend entire message."
     },
     ex.InactiveFormModelException: {
         DEFAULT: u"Error. This project is not yet active. Submissions can be made only for an active project."
@@ -80,7 +80,7 @@ exception_messages = {
 }
 
 def get_validation_failure_error_message():
-    return _("Error. Incorrect answer for question %s. Please resend entire message.")
+    return _("Error. Incorrect answer for %s. Please resend entire message.")
 
 def get_submission_success_message():
     return _("Thank you") + " %s. " + _("We received : ")

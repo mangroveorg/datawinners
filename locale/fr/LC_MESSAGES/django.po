@@ -221,11 +221,6 @@ msgstr "Le numéro d'identification unique (ID) est :"
 msgid "We received : "
 msgstr "Nous avons reçu : "
 
-#: messageprovider/messages.py:83
-#, python-format
-msgid "Error. Incorrect answer for question %s. Please resend entire message."
-msgstr "Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité du message."
-
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
 msgid "Thank you"
@@ -2816,7 +2811,7 @@ msgstr "Erreur envoi non valide. Reportez-vous au questionnaire imprimé. Le num
 msgid "This field is required."
 msgstr "Ce champ est obligatoire."
 
-msgid "Error. Incorrect answer for %s. Please re-send entire message."
+msgid "Error. Incorrect answer for %s. Please resend entire message."
 msgstr "Réponse incorrecte pour la question %s. Veuillez envoyer de nouveau la totalité du message"
 
 msgid"Questionnaire ID %s doesnt exist."

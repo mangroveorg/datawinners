@@ -220,11 +220,6 @@ msgstr ""
 msgid "We received : "
 msgstr ""
 
-#: messageprovider/messages.py:83
-#, python-format
-msgid "Error. Incorrect answer for question %s. Please resend entire message."
-msgstr ""
-
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
 msgid "Thank you"
@@ -2772,7 +2767,7 @@ msgstr ""
 msgid "This field is required."
 msgstr ""
 
-msgid "Error. Incorrect answer for %s. Please re-send entire message."
+msgid "Error. Incorrect answer for %s. Please resend entire message."
 msgstr ""
 
 msgid"Questionnaire ID %s doesnt exist."

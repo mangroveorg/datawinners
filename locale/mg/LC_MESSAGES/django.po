@@ -225,13 +225,6 @@ msgstr "Le numéro d'identification unique (ID) est :"
 msgid "We received : "
 msgstr "Nous avons reçu : "
 
-#: messageprovider/messages.py:83
-#, python-format
-msgid "Error. Incorrect answer for question %s. Please resend entire message."
-msgstr ""
-"Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité "
-"du message."
-
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
 msgid "Thank you"
@@ -2748,7 +2741,7 @@ msgid "This field is required."
 msgstr "Faritra tsy maintsy fenoina."
 
 #, python-format
-msgid "Error. Incorrect answer for %s. Please re-send entire message."
+msgid "Error. Incorrect answer for %s. Please resend entire message."
 msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao"
 
 #, python-format
