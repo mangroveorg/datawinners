@@ -5,14 +5,10 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, Set
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
-from django.forms.widgets import Select
-from django.utils.encoding import force_unicode
-from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from datawinners.accountmanagement.phone_country_code import PHONE_COUNTRY_CODE
-from datawinners.entity.fields import PhoneNumberField, PhoneCountryCodeSelect, PhoneCountryCodeSelectField
+from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
@@ -29,13 +25,6 @@ def get_organization_sectors():
             ('Shelter', _('Shelter')),
             ('WaterSanitation', _('Water and Sanitation')),
             ('Other', _('Other')))
-
-def get_country_code():
-    return (
-            ('', _('Select') ),
-            ("+01", _('American') ),
-            ("+86", _('China') ),
-            )
 
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
@@ -103,15 +92,12 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
     first_name = forms.CharField(max_length=30, required=True, label='First name')
     last_name = forms.CharField(max_length=30, required=True, label='Last name')
-
     office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
-    office_phone_country_code = PhoneCountryCodeSelectField(required=False, label=_('Country Phone Code'),data_for=office_phone)
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
                                           label=_('Organization Sector'))
-
     organization_city = forms.CharField(max_length=30, required=True, label=_('City'))
     organization_country = forms.CharField(max_length=30, required=True, label=_('Country'))
     username = forms.CharField(max_length=30, required=False)
