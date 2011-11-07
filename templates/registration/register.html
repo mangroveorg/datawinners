@@ -69,10 +69,12 @@
                         {{ form.organization_country.errors }}
 
                     </li>
-                    <li class="{{ form.organization_office_phone.css_classes  }} form-row-10px">
+                    <li class="{{ form.office_phone.css_classes  }} form-row-10px">
                         {{ form.organization_office_phone|field_label }}
-                        {{ form.organization_office_phone_country_code }}
-                        {{ form.organization_office_phone }}
+                        <div class="country_code_phone_container">
+                            {{ form.office_phone_country_code }}
+                            {{ form.organization_office_phone }}
+                        </div>
                         {{ form.organization_office_phone.errors }}
                     </li>
                     <li class="{{ form.organization_website.css_classes  }} form-row-10px">
@@ -119,14 +121,12 @@
                     </li>
                     <li class="{{ form.office_phone.css_classes  }} form-row-10px">
                         {{ form.office_phone|field_label }}
-                        {{ form.office_phone_country_code }}
                         {{ form.office_phone }}
 
                         {{ form.office_phone.errors }}
                     </li>
                     <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
                         {{ form.mobile_phone|field_label }}
-                        {{ form.mobile_phone_country_code }}
                         {{ form.mobile_phone }}
 
                         {{ form.mobile_phone.errors }}
