@@ -35,14 +35,3 @@ class TestPhoneNumberField(TestCase):
     def test_should_get_right_data_from_phone_countrycode_select_field(self):
         phone_country_code_select_field = PhoneCountryCodeSelectField()
         self.assertIsInstance(phone_country_code_select_field.widget, PhoneCountryCodeSelect)
-
-    def test_clean_with_phone_country_code_select_field_should_return_value_with_country_code(self):
-        phone_number_field = PhoneNumberField()
-        phone_country_code_select_field = PhoneCountryCodeSelectField(data_for=phone_number_field)
-        phone_country_code_select_field.clean('+86')
-        self.assertEqual(phone_number_field.country_code, u'+86')
-
-    def test_clean_with_phone_number_field_should_return_value_with_country_code(self):
-        phone_number_field = PhoneNumberField()
-        phone_number_field.country_code = '+86'
-        self.assertEqual(phone_number_field.clean('111222'), u'+86111222')

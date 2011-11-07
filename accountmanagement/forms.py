@@ -49,6 +49,7 @@ class OrganizationForm(ModelForm):
     state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     country = forms.CharField(max_length=30, required=True, label=_('Country'))
     zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
+    office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
     website = forms.URLField(required=False, label=_('Website Url'))
 
@@ -71,7 +72,9 @@ class UserProfileForm(forms.Form):
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
     username = forms.EmailField(max_length=30, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
+    mobile_phone_country_code = PhoneCountryCodeSelectField(required=False)
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
+    office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
@@ -104,8 +107,9 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     first_name = forms.CharField(max_length=30, required=True, label='First name')
     last_name = forms.CharField(max_length=30, required=True, label='Last name')
 
+    office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
-    office_phone_country_code = PhoneCountryCodeSelectField(required=False, label=_('Country Phone Code'),data_for=office_phone)
+    mobile_phone_country_code = PhoneCountryCodeSelectField(required=False)
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
@@ -160,10 +164,28 @@ class FullRegistrationForm(MinimalRegistrationForm):
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
                                             error_message=_("Please enter a valid Postal / Zip code"),
                                             label=_('Postal / Zip Code'))
+    organization_office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     organization_office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
     organization_website = forms.URLField(required=False, label=_('Website Url'))
 
     invoice_period, preferred_payment = payment_details_form()
+
+    def validate_country_code(self, country_code_field_name, phone_number_field_name):
+        if not self.cleaned_data.has_key(phone_number_field_name):
+            return 
+        country_code = self.cleaned_data[country_code_field_name]
+        phone_number = self.cleaned_data[phone_number_field_name]
+        if phone_number != '' and country_code == '':
+            msg = _('Please enter a country code.')
+            self._errors[phone_number_field_name] = self.error_class([msg])
+            del self.cleaned_data[phone_number_field_name]
+
+    def clean(self):
+        super(FullRegistrationForm, self).clean()
+        self.validate_country_code('organization_office_phone_country_code', 'organization_office_phone')
+        self.validate_country_code('office_phone_country_code', 'office_phone')
+        self.validate_country_code('mobile_phone_country_code', 'mobile_phone')
+        return self.cleaned_data
 
 
 class LoginForm(AuthenticationForm):

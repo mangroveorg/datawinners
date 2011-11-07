@@ -15,16 +15,9 @@ PHONE_NUMBER_REGEX = "^(\(?[0-9]*?\)?)?[0-9- ]+$"
 PHONE_NUMBER_MAX_LENGTH = 15
 PHONE_NUMBER_MIN_LENGTH = 5
 class PhoneCountryCodeSelectField(CharField):
-    def __init__(self, max_length=None, min_length=None,data_for=None, *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, *args, **kwargs):
         super(PhoneCountryCodeSelectField, self).__init__(max_length, min_length, *args, **kwargs)
-        self.widget = PhoneCountryCodeSelect(attrs={'class': 'width-200px'})
-        self.data_for = data_for
-        
-    def clean(self, value):
-        super(PhoneCountryCodeSelectField, self).clean(value)
-        self.data_for.country_code = value
-        return value
-
+        self.widget = PhoneCountryCodeSelect(attrs={'class': 'width-200px country-code'})
 
 class PhoneCountryCodeSelect(Select):
     def __init__(self, attrs=None, choices=PHONE_COUNTRY_CODE):
@@ -46,7 +39,6 @@ class PhoneNumberField(RegexField):
                                                error_message or _("Please enter a valid phone number."),
                                                *args,
                                                **kwargs)
-        self.country_code = ''
 
     def validate_phone_number_for_filled_field(self, value):
         if value:
@@ -69,4 +61,4 @@ class PhoneNumberField(RegexField):
     def clean(self, value):
         value = self.simplify_value(value)
         super(PhoneNumberField, self).clean(value)
-        return self.country_code + value
+        return value
