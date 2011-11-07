@@ -45,7 +45,7 @@ class TestGetExceptionMessageHandler(unittest.TestCase):
 
 class TestShouldTemplatizeMessage(unittest.TestCase):
     def test_should_format_error_message_with_question_codes(self):
-        expected_message = u'Error. Incorrect answer for question q1, q2. Please resend entire message.'
+        expected_message = u'Error. Incorrect answer for q1, q2. Please resend entire message.'
         errors = {"q1": "Some error", "q2": "Some other error"}
         message = get_submission_error_message_for(errors)
         self.assertEqual(expected_message, message)
