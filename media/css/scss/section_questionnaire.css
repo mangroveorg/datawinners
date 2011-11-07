@@ -24,9 +24,7 @@
 
 /*The content styles for wizard based pages*/
 .wizard_content .content_wrapper .questionnaire_code label {
-  font-weight: normal;
-  font-size: 13px;
-  width: 125px; }
+  font-weight: normal; }
 .wizard_content .content_wrapper .questionnaire_code input {
   width: 90px;
   height: 25px;
@@ -35,7 +33,8 @@
   margin-bottom: 10px; }
 .wizard_content .content_wrapper .questionnaire_code li > label {
   display: inline;
-  margin-left: 30px; }
+  margin-left: 30px;
+  margin-right: -30px; }
 .wizard_content .content_wrapper .questionnare_header {
   border: 1px solid #a3c7ef;
   height: 50px;
@@ -90,7 +89,8 @@
   .wizard_content .content_wrapper .questionnare_content #questions-panel {
     background: #f2f2f2 url("/media/images/questions_bg.gif") repeat-y top right;
     padding: 20px 0 0 0px;
-    min-height: 760px; }
+    min-height: 760px;
+    margin-right: 0px !important; }
     .wizard_content .content_wrapper .questionnare_content #questions-panel h4 {
       padding-left: 30px;
       border-bottom: 1px solid #B5B5B5;
@@ -104,7 +104,7 @@
     .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ul li {
       margin-bottom: 10px; }
     .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list ul > div {
-      padding: 10px 50px 0 50px;
+      padding: 2px 50px 0 50px;
       border-bottom: 1px solid #B5B5B5;
       width: 200px;
       cursor: pointer; }

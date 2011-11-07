@@ -145,7 +145,7 @@ class CreateProject(Form):
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=True)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),
                                             ('quarter', _('Quarter')), ), widget=forms.Select(
-        attrs={'style': 'margin-left: 100px; margin-top: -58px; position: absolute'}),
+        attrs={'style': 'position: absolute; margin-left: 82px; margin-top: -39px;'}),
                                    required=False, )
     activity_report = ChoiceField(label=_("What is this questionnaire about?"),
                                   choices=QUESTIONNAIRE_CHOICES,

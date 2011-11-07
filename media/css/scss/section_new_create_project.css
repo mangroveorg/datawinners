@@ -25,12 +25,11 @@
   margin-bottom: 30px; }
   .clear_both li {
     list-style-type: None;
-    margin: 25px 0 25px 0; }
+    margin: 20px 0 20px 0; }
     .clear_both li ul li {
       margin: 10px 0 10px 0; }
       .clear_both li ul li label {
         font-weight: normal;
-        margin-bottom: 20px;
         width: 100%; }
     .clear_both li div.error_arrow label {
       font-size: 14px !important; }
