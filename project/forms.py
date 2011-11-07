@@ -21,6 +21,7 @@ class BroadcastMessageForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
+        self.fields['text'].widget.attrs['id'] = 'sms_content'
         self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers.')
 
 
@@ -140,7 +141,7 @@ class CreateProject(Form):
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
 
     frequency_enabled = ChoiceField(label=_("Time Period"),
-                                     help_text="How often do you need data?",
+                                    help_text=ugettext_lazy("How often do you need data?"),
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=True)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),
                                             ('quarter', _('Quarter')), ), widget=forms.Select(

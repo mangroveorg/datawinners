@@ -5,10 +5,14 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, Set
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+from django.forms.widgets import Select
+from django.utils.encoding import force_unicode
+from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from datawinners.entity.fields import PhoneNumberField
+from datawinners.accountmanagement.phone_country_code import PHONE_COUNTRY_CODE
+from datawinners.entity.fields import PhoneNumberField, PhoneCountryCodeSelect, PhoneCountryCodeSelectField
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
@@ -26,6 +30,13 @@ def get_organization_sectors():
             ('WaterSanitation', _('Water and Sanitation')),
             ('Other', _('Other')))
 
+def get_country_code():
+    return (
+            ('', _('Select') ),
+            ("+01", _('American') ),
+            ("+86", _('China') ),
+            )
+
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
 
@@ -38,6 +49,7 @@ class OrganizationForm(ModelForm):
     state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     country = forms.CharField(max_length=30, required=True, label=_('Country'))
     zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
+    office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
     website = forms.URLField(required=False, label=_('Website Url'))
 
@@ -60,7 +72,9 @@ class UserProfileForm(forms.Form):
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
     username = forms.EmailField(max_length=30, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
+    mobile_phone_country_code = PhoneCountryCodeSelectField(required=False)
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
+    office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
     skype = forms.CharField(max_length=30, required=False, label="Skype")
 
@@ -92,12 +106,16 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
     first_name = forms.CharField(max_length=30, required=True, label='First name')
     last_name = forms.CharField(max_length=30, required=True, label='Last name')
+
+    office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
+    mobile_phone_country_code = PhoneCountryCodeSelectField(required=False)
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
                                           label=_('Organization Sector'))
+
     organization_city = forms.CharField(max_length=30, required=True, label=_('City'))
     organization_country = forms.CharField(max_length=30, required=True, label=_('Country'))
     username = forms.CharField(max_length=30, required=False)
@@ -146,10 +164,28 @@ class FullRegistrationForm(MinimalRegistrationForm):
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
                                             error_message=_("Please enter a valid Postal / Zip code"),
                                             label=_('Postal / Zip Code'))
+    organization_office_phone_country_code = PhoneCountryCodeSelectField(required=False)
     organization_office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
     organization_website = forms.URLField(required=False, label=_('Website Url'))
 
     invoice_period, preferred_payment = payment_details_form()
+
+    def validate_country_code(self, country_code_field_name, phone_number_field_name):
+        if not self.cleaned_data.has_key(phone_number_field_name):
+            return 
+        country_code = self.cleaned_data[country_code_field_name]
+        phone_number = self.cleaned_data[phone_number_field_name]
+        if phone_number != '' and country_code == '':
+            msg = _('Please enter a country code.')
+            self._errors[phone_number_field_name] = self.error_class([msg])
+            del self.cleaned_data[phone_number_field_name]
+
+    def clean(self):
+        super(FullRegistrationForm, self).clean()
+        self.validate_country_code('organization_office_phone_country_code', 'organization_office_phone')
+        self.validate_country_code('office_phone_country_code', 'office_phone')
+        self.validate_country_code('mobile_phone_country_code', 'mobile_phone')
+        return self.cleaned_data
 
 
 class LoginForm(AuthenticationForm):
@@ -180,8 +216,6 @@ class LoginForm(AuthenticationForm):
 
     def check_trial_account_expired(self):
         org = Organization.objects.get(org_id=self.user_cache.get_profile().org_id)
-        if org.in_trial_mode == False:
-            return
         if org.is_expired():
             raise TrialAccountExpiredException()
 

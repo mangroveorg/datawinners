@@ -18,20 +18,22 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import  FormModel, get_form_model_by_code
 from mangrove.utils.types import is_string, is_empty
 
-def create_questionnaire(post, manager, entity_type, name):
+def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['state'], fields=[], form_code=questionnaire_code)
+    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['state'], fields=[], form_code=questionnaire_code, language=language)
+    form_model.activeLanguages = [language]
     return helper.update_questionnaire_with_questions(form_model, question_set, manager)
 
 
-def update_questionnaire(questionnaire, post, entity_type, name, manager):
+def update_questionnaire(questionnaire, post, entity_type, name, manager, language):
     json_string = post['question-set']
     question_set = json.loads(json_string)
     questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
     questionnaire.name = name
+    questionnaire.activeLanguages = [language]
     questionnaire.entity_type = [entity_type] if is_string(entity_type) else entity_type
     questionnaire.form_code = post['questionnaire-code'].lower()
     return questionnaire
@@ -48,6 +50,7 @@ def save_project(request):
     if form.is_valid():
         entity_type = form.cleaned_data['entity_type']
         project_name = form.cleaned_data["name"]
+        language = form.cleaned_data['language']
         if is_empty(project_id):
             try:
                 get_form_model_by_code(manager, request.POST['questionnaire-code'])
@@ -57,9 +60,9 @@ def save_project(request):
                               project_type='survey', entity_type=entity_type,
                               reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                               activity_report=form.cleaned_data['activity_report'],
-                              state =project_state, devices=[],language=form.cleaned_data['language'])
+                              state =project_state, devices=[],language=language)
                 try:
-                    questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name)
+                    questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name, language=language)
                 except QuestionCodeAlreadyExistsException as e:
                     return HttpResponseServerError(e)
                 except EntityQuestionAlreadyExistsException as e:
@@ -75,7 +78,7 @@ def save_project(request):
             project.reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data)
             project.update(form.cleaned_data)
             try:
-                questionnaire = update_questionnaire(questionnaire, request.POST, entity_type, project_name, manager)
+                questionnaire = update_questionnaire(questionnaire, request.POST, entity_type, project_name, manager, language)
             except QuestionCodeAlreadyExistsException as e:
                 return HttpResponseServerError(e)
             except EntityQuestionAlreadyExistsException as e:

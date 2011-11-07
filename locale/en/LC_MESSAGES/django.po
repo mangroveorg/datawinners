@@ -2647,6 +2647,48 @@ msgstr ""
 msgid "characters used"
 msgstr ""
 
+msgid "How often do you need data?"
+msgstr ""
+
+msgid "This is general activity report."
+msgstr ""
+
+msgid "I am collecting data about a specific subject."
+msgstr ""
+
+msgid "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own."
+msgstr ""
+
+msgid "Save as Draft"
+msgstr ""
+
+msgid "Time Period"
+msgstr ""
+
 #: templates/dashboard/overview.html
 msgid "Your project"
+msgstr ""
+
+msgid "You successfully created your questionnaire! "
+msgstr ""
+
+msgid "Now you can..."
+msgstr ""
+
+msgid "...or just start collecting data"
+msgstr ""
+
+msgid "How to start collecting data"
+msgstr ""
+
+msgid "input data "
+msgstr ""
+
+msgid "How to Distribute Questionnaire"
+msgstr ""
+
+msgid "How to Collect Data"
+msgstr ""
+
+msgid "Training datasender "
 msgstr ""

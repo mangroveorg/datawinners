@@ -1,5 +1,6 @@
 from django.test.testcases import TestCase
-from datawinners.entity.fields import PhoneNumberField, EMPTY_VALUES
+from mock import Mock
+from datawinners.entity.fields import PhoneNumberField, EMPTY_VALUES, PhoneCountryCodeSelect, PhoneCountryCodeSelectField
 from datawinners.tests.backport import assertFieldOutput
 
 
@@ -21,7 +22,16 @@ class TestPhoneNumberField(TestCase):
             'abcdefgh': ['Please enter a valid phone number.'],
             '^6506368600': ['Please enter a valid phone number.'],
             }
-        
+
         assertFieldOutput(self, PhoneNumberField, valid_cases, {})
         assertFieldOutput(self, PhoneNumberField, {}, invalid_cases)
 
+    def test_should_show_right_html_for_phone_countrycode_select(self):
+        phone_counry_select = PhoneCountryCodeSelect()
+        html_return_value = phone_counry_select.render_option(selected_choices='', option_value='sth',
+                                                              option_label="whatever")
+        self.assertEqual(u'<option value="sth" title="whatever" >whatever sth</option>', html_return_value)
+
+    def test_should_get_right_data_from_phone_countrycode_select_field(self):
+        phone_country_code_select_field = PhoneCountryCodeSelectField()
+        self.assertIsInstance(phone_country_code_select_field.widget, PhoneCountryCodeSelect)
