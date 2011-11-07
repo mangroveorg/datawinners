@@ -45,8 +45,6 @@ class OrderSMSParser(SMSParser):
         questionnaire_form = get_form_model_by_code(self.dbm, form_code)
         question_codes = []
         form_fields = questionnaire_form.fields
-        print questionnaire_form.entity_type[0]
-        print questionnaire_form.entity_type[0] == 'reporter'
         if questionnaire_form.entity_type[0] == 'reporter':
             form_fields.remove(form_fields[0])
         for aField in form_fields:
