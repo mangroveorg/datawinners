@@ -1,7 +1,7 @@
 import unittest
 from django.conf import settings
 from mock import Mock
-from datawinners.orderSMSParser.order_sms_parser import OrderSMSParser
+from datawinners.ordersmsparser.order_sms_parser import OrderSMSParser
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException, SMSParserInvalidFormatException
 
 class TestOrderSMSParser(unittest.TestCase):

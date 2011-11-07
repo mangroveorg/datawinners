@@ -10,7 +10,7 @@ from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_db_manager_for
 from datawinners.messageprovider.messages import exception_messages, SMS
-from datawinners.orderSMSParser.order_sms_parser import OrderSMSParser
+from datawinners.ordersmsparser.order_sms_parser import OrderSMSParser
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, UnknownOrganization, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException
 from mangrove.form_model.form_model import get_form_model_by_code
