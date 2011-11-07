@@ -6,7 +6,7 @@
 
 .wizard_success_message{
     height:auto;
-    background:#ffefb0;
+    background:url("/media/images/wizard_bg2.gif") repeat-x scroll left top transparent;
     border: 1px solid #ccbf97;
     margin-bottom:20px;
 }
@@ -92,6 +92,9 @@
 .text-content
 {
     background: white;
+    border-bottom: 1px solid #CCBF97;
+    border-left: 1px solid #CCBF97;
+    border-top: 1px solid #CCBF97;
     float:left;
     height: 25px;
     width: 130px;
