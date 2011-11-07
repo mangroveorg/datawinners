@@ -1041,10 +1041,6 @@ msgstr ""
 msgid "Generating the questionnaire preview."
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:44
-msgid "Step4"
-msgstr ""
-
 #: templates/project/datasenders_wizard.html:47
 msgid "q_tooltip_datasenders_sender"
 msgstr ""
@@ -1329,10 +1325,6 @@ msgstr ""
 msgid "Projects - Overview"
 msgstr ""
 
-#: templates/project/overview.html:34
-msgid "Edit this project"
-msgstr ""
-
 #: templates/project/overview.html:41
 msgid ""
 "Review the basic information for your project. Click \"View\" to see the "
@@ -1341,10 +1333,6 @@ msgstr ""
 
 #: templates/project/overview.html:45
 msgid "Status: Complete"
-msgstr ""
-
-#: templates/project/overview.html:48
-msgid "What"
 msgstr ""
 
 #: templates/project/overview.html:50
