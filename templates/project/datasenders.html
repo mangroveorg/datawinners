@@ -1,4 +1,4 @@
-{% extends 'project/tab_navigation.html' %}
+    {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
 {% block page_title %} {% trans "Projects - Data Senders" %} {% endblock %}
 
@@ -79,6 +79,7 @@
             </p></div>
             <p>{% trans "Upload an excel (.xls) or csv file (.csv) of your Data Senders" %}</p>
             <input id='import_subjects' type="button" class="button_blue" value="{% trans 'Import List' %}"/>
+            <div class="error">Don't know the format? Download <a href="/project/subjects/{{ LANGUAGE_CODE }}/download/">here</a></div>
         </div>
         <div id="add_data_sender_form" class="add_datasender_form">
             {% include 'datasender_form.html' %}

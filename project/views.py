@@ -9,6 +9,7 @@ from django.forms.widgets import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.utils.encoding import smart_str
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type
@@ -556,6 +557,12 @@ def subjects(request, project_id=None):
              'post_url': reverse(import_subjects_from_project_wizard)},
                               context_instance=RequestContext(request))
 
+def download_subject_template(request, language):
+    file_name = '../media/files/DataWinners_ImportSubjects.xls' if language == 'en' else '../media/files/DataWinners_ImporterLesSujets.xls'
+    response = HttpResponse(mimetype='application/force-download')
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file_name)
+    response['X-Sendfile'] = smart_str('../media/files/DataWinners_ImportSubjects.xls')
+    return response
 
 @login_required(login_url='/login')
 def registered_subjects(request, project_id=None):

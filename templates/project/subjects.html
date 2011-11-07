@@ -1,5 +1,6 @@
 {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 {% block page_title %} {% trans "Projects - Subjects" %} {% endblock %}
 
 {% load dw_tabs %}
@@ -90,6 +91,7 @@
             <p>{% trans "Upload an excel (.xls) or csv file (.csv) of your Subjects" %}</p>
 
             <input id='import_subjects' type="button" class="button_blue" value="{% trans 'Import List' %}"/>
+            <div class="error">Don't know the format? Download <a href="/project/subjects/{{ LANGUAGE_CODE }}/download/">here</a></div>
         </div>
         <div class="add_subject_form">
             {% include 'subject_form.html' %}
