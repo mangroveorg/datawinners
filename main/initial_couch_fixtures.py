@@ -824,6 +824,27 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     project16.data_senders.extend(["rep5","rep6","rep7"])
     project16.save(manager)
 
+    form_model17 = FormModel(manager, name="AIDS", label="Aids form_model",
+                            form_code="cli017", type='survey',
+                            fields=[question1, question2, question3, question4, question5, question6],
+                            entity_type=CLINIC_ENTITY_TYPE, state=attributes.INACTIVE_STATE)
+    try:
+        qid17 = form_model17.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "cli017").delete()
+        qid17 = form_model17.save()
+    project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
+                       entity_type='reporter', devices=["sms"], activity_report='yes', sender_group="close",
+                       reminder_and_deadline={'frequency_enabled':'False', 'reminders_enabled': 'False'})
+    project17.qid = qid17
+    project17.state = ProjectState.INACTIVE
+    try:
+        project17.save(manager)
+    except Exception:
+        pass
+
+    
+
 def load_sms_data_for_cli001(manager):
     FEB = datetime(2011, 02, 28, hour=12, minute=00, second=00, tzinfo=UTC)
     MARCH = datetime(2011, 03, 01, tzinfo=UTC)
