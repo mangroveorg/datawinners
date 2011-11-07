@@ -17,12 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accountmanagement/forms.py:17
-msgid "* Organization name"
-msgstr ""
-
-#: accountmanagement/forms.py:19
-msgid "Public Health"
+#: accountmanagement/forms.py:32,97
+msgid "Organization name"
 msgstr ""
 
 #: accountmanagement/forms.py:19
@@ -106,10 +102,6 @@ msgstr ""
 
 #: accountmanagement/forms.py:79
 msgid "* Password (again)"
-msgstr ""
-
-#: accountmanagement/forms.py:87
-msgid "* Organization Name"
 msgstr ""
 
 #: accountmanagement/forms.py:99
@@ -251,9 +243,7 @@ msgid "Open Data Sender Group. Anyone can send in data without registering"
 msgstr ""
 
 #: project/forms.py:42
-msgid ""
-"Closed Data Sender Group. Only registered data sender will be able to send "
-"data"
+msgid "Closed Data Sender Group. Only registered data sender will be able to send data"
 msgstr ""
 
 #: project/forms.py:43

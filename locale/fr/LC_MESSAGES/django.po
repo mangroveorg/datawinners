@@ -19,12 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: accountmanagement/forms.py:17
-msgid "* Organization name"
-msgstr "* Nom de l'organisation"
-
-#: accountmanagement/forms.py:19
-msgid "Public Health"
-msgstr "Santé publique"
+msgid "Organization name"
+msgstr "Nom de l'organisation"
 
 #: accountmanagement/forms.py:19
 msgid "Other"
@@ -108,10 +104,6 @@ msgstr "* Mot de passe"
 #: accountmanagement/forms.py:79
 msgid "* Password (again)"
 msgstr "* Mot de passe (ressaisir)"
-
-#: accountmanagement/forms.py:87
-msgid "* Organization Name"
-msgstr "* Nom de l'organisation"
 
 #: accountmanagement/forms.py:99
 msgid "The two password fields didn't match."
@@ -252,9 +244,7 @@ msgid "Open Data Sender Group. Anyone can send in data without registering"
 msgstr "Ouvert. Tous le monde peut envoyer des données sans s'être enregistré"
 
 #: project/forms.py:42
-msgid ""
-"Closed Data Sender Group. Only registered data sender will be able to send "
-"data"
+msgid "Closed Data Sender Group. Only registered data sender will be able to send data"
 msgstr "Restreint. Seuls les personnes enregistrées peuvent envoyer des données"
 
 #: project/forms.py:43
