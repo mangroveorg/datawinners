@@ -50,7 +50,7 @@ exception_messages = {
     },
 
     ex.EntityTypeDoesNotExistsException: {
-        DEFAULT: u"Error. Incorrect answer for question t. Please resend entire message."
+        DEFAULT: u"Error. Incorrect answer for t. Please resend entire message."
     },
 
     ex.SMSParserInvalidFormatException: {

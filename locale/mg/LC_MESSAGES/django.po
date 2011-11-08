@@ -225,13 +225,6 @@ msgstr "Le numéro d'identification unique (ID) est :"
 msgid "We received : "
 msgstr "Nous avons reçu : "
 
-#: messageprovider/messages.py:83
-#, python-format
-msgid "Error. Incorrect answer for question %s. Please resend entire message."
-msgstr ""
-"Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité "
-"du message."
-
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
 msgid "Thank you"
@@ -2596,7 +2589,7 @@ msgid "This field is required."
 msgstr "Faritra tsy maintsy fenoina."
 
 #, python-format
-msgid "Error. Incorrect answer for %s. Please re-send entire message."
+msgid "Error. Incorrect answer for %s. Please resend entire message."
 msgstr "Diso. Diso ny valiny hoan'i %s. Azafady avereno alefa manontolo ny SMS-nao"
 
 #, python-format
@@ -2608,10 +2601,6 @@ msgid "Error with Questionnaire code %s. Find the Questionnaire code on the prin
 "SMS starting with this questionnaire code."
 msgstr "Diso ny  kaodin’ny lisitry ny fanontaniana %s. Jereo eo amin’ny lisitry ny fanontaniana ilay izy ary "
 "alefaso indray ny SMS-nao  manomboka amin’io kaody io"
-
-msgid "This entity reported on is not registered in our system. Please register entity or contact us at "
-"033 20 426 89"
-msgstr ""
 
 #, python-format
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
@@ -2643,7 +2632,7 @@ msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the que
 msgstr "Diso. Tsy tafiditra ny SMS-nao. Jereo ny lisitry ny fanontaniana. Avereni alefa ny ID ny fanontaniana "
 "sy ny valiny hoan'ny: %s"
 
-msgid "Error. Incorrect answer for question t. Please resend entire message."
+msgid "Error. Incorrect answer for t. Please resend entire message."
 msgstr "Diso ny valin’ny fanontaniana t. Avereno alefa manontolo indray ny toromarika sy soratra marina azafady"
 
 msgid "Invalid message format."

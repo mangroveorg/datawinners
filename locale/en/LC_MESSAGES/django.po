@@ -2338,7 +2338,7 @@ msgstr ""
 msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
 msgstr ""
 
-msgid "Error. Incorrect answer for question t. Please resend entire message."
+msgid "Error. Incorrect answer for t. Please resend entire message."
 msgstr ""
 
 msgid "Invalid message format."

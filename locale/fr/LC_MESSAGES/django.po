@@ -215,8 +215,8 @@ msgstr "Nous avons reçu : "
 
 #: messageprovider/messages.py:83
 #, python-format
-msgid "Error. Incorrect answer for question %s. Please resend entire message."
-msgstr "Erreur. Mauvaise réponse à la question %s. Veuillez renvoyer la totalité du message."
+msgid "Error. Incorrect answer for %s. Please resend entire message."
+msgstr "Erreur. Mauvaise réponse à la %s. Veuillez renvoyer la totalité du message."
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
@@ -2367,8 +2367,8 @@ msgid "Error. Invalid Submission. Refer to printed Questionnaire. Resend the que
 msgstr "Erreur. Submission non valide. Reportez-vous au questionnaire imprimé. Envoyez de nouveau l'ID de "
 "la question et la réponse pour : %s"
 
-msgid "Error. Incorrect answer for question t. Please resend entire message."
-msgstr "Réponse incorrecte pour la question t. Veuillez envoyer de nouveau la totalité du message"
+msgid "Error. Incorrect answer for t. Please resend entire message."
+msgstr "Réponse incorrecte pour la t. Veuillez envoyer de nouveau la totalité du message"
 
 msgid "Invalid message format."
 msgstr "Format de message non valide."
