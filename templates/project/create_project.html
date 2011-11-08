@@ -91,12 +91,10 @@
 
     <div class="clear_both">
         <fieldset>
-            <legend>2. Questions</legend>
+            <legend>2. {% trans "Questions" %}</legend>
         </fieldset>
         <div class="line"></div>
-        <p class="black_italic">We have provided you with example questions below. You can use the provided question,
-            edit them, delete
-            them or write your own.</p>
+        <p class="black_italic">{% trans "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own." %}</p>
 
         <form id="question_form">
             {% csrf_token %}
