@@ -3,8 +3,6 @@ DW.init_view_model = function (question_list) {
     viewModel.questions([]);
     viewModel.questions.valueHasMutated();
     DW.current_code = 2;
-    DW.ACTIVITY_REPORT_PROJECT=1
-    DW.SUBJECT_PROJECT=2
 
     for (index in question_list) {
         var questions = new DW.question(question_list[index]);
@@ -15,20 +13,79 @@ DW.init_view_model = function (question_list) {
     viewModel.selectedQuestion.valueHasMutated();
 };
 
-function is_activity_report_selected() {
-    return $('input[name="activity_report"]:checked').val() == "yes";
-}
+DW.subject_warning_dialog_module={
+    init: function(){
+        DW.ACTIVITY_REPORT_PROJECT=1;
+        DW.SUBJECT_PROJECT=2;
+        DW.current_subject = $('#id_entity_type').val();
+        DW.current_project_selected= DW.subject_warning_dialog_module.get_selected_project();
+        DW.subject_warning_dialog_module.init_subject_warning_dialog();
+        DW.subject_warning_dialog_module.bind_dialog_closed();
+        DW.subject_warning_dialog_module.bind_cancel_link();
+        DW.subject_warning_dialog_module.bind_continue();
+    },
 
-function is_subject_selected() {
-    return !is_activity_report_selected()
-}
 
-function get_selected_project(){
-    if (is_activity_report_selected()){
-        return DW.ACTIVITY_REPORT_PROJECT;
+    init_subject_warning_dialog:function(){$("#subject_warning_message").dialog({
+        title: gettext("Warning !!"),
+        modal: true,
+        autoOpen: false,
+        height: 225,
+        width: 325,
+        closeText: 'hide'
+    });
+    },
+
+    bind_dialog_closed:function(){
+        $( "#subject_warning_message" ).bind( "dialogclose", function(event, ui) {
+            $('#id_entity_type').val(DW.current_subject);
+            if(DW.current_project_selected!=get_selected_project()){
+               handle_subject_warning_cancel()
+            }
+        });
+
+    },
+    bind_cancel_link:function(){
+        $(".cancel_link").bind("click", function(){
+            handle_subject_warning_cancel()
+            $("#subject_warning_message").dialog("close");
+        });
+
+    },
+
+    bind_continue:function(){
+        $("#continue").bind("click", function(){
+            if (DW.subject_warning_dialog_module.is_subject_selected()) {
+                DW.init_view_model(subject_report_questions);
+                $('#id_entity_type').attr('disabled', false);
+            }
+            else {
+                DW.init_view_model(activity_report_questions);
+                $('#id_entity_type').attr('disabled', true);
+            }
+            DW.current_subject = $('#id_entity_type').val();
+            DW.current_project_selected = DW.subject_warning_dialog_module.get_selected_project();
+            $("#subject_warning_message").dialog("close");
+        });
+
+    },
+
+    is_activity_report_selected:function(){
+        return $('input[name="activity_report"]:checked').val() == "yes";
+    },
+    is_subject_selected:function(){
+        return !DW.subject_warning_dialog_module.is_activity_report_selected();
+    },
+    get_selected_project:function(){
+        if (DW.subject_warning_dialog_module.is_activity_report_selected()){
+            return DW.ACTIVITY_REPORT_PROJECT;
+        }
+        return DW.SUBJECT_PROJECT;
+
     }
-    return DW.SUBJECT_PROJECT;
-}
+
+};
+
 
 function handle_subject_warning_cancel() {
     if(DW.current_project_selected==DW.ACTIVITY_REPORT_PROJECT){
@@ -39,11 +96,11 @@ function handle_subject_warning_cancel() {
 
     }
 }
+
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
-    DW.current_subject = $('#id_entity_type').val();
-    DW.current_project_selected= get_selected_project()
+    DW.subject_warning_dialog_module.init();
 
     $($('input[name="frequency_enabled"]')).change(function() {
         if (this.value == "True") {
@@ -52,41 +109,6 @@ $(document).ready(function() {
         else {
             $('#id_frequency_period').attr('disabled', true);
         }
-    });
-
-    $("#subject_warning_message").dialog({
-        title: gettext("Warning !!"),
-        modal: true,
-        autoOpen: false,
-        height: 225,
-        width: 325,
-        closeText: 'hide'
-    });
-
-    $( "#subject_warning_message" ).bind( "dialogclose", function(event, ui) {
-        $('#id_entity_type').val(DW.current_subject);
-        if(DW.current_project_selected!=get_selected_project()){
-           handle_subject_warning_cancel()
-        }
-    });
-
-    $(".cancel_link").bind("click", function(){
-        handle_subject_warning_cancel()
-        $("#subject_warning_message").dialog("close");
-    });
-
-    $("#continue").bind("click", function(){
-        if (is_subject_selected()) {
-            DW.init_view_model(subject_report_questions);
-            $('#id_entity_type').attr('disabled', false);
-        }
-        else {
-            DW.init_view_model(activity_report_questions);
-            $('#id_entity_type').attr('disabled', true);
-        }
-        DW.current_subject = $('#id_entity_type').val();
-        DW.current_project_selected = get_selected_project();
-        $("#subject_warning_message").dialog("close");
     });
 
     $('#id_entity_type').change(function() {
