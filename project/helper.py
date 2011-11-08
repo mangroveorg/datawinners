@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
+from django.utils.translation import ugettext
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
@@ -64,7 +65,7 @@ def create_question(post_dict, dbm):
 def _create_entity_id_question(dbm, entity_id_question_code):
     entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
                                                     description="Entity ID")
-    name = "Which subject are you reporting on?"
+    name = ugettext("Which subject are you reporting on?")
     entity_id_question = TextField(name=name, code=entity_id_question_code,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
@@ -78,7 +79,7 @@ def _create_questionnaire(dbm, post,entity_type,entity_id_question_code, activit
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
                                                          primitive_type="date",
                                                          description="activity reporting period")
-    activity_report_question = DateField(name="What is the reporting period for the activity?", code=activity_report_question_code,
+    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code=activity_report_question_code,
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy", event_time_field_flag=True)
 
@@ -316,7 +317,7 @@ def get_activity_report_questions(dbm):
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
                                                          primitive_type="date",
                                                          description="activity reporting period")
-    activity_report_question = DateField(name="What is the reporting period for the activity?", code='q1',
+    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q1',
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy", event_time_field_flag=True)
 
@@ -327,7 +328,7 @@ def get_subject_report_questions(dbm):
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
                                                          primitive_type="date",
                                                          description="activity reporting period")
-    activity_report_question = DateField(name="What is the reporting period for the activity?", code='q2',
+    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code='q2',
                                          label="Period being reported on", ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy", event_time_field_flag=True)
     return [entity_id_question, activity_report_question]
