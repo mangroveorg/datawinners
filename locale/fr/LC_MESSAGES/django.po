@@ -481,17 +481,6 @@ msgstr "Se déconnecter"
 msgid "Help"
 msgstr "Aide"
 
-#: templates/header_wizard.html:28 templates/registration/activate.html:11
-#: templates/registration/activation_complete.html:9
-#: templates/registration/login.html:45
-#: templates/registration/password_reset_complete.html:9
-msgid "Sign in"
-msgstr "S'identifier"
-
-#: templates/header_wizard.html:29
-msgid "Sign up"
-msgstr "S'inscrire"
-
 #: templates/layout_master.html:53
 msgid "Javascript is disabled in your browser, Please enable it."
 msgstr "Javascript est désactivé dans votre navigateur, Veuillez l'activer."
@@ -1423,10 +1412,6 @@ msgstr ""
 "Choose one, two or all three channels by clicking on the boxes. Don't worry, "
 "you can alwayschange your mind later."
 
-#: templates/project/profile_subjects-questionnaire.html:3
-msgid "Subjects and Questionnaire"
-msgstr "Sujets et Questionnaire"
-
 #: templates/project/profile_subjects-questionnaire.html:12
 msgid "q_tooltip_profile_subjects"
 msgstr ""
@@ -1631,10 +1616,6 @@ msgstr ""
 "questionnaire and still keep the response within 1 SMS (160 characters)."
 "Don't worry, you can go beyond 160 characters. However, more than one SMS "
 "will be required to answer all the questions in your questionnaire."
-
-#: templates/project/questionnaire.html:125
-msgid "submit"
-msgstr "valider"
 
 #: templates/project/questionnaire_preview.html:8
 msgid "Print"
@@ -2187,9 +2168,6 @@ msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attr
 msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
 msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser un fichier CSV ​​(.csv) ou un Excel (.xls)!"
 
-msgid "vtrue,vfalse"
-msgstr "Oui,Non"
-
 msgid "Register"
 msgstr "S'enregistrer"
 
@@ -2210,6 +2188,13 @@ msgstr "Identifiez vous ici"
 
 msgid "Sign Up To Start Using DataWinners Now"
 msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
+
+#: templates/header_wizard.html:28 templates/registration/activate.html:11
+#: templates/registration/activation_complete.html:9
+#: templates/registration/login.html:45
+#: templates/registration/password_reset_complete.html:9
+msgid "Sign In"
+msgstr "S'identifier"
 
 msgid "Sign Up"
 msgstr "S'inscrire"
