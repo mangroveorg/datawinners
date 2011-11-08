@@ -29,13 +29,13 @@ def create_questionnaire(post, manager, entity_type, name, language):
 
 
 def update_questionnaire(questionnaire, post, entity_type, name, manager, language):
-    json_string = post['question-set']
-    question_set = json.loads(json_string)
-    questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
     questionnaire.name = name
     questionnaire.activeLanguages = [language]
     questionnaire.entity_type = [entity_type] if is_string(entity_type) else entity_type
     questionnaire.form_code = post['questionnaire-code'].lower()
+    json_string = post['question-set']
+    question_set = json.loads(json_string)
+    questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
     return questionnaire
 
 @login_required()
