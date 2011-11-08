@@ -2,6 +2,7 @@
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
+from django.utils import translation
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -175,7 +176,8 @@ def all_subjects(request):
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         subjects_data = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                        'failure_imports': failure_imports, 'all_data': subjects_data}))
+                                        'failure_imports': failure_imports, 'all_data': subjects_data,
+                                        'current_language': translation.get_language()}))
 
     subjects_data = import_module.load_all_subjects(request)
     return render_to_response('entity/all_subjects.html', {'all_data': subjects_data},
@@ -245,7 +247,8 @@ def all_datasenders(request):
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                        'failure_imports': failure_imports, 'all_data': all_data_senders}))
+                                        'failure_imports': failure_imports, 'all_data': all_data_senders,
+                                        'current_language': translation.get_language()}))
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access},
                               context_instance=RequestContext(request))
