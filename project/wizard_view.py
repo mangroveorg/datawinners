@@ -2,7 +2,7 @@ import json
 import urlparse
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import  HttpResponseServerError, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from datawinners.accountmanagement.models import Organization
@@ -54,7 +54,7 @@ def save_project(request):
         if is_empty(project_id):
             try:
                 get_form_model_by_code(manager, request.POST['questionnaire-code'])
-                return HttpResponseServerError('Questionnaire with this code already exists')
+                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': 'Questionnaire with this code already exists'}))
             except FormModelDoesNotExistsException:
                 project = Project(name=project_name, goals=form.cleaned_data["goals"],
                               project_type='survey', entity_type=entity_type,
@@ -64,9 +64,9 @@ def save_project(request):
                 try:
                     questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name, language=language)
                 except QuestionCodeAlreadyExistsException as e:
-                    return HttpResponseServerError(e)
+                    return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
                 except EntityQuestionAlreadyExistsException as e:
-                    return HttpResponseServerError(e.message)
+                    return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
 
         else :
             project = Project.load(manager.database, project_id)
@@ -80,26 +80,24 @@ def save_project(request):
             try:
                 questionnaire = update_questionnaire(questionnaire, request.POST, entity_type, project_name, manager, language)
             except QuestionCodeAlreadyExistsException as e:
-                return HttpResponseServerError(e)
+                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
             except EntityQuestionAlreadyExistsException as e:
-                return HttpResponseServerError(e.message)
+                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
-                    return HttpResponseServerError("Questionnaire with this code already exists")
-                return HttpResponseServerError(e.message)
+                    return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': 'Questionnaire with this code already exists'}))
+                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
         try:
             pid = project.save(manager)
             qid = questionnaire.save()
             project.qid = qid
             pid = project.save(manager)
         except DataObjectAlreadyExists as e:
-            messages.error(request, e.message)
-            return render_to_response('project/create_project.html', {'form': form},
-                                      context_instance=RequestContext(request))
+            return HttpResponse(json.dumps({'success': False, 'error': 'project' ,'error_message': e.message}))
         from datawinners.project.views import project_overview, index
         if project.state == ProjectState.INACTIVE:
             return HttpResponse(json.dumps({'redirect_url': reverse(index)}))
-        return HttpResponse(json.dumps({'redirect_url': reverse(project_overview, args=[pid])}))
+        return HttpResponse(json.dumps({'success': True, 'redirect_url': reverse(project_overview, args=[pid])}))
 
 
 @login_required(login_url='/login')

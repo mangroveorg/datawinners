@@ -25,7 +25,7 @@ $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
     DW.current_type = $('#id_entity_type').val();
-    
+
     $($('input[name="frequency_enabled"]')).change(function() {
         if (this.value == "True") {
             $('#id_frequency_period').attr('disabled', false);
@@ -106,13 +106,13 @@ $(document).ready(function() {
     $('.right_aligned_button input:button').click(function() {
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
-            $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
+            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("The Questionnaire code is required") + ".</label>");
             return;
         }
 
         var list = $.trim($('#questionnaire-code').val()).split(" ");
         if (list.length > 1) {
-            $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("Space is not allowed in questionnaire code")+".</label>");
+            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("Space is not allowed in questionnaire code") + ".</label>");
             return;
         }
         else {
@@ -142,20 +142,28 @@ $(document).ready(function() {
         }
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val(),
                         'profile_form': $('#create_project_form').serialize(), 'state':this.id};
-       
+
         $.post('/project/save/', post_data,
                 function(response) {
-                    $("#message-label").removeClass("none");
-                    $("#message-label").removeClass("message-box");
-                    $("#message-label").addClass("success-message-box");
-                    $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
-                    hide_message();
-                    window.location.href = $.parseJSON(response).redirect_url;
-                }).error(function(e) {
-                    $("#message-label").removeClass("none");
-                    $("#message-label").removeClass("success-message-box");
-                    $("#message-label").addClass("message-box");
-                    $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
+                    var responseJson = $.parseJSON(response);
+                    if (responseJson.success) {
+                        window.location.href = responseJson.redirect_url;
+                    }
+                    else {
+                        if (responseJson.error == 'project') {
+                            $("#message-label").addClass('none');
+                            $("#project-message-label").removeClass('none');
+                            $("#project-message-label").html("<label class='error_message'>" + responseJson.error_message + "</label>");
+                        }
+                        else {
+                            $("#project-message-label").addClass('none');
+                            $("#message-label").removeClass('none');
+                            $("#message-label").html("<label class='error_message'>" + responseJson.error_message + "</label>");
+
+                        }
+                        var location = "/project/wizard/create";
+                        window.location.href = location + "#" + $('.message-box:visible')[0].id;
+                    }
                 });
         return false;
     });
