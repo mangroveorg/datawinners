@@ -82,10 +82,14 @@ $(document).ready(function() {
     });
     $("#ok_button").bind("click", function(){
          $("#questionnaire_code_change").dialog("close");
+        return false;
     });
 
     $(".cancel_link").bind("click", function(){
          $("#questionnaire_code_change").dialog("close");
+        var old_questionnaire_code = $('#saved-questionnaire-code').val();
+        $('#questionnaire-code').val(old_questionnaire_code);
+        return false;
     });
 
     $('input[name=type]:radio').change(
