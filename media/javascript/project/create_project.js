@@ -13,6 +13,14 @@ DW.init_view_model = function (question_list) {
     viewModel.selectedQuestion.valueHasMutated();
 };
 
+function is_activity_report_selected() {
+    return $('input[name="activity_report"]:checked').val() == "no";
+}
+
+function is_subject_selected() {
+    return !is_activity_report_selected()
+}
+
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
@@ -37,7 +45,7 @@ $(document).ready(function() {
     });
 
     $(".cancel_link").bind("click", function(){
-          if (flag == '')
+          if (is_subject_selected())
           {
               if ($('#id_activity_report_0').attr('checked')){
                 $('#id_activity_report_1').attr("checked",true);
@@ -54,7 +62,7 @@ $(document).ready(function() {
     });
 
     $("#continue").bind("click", function(){
-        if ($('input[name="activity_report"]:checked').val() == "no") {
+        if (is_activity_report_selected()) {
             DW.init_view_model(subject_report_questions);
             $('#id_entity_type').attr('disabled', false);
         }
@@ -67,15 +75,12 @@ $(document).ready(function() {
     });
 
     var entity_type = '';
-    var flag = '';
     $('#id_entity_type').change(function() {
         entity_type = $('#id_entity_type').val();
-        flag = 'subject';
         $("#subject_warning_message").dialog("open");
     });
 
     $($('input[name="activity_report"]')).change(function() {
-        flag = '';
         $("#subject_warning_message").dialog("open");
     });
 
