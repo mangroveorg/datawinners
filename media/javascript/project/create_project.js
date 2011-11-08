@@ -39,7 +39,7 @@ DW.subject_warning_dialog_module={
     bind_dialog_closed:function(){
         $( "#subject_warning_message" ).bind( "dialogclose", function(event, ui) {
             $('#id_entity_type').val(DW.current_subject);
-            if(DW.current_project_selected!=get_selected_project()){
+            if(DW.current_project_selected!=DW.subject_warning_dialog_module.get_selected_project()){
                handle_subject_warning_cancel()
             }
         });
