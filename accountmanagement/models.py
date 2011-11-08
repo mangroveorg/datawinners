@@ -105,11 +105,28 @@ class OrganizationSetting(models.Model):
     sms_tel_number = models.TextField(unique=True, null=True)
     smsc = models.ForeignKey(SMSC, null=True,
                              blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
+    incoming_sms_count = models.IntegerField(default=0)
+    outgoing_sms_count = models.IntegerField(default=0)
 
     def get_organisation_sms_number(self):
         if self.organization.in_trial_mode:
             return settings.TRIAL_ACCOUNT_PHONE_NUMBER
         return self.sms_tel_number
+
+    def increment_incoming_message_count(self):
+        self.incoming_sms_count += 1
+        self.save()
+
+    def increment_outgoing_message_count(self):
+        self.outgoing_sms_count += 1
+        self.save()
+
+    def should_handle_message(self):
+        if self.organization.in_trial_mode:
+            if (self.incoming_sms_count + self.outgoing_sms_count) > 100:
+                return False
+
+        return True
 
     def __unicode__(self):
         return self.organization.name

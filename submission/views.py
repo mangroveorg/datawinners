@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_db_manager_for
+from datawinners.main.utils import get_db_manager_for, get_organization_settings_for
 from datawinners.messageprovider.messages import exception_messages, SMS
 from datawinners.ordersmsparser.order_sms_parser import OrderSMSParser
 from datawinners.submission.models import DatawinnerLog, SMSResponse
@@ -49,6 +49,10 @@ def sms(request):
     if _to is None:
         return HttpResponse(_("Your organization does not have a telephone number assigned. Please contact DataWinners Support."))
     try:
+        org_settings = get_organization_settings_for(_from, _to)
+        org_settings.increment_incoming_message_count()
+        if not org_settings.should_handle_message():
+            return HttpResponse(_("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects."))
         dbm = get_db_manager_for(_from, _to)
     except UnknownOrganization as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
@@ -67,12 +71,14 @@ def sms(request):
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, error=message)
         log.save()
+        org_settings.increment_outgoing_message_count()
         return HttpResponse(message)
     except FormModelDoesNotExistsException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         log = DatawinnerLog(message=_message, from_number=_from, to_number=_to, form_code=exception.data[0],
                             error=message)
         log.save()
+        org_settings.increment_outgoing_message_count()
         return HttpResponse(message)
 
     try:
@@ -98,6 +104,7 @@ def sms(request):
         logger.exception('SMS Processing failure: message')
         message = get_exception_message_for(exception=exception, channel=SMS)
 
+    org_settings.increment_outgoing_message_count()
     return HttpResponse(message)
 
 

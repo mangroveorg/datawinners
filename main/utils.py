@@ -29,6 +29,14 @@ def exclude_of_type(entity,type):
     return False if entity.type_path[0] == type else True
 
 def get_db_manager_for(data_sender_phone_no, org_tel_number):
+    try:
+        organization_settings = get_organization_settings_for(data_sender_phone_no, org_tel_number)
+    except UnknownOrganization as ex:
+        raise ex
+    db = organization_settings.document_store
+    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+
+def get_organization_settings_for(data_sender_phone_no, org_tel_number):
     org_tel_number = remove_hyphens(org_tel_number)
     trial_account_phone_number = remove_hyphens(settings.TRIAL_ACCOUNT_PHONE_NUMBER)
 
@@ -40,8 +48,7 @@ def get_db_manager_for(data_sender_phone_no, org_tel_number):
             organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
     except ObjectDoesNotExist:
         raise UnknownOrganization(org_tel_number)
-    db = organization_settings.document_store
-    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
+    return organization_settings
 
 def create_views(dbm):
     """Creates a standard set of views in the database"""
