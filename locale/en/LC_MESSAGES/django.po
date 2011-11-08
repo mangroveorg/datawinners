@@ -2634,3 +2634,6 @@ msgstr ""
 
 msgid "enabled"
 msgstr ""
+
+msgid "You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects."
+msgstr ""

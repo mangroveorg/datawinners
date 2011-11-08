@@ -2682,3 +2682,6 @@ msgstr "pour ce projet."
 
 msgid "enabled"
 msgstr "activés"
+
+msgid "You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects."
+msgstr "Vous avez utilisé vos 100 SMS pour le compte d'essai. S'il vous plaît passer à un abonnement mensuel de continuer à envoyer des données à vos projets."
