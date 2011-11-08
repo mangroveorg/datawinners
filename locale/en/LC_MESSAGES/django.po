@@ -1331,62 +1331,8 @@ msgid ""
 "whole profile or \"Edit profile\" to make changes."
 msgstr ""
 
-#: templates/project/overview.html:45
+#: templates/project/questionnaire_and_html:2
 msgid "Status: Complete"
-msgstr ""
-
-#: templates/project/overview.html:50
-msgid "Template"
-msgstr ""
-
-#: templates/project/overview.html:51
-msgid "No template"
-msgstr ""
-
-#: templates/project/overview.html:55
-msgid "questions defined"
-msgstr ""
-
-#: templates/project/overview.html:59
-msgid "Who"
-msgstr ""
-
-#: templates/project/overview.html:61
-msgid "Sender Group"
-msgstr ""
-
-#: templates/project/overview.html:62 templates/project/overview.html.py:84
-#: templates/project/overview.html:91 templates/project/overview.html.py:95
-msgid "No Data"
-msgstr ""
-
-#: templates/project/overview.html:65
-msgid "Data sender Registration"
-msgstr ""
-
-#: templates/project/overview.html:66
-msgid "No data"
-msgstr ""
-
-#: templates/project/overview.html:69
-#: templates/project/profile_languages.html:3
-msgid "Languages"
-msgstr ""
-
-#: templates/project/overview.html:70
-msgid "No language specified"
-msgstr ""
-
-#: templates/project/overview.html:74
-msgid "How"
-msgstr ""
-
-#: templates/project/overview.html:76
-msgid "Cell Phone"
-msgstr ""
-
-#: templates/project/overview.html:83
-msgid "Computer"
 msgstr ""
 
 #: templates/project/overview.html:88
@@ -1395,20 +1341,8 @@ msgstr ""
 msgid "When"
 msgstr ""
 
-#: templates/project/overview.html:90
-msgid "How often"
-msgstr ""
-
 #: templates/project/overview.html:94
 msgid "Deadline"
-msgstr ""
-
-#: templates/project/profile.html:24
-msgid "Step 1"
-msgstr ""
-
-#: templates/project/profile.html:26
-msgid "Fill out the following information to create your project"
 msgstr ""
 
 #: templates/project/profile.html:49
@@ -1417,58 +1351,13 @@ msgid ""
 "remove all existing data."
 msgstr ""
 
-#: templates/project/profile.html:51
+#: templates/project/create_project.html:88
 msgid "Continue"
 msgstr ""
 
-#: templates/project/profile.html:61
+#: templates/project/create_project.html:179
 msgid "Save & Create Project"
 msgstr ""
-
-#: templates/project/profile_background.html:4
-msgid "Background"
-msgstr ""
-
-#: templates/project/profile_background.html:13
-msgid "q_tooltip_project_profile_background"
-msgstr ""
-"DataWinners stores projects by the <strong>Project Name</strong>. It is "
-"important to give each ofyour projects a separate name so when you have many "
-"projects running at the same time youcan easily track each project."
-
-#: templates/project/profile_background.html:15
-msgid "r_tooltip_project_profile_background"
-msgstr ""
-"Name your project by typing a short descriptive phrase in the Name this "
-"Project box. Don't worry,you can always edit your project name later."
-
-#: templates/project/profile_background.html:26
-msgid "q_tooltip_project_profile_project_type"
-msgstr ""
-"DataWinners offers two <strong>Project Types</strong>. You can collect data "
-"from people by choosingthe <strong>Data Collection</strong> option. Or, you "
-"can send messages to people by choosing<strong>Public Communication</strong>."
-
-#: templates/project/profile_background.html:29
-msgid "r_tooltip_project_profile_project_type"
-msgstr ""
-"Click the radio button next the <strong>Project Type</strong> you are "
-"creating. We will providestep-by-step instructions for your choice. Don't "
-"worry, you can always change your mind later."
-
-#: templates/project/profile_datasenders.html:12
-msgid "q_tooltip_profile_data_senders"
-msgstr ""
-"DataWinners allows you to chose who you collect your data from. With Open "
-"Data Sender Groups anyone cansend you data if you provide them your phone "
-"number. With Closed Data Sender Groups only those peoplewho you register "
-"will be able to send data to your number."
-
-#: templates/project/profile_datasenders.html:15
-msgid "r_tooltip_profile_data_senders"
-msgstr ""
-"Click the radio button next to your choice. Don’t worry, you can always "
-"change your mind later."
 
 #: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"

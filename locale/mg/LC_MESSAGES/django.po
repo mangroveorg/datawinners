@@ -1414,81 +1414,15 @@ msgstr ""
 msgid "Status: Complete"
 msgstr "Statut : Terminé"
 
-#: templates/project/overview.html:50
-msgid "Template"
-msgstr "Modèle"
-
-#: templates/project/overview.html:51
-msgid "No template"
-msgstr "Aucun modèle"
-
-#: templates/project/overview.html:55
-msgid "questions defined"
-msgstr "questions définies"
-
-#: templates/project/overview.html:59
-msgid "Who"
-msgstr "Qui"
-
-#: templates/project/overview.html:61
-msgid "Sender Group"
-msgstr "Groupe d'envoyeur"
-
-#: templates/project/overview.html:62 templates/project/overview.html.py:84
-#: templates/project/overview.html:91 templates/project/overview.html.py:95
-msgid "No Data"
-msgstr "Aucunes données"
-
-#: templates/project/overview.html:65
-msgid "Data sender Registration"
-msgstr "Ajout d'un envoyeur"
-
-#: templates/project/overview.html:66
-msgid "No data"
-msgstr "Aucunes données"
-
-#: templates/project/overview.html:69
-#: templates/project/profile_languages.html:3
-msgid "Languages"
-msgstr "Langues"
-
-#: templates/project/overview.html:70
-msgid "No language specified"
-msgstr "Langue non spécifiée"
-
-#: templates/project/overview.html:74
-msgid "How"
-msgstr "Comment"
-
-#: templates/project/overview.html:76
-msgid "Cell Phone"
-msgstr "Téléphone mobile"
-
-#: templates/project/overview.html:83
-msgid "Computer"
-msgstr "Ordinateur"
-
 #: templates/project/overview.html:88
 #: templates/project/reminder_content.html:25
 #: templates/project/reminders.html:38
 msgid "When"
 msgstr "Quand"
 
-#: templates/project/overview.html:90
-msgid "How often"
-msgstr "Combien de fois"
-
 #: templates/project/overview.html:94
 msgid "Deadline"
 msgstr "Date limite "
-
-#: templates/project/profile.html:24
-msgid "Step 1"
-msgstr "Etape 1"
-
-#: templates/project/profile.html:26
-msgid "Fill out the following information to create your project"
-msgstr "Remplissez les informations suivantes pour créer votre projet"
 
 #: templates/project/profile.html:49
 msgid ""
@@ -1505,52 +1439,6 @@ msgstr "Continuer"
 #: templates/project/profile.html:61
 msgid "Save & Create Project"
 msgstr "Enregistrer & créez projet"
-
-#: templates/project/profile_background.html:4
-msgid "Background"
-msgstr "Données de base"
-
-#: templates/project/profile_background.html:13
-msgid "q_tooltip_project_profile_background"
-msgstr ""
-"DataWinners identifie les projets par leur <strong>Nom</strong>. Il est "
-"important de donner à chaque projet un nom distinctif pour que vous "
-"puissiez les distinguer et les suivre aisément."
-
-#: templates/project/profile_background.html:15
-msgid "r_tooltip_project_profile_background"
-msgstr ""
-"Donnez un nom à votre projet en saisissant un court descriptif dans ce champ. "
-"Ne vous inquiétez pas, vous pourrez toujours le changer plus tard."
-
-#: templates/project/profile_background.html:26
-msgid "q_tooltip_project_profile_project_type"
-msgstr ""
-"DataWinners gère deux <strong>types de projets</strong>. Vous pouvez collecter "
-"des données en choisissant l'option <strong>Collecte de données</strong>. "
-"Ou bien envoyer des messages à des personnes choisies avec l'option <strong> "
-"Communication publique</strong>"
-
-#: templates/project/profile_background.html:29
-msgid "r_tooltip_project_profile_project_type"
-msgstr ""
-"Cliquez sur le bouton radio à côté de <strong>Type de projet</strong> "
-"Nous vous guiderons étape par étape selon votre choix. Ne vous inquiétez "
-"pas, vous pourrez toujours changer votre choix plus tard."
-
-#: templates/project/profile_datasenders.html:12
-msgid "q_tooltip_profile_data_senders"
-msgstr ""
-"DataWinners vous permet de choisir les personnes qui vont vous envoyer des données."
-"Avec l'option \" Ouvert \", tout le monde peut vous envoyer des données du moment "
-"que vous leur communiquez votre numéro. Avec l'option \" Restreint \", seules "
-"les personnes enregistrées seront autorisées à envoyer des données."
-
-#: templates/project/profile_datasenders.html:15
-msgid "r_tooltip_profile_data_senders"
-msgstr ""
-"Cliquez sur le bouton radio à côté de votre choix. Ne vous inquiétez pas, "
-"vous pourrez toujours changer votre choix plus tard."
 
 #: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"
