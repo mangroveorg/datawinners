@@ -2,6 +2,7 @@
 import json
 import datetime
 from time import mktime
+import mimetypes, os
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import Form
 from django import forms
@@ -557,13 +558,6 @@ def subjects(request, project_id=None):
              'post_url': reverse(import_subjects_from_project_wizard),
              'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
-
-def download_subject_template(request, language):
-    file_name = '../media/files/DataWinners_ImportSubjects.xls' if language == 'en' else '../media/files/DataWinners_ImporterLesSujets.xls'
-    response = HttpResponse(mimetype='application/force-download')
-    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file_name)
-    response['X-Sendfile'] = smart_str('../media/files/DataWinners_ImportSubjects.xls')
-    return response
 
 @login_required(login_url='/login')
 def registered_subjects(request, project_id=None):
