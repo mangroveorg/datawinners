@@ -245,7 +245,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     weekly_reminder_and_deadline = {
             "reminders_enabled": "True",
             "deadline_week": "5",
-            "deadline_type": "That",
+            "deadline_type": "Same",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "week"
@@ -580,7 +580,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     weekly_reminder_and_deadline = {
             "reminders_enabled": "True",
             "deadline_week": "5",
-            "deadline_type": "That",
+            "deadline_type": "Same",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "week"
@@ -784,7 +784,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     monthly_reminder_and_deadline = {
 	   "reminders_enabled": "True",
 	   "deadline_month": "30",
-	   "deadline_type": "that",
+	   "deadline_type": "Same",
 	   "frequency_enabled": "True",
 	   "has_deadline": "True",
 	   "frequency_period": "month"
@@ -1194,7 +1194,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     weekly_reminder_and_deadline = {
             "reminders_enabled": "True",
             "deadline_week": "5",
-            "deadline_type": "That",
+            "deadline_type": "Same",
             "frequency_enabled": "True",
             "has_deadline": "True",
             "frequency_period": "week"
