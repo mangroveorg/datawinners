@@ -176,11 +176,10 @@ def all_subjects(request):
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         subjects_data = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                        'failure_imports': failure_imports, 'all_data': subjects_data,
-                                        'current_language': translation.get_language()}))
+                                        'failure_imports': failure_imports, 'all_data': subjects_data}))
 
     subjects_data = import_module.load_all_subjects(request)
-    return render_to_response('entity/all_subjects.html', {'all_data': subjects_data},
+    return render_to_response('entity/all_subjects.html', {'all_data': subjects_data, 'current_language': translation.get_language()},
                                   context_instance=RequestContext(request))
 
 
@@ -247,10 +246,10 @@ def all_datasenders(request):
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                        'failure_imports': failure_imports, 'all_data': all_data_senders,
-                                        'current_language': translation.get_language()}))
+                                        'failure_imports': failure_imports, 'all_data': all_data_senders}))
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access},
+    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access,
+                                                              'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
 @csrf_view_exempt
