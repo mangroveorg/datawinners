@@ -1,10 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
-from datawinners.accountmanagement.models import OrganizationSetting, SMSC
+from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails
+from mangrove.utils.types import is_empty
 
 class OrganizationSettingAdmin(admin.ModelAdmin):
-    list_display = ('organization_name', 'organization_id', 'inbound_sms', 'outbound_sms', 'total_sms')
+    list_display = ('organization_name', 'organization_id', 'inbound_sms', 'outbound_sms', 'total_sms', 'payment_details')
     fields = ('sms_tel_number', 'smsc')
 
     def organization_name(self, obj):
@@ -21,6 +22,14 @@ class OrganizationSettingAdmin(admin.ModelAdmin):
 
     def total_sms(self, obj):
         return obj.incoming_sms_count + obj.outgoing_sms_count
+
+    def payment_details(self, obj):
+        organization = obj.organization
+        payment_details = PaymentDetails.objects.filter(organization = organization)
+        if not is_empty(payment_details):
+            return payment_details[0].preferred_payment
+
+        return "--"
 
 
 admin.site.register(OrganizationSetting, OrganizationSettingAdmin)
