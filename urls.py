@@ -9,7 +9,7 @@ import settings
 from django.contrib import admin
 
 js_info_dict = {
-    'packages': ('datawinners.project',),
+    'packages': ('datawinners',),
 }
 
 urlpatterns = patterns('',
