@@ -13,11 +13,25 @@ DW.init_view_model = function (question_list) {
     viewModel.selectedQuestion.valueHasMutated();
 };
 
+DW.devices=function(smsElement){
+  this.smsElement=smsElement;
+}
+
+DW.devices.prototype={
+    disableSMSElement:function(){
+        $(this.smsElement).attr("disabled",true);
+    },
+    enableSMSElement:function(){
+        $(this.smsElement).attr("disabled",false);
+    }
+}
 
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
     DW.subject_warning_dialog_module.init();
+    var devices=new DW.devices("#id_devices_0");
+    devices.disableSMSElement();
 
     $($('input[name="frequency_enabled"]')).change(function() {
         if (this.value == "True") {
@@ -92,6 +106,7 @@ $(document).ready(function() {
             $('div.clear_both').removeAttr('id','error');
             return;
         }
+        devices.enableSMSElement();
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val(),
                         'profile_form': $('#create_project_form').serialize(), 'state':this.id};
 
