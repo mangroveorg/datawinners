@@ -17,6 +17,23 @@ DW.devices=function(smsElement){
   this.smsElement=smsElement;
 }
 
+DW.error_appender=function(element){
+    this.element=element;
+
+}
+
+DW.error_appender.prototype={
+   appendError:function(errorText){
+       $(this.element).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
+
+   },
+   hide_message:function () {
+    $(this.element).delay(5000).fadeOut();
+}
+
+
+}
+
 DW.devices.prototype={
     disableSMSElement:function(){
         $(this.smsElement).attr("disabled",true);
@@ -113,6 +130,29 @@ DW.basic_project_info.prototype={
             }
         });
 
+    },
+    isValid:function(){
+        return $(this.project_info_form_element).valid();
+    }
+
+}
+
+DW.questionnaire_form=function(formElement){
+    this.formElement=formElement;
+    this.errorAppender=new DW.error_appender("#message-label");
+
+}
+
+DW.questionnaire_form.prototype={
+    isValid:function(){
+        return $(this.formElement).valid();
+    },
+    processValidation:function(){
+        if (!this.isValid()){
+            this.error_appender.appendError("This questionnaire has an error");
+            this.error_appender.hide_message();
+        }
+
     }
 
 }
@@ -151,15 +191,11 @@ $(document).ready(function() {
         if(!questionnnaire_code.processValidation()){
             return;
         }
+        var questionnaire_form =new DW.questionnaire_form('#question_form');
 
-
-        var is_project_form_valid = $('#create_project_form').valid();
-        var is_questionnaire_form_valid = $('#question_form').valid();
-        if (!is_questionnaire_form_valid){
-            $("#message-label").show().html("<label class='error_message'> " + gettext("This questionnaire has an error") + ".</label> ");
-            hide_message();
-        }
-        if (!is_questionnaire_form_valid || !is_project_form_valid){
+        questionnaire_form.processValidation();
+        
+        if (!questionnaire_form.isValid()|| !basic_project_info.isValid()){
             var location = "/project/wizard/create";
             $('.error_arrow:visible').closest('div.clear_both').attr('id','error');
             window.location.href = location + "#error";
@@ -193,7 +229,4 @@ $(document).ready(function() {
         return false;
     });
 
-    function hide_message() {
-        $('#message-label').delay(5000).fadeOut();
-    }
 });
