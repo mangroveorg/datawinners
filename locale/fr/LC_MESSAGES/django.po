@@ -2442,11 +2442,14 @@ msgstr "texte:"
 msgid "To:"
 msgstr "Pour:"
 
-msgid "Other People:"
-msgstr "Autres Personnes:"
+msgid "Additional People"
+msgstr "Les personnes supplémentaires"
 
-msgid "Data Senders from my project"
-msgstr "Les expéditeurs de données de mon projet"
+msgid "Additional People:"
+msgstr "Les personnes supplémentaires:"
+
+msgid "Data Senders associated to my project"
+msgstr "Les expéditeurs de données associés à mon projet"
 
 msgid "Enter your SMS text"
 msgstr "Entrez votre texte SMS"

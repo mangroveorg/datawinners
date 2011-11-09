@@ -14,15 +14,21 @@ from mangrove.form_model.form_model import REPORTER
 class BroadcastMessageForm(forms.Form):
 
     text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
-    to = ChoiceField(label=ugettext_lazy("To:"),choices=(("Associated", ugettext_lazy("Data Senders from my project")), ("All", ugettext_lazy("All Data Senders"))),
-                     widget=forms.RadioSelect, initial=("Associated"))
-    others = CharField(label=ugettext_lazy("Other People:"), max_length=160, widget=forms.Textarea, required=False)
+    to = ChoiceField(label=ugettext_lazy("To:"),choices=(("All", ugettext_lazy("All Data Senders")),
+                                                         ("Associated", ugettext_lazy("Data Senders associated to my project")),
+                                                         ("Additional", ugettext_lazy("Additional People"))),initial=("All"))
+    others = CharField(label=ugettext_lazy("Additional People:"), max_length=160, widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
         self.fields['text'].widget.attrs['id'] = 'sms_content'
         self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers.')
+
+    def clean_others(self):
+        if self.cleaned_data.get('to') == "Additional" and self.cleaned_data.get('others') == "":
+            raise ValidationError(_("This field is required"))
+        return self.cleaned_data.get('others')
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):

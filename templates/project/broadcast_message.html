@@ -33,7 +33,7 @@
         {% endif %}
 
         <div id="broadcast-form">
-            <form method="POST" action="">
+            <form method="POST" action="" id="broadcast_sms_form">
                 {% csrf_token %}
                 <ul>
                     <li class="{{ form.text.css_classes }} form-row-10px">
@@ -49,13 +49,13 @@
                         {{ form.to.errors }}
                     </li>
 
-                    <li class="{{ form.others.css_classes }} form-row-10px">
+                    <li class="{{ form.others.css_classes }} form-row-10px" id="additional_people_column">
                         {{ form.others.label_tag }}
                         {{ form.others }}
                         {{ form.others.errors }}
                     </li>
                     <div id="message-submit" class="float_right">
-                        <input type="reset" value="{% trans "Clear" %}" class="button">
+                        <input id="clear_broadcast_sms_form" type="reset" value="{% trans "Clear" %}" class="button">
                         <input id="id_send_broadcast_sms_button" type="submit" value="{% trans "Send" %}" class="button">
                     </div>
                 </ul>

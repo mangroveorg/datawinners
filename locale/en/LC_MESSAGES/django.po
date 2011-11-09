@@ -2413,10 +2413,13 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-msgid "Other People:"
+msgid "Additional People"
 msgstr ""
 
-msgid "Data Senders from my project"
+msgid "Additional People:"
+msgstr ""
+
+msgid "Data Senders associated to my project"
 msgstr ""
 
 msgid "Enter your SMS text"
