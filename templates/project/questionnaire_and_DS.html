@@ -19,7 +19,9 @@
             {% include 'project/sms_tester_form.html' %}
         {% endif %}
         <div class="line"></div>
-        <li><img src="/media/images/mini_computer.png"/>Internet</li>
+        {% if 'web' in project.devices %}
+            <li><img src="/media/images/mini_computer.png"/>Internet</li>
+        {% endif %}
     </ul>
     </div>
 </div>
