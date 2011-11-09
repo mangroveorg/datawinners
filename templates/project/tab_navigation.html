@@ -76,6 +76,9 @@
         <li class="{% ifactivetab 'tab_nav' 'data' %}active{% else %}inactive{% endifactivetab %}">
             <a id="data_tab" href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Data" %}</a>
         </li>
+        <li class="{% ifactivetab 'tab_nav' 'send_a_message' %}active{% else %}inactive{% endifactivetab %}">
+            <a id="send_message_tab" href="{{ project_links.broadcast_message_link }}" class="{{ disable_link_class }}">{% trans "Send A Message" %}</a>
+        </li>
         {% endif %}
     </ul>
 </div>
@@ -130,9 +133,6 @@
 
 {% block secondary_navigation_reminders %}
 <ul class="secondary_tab">
-    <li class="{% ifactivetab 'secondary_tab_nav' 'message' %}active{% else %}inactive{% endifactivetab %}">
-        <a id="send_message_tab" href="{{ project_links.broadcast_message_link }}">{% trans "Send A Message" %}</a>
-    </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'scheduled' %}active{% else %}inactive{% endifactivetab %}">
         <a id="scheduled_reminders_tab" href="{{ project_links.reminders_link }}">{% trans "Scheduled Reminders" %}</a>
     </li>
@@ -142,6 +142,5 @@
     <li class="{% ifactivetab 'secondary_tab_nav' 'settings' %}active{% else %}inactive{% endifactivetab %}">
         <a id="reminder_settings_tab" href="{{ project_links.setting_reminders_link }}">{% trans "Settings" %}</a>
     </li>
-
 </ul>
 {% endblock %}

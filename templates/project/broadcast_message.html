@@ -5,7 +5,7 @@
 {% load dw_tabs %}
 
 {% block navigation %}
-    {% activetab "tab_nav" "reminders" %}
+    {% activetab "tab_nav" "send_a_message" %}
     {{ block.super }}
 {% endblock %}
 
@@ -26,16 +26,11 @@
 {% endblock %}
 
 {% block content %}
-    {% block secondary_navigation_reminders %}
-        {% activetab "secondary_tab_nav" "message" %}
-        {{ block.super }}
-    {% endblock %}
     <div>
         {% if success %}
             <div class="success-message-box">Your message has been sent successfully. View your message in <a href="#">Sent
                 Messages</a></div>
         {% endif %}
-        <label>{% trans "Send A Message" %}</label>
 
         <div id="broadcast-form">
             <form method="POST" action="">
