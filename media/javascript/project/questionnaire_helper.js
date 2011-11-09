@@ -48,7 +48,8 @@ DW.question = function(question) {
     };
 
     // Extend will override the default values with the passed values(question), And take the values from defaults when its not present in question
-    this.options = $.extend({}, defaults, question);
+    //first argument "true" in extend field shows that appent values in default
+    this.options = $.extend(true, defaults, question);
     this._init();
 };
 
