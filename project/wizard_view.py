@@ -99,7 +99,7 @@ def save_project(request):
             return HttpResponse(json.dumps({'success': False, 'error': 'project' ,'error_message': e.message}))
         from datawinners.project.views import project_overview, index
         if project.state == ProjectState.INACTIVE:
-            return HttpResponse(json.dumps({'redirect_url': reverse(index)}))
+            return HttpResponse(json.dumps({'success': True, 'redirect_url': reverse(index)}))
         return HttpResponse(json.dumps({'success': True, 'redirect_url': reverse(project_overview, args=[pid])}))
 
 
