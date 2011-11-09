@@ -1,3 +1,4 @@
+from _collections import defaultdict
 import json
 import urlparse
 from django.contrib.auth.decorators import login_required
@@ -43,14 +44,16 @@ def save_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-
-    form = CreateProject(data=dict(urlparse.parse_qsl(request.POST['profile_form'])), entity_list=entity_list)
+    DEVICES = 'devices'
+    parsed_data = urlparse.parse_qsl(request.POST['profile_form'])
+    form = CreateProject(data=_convert_parsed_query_string_in_dict(parsed_data,DEVICES), entity_list=entity_list)
     project_id = request.POST['pid']
     project_state = request.POST['state']
     if form.is_valid():
         entity_type = form.cleaned_data['entity_type']
         project_name = form.cleaned_data["name"]
         language = form.cleaned_data['language']
+        devices = form.cleaned_data[DEVICES]
         if is_empty(project_id):
             try:
                 get_form_model_by_code(manager, request.POST['questionnaire-code'])
@@ -60,7 +63,7 @@ def save_project(request):
                               project_type='survey', entity_type=entity_type,
                               reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
                               activity_report=form.cleaned_data['activity_report'],
-                              state =project_state, devices=[],language=language)
+                              state =project_state, devices=devices,language=language)
                 try:
                     questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name, language=language)
                 except QuestionCodeAlreadyExistsException as e:
@@ -193,3 +196,9 @@ def reminder_settings(request, project_id):
         return render_to_response('project/reminder_settings.html',
                 {'project_links': project_links,'project': project,
                  'form':form},context_instance=RequestContext(request))
+
+def _convert_parsed_query_string_in_dict(parsed_query_string,special_key):
+    intermediate_dict=defaultdict(list)
+    for key,value in parsed_query_string:
+        intermediate_dict[key].append(value)
+    return {key:(value if key==special_key else value[0]) for key,value in intermediate_dict.items()}

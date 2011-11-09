@@ -113,20 +113,6 @@ class TestHelper(unittest.TestCase):
         q1 = helper.create_question(post[0], self.dbm)
         self.assertEqual(q1.constraints, [])
 
-#    #This test would be fixed when we pass a created param to Submission
-#    @skip
-#    def test_should_return_tuple_list_of_submissions(self):
-#        dbm = Mock(spec=DatabaseManager)
-#        questions = [Field(name="Question 1", code="Q1", ddtype="int"),
-#                     Field(code="Q2", name="Question 2", ddtype="int")]
-#        submissions = [
-#            Submission(dbm, values={'q1': 'ans1', 'q2': 'ans2'}, transport_info=TransportInfo("sms", "1234", "2616")),
-#            Submission(dbm, values={'q2': 'ans22'}, transport_info=TransportInfo("sms", "1234", "2616"))
-#        ]
-#        required_submissions = [('2616', '1234', datetime(2011, 1, 1), True, False, 'error1', 'ans1', 'ans2',),
-#            ('2616', helper.TEST_FLAG, datetime(2011, 1, 2), False, True, 'error2', None, 'ans22',),
-#        ]
-#        self.assertEquals(required_submissions, helper.adapt_submissions_for_template(questions, submissions))
 
     def test_should_create_text_question_with_implicit_ddtype(self):
         post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text",

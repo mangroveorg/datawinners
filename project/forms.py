@@ -137,6 +137,8 @@ class CreateProject(Form):
                       ('Child', _('Child')), ('Employee', _('Employee')), )
     LANGUAGES = (('en', 'English'), ('fr', 'Français'),('mg', 'Malagasy'))
 
+    DEVICE_CHOICES = (('sms', 'SMS'), ('web', 'WEB'))
+
     name = CharField(required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
 
@@ -153,6 +155,9 @@ class CreateProject(Form):
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
                            widget=forms.RadioSelect,
                            choices=LANGUAGES, initial='en')
+
+    devices = MultipleChoiceField(label=_('Device'), widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
+                                  initial=['sms', 'web'], required=False)
 
 #TO-DO introduce this when we introduce categories
 #    category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
