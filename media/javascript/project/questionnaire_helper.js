@@ -65,7 +65,7 @@ DW.question.prototype = {
 
         this.min_length = ko.observable(q.length.min);
         this.max_length = ko.observable(q.length.max);
-        this.title = ko.observable(gettext(q.name));
+        this.title = ko.observable(q.name);
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.required = ko.observable(q.required);
@@ -117,8 +117,6 @@ DW.question.prototype = {
                     },
                     owner: this
                 });
-
-
     }
 };
 
