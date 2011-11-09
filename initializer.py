@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import  sync_views
+
 from mangrove import initializer as mangrove_intializer
 from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.datastore.entity import create_entity, get_by_short_code
@@ -9,9 +11,6 @@ from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 
 
 REPORTER_SHORT_CODE = 'test'
-
-TEST_REPORTER_MOBILE_NUMBER = '0000000000'
-
 DEFAULT_LOCATION = ["madagascar"]
 
 def create_default_reporter(manager):

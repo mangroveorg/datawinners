@@ -4,10 +4,9 @@ from unittest.case import SkipTest
 import couchdb
 from django.test import Client
 from django.conf import settings
-from datawinners.accountmanagement.models import Organization, OrganizationSetting
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, TEST_REPORTER_MOBILE_NUMBER
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
-from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport import reporter
 

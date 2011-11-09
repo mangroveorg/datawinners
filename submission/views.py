@@ -5,8 +5,7 @@ from django.utils import translation
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import gettext as _
-from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_db_manager_for, get_organization_settings_for, get_database_manager
 from datawinners.messageprovider.messages import exception_messages, SMS

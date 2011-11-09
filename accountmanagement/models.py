@@ -8,6 +8,7 @@ from django.template.defaultfilters import slugify
 
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
+TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
 class Organization(models.Model):
     name = models.TextField()

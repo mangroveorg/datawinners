@@ -9,7 +9,7 @@ from django.conf import settings
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import UnknownOrganization
 
-from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.entity.helper import remove_hyphens
 
 def get_database_manager(user):
@@ -39,7 +39,6 @@ def get_organization_settings_for(data_sender_phone_no, org_tel_number, user=Non
 
     try:
         if org_tel_number == trial_account_phone_number:
-            from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
             if data_sender_phone_no == TEST_REPORTER_MOBILE_NUMBER:
                 profile = user.get_profile()
                 organization = Organization.objects.get(org_id=profile.org_id)
