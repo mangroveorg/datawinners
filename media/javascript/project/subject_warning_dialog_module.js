@@ -26,7 +26,7 @@ DW.subject_warning_dialog_module={
         $( "#subject_warning_message" ).bind( "dialogclose", function(event, ui) {
             $('#id_entity_type').val(DW.current_subject);
             if(DW.current_project_selected!=DW.subject_warning_dialog_module.get_selected_project()){
-               DW.subject_warning_dialog_module.handle_subject_warning_cancel()
+               DW.subject_warning_dialog_module.handle_subject_warning_cancel();
             }
         });
         return false;

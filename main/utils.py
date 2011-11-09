@@ -1,19 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
-from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
-from mangrove.datastore.database import get_db_manager
-
-from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
-from datawinners.settings import PROJECT_DIR
-from mangrove.datastore.database import get_db_manager
-from datawinners.entity.helper import remove_hyphens
-
-from django.conf import settings
-from mangrove.errors.MangroveException import UnknownOrganization
 import os
 from glob import iglob
 import string
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+
+from mangrove.datastore.database import get_db_manager
+from mangrove.errors.MangroveException import UnknownOrganization
+
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
+from datawinners.entity.helper import remove_hyphens
 
 def get_database_manager(user):
     profile = user.get_profile()
@@ -36,14 +33,20 @@ def get_db_manager_for(data_sender_phone_no, org_tel_number):
     db = organization_settings.document_store
     return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
 
-def get_organization_settings_for(data_sender_phone_no, org_tel_number):
+def get_organization_settings_for(data_sender_phone_no, org_tel_number, user=None):
     org_tel_number = remove_hyphens(org_tel_number)
     trial_account_phone_number = remove_hyphens(settings.TRIAL_ACCOUNT_PHONE_NUMBER)
 
     try:
         if org_tel_number == trial_account_phone_number:
-            record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
-            organization_settings = OrganizationSetting.objects.get(organization=record.organization)
+            from datawinners.initializer import TEST_REPORTER_MOBILE_NUMBER
+            if data_sender_phone_no == TEST_REPORTER_MOBILE_NUMBER:
+                profile = user.get_profile()
+                organization = Organization.objects.get(org_id=profile.org_id)
+                organization_settings = OrganizationSetting.objects.get(organization=organization)
+            else:
+                record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
+                organization_settings = OrganizationSetting.objects.get(organization=record.organization)
         else:
             organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
     except ObjectDoesNotExist:
