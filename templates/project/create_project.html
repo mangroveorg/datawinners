@@ -174,12 +174,12 @@
         <fieldset>
             <legend>3. Save and Create</legend>
         </fieldset>
-        <div class="right_aligned_button">
+        <div class="right_aligned_button create_project">
             <a href="/project/" class="cancel_link">{% trans "Cancel" %} </a>
             {% if project.state != 'Test' %}
                 <input type="button" class="draft_button" id="Inactive" value="{% trans "Save as Draft" %}">
             {% endif %}
-            <input type="button" class="button" id="create_test_project" value="{% trans "Save & Create Project" %}"/>
+            <input type="button" class="button" id="Test" value="{% trans "Save & Create Project" %}"/>
         </div>
     </div>
 

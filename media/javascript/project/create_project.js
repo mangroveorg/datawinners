@@ -92,8 +92,7 @@ $(document).ready(function() {
         }
     });
 
-
-    $('#create_test_project').click(function() {
+    $('.create_project input:button').click(function() {
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
         if(!questionnnaire_code.processMandatory()){
