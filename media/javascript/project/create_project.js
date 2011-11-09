@@ -32,6 +32,7 @@ DW.questionnaire_code=function(questionnaireCode,questionnaireErrorCode){
 
 }
 
+
 DW.questionnaire_code.prototype={
     processMandatory:function(){
         if (!this.isPresent()){
@@ -40,12 +41,78 @@ DW.questionnaire_code.prototype={
         }
         return true;
     },
+    processSpaces:function(){
+        var trimmed_value = $.trim($(this.questionnaireCode).val());
+        var list = trimmed_value.split(" ");
+        if(list.length>1){
+            this.appendError("Space is not allowed in questionnaire code");
+            return false;
+        }
+
+        $(this.questionnaireCode).val(trimmed_value);
+        return true;
+    },
+
+    processLetterAndDigitValidation:function(){
+        var code = $(this.questionnaireCode).val();
+        var re = new RegExp('^[A-Za-z0-9 ]+$');
+        if (!re.test(code)) {
+            this.appendError("Only letters and digits are valid");
+            return false;
+        }
+        return true;
+    },
+
     isPresent:function(){
         return !($.trim($(this.questionnaireCode).val())=="");
     },
 
     appendError:function(errorText){
       $(this.questionnaireErrorCode).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
+    },
+
+    processValidation:function(){
+        if(!this.processMandatory()){
+            return false;
+        }
+
+        if(!this.processSpaces()){
+            return false;
+        }
+
+        if(!this.processLetterAndDigitValidation()){
+            return false;
+        }
+        return true;
+
+    }
+
+}
+
+DW.basic_project_info=function(project_info_form_element){
+    this.project_info_form_element=project_info_form_element;
+}
+
+DW.basic_project_info.prototype={
+
+    createValidationRules:function(){
+        $(this.project_info_form_element).validate({
+            rules: {
+                name:{
+                    required: true
+                },
+                entity_type:{
+                    required:true
+                }
+            },
+            wrapper: "div",
+            errorPlacement: function(error, element) {
+                offset = element.offset();
+                error.insertAfter(element);
+                error.addClass('error_arrow');  // add a class to the wrapper
+            }
+        });
+
     }
 
 }
@@ -74,48 +141,18 @@ $(document).ready(function() {
         $("#subject_warning_message").dialog("open");
     });
 
-
-    $("#create_project_form").validate({
-        rules: {
-            name:{
-                required: true
-            },
-            entity_type:{
-                required:true
-            }
-        },
-        wrapper: "div",
-        errorPlacement: function(error, element) {
-            offset = element.offset();
-            error.insertAfter(element);
-            error.addClass('error_arrow');  // add a class to the wrapper
-        }
-    });
+    var basic_project_info=new DW.basic_project_info('#create_project_form');
+    basic_project_info.createValidationRules();
 
     $('.create_project input:button').click(function() {
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+
         var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
-        if(!questionnnaire_code.processMandatory()){
+        if(!questionnnaire_code.processValidation()){
             return;
         }
 
-        var list = $.trim($('#questionnaire-code').val()).split(" ");
-        if (list.length > 1) {
-            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("Space is not allowed in questionnaire code") + ".</label>");
-            return;
-        }
-        else {
-            $('#questionnaire-code').val($.trim($('#questionnaire-code').val()))
-        }
 
-        var text = $('#questionnaire-code').val();
-        var re = new RegExp('^[A-Za-z0-9 ]+$');
-        if (!re.test(text)) {
-            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("Only letters and digits are valid") + ".</label>");
-            return;
-        }
-
-        $("#questionnaire-code-error").html("");
         var is_project_form_valid = $('#create_project_form').valid();
         var is_questionnaire_form_valid = $('#question_form').valid();
         if (!is_questionnaire_form_valid){
