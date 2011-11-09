@@ -26,6 +26,30 @@ DW.devices.prototype={
     }
 }
 
+DW.questionnaire_code=function(questionnaireCode,questionnaireErrorCode){
+    this.questionnaireCode=questionnaireCode;
+    this.questionnaireErrorCode=questionnaireErrorCode;
+
+}
+
+DW.questionnaire_code.prototype={
+    processMandatory:function(){
+        if (!this.isPresent()){
+            this.appendError("The Questionnaire code is required")
+            return false;
+        }
+        return true;
+    },
+    isPresent:function(){
+        return !($.trim($(this.questionnaireCode).val())=="");
+    },
+
+    appendError:function(errorText){
+      $(this.questionnaireErrorCode).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
+    }
+
+}
+
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
@@ -69,10 +93,10 @@ $(document).ready(function() {
     });
 
 
-    $('.right_aligned_button input:button').click(function() {
+    $('#create_test_project').click(function() {
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
-        if ($.trim($("#questionnaire-code").val()) == "") {
-            $("#questionnaire-code-error").html("<label class='error_message'> " + gettext("The Questionnaire code is required") + ".</label>");
+        var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
+        if(!questionnnaire_code.processMandatory()){
             return;
         }
 
