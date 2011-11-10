@@ -51,7 +51,7 @@ def save_project(request):
     project_state = request.POST['state']
     if form.is_valid():
         entity_type = form.cleaned_data['entity_type']
-        project_name = form.cleaned_data["name"]
+        project_name = form.cleaned_data["name"].lower()
         language = form.cleaned_data['language']
         devices = form.cleaned_data[DEVICES]
         if is_empty(project_id):
