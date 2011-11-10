@@ -54,6 +54,15 @@
                     {% endif %}
                 </p>
             </div>
+
+            <div class="my_sub"><p><b>
+            {% if 'yes' in project.activity_report %}
+                My Data Senders
+            {% else %}
+                My {{ project.entity_type }}
+            {% endif %}
+            </b></p></div>
+
         <!--Map div-->
         {% include 'maps/entity_map.html'  %}
         <!--Questionnaire & DS div-->

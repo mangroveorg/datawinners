@@ -31,6 +31,12 @@
     display: inline;
     font-size: 16px; }
 
+.my_sub p b{
+    font-size: 16px;
+    float: left;
+    margin-bottom: 5px;
+}
+
 .right_half {
   float: right;
   width: 50%;
