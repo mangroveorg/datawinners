@@ -62,8 +62,7 @@ form ul li {
     border: 1px solid #00000;
     -moz-border-radius: 5px;
     -webkit-moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    opacity: 0.8; }
+    -webkit-border-radius: 5px; }
     form ul li ul.errorlist li {
       background: #c20303;
       padding: 3px 10px 3px 10px;
