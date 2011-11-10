@@ -37,7 +37,13 @@
         {% for project in projects %}
             <tr>
                 <td><a href="{{ project.link }}" class='project-id-class'>{{ project.name }}</a></td>
-                <td>{% trans project.state %}</td>
+                <td>{% if project.state == "Inactive" %}
+                        {% trans "Draft" %}
+                    {% else %}
+                        {% trans project.state %}
+                    {% endif %}
+                </td>
+
                 <td>{{ project.created }}</td>
                 <td>
                     <a href="{{ project.delete_link }}" class="delete_project">{% trans "Delete" %}</a>
