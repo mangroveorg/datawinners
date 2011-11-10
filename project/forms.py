@@ -128,7 +128,6 @@ class ProjectProfile(Form):
 
 
 class CreateProject(Form):
-    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
 
     QUESTIONNAIRE_CHOICES = (('yes', _("This is general activity report.")),
                              ('no', _("I am collecting data about a specific subject.")))
@@ -143,13 +142,6 @@ class CreateProject(Form):
     name = CharField(required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
 
-    frequency_enabled = ChoiceField(label=_("Time Period"),
-                                    help_text=ugettext_lazy("How often do you need data?"),
-                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=True)
-    frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),
-                                            ('quarter', _('Quarter')), ), widget=forms.Select(
-        attrs={'style': 'position: absolute; margin-left: 82px; margin-top: -39px;'}),
-                                   required=False, )
     activity_report = ChoiceField(label=_("What is this questionnaire about?"),
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='yes')
