@@ -116,7 +116,7 @@ def create_project(request):
         return render_to_response('project/create_project.html',
                 {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
-                 'existing_questions': repr(subject_report_questions), 'project': project_summary,
+                 'existing_questions': repr(activity_report_questions), 'project': project_summary,
                  'questionnaire_code': helper.generate_questionnaire_code(manager)},context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
