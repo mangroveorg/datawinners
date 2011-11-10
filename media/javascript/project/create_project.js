@@ -177,8 +177,13 @@ $(document).ready(function() {
         $("#subject_warning_message").dialog("open");
     });
 
-    $($('input[name="activity_report"]')).change(function() {
-        $("#subject_warning_message").dialog("open");
+    $('input[name="activity_report"]').change(function() {
+        if(DW.current_code > 2){
+            $("#subject_warning_message").dialog("open");
+        }
+        else{
+            DW.continue_flip();
+        }
     });
 
     var basic_project_info=new DW.basic_project_info('#create_project_form');

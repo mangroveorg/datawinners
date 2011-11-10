@@ -1,3 +1,17 @@
+DW.continue_flip = function(){
+    DW.subject_warning_dialog_module.enable_disable_entity_type_control();
+    if (DW.subject_warning_dialog_module.is_subject_selected()) {
+        DW.init_view_model(subject_report_questions);
+    }
+    else {
+        DW.init_view_model(activity_report_questions);
+    }
+    DW.current_subject = $('#id_entity_type').val();
+    DW.current_project_selected = DW.subject_warning_dialog_module.get_selected_project();
+    $("#subject_warning_message").dialog("close");
+    return false;
+};
+
 DW.subject_warning_dialog_module={
     init: function(){
         DW.ACTIVITY_REPORT_PROJECT=1;
@@ -12,14 +26,15 @@ DW.subject_warning_dialog_module={
     },
 
 
-    init_subject_warning_dialog:function(){$("#subject_warning_message").dialog({
-        title: gettext("Warning !!"),
-        modal: true,
-        autoOpen: false,
-        height: 225,
-        width: 325,
-        closeText: 'hide'
-    });
+    init_subject_warning_dialog:function(){
+        $("#subject_warning_message").dialog({
+            title: gettext("Warning !!"),
+            modal: true,
+            autoOpen: false,
+            height: 225,
+            width: 400,
+            closeText: 'hide'
+        });
     },
 
     bind_dialog_closed:function(){
@@ -43,29 +58,17 @@ DW.subject_warning_dialog_module={
 
     bind_continue:function(){
         $("#continue").bind("click", function(){
-            DW.subject_warning_dialog_module.enable_disable_entity_type_control()
-            if (DW.subject_warning_dialog_module.is_subject_selected()) {
-                DW.init_view_model(subject_report_questions);
-            }
-            else {
-                DW.init_view_model(activity_report_questions);
-            }
-            DW.current_subject = $('#id_entity_type').val();
-            DW.current_project_selected = DW.subject_warning_dialog_module.get_selected_project();
-            $("#subject_warning_message").dialog("close");
-            return false;
+            DW.continue_flip();
         });
-
     },
 
     enable_disable_entity_type_control:function(){
         if (DW.subject_warning_dialog_module.is_subject_selected()) {
-                $('#id_entity_type').attr('disabled', false);
-            }
-            else {
-                $('#id_entity_type').attr('disabled', true);
-            }
-
+            $('#id_entity_type').attr('disabled', false);
+        }
+        else {
+            $('#id_entity_type').attr('disabled', true);
+        }
     },
 
     is_activity_report_selected:function(){
