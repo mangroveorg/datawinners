@@ -10,13 +10,14 @@ from django.template.context import RequestContext
 from django.test.client import RequestFactory
 
 from mangrove.errors.MangroveException import TrialAccountExpiredException
-from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm
-from datawinners.accountmanagement.models import Organization, NGOUserProfile
+from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, LoginForm
+from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails
 from django.contrib.auth.views import login
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
+from django.core.urlresolvers import reverse
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -194,3 +195,29 @@ def edit_user(request):
 
 def trial_expired(request):
     return render_to_response("registration/trial_account_expired_message.html")
+
+@is_admin
+def upgrade(request):
+    profile = request.user.get_profile()
+    organization = Organization.objects.get(org_id = profile.org_id)
+    if request.method == 'GET':
+        form = UpgradeForm()
+        return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
+                                                               'form':form}, context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = UpgradeForm(request.POST)
+        if form.is_valid():
+            organization.in_trial_mode = False
+            organization.save()
+
+            invoice_period = form.cleaned_data['invoice_period']
+            preferred_payment = form.cleaned_data['preferred_payment']
+            payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,
+                                                           preferred_payment= preferred_payment)
+            payment_details.save()
+            return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
+            
+        return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
+                                                                   'form':form}, context_instance=RequestContext(request))
+
+

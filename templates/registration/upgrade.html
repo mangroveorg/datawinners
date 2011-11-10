@@ -1,0 +1,93 @@
+{% extends 'layout_registration.html' %}
+{% load i18n %}
+{% load field_tags %}
+{% block page_title %}{% trans "Upgrade" %} {% endblock %}
+{#{% block section_title %} {%  trans "Sign Up To Start Using DataWinners Now" %} {% endblock %}#}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="span-18 box">
+        <fieldset>
+            <form id="registration_form" action="" method="POST">
+                {% csrf_token %}
+                <div class="form-5px">
+                    <ul class="organization">
+                        <li>
+                            <h3 class="highlighted_title">{% trans "Your Organization" %}<br/></h3>
+                        </li>
+                        <li><label>Organization Name</label>{{ organization.name }}</li>
+                        <li><label>Organization Sector</label>{{ organization.sector }}</li>
+                        <li><label>Address</label>{{ organization.address }}</li>
+                        <li><label>City</label>{{ organization.city }}</li>
+                        <li><label>State / Province</label>{{ organization.state }}</li>
+                        <li><label>Postal / Zip Code</label>{{ organization.zipcode }}</li>
+                        <li><label>Country</label>{{ organization.country }}</li>
+                        <li><label>Office Phone Number</label>{{ organization.office_phone }}</li>
+                        <li><label>Website Url</label>{{ organization.website }}</li>
+                    </ul>
+                    <ul class="administrative">
+                        <li>
+                            <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}<br/>
+                            </h3>
+                        </li>
+                        <li><label>Title</label>{{ profile.title }}</li>
+                        <li><label>First Name</label>{{ user.first_name }}</li>
+                        <li><label>Last Name</label>{{ user.last_name }}</li>
+                        <li><label>User Name</label>{{ user.username }}</li>
+                        <li><label>Office Phone</label>{{ profile.office_phone }}</li>
+                        <li><label>Mobile Phone</label>{{ profile.mobile_phone }}</li>
+                        <li><label>Skype</label>{{ profile.skype }}</li>
+                    </ul>
+                    <ul class="payment_details">
+                        <li>
+                            <h3 class="highlighted_title">{% trans "Payment Details" %}</h3>
+                        </li>
+                        <li class="{{ form.invoice_period.css_classes }} form-row-10px">
+                            {{ form.invoice_period|field_label }}
+                            {{ form.invoice_period }}
+
+                            {{ form.invoice_period.errors }}
+                        </li>
+
+                        <li class="{{ form.preferred_payment.css_classes }} form-row-10px">
+                            {{ form.preferred_payment|field_label }}
+                            <div>
+                                <div class="choices_description">{% trans "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?" %}</div>
+                                <ul style="margin-left:170px">
+                                    {{ form.preferred_payment }}
+                                </ul>
+                                {{ form.preferred_payment.errors }}
+                            </div>
+
+                        </li>
+                        <li>
+                            <span class="italic">Note, your projects from the trial account will still be available</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="agree-terms" value="1"
+                                   checked="checked"/>{% trans "agree-terms" %}
+                        </li>
+
+                        <li class="margin_top_20">
+                            <input type="button" id="submit_registration_form" value="{% trans 'Upgrade' %}"
+                                   class="button"/>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+
+    <div id='user_should_agree_terms_block'>
+        {% trans "You have to agree terms and conditions before using DataWinners" %}
+        <br/>
+        <br/>
+        <a href="#" class="button agree_link">{% trans "Agree" %}</a>
+    </div>
+    <div id="content_of_terms_and_conditions">
+
+    </div>
+{% endblock %}

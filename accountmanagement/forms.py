@@ -190,3 +190,6 @@ class ResetPasswordForm(PasswordResetForm):
 
 class PasswordSetForm(SetPasswordForm):
     required_css_class = 'required'
+
+class UpgradeForm(forms.Form):
+    invoice_period, preferred_payment = payment_details_form()

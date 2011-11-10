@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from datawinners.accountmanagement.forms import FullRegistrationForm, LoginForm, ResetPasswordForm, PasswordSetForm, MinimalRegistrationForm
 from django.contrib import admin
-from views import settings, new_user, edit_user, users, custom_login,registration_complete,trial_expired
+from views import settings, new_user, edit_user, users, custom_login,registration_complete,trial_expired, upgrade
 
 admin.autodiscover()
 from django.contrib.auth import views as auth_views
@@ -24,4 +24,5 @@ urlpatterns = patterns('',
                        (r'^profile/$', edit_user),
                        (r'^account/users/$', users),
                        (r'^trial/expired/$', trial_expired),
+                       (r'^upgrade/$', upgrade),
 )
