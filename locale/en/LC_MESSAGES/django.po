@@ -71,10 +71,6 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-#: accountmanagement/forms.py:48
-msgid "Email"
-msgstr ""
-
 #: accountmanagement/forms.py:49 accountmanagement/forms.py:75
 msgid "Enter a valid email address. Example:name@organization.com"
 msgstr ""
@@ -601,10 +597,6 @@ msgstr ""
 msgid "Describe your subject in more details (optional)"
 msgstr ""
 
-#: templates/subject_form.html:56
-msgid "Mobile Number"
-msgstr ""
-
 #: templates/subject_form.html:57
 msgid "Enter the subject's Number"
 msgstr ""
@@ -669,6 +661,7 @@ msgstr ""
 
 #: templates/accountmanagement/account/users_list.html:25
 #: templates/entity/datasenders_table.html:12
+#: accountmanagement/forms.py:48
 msgid "Email"
 msgstr ""
 
@@ -2698,9 +2691,6 @@ msgid "Shelter"
 msgstr ""
 
 msgid "Water and Sanitation"
-msgstr ""
-
-msgid "State / Province"
 msgstr ""
 
 #blue tab
