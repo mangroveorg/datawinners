@@ -64,15 +64,15 @@ msgid "Website Url"
 msgstr ""
 
 #: accountmanagement/forms.py:46
-msgid "* First name"
+msgid "First name"
 msgstr ""
 
 #: accountmanagement/forms.py:47
-msgid "* Last name"
+msgid "Last name"
 msgstr ""
 
 #: accountmanagement/forms.py:48
-msgid "* Email"
+msgid "Email"
 msgstr ""
 
 #: accountmanagement/forms.py:49 accountmanagement/forms.py:75
@@ -93,15 +93,15 @@ msgid ""
 msgstr ""
 
 #: accountmanagement/forms.py:74
-msgid "* Email address"
+msgid "Email address"
 msgstr ""
 
 #: accountmanagement/forms.py:77
-msgid "* Password"
+msgid "Password"
 msgstr ""
 
 #: accountmanagement/forms.py:79
-msgid "* Password (again)"
+msgid "Password (again)"
 msgstr ""
 
 #: accountmanagement/forms.py:99
@@ -158,12 +158,8 @@ msgid ""
 "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
 msgstr ""
 
-#: entity/forms.py:22
-msgid "* Name"
-msgstr ""
-
 #: entity/forms.py:23
-msgid "* Mobile Number"
+msgid "Mobile Number"
 msgstr ""
 
 #: entity/forms.py:24
@@ -2705,4 +2701,15 @@ msgid "Water and Sanitation"
 msgstr ""
 
 msgid "State / Province"
+msgstr ""
+
+#blue tab
+msgid "Review and Test"
+msgstr ""
+
+#datasender-tab
+msgid "Import List"
+msgstr ""
+
+msgid "Import A List"
 msgstr ""

@@ -90,8 +90,8 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     password2 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
                                 label=_("Password (again)"))
 
-    first_name = forms.CharField(max_length=30, required=True, label='First name')
-    last_name = forms.CharField(max_length=30, required=True, label='Last name')
+    first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
+    last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
     office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
     mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))

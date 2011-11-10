@@ -65,15 +65,15 @@ msgid "Website Url"
 msgstr "Url du site web"
 
 #: accountmanagement/forms.py:46
-msgid "* First name"
-msgstr "* Prénom"
+msgid "First name"
+msgstr "Prénom"
 
 #: accountmanagement/forms.py:47
-msgid "* Last name"
-msgstr "* Nom"
+msgid "Last name"
+msgstr "Nom de Famille"
 
 #: accountmanagement/forms.py:48
-msgid "* Email"
+msgid "Email"
 msgstr ""
 
 #: accountmanagement/forms.py:49 accountmanagement/forms.py:75
@@ -94,16 +94,16 @@ msgid ""
 msgstr "Cette adresse email est déja utilisée. Veuillez saisir une adresse différente"
 
 #: accountmanagement/forms.py:74
-msgid "* Email address"
-msgstr "* Adresse email"
+msgid "Email address"
+msgstr "Adresse email"
 
 #: accountmanagement/forms.py:77
-msgid "* Password"
-msgstr "* Mot de passe"
+msgid "Password"
+msgstr "Mot de passe"
 
 #: accountmanagement/forms.py:79
-msgid "* Password (again)"
-msgstr "* Mot de passe (ressaisir)"
+msgid "Password (again)"
+msgstr "Mot de passe (ressaisir)"
 
 #: accountmanagement/forms.py:99
 msgid "The two password fields didn't match."
@@ -159,13 +159,9 @@ msgid ""
 "Please enter a valid value containing only letters a-z or A-Z or symbols '`- "
 msgstr "Veuillez saisir uniquement des lettres a-z ou A-Z ou les symboles '`-"
 
-#: entity/forms.py:22
-msgid "* Name"
-msgstr "* Nom"
-
 #: entity/forms.py:23
-msgid "* Mobile Number"
-msgstr "* Numéro de mobile"
+msgid "Mobile Number"
+msgstr "Numéro de mobile"
 
 #: entity/forms.py:24
 msgid "Please enter a valid phone number."
@@ -680,7 +676,7 @@ msgstr "Nom"
 #: templates/accountmanagement/account/users_list.html:25
 #: templates/entity/datasenders_table.html:12
 msgid "Email"
-msgstr "Email"
+msgstr "Adresse E-mail"
 
 #: templates/accountmanagement/profile/index.html:11
 msgid "Contact Info"
@@ -2752,3 +2748,14 @@ msgstr "Logement"
 
 msgid "Water and Sanitation"
 msgstr "Eau et Assainissement"
+
+#blue tab
+msgid "Review and Test"
+msgstr "Réviser et Mettre à l’Essai"
+
+#datasender-tab
+msgid "Import List"
+msgstr "Importer la Liste"
+
+msgid "Import A List"
+msgstr "Importer Une Liste"
