@@ -84,23 +84,6 @@
   width: 130px;
   padding: 6px 0px 0px 11px; }
 
-#how_to {
-  width: 100% !important;
-  margin: 40px 0 40px 0; }
-  #how_to .ui-widget-content {
-    border: 1px solid #CCCCCC; }
-  #how_to h3 {
-    background: #F5F5F5 !important;
-    padding: 10px;
-    color: #000000 !important;
-    border: 1px solid #ccc !important; }
-    #how_to h3 .title {
-      background: url(/media/images/accordion_arrows.png) no-repeat left -13px;
-      padding-left: 15px; }
-  #how_to h3.ui-state-active .title {
-    background: url(/media/images/accordion_arrows.png) no-repeat left -52px;
-    padding-left: 15px; }
-
 .padding_0 {
   padding: 0px !important;
   height: auto !important; }
