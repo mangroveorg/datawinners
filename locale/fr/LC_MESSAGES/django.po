@@ -2491,8 +2491,8 @@ msgstr "Vous avez créé votre questionnaire avec succès"
 msgid "Now you can..."
 msgstr "Maintenant vous pouvez..."
 
-msgid "...or just start collecting data"
-msgstr "...ou juste commencer à colleter des données"
+msgid "...or just start collecting data."
+msgstr "...ou juste commencer à colleter des données."
 
 msgid "input data"
 msgstr "donnée en entrée"
@@ -2682,3 +2682,38 @@ msgstr "Vous avez utilisé vos 100 SMS pour le compte d'essai. S'il vous plaît 
 
 msgid "Which subject are you reporting on?"
 msgstr "Votre rapport concerne quel sujet ?"
+
+#Create project Page:
+msgid "Basic Information"
+msgstr "Renseignements de Base"
+
+msgid "Example: Teacher attendance in Antananarivo"
+msgstr "Exemple: Taux d’Assiduité des Enseignants à Antananarivo"
+
+msgid "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%"
+msgstr "Exemple: Collecter les données émanant de 100 écoles primaires situées à Antananarivo, dans le but de faire passer le taux d'assiduité des enseignants de 50% à 80%"
+
+#overview page
+msgid "Data Senders associated"
+msgstr "Expéditeurs de Données concernés "
+
+msgid "records submitted"
+msgstr "enregistrements effectués"
+
+msgid "Reminders set for Data Senders"
+msgstr "Messages de rappel définis pour les Expéditeurs de Données"
+
+msgid "QUESTIONNAIRE"
+msgstr "QUESTIONNAIRE"
+
+msgid "Input Data"
+msgstr "Entrer des Données"
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "DATA SENDERS"
+msgstr "EXPÉDITEURS DE DONNÉES"
+
+msgid "Add Senders"
+msgstr "Ajouter des Expéditeurs"

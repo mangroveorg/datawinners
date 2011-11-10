@@ -3,7 +3,7 @@
 <div id="questionnaire" class="left_half">
     <div class="quarter">
         <div>
-            <div class="text-content">QUESTIONNAIRE</div><div class="text-content-right-arrow"></div>
+            <div class="text-content">{% trans "QUESTIONNAIRE" %}</div><div class="text-content-right-arrow"></div>
             <div class="clear-both">
                 <a href="{{ project_links.questionnaire_link }}" class="{% if project.state == 'Test' %} disable_link {% endif %}">{% trans "View" %} </a> |
                 <a href="{{ project_links.test_questionnaire_link }}" class="{% if project.state == 'Test' %} disable_link {% endif %}">{% trans "Input Data" %}</a>
@@ -12,7 +12,7 @@
     </div>
     <div class="quarter">
     <ul>
-        <li><b>{{ number_of_questions }}</b> Questions</li>
+        <li><b>{{ number_of_questions }}</b> {% trans "Questions" %}</li>
         <div class="line"></div>
         <li><img src="/media/images/mini_mobile.png" />sms{% if project.state == 'Test' %}<a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a></li>{% endif %}
         {% if project.state != 'Test' %}
@@ -20,7 +20,7 @@
         {% endif %}
         <div class="line"></div>
         {% if 'web' in project.devices %}
-            <li><img src="/media/images/mini_computer.png"/>Internet</li>
+            <li><img src="/media/images/mini_computer.png"/>{% trans "Internet" %}</li>
         {% endif %}
     </ul>
     </div>
@@ -28,20 +28,20 @@
 <div id="datasender-section" class="right_half">
     <div class="quarter">
         <div>
-            <div class="text-content">DATA SENDERS</div><div class="text-content-right-arrow"></div>
+            <div class="text-content">{% trans "DATA SENDERS" %}</div><div class="text-content-right-arrow"></div>
             <div class="clear-both">
-            <a href="{{ links.registered_data_senders }}">View</a> |
-            <a href="/entity/datasender/create">Add Senders</a>
-                </div>
+                <a href="{{ links.registered_data_senders }}">{% trans "View" %}</a> |
+                <a href="/entity/datasender/create">{% trans "Add Senders" %}</a>
+            </div>
         </div>
     </div>
     <div class="quarter">
     <ul>
-        <li><b>{{ number_data_sender }}</b> Data Senders associated</li>
+        <li><b>{{ number_data_sender }}</b> {% trans "Data Senders associated" %}</li>
         <div class="line"></div>
-        <li><b>{{ number_records }}</b> records submitted</li>
+        <li><b>{{ number_records }}</b> {% trans "records submitted" %}</li>
         <div class="line"></div>
-        <li><b>{{ number_reminders }}</b> Reminders set for Data Senders</li>
+        <li><b>{{ number_reminders }}</b> {% trans "Reminders set for Data Senders" %}</li>
     </ul>
     </div>
 </div>

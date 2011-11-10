@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="project_profile" class="clear_both">
     <fieldset>
-        <legend>1. Basic Information</legend>
+        <legend>1. {% trans "Basic Information" %}</legend>
     </fieldset>
     {% if messages %}
         <div class="message-box">
@@ -16,14 +16,13 @@
         {{ form.name }}
         <img src="/media/images/help_icon.png" />
         {{ form.name.errors }}
-        <p class="black_italic">Example: Teacher attendance in Antananarivo</p>
+        <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
     </li>
     <li>
         {{ form.goals.label_tag }}
         {{ form.goals }}
         {{ form.goals.errors }}
-        <p class="black_italic">Example: Collect data from 100 primary school in Antananarivo in an effort to increase
-            teacher attendance from 50% to 80%</p>
+        <p class="black_italic">{% trans "Example: Collect data from 100 primary school in Antananarivo in an effort to increase teacher attendance from 50% to 80%" %}</p>
     </li>
 
     <li>
