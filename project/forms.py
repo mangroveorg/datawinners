@@ -25,11 +25,6 @@ class BroadcastMessageForm(forms.Form):
         self.fields['text'].widget.attrs['id'] = 'sms_content'
         self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers.')
 
-    def clean_others(self):
-        if self.cleaned_data.get('to') == "Additional" and self.cleaned_data.get('others') == "":
-            raise ValidationError(_("This field is required"))
-        return self.cleaned_data.get('others')
-
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
     def __init__(self, name, value, attrs, choices):
