@@ -2448,6 +2448,9 @@ msgstr "Autres Personnes"
 msgid "Other People:"
 msgstr "Autres Personnes:"
 
+msgid "Send"
+msgstr "Envoyer"
+
 msgid "Data Senders associated to my project"
 msgstr "Les expéditeurs de données associés à mon projet"
 
