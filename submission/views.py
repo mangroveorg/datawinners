@@ -22,22 +22,80 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 import logging
 logger = logging.getLogger("django")
 
-def _test_mode_numbers(request):
-    profile = request.user.get_profile()
-    organization = Organization.objects.get(org_id=profile.org_id)
-    organization_settings = OrganizationSetting.objects.get(organization=organization)
-    _to = organization_settings.get_organisation_sms_number()
-    _from = TEST_REPORTER_MOBILE_NUMBER
-    return _from, _to
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+def sms(request):
+    message = Responder().respond(request)
+    return HttpResponse(message)
 
 
-def _get_from_and_to_numbers(request):
-    if request.POST.get('test_mode'):
-        return _test_mode_numbers(request)
+class Responder(object):
 
-    _from = request.POST["from_msisdn"]
-    _to = request.POST["to_msisdn"]
-    return _from, _to
+    def __init__(self):
+        self.next_state_processor = find_dbm
+
+    def respond(self, incoming_request):
+        request = self.next_state_processor(incoming_request)
+        if request.get('outgoing_message'):
+            return request['outgoing_message']
+
+        self.next_state_processor = request['next_state']
+        return self.respond(request)
+
+
+def find_dbm(request):
+    _from, _to = _get_from_and_to_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
+    transport_info = TransportInfo(transport=SMS, source=_from, destination=_to)
+    incoming_request = {'incoming_message': request.POST["message"], 'transport_info': transport_info,
+                        'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
+                                                        to_number=_to)}
+    if _to is None:
+        incoming_request['outgoing_message'] = ugettext("Your organization does not have a telephone number assigned. Please contact DataWinners Support.")
+        return incoming_request
+
+    try:
+        incoming_request['dbm'] = get_database_manager(request.user) if _from == TEST_REPORTER_MOBILE_NUMBER else get_db_manager_for(_from, _to)
+        org_setting = OrganizationSetting.objects.get(document_store = incoming_request['dbm'].database_name)
+        org_setting.increment_incoming_message_count()
+        org_setting.increment_outgoing_message_count()
+        org_setting.save()
+        if not org_setting.should_handle_message():
+            incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
+            return  incoming_request
+    except UnknownOrganization as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
+        incoming_request['datawinner_log'].save()
+        return incoming_request
+
+    incoming_request['next_state'] = find_parser
+    return incoming_request
+
+def find_parser(incoming_request):
+    sms_parser = OrderSMSParser(incoming_request['dbm']) if settings.USE_ORDERED_SMS_PARSER else SMSParser()
+    try:
+        form_code, values = sms_parser.parse(incoming_request['incoming_message'])
+        form_model = get_form_model_by_code(incoming_request['dbm'], form_code)
+        incoming_request['form_model'] = form_model
+        incoming_request['submission_values'] = values
+        incoming_request['datawinner_log'].form_code = form_code
+    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
+        incoming_request['datawinner_log'].save()
+    except FormModelDoesNotExistsException as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
+        incoming_request['datawinner_log'].save()
+
+    incoming_request['next_state'] = activate_language
+    return incoming_request
+
+def activate_language(incoming_request):
+    translation.activate(incoming_request['form_model'].activeLanguages[0])
+    incoming_request['next_state'] = submit_to_player
+    return incoming_request
 
 def submit_to_player(incoming_request):
     try:
@@ -62,69 +120,20 @@ def submit_to_player(incoming_request):
     incoming_request['outgoing_message'] = message
     return incoming_request
 
-def activate_language(incoming_request):
-    translation.activate(incoming_request['form_model'].activeLanguages[0])
-    incoming_request['next_state'] = submit_to_player
-    return incoming_request
 
-def find_parser(incoming_request):
-    sms_parser = OrderSMSParser(incoming_request['dbm']) if settings.USE_ORDERED_SMS_PARSER else SMSParser()
-    try:
-        form_code, values = sms_parser.parse(incoming_request['incoming_message'])
-        form_model = get_form_model_by_code(incoming_request['dbm'], form_code)
-        incoming_request['form_model'] = form_model
-        incoming_request['submission_values'] = values
-        incoming_request['datawinner_log'].form_code = form_code
-    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
-    except FormModelDoesNotExistsException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
-
-    incoming_request['next_state'] = activate_language
-    return incoming_request
-
-def find_dbm(request):
-    _from, _to = _get_from_and_to_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
-    transport_info = TransportInfo(transport=SMS, source=_from, destination=_to)
-    incoming_request = {'incoming_message': request.POST["message"], 'transport_info': transport_info,
-                        'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
-                                                        to_number=_to)}
-    if _to is None:
-        incoming_request['outgoing_message'] = ugettext("Your organization does not have a telephone number assigned. Please contact DataWinners Support.")
-        return incoming_request
-
-    try:
-        incoming_request['dbm'] = get_database_manager(request.user) if _from == TEST_REPORTER_MOBILE_NUMBER else get_db_manager_for(_from, _to)
-    except UnknownOrganization as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
-        return incoming_request
-    incoming_request['next_state'] = find_parser
-    return incoming_request
+def _test_mode_numbers(request):
+    profile = request.user.get_profile()
+    organization = Organization.objects.get(org_id=profile.org_id)
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    _to = organization_settings.get_organisation_sms_number()
+    _from = TEST_REPORTER_MOBILE_NUMBER
+    return _from, _to
 
 
-class Responder(object):
+def _get_from_and_to_numbers(request):
+    if request.POST.get('test_mode'):
+        return _test_mode_numbers(request)
 
-    def __init__(self):
-        self.next_state_processor = find_dbm
-
-    def respond(self, incoming_request):
-        request = self.next_state_processor(incoming_request)
-        if request.get('outgoing_message'):
-            return request['outgoing_message']
-
-        self.next_state_processor = request['next_state']
-        return self.respond(request)
-
-@csrf_view_exempt
-@csrf_response_exempt
-@require_http_methods(['POST'])
-def sms(request):
-    message = Responder().respond(request)
-    return HttpResponse(message)
-
+    _from = request.POST["from_msisdn"]
+    _to = request.POST["to_msisdn"]
+    return _from, _to
