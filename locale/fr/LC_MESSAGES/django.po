@@ -2491,20 +2491,8 @@ msgstr "Maintenant vous pouvez..."
 msgid "...or just start collecting data"
 msgstr "...ou juste commencer à colleter des données"
 
-msgid "How to start collecting data"
-msgstr "Comment commencer la collecte de données"
-
 msgid "input data"
 msgstr "donnée en entrée"
-
-msgid "How to Distribute Questionnaire"
-msgstr "Comment dissuser le questionnaire"
-
-msgid "How to Collect Data"
-msgstr "Comment collecter les données"
-
-msgid "Training datasender"
-msgstr "Former les envoyeurs de données"
 
 msgid "A part of"
 msgstr "Une partie de"

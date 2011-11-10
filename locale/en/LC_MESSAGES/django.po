@@ -2462,21 +2462,8 @@ msgstr ""
 msgid "...or just start collecting data"
 msgstr ""
 
-msgid "How to start collecting data"
-msgstr ""
-
 msgid "input data "
 msgstr ""
-
-msgid "How to Distribute Questionnaire"
-msgstr ""
-
-msgid "How to Collect Data"
-msgstr ""
-
-msgid "Training datasender "
-msgstr ""
-
 
 msgid "A part of"
 msgstr ""
