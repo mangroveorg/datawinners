@@ -31,24 +31,24 @@ msgid "Organization Sector"
 msgstr "Secteur de l'organisation"
 
 #: accountmanagement/forms.py:21 accountmanagement/forms.py:110
-msgid "* Address"
-msgstr "* Adresse"
+msgid "Address"
+msgstr "Adresse"
 
 #: accountmanagement/forms.py:22 accountmanagement/forms.py:91
-msgid "* City"
-msgstr "* Ville"
+msgid "City"
+msgstr "Ville"
 
 #: accountmanagement/forms.py:23 accountmanagement/forms.py:111
 msgid "State / Province"
 msgstr "Etat / Province"
 
 #: accountmanagement/forms.py:24 accountmanagement/forms.py:92
-msgid "* Country"
-msgstr "* Pays"
+msgid "Country"
+msgstr "Pays"
 
 #: accountmanagement/forms.py:25 accountmanagement/forms.py:114
-msgid "* Postal / Zip Code"
-msgstr "* Code postal"
+msgid "Postal / Zip Code"
+msgstr "Code postal"
 
 #: accountmanagement/forms.py:27 accountmanagement/forms.py:116
 msgid "Office Phone Number"
@@ -1747,6 +1747,9 @@ msgid "Everyone"
 msgstr "Tous le monde"
 
 #: templates/project/reminders.html:109
+msgid "Reminders are not enabled for this project. Click on Settings tab to activate reminders for this project."
+msgstr "Messages de rappel non activés pour ce projet. Cliquez sur l'onglet Paramètres pour activer les messages de rappel pour ce projet."
+
 #: templates/project/sent_reminders.html:52
 msgid "Reminders are not enabled for this project."
 msgstr "Les Messages de rappel ne sont pas activés pour ce projet."
@@ -2717,3 +2720,35 @@ msgstr "EXPÉDITEURS DE DONNÉES"
 
 msgid "Add Senders"
 msgstr "Ajouter des Expéditeurs"
+
+#broadcast_message.html
+msgid "Your message has been sent successfully. View your message in Sent Messages"
+msgstr "Votre message a été envoyé avec succès. Afficher votre message dans les Messages Envoyés"
+
+#accountmanagement/form.py
+msgid "Please Select..."
+msgstr "Veuillez Choisir ..."
+
+msgid "Commercial Business"
+msgstr "Opérations Commerciales"
+
+msgid "Education"
+msgstr "Éducation"
+
+msgid "Finance"
+msgstr "Finances"
+
+msgid "Food Security"
+msgstr "Sécurité Alimentaire"
+
+msgid "Health"
+msgstr "Santé"
+
+msgid "Human Rights"
+msgstr "Droits de l'Homme"
+
+msgid "Shelter"
+msgstr "Logement"
+
+msgid "Water and Sanitation"
+msgstr "Eau et Assainissement"

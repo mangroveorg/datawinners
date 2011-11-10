@@ -30,11 +30,11 @@ msgid "Organization Sector"
 msgstr ""
 
 #: accountmanagement/forms.py:21 accountmanagement/forms.py:110
-msgid "* Address"
+msgid "Address"
 msgstr ""
 
 #: accountmanagement/forms.py:22 accountmanagement/forms.py:91
-msgid "* City"
+msgid "City"
 msgstr ""
 
 #: accountmanagement/forms.py:23 accountmanagement/forms.py:111
@@ -42,11 +42,11 @@ msgid "State / Province"
 msgstr ""
 
 #: accountmanagement/forms.py:24 accountmanagement/forms.py:92
-msgid "* Country"
+msgid "Country"
 msgstr ""
 
 #: accountmanagement/forms.py:25 accountmanagement/forms.py:114
-msgid "* Postal / Zip Code"
+msgid "Postal / Zip Code"
 msgstr ""
 
 #: accountmanagement/forms.py:27 accountmanagement/forms.py:116
@@ -1729,6 +1729,9 @@ msgid "Everyone"
 msgstr ""
 
 #: templates/project/reminders.html:109
+msgid "Reminders are not enabled for this project. Click on Settings tab to activate reminders for this project."
+msgstr ""
+
 #: templates/project/sent_reminders.html:52
 msgid "Reminders are not enabled for this project."
 msgstr ""
@@ -2667,4 +2670,39 @@ msgid "DATA SENDERS"
 msgstr ""
 
 msgid "Add Senders"
+msgstr ""
+
+#broadcast_message.html
+msgid "Your message has been sent successfully. View your message in Sent Messages"
+msgstr ""
+
+#accountmanagement/form.py
+msgid "Please Select..."
+msgstr ""
+
+msgid "Commercial Business"
+msgstr ""
+
+msgid "Education"
+msgstr ""
+
+msgid "Finance"
+msgstr ""
+
+msgid "Food Security"
+msgstr ""
+
+msgid "Health"
+msgstr ""
+
+msgid "Human Rights"
+msgstr ""
+
+msgid "Shelter"
+msgstr ""
+
+msgid "Water and Sanitation"
+msgstr ""
+
+msgid "State / Province"
 msgstr ""

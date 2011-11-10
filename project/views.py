@@ -228,7 +228,7 @@ def _get_submissions(manager, questionnaire_code, request, paginate=True):
     page_size = PAGE_SIZE if paginate else None
     submissions = get_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch, current_page, page_size)
     count = submission_count(manager, questionnaire_code, start_time_epoch, end_time_epoch)
-    error_message = "No submissions present for this project" if not count else None
+    error_message = ugettext("No submissions present for this project") if not count else None
     return count, submissions, error_message
 
 

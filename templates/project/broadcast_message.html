@@ -28,8 +28,7 @@
 {% block content %}
     <div>
         {% if success %}
-            <div class="success-message-box">Your message has been sent successfully. View your message in <a href="#">Sent
-                Messages</a></div>
+            <div class="success-message-box">{% trans "Your message has been sent successfully. View your message in Sent Messages" %}</div>
         {% endif %}
 
         <div id="broadcast-form">
