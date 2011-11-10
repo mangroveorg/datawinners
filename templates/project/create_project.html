@@ -94,7 +94,7 @@
     </div>
 
 
-    <div class="clear_both">
+    <div id="questionnaire" class="clear_both none">
         <fieldset>
             <legend>2. {% trans "Questions" %}</legend>
         </fieldset>
@@ -168,18 +168,14 @@
             <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
             <a href="#" class="button" id="ok_button">{% trans "OK" %}</a>
         </div>
-    </div>
 
-    <div class="clear_both">
-        <fieldset>
-            <legend>3. Save and Create</legend>
-        </fieldset>
         <div class="right_aligned_button create_project">
             <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
             {% if project.state != 'Test' %}
                 <input type="button" class="draft_button" id="Inactive" value="{% trans "Save as Draft" %}">
             {% endif %}
             <input type="button" class="button" id="Test" value="{% trans "Save & Create Project" %}"/>
+            <input type="button" class="button" id="back_to_project" value="{% trans "Back" %}"/>
         </div>
     </div>
 

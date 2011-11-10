@@ -70,7 +70,20 @@ def save_project(request):
                     return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
                 except EntityQuestionAlreadyExistsException as e:
                     return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
-
+            if project_state == 'continue_project':
+                try:
+                    rows = manager.load_all_rows_in_view('project_names', key=project_name)
+                    if len(rows) and rows[0]['key'] == project_name:
+                        raise DataObjectAlreadyExists('Project', "Name", "'%s'" % project_name)
+                    return HttpResponse(json.dumps({'success': True, 'redirect_url': ""}))
+                except DataObjectAlreadyExists as e:
+                    return HttpResponse(json.dumps({'success': False, 'error': 'project' ,'error_message': e.message}))
+            if project_state == 'back_to_project':
+                try:
+                    get_form_model_by_code(manager, request.POST['questionnaire-code'])
+                    return HttpResponse(json.dumps({'success': False, 'error': 'back_to_project' ,'error_message': 'Questionnaire with this code already exists'}))
+                except FormModelDoesNotExistsException as e:
+                    return HttpResponse(json.dumps({'success': True, 'redirect_url': ""}))
         else :
             project = Project.load(manager.database, project_id)
             questionnaire = FormModel.get(manager, project.qid)

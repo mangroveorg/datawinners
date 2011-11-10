@@ -163,7 +163,6 @@ $(document).ready(function() {
     DW.subject_warning_dialog_module.init();
     var devices=new DW.devices("#id_devices_0");
     devices.disableSMSElement();
-
     $($('input[name="frequency_enabled"]')).change(function() {
         if (this.value == "True") {
             $('#id_frequency_period').attr('disabled', false);
@@ -199,29 +198,50 @@ $(document).ready(function() {
         var questionnaire_form =new DW.questionnaire_form('#question_form');
 
         questionnaire_form.processValidation();
-        
-        if (!questionnaire_form.isValid()|| !basic_project_info.isValid()){
+
+        if (!basic_project_info.isValid()){
             var location = "/project/wizard/create";
-            $('.error_arrow:visible').closest('div.clear_both').attr('id','error');
-            window.location.href = location + "#error";
-            $('div.clear_both').removeAttr('id','error');
+            window.location.href = location + "#create_project_form";
+            return;
+        }
+        else if (!questionnaire_form.isValid()){
+            var location = "/project/wizard/create";
+            window.location.href = location + "#questionnaire";
             return;
         }
         devices.enableSMSElement();
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val(),
                         'profile_form': $('#create_project_form').serialize(), 'state':this.id};
 
+        var clickItemId = jQuery(this).attr("id");
+
         $.post('/project/save/', post_data,
                 function(response) {
                     var responseJson = $.parseJSON(response);
                     if (responseJson.success) {
-                        window.location.href = responseJson.redirect_url;
+                        if (clickItemId == 'continue_project') {
+                            $("#project-message-label").addClass('none');
+                            $("#message-label").addClass('none');
+                            $("#project_profile").addClass('none');
+                            $("#questionnaire").removeClass('none');
+                        }
+                        else if (clickItemId == 'back_to_project') {
+                            $("#project-message-label").addClass('none');
+                            $("#message-label").addClass('none');
+                            $("#project_profile").removeClass('none');
+                            $("#questionnaire").addClass('none');
+                        }
+                        else {
+                            window.location.href = responseJson.redirect_url;
+                        }
                     }
                     else {
                         if (responseJson.error == 'project') {
                             $("#message-label").addClass('none');
                             $("#project-message-label").removeClass('none');
                             $("#project-message-label").html("<label class='error_message'>" + responseJson.error_message + "</label>");
+                            var location = "/project/wizard/create";
+                            window.location.href = location + "#project-message-label";
                         }
                         else {
                             $("#project-message-label").addClass('none');

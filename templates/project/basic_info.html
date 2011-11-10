@@ -1,4 +1,5 @@
-<div class="clear_both">
+{% load i18n %}
+<div id="project_profile" class="clear_both">
     <fieldset>
         <legend>1. Basic Information</legend>
     </fieldset>
@@ -48,5 +49,10 @@
         {{ form.devices.label_tag }}
         {{ form.devices }}
     </li>
+
+    <div class="right_aligned_button create_project">
+        <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
+        <input type="button" class="button" id="continue_project" value="{% trans "Continue" %}"/>
+    </div>
 
 </div>
