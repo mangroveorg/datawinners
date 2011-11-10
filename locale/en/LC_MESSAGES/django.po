@@ -2413,10 +2413,10 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-msgid "Additional People"
+msgid "Other People"
 msgstr ""
 
-msgid "Additional People:"
+msgid "Other People:"
 msgstr ""
 
 msgid "Data Senders associated to my project"

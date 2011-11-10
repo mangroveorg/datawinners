@@ -16,8 +16,8 @@ class BroadcastMessageForm(forms.Form):
     text = CharField(label=ugettext_lazy("Text:"), required=True, max_length=160, widget=forms.Textarea)
     to = ChoiceField(label=ugettext_lazy("To:"),choices=(("All", ugettext_lazy("All Data Senders")),
                                                          ("Associated", ugettext_lazy("Data Senders associated to my project")),
-                                                         ("Additional", ugettext_lazy("Additional People"))),initial=("All"))
-    others = CharField(label=ugettext_lazy("Additional People:"), max_length=160, widget=forms.Textarea, required=False)
+                                                         ("Additional", ugettext_lazy("Other People"))),initial=("All"))
+    others = CharField(label=ugettext_lazy("Other People:"), max_length=160, widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)

@@ -2442,11 +2442,11 @@ msgstr "texte:"
 msgid "To:"
 msgstr "Pour:"
 
-msgid "Additional People"
-msgstr "Les personnes supplémentaires"
+msgid "Other People"
+msgstr "Autres Personnes"
 
-msgid "Additional People:"
-msgstr "Les personnes supplémentaires:"
+msgid "Other People:"
+msgstr "Autres Personnes:"
 
 msgid "Data Senders associated to my project"
 msgstr "Les expéditeurs de données associés à mon projet"
