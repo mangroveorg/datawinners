@@ -92,7 +92,8 @@
   padding: 5px; }
 
 .error {
-  color: #FF0000; }
+  font-style: italic;
+  color: #000000; }
 
 .success {
   color: green; }
@@ -141,8 +142,6 @@ table {
   padding-left: 25px; }
 
 .cancel_link {
-  margin-right: 10px; }
-.cancel_project {
   margin-right: 10px; }
 
 /* Titles */

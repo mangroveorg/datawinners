@@ -90,7 +90,7 @@
             <p>{% trans "Upload an excel (.xls) or csv file (.csv) of your Subjects" %}</p>
 
             <input id='import_subjects' type="button" class="button_blue" value="{% trans 'Import List' %}"/>
-            <div class="error">Don't know the format? Download <a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportSubjects.xls {% else %}DataWinners_ImporterLesSujets.xls{% endif %}">here</a></div>
+            <div class="error">Use this <a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportSubjects.xls {% else %}DataWinners_ImporterLesSujets.xls{% endif %}">Import Template</a></div>
         </div>
         <div class="add_subject_form">
             {% include 'subject_form.html' %}
