@@ -63,6 +63,7 @@ class Organization(models.Model):
         return organization
 
 
+    #TODO SHould be removed??
     def _configure_organization_settings(self):
         organization_setting = OrganizationSetting()
         organization_setting.organization = self
@@ -106,13 +107,22 @@ class OrganizationSetting(models.Model):
     sms_tel_number = models.TextField(unique=True, null=True)
     smsc = models.ForeignKey(SMSC, null=True,
                              blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
-    incoming_sms_count = models.IntegerField(default=0)
-    outgoing_sms_count = models.IntegerField(default=0)
 
     def get_organisation_sms_number(self):
         if self.organization.in_trial_mode:
             return settings.TRIAL_ACCOUNT_PHONE_NUMBER
         return self.sms_tel_number
+
+
+    def __unicode__(self):
+        return self.organization.name
+
+class MessageTracker(models.Model):
+
+    organization = models.ForeignKey(Organization)
+    month = models.DateField()
+    incoming_sms_count = models.IntegerField(default=0)
+    outgoing_sms_count = models.IntegerField(default=0)
 
     def increment_incoming_message_count(self):
         self.incoming_sms_count += 1
@@ -130,7 +140,9 @@ class OrganizationSetting(models.Model):
         return True
 
     def __unicode__(self):
-        return self.organization.name
+        return "organization : %s incoming messages: %d outgoing messages: %d" % (
+        self.organization.name, self.incoming_sms_count, self.outgoing_sms_count)
+
 
 
 

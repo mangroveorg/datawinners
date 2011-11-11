@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import datetime
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils import translation
@@ -11,9 +12,9 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParser
 from mangrove.transport.player.player import SMSPlayer, TransportInfo
 
-from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, MessageTracker
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager, get_db_manager_for
+from datawinners.main.utils import get_database_manager, get_db_manager_for, get_organization_settings_for
 from datawinners.messageprovider.messages import exception_messages, SMS
 from datawinners.ordersmsparser.order_sms_parser import OrderSMSParser
 from datawinners.submission.models import DatawinnerLog, SMSResponse
@@ -56,17 +57,26 @@ def find_dbm(request):
 
     try:
         incoming_request['dbm'] = get_database_manager(request.user) if _from == TEST_REPORTER_MOBILE_NUMBER else get_db_manager_for(_from, _to)
-        org_setting = OrganizationSetting.objects.get(document_store = incoming_request['dbm'].database_name)
-        org_setting.increment_incoming_message_count()
-        org_setting.increment_outgoing_message_count()
-        org_setting.save()
-        if not org_setting.should_handle_message():
-            incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
-            return  incoming_request
     except UnknownOrganization as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
         incoming_request['datawinner_log'].save()
+        return incoming_request
+
+    incoming_request['organization'] = _find_organization(request)
+    incoming_request['next_state'] = increment_message_counter
+    return incoming_request
+
+def increment_message_counter(incoming_request):
+    organization = incoming_request['organization']
+    current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+    message_tracker = MessageTracker.objects.filter(organization=organization, month=current_month)
+    if not message_tracker.count():
+        MessageTracker(organization=organization, month=current_month).save()
+    message_tracker[0].increment_incoming_message_count()
+    message_tracker[0].increment_outgoing_message_count()
+    if not message_tracker[0].should_handle_message():
+        incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
         return incoming_request
 
     incoming_request['next_state'] = find_parser
@@ -137,3 +147,13 @@ def _get_from_and_to_numbers(request):
     _from = request.POST["from_msisdn"]
     _to = request.POST["to_msisdn"]
     return _from, _to
+
+def _find_organization(request):
+    if request.POST.get('test_mode'):
+        profile = request.user.get_profile()
+        organization = Organization.objects.get(org_id=profile.org_id)
+        return organization
+
+    _from = request.POST["from_msisdn"]
+    _to = request.POST["to_msisdn"]
+    return get_organization_settings_for(_from, _to).organization
