@@ -2,7 +2,7 @@
        var map, layer;
        var project_id = $('#project_id').html();
 
-       function init(entity_type){
+       function init(entity_type, marker_image){
            map = new OpenLayers.Map({
                 div: "map",
                 projection: new OpenLayers.Projection("EPSG:900913"),
@@ -25,7 +25,7 @@
 
            var myStyles = new OpenLayers.StyleMap({
                "default": new OpenLayers.Style({
-                   externalGraphic:'/media/images/map_marker.png',
+                   externalGraphic:'/media/images/' + marker_image,
                    pointRadius:8
 
                })

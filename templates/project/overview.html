@@ -58,8 +58,10 @@
             <div class="my_sub"><p><b>
             {% if 'yes' in project.activity_report %}
                 My Data Senders
+                <span style="display: none" id="marker_image">map_marker_red.png</span>
             {% else %}
                 My {{ project.entity_type }}
+                <span style="display: none" id="marker_image">map_marker_blue.png</span>
             {% endif %}
             </b></p></div>
 

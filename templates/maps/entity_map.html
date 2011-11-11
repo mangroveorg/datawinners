@@ -9,7 +9,8 @@
     <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script>
     $(document).ready(function(){
-        init('{{ entity_type  }}' );
+        var marker_image = $('#marker_image').html();
+        init('{{ entity_type  }}', marker_image );
     });
 
     </script>
