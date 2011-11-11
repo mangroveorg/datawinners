@@ -1163,6 +1163,9 @@ msgstr ""
 msgid "edit"
 msgstr ""
 
+msgid "Edit this project"
+msgstr ""
+
 #: templates/project/finish_and_test.html:76
 #: templates/project/finish_and_test.html:99
 #: templates/project/finish_and_test.html:116

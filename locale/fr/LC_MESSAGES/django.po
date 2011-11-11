@@ -1170,6 +1170,9 @@ msgstr "Canaaux :"
 msgid "edit"
 msgstr "éditer"
 
+msgid "Edit this project"
+msgstr "Modifier ce projet"
+
 #: templates/project/finish_and_test.html:76
 #: templates/project/finish_and_test.html:99
 #: templates/project/finish_and_test.html:116
