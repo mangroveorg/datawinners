@@ -220,20 +220,17 @@ $(document).ready(function() {
                     devices.disableSMSElement();
                     var responseJson = $.parseJSON(response);
                     if (responseJson.success) {
-                        var location = "/project/wizard/create"
                         if (clickItemId == 'continue_project') {
                             $("#project-message-label").addClass('none');
                             $("#message-label").addClass('none');
                             $("#project_profile").addClass('none');
                             $("#questionnaire").removeClass('none');
-                            window.location.href = location + "#header"
                         }
                         else if (clickItemId == 'back_to_project') {
                             $("#project-message-label").addClass('none');
                             $("#message-label").addClass('none');
                             $("#project_profile").removeClass('none');
                             $("#questionnaire").addClass('none');
-                            window.location.href = location + "#header"
                         }
                         else {
                             window.location.href = responseJson.redirect_url;
