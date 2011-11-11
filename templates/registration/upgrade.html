@@ -18,28 +18,28 @@
                         <li>
                             <h3 class="highlighted_title">{% trans "Your Organization" %}<br/></h3>
                         </li>
-                        <li><label>Organization Name</label>{{ organization.name }}</li>
-                        <li><label>Organization Sector</label>{{ organization.sector }}</li>
-                        <li><label>Address</label>{{ organization.address }}</li>
-                        <li><label>City</label>{{ organization.city }}</li>
-                        <li><label>State / Province</label>{{ organization.state }}</li>
-                        <li><label>Postal / Zip Code</label>{{ organization.zipcode }}</li>
-                        <li><label>Country</label>{{ organization.country }}</li>
-                        <li><label>Office Phone Number</label>{{ organization.office_phone }}</li>
-                        <li><label>Website Url</label>{{ organization.website }}</li>
+                        <li><label>{% trans "Organization Name" %}</label>{{ organization.name }}</li>
+                        <li><label>{% trans "Organization Sector" %}</label>{{ organization.sector }}</li>
+                        <li><label>{% trans "Address" %}</label>{{ organization.address }}</li>
+                        <li><label>{% trans "City" %}</label>{{ organization.city }}</li>
+                        <li><label>{% trans "State / Province" %}</label>{{ organization.state }}</li>
+                        <li><label>{% trans "Postal / Zip Code" %}</label>{{ organization.zipcode }}</li>
+                        <li><label>{% trans "Country" %}</label>{{ organization.country }}</li>
+                        <li><label>{% trans "Office Phone Number" %}</label>{{ organization.office_phone }}</li>
+                        <li><label>{% trans "Website Url" %}</label>{{ organization.website }}</li>
                     </ul>
                     <ul class="administrative">
                         <li>
                             <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}<br/>
                             </h3>
                         </li>
-                        <li><label>Title</label>{{ profile.title }}</li>
-                        <li><label>First Name</label>{{ user.first_name }}</li>
-                        <li><label>Last Name</label>{{ user.last_name }}</li>
-                        <li><label>User Name</label>{{ user.username }}</li>
-                        <li><label>Office Phone</label>{{ profile.office_phone }}</li>
-                        <li><label>Mobile Phone</label>{{ profile.mobile_phone }}</li>
-                        <li><label>Skype</label>{{ profile.skype }}</li>
+                        <li><label>{% trans "Title" %}</label>{{ profile.title }}</li>
+                        <li><label>{% trans "First Name" %}</label>{{ user.first_name }}</li>
+                        <li><label>{% trans "Last Name" %}</label>{{ user.last_name }}</li>
+                        <li><label>{% trans "User Name" %}</label>{{ user.username }}</li>
+                        <li><label>{% trans "Office Phone" %}</label>{{ profile.office_phone }}</li>
+                        <li><label>{% trans "Mobile Phone" %}</label>{{ profile.mobile_phone }}</li>
+                        <li><label>{% trans "Skype" %}</label>{{ profile.skype }}</li>
                     </ul>
                     <ul class="payment_details">
                         <li>

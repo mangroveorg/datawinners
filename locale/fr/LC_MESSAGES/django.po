@@ -2192,7 +2192,10 @@ msgid "Sign Up"
 msgstr "S'inscrire"
 
 msgid "Active"
-msgstr "Activé"
+msgstr "Actif"
+
+msgid "Test"
+msgstr "En Phase d’Essai"
 
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
