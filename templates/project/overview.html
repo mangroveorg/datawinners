@@ -40,7 +40,7 @@
             <div class="left_half">
                 <label> {% trans "Your project" %}</label>
                 {%  if project.state != "Active" %}
-                    <a id="edit_project" href="{% url edit_project project.id %}">{% trans "edit" %}</a>
+                    <a id="edit_project" class="button_blue" href="{% url edit_project project.id %}">{% trans "Edit this project" %}</a>
                 {% endif %}
                 {%  if project.state == "Active" %}
                     <a href="#">{% trans "input data" %} </a>
