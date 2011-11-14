@@ -417,6 +417,7 @@ body{
 #how_menu{
     position:relative;
     padding-top:10px;
+    margin-bottom: 40px;
     .title{
         width:180px;
         float:left;
@@ -457,7 +458,7 @@ body{
 }
 #how_nav{
     #how_links{
-        margin:30px 0;
+        margin:30px 0 0;
         text-align:center;
         #how_try_button{
             display:block;

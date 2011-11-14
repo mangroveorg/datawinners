@@ -2470,7 +2470,7 @@ msgid "input data "
 msgstr ""
 
 msgid "A part of"
-msgstr ""
+msgstr "Developed by"
 
 msgid "en"
 msgstr ""

@@ -2500,7 +2500,7 @@ msgid "input data"
 msgstr "donnée en entrée"
 
 msgid "A part of"
-msgstr "Une partie de"
+msgstr "Developpé par"
 
 msgid "en"
 msgstr "fr"
