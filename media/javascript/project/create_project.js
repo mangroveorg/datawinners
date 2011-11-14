@@ -242,9 +242,8 @@ $(document).ready(function() {
         var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
         'project_state': 'Test'};
-        console.log(post_data);
         
-        $.post('/project/wizard/create/', post_data, function(response){
+        $.post('', post_data, function(response){
             var response = $.parseJSON(response);
             if(response.success){
                 window.location.replace('/project/overview/' + response.project_id);
@@ -264,6 +263,30 @@ $(document).ready(function() {
     });
 
     $('#save_as_draft').click(function(){
-        
+        if(!questionnnaire_code.processValidation() && !questionnaire_form.processValidation()){
+            return false;
+        }
+        var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
+        'project_state': 'Inactive'};
+
+        $.post('', post_data, function(response){
+            var response = $.parseJSON(response);
+            if(response.success){
+                window.location.replace('/project/');
+            }else{
+                if(response.error_in_project_section){
+                    basic_project_info.show();
+                    questionnaire_section.hide();
+                }else{
+                    basic_project_info.hide();
+                    questionnaire_section.show();
+                }
+                $('#project-message-label').removeClass('none');
+                $('#project-message-label').html("<label class='error_message'> " + gettext(response.error_message) + ".</label>")
+            }
+        });
+
+
     });
 });

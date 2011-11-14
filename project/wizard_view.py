@@ -1,6 +1,4 @@
-from _collections import defaultdict
 import json
-import urlparse
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -14,11 +12,11 @@ from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder
 from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, FormModelDoesNotExistsException
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from django.contrib import messages
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import  FormModel, get_form_model_by_code
-from mangrove.utils.types import is_string, is_empty
+from mangrove.form_model.form_model import  FormModel
+from mangrove.utils.types import is_string
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -38,84 +36,8 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     json_string = post['question-set']
     question_set = json.loads(json_string)
     questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
+    questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
     return questionnaire
-
-@login_required()
-def save_project(request):
-    manager = get_database_manager(request.user)
-    entity_list = get_all_entity_types(manager)
-    entity_list = helper.remove_reporter(entity_list)
-    DEVICES = 'devices'
-    parsed_data = urlparse.parse_qsl(request.POST['profile_form'])
-    form = CreateProject(data=_convert_parsed_query_string_in_dict(parsed_data,DEVICES), entity_list=entity_list)
-    project_id = request.POST['pid']
-    project_state = request.POST['state']
-    if form.is_valid():
-        entity_type = form.cleaned_data['entity_type']
-        project_name = form.cleaned_data["name"].lower()
-        language = form.cleaned_data['language']
-        devices = form.cleaned_data[DEVICES]
-        if is_empty(project_id):
-            try:
-                get_form_model_by_code(manager, request.POST['questionnaire-code'])
-                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': 'Questionnaire with this code already exists'}))
-            except FormModelDoesNotExistsException:
-                project = Project(name=project_name, goals=form.cleaned_data["goals"],
-                              project_type='survey', entity_type=entity_type,
-                              reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data),
-                              activity_report=form.cleaned_data['activity_report'],
-                              state =project_state, devices=devices,language=language)
-                try:
-                    questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=entity_type, name=project_name, language=language)
-                except QuestionCodeAlreadyExistsException as e:
-                    return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
-                except EntityQuestionAlreadyExistsException as e:
-                    return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
-            if project_state == 'continue_project':
-                try:
-                    rows = manager.load_all_rows_in_view('project_names', key=project_name)
-                    if len(rows) and rows[0]['key'] == project_name:
-                        raise DataObjectAlreadyExists('Project', "Name", "'%s'" % project_name)
-                    return HttpResponse(json.dumps({'success': True, 'redirect_url': ""}))
-                except DataObjectAlreadyExists as e:
-                    return HttpResponse(json.dumps({'success': False, 'error': 'project' ,'error_message': e.message}))
-            if project_state == 'back_to_project':
-                try:
-                    get_form_model_by_code(manager, request.POST['questionnaire-code'])
-                    return HttpResponse(json.dumps({'success': False, 'error': 'back_to_project' ,'error_message': 'Questionnaire with this code already exists'}))
-                except FormModelDoesNotExistsException as e:
-                    return HttpResponse(json.dumps({'success': True, 'redirect_url': ""}))
-        else :
-            project = Project.load(manager.database, project_id)
-            questionnaire = FormModel.get(manager, project.qid)
-            if project.state == ProjectState.INACTIVE:
-                if project_state == ProjectState.TEST:
-                    project.state = ProjectState.TEST
-                    questionnaire.set_test_mode()
-            project.reminder_and_deadline=helper.new_deadline_and_reminder(form.cleaned_data)
-            project.update(form.cleaned_data)
-            try:
-                questionnaire = update_questionnaire(questionnaire, request.POST, entity_type, project_name, manager, language)
-            except QuestionCodeAlreadyExistsException as e:
-                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
-            except EntityQuestionAlreadyExistsException as e:
-                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
-            except DataObjectAlreadyExists as e:
-                if e.message.find("Form") >= 0:
-                    return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': 'Questionnaire with this code already exists'}))
-                return HttpResponse(json.dumps({'success': False, 'error': 'questionnaire' ,'error_message': e.message}))
-        try:
-            pid = project.save(manager)
-            qid = questionnaire.save()
-            project.qid = qid
-            pid = project.save(manager)
-        except DataObjectAlreadyExists as e:
-            return HttpResponse(json.dumps({'success': False, 'error': 'project' ,'error_message': e.message}))
-        from datawinners.project.views import project_overview, index
-        if project.state == ProjectState.INACTIVE:
-            return HttpResponse(json.dumps({'success': True, 'redirect_url': reverse(index)}))
-        return HttpResponse(json.dumps({'success': True, 'redirect_url': reverse(project_overview, args=[pid])}))
-
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -167,11 +89,11 @@ def edit_project(request, project_id=None):
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
     project = Project.load(manager.database, project_id)
+    questionnaire = FormModel.get(manager, project.qid)
     if request.method == 'GET':
         form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
         activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
         subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
-        questionnaire = FormModel.get(manager, project.qid)
         fields = questionnaire.fields
         if questionnaire.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(questionnaire.fields)
@@ -183,15 +105,28 @@ def edit_project(request, project_id=None):
                  'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code, 'project':project},
                                   context_instance=RequestContext(request))
 
+    if request.method == 'POST':
+        project_info = json.loads(request.POST['profile_form'])
+        form = CreateProject(entity_list, data=project_info)
+        if form.is_valid():
+            project.update(form.cleaned_data)
+            try:
+                questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
+            except (QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
+                return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': ex.message}))
+            except DataObjectAlreadyExists:
+                return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': 'Questionnaire with this code already exists'}))
 
-def _generate_project_info_with_deadline_and_reminders(project):
-    project_info = {}
-    for key, value in project.items():
-        project_info[key] = value
-    for key, value in project['reminder_and_deadline'].items():
-        project_info[key] = value
-    del project_info['reminder_and_deadline']
-    return project_info
+            project.state = request.POST['project_state']
+            project.qid = questionnaire.save()
+
+            try:
+                project.save(manager)
+            except DataObjectAlreadyExists as ex:
+                return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': True}))
+
+            return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
+
 
 @login_required(login_url='/login')
 @is_datasender
@@ -237,9 +172,3 @@ def reminder_settings(request, project_id):
         return render_to_response('project/reminder_settings.html',
                 {'project_links': project_links,'project': project,
                  'form':form},context_instance=RequestContext(request))
-
-def _convert_parsed_query_string_in_dict(parsed_query_string,special_key):
-    intermediate_dict=defaultdict(list)
-    for key,value in parsed_query_string:
-        intermediate_dict[key].append(value)
-    return {key:(value if key==special_key else value[0]) for key,value in intermediate_dict.items()}
