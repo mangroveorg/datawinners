@@ -5,9 +5,6 @@ from django.contrib.gis.geos.point import Point
 from django.db import connection
 from datawinners.location.models import LocationLevel
 
-from psycopg2.extensions import adapt
-
-
 ROOT = "root"
 FILTER_LIMIT = 10
 

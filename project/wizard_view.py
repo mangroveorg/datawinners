@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
@@ -24,7 +25,7 @@ def create_questionnaire(post, manager, entity_type, name, language):
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['state'], fields=[], form_code=questionnaire_code, language=language)
+    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
     form_model.activeLanguages = [language]
     return helper.update_questionnaire_with_questions(form_model, question_set, manager)
 
@@ -117,6 +118,7 @@ def save_project(request):
 
 
 @login_required(login_url='/login')
+@csrf_exempt
 def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -131,6 +133,32 @@ def create_project(request):
                  'subject_report_questions':repr(subject_report_questions),
                  'existing_questions': repr(activity_report_questions), 'project': project_summary,
                  'questionnaire_code': helper.generate_questionnaire_code(manager)},context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+        project_info = json.loads(request.POST['profile_form'])
+        form = CreateProject(entity_list, data=project_info)
+        if form.is_valid():
+            project = Project(name=form.cleaned_data['name'], goals=form.cleaned_data['goals'],
+                              project_type='survey', entity_type=form.cleaned_data['entity_type'],
+                              activity_report=form.cleaned_data['activity_report'],
+                              state = request.POST['project_state'], devices=form.cleaned_data['devices'],language=form.cleaned_data['language'])
+            try:
+                questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=form.cleaned_data['entity_type'], name=form.cleaned_data['name'], language=form.cleaned_data['language'])
+            except (QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
+                return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': False}))
+
+            try:
+                project.qid = questionnaire.save()
+            except DataObjectAlreadyExists:
+                return HttpResponse(json.dumps({'success': False ,'error_message': "Questionnaire with this code already exists", 'error_in_project_section': False}))
+
+            try:
+                project.save(manager)
+            except DataObjectAlreadyExists as ex:
+                questionnaire.delete()
+                return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': True}))
+
+            return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
 @login_required(login_url='/login')
 @is_datasender

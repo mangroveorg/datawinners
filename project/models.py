@@ -163,7 +163,7 @@ class Project(DocumentBase):
     sms_simple_format = couchdb.mapping.BooleanField(default=True)
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None, reminder_and_deadline=None,
+                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None,
                  language='en', sms_simple_format=True):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
@@ -176,7 +176,7 @@ class Project(DocumentBase):
         self.state = state
         self.activity_report = activity_report
         self.sender_group = sender_group
-        self.reminder_and_deadline = reminder_and_deadline if reminder_and_deadline is not None else {}
+        self.reminder_and_deadline = {'reminders_enabled': False, 'has_deadline': False,'frequency_enabled': False}
         self.language = language
         self.sms_simple_format = sms_simple_format
 
@@ -288,7 +288,8 @@ class Project(DocumentBase):
         self.save(dbm)
 
     def delete(self, dbm):
-        dbm.database.delete(self)
+        if self.id is not None:
+            dbm.database.delete(self)
 
     #The method name sucks but until we make Project DataObject we can't make the method name 'void'
     def set_void(self, dbm, void=True):

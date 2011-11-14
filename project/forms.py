@@ -141,20 +141,14 @@ class CreateProject(Form):
 
     name = CharField(required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
-
     activity_report = ChoiceField(label=_("What is this questionnaire about?"),
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='yes')
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
                            widget=forms.RadioSelect,
                            choices=LANGUAGES, initial='en')
-
     devices = MultipleChoiceField(label=_('Device'), widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
                                   initial=['sms', 'web'], required=False)
-
-#TO-DO introduce this when we introduce categories
-#    category = ChoiceField(choices=CATEGORY_CHOICE, required=False)
-
     entity_type = ChoiceField(required=False)
 
     def clean(self):

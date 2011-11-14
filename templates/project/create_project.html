@@ -26,6 +26,11 @@
     <script type="text/javascript" src="/media/javascript/project/subject_warning_dialog_module.js"></script>
     <script type="text/javascript" src="/media/javascript/project/create_project.js"></script>
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/new_questionnaire_wizard.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/html" id="choice-template">
         <li>
             <input id="choice_text" name="choice_text" class="required" type="text"
@@ -55,11 +60,6 @@
             </ul>
         </div>
     </script>
-    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/new_questionnaire_wizard.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
 {% endblock %}
 
 {% block page_scss %}
@@ -125,9 +125,6 @@
                 </ul>
 
                 <div class="questionnare_content grid_23 alpha omega">
-                    <div id="message-label" class="message-box none">
-                    </div>
-
                     <div>
                         <div id="questions-panel" class="grid_8 alpha">
                             <h4>{% trans "Questions" %}</h4>
@@ -172,9 +169,9 @@
         <div class="right_aligned_button create_project">
             <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
             {% if project.state != 'Test' %}
-                <input type="button" class="draft_button" id="Inactive" value="{% trans "Save as Draft" %}">
+                <input type="button" class="button" id="save_as_draft" value="{% trans "Save as Draft" %}">
             {% endif %}
-            <input type="button" class="button" id="Test" value="{% trans "Save & Create Project" %}"/>
+            <input type="button" class="button" id="save_and_create" value="{% trans "Save & Create Project" %}"/>
             <input type="button" class="button" id="back_to_project" value="{% trans "Back" %}"/>
         </div>
     </div>
