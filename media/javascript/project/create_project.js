@@ -164,13 +164,13 @@ DW.basic_project_info.prototype={
     hide: function(){
         $(this.project_info_form_element).hide();
     }
-}
+};
 
 DW.questionnaire_form=function(formElement){
     this.formElement=formElement;
     this.errorAppender=new DW.error_appender("#message-label");
 
-}
+};
 
 DW.questionnaire_form.prototype={
     isValid:function(){
@@ -185,7 +185,7 @@ DW.questionnaire_form.prototype={
         return true;
     }
 
-}
+};
 
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
