@@ -9,7 +9,7 @@ from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
-from mangrove.transport.player.parser import SMSParser
+from mangrove.transport.player.parser import KeyBasedSMSParser
 from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
 
 class TestImportData(TestCase):
@@ -60,7 +60,7 @@ class TestImportData(TestCase):
 
 
     def _register_entity(self, text):
-        form_code, values = SMSParser().parse(text)
+        form_code, values = KeyBasedSMSParser().parse(text)
         self.player.accept(self.transport, form_code, values)
 
     def _register_entities(self):

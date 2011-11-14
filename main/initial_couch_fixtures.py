@@ -18,7 +18,7 @@ from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObje
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code, GEO_CODE_FIELD
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
-from mangrove.transport.player.parser import SMSParser
+from mangrove.transport.player.parser import KeyBasedSMSParser
 from mangrove.transport.player.player import Request, SMSPlayer, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from mangrove.transport.submissions import Submission
@@ -861,96 +861,96 @@ def load_sms_data_for_cli001(manager):
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
     message1 = "reg .t  clinic .n  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "reg .t  clinic .n  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
     message1 = "cli001 .EID cid001 .NA Mr. Tessy .FA 58 .RD 28.02.2011 .BG c .SY ade .GPS 79.2 20.34567"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid002 .NA Mr. Adam .FA 62 .RD 15.02.2011 .BG a .SY ab .GPS 74.2678 23.3567"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid003 .NA Ms. Beth .FA 75 .RD 09.02.2011 .BG b .SY bc .GPS 18.245 29.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker.set_date_time_now(MARCH)
     # Total number of identical records = 4
     message1 = "cli001 .EID cid004 .NA Jannita .FA 90 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid005 .NA Aanda .FA 58 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cid001 .NA Ianda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid001 .NA ànita .FA 45 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid004 .NA Amanda .FA 81 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cid005 .NA Vanda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid003 .NA ànnita .FA 80 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid002 .NA Amanda .FA 69 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cid004 .NA Panda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid005 .NA ànnita .FA 50 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid003 .NA Jimanda .FA 86 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cli10 .NA Kanda (",) .FA 64 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid004 .NA ànnita .FA 30 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid005 .NA Qamanda  .FA 47 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cid001 .NA Huanda (*_*) .FA 74 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker.set_date_time_now(DEC_2010)
     # Total number of identical records = 4
     message1 = "cli001 .EID cli12 .NA Jugal .FA 47 .RD 15.12.2010 .BG d .SY ace .GPS -58.3452 19.3345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli11 .NA De'melo .FA 38 .RD 27.12.2010 .BG c .SY ba .GPS 81.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli13 .NA Dono`mova .FA 24 .RD 06.12.2010 .BG b .SY cd .GPS 65.23452 -28.3456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli15 .NA Aàntra .FA 89 .RD 11.12.2010 .BG a .SY bd .GPS 45.234 89.32345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker.set_date_time_now(NOV_2010)
     # Total number of identical records = 3
     message1 = "cli001 .EID cli12 .NA ànnita .FA 90 .RD 07.11.2010 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli14 .NA Amanda .FA 67 .RD 12.11.2010 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli9 .NA ànnita .FA 90 .RD 17.11.2010 .BG b .SY bbe .GPS 45.233 28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cid007 .NA Amanda .FA 73 .RD 12.11.2010 .BG c .SY bd .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = 'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452 15.3345'
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker.set_date_time_now(PREV_MONTH)
     month = today.month - 1
@@ -961,67 +961,67 @@ def load_sms_data_for_cli001(manager):
     Last_month_date = "12." + str(month) + "." + str(year)
     # Total number of identical records = 4
     message1 = "cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli11 .NA Aàntra .FA 98 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234 89.32345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli12 .NA ànnita .FA 37 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli11 .NA Aàntra .FA 95 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234 89.32345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli12 .NA ànnita .FA 35 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli9 .NA Demelo .FA 32 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli10 .NA Zorro .FA 43 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli11 .NA Aàntra .FA 91 .RD " + Last_month_date + " .BG a .SY be .GPS -45.234 89.32345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli12 .NA ànnita .FA 45 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker.set_date_time_now(THIS_MONTH)
     current_month_date = "01." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 4
     message1 = "cli001 .EID cli13 .NA Dmanda .FA 69 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli14 .NA Vamand .FA 36 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452 115.3345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli15 .NA M!lo .FA 88 .RD " + current_month_date + " .BG b .SY ba .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli16 .NA K!llo .FA 88 .RD " + current_month_date + " .BG a .SY ac .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli13 .NA Dmanda .FA 89 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2 69.3123"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli14 .NA Vamand .FA 56 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452 115.3345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli15 .NA M!lo .FA 45 .RD " + current_month_date + " .BG c .SY ca .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli16 .NA K!llo .FA 28 .RD " + current_month_date + " .BG b .SY ae .GPS 19.672 92.33456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker.end_mock()
 
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
     message1 = "cli001 .EID cli17 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli18 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     message1 = "cli001 .EID cli17 .NA Catty .FA 98 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli18 .NA àntra .FA 58 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233 -28.3324"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     FROM_NUMBER = '919970059125'
     TO_NUMBER = '919880734937'
@@ -1032,27 +1032,27 @@ def load_sms_data_for_cli001(manager):
     last_week_date = str(LAST_WEEK.day) + "." + str(LAST_WEEK.month) + "." + str(LAST_WEEK.year)
     # Total number of identical records = 4
     message1 = "cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 4
     message1 = "cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 4
     message1 = "cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     FROM_NUMBER = '919970059125'
     TO_NUMBER = '919880734937'
@@ -1062,35 +1062,35 @@ def load_sms_data_for_cli001(manager):
     last_week_date = str(PREV_MONTH.day) + "." + str(PREV_MONTH.month) + "." + str(PREV_MONTH.year)
     # Total number of identical records = 3
     message1 = "cli013 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli013 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli013 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli015 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli015 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli015 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli014 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli014 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli014 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli016 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli016 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli016 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
 
     FROM_NUMBER = '917798987102'
@@ -1102,35 +1102,35 @@ def load_sms_data_for_cli001(manager):
     this_month = str(THIS_MONTH.day) + "." + str(THIS_MONTH.month) + "." + str(THIS_MONTH.year)
     # Total number of identical records = 3
     message1 = "cli013 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli013 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli013 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli014 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli014 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli014 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli015 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli015 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli015 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli016 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli016 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli016 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     datetime_mocker2.end_mock()
 
@@ -1141,27 +1141,27 @@ def load_sms_data_for_cli001(manager):
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
     message1 = "cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
     # Total number of identical records = 3
     message1 = "cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
     message1 = "cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d"
-    response = sms_player.accept(transport, *(SMSParser().parse(message1)))
+    response = sms_player.accept(transport, *(KeyBasedSMSParser().parse(message1)))
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)

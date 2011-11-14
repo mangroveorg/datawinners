@@ -1,10 +1,10 @@
 from collections import OrderedDict
 from mangrove.errors.MangroveException import SMSParserWrongNumberOfAnswersException, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException
 from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.player.parser import SMSParser
+from mangrove.transport.player.parser import KeyBasedSMSParser
 from mangrove.utils.types import is_empty, is_string
 
-class OrderSMSParser(SMSParser):
+class OrderSMSParser(KeyBasedSMSParser):
     MESSAGE_PREFIX_FOR_ORDERED_SMS = ur'^(\w+)\s+(\w+)'
 
     def __init__(self, dbm):
