@@ -415,6 +415,12 @@ msgstr "Decide what information you want to use to identify and register each "
 msgid "What do I need to do?"
 msgstr ""
 
+msgid "Use this"
+msgstr ""
+
+msgid "Import Template"
+msgstr ""
+
 #: templates/entity_question_panel.html:14
 msgid "r_tooltip_question_panel_subject"
 msgstr "Review the questions by clicking on each question in order."

@@ -1837,6 +1837,13 @@ msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
 msgid "Preview Subject's questionnaire"
 msgstr "Faites un aperçu du questionnaire \"Sujets\""
 
+msgid "Use this "
+msgstr "Utilisez cette "
+
+msgid "Import Template"
+msgstr "Importer un modèle"
+
+
 #: templates/project/subjects_wizard.html:46
 msgid "q_tooltip_subject_wizard_subject"
 msgstr ""
