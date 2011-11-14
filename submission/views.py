@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, UnknownOrganization
 from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.player.parser import KeyBasedSMSParser, OrderSMSParser
+from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.player.player import SMSPlayer, TransportInfo
 
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, MessageTracker
@@ -82,10 +82,14 @@ def increment_message_counter(incoming_request):
     return incoming_request
 
 def find_parser(incoming_request):
-    sms_parser = OrderSMSParser(incoming_request['dbm']) if settings.USE_ORDERED_SMS_PARSER else KeyBasedSMSParser()
+#    sms_parser = OrderSMSParser(incoming_request['dbm']) if settings.USE_ORDERED_SMS_PARSER else KeyBasedSMSParser()
+    incoming_message = incoming_request['incoming_message']
+    dbm = incoming_request['dbm']
+    sms_parser = SMSParserFactory().getSMSParser(message=incoming_message,
+                                                 dbm=dbm)
     try:
-        form_code, values = sms_parser.parse(incoming_request['incoming_message'])
-        form_model = get_form_model_by_code(incoming_request['dbm'], form_code)
+        form_code, values = sms_parser.parse(incoming_message)
+        form_model = get_form_model_by_code(dbm, form_code)
         incoming_request['form_model'] = form_model
         incoming_request['submission_values'] = values
         incoming_request['datawinner_log'].form_code = form_code
