@@ -9,3 +9,6 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+SHOW_GOOGLE_MAPS = False
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
