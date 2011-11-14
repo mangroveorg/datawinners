@@ -15,12 +15,12 @@ DW.init_view_model = function (question_list) {
 
 DW.devices=function(smsElement){
   this.smsElement=smsElement;
-}
+};
 
 DW.error_appender=function(element){
     this.element=element;
 
-}
+};
 
 DW.error_appender.prototype={
    appendError:function(errorText){
@@ -30,7 +30,7 @@ DW.error_appender.prototype={
    hide_message:function () {
        $(this.element).delay(5000).fadeOut();
    }
-}
+};
 
 DW.devices.prototype={
     disableSMSElement:function(){
@@ -39,13 +39,13 @@ DW.devices.prototype={
     enableSMSElement:function(){
         $(this.smsElement).attr("disabled",false);
     }
-}
+};
 
 DW.questionnaire_code=function(questionnaireCode,questionnaireErrorCode){
     this.questionnaireCode=questionnaireCode;
     this.questionnaireErrorCode=questionnaireErrorCode;
 
-}
+};
 
 
 DW.questionnaire_code.prototype={
@@ -103,11 +103,11 @@ DW.questionnaire_code.prototype={
 
     }
 
-},
+};
 
 DW.questionnaire_section = function(questionnaire_form_element){
     this.questionnaire_form_element = questionnaire_form_element;
-},
+};
 DW.questionnaire_section.prototype = {
     show:function(){
         $(this.questionnaire_form_element).removeClass('none');
@@ -116,10 +116,10 @@ DW.questionnaire_section.prototype = {
         $(this.questionnaire_form_element).addClass('none');
     }
 
-},
+};
 DW.basic_project_info=function(project_info_form_element){
     this.project_info_form_element=project_info_form_element;
-},
+};
 
 DW.basic_project_info.prototype={
 
@@ -187,21 +187,40 @@ DW.questionnaire_form.prototype={
 
 };
 
+DW.post_project_data = function(state, function_to_construct_redirect_url_on_success){
+    var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+    var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
+        'project_state': state};
+    $.post('', post_data, function(response) {
+        var response = $.parseJSON(response);
+        if (response.success) {
+            window.location.replace(function_to_construct_redirect_url_on_success(response));
+        } else {
+            if (response.error_in_project_section) {
+                basic_project_info.show();
+                questionnaire_section.hide();
+            } else {
+                basic_project_info.hide();
+                questionnaire_section.show();
+            }
+            $('#project-message-label').removeClass('none');
+            $('#project-message-label').html("<label class='error_message'> " + gettext(response.error_message) + ".</label>")
+        }
+    })
+};
+
+var basic_project_info=new DW.basic_project_info('#create_project_form');
+var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
+var questionnaire_form =new DW.questionnaire_form('#question_form');
+var questionnaire_section = new DW.questionnaire_section("#questionnaire");
+var devices=new DW.devices("#id_devices_0");
+
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
     DW.subject_warning_dialog_module.init();
-    var devices=new DW.devices("#id_devices_0");
-    devices.disableSMSElement();
-    $($('input[name="frequency_enabled"]')).change(function() {
-        if (this.value == "True") {
-            $('#id_frequency_period').attr('disabled', false);
-        }
-        else {
-            $('#id_frequency_period').attr('disabled', true);
-        }
-    });
 
+    devices.disableSMSElement();
     $('#id_entity_type').change(function() {
         $("#subject_warning_message").dialog("open");
     });
@@ -215,12 +234,7 @@ $(document).ready(function() {
         }
     });
 
-    var basic_project_info=new DW.basic_project_info('#create_project_form');
     basic_project_info.createValidationRules();
-    var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
-    var questionnaire_form =new DW.questionnaire_form('#question_form');
-
-    var questionnaire_section = new DW.questionnaire_section("#questionnaire")
 
     $('#continue_project').click(function(){
         if (!basic_project_info.isValid()){
@@ -239,54 +253,18 @@ $(document).ready(function() {
         if(!questionnnaire_code.processValidation() && !questionnaire_form.processValidation()){
             return false;
         }
-        var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
-        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
-        'project_state': 'Test'};
-
-        $.post('', post_data, function(response){
-            var response = $.parseJSON(response);
-            if(response.success){
-                window.location.replace('/project/overview/' + response.project_id);
-            }else{
-                if(response.error_in_project_section){
-                    basic_project_info.show();
-                    questionnaire_section.hide();
-                }else{
-                    basic_project_info.hide();
-                    questionnaire_section.show();
-                }
-                $('#project-message-label').removeClass('none');
-                $('#project-message-label').html("<label class='error_message'> " + gettext(response.error_message) + ".</label>")
-            }
+        DW.post_project_data('Test', function(response){
+            return '/project/overview/' + response.project_id;
         });
-
     });
 
     $('#save_as_draft').click(function(){
         if(!questionnnaire_code.processValidation() && !questionnaire_form.processValidation()){
             return false;
         }
-        var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
-        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
-        'project_state': 'Inactive'};
-
-        $.post('', post_data, function(response){
-            var response = $.parseJSON(response);
-            if(response.success){
-                window.location.replace('/project/');
-            }else{
-                if(response.error_in_project_section){
-                    basic_project_info.show();
-                    questionnaire_section.hide();
-                }else{
-                    basic_project_info.hide();
-                    questionnaire_section.show();
-                }
-                $('#project-message-label').removeClass('none');
-                $('#project-message-label').html("<label class='error_message'> " + gettext(response.error_message) + ".</label>")
-            }
+        DW.post_project_data('Inactive', function(response){
+            return '/project/';
         });
-
 
     });
 });
