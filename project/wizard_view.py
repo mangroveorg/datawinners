@@ -172,3 +172,12 @@ def reminder_settings(request, project_id):
         return render_to_response('project/reminder_settings.html',
                 {'project_links': project_links,'project': project,
                  'form':form},context_instance=RequestContext(request))
+
+def _generate_project_info_with_deadline_and_reminders(project):
+    project_info = {}
+    for key, value in project.items():
+        project_info[key] = value
+    for key, value in project['reminder_and_deadline'].items():
+        project_info[key] = value
+    del project_info['reminder_and_deadline']
+    return project_info
