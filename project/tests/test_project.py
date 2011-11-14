@@ -18,7 +18,7 @@ class TestProject(TestCase):
         self.assertEquals(response.status_code,200)
 
     def test_should_render_project_wizard_view_if_not_logged_in(self):
-        response = self.client.post('/project/wizard/create')
+        response = self.client.post('/project/wizard/create/')
         self.assertEquals(response.status_code,302)
 
     @SkipTest

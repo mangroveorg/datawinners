@@ -242,7 +242,7 @@ $(document).ready(function() {
         var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
         'project_state': 'Test'};
-        
+
         $.post('', post_data, function(response){
             var response = $.parseJSON(response);
             if(response.success){

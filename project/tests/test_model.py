@@ -129,7 +129,8 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "month"
         }
-        project_reminders = Project(name="ReminderProject", reminder_and_deadline=reminder_and_deadline_for_month)
+        project_reminders = Project(name="ReminderProject")
+        project_reminders.reminder_and_deadline = reminder_and_deadline_for_month
         self.assertEquals(5, project_reminders.get_deadline_day())
 
 
@@ -146,7 +147,8 @@ class TestProjectModel(unittest.TestCase):
             "has_deadline": "True",
             "frequency_period": "month"
         }
-        project = Project(reminder_and_deadline=reminder_and_deadline_for_month)
+        project = Project()
+        project.reminder_and_deadline=reminder_and_deadline_for_month
         project.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
         dbm = Mock(spec=DatabaseManager)
 
