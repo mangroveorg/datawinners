@@ -35,10 +35,10 @@ class OrderSMSParser(KeyBasedSMSParser):
         return form_code, submission
 
     def form_code(self, message):
-        message = self._clean(message)
-        self._validate_format(self.MESSAGE_PREFIX_FOR_ORDERED_SMS,message)
+        message = self.clean(message)
+        self.validate_format(self.MESSAGE_PREFIX_FOR_ORDERED_SMS,message)
         tokens = message.split()
-        form_code = self._pop_form_code(tokens)
+        form_code = self.pop_form_code(tokens)
         return form_code, tokens
 
     def _get_question_codes_from_couchdb(self,form_code):
