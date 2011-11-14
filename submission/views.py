@@ -9,14 +9,13 @@ from django.views.decorators.http import require_http_methods
 
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, UnknownOrganization
 from mangrove.form_model.form_model import get_form_model_by_code
-from mangrove.transport.player.parser import KeyBasedSMSParser
+from mangrove.transport.player.parser import KeyBasedSMSParser, OrderSMSParser
 from mangrove.transport.player.player import SMSPlayer, TransportInfo
 
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, MessageTracker
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, get_db_manager_for, get_organization_settings_for
 from datawinners.messageprovider.messages import exception_messages, SMS
-from datawinners.ordersmsparser.order_sms_parser import OrderSMSParser
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from datawinners.messageprovider.message_handler import get_exception_message_for
 
