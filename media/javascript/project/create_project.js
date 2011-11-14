@@ -155,7 +155,7 @@ DW.basic_project_info.prototype={
         $('input[name=devices]:checked').each(function(){
             devices.push($(this).val());
         });
-        return JSON.stringify({'name':name, 'goals':goals, 'language':language, 'is_activity_report': is_activity_report,
+        return JSON.stringify({'name':name, 'goals':goals, 'language':language, 'activity_report': is_activity_report,
         'entity_type': entity_type, 'devices': devices});
     },
     show: function(){
