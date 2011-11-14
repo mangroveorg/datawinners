@@ -783,8 +783,12 @@ def questionnaire_preview(request, project_id=None):
         for field in fields:
             question = helper.get_preview_for_field(field)
             questions.append(question)
-        example_sms = "%s .%s <%s> .... .%s <%s>" % (
-            form_model.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
+        if(len(fields)>1):
+            example_sms = "%s  <answer 1> ..... <answer %s>" % (
+                form_model.form_code, len(fields))
+        else:
+            example_sms = "%s  <answer 1>" % (
+                form_model.form_code)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,
