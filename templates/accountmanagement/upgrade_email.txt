@@ -1,0 +1,18 @@
+Dear {{ name }},
+
+Thank you!  We have received your upgrade request from a trial account to a monthly subscription and are currently processing your order.
+
+You will receive a confirmation email from us containing payment information and telephone number options within the next 24 hours.  In the meantime, you can continue to use DataWinners to create your questionnaires and collect data via the Internet.
+
+Upon receipt of payment, you can begin collecting data via SMS.
+
+If you need help getting started:
+
+    Email us at support@datawinners.com.  We're happy to help!
+
+
+Keep in touch! You can follow us on Twitter and Facebook and check out our blog to learn about new features and more... (Thoughtworks:  Chris will send twitter, facebook and blog links)
+
+Thanks again for your support,
+
+Your DataWinners Team

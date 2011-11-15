@@ -338,7 +338,8 @@ body {
 
 #how_menu {
   position: relative;
-  padding-top: 10px; }
+  padding-top: 10px;
+  margin-bottom: 40px; }
   #how_menu .title {
     width: 180px;
     float: left;
@@ -368,7 +369,7 @@ body {
   display: block; }
 
 #how_nav #how_links {
-  margin: 30px 0;
+  margin: 30px 0 0;
   text-align: center; }
   #how_nav #how_links #how_try_button {
     display: block;
@@ -427,8 +428,25 @@ body {
   color: #6f451b !important;
   text-shadow: #FFF2B2 0 1px 1px;
   background: url("/media/images/dw_home_button1.png") no-repeat left top;
-  margin: 10px auto;
-  text-align: center;}
+  margin: 10px auto; }
+
+.trial_web_limit_button {
+  display: block;
+  margin-left: 80%;
+  margin-top: -28px;
+  width: 158px;
+  height: 46px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 46px;
+  color: #6f451b !important;
+  text-shadow: #FFF2B2 0 1px 1px;
+  background: url("/media/images/dw_home_button1.png") no-repeat left top;
+  text-align: center; }
+
+.trial_web_learn_more {
+  margin-left: 70%; }
 
 #pricing .container_plan {
   margin: 0 auto;

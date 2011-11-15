@@ -4,10 +4,13 @@ from django.conf import settings as django_settings
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.template.loader import render_to_string
+from datawinners.settings import EMAIL_HOST_USER
 
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm
@@ -195,6 +198,13 @@ def edit_user(request):
 def trial_expired(request):
     return render_to_response("registration/trial_account_expired_message.html")
 
+
+def _send_upgrade_email(user):
+    subject = render_to_string('accountmanagement/upgrade_email_subject.txt')
+    body = render_to_string('accountmanagement/upgrade_email.txt', {'name':user.first_name})
+    EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], ['akshay.naval@gmail.com']).send()
+
+
 @is_admin
 def upgrade(request):
     profile = request.user.get_profile()
@@ -214,6 +224,7 @@ def upgrade(request):
             payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,
                                                            preferred_payment= preferred_payment)
             payment_details.save()
+#            _send_upgrade_email(request.user)
             messages.success(request,_("upgrade success message") )
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
             
