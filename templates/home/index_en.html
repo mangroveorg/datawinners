@@ -1,4 +1,5 @@
-{% extends 'public_en.html' %}
+{% extends 'public.html' %}
+{% load i18n %}
 {% block page_title %} DataWinners {% endblock %}
 
 {% block page_js %}
@@ -18,17 +19,15 @@
                 <div class="content">
                     <p class="title">Get timely data via SMS.<br/>
                         Anywhere a mobile phone works.<br/>
-                        Just pennies per report.</p>
+                        One low monthly fee.</p>
 
                     <p>
                         Get all the data you need using the technology you
                         already have.
                     </p>
-                    {% if TRIAL_REGISTRATION_ENABLED %}
-                        <a href="/register/trial"
-                           class="intro_try_button">Try it Free</a>
-                    {% endif %}
-                    <a href="/en/what-is-datawinners" class="intro_learn_button">Learn
+                    <a href="/register/trial"
+                       class="intro_try_button">Try it Free</a>
+                    <a href="/{% trans "en"%}/what-is-datawinners" class="intro_learn_button">Learn
                         More</a>
                 </div>
             </div>
@@ -39,7 +38,7 @@
 <div id="container_home_carousel">
     <div id="home_carousel" class="container_24 text_align_center">
         <div id="carousel_title">
-            <div><a href="/en/success-stories">view all stories &raquo;</a></div>
+            <div><a href="/{% trans "en"%}/success-stories">view all stories &raquo;</a></div>
             <h1>Make better decisions to change lives</h1>
         </div>
         <div id="carousel">
@@ -55,7 +54,7 @@
                     <div class="text">
                         <h2>Public Health, Madagascar</h2>
                         <a href="javascript:void(0)" rel="popup1">Family
-                            Planning and Reproductive Healthcare</a>
+                            Planning and Reproductive Health</a>
                     </div>
                 </div>
                 <div class="plus"><a href="javascript:void(0)"
@@ -94,8 +93,7 @@
                     </div>
                     <div class="text">
                         <h2>Humanitaire, Madagascar</h2>
-                        <a href="javascript:void(0)" rel="popup3">Gestion des
-                            risques et catastrophes</a>
+                        <a href="javascript:void(0)" rel="popup3">Risk and Disaster Management</a>
                     </div>
                 </div>
                 <div class="plus"><a href="javascript:void(0)"
@@ -113,7 +111,7 @@
                 <div class="carousel_popup_left">
                     <h2>Public Health</h2>
 
-                    <h1>Family Planning<br/>and Reproductive Healthcare</h1>
+                    <h1>Family Planning<br/>and Reproductive Health</h1>
                     In 2010, Marie Stopes Madagascar (MSM) began collecting and
                     storing information sent in via mobile phone from doctors
                     affiliated with its "BlueStar" network of medical clinics.
@@ -135,7 +133,7 @@
                         complete data on a monthly basis and analyze which of
                         our marketing efforts directly lead to spikes in
                         clients seen.
-                        <br/>We now have a much better idea where to spend our
+                        <br/><br/>We now have a much better idea where to spend our
                         limited resources."
                         <br/><span>Miles Kemplay, Country Director of MSM</span>
                         <br/><img src="/media/images/dw_popup_logo_msi.gif"
@@ -202,17 +200,18 @@
 
             <div class="carousel_popup_content">
                 <div class="carousel_popup_left">
-                    <h2>Humanitarian Component, Madagascar</h2>
+                    <h2>HUMANITARIAN AID, Madagascar</h2>
 
                     <h1>Risk and Disaster Management</h1>
-                    <br/>In 2010, the National Bureau for Risk and Disaster
-                    Management (BNGRC) began to prepare itself for the setting
-                    in place of data collection by SMS at the level of Malagasy
-                    basic administrative subdivisions.
-                    <br/><br/>By the use of simple SMS, local officials are now
-                    able to send their first post-cyclone data from the
-                    affected areas to the Bureau, and get tables and maps for
-                    decision making and interventions.
+                    <br/>In 2010,
+                    the National Bureau for Risk and Disaster Management
+                    (known by the French acronym BNGRC) launched a
+                    new initiative to collect data  electronically after a natural disaster.
+                    <br/><br/>Using SMS, local officials now send in their first post-cyclone
+                    data from the affected areas to headquarters.
+                    Managers in the capital,
+                    Antananarivo, can view the data in spreadsheets and maps and
+                    then make more informed decisions.
                     <br/><br/><a href="/en/success-story/bngrc" class="more">Read
                     more &raquo;</a>
                 </div>
@@ -221,10 +220,11 @@
                          alt="Nianja Raonivelo" width="65" height="65"/><br/>
 
                     <p>
-                        "Now, the communication, the processing and the
-                        compilation of data can be done quickly.
-                        <br/>We can send messages to raise pre-hazard awareness
-                        and preparedness."
+                        "Now, communicating,
+                        processing and compiling the data is done quickly.
+                        We map our data,
+                        send messages to raise pre-disaster awareness and increase preparedness,
+                        access our collected data in real time and share it with other stakeholders."
                         <br/><span>BNGRC Webmaster/ Data Analyst</span>
                         <br/><img src="/media/images/dw_popup_logo_bngrc.gif"
                                   width="39" height="51" alt=""/>
