@@ -144,3 +144,6 @@
     .wizard_content .content_wrapper .questionnare_content #questions-panel .question_list .delete a {
       color: #0070AC;
       font-size: 12px; }
+
+#que_code li {
+  list-style-type: decimal; }

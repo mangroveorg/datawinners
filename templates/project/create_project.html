@@ -43,7 +43,7 @@
         </li>
     </script>
     <script type="text/html" id="question-list-template">
-        <div class="question_list">
+        <div class="question_list" id="que_code">
             <ol>
                 {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
                 <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
