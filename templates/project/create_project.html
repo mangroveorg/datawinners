@@ -47,7 +47,7 @@
             <ol>
                 {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
                 <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
-                    <li style="list-style-type: decimal">
+                    <li>
                         <a href="#" data-bind="text: question.display"></a>
 
                         <div data-bind="visible: question.canBeDeleted()" class="delete">
