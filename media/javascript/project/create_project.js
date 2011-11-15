@@ -11,6 +11,7 @@ DW.init_view_model = function (question_list) {
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
     DW.current_code = viewModel.questions().length + 1; //This variable holds the next question code to be generated.
+    viewModel.hasAddedNewQuestions = false;
 };
 
 DW.devices=function(smsElement){
@@ -222,7 +223,7 @@ $(document).ready(function() {
 
     devices.disableSMSElement();
     $('#id_entity_type').change(function() {
-        if(is_edit){
+        if(is_edit || viewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");
         }else{
             DW.continue_flip();
@@ -230,7 +231,7 @@ $(document).ready(function() {
     });
 
     $('input[name="activity_report"]').change(function() {
-        if(is_edit){
+        if(is_edit || viewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");
         }else{
             DW.continue_flip();
