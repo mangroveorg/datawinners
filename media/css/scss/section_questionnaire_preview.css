@@ -21,6 +21,9 @@
     width: 100%;
     float: left; }
 
+#que_code li {
+  list-style-type: decimal; }
+
 #print_page a {
   color: #0070ac;
   outline: none; }

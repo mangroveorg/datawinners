@@ -25,10 +25,10 @@
                 <p class="content italic">{{ example_sms }}</p>
             </li>
         </ul>
-        <ul class="questionnaire_preview">
+        <ul class="questionnaire_preview" id="que_code">
             {% for question in questions %}
                 <li>
-                    <h6><span> .{{ question.code }}</span> {% trans question.description %}</h6>
+                    <h6>{% trans question.description %}</h6>
                     {% if  question.instruction %}
                         <p class="instructions italic">
                             {% trans question.instruction %}
