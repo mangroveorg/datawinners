@@ -1,11 +1,12 @@
 $(document).ready(function() {
     var count = function () {
-        var len = $(this).val().length
+        var len = $(this).val().length;
         var limitation = 160;
-        if (len > limitation)
-            $(this).val($(this).val().substring(0, limitation))
-        $('#counter').html($(this).val().length)
-    }
+        if (len > limitation){
+            $(this).val($(this).val().substring(0, limitation));
+        }
+        $('#counter').html($(this).val().length);
+    };
     $('#sms_content').bind('keyup keydown', count);
 });
 

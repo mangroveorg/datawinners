@@ -2,7 +2,7 @@ DW.init_view_model = function (question_list) {
 
     viewModel.questions([]);
     viewModel.questions.valueHasMutated();
-
+    var index = 0;
     for (index in question_list) {
         var questions = new DW.question(question_list[index]);
         viewModel.loadQuestion(questions);
@@ -52,7 +52,7 @@ DW.questionnaire_code=function(questionnaireCode,questionnaireErrorCode){
 DW.questionnaire_code.prototype={
     processMandatory:function(){
         if (!this.isPresent()){
-            this.appendError("The Questionnaire code is required")
+            this.appendError("The Questionnaire code is required");
             return false;
         }
         return true;
@@ -136,7 +136,7 @@ DW.basic_project_info.prototype={
             },
             wrapper: "div",
             errorPlacement: function(error, element) {
-                offset = element.offset();
+                var offset = element.offset();
                 error.insertAfter(element);
                 error.addClass('error_arrow');  // add a class to the wrapper
             }
@@ -188,27 +188,6 @@ DW.questionnaire_form.prototype={
 
 };
 
-DW.post_project_data = function(state, function_to_construct_redirect_url_on_success){
-    var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
-    var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
-        'project_state': state};
-    $.post('', post_data, function(response) {
-        var response = $.parseJSON(response);
-        if (response.success) {
-            window.location.replace(function_to_construct_redirect_url_on_success(response));
-        } else {
-            if (response.error_in_project_section) {
-                basic_project_info.show();
-                questionnaire_section.hide();
-            } else {
-                basic_project_info.hide();
-                questionnaire_section.show();
-            }
-            $('#project-message-label').removeClass('none');
-            $('#project-message-label').html("<label class='error_message'> " + gettext(response.error_message) + ".</label>")
-        }
-    })
-};
 
 var basic_project_info=new DW.basic_project_info('#create_project_form');
 var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
@@ -216,6 +195,27 @@ var questionnaire_form =new DW.questionnaire_form('#question_form');
 var questionnaire_section = new DW.questionnaire_section("#questionnaire");
 var devices=new DW.devices("#id_devices_0");
 
+DW.post_project_data = function(state, function_to_construct_redirect_url_on_success){
+    var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+    var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
+        'project_state': state};
+    $.post('', post_data, function(response) {
+        var responseJson = $.parseJSON(response);
+        if (responseJson.success) {
+            window.location.replace(function_to_construct_redirect_url_on_success(responseJson));
+        } else {
+            if (responseJson.error_in_project_section) {
+                basic_project_info.show();
+                questionnaire_section.hide();
+            } else {
+                basic_project_info.hide();
+                questionnaire_section.show();
+            }
+            $('#project-message-label').removeClass('none');
+            $('#project-message-label').html("<label class='error_message'> " + gettext(responseJson.error_message) + ".</label>");
+        }
+    });
+};
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
     ko.applyBindings(viewModel);
