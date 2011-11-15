@@ -14,6 +14,9 @@
             <form id="registration_form" action="" method="POST">
                 {% csrf_token %}
                 <div class="form-5px">
+                    <ul>
+                        <li><span class="bold">Edit this information by clicking on the   'Your Profile' and 'Account' links at the top of this page.</span></li>
+                    </ul>
                     <ul class="organization">
                         <li>
                             <h3 class="highlighted_title">{% trans "Your Organization" %}<br/></h3>
@@ -64,7 +67,7 @@
 
                         </li>
                         <li>
-                            <span class="italic">Note, your projects from the trial account will still be available</span>
+                            <span class="bold">Note, your projects from the trial account will still be available</span>
                         </li>
                         <li>
                             <input type="checkbox" id="agree-terms" value="1"

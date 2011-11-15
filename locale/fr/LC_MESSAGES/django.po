@@ -2762,3 +2762,6 @@ msgstr "Importer la Liste"
 
 msgid "Import A List"
 msgstr "Importer Une Liste"
+
+msgid "upgrade success message"
+msgstr ""

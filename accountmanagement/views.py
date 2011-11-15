@@ -1,23 +1,22 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 from django.conf import settings as django_settings
+from django.contrib import messages
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect, HttpRequest
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.test.client import RequestFactory
 
 from mangrove.errors.MangroveException import TrialAccountExpiredException
-from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, LoginForm
+from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails
 from django.contrib.auth.views import login
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
-from django.core.urlresolvers import reverse
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -215,6 +214,7 @@ def upgrade(request):
             payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,
                                                            preferred_payment= preferred_payment)
             payment_details.save()
+            messages.success(request,_("upgrade success message") )
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
             
         return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
