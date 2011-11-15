@@ -1,5 +1,5 @@
 DW.continue_flip = function(){
-    DW.subject_warning_dialog_module.enable_disable_entity_type_control();
+    DW.subject_warning_dialog_module.enable_or_disable_entity_type_control();
     if (DW.subject_warning_dialog_module.is_subject_selected()) {
         DW.init_view_model(subject_report_questions);
     }
@@ -8,7 +8,6 @@ DW.continue_flip = function(){
     }
     DW.current_subject = $('#id_entity_type').val();
     DW.current_project_selected = DW.subject_warning_dialog_module.get_selected_project();
-    $("#subject_warning_message").dialog("close");
     return false;
 };
 
@@ -22,7 +21,7 @@ DW.subject_warning_dialog_module={
         DW.subject_warning_dialog_module.bind_dialog_closed();
         DW.subject_warning_dialog_module.bind_cancel_link();
         DW.subject_warning_dialog_module.bind_continue();
-        DW.subject_warning_dialog_module.enable_disable_entity_type_control();
+        DW.subject_warning_dialog_module.enable_or_disable_entity_type_control();
     },
 
 
@@ -59,10 +58,11 @@ DW.subject_warning_dialog_module={
     bind_continue:function(){
         $("#continue").bind("click", function(){
             DW.continue_flip();
+            $("#subject_warning_message").dialog("close");
         });
     },
 
-    enable_disable_entity_type_control:function(){
+    enable_or_disable_entity_type_control:function(){
         if (DW.subject_warning_dialog_module.is_subject_selected()) {
             $('#id_entity_type').attr('disabled', false);
         }

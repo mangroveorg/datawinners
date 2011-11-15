@@ -224,12 +224,16 @@ $(document).ready(function() {
     $('#id_entity_type').change(function() {
         if(is_edit){
             $("#subject_warning_message").dialog("open");
+        }else{
+            DW.continue_flip();
         }
     });
 
     $('input[name="activity_report"]').change(function() {
         if(is_edit){
             $("#subject_warning_message").dialog("open");
+        }else{
+            DW.continue_flip();
         }
     });
 
