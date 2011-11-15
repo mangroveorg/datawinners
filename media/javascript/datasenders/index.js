@@ -21,7 +21,7 @@ $(document).ready(function() {
                         "<td>" + element.geocode + "</td>" +
                         "<td>" + element.mobile_number + "</td>" +
                         "<td>" + element.projects + "</td>" +
-                        "<td>" + element.email + "</td></tr>")
+                        "<td>" + element.email + "</td></tr>");
             });
             if (responseJSON.success == true) {
                 $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
@@ -41,7 +41,7 @@ $(document).ready(function() {
                 }
                 $.each(responseJSON.failure_imports, function(index, element) {
                     $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
-                            + element.error + "</td></tr>")
+                            + element.error + "</td></tr>");
                 });
                 $("#error_table").show();
             }
@@ -96,35 +96,16 @@ $(document).ready(function() {
             projects.push($(this).val());
         });
         if (projects.length == 0) {
-            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project") + '</div>').insertBefore($("#all_projects"))
+            $('<div class="message-box" id="error">' + gettext("Please select atleast 1 Project") + '</div>').insertBefore($("#all_projects"));
         }
         else {
-            var url = '/entity/' + $('#action').val() + '/'
+            var url = '/entity/' + $('#action').val() + '/';
             $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
             $.post(url,
                     {'ids':allIds.join(';'),'project_id':projects.join(';')}
             ).success(function(data) {
                         window.location.href = data;
                     });
-        }
-    });
-
-    $('#action').change(function() {
-        var allIds = updateIds();
-        $('#error').remove();
-        if (allIds.length == 0) {
-            $('#web-access-success').remove();
-            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender') + '</div>').insertAfter($(this));
-            $('#project').val('');
-            $(this).val("");
-            return;
-        }
-        var action = $(this).val();
-        if(action=='makewebuser'){
-            populate_dialog_box_for_web_users();
-            return false;
-        }else{
-            $("#all_project_block").dialog("open");
         }
     });
 
@@ -148,6 +129,27 @@ $(document).ready(function() {
         $('#web_user_table_body').html($.tmpl('webUserTemplate', data_sender_details));
         $("#web_user_block").dialog("open");
     }
+
+
+    $('#action').change(function() {
+        var allIds = updateIds();
+        $('#error').remove();
+        if (allIds.length == 0) {
+            $('#web-access-success').remove();
+            $('<div class="message-box" id="error">' + gettext('Please select atleast 1 data sender') + '</div>').insertAfter($(this));
+            $('#project').val('');
+            $(this).val("");
+            return;
+        }
+        var action = $(this).val();
+        if(action=='makewebuser'){
+            populate_dialog_box_for_web_users();
+            return false;
+        }else{
+            $("#all_project_block").dialog("open");
+        }
+    });
+
 
     $('#web_user_button').click(function() {
         $('#web_user_error').hide();
@@ -180,18 +182,18 @@ $(document).ready(function() {
                     var json_data = JSON.parse(response);
                     if (json_data.success) {
                         $("#web_user_block").dialog("close");
-                        redirect_url = location.href;
+                        var redirect_url = location.href;
                         if(redirect_url.indexOf('?web=1') == -1) {
                             redirect_url = redirect_url + '?web=1';
                         }
-                        window.location.href = redirect_url
+                        window.location.href = redirect_url;
                     } else {
                         $.unblockUI();
                         var html = "";
-                        for (var i = 0; i < json_data.errors.length; i++) {
-                            console.log(json_data);
+                        var i = 0;
+                        for (i; i < json_data.errors.length; i=i+1) {
                             var email_in_error = json_data.errors[i].split(' ')[3];
-                            var error_message = gettext('User with email ') + email_in_error + gettext(' already exists')
+                            var error_message = gettext('User with email ') + email_in_error + gettext(' already exists');
                             html += "<tr><td>" + error_message + "</td></tr>";
                         }
                         $('#web_user_error').html(html);
@@ -202,6 +204,6 @@ $(document).ready(function() {
         return false;
     });
 
-    var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:150px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>"
+    var markup = "<tr><td>${short_name}</td><td>${name}</td><td style='width:150px;'>${location}</td><td>${contactInformation}</td><td><input type='text' style='width:150px' class='ds-email' value='${email}' ${input_field_disabled}/></td></tr>";
     $.template("webUserTemplate", markup);
 });
