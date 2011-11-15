@@ -18,7 +18,7 @@ $(document).ready(function() {
                         "<td>" + element.location + "</td>" +
                         "<td>"+ element.geocode + "</td>" +
                         "<td>" + element.description + "</td>" +
-                        "<td>" + element.mobile_number + "</td></tr>")
+                        "<td>" + element.mobile_number + "</td></tr>");
             });
             if (responseJSON.success == true) {
                 $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
@@ -39,7 +39,7 @@ $(document).ready(function() {
                 }
                 $.each(responseJSON.failure_imports, function(index, element) {
                     $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
-                            + element.error + "</td></tr>")
+                            + element.error + "</td></tr>");
                 });
                 $("#error_table").show();
             }
