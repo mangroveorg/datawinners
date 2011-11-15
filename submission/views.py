@@ -82,7 +82,6 @@ def increment_message_counter(incoming_request):
     return incoming_request
 
 def find_parser(incoming_request):
-#    sms_parser = OrderSMSParser(incoming_request['dbm']) if settings.USE_ORDERED_SMS_PARSER else KeyBasedSMSParser()
     incoming_message = incoming_request['incoming_message']
     dbm = incoming_request['dbm']
     sms_parser = SMSParserFactory().getSMSParser(message=incoming_message,

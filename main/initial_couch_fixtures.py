@@ -821,7 +821,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
                        entity_type='reporter', devices=["sms"], activity_report='yes', sender_group="close")
     project17.qid = qid17
-    project17.state = ProjectState.INACTIVE
+    project17.state = ProjectState.TEST
     try:
         project17.save(manager)
     except Exception:
