@@ -2,7 +2,6 @@ DW.init_view_model = function (question_list) {
 
     viewModel.questions([]);
     viewModel.questions.valueHasMutated();
-    DW.current_code = 2;
 
     for (index in question_list) {
         var questions = new DW.question(question_list[index]);
@@ -11,6 +10,7 @@ DW.init_view_model = function (question_list) {
 
     viewModel.selectedQuestion(viewModel.questions()[0]);
     viewModel.selectedQuestion.valueHasMutated();
+    DW.current_code = viewModel.questions().length + 1; //This variable holds the next question code to be generated.
 };
 
 DW.devices=function(smsElement){
@@ -149,13 +149,13 @@ DW.basic_project_info.prototype={
         var name = $('#id_name').val();
         var goals = $('#id_goals').val();
         var language = $('input[name=language]:checked').val();
-        var is_activity_report = $('input[name=activity_report]:checked').val();
+        var activity_report = $('input[name=activity_report]:checked').val();
         var entity_type = $('#id_entity_type').val();
         var devices = [];
         $('input[name=devices]:checked').each(function(){
             devices.push($(this).val());
         });
-        return JSON.stringify({'name':name, 'goals':goals, 'language':language, 'activity_report': is_activity_report,
+        return JSON.stringify({'name':name, 'goals':goals, 'language':language, 'activity_report': activity_report,
         'entity_type': entity_type, 'devices': devices});
     },
     show: function(){
@@ -178,8 +178,8 @@ DW.questionnaire_form.prototype={
     },
     processValidation:function(){
         if (!this.isValid()){
-            this.error_appender.appendError("This questionnaire has an error");
-            this.error_appender.hide_message();
+            this.errorAppender.appendError("This questionnaire has an error");
+            this.errorAppender.hide_message();
             return false;
         }
         return true;
@@ -222,15 +222,14 @@ $(document).ready(function() {
 
     devices.disableSMSElement();
     $('#id_entity_type').change(function() {
-        $("#subject_warning_message").dialog("open");
+        if(is_edit){
+            $("#subject_warning_message").dialog("open");
+        }
     });
 
     $('input[name="activity_report"]').change(function() {
-        if(DW.current_code > 2){
+        if(is_edit){
             $("#subject_warning_message").dialog("open");
-        }
-        else{
-            DW.continue_flip();
         }
     });
 
@@ -250,21 +249,21 @@ $(document).ready(function() {
     });
 
     $('#save_and_create').click(function(){
-        if(!questionnnaire_code.processValidation() && !questionnaire_form.processValidation()){
-            return false;
+        if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+            DW.post_project_data('Test', function(response){
+                return '/project/overview/' + response.project_id;
+            });
         }
-        DW.post_project_data('Test', function(response){
-            return '/project/overview/' + response.project_id;
-        });
+        return false;
     });
 
     $('#save_as_draft').click(function(){
-        if(!questionnnaire_code.processValidation() && !questionnaire_form.processValidation()){
-            return false;
+        if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+            DW.post_project_data('Inactive', function(response){
+                return '/project/';
+            });
         }
-        DW.post_project_data('Inactive', function(response){
-            return '/project/';
-        });
+        return false;
 
     });
 });

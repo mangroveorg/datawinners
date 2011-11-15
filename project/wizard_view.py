@@ -54,7 +54,7 @@ def create_project(request):
                 {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
                  'existing_questions': repr(activity_report_questions), 'project': project_summary,
-                 'questionnaire_code': helper.generate_questionnaire_code(manager)},context_instance=RequestContext(request))
+                 'questionnaire_code': helper.generate_questionnaire_code(manager), 'is_edit': 'false'},context_instance=RequestContext(request))
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
@@ -102,7 +102,8 @@ def edit_project(request, project_id=None):
         return render_to_response('project/create_project.html',
                                   {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
-                 'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code, 'project':project},
+                 'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code,
+                 'project':project, 'is_edit': 'true'},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':

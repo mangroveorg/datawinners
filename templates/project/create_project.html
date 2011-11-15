@@ -31,6 +31,9 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
+    <script type="text/javascript">
+        var is_edit = {{ is_edit }};
+    </script>
     <script type="text/html" id="choice-template">
         <li>
             <input id="choice_text" name="choice_text" class="required" type="text"
@@ -119,7 +122,7 @@
                             <strong>{% trans "What do I need to do?" %}</strong><br/>
                             {% trans "r_tooltip_question_code" %}
                         </p></div>
-                        <input id='questionnaire-code' class='required' value="{{ questionnaire_code }}"/>
+                        <input id='questionnaire-code' value="{{ questionnaire_code }}"/>
                         <span id="questionnaire-code-error"></span>
                     </li>
                 </ul>
