@@ -2483,6 +2483,16 @@ msgstr "Enregistrer comme ébauche"
 msgid "Time Period"
 msgstr "Période"
 
+msgid "q_tooltip_project_name"
+msgstr "DataWinners identifie les projets par leur <strong>Nom</strong>. Il est "
+"important de donner à chaque projet un nom distinctif pour que vous "
+"puissiez les distinguer et les suivre aisément."
+
+msgid "r_tooltip_project_name"
+msgstr ""
+"Donnez un nom à votre projet en saisissant un court descriptif dans ce champ. "
+"Ne vous inquiétez pas, vous pourrez toujours le changer plus tard."
+
 #: templates/dashboard/overview.html
 msgid "Your project"
 msgstr "Vos projet"

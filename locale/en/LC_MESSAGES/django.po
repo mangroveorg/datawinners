@@ -2453,6 +2453,16 @@ msgstr ""
 msgid "Time Period"
 msgstr ""
 
+msgid "q_tooltip_project_name"
+msgstr "DataWinners stores projects by the <strong>Project Name</strong>. It is "
+"important to give each ofyour projects a separate name so when you have many "
+"projects running at the same time youcan easily track each project."
+
+msgid "r_tooltip_project_name"
+msgstr ""
+"Name your project by typing a short descriptive phrase in the Name this "
+"Project box. Don't worry,you can always edit your project name later."
+
 #: templates/dashboard/overview.html
 msgid "Your project"
 msgstr ""
