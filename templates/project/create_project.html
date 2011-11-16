@@ -86,6 +86,7 @@
 {% block content %}
     <div id="project-message-label" class="message-box none">
     </div>
+    <input id='post_url' value="{{ post_url }}" type='hidden'/>
     <form id="create_project_form">
         {% csrf_token %}
         {% include 'project/basic_info.html' %}

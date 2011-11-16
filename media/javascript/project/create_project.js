@@ -198,8 +198,8 @@ var devices=new DW.devices("#id_devices_0");
 DW.post_project_data = function(state, function_to_construct_redirect_url_on_success){
     var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
     var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
-        'project_state': state};
-    $.post('', post_data, function(response) {
+        'project_state': state, 'csrfmiddlewaretoken':$('#create_project_form input[name=csrfmiddlewaretoken]').val()};
+    $.post($('#post_url').val(), post_data, function(response){
         var responseJson = $.parseJSON(response);
         if (responseJson.success) {
             window.location.replace(function_to_construct_redirect_url_on_success(responseJson));

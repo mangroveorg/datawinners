@@ -54,7 +54,7 @@ def create_project(request):
                 {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
                  'existing_questions': repr(activity_report_questions), 'project': project_summary,
-                 'questionnaire_code': helper.generate_questionnaire_code(manager), 'is_edit': 'false'},context_instance=RequestContext(request))
+                 'questionnaire_code': helper.generate_questionnaire_code(manager), 'is_edit': 'false', 'post_url': reverse(create_project)},context_instance=RequestContext(request))
 
     if request.method == 'POST':
         project_info = json.loads(request.POST['profile_form'])
@@ -84,6 +84,7 @@ def create_project(request):
 
 @login_required(login_url='/login')
 @is_datasender
+@csrf_exempt
 def edit_project(request, project_id=None):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -103,7 +104,7 @@ def edit_project(request, project_id=None):
                                   {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
                  'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code,
-                 'project':project, 'is_edit': 'true'},
+                 'project':project, 'is_edit': 'true', 'post_url':reverse(edit_project, args=[project_id])},
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
