@@ -120,7 +120,7 @@ $(document).ready(function() {
             data_sender.contactInformation = $($(row).children()[6]).html();
             data_sender.email = $($(row).children()[8]).html();
             data_sender.input_field_disabled = "disabled";
-            if(data_sender.email.trim() == "--"){
+            if($.trim(data_sender.email) == "--"){
                 data_sender.input_field_disabled = "";
                 data_sender.email = "";
             }
