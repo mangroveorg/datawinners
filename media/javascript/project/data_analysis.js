@@ -3,9 +3,9 @@ $(document).ready(function() {
     DW.submit_data = function() {
         $("#dateErrorDiv").hide();
         var aggregation_selectBox_Array = $(".aggregation_type");
-        aggregationArray = new Array();
+        var aggregationArray = [];
         aggregation_selectBox_Array.each(function() {
-            aggregationArray.push($(this).val())
+            aggregationArray.push($(this).val());
         });
         var time_range = $("#dateRangePicker").val().split("/");
         if (time_range[0] == "" || time_range[0] == "Click to select a date range") {
@@ -14,7 +14,7 @@ $(document).ready(function() {
             return time_range;
         }
         if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>')
+            $("#dateErrorDiv").html('<label class=error>' + gettext("Enter a correct date. No filtering applied") + '</label>');
             $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
@@ -22,14 +22,15 @@ $(document).ready(function() {
         return time_range;
     };
     DW.wrap_table = function() {
-        $("#data_analysis").wrap("<div class='data_table' style='width:" + screen_width + "px'/>")
+        $("#data_analysis").wrap("<div class='data_table' style='width:" + screen_width + "px'/>");
     };
     DW.update_footer = function(footer) {
         var index = 0;
         $("tfoot tr th").each(function() {
-            $(this).text(footer[index++]);
+            $(this).text(footer[index]);
+            index = index + 1;
         });
-    }
+    };
     $("#dateRangePicker").daterangepicker({
         presetRanges: [
             {text: gettext('Current month'), dateStart: function() {
@@ -48,7 +49,10 @@ $(document).ready(function() {
             }, dateEnd: 'today' }
         ],
         presets: {dateRange: 'Date Range'},
-        earliestDate:'1/1/2011', latestDate:'21/12/2012', dateFormat:'dd-mm-yy', rangeSplitter:'/',
+        earliestDate:'1/1/2011',
+        latestDate:'21/12/2012',
+        dateFormat:'dd-mm-yy',
+        rangeSplitter:'/'
 
     });
     DW.dataBinding = function(data, destroy, retrive) {
@@ -81,7 +85,7 @@ $(document).ready(function() {
                     "fnInfoCallback": null
             }
         });
-    }
+    };
 
     DW.dataBinding(initial_data, false, true);
     DW.wrap_table();

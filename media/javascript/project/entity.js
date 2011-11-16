@@ -7,8 +7,8 @@ $(document).ready(function() {
 
     $('.question_list ol > div').live("click", function() {
         $("#question-detail-panel > div").hide();
-        $('.question_list ol > div').removeClass("question_selected")
-        $('.question_list ol > div li span.selected_question_arrow').hide()
+        $('.question_list ol > div').removeClass("question_selected");
+        $('.question_list ol > div li span.selected_question_arrow').hide();
         $(this).toggleClass("question_selected");
         $(this).find(".selected_question_arrow").show();
 
@@ -16,10 +16,5 @@ $(document).ready(function() {
         var answer_class = question_class[0].replace(/question/, "answer");
         $("#question-detail-panel > div." + answer_class).show();
     });
-
-
-
-
-
 
 });
