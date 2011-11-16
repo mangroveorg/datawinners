@@ -1,5 +1,3 @@
-$border_color: #CCCCCC;
-
 #new_reminder{
     input[type=text]{
         width:100px;
@@ -30,46 +28,6 @@ label.error{
     width: 50%;
 }
 
-#reminder_deadline_form{
-    li{
-        overflow:hidden;
-        margin-bottom:15px;
-        padding-bottom:5px;
-        list-style-type:None;
-        label{
-            font-size:14px;
-            display:block;
-            float:left;
-            width:170px;
-            argin-right:10px;
-            font-weight:bold;
-        }
-        ul
-        {
-            float:left;
-            li{
-                margin-bottom:0px;
-                label{
-                    font-size:12px;
-                    display:inline;
-                    font-weight:normal;
-                    width:auto;
-                }
-                label.error{
-                    margin-left:0px;
-                }
-            }
-        }
-    }
-    select{
-        width:auto;
-        height:25px;
-        border-color:$border_color;
-        background:#FFFFFF;
-    } 
-}
-
-
 fieldset{
     border:1px solid #ccc;
     -moz-border-radius:5px;
@@ -80,5 +38,35 @@ fieldset{
     legend{
         color:#C35C00;
         font-weight:bold;
+    }
+    input[type="radio"]
+    {
+        margin-right: 10px;
+    }
+}
+
+#reminders_section input[type="text"]
+{
+    width:70px;
+    margin-right:10px;
+}
+#reminders_section input[type="checkbox"]{
+    margin-right:10px;
+}
+#reminders_section textarea{
+    margin-left:27px;
+}
+#frequency_values
+{
+    padding-top: 20px;
+    ul
+    {
+        margin-left: -190px;
+    }
+    ul li{
+        float: left;
+    }
+    select{
+        margin:0 5px;
     }
 }

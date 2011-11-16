@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import calendar
 from django.db.models.fields import TextField
+from django.forms import DecimalField
 
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.core.exceptions import ValidationError
@@ -175,10 +176,9 @@ class CreateProject(Form):
 
 class ReminderForm(Form):
     FREQUENCY_CHOICES = ((False, _("No deadline. Senders can submit data any time.")), (True, _("Every")))
-    deadline_enabled = ChoiceField(label=_("Time Period"),
-                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=False)
-    frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select(
-        attrs={'style': 'margin-left: -138px; margin-top: 19px; position: absolute'}),
+    has_deadline = ChoiceField(label=_("Time Period"),
+                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, initial=False)
+    frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select,
                                    required=False, )
     deadline_month = ChoiceField(
         choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, 'Last Day')])), widget=forms.Select,
@@ -187,3 +187,16 @@ class ReminderForm(Form):
                                 required=False)
     deadline_type = ChoiceField(choices=(('Same', _('Same')), ('Following', _('Following'))), widget=forms.Select,
                                 required=False)
+
+    should_send_reminders_before_deadline = ChoiceField(widget=forms.CheckboxInput, required=False)
+    number_of_days_before_deadline = DecimalField(label="days before deadline", required=False)
+    reminder_text_before_deadline = CharField(widget=forms.Textarea, required=False)
+
+    should_send_reminders_on_deadline = ChoiceField(widget=forms.CheckboxInput, label="The day of the deadline", required=False)
+    reminder_text_on_deadline = CharField(widget=forms.Textarea, required=False)
+
+    should_send_reminders_after_deadline = ChoiceField(widget=forms.CheckboxInput, label="days after the deadline", required=False)
+    number_of_days_after_deadline = DecimalField(required=False)
+    reminder_text_after_deadline = CharField(widget=forms.Textarea, required=False)
+
+    whom_to_send_message = ChoiceField(widget=forms.CheckboxInput, label="Only send reminders to senders who have not already submitted data for the current deadline", required=False)

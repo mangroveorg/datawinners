@@ -2,24 +2,62 @@
 <form action="" method="POST" id="reminder_deadline_form">
     {% csrf_token %}
     <fieldset>
-        <legend>{% trans "Reminder Deadline" %}</legend>
-        <li class="{{ form.deadline_enabled.css_classes  }} form-row-10px">
-            {{ form.deadline_enabled }}
-            {{ form.deadline_enabled.errors }}
+        <legend>{% trans "Deadline" %}</legend>
+        <ul>
+        <li class="form-row-10px">
+            {{ form.has_deadline }}
             <div id="frequency_values">
-                {{ form.frequency_period }}
-                {{ form.frequency_period.errors }}
-                {% include 'project/profile_deadline_week_block.html' %}
-                {% include 'project/profile_deadline_month_block.html' %}
+                <ul>
+                    <li>{{ form.frequency_period }}</li>
+                    {% include 'project/profile_deadline_week_block.html' %}
+                    {% include 'project/profile_deadline_month_block.html' %}
+                </ul>
             </div>
         </li>
-
+        </ul>
     </fieldset>
 
-    <fieldset>
-        <legend>Reminders</legend>
-        
-    </fieldset>
+    <div id="reminders_section">
+        <fieldset>
+            <legend>Reminders</legend>
+            <ul>
+                <li>
+                    {{ form.should_send_reminders_before_deadline }}
+
+                    {{ form.number_of_days_before_deadline }}
+                    {{ form.number_of_days_before_deadline.label }}
+                    {{ form.number_of_days_before_deadline.errors }}
+                </li>
+                <li>
+                    {{ form.reminder_text_before_deadline }}
+                    {{ form.reminder_text_before_deadline.errors }}
+                </li>
+                 <li>
+                     {{ form.should_send_reminders_on_deadline }}
+                     {{ form.should_send_reminders_on_deadline.label }}
+                 </li>
+                 <li>
+                     {{ form.reminder_text_on_deadline }}
+                     {{ form.reminder_text_on_deadline.errors }}
+                 </li>
+                 <li>
+                     {{ form.should_send_reminders_after_deadline }}
+
+                     {{ form.number_of_days_after_deadline }}
+                     {{ form.number_of_days_after_deadline.label }}
+                     {{ form.number_of_days_after_deadline.errors }}
+                 </li>
+                 <li>
+                     {{ form.reminder_text_after_deadline }}
+                     {{ form.reminder_text_after_deadline.errors }}
+                 </li>
+                 <li>
+                     {{ form.whom_to_send_message }}
+                     {{ form.whom_to_send_message.label }}
+                 </li>
+                </ul>
+        </fieldset>
+    </div>
     <div class="right_aligned_button">
         <input id="submit-button" class="button" type="submit" value="{% trans 'Save' %}"/>
     </div>

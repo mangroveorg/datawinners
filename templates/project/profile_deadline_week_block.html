@@ -1,11 +1,2 @@
 {% load i18n %}
-<div id="week_block">
-<div id="deadline_week_block" style="float: left; margin: 20px 10px 0px 10px;">
-        {% trans "on" %} {{ form.deadline_week }}
-        {{ form.deadline_week.errors }}
-</div>
-<div id="deadline_type_block" style="float:left; margin-top: 20px;">
-        {% trans "of the" %} {{ form.deadline_type }} {% trans "week" %}
-        {{ form.deadline_type.errors }}
-</div>
-</div>
+<li class="week_block">{% trans "on" %}</li> <li class="week_block">{{ form.deadline_week }}</li><li class="week_block">{% trans "of the" %}</li> <li class="week_block">{{ form.deadline_type }}</li> <li class="week_block">{% trans "week" %}</li>
