@@ -26,7 +26,7 @@ var viewModel =
         viewModel.questions.valueHasMutated();
     },
     canQuestionBeDeleted: function() {
-        return viewModel.questions().length > 2
+        return viewModel.questions().length > 2;
     },
     removeQuestion: function(question) {
         var index = $.inArray(question, viewModel.questions());
@@ -45,7 +45,7 @@ var viewModel =
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {
-            viewModel.removeQuestion(question)
+            viewModel.removeQuestion(question);
         }
     },
     showAddChoice:function() {
@@ -59,7 +59,7 @@ var viewModel =
         return false;
     },
     showDateFormats:function() {
-        return viewModel.selectedQuestion().type() == "date"
+        return viewModel.selectedQuestion().type() == "date";
     },
     showAddRange:function() {
         return viewModel.selectedQuestion().type() == 'integer';
@@ -77,7 +77,8 @@ var viewModel =
     removeOptionFromQuestion:function(choice) {
         var indexOfChoice = viewModel.selectedQuestion().choices().indexOf(choice);
         var lastChoiceValue = choice['val'].charCodeAt(0);
-        for(var i = indexOfChoice + 1; i < viewModel.selectedQuestion().choices().length; i++){
+        var i = indexOfChoice + 1;
+        for(i; i < viewModel.selectedQuestion().choices().length; i=i+1){
             viewModel.selectedQuestion().choices()[i]['val'] = String.fromCharCode(lastChoiceValue);
             lastChoiceValue = lastChoiceValue + 1;
         }
@@ -95,10 +96,11 @@ var viewModel =
         viewModel.selectedQuestion().choices([]);
     },
     showLengthLimiter: function() {
-        return viewModel.selectedQuestion().length_limiter() == 'length_limited'
+        return viewModel.selectedQuestion().length_limiter() == 'length_limited';
     },
     check_unique_code: function(test_code) {
-        for (var q in viewModel.questions()) {
+        var q;
+        for (q in viewModel.questions()) {
             if (test_code == viewModel.questions()[q].code()) {
                 test_code = DW.generateQuestionCode();
                 test_code = viewModel.check_unique_code(test_code);
@@ -108,16 +110,17 @@ var viewModel =
         return test_code;
     },
     choiceCanBeDeleted: function() {
-        return viewModel.selectedQuestion().choices().length > 1 && viewModel.isEnabled()
+        return viewModel.selectedQuestion().choices().length > 1 && viewModel.isEnabled();
     },
     isEnabled: function(){
         if($("#not_wizard").length>0){
             return viewModel.selectedQuestion().isenabled();
         }
-        else
+        else{
             return true;
+        }
     },
     isTypeEnabled: function(){
-        return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag()
+        return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag();
     }
 };

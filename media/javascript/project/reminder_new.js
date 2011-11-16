@@ -27,7 +27,7 @@ $(document).ready(function() {
     $('input[name="reminder_mode"]').change(function() {
         $('#when_block label.error').each(function(){
             $(this).remove();
-        })
+        });
         if ($(this).val() == 'before_deadline') {
             $('#days_before_deadline').attr("disabled", "");
             $('#days_after_deadline').attr("disabled", "disabled");
@@ -62,7 +62,7 @@ $(document).ready(function() {
     });
 
     $('.edit_reminder').unbind("click").bind("click", function() {
-        url = '/project/get_reminder/' + $('#project_id').val() + '/'
+        var url = '/project/get_reminder/' + $('#project_id').val() + '/';
         $.getJSON(url, {'id':$(this)[0].name}, function(data) {
             $('#message').val(data.message);
             $('#message_count').html(data.message.length);
@@ -78,7 +78,7 @@ $(document).ready(function() {
 
             $('#reminder_id').val(data.id);
             $("#new_reminder").dialog("open");
-        })
+        });
     });
 
 });

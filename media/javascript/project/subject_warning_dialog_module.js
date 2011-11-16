@@ -49,7 +49,7 @@ DW.subject_warning_dialog_module={
     },
     bind_cancel_link:function(){
         $(".cancel_link").bind("click", function(){
-            DW.subject_warning_dialog_module.handle_subject_warning_cancel()
+            DW.subject_warning_dialog_module.handle_subject_warning_cancel();
             $("#subject_warning_message").dialog("close");
 
         });

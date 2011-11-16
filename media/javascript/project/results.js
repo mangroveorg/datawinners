@@ -15,10 +15,10 @@ $(document).ready(function(){
             prev_text: gettext("Prev"),
             callback : function(page_number) {
                 new DW.show_data(page_number + 1);
-                DW.current_page = page_number + 1
+                DW.current_page = page_number + 1;
             }
         });
-    }
+    };
 
     DW.submit_data = function() {
         var time_range = $("#dateRangePicker").val().split("/");
@@ -28,7 +28,7 @@ $(document).ready(function(){
             return time_range;
         }
         if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
-            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>')
+            $("#dateErrorDiv").html('<label class=error>' + "Enter a correct date. No filtering applied" + '</label>');
             $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
@@ -40,7 +40,7 @@ $(document).ready(function(){
     DW.show_data = function(page_number){
         this.page_number = page_number;
         this._init();
-    }
+    };
     DW.show_data.prototype = {
         _init : function(){
             var time_range = DW.submit_data();
@@ -59,13 +59,13 @@ $(document).ready(function(){
                   }
 );
             }
-    }
+    };
 
 
    DW.screen_width = $(window).width() - 50;
-     $("#data_record").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>")
+     $("#data_record").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
     DW.wrap_table = function() {
-        $("#data_analysis").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>")
+        $("#data_analysis").wrap("<div class='data_table' style='width:"+DW.screen_width+"px'/>");
     };
     $("#dateRangePicker").daterangepicker({
                 presetRanges: [
@@ -88,8 +88,8 @@ $(document).ready(function(){
     //Checkbox on/off functionality
     $("#master_checkbox").live("click", function(){
         $(".selected_submissions").each(function(){
-           $(this).attr("checked", !$(this).attr('checked'))
-        })
+           $(this).attr("checked", !$(this).attr('checked'));
+        });
 
     });
 
@@ -101,8 +101,9 @@ $(document).ready(function(){
        }
        else{
        $(".selected_submissions:checked").each(function(){
-           if($(this).val()!="None")
-                ids.push($(this).val());
+           if($(this).val()!="None"){
+               ids.push($(this).val());
+           }
        });
        if(ids.length==0){
             $("#message_text").html("<div class='error_message message-box'>" + gettext("This data has already been deleted") + "</div>");
@@ -126,12 +127,14 @@ $(document).ready(function(){
                 }
              });
            }
-           else $("#action").val(0);
+           else{
+               $("#action").val(0);
+           }
         }
        }
    });
     $('#export_link').click(function(){
-        var time_range = DW.submit_data()
+        var time_range = DW.submit_data();
         $("#start_time").attr("value", time_range[0]);
         $("#end_time").attr("value", time_range[1]);
         $('#export_form').submit();

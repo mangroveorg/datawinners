@@ -14,7 +14,9 @@ $(document).ready(function() {
             return gettext("Hello. We have not received your data for ") + this.projectName + gettext(".Please send it to us today. Thank you.");
         };
 
-        if (message == null) message = this.defaultMessage();
+        if (message == null){
+          message = this.defaultMessage();
+        }
         this.message = ko.observable(message);
         var self = this;
         this.header = ko.dependentObservable(function() {
@@ -56,7 +58,8 @@ $(document).ready(function() {
         };
         this.save = function() {
             this.remindersToSave = [];
-            for (var i = 0; i < this.reminders().length; i++) {
+            var i=0;
+            for (i; i < this.reminders().length; i = i+1) {
                 var newReminder = {};
                 newReminder['targetDataSenders'] = this.reminders()[i].targetDataSenders();
                 newReminder['message'] = this.reminders()[i].message();
@@ -69,14 +72,14 @@ $(document).ready(function() {
                     newReminder['day'] = this.reminders()[i].afterDay();
                 }
                 if (this.reminders()[i].reminderMode() == "on_deadline") {
-                    newReminder['reminderMode'] = 'on_deadline'
-                    newReminder['day'] = 0
+                    newReminder['reminderMode'] = 'on_deadline';
+                    newReminder['day'] = 0;
                 }
                 this.remindersToSave.push(newReminder);
             }
             $.post('/project/reminders/' + project_id + "/", {'reminders':ko.toJSON(this.remindersToSave)}, function() {
                 $('.success-message-box').show().html(gettext('The reminders has been saved')).fadeOut(10000);
-            })
+            });
         };
 
         var self = this;
@@ -89,7 +92,7 @@ $(document).ready(function() {
                 } else {
                     afterDay = item.day;
                 }
-                return new reminder($("#project_name").text(), item.message, beforeDay, afterDay, item.reminder_mode, self, item.remind_to)
+                return new reminder($("#project_name").text(), item.message, beforeDay, afterDay, item.reminder_mode, self, item.remind_to);
             });
             self.reminders(mappedReminders);
             $("#review_section").accordion({header:'.header',collapsible: true});
@@ -103,7 +106,7 @@ $(document).ready(function() {
     // calls viewmodel.save only on jquery validate success.
     $("#reminder_form").validate({
         submitHandler: function () {
-            viewmodel.save()
+            viewmodel.save();
         }
     });
 
