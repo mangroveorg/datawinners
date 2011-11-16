@@ -42,7 +42,7 @@ $(document).ready(function(){
                 }
                 $.each(responseJSON.failure_imports, function(index, element) {
                     $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
-                            + element.error + "</td></tr>")
+                            + element.error + "</td></tr>");
                 });
                 $("#error_table").show();
             }

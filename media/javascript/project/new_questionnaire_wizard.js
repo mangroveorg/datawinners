@@ -59,7 +59,7 @@ $(document).ready(function() {
         },
         wrapper: "div",
         errorPlacement: function(error, element) {
-            offset = element.offset();
+            var offset = element.offset();
             error.insertAfter(element);
             error.addClass('error_arrow');  // add a class to the wrapper
 

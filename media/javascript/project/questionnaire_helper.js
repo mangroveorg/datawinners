@@ -77,29 +77,36 @@ DW.question.prototype = {
         this.instruction = ko.dependentObservable({
             read: function(){
                   if(this.type()=="text"){
-                      if (this.max_length()!="" && this.max_length()>0 )
+                      if (this.max_length()!="" && this.max_length()>0 ){
                           return $.sprintf(DW.instruction_template.max_text, this.max_length());
+                      }
                       return DW.instruction_template.text;
                   }
                   if (this.type()=="integer"){
-                      if(this.range_min() == "" && this.range_max() == "")
+                      if(this.range_min() == "" && this.range_max() == ""){
                         return DW.instruction_template.number;
-                      if(this.range_min()=="")
-                        return $.sprintf(DW.instruction_template.max_number, this.range_max());
-                      if(this.range_max()=="")
-                        return $.sprintf(DW.instruction_template.min_number, this.range_min());
+                      }
+                      if(this.range_min()==""){
+                          return $.sprintf(DW.instruction_template.max_number, this.range_max());
+                      }
+                      if(this.range_max()==""){
+                          return $.sprintf(DW.instruction_template.min_number, this.range_min());
+                      }
                       return $.sprintf(DW.instruction_template.range_number, this.range_min(), this.range_max());
                   }
-                  if(this.type()=="date")
-                    return $.sprintf(DW.instruction_template.date, DW.date_template[this.date_format()], DW.instruction_template[this.date_format()]);
-                  if(this.type()=="geocode")
-                    return DW.instruction_template.gps;
-                  if(this.type()=="select1")
-                    return DW.instruction_template.single_select;
-                if(this.type()=="select")
+                  if(this.type()=="date"){
+                      return $.sprintf(DW.instruction_template.date, DW.date_template[this.date_format()], DW.instruction_template[this.date_format()]);
+                  }
+                  if(this.type()=="geocode"){
+                      return DW.instruction_template.gps;
+                  }
+                  if(this.type()=="select1"){
+                      return DW.instruction_template.single_select;
+                  }
+                if(this.type()=="select"){
                     return DW.instruction_template.multi_select;
-
-                return "No instruction can be generated"
+                }
+                return "No instruction can be generated";
             },
             owner:this
     });
@@ -124,6 +131,8 @@ DW.question.prototype = {
 DW.current_code = 2;
 
 DW.generateQuestionCode = function() {
-    return "q" + DW.current_code++;
+    var code = "q" + DW.current_code;
+    DW.current_code = DW.current_code + 1;
+    return code;
 };
 

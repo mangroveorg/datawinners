@@ -1,5 +1,6 @@
 // vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 $(document).ready(function() {
+    var index;
     for(index in question_list){
         var questions = new DW.question(question_list[index]);
         viewModel.loadQuestion(questions);
@@ -66,7 +67,7 @@ $(document).ready(function() {
         },
         wrapper: "div",
         errorPlacement: function(error, element) {
-            offset = element.offset();
+            var offset = element.offset();
             error.insertAfter(element);
             error.addClass('error_arrow');  // add a class to the wrapper
 
@@ -91,6 +92,10 @@ $(document).ready(function() {
          $("#questionnaire_code_change").dialog("close");
     });
 
+    function hide_message() {
+        $('#message-label').delay(5000).fadeOut();
+    }
+
     $("#submit-button").click(function() {
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
@@ -105,7 +110,7 @@ $(document).ready(function() {
             return;
         }
         else {
-            $('#questionnaire-code').val($.trim($('#questionnaire-code').val()))
+            $('#questionnaire-code').val($.trim($('#questionnaire-code').val()));
         }
 
         var text = $('#questionnaire-code').val();
@@ -123,7 +128,7 @@ $(document).ready(function() {
             return;
         }
 
-        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()}
+        var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()};
 
         $.post('/project/questionnaire/save', post_data,
                 function(response) {
@@ -141,10 +146,6 @@ $(document).ready(function() {
                 });
         return false;
     });
-
-    function hide_message() {
-        $('#message-label').delay(5000).fadeOut();
-    }
 
     $('input[name=type]:radio').change(
             function() {

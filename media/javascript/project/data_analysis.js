@@ -19,7 +19,7 @@ $(document).ready(function() {
             time_range[0] = "";
             time_range[1] = "";
         }
-        return time_range;
+        return {'time_range':time_range, 'aggregationArray': aggregationArray};
     };
     DW.wrap_table = function() {
         $("#data_analysis").wrap("<div class='data_table' style='width:" + screen_width + "px'/>");
@@ -93,7 +93,9 @@ $(document).ready(function() {
     $(document).ajaxStop($.unblockUI);
 
     $(".aggregation_type").live("change", function() {
-        var time_list = DW.submit_data();
+        var data = DW.submit_data();
+        var aggregationArray = data['aggregationArray'];
+        var time_list = data['time_range'];
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',
@@ -109,7 +111,9 @@ $(document).ready(function() {
 
 
     $('#export_link').click(function() {
-        var time_list = DW.submit_data();
+        var data = DW.submit_data();
+        var aggregationArray = data['aggregationArray'];
+        var time_list = data['time_range'];
         var path = window.location.pathname;
         var element_list = path.split("/");
         $("#aggregation-types").attr("value", JSON.stringify(aggregationArray));
@@ -120,7 +124,9 @@ $(document).ready(function() {
     });
 
     $('#time_submit').click(function() {
-        var time_list = DW.submit_data();
+        var data = DW.submit_data();
+        var aggregationArray = data['aggregationArray'];
+        var time_list = data['time_range'];
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         $.ajax({
             type: 'POST',

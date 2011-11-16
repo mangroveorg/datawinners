@@ -10,8 +10,9 @@ $(document).ready(function() {
 
     $.validator.addMethod('regexrule', function(value, element, params) {
         var text = $.trim($('#' + element.id).val());
-        if (text=="")
+        if (text==""){
             return true;
+        }
         var re = new RegExp("^[0-9-]+$");
         return re.test(text);
     }, gettext("Please enter a valid phone number."));
@@ -19,13 +20,15 @@ $(document).ready(function() {
     $.validator.addMethod('gpsrule', function(value, element, params) {
         var codes = $('#' + element.id).val();
         codes = $.trim(codes);
-        if (codes == "")
+        if (codes == ""){
             return true;
+        }
         codes = codes.replace(/\s+/g, " ");
-        lat_long = codes.split(' ');
+        var lat_long = codes.split(' ');
 
-        if (lat_long.length != 2)
+        if (lat_long.length != 2){
             return false;
+        }
         return (lat_long[0] > -90 && lat_long[0] < 90)
                 && (lat_long[1] > -180 && lat_long[1] < 180);
     }, gettext("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"));
@@ -66,8 +69,7 @@ $(document).ready(function() {
         },
         wrapper: "label",
         errorPlacement: function(error, element) {
-                    offset = element.offset();
-                    error.insertAfter(element)
+                    error.insertAfter(element);
                     error.addClass('error_arrow');  // add a class to the wrapper
 
         }

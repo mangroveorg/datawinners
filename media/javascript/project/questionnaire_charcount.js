@@ -8,8 +8,8 @@ DW.charCount = function() {
     var delimiter_len = 1;
     var sms_number = 1;
     var sms_number_text = "";
-
-    for (var i = 0; i < viewModel.questions().length; i++) {
+    var i = 0;
+    for (i; i < viewModel.questions().length; i=i+1) {
         var current_question = viewModel.questions()[i];
         question_codes_len = question_codes_len + current_question.code().length + space_len + delimiter_len;
         var question_type = current_question.type();
@@ -19,8 +19,9 @@ DW.charCount = function() {
                     constraints_len = constraints_len + current_question.range_max().toString().length;
                     break;
                 }
-                if (current_question.range_min())
+                if (current_question.range_min()){
                     constraints_len = constraints_len + current_question.range_min().toString().length;
+                }
                 break;
             case 'text':
                 if (current_question.max_length()) {
@@ -46,7 +47,7 @@ DW.charCount = function() {
     if (current_len > max_len) {
         $("#char-count").css("color", "red");
         max_len = max_len+160;
-        sms_number++;
+        sms_number = sms_number+1;
         sms_number_text = "(" + sms_number + " sms required)";
     }
     $('#char-count').html((current_len) + ' / ' + max_len + ' ' + gettext('characters used') + sms_number_text);
