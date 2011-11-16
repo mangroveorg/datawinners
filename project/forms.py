@@ -174,15 +174,12 @@ class CreateProject(Form):
 
 
 class ReminderForm(Form):
-    FREQUENCY_CHOICES = ((False, _("Whenever a data sender has data for us")), (True, _("Every")))
-    frequency_enabled = ChoiceField(label=_("Time Period"),
+    FREQUENCY_CHOICES = ((False, _("No deadline. Senders can submit data any time.")), (True, _("Every")))
+    deadline_enabled = ChoiceField(label=_("Time Period"),
                                     choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, required=True, initial=False)
-    frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month')),
-                                            ('quarter', _('Quarter')), ), widget=forms.Select(
+    frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select(
         attrs={'style': 'margin-left: -138px; margin-top: 19px; position: absolute'}),
                                    required=False, )
-    has_deadline = ChoiceField(label=_("Do you want to set a deadline?"), widget=forms.RadioSelect,
-                               choices=((False, _('No')), (True, _('Yes'))), required=False, initial=False)
     deadline_month = ChoiceField(
         choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, 'Last Day')])), widget=forms.Select,
         required=False)
@@ -190,6 +187,3 @@ class ReminderForm(Form):
                                 required=False)
     deadline_type = ChoiceField(choices=(('Same', _('Same')), ('Following', _('Following'))), widget=forms.Select,
                                 required=False)
-    reminders_enabled = ChoiceField(choices=((False, _('No')), (True, _('Yes'))),
-                                    label=_("Do you want to remind DataSenders to send in their data?"), required=False,
-                                    initial=False, widget=forms.RadioSelect)
