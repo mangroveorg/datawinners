@@ -5,7 +5,7 @@ from datawinners.accountmanagement.models import OrganizationSetting, SMSC, Paym
 from mangrove.utils.types import is_empty
 
 class OrganizationSettingAdmin(admin.ModelAdmin):
-    list_display = ('organization_name', 'organization_id', 'payment_details')
+    list_display = ('organization_name', 'organization_id', 'type', 'payment_details', 'activation_date')
     fields = ('sms_tel_number', 'smsc')
 
     def organization_name(self, obj):
@@ -21,6 +21,12 @@ class OrganizationSettingAdmin(admin.ModelAdmin):
             return payment_details[0].preferred_payment
 
         return "--"
+
+    def type(self, obj):
+        return 'Trial' if obj.organization.in_trial_mode else 'Paid'
+
+    def activation_date(self, obj):
+        return obj.organization.active_date if obj.organization.active_date is not None else '--'
 
 
 class MessageTrackerAdmin(admin.ModelAdmin):

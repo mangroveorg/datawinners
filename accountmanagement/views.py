@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
+from datawinners.local_settings import HNI_SUPPORT_EMAIL_ID
 from datawinners.settings import EMAIL_HOST_USER
 
 from mangrove.errors.MangroveException import TrialAccountExpiredException
@@ -202,7 +203,7 @@ def trial_expired(request):
 def _send_upgrade_email(user):
     subject = render_to_string('accountmanagement/upgrade_email_subject.txt')
     body = render_to_string('accountmanagement/upgrade_email.txt', {'name':user.first_name})
-    EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], ['akshay.naval@gmail.com']).send()
+    EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID]).send()
 
 
 @is_admin
@@ -224,7 +225,7 @@ def upgrade(request):
             payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,
                                                            preferred_payment= preferred_payment)
             payment_details.save()
-#            _send_upgrade_email(request.user)
+            _send_upgrade_email(request.user)
             messages.success(request,_("upgrade success message") )
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
             

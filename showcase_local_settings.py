@@ -24,6 +24,8 @@ DATABASES = {
     }
 }
 
+HNI_SUPPORT_EMAIL_ID = 'dmcafee@hni.org'
+
 LOG_FOLDER = '/home/mangrover/'
 LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
