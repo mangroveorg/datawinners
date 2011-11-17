@@ -13,7 +13,7 @@ DW.broadcast_sms.prototype={
     init:function(){
         this.createSMSContentValidationRule();
         this.createAdditionalTelephoneValidationRule();
-        this.processAddtionalColumnValidation();
+        this.additional_column.hide();
         this.setMessageCount();
     },
 
@@ -38,12 +38,11 @@ DW.broadcast_sms.prototype={
 
     processAddtionalColumnValidation:function(){
         if (this.isAdditionalSelected()) {
-            this.additional_column.addRule();
+            this.additional_column.processSelected();
         }
         else {
-            this.additional_column.removeRule();
+            this.additional_column.processUnSelected();
         }
-
     },
 
     isAdditionalSelected:function(){
@@ -56,9 +55,9 @@ DW.broadcast_sms.prototype={
         return $(this.smsContentElement).val().length;
     },
     clearContent:function(){
-        $(this.formElementId)[0].reset();
+        $(this.smsContentElement).val("");
+        $(this.additional_column.telephoneNumbersElementId).val("");
         this.setMessageCount();
-
     },
     getSMSContent:function(){
         return $(this.smsContentElement).val()
@@ -100,15 +99,30 @@ DW.additional_column.prototype={
     },
 
     addRule:function(){
-        $(this.additionalPeopleId).removeClass('none');
         $(this.telephoneNumbersElementId).rules("add", this.telephone_number_rule);
         $(this.telephoneNumbersElementId).rules("add", "required");
 
     },
-    removeRule:function(){
+    show:function(){
+        $(this.additionalPeopleId).removeClass('none');
+    },
+    hide:function(){
         $(this.additionalPeopleId).addClass('none');
+    },
+    removeRule:function(){
         $(this.telephoneNumbersElementId).rules("remove", this.telephone_number_rule);
         $(this.telephoneNumbersElementId).rules("remove", "required");
+    },
+    processSelected:function(){
+        this.addRule();
+        this.show();
+
+    },
+    processUnSelected:function(){
+        this.removeRule();
+        this.hide();
+        $(this.telephoneNumbersElementId).val("");
+        $(this.telephoneNumbersElementId).valid();
 
     }
 };
