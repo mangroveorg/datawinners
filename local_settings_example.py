@@ -13,3 +13,6 @@ DATABASES = {
 }
 
 TRIAL_REGISTRATION_ENABLED = True
+
+HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
