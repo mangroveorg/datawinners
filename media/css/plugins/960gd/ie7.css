@@ -18,3 +18,16 @@
 #questionnaire_preview  .multiple_select{
     margin-left:25px !important;
 }
+
+.questionnaire_title li{
+        width:700px;
+        float:left;
+}
+
+#questionnaire_preview .questionnaire_title li{
+    width: 500px;
+}
+
+.sms_tester_form td{
+    width: 500px !important;
+}
