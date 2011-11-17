@@ -59,8 +59,16 @@ DW.broadcast_sms.prototype={
         $(this.formElementId)[0].reset();
         this.setMessageCount();
 
+    },
+    getSMSContent:function(){
+        return $(this.smsContentElement).val()
+    },
+    limitCount:function () {
+        if (this.getSMSLength() > this.maxSMSChar){
+            $(this.smsContentElement).val(this.getSMSContent().substring(0, this.maxSMSChar));
+        }
+        this.setMessageCount();
     }
-
 };
 
 
@@ -103,15 +111,18 @@ DW.additional_column.prototype={
         $(this.telephoneNumbersElementId).rules("remove", "required");
 
     }
-
 };
 
 $(document).ready(function() {
     var broadcast_sms=new DW.broadcast_sms();
     broadcast_sms.init();
 
-    $('#sms_content').keyup(function() {
-        broadcast_sms.setMessageCount();
+    $(broadcast_sms.smsContentElement).keyup(function() {
+        broadcast_sms.limitCount();
+    });
+
+    $(broadcast_sms.smsContentElement).keydown(function() {
+        broadcast_sms.limitCount();
     });
 
     $('#id_to').change(function() {
