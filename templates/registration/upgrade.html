@@ -15,7 +15,7 @@
                 {% csrf_token %}
                 <div class="form-5px">
                     <ul>
-                        <li><span class="bold">Edit this information by clicking on the   'Your Profile' and 'Account' links at the top of this page.</span></li>
+                        <li><span class="bold">{% trans "upgrade edit note" %}</span></li>
                     </ul>
                     <ul class="organization">
                         <li>
@@ -67,11 +67,10 @@
 
                         </li>
                         <li>
-                            <span class="bold">Note, your projects from the trial account will still be available</span>
+                            <span class="bold">{% trans "upgrade project note" %}</span>
                         </li>
                         <li>
-                            <input type="checkbox" id="agree-terms" value="1"
-                                   checked="checked"/>{% trans "agree-terms" %}
+                            <input type="checkbox" id="agree-terms" value="1"/>{% trans "agree-terms" %}
                         </li>
 
                         <li class="margin_top_20">
