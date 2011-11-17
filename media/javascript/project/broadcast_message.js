@@ -2,8 +2,17 @@ $(document).ready(function() {
     $.validator.addMethod('regexrule', function(value, element) {
         var text = $('#' + element.id).val();
         var re = new RegExp('^[0-9 ,]+$');
-        return re.test(text);
-    }, gettext("Only letters are valid"));
+        var string_has_non_numeric_char = re.test(text);
+        if (!string_has_non_numeric_char)
+            return false;
+        var telephone_numbers = text.split(',');
+        for (var each in telephone_numbers){
+            if (telephone_numbers[each].length>10){
+                return false;
+            }
+        }
+        return true;
+    }, gettext("Only 10 digit letters are valid"));
 
     var defaults = $("#broadcast_sms_form").validate({
         rules: {
