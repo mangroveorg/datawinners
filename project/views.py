@@ -75,7 +75,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
         project_links['submission_log_link'] = reverse(project_results, args=[project_id, questionnaire_code])
         project_links['finish_link'] = reverse(review_and_test, args=[project_id])
-        project_links['reminders_link'] = reverse(reminders, args=[project_id])
+        project_links['reminders_link'] = reverse(reminder_settings, args=[project_id])
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])

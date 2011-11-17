@@ -40,11 +40,9 @@ class Reminder(models.Model):
     reminder_mode = CharField(null=False, blank=False, max_length=20, default=ReminderMode.BEFORE_DEADLINE)
     organization = ForeignKey(Organization)
     voided = BooleanField(default=False)
-    remind_to = CharField(null=False, blank=False, max_length=50, default=RemindTo.ALL_DATASENDERS)
 
     def to_dict(self):
-        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode,
-                'remind_to': self.remind_to, 'id': self.id}
+        return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'id': self.id}
 
     def void(self, void=True):
         self.voided = void
@@ -56,7 +54,7 @@ class Reminder(models.Model):
         return on_date == deadline_date + timedelta(days=self._delta())
 
     def get_sender_list(self, project, on_date, dbm):
-        if self.remind_to == RemindTo.DATASENDERS_WITHOUT_SUBMISSIONS:
+        if project.reminder_and_deadline['should_send_reminder_to_all_ds']:
             deadline_date = self._get_applicapable_deadline_date(project.deadline(), on_date)
             return project.get_data_senders_without_submissions_for(deadline_date, dbm)
         return project.get_data_senders(dbm)

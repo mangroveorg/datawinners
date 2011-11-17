@@ -1,11 +1,12 @@
+from httplib import HTTPResponse
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
@@ -92,7 +93,7 @@ def edit_project(request, project_id=None):
     project = Project.load(manager.database, project_id)
     questionnaire = FormModel.get(manager, project.qid)
     if request.method == 'GET':
-        form = CreateProject(data=(_generate_project_info_with_deadline_and_reminders(project)), entity_list=entity_list)
+        form = CreateProject(data=project, entity_list=entity_list)
         activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
         subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
         fields = questionnaire.fields
@@ -168,26 +169,25 @@ def reminder_settings(request, project_id):
 
     if request.method == 'POST':
         form = ReminderForm(data=request.POST)
-        pass
-#        if form.is_valid():
-#            project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
-#            project.save(dbm)
-#            messages.success(request, 'Reminder settings saved successfully')
-#            return render_to_response('project/reminder_settings.html',
-#                    {'project_links': project_links,'project': project,
-#                     'form':form},context_instance=RequestContext(request))
+        if form.is_valid():
+            org_id = NGOUserProfile.objects.get(user = request.user).org_id
+            organization = Organization.objects.get(org_id = org_id)
+            project = _add_reminder_info_to_project(form.cleaned_data, project, organization)
+            project.save(dbm)
+            messages.success(request, 'Reminder settings saved successfully')
+            return HttpResponseRedirect('')
 
 def _reminder_info_about_project(project):
     data = {}
-    deadline_information = project.reminder_and_deadline['has_deadline']
+    deadline_information = project.reminder_and_deadline
     data['has_deadline'] = deadline_information['has_deadline']
-    if deadline_information:
-        data['frequency_period'] = project.frequency_period
-        if project.frequency_period == 'month':
-            data['deadline_month'] = project.deadline_month
+    if deadline_information['has_deadline']:
+        data['frequency_period'] = deadline_information['frequency_period']
+        if deadline_information['frequency_period'] == 'month':
+            data['deadline_month'] = deadline_information['deadline_month']
         else:
-            data['deadline_week'] = project.deadline_week
-        data['deadline_type'] = project.deadline_type
+            data['deadline_week'] = deadline_information['deadline_week']
+        data['deadline_type'] = deadline_information['deadline_type']
         reminder_before_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.BEFORE_DEADLINE, project_id=project.id)
         if  reminder_before_deadline.count()>0:
             data['should_send_reminders_before_deadline'] = True
@@ -205,7 +205,43 @@ def _reminder_info_about_project(project):
             data['number_of_days_after_deadline'] = reminder_after_deadline[0].day
             data['reminder_text_after_deadline'] = reminder_after_deadline[0].message
 
-        data['whom_to_send_message'] = not project.reminder_and_deadline['should_send_reminder_to_all_ds']
+
+    data['whom_to_send_message'] = not project.reminder_and_deadline['should_send_reminder_to_all_ds']
 
 
     return data
+
+def _add_reminder_info_to_project(cleaned_data, project, organization):
+    project['reminder_and_deadline']['has_deadline'] = (cleaned_data['has_deadline'] == 'True')
+    if project['reminder_and_deadline']['has_deadline']:
+        project['reminder_and_deadline']['frequency_period'] = cleaned_data['frequency_period']
+        if cleaned_data['frequency_period'] == 'month':
+            if project['reminder_and_deadline'].get('deadline_week'):
+                del project['reminder_and_deadline']['deadline_week']
+            project['reminder_and_deadline']['deadline_month'] = cleaned_data['deadline_month']
+        else:
+            if project['reminder_and_deadline'].get('deadline_month'):
+                del project['reminder_and_deadline']['deadline_month']
+            project['reminder_and_deadline']['deadline_week'] = cleaned_data['deadline_week']
+        project['reminder_and_deadline']['deadline_type'] = cleaned_data['deadline_type']
+
+        reminder_list = Reminder.objects.filter(project_id = project.id)
+        reminder_list.delete()
+
+        if cleaned_data['should_send_reminders_before_deadline']:
+            Reminder(project_id=project.id, day = cleaned_data['number_of_days_before_deadline'], message = cleaned_data['reminder_text_before_deadline'],
+                     reminder_mode = ReminderMode.BEFORE_DEADLINE,organization = organization).save()
+
+
+        if cleaned_data['should_send_reminders_on_deadline']:
+            Reminder(project_id=project.id, day = 0, message = cleaned_data['reminder_text_on_deadline'],
+                     reminder_mode = ReminderMode.ON_DEADLINE,organization = organization).save()
+
+
+        if cleaned_data['should_send_reminders_after_deadline']:
+            Reminder(project_id=project.id, day = cleaned_data['number_of_days_after_deadline'], message = cleaned_data['reminder_text_after_deadline'],
+                     reminder_mode = ReminderMode.AFTER_DEADLINE,organization = organization).save()
+
+        project['reminder_and_deadline']['should_send_reminder_to_all_ds'] = not cleaned_data['whom_to_send_message']
+
+    return project
