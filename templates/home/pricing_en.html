@@ -1,4 +1,4 @@
-{% extends 'public_secondary_en.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Pricing {% endblock %}
 
 {% load dw_tabs %}
@@ -13,16 +13,19 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home">Home</a> &gt; Pricing
+<a href="/en/home/">Home</a> &gt; Pricing
 {% endblock %}
 
 {% block main_content %}
 <div id="nav_content">
+    <h1>Plans and Pricing</h1>
+    <ul>
+        <li class="active"><a href="/en/pricing/">Pricing</a></li>
+    </ul>
 </div>
 <div id="main_content">
     <div class="margin_left_20">
         <div id="pricing">
-            {% if TRIAL_REGISTRATION_ENABLED %}
             <div class="grid_9 alpha omega">
                 <div class="container_plan">
                     <div class="plan">
@@ -32,59 +35,50 @@
                             free
                             <a href="/register/trial" class="try_button">Try it free</a>
                             <ul>
-                                <li>Same online functionality as paid subscription</li>
+                                <li>Same online data collection tools as paid subscription</li>
                                 <li>International telephone number for test purposes</li>
-                                <li>10 SMS submissions*</li>
-                                <li>10 Web submissions</li>
+                                <li>Packet of 100 SMS* Unlimited Web submissions</li>
                             </ul>
-                            <em><small>* International SMS rates apply (for Test Drive only)</small></em>
+                            <em><small>* For Test Drive Accounts international SMS rates apply</small></em>
                         </div>
                     </div>
                     <div class="badge">
-                        <img src="/media/images/dw_badge_world.png" width="80" height="80" alt="worldwide" />
+                        <img src="/media/images/dw_badge_try.png" width="80" height="80" alt="worldwide" />
                     </div>
                 </div>
             </div>
-            {% endif %}
             <div class="grid_9 alpha omega">
                 <div class="container_plan">
                     <div class="plan">
                         <div class="padding_10">
                             <h2>Ready to Work</h2>
+                            <span>Madagascar only. Worldwide early 2012</span>
                             $850 <small>per month</small>
-                            <br/><br/>
-                            <a href="javascript:void(0)" class="try_button">Subscribe now</a>
+                            <br/>
+                            <a href="/register/" class="try_button">Subscribe now</a>
                             <ul>
                                 <li>Full access to online data collection tool</li>
                                 <li>Local telephone number for your organization</li>
                                 <li>Packet of 5000 SMS</li>
-                                <li>Unlimited Web submissions</li>
+                                <li>Unlimited Web submissions</li>
                             </ul>
                             Save 10% <a id="learn_more" href="#a3">learn more</a>
                         </div>
                     </div>
                     <div class="badge">
-                        <img src="/media/images/dw_badge_mada.png" width="80" height="80" alt="Madagascar" />
+                        <img src="/media/images/dw_badge_subscribe.png" width="80" height="80" alt="Madagascar" />
                     </div>
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <h2>More Details</h2>
-        <ul class="bulleted">
-            <li><a href="#a1">Where DataWinners is available</a></li>
-            <li><a href="#a2">Key details of Monthly Subscription</a></li>
-            <li><a href="#a3">Monthly Subscription Costs</a></li>
-            <li><a href="#a4">Payment</a></li>
-            <li><a href="#a5">Need help getting started?</a></li>
-        </ul>
-        <a name="a1"></a><h2>Where DataWinners is available</h2>
-        <ul class="bulleted">
-            <li>DataWinners is currently available in Madagascar</li>
-            <li>It will be available worldwide starting in early 2012</li>
-            <li>Free Test Drive account is available anywhere</li>
-        </ul>
-        <a name="a2"></a><h2>Key Details of Monthly Subscription</h2>
+        <h2>Where DataWinners is available</h2>
+        <p>DataWinners is currently available in Madagascar
+            and will be launched worldwide in early 2012.
+            Until then, consider signing up for a free trial
+            account to see how DataWinners can fit your needs.
+        </p>
+        <h2>How the Monthly Subscription Works</h2>
         <ul class="bulleted">
             <li>Subscription per organization per country</li>
             <li>Local number provided by HNI</li>
@@ -103,8 +97,8 @@
                 </p></div>
             </li>
         </ul>
-        <p>View HNI’s Terms and Conditions and Privacy Policy for more details.</p>
-        <a name="a3"></a><h2>Monthly Subscription Costs</h2>
+        <p>View HNI’s <a href="/en/terms-and-conditions/">Terms and Conditions</a> and <a href="javascript:void(0);">Privacy Policy</a> for more details.</p>
+        <h2>Monthly Subscription Costs</h2>
         <table width="500" class="pricelist">
             <tr>
                 <td width="400">Price per month:</td>
@@ -121,13 +115,13 @@
         </table>
         <a name="a4"></a><h2>Payment</h2>
         <ol>
-            <li><strong>Wire transfer</strong></li>
-            <li><strong>Credit card</strong><br/>Call us directly and we can securely process your credit card payment over the phone</li>
+            <li><strong>Wire transfer.</strong></li>
+            <li><strong>Credit card</strong><br/>Call us directly and we can securely process your credit card payment over the phone.</li>
             <li><strong>Pay via ACH</strong><br/>Securely transfer funds between your US-based bank account and ours (normally free of charge).</li>
         </ol>
         <a name="a5"></a><h2>Need help getting started? </h2>
         <p>If you need help getting started or have an ambitious data collection project that requires a DataWinners custom solution, contact us at
-        info@datawinners.com or use our contact form</p>
+        <a href="mailto:info@datawinners.com">info@datawinners.com</a> or use our contact form</p>
         <p>Our team has extensive experience developing mobile data collection systems. See our <a href="/en/success-stories">Success Stories.</a></p>
     </div>
 </div>
