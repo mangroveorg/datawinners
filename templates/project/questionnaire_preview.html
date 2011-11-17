@@ -26,6 +26,7 @@
             </li>
         </ul>
         <ul class="questionnaire_preview" id="que_code">
+            <ol>
             {% for question in questions %}
                 <li>
                     <h6>{% trans question.description %}</h6>
@@ -53,6 +54,7 @@
                     </div>
                 </li>
             {% endfor %}
+            </ol>
         </ul>
     </div>
     <script>

@@ -31,3 +31,7 @@
 .sms_tester_form td{
     width: 500px !important;
 }
+
+#que_code li{
+     clear: both;
+    }
