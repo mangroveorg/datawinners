@@ -10,7 +10,7 @@ from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from django.contrib import messages
@@ -161,25 +161,51 @@ def reminder_settings(request, project_id):
     from datawinners.project.views import _make_project_links
     project_links = _make_project_links(project, questionnaire.form_code)
     if request.method == 'GET':
-        form = ReminderForm(data=(_generate_project_info_with_deadline_and_reminders(project)))
+        form = ReminderForm(data=(_reminder_info_about_project(project)))
         return render_to_response('project/reminder_settings.html',
                 {'project_links': project_links,'project': project,
                  'form':form},context_instance=RequestContext(request))
 
-    form = ReminderForm(data=request.POST)
-    if form.is_valid():
-        project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
-        project.save(dbm)
-        messages.success(request, 'Reminder settings saved successfully')
-        return render_to_response('project/reminder_settings.html',
-                {'project_links': project_links,'project': project,
-                 'form':form},context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = ReminderForm(data=request.POST)
+        pass
+#        if form.is_valid():
+#            project.reminder_and_deadline=helper.deadline_and_reminder(form.cleaned_data)
+#            project.save(dbm)
+#            messages.success(request, 'Reminder settings saved successfully')
+#            return render_to_response('project/reminder_settings.html',
+#                    {'project_links': project_links,'project': project,
+#                     'form':form},context_instance=RequestContext(request))
 
-def _generate_project_info_with_deadline_and_reminders(project):
-    project_info = {}
-    for key, value in project.items():
-        project_info[key] = value
-    for key, value in project['reminder_and_deadline'].items():
-        project_info[key] = value
-    del project_info['reminder_and_deadline']
-    return project_info
+def _reminder_info_about_project(project):
+    data = {}
+    deadline_information = project.reminder_and_deadline['has_deadline']
+    data['has_deadline'] = deadline_information['has_deadline']
+    if deadline_information:
+        data['frequency_period'] = project.frequency_period
+        if project.frequency_period == 'month':
+            data['deadline_month'] = project.deadline_month
+        else:
+            data['deadline_week'] = project.deadline_week
+        data['deadline_type'] = project.deadline_type
+        reminder_before_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.BEFORE_DEADLINE, project_id=project.id)
+        if  reminder_before_deadline.count()>0:
+            data['should_send_reminders_before_deadline'] = True
+            data['number_of_days_before_deadline'] = reminder_before_deadline[0].day
+            data['reminder_text_before_deadline'] = reminder_before_deadline[0].message
+
+        reminder_on_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.ON_DEADLINE, project_id=project.id)
+        if reminder_on_deadline.count() > 0:
+            data['should_send_reminders_on_deadline'] = True
+            data['reminder_text_on_deadline'] = reminder_on_deadline[0].message
+
+        reminder_after_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.AFTER_DEADLINE, project_id=project.id)
+        if reminder_after_deadline.count() > 0:
+            data['should_send_reminders_after_deadline'] = True
+            data['number_of_days_after_deadline'] = reminder_after_deadline[0].day
+            data['reminder_text_after_deadline'] = reminder_after_deadline[0].message
+
+        data['whom_to_send_message'] = not project.reminder_and_deadline['should_send_reminder_to_all_ds']
+
+
+    return data

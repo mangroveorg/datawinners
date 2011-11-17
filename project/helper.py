@@ -281,26 +281,6 @@ def _add_to_dict(dict, post_dict,key):
     if post_dict.get(key):
         dict[key] = post_dict.get(key)
 
-
-def deadline_and_reminder(post_dict):
-    dict={}
-    _add_to_dict(dict, post_dict,'frequency_enabled')
-    _add_to_dict(dict, post_dict,'frequency_period')
-    _add_to_dict(dict, post_dict,'has_deadline')
-    _add_to_dict(dict, post_dict,'deadline_week')
-    _add_to_dict(dict, post_dict,'deadline_month')
-    _add_to_dict(dict, post_dict,'deadline_type')
-    _add_to_dict(dict, post_dict,'reminders_enabled')
-    return dict
-
-def new_deadline_and_reminder(post_dict):
-    dict={}
-    _add_to_dict(dict, post_dict,'frequency_enabled')
-    _add_to_dict(dict, post_dict,'frequency_period')
-    dict['reminders_enabled'] = 'False'
-    dict['has_deadline'] = 'False'
-    return dict
-
 def get_project_data_senders(manager, project):
     all_data = load_all_subjects_of_type(manager)
     return [data for data in all_data if data['short_name'] in project.data_senders]

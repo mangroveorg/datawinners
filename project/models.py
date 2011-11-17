@@ -176,7 +176,7 @@ class Project(DocumentBase):
         self.state = state
         self.activity_report = activity_report
         self.sender_group = sender_group
-        self.reminder_and_deadline = {'reminders_enabled': False, 'has_deadline': False,'frequency_enabled': False}
+        self.reminder_and_deadline = {'has_deadline': False, 'should_send_reminder_to_all_ds': False}
         self.language = language
         self.sms_simple_format = sms_simple_format
 
