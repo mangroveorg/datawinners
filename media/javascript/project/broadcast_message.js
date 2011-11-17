@@ -7,18 +7,18 @@ DW.broadcast_sms=function(){
     this.maxSMSChar=160;
     this.additional_column=new DW.additional_column();
 
-}
+};
 
 DW.broadcast_sms.prototype={
     init:function(){
         this.createSMSContentValidationRule();
         this.createAdditionalTelephoneValidationRule();
         this.processAddtionalColumnValidation();
-        this.setMessageCount()
+        this.setMessageCount();
     },
 
     createAdditionalTelephoneValidationRule:function(){
-        this.additional_column.createAdditionalTelephoneValidationRule()
+        this.additional_column.createAdditionalTelephoneValidationRule();
     },
     createSMSContentValidationRule:function(){
         var defaults = $(this.formElementId).validate({
@@ -29,7 +29,6 @@ DW.broadcast_sms.prototype={
             },
             wrapper: "div",
             errorPlacement: function(error, element) {
-                var offset = element.offset();
                 error.insertAfter(element);
                 error.addClass('error_arrow');  // add a class to the wrapper
             }
@@ -48,7 +47,7 @@ DW.broadcast_sms.prototype={
     },
 
     isAdditionalSelected:function(){
-        return $(this.idToElement).val() == "Additional"
+        return $(this.idToElement).val() == "Additional";
     },
     setMessageCount:function(){
         $(this.messageCountElement).html(this.getSMSLength() + "/"+this.maxSMSChar);
@@ -62,14 +61,14 @@ DW.broadcast_sms.prototype={
 
     }
 
-}
+};
 
 
 DW.additional_column=function(){
     this.additionalPeopleId="#additional_people_column";
     this.telephoneNumbersElementId='#id_others';
     this.telephone_number_rule="regexrule";
-}
+};
 
 DW.additional_column.prototype={
     createAdditionalTelephoneValidationRule:function(){
@@ -77,10 +76,12 @@ DW.additional_column.prototype={
             var text = $('#' + element.id).val();
             var re = new RegExp('^[0-9 ,]+$');
             var string_has_non_numeric_char = re.test(text);
-            if (!string_has_non_numeric_char)
+            if (!string_has_non_numeric_char){
                 return false;
+            }
             var telephone_numbers = text.split(',');
-            for (var each in telephone_numbers){
+            var each;
+            for (each in telephone_numbers){
                 if (telephone_numbers[each].length>10){
                     return false;
                 }
@@ -103,11 +104,11 @@ DW.additional_column.prototype={
 
     }
 
-}
+};
 
 $(document).ready(function() {
     var broadcast_sms=new DW.broadcast_sms();
-    broadcast_sms.init()
+    broadcast_sms.init();
 
     $('#sms_content').keyup(function() {
         broadcast_sms.setMessageCount();
