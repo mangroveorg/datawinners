@@ -7,7 +7,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
-from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, UnknownOrganization
+from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, UnknownOrganization, SMSParserWrongNumberOfAnswersException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.player.player import SMSPlayer, TransportInfo
@@ -92,7 +92,7 @@ def find_parser(incoming_request):
         incoming_request['form_model'] = form_model
         incoming_request['submission_values'] = values
         incoming_request['datawinner_log'].form_code = form_code
-    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
+    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException,SMSParserWrongNumberOfAnswersException) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
         incoming_request['datawinner_log'].save()
