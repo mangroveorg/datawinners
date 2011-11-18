@@ -243,5 +243,8 @@ def _add_reminder_info_to_project(cleaned_data, project, organization):
                      reminder_mode = ReminderMode.AFTER_DEADLINE,organization = organization).save()
 
         project['reminder_and_deadline']['should_send_reminder_to_all_ds'] = not cleaned_data['whom_to_send_message']
+    else:
+        reminder_list = Reminder.objects.filter(project_id = project.id)
+        reminder_list.delete()
 
     return project
