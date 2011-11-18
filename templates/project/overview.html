@@ -36,26 +36,6 @@
     <div class="span-18 box">
         <!--Success Message div-->
         {% include 'project/success_message.html' %}
-        <!--Project description div-->
-            <div class="left_half">
-                <label> {% trans "Your project" %}</label>
-                {%  if project.state != "Active" %}
-                    <a id="edit_project" class="button_blue" href="{% url edit_project project.id %}">{% trans "Edit this project" %}</a>
-                {% endif %}
-                {%  if project.state == "Active" %}
-                    <a href="#">{% trans "input data" %} </a>
-                {% endif %}
-            </div>
-            <div class="float_left">
-                <p><b>{% trans "Description" %} </b>
-                    {% if project.goals %}
-                        {{ project.goals }}
-                    {% else %}
-                        --
-                    {% endif %}
-                </p>
-            </div>
-
             <div class="my_sub"><p><b>
             {% if 'yes' in project.activity_report %}
                 My Data Senders
