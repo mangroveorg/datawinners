@@ -49,7 +49,7 @@ def send_reminders_for_an_organization(org,on_date,sms_client,from_number,dbm):
     logger.info("Projects with reminders:- %d" % len(reminders_grouped_by_proj) )
     for project_id, reminders in reminders_grouped_by_proj.items():
         project = dbm._load_document(project_id, Project)
-        if not project.is_reminder_enabled():
+        if not project.has_deadline():
             continue
         send_reminders_on(project,reminders,on_date,sms_client,from_number,dbm)
 
@@ -72,7 +72,7 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
 
 def _get_reminders_grouped_by_project_for_organization(organization_id):
     reminders_grouped_project_id = defaultdict(list)
-    for reminder in Reminder.objects.filter(voided=False,organization=organization_id):
+    for reminder in Reminder.objects.filter(organization=organization_id):
         reminders_grouped_project_id[reminder.project_id].append(reminder)
     return reminders_grouped_project_id
 

@@ -39,7 +39,6 @@ class Reminder(models.Model):
     message = CharField(max_length=160)
     reminder_mode = CharField(null=False, blank=False, max_length=20, default=ReminderMode.BEFORE_DEADLINE)
     organization = ForeignKey(Organization)
-    voided = BooleanField(default=False)
 
     def to_dict(self):
         return {'day': self.day, 'message': self.message, 'reminder_mode': self.reminder_mode, 'id': self.id}
@@ -210,17 +209,10 @@ class Project(DocumentBase):
 
 
     def has_deadline(self):
-        return self.reminder_and_deadline.get('has_deadline') == 'True'
-
-    def frequency_enabled(self):
-        return self.reminder_and_deadline.get('frequency_enabled') == 'True'
-
-    def reminders_enabled(self):
-        return self.reminder_and_deadline.get('reminders_enabled') == 'True'
+        return self.reminder_and_deadline.get('has_deadline')
 
     def _deadline_type(self):
-        if self.frequency_enabled():
-            return self.reminder_and_deadline.get('deadline_type')
+        return self.reminder_and_deadline.get('deadline_type')
 
     def _frequency_period(self):
         return self.reminder_and_deadline.get('frequency_period')
@@ -228,9 +220,6 @@ class Project(DocumentBase):
     def get_deadline_day(self):
         if self.reminder_and_deadline.get('frequency_period') == 'month':
             return int(self.reminder_and_deadline.get('deadline_month'))
-
-    def is_reminder_enabled(self):
-        return self.reminder_and_deadline.get('reminders_enabled') == "True"
 
     def should_send_reminders(self, as_of, days_relative_to_deadline):
         next_deadline_day = self.deadline().current(as_of)
