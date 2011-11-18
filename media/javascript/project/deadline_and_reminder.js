@@ -1,6 +1,6 @@
 //All the deadline related drop-downs. They are very very very annoying.
 DW.DeadlineDetails = function(){
-    this.deadlineSection = '#frequency_values';
+    this.deadlineSectionSelectControls = '#frequency_values select';
     this.deadlineEnabledControl = 'input[name=has_deadline]';
     this.deadlineEnabledCheckedControl = 'input[name=has_deadline]:checked';
     this.frequencyPeriodControl = 'select[name=frequency_period]';
@@ -23,21 +23,26 @@ DW.DeadlineDetails.prototype = {
         return true; //It's a Best Practice to return either true or false when there are only side effects happening inside a method.
     },
     hide: function(){
-        $(this.deadlineSection).hide();
+        this.toggle_week_and_month_controls();
+        $(this.deadlineSectionSelectControls).each(function(){
+            $(this).attr('disabled', 'disabled');
+        });
         $(this.reminders_block_id).hide();
     },
     show: function(){
+        this.toggle_week_and_month_controls();
+        $(this.deadlineSectionSelectControls).each(function(){
+            $(this).removeAttr('disabled');
+        });
+        $(this.reminders_block_id).show();
+    },
+    toggle_week_and_month_controls: function(){
         var is_week = ($(this.frequencyPeriodControl).val() === "week");
         if(is_week){
             this.toggle_when_week_is_selected();
         }else{
             this.toggle_when_month_is_selected();
         }
-        $(this.deadlineSection).show(); //Showing stuff after everything has been set, should make the user not see that we are changing values in browsers like IE6-7
-        $(this.reminders_block_id).show();
-    },
-    disable: function(){
-
     },
     toggle_when_month_is_selected: function(){
         $(this.month_block_id).show();
