@@ -79,7 +79,7 @@ class EditUserProfileForm(UserProfileForm):
 class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     required_css_class = 'required'
 
-    title = forms.CharField(max_length=30, required=False)
+    title = forms.CharField(label="Job Title", max_length=30, required=False)
     email = forms.EmailField(widget=forms.TextInput(attrs=dict({'class': 'required'},
                                                                                     maxlength=75)),
                              label=_("Email address"),
@@ -118,7 +118,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
 def payment_details_form():
     pay_monthly = ('pay_monthly', _(mark_safe(
-        "<div class='radio_title'>Monthly: $ 850 per month</div><div class='subtitle_for_radio_button'>Renews automatically each month<div>")))
+        "<div class='radio_title'>Monthly: $ 850 per month</div><div class='subtitle_for_radio_button'>Renews automatically each month. Cancel at any time without penalty.<div>")))
     pay_half_yearly = ('half_yearly', _(mark_safe(
         "<div class='radio_title'>6 months:$ 765 per month</div><div class='subtitle_for_radio_button'>Save 10% by paying 6 months in advance</div> ")))
     INVOICE_PERIOD_CHOICES = (pay_monthly, pay_half_yearly)
