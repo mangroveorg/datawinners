@@ -46,8 +46,7 @@
         <div class="question_list" id="que_code">
             <ol>
                 {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
-                    <li>
+                <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
                         <a href="#" data-bind="text: question.display"></a>
 
                         <div data-bind="visible: question.canBeDeleted()" class="delete">
@@ -56,9 +55,8 @@
                         </div>
                         <span class="selected_question_arrow"
                               data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
-                    </li>
 
-                </div>
+                </li>
                 {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
         </div>
