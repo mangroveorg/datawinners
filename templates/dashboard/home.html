@@ -54,8 +54,8 @@
         {% for project in projects %}
             <div class="project_header">
                 <span class="header">{{ project.name|capfirst }} </span>
-                <span class="success_error">{{ project.success }} {% trans "successful"%}{{ project.success|pluralize }} |
-                {{ project.errors }} {% trans "error"%}{{ project.errors|pluralize }}</span>
+                <span class="success_error">{{ project.success }} {% trans "successful"%} |
+                {{ project.errors }} {% trans "error"%}</span>
             </div>
             <div>
                 <a class="go_to_project"href="{{ project.link }}">{% trans "go to this project" %}»</a>
