@@ -326,6 +326,17 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
+msgid "No deadline. Senders can submit data any time."
+msgstr ""
+
+msgid "days before deadline"
+msgstr ""
+
+msgid "The day of the deadline"
+msgstr ""
+
+msgid "Only send reminders to senders who have not already submitted data for the current deadline"
+msgstr ""
 #: project/views.py:824
 msgid "Successfully submitted"
 msgstr ""
@@ -941,7 +952,7 @@ msgstr ""
 
 #: templates/entity/create_subject.html:3
 #: templates/entity/create_subject.html:4
-msgid "Add A Subject"
+msgid "Add a Subject"
 msgstr ""
 
 #: templates/entity/create_type.html:3
@@ -2173,6 +2184,22 @@ msgid "Sign in"
 msgstr ""
 
 #: templates/header_wizard.html:29, public_header_wizard.html, register.html, register_for_trial.html
+
+msgid "Renews automatically each month. Cancel at any time without penalty."
+msgstr ""
+
+msgid "Save 10% by paying 6 months in advance"
+msgstr ""
+
+msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
+msgstr ""
+
+msgid "Call us directly and we can securely process your credit card payment over the phone"
+msgstr ""
+
+msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
+msgstr ""
+
 msgid "Sign Up"
 msgstr ""
 
@@ -2180,6 +2207,9 @@ msgid "Active"
 msgstr ""
 
 msgid "Test"
+msgstr ""
+
+msgid "Draft"
 msgstr ""
 
 msgid "Add a Reminder"
@@ -2395,6 +2425,9 @@ msgstr ""
 msgid "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data."
 msgstr ""
 
+msgid "Register Data Senders to see them on this map"
+msgstr ""
+
 #create_project.html
 msgid "Create your project in a few easy steps."
 msgstr ""
@@ -2430,6 +2463,9 @@ msgid "Data Senders associated to my project"
 msgstr ""
 
 msgid "Enter your SMS text"
+msgstr ""
+
+msgid "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers."
 msgstr ""
 
 msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."

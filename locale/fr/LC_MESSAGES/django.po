@@ -336,6 +336,19 @@ msgstr "Ce champ est obligatoire"
 msgid "Successfully submitted"
 msgstr "Envoyé avec succès"
 
+msgid "No deadline. Senders can submit data any time."
+msgstr ""
+
+msgid "days before deadline"
+msgstr ""
+
+msgid "The day of the deadline"
+msgstr ""
+
+msgid "Only send reminders to senders who have not already submitted data for the current deadline"
+msgstr ""
+
+
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
 #: templates/entity/all_datasenders.html:89
@@ -944,7 +957,7 @@ msgstr "Ajoutez un Envoyeur"
 #: templates/entity/create_subject.html:3
 #: templates/entity/create_subject.html:4
 #: templates/entity/all_subjects.html:7
-msgid "Add A Subject"
+msgid "Add a Subject"
 msgstr "Ajoutez un sujet"
 
 #: templates/entity/create_type.html:3
@@ -1341,6 +1354,9 @@ msgstr "Quand"
 #: templates/project/overview.html:94
 msgid "Deadline"
 msgstr "Date limite "
+
+msgid "Register Data Senders to see them on this map"
+msgstr ""
 
 #: templates/project/profile.html:49
 msgid ""
@@ -2191,11 +2207,26 @@ msgstr "Identifiez vous ici"
 msgid "Sign Up To Start Using DataWinners Now"
 msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
 
+msgid "Renews automatically each month. Cancel at any time without penalty."
+msgstr ""
+
+msgid "Save 10% by paying 6 months in advance"
+msgstr ""
+
+msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
+msgstr ""
+
+msgid "Call us directly and we can securely process your credit card payment over the phone"
+msgstr ""
+
+msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
+msgstr ""
+
 #: templates/header_wizard.html:28 templates/registration/activate.html:11
 #: templates/registration/activation_complete.html:9
 #: templates/registration/login.html:45
 #: templates/registration/password_reset_complete.html:9
-msgid "Sign In"
+msgid "Sign in"
 msgstr "S'identifier"
 
 msgid "Sign Up"
@@ -2206,6 +2237,9 @@ msgstr "Actif"
 
 msgid "Test"
 msgstr "En Phase d’Essai"
+
+msgid "Draft"
+msgstr ""
 
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
@@ -2461,6 +2495,9 @@ msgstr "Les expéditeurs de données associés à mon projet"
 
 msgid "Enter your SMS text"
 msgstr "Entrez votre texte SMS"
+
+msgid "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers."
+msgstr ""
 
 msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
 msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une virgule (,) pour séparer les numéros."

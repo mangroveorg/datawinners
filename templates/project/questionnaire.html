@@ -41,7 +41,7 @@
         <li>
                 <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName: true, enable: viewModel.isEnabled()"/>
                 <a href="questionnaire.html#" class='delete delete_link'
-                   data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">Delete</a>
+                   data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template_new">
@@ -52,7 +52,7 @@
                  <li>
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
                      <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
-                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
                     </div>
                  </li>
             </div>
