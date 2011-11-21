@@ -55,6 +55,13 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="mast
     """
     if build_number == 'lastSuccessfulBuild':
         build_number = run("curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
+    
+    ENVIRONMENT_CONFIGURATIONS = {
+        "showcase": "showcase_local_settings.py",
+        "test": "test_local_settings.py",
+        "master": "showcase_local_settings.py",
+        "beta": "local_settings.py"
+    }
 
     run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
     branch, build_number))
@@ -70,6 +77,7 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="mast
             run("git checkout .")
             activate_and_run(virtual_env, "pip install -r requirements.pip")
         with cd(code_dir + '/src/datawinners'):
+            run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
@@ -77,7 +85,7 @@ def deploy(build_number, home_dir, virtual_env, environment="test", branch="mast
             restart_servers()
 
 
-def beta():
+def showcase():
     env.user = "mangrover"
-    env.hosts = ["178.79.185.34"]
+    env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_rsa"]
