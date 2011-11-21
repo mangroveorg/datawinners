@@ -82,5 +82,11 @@
         <a class="grid_4  omega alpha view_all_projects" href="{% url datawinners.project.views.index %}">{% trans "view all projects"%} »</a>
     </div>
     <div class="grid_4 alpha omega dashboard_right">
+    {% if trial_account %}
+    <ul>
+        <li><a href="/upgrade/">Subscribe to Pro Account</a></li>
+        <li><a href="/en/pricing/">Learn More</a></li>
+    </ul>
+    {% endif %}
     </div>
 {% endblock %}

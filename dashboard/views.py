@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
+from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.accountmanagement.views import is_datasender
 
 from datawinners.main.utils import get_database_manager
@@ -68,7 +69,8 @@ def is_project_inactive(row):
 @is_datasender
 def dashboard(request):
     manager = get_database_manager(request.user)
-
+    user_profile = NGOUserProfile.objects.get(user=request.user)
+    organization = Organization.objects.get(org_id=user_profile.org_id)
     project_list = []
     rows = manager.load_all_rows_in_view('all_projects', descending=True, limit=4)
     for row in rows:
@@ -84,7 +86,7 @@ def dashboard(request):
         project_list.append(project)
 
     return render_to_response('dashboard/home.html',
-            {"projects": project_list}, context_instance=RequestContext(request))
+            {"projects": project_list, 'trial_account': organization.in_trial_mode}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
