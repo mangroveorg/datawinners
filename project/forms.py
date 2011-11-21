@@ -24,7 +24,7 @@ class BroadcastMessageForm(forms.Form):
         super(BroadcastMessageForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs['watermark'] = ugettext_lazy('Enter your SMS text')
         self.fields['text'].widget.attrs['id'] = 'sms_content'
-        self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers.')
+        self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers.')
 
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
