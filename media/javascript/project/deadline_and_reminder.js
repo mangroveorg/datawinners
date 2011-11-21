@@ -7,8 +7,8 @@ DW.DeadlineDetails = function(){
     this.deadlineTypeControl = 'select[name=deadline_type]'; //For the control which lets user select Same and Following. I wish i had a better name for this one.
     this.deadlineMonthControl = 'select[name=deadline_month]';
     this.deadlineWeekControl = 'select[name=deadline_week]';
-    this.month_block_id = '.month_block';
-    this.week_block_id = '.week_block';
+    this.month_block_class = '.month_block';
+    this.week_block_class = '.week_block';
     this.reminders_block_id = '#reminders_section';
 };
 
@@ -45,12 +45,12 @@ DW.DeadlineDetails.prototype = {
         }
     },
     toggle_when_month_is_selected: function(){
-        $(this.month_block_id).show();
-        $(this.week_block_id).hide();
+        $(this.month_block_class).show();
+        $(this.week_block_class).hide();
     },
     toggle_when_week_is_selected: function(){
-        $(this.week_block_id).show();
-        $(this.month_block_id).hide();
+        $(this.week_block_class).show();
+        $(this.month_block_class).hide();
     }
 };
 

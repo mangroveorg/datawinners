@@ -11,6 +11,9 @@
                     <li>{{ form.frequency_period }}</li>
                     {% include 'project/profile_deadline_week_block.html' %}
                     {% include 'project/profile_deadline_month_block.html' %}
+                    <li>{{ form.deadline_type }}</li>
+                    <li class="week_block">{% trans "week" %}</li>
+                    <li class="month_block">{% trans "month" %}</li>
                 </ul>
             </div>
         </li>
