@@ -139,6 +139,11 @@ class MessageTracker(models.Model):
 
         return True
 
+    def reset(self):
+        self.incoming_sms_count = 0
+        self.outgoing_sms_count = 0
+        self.save()
+
     def __unicode__(self):
         return "organization : %s incoming messages: %d outgoing messages: %d" % (
         self.organization.name, self.incoming_sms_count, self.outgoing_sms_count)

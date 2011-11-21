@@ -14,7 +14,7 @@ from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 
 from mangrove.errors.MangroveException import TrialAccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm
-from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails
+from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker
 from django.contrib.auth.views import login
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
@@ -224,6 +224,10 @@ def upgrade(request):
             payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,
                                                            preferred_payment= preferred_payment)
             payment_details.save()
+            message_tracker = MessageTracker.objects.filter(organization=organization)
+            if message_tracker.count() > 0:
+                tracker = message_tracker[0]
+                tracker.reset()
             _send_upgrade_email(request.user)
             messages.success(request,_("upgrade success message") )
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
