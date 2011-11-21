@@ -38,10 +38,11 @@
         {% include 'project/success_message.html' %}
             <div class="my_sub"><p><b>
             {% if 'yes' in project.activity_report %}
-                My Data Senders
+                <div>Subjects: Data Senders</div>
+                <div>{{ add_data_senders_to_see_on_map_msg }}</div>
                 <span style="display: none" id="marker_image">map_marker_red.png</span>
             {% else %}
-                My {{ project.entity_type }}
+                <div>Subjects: {{ project.entity_type }}</div>
                 <span style="display: none" id="marker_image">map_marker_blue.png</span>
             {% endif %}
             </b></p></div>

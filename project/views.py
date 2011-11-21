@@ -178,6 +178,7 @@ def project_overview(request, project_id=None):
     number_records = submission_count(manager, form_model.form_code, None, None)
     number_reminders = Reminder.objects.filter(project_id = project.id).count()
     links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id])}
+    add_data_senders_to_see_on_map_msg = _("Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': project,
         'entity_type': project['entity_type'],
@@ -187,7 +188,8 @@ def project_overview(request, project_id=None):
         'number_data_sender': number_data_sender,
         'number_records': number_records,
         'number_reminders': number_reminders,
-        'links': links
+        'links': links,
+        "add_data_senders_to_see_on_map_msg": add_data_senders_to_see_on_map_msg
     }))
 
 
