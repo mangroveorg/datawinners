@@ -243,13 +243,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     weekly_reminder_and_deadline = {
-            "reminders_enabled": "True",
             "deadline_week": "5",
             "deadline_type": "Same",
-            "frequency_enabled": "True",
-            "has_deadline": "True",
+            "has_deadline": True,
             "frequency_period": "week",
-            "should_send_reminder_to_all_ds": "True"
+            "should_send_reminder_to_all_ds": True
         }
 
     try:
@@ -261,6 +259,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
+    project1.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project1.save(manager)
     except Exception:
@@ -413,13 +412,12 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
 
     # Creating a project to test reminders with following deadline.
     weekly_reminder_and_following_deadline = {
-            "reminders_enabled": "True",
             "deadline_week": "6",
             "deadline_type": "Following",
-            "frequency_enabled": "True",
-            "has_deadline": "True",
+            "frequency_enabled": True,
+            "has_deadline": True,
             "frequency_period": "week",
-            "should_send_reminder_to_all_ds": "True"
+            "should_send_reminder_to_all_ds": True
         }
 
     form_model10 = FormModel(manager, name="AIDS Clinici", label="Aids form_model",
@@ -436,6 +434,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                        entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project9.qid = qid
     project9.state = ProjectState.ACTIVE
+    project9.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project9.save(manager)
     except Exception:
@@ -457,13 +456,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     weekly_reminder_and_deadline = {
-            "reminders_enabled": "True",
             "deadline_week": "5",
             "deadline_type": "Following",
-            "frequency_enabled": "True",
-            "has_deadline": "True",
+            "has_deadline": True,
             "frequency_period": "week",
-            "should_send_reminder_to_all_ds": "False"
+            "should_send_reminder_to_all_ds": False
         }
 
     try:
@@ -475,6 +472,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project10.qid = qid10
     project10.state = ProjectState.ACTIVE
+    project10.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project10.save(manager)
     except Exception:
@@ -504,13 +502,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     weekly_reminder_and_deadline = {
-            "reminders_enabled": "True",
             "deadline_week": "5",
             "deadline_type": "Following",
-            "frequency_enabled": "True",
-            "has_deadline": "True",
+            "has_deadline": True,
             "frequency_period": "week",
-            "should_send_reminder_to_all_ds": "True"
+            "should_send_reminder_to_all_ds": True
         }
 
     try:
@@ -522,6 +518,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project11.qid = qid11
     project11.state = ProjectState.ACTIVE
+    project11.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project11.save(manager)
     except Exception:
@@ -551,13 +548,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     weekly_reminder_and_deadline = {
-            "reminders_enabled": "True",
             "deadline_week": "5",
             "deadline_type": "Same",
-            "frequency_enabled": "True",
-            "has_deadline": "True",
+            "has_deadline": True,
             "frequency_period": "week",
-            "should_send_reminder_to_all_ds": "False"
+            "should_send_reminder_to_all_ds": False
         }
 
     try:
@@ -569,7 +564,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project12.qid = qid12
     project12.state = ProjectState.ACTIVE
-
+    project12.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project12.save(manager)
     except Exception:
@@ -600,13 +595,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "reminders_enabled": "True",
         "deadline_month": "30",
         "deadline_type": "Same",
-        "frequency_enabled": "True",
-        "has_deadline": "True",
+        "has_deadline": True,
         "frequency_period": "month",
-        "should_send_reminder_to_all_ds": "False"
+        "should_send_reminder_to_all_ds": False
     }
 
     try:
@@ -618,6 +611,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project13.qid = qid13
     project13.state = ProjectState.ACTIVE
+    project13.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project13.save(manager)
     except Exception:
@@ -648,13 +642,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "reminders_enabled": "True",
         "deadline_month": "30",
-        "deadline_type": "following",
-        "frequency_enabled": "True",
-        "has_deadline": "True",
+        "deadline_type": "Following",
+        "has_deadline": True,
         "frequency_period": "month",
-        "should_send_reminder_to_all_ds": "False"
+        "should_send_reminder_to_all_ds": False
     }
 
     try:
@@ -666,6 +658,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project14.qid = qid14
     project14.state = ProjectState.ACTIVE
+    project14.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project14.save(manager)
     except Exception:
@@ -695,13 +688,11 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "reminders_enabled": "True",
         "deadline_month": "30",
-        "deadline_type": "following",
-        "frequency_enabled": "True",
-        "has_deadline": "True",
+        "deadline_type": "Following",
+        "has_deadline": True,
         "frequency_period": "month",
-        "should_send_reminder_to_all_ds": "True"
+        "should_send_reminder_to_all_ds": True
     }
 
     try:
@@ -713,6 +704,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project15.qid = qid15
     project15.state = ProjectState.ACTIVE
+    project15.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project15.save(manager)
     except Exception:
@@ -742,11 +734,9 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "reminders_enabled": "True",
         "deadline_month": "30",
         "deadline_type": "Same",
-        "frequency_enabled": "True",
-        "has_deadline": "True",
+        "has_deadline": True,
         "frequency_period": "month",
         "should_send_reminder_to_all_ds": "True"
     }
@@ -760,6 +750,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project16.qid = qid16
     project16.state = ProjectState.ACTIVE
+    project16.reminder_and_deadline = monthly_reminder_and_deadline
     try:
         project16.save(manager)
     except Exception:
@@ -1169,12 +1160,11 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     )
 
     weekly_reminder_and_deadline = {
-            "reminders_enabled": "True",
             "deadline_week": "5",
             "deadline_type": "Same",
-            "frequency_enabled": "True",
-            "has_deadline": "True",
-            "frequency_period": "week"
+            "has_deadline": True,
+            "frequency_period": "week",
+            "should_send_reminder_to_all_ds": True
         }
 
     try:
@@ -1186,6 +1176,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
+    project1.reminder_and_deadline = weekly_reminder_and_deadline
     try:
         project1.save(manager)
     except Exception:
