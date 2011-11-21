@@ -48,7 +48,7 @@ $(document).ready(function() {
                 return x;
             }, dateEnd: 'today' }
         ],
-        presets: {dateRange: 'Date Range'},
+        presets: {dateRange: gettext('Date Range')},
         earliestDate:'1/1/2011',
         latestDate:'21/12/2012',
         dateFormat:'dd-mm-yy',

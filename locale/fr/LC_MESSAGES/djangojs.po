@@ -159,6 +159,9 @@ msgstr "Mois dernier"
 msgid "Year to date"
 msgstr "Du début de l'année à la date"
 
+msgid "Date Range"
+msgstr ""
+
 #: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"
 msgstr "Ajouter un envoyeur"

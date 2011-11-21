@@ -1357,6 +1357,9 @@ msgstr ""
 msgid "Save & Create Project"
 msgstr ""
 
+msgid "Back"
+msgstr ""
+
 #: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"
 msgstr ""

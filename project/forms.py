@@ -118,15 +118,15 @@ class ReminderForm(Form):
                                 required=False)
 
     should_send_reminders_before_deadline = BooleanField(required=False, initial=False)
-    number_of_days_before_deadline = DecimalField(label="days before deadline", required=False)
+    number_of_days_before_deadline = DecimalField(label=ugettext_lazy("days before deadline"), required=False)
     reminder_text_before_deadline = CharField(widget=forms.Textarea, required=False)
 
-    should_send_reminders_on_deadline = BooleanField(label="The day of the deadline", required=False, initial=False)
+    should_send_reminders_on_deadline = BooleanField(label=ugettext_lazy("The day of the deadline"), required=False, initial=False)
     reminder_text_on_deadline = CharField(widget=forms.Textarea, required=False)
 
-    should_send_reminders_after_deadline = BooleanField(label="days after the deadline", required=False, initial=False)
+    should_send_reminders_after_deadline = BooleanField(label=ugettext_lazy("days after the deadline"), required=False, initial=False)
     number_of_days_after_deadline = DecimalField(required=False)
     reminder_text_after_deadline = CharField(widget=forms.Textarea, required=False)
 
-    whom_to_send_message = BooleanField(label="Only send reminders to senders who have not already submitted data for the current deadline",
+    whom_to_send_message = BooleanField(label=ugettext_lazy("Only send reminders to senders who have not already submitted data for the current deadline"),
                                        required=False, initial=True)
