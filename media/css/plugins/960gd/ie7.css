@@ -35,3 +35,7 @@
 #que_code li{
      clear: both;
     }
+
+#question_form .alpha_list li{
+    margin-left: 13px;
+}
