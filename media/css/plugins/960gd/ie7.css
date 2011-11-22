@@ -39,3 +39,8 @@
 #question_form .alpha_list li{
     margin-left: 13px;
 }
+
+#question_form #questions-panel .question_list li {
+    margin-bottom: 10px;
+    margin-left: 23px;
+}

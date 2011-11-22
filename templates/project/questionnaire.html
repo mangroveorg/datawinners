@@ -48,14 +48,12 @@
         <div class="question_list">
             <ol>
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
-                 <li>
+                 <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
                      <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
                          <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
                     </div>
                  </li>
-            </div>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
         </div>
