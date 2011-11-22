@@ -162,9 +162,12 @@ def reminder_settings(request, project_id):
     questionnaire = FormModel.get(dbm, project.qid)
     from datawinners.project.views import _make_project_links
     project_links = _make_project_links(project, questionnaire.form_code)
+    org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
+    organization = Organization.objects.get(org_id=org_id)
+    html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
         form = ReminderForm(data=(_reminder_info_about_project(project)))
-        return render_to_response('project/reminder_settings.html',
+        return render_to_response(html,
                 {'project_links': project_links,'project': project,
                  'form':form},context_instance=RequestContext(request))
 
