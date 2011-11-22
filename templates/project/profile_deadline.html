@@ -5,9 +5,9 @@
         <legend>{% trans "Deadline" %}</legend>
         <ul>
         <li class="form-row-10px">
-            {{ form.has_deadline }}
             <div id="frequency_values">
                 <ul>
+                    <li>Every</li>
                     <li>{{ form.frequency_period }}</li>
                     {% include 'project/profile_deadline_week_block.html' %}
                     {% include 'project/profile_deadline_month_block.html' %}

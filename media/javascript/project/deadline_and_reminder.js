@@ -14,12 +14,12 @@ DW.DeadlineDetails = function(){
 
 DW.DeadlineDetails.prototype = {
     init: function(){
-        var is_deadline_enabled = ($(this.deadlineEnabledCheckedControl).val() === "True");
-        if(is_deadline_enabled){
+        //var is_deadline_enabled = ($(this.deadlineEnabledCheckedControl).val() === "True");
+        //if(is_deadline_enabled){
             this.show();
-        }else{
-            this.hide();
-        }
+        //}else{
+          //  this.hide();
+       // }
         return true; //It's a Best Practice to return either true or false when there are only side effects happening inside a method.
     },
     hide: function(){
@@ -57,9 +57,11 @@ DW.DeadlineDetails.prototype = {
 var deadlineDetails = new DW.DeadlineDetails;
 $(document).ready(function() {
     deadlineDetails.init();
+    /*
     $(deadlineDetails.deadlineEnabledControl).change(function(){
         deadlineDetails.init();
     });
+    */
     $(deadlineDetails.frequencyPeriodControl).change(function(){
         deadlineDetails.show();
     });

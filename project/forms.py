@@ -104,9 +104,9 @@ class CreateProject(Form):
 
 
 class ReminderForm(Form):
-    FREQUENCY_CHOICES = ((False, _("No deadline. Senders can submit data any time.")), (True, _("Every")))
-    has_deadline = ChoiceField(label=_("Time Period"),
-                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, initial=False)
+#    FREQUENCY_CHOICES = ((False, _("No deadline. Senders can submit data any time.")), (True, _("Every")))
+#    has_deadline = ChoiceField(label=_("Time Period"),
+#                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, initial=False)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select,
                                    required=False, )
     deadline_month = ChoiceField(

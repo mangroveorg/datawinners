@@ -212,8 +212,6 @@ def _reminder_info_about_project(project):
     return data
 
 def _add_reminder_info_to_project(cleaned_data, project, organization):
-    print cleaned_data
-    project['reminder_and_deadline']['has_deadline'] = (cleaned_data['has_deadline'] == 'True')
     if project['reminder_and_deadline']['has_deadline']:
         project['reminder_and_deadline']['frequency_period'] = cleaned_data['frequency_period']
         if cleaned_data['frequency_period'] == 'month':

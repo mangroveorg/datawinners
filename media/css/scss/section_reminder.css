@@ -45,11 +45,5 @@ fieldset {
 #reminders_section textarea {
   margin-left: 27px; }
 
-#frequency_values {
-  padding-top: 20px; }
-  #frequency_values ul {
-    margin-left: -190px; }
-  #frequency_values ul li {
-    float: left; }
-  #frequency_values select {
-    margin: 0 5px; }
+#frequency_values ul li {
+  display: inline; }
