@@ -46,9 +46,9 @@
     {% endif %}
     <form method="POST" >
         {% csrf_token %}
-        <ul>
+        <ul class="que_width">
             {% for field in questionnaire_form %}
-                <li>
+                <li >
                     {% if not field.is_hidden %}
                         <h6>{{ field.label }}</h6>
                         <p class="instructions italic">

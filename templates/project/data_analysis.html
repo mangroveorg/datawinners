@@ -60,7 +60,7 @@
             <li><a href="#" class="null_border disable_link">{% trans "e-mail" %}</a> </li>
         </ul>
     </div>
-    <div class="heading_block grid_23 alpha">
+    <div class="heading_block grid_23 alpha data_ana">
         <h3 class="grid_10">{% trans "Analysis" %}</h3>
     </div>
     <form id = "export_form" action="/project/export/data" method='POST'>
@@ -71,7 +71,7 @@
         <input id='end_time' name='end_time'  type="hidden" />
         <input id='project_name' name='project_name'  type="hidden"  value="{{ project.name }}"/>
     </form>
-    <div class="heading_block grid_23 alpha">
+    <div class="heading_block grid_23 alpha data_ana">
         <div class="date_range_box">
             <label>{% trans "Show data for:" %}</label>
             <input type="text" id="dateRangePicker" value="{% trans 'Click to select a date range' %}"/>
