@@ -133,9 +133,6 @@
 
 {% block secondary_navigation_reminders %}
 <ul class="secondary_tab">
-    <li class="{% ifactivetab 'secondary_tab_nav' 'scheduled' %}active{% else %}inactive{% endifactivetab %}">
-        <a id="scheduled_reminders_tab" href="{{ project_links.reminders_link }}">{% trans "Scheduled Reminders" %}</a>
-    </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'sent' %}active{% else %}inactive{% endifactivetab %}">
         <a id = "sent_reminders_tab" href="{{ project_links.sent_reminders_link }}">{% trans "Sent Reminders" %}</a>
     </li>

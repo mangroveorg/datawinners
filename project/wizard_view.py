@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
@@ -193,17 +194,28 @@ def _reminder_info_about_project(project):
             data['should_send_reminders_before_deadline'] = True
             data['number_of_days_before_deadline'] = reminder_before_deadline[0].day
             data['reminder_text_before_deadline'] = reminder_before_deadline[0].message
+        else:
+            data['should_send_reminders_before_deadline'] = False
+            data['number_of_days_before_deadline'] = 2
+            data['reminder_text_before_deadline'] = ugettext("Reports are due in 2 days. Please submit soon.")
 
         reminder_on_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.ON_DEADLINE, project_id=project.id)
         if reminder_on_deadline.count() > 0:
             data['should_send_reminders_on_deadline'] = True
             data['reminder_text_on_deadline'] = reminder_on_deadline[0].message
+        else:
+            data['should_send_reminders_on_deadline'] = False
+            data['reminder_text_on_deadline'] = ugettext("Reports are due today. Please submit soon.")
 
         reminder_after_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.AFTER_DEADLINE, project_id=project.id)
         if reminder_after_deadline.count() > 0:
             data['should_send_reminders_after_deadline'] = True
             data['number_of_days_after_deadline'] = reminder_after_deadline[0].day
             data['reminder_text_after_deadline'] = reminder_after_deadline[0].message
+        else:
+            data['should_send_reminders_after_deadline'] = False
+            data['number_of_days_after_deadline'] = 2
+            data['reminder_text_after_deadline'] = ugettext("Reports are over due. Please submit immediately.")
 
 
     data['whom_to_send_message'] = not project.reminder_and_deadline['should_send_reminder_to_all_ds']
