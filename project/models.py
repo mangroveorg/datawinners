@@ -157,11 +157,10 @@ class Project(DocumentBase):
     reminder_and_deadline = DictField()
     data_senders = ListField(TextField())
     language = TextField(default='en')
-    sms_simple_format = couchdb.mapping.BooleanField(default=True)
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None,
-                 language='en', sms_simple_format=True):
+                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None,language='en'):
+        
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -179,7 +178,6 @@ class Project(DocumentBase):
                                       "deadline_month": "5",
                                       "frequency_period": "month"}
         self.language = language
-        self.sms_simple_format = sms_simple_format
 
     def is_activity_report(self):
         return self.activity_report == "yes"
