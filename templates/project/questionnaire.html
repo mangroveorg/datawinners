@@ -45,8 +45,9 @@
         </li>
     </script>
     <script type="text/html" id="question-list-template_new">
-        <div class="question_list">
+        <div class="question_list que_num">
             <ol>
+
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
                  <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>

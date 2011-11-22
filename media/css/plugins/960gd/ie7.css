@@ -39,3 +39,7 @@
 #question_form .que_list li{
     margin-left: 13px;
 }
+
+#question_form #questions-panel .que_num li {
+    margin-left: 23px;
+}
