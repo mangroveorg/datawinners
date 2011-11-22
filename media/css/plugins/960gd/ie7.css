@@ -52,3 +52,5 @@
 .que_width li{
     width: 900px;
 }
+
+.question_list ol li { margin-top: -3px !important; }
