@@ -22,7 +22,7 @@ class Organization(models.Model):
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
-    in_trial_mode = models.BooleanField(False)
+    in_trial_mode = models.BooleanField(default=False)
     active_date = models.DateTimeField(blank=True, null=True)
     is_deactivate_email_sent = models.BooleanField(False)
 
