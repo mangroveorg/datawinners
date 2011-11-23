@@ -11,20 +11,11 @@ function(doc){
 }
 """
 
-map_fun_raw_form_model_docs = """
-function(doc){
-	if(doc.document_type=='FormModel'){
-		emit(doc, null);
-	}
-}
-"""
-
 def migrate_01(managers, map_fun_project_docs):
     for manager in managers:
-        initializer.run(manager)
-
         projects = manager.database.query(map_fun_project_docs)
         for project in projects:
+            print project
             document = project.key
             document['reminder_and_deadline'] = {"deadline_type": "Following",
                                       "should_send_reminder_to_all_ds": False,
@@ -36,3 +27,7 @@ def migrate_01(managers, map_fun_project_docs):
 
 def migrate():
     migrate_01(managers, map_fun_project_docs)
+    print "Done"
+
+
+migrate()
