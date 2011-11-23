@@ -34,4 +34,5 @@ def migrate_01(managers, map_fun_project_docs):
 
             manager.database.save(document)
 
-migrate_01(managers, map_fun_project_docs)
+def migrate():
+    migrate_01(managers, map_fun_project_docs)
