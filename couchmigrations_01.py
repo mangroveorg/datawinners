@@ -29,5 +29,3 @@ def migrate():
     migrate_01(managers, map_fun_project_docs)
     print "Done"
 
-
-migrate()
