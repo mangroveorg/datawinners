@@ -337,16 +337,16 @@ msgid "Successfully submitted"
 msgstr "Envoyé avec succès"
 
 msgid "No deadline. Senders can submit data any time."
-msgstr ""
+msgstr "Pas de date limite. Les expéditeurs peuvent soumettre des données à tout moment."
 
 msgid "days before deadline"
-msgstr ""
+msgstr "jours avant la date de l'échéance"
 
 msgid "The day of the deadline"
-msgstr ""
+msgstr "Le jour de l'échéance"
 
 msgid "Only send reminders to senders who have not already submitted data for the current deadline"
-msgstr ""
+msgstr "N’envoie des rappels qu’aux expéditeurs qui n’ont pas encore soumis des données à la date de l’échéance actuelle"
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
@@ -500,11 +500,11 @@ msgstr ""
 
 msgid "subscription_details"
 msgstr ""
-"<h5>Subscription Details</h5><p>Learn more about</p>"
-"<p><ul><li>Where DataWinners is available</li>"
-"<li>Key details of Monthly Subscription</li>"
-"<li>Our Conuslting Service</li></ul></p>"
-"<p>See our <a href='/en/pricing/'>Pricing page</a></p>"
+"<h5>Détails de l’Abonnement</h5><p>En savoir plus</p>"
+"<p><ul><li>Où trouver DataWinners</li>"
+"<li>Principaux détails sur l’Abonnement Mensuel</li>"
+"<li>Notre Service de Consultance</li></ul></p>"
+"<p>Voir notre <a href='/en/pricing/'>Page des Tarifications</a></p>"
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
@@ -1355,7 +1355,7 @@ msgid "Deadline"
 msgstr "Date limite "
 
 msgid "Register Data Senders to see them on this map"
-msgstr ""
+msgstr "Enregistrez les Expéditeurs de Données pour les voir sur cette carte"
 
 #: templates/project/profile.html:49
 msgid ""
@@ -1374,7 +1374,7 @@ msgid "Save & Create Project"
 msgstr "Enregistrer & créez projet"
 
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: templates/project/profile_deadline.html:3
 msgid "Deadlines and Reminders"
@@ -1470,18 +1470,18 @@ msgstr "Type de réponse "
 #: templates/project/question_detail_panel.html:26
 msgid "q_tooltip_question_detail_type"
 msgstr ""
-"Questionnaires collect data in several formats: numbers, text, multiple "
-"choiceand dates. The <strong>Answer Type</strong> identifies which format "
-"the DataSender must use when answering the question."
+"Les questionnaires collectent des données en plusieurs formats: chiffres, textes, choix multiples, "
+"et dates. Le <strong>Type de Réponse</strong> détermine quel format "
+"l'Expéditeur de Données devra utiliser pour répondre à la question."
 
 #: templates/project/question_detail_panel.html:29
 msgid "r_tooltip_question_detail_type"
 msgstr ""
-"Select the <strong>Answer Type</strong> that the Data Sender will use "
-"whenanswering the question. Answers can be numbers, text, multiple choice, "
-"or dates.<br/>When using the <strong>Multiple Choice option</strong>, Data "
-"Senders will typein the letter (A, B, C etc.) that corresponds to the "
-"correct answer NOT the textin the answer field."
+"Sélectionnez le <strong>Type de Réponse</strong> que l'Expéditeur de Données utilisera "
+"pour répondre à la question. Les réponses peuvent être des chiffres, du texte, des choix multiples, "
+"ou des dates.<br/>Lorsque vous utilisez <strong>l'option à Choix Multiples</strong>, les "
+"Expéditeurs de Données saisiront la lettre (A, B, C etc) qui correspond à la "
+"bonne réponse, et NON PAS le texte contenu dans le champ de réponse."
 
 #: templates/project/question_detail_panel.html:31
 msgid "Select what kind of answer you want from your Data Senders."
@@ -1558,16 +1558,16 @@ msgstr "Instructions"
 #: templates/project/question_detail_panel.html:129
 msgid "q_tooltip_question_detail_instruction"
 msgstr ""
-"When you print the Questionnaire and give it to your Data Senders, "
-"these<strong>Instructions</strong> will appear below each question. They "
-"providebackground or other important information to help Data Senders answer "
-"thequestionnaire.<br/><br/>"
+"Lorsque vous imprimez le Questionnaire et le donnez à vos Expéditeurs de Données, "
+"ces<strong>Instructions</strong> apparaîtront en dessous de chaque question. Elles "
+"fournissent des informations d’ordre général ou d'autres renseignements importants pour aider les Expéditeurs de Données à répondre "
+"au questionnaire.<br/><br/>"
 
 #: templates/project/question_detail_panel.html:131
 msgid "r_tooltip_question_detail_instruction"
 msgstr ""
-"Type in any specific information that may be important to help the Data "
-"Sender answer the question."
+"Saisissez-y toutes les informations spécifiques qui peuvent être importantes pour aider les Expéditeurs de "
+"Données à répondre au questionnaire."
 
 #: templates/project/question_table.html:4
 msgid "Question Number"
@@ -1593,16 +1593,16 @@ msgstr "Code Questionnaire :"
 #: templates/project/questionnaire.html:83
 msgid "q_tooltip_questionnaire_code"
 msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctly identify your questionnaire. Use the recommended "
-"code or change it if you like."
+"Tous les questionnaires ont un Code Questionnaire Unique. DataWinners utilise ce "
+"code unique pour identifier correctement votre questionnaire. Utilisez le code recommandé "
+"ou changez-le si vous le souhaitez."
 
 #: templates/project/questionnaire.html:86
 msgid "r_tooltip_questionnaire_code"
 msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
+"Entrez un code alphanumérique à 3 caractères (lettres et chiffres). Ce code questionnaire apparaîtra "
+"sur la version imprimée de votre questionnaire. Vos Expéditeurs de Données "
+"saisiront ce code en premier lors de l'envoi de leurs données."
 
 #: templates/project/questionnaire.html:102
 #: templates/project/questionnaire_wizard.html:98
@@ -1613,19 +1613,19 @@ msgstr "Ajouter une question"
 #: templates/project/questionnaire_wizard.html:108
 msgid "q_tooltip_question_sms"
 msgstr ""
-"<strong>1 SMS is limited to 160 characters.</strong><br />The Running Count "
-"tallies the questionnaire code, all question codes andthe maximum lengths of "
-"all answers and keeps a running count of how many characters you have used "
-"out of 160."
+"<strong>1 SMS est limité à 160 caractères.</strong><br />Le Décompte "
+"tallies the questionnaire code, Automatique fait le pointage du code questionnaire, de tous les codes "
+"des questions et des longueurs maximales pour toutes les réponses, et compte le nombre de caractères utilisés sur "
+"les 160 autorisés."
 
 #: templates/project/questionnaire.html:117
 #: templates/project/questionnaire_wizard.html:111
 msgid "r_tooltip_question_sms"
 msgstr ""
-"Use this count to determine how many questions you can add to the "
-"questionnaire and still keep the response within 1 SMS (160 characters)."
-"Don't worry, you can go beyond 160 characters. However, more than one SMS "
-"will be required to answer all the questions in your questionnaire."
+"Utilisez ce décompte pour déterminer combien de questions vous pouvez ajouter au "
+"questionnaire tout en maintenant la réponse dans les limites de 1 SMS (160 caractères)."
+"Ne vous inquiétez pas, vous pouvez aller au-delà de 160 caractères. Cependant, plus d'un SMS "
+"seront nécessaires pour répondre à toutes les questions de votre questionnaire."
 
 #: templates/project/questionnaire_preview.html:8
 msgid "Print"
@@ -1987,14 +1987,14 @@ msgstr "Données"
 #: templates/project/tab_navigation.html:78
 msgid "tooltip_tab_navigation"
 msgstr ""
-"View, analyze and export your collected Data. Create an alert to be aware "
-"when something importanthappens.<br/>There are 3 main areas:<br/><strong>1. "
-"Summary</strong><br/>Look at the summary of each individual question to get "
-"a first impression ofyour Data.<br/><strong>2. Analysis</strong><br/>View "
-"your Data as a list, chart or map. Choose the sum, minimum or averageof a "
-"specific answer or see what which one was the most frequent.<br/><strong>3. "
-"All Data Records</strong><br/>View the list of all Data Records you have "
-"received from your Data Senders. Filter and export your list toExcel."
+"Visualisez, analysez et exportez vos données collectées. Créez une alarme "
+"pour être au courant quand quelque chose d'important se passe.<br/>Il existe 3 principaux domaines:<br/><strong>1. "
+"Résumé</strong><br/>Regardez le résumé de chaque question pour "
+"obtenir une première impression de vos données.<br/><strong>2. Analyse</strong><br/>Visualisez "
+"vos Données sous forme de liste, de graphique ou de carte. Choisissez la somme, le minimum ou la moyenne d'une "
+"réponse spécifique ou déterminez laquelle était la plus fréquente.<br/><strong>3. "
+"Tous les Enregistrements de Données</strong><br/>Regardez la liste de tous les Enregistrements "
+"de Données que vous avez reçus de la part de vos Expéditeurs de Données. Filtrez et exportez votre liste au format Excel."
 
 #: templates/project/tab_navigation.html:90
 msgid "Web Submission"
@@ -2210,19 +2210,19 @@ msgid "Sign Up To Start Using DataWinners Now"
 msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
 
 msgid "Renews automatically each month. Cancel at any time without penalty."
-msgstr ""
+msgstr "Renouvellement mensuel automatique. Annulation sans pénalité, faisable à tout moment."
 
 msgid "Save 10% by paying 6 months in advance"
-msgstr ""
+msgstr "Économisez 10% en payant 6 mois à l’avance"
 
 msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
-msgstr ""
+msgstr "Nous prendrons contact avec vous par e-mail pour organiser le paiement.<br /> Quelle option de paiement préférez-vous?"
 
 msgid "Call us directly and we can securely process your credit card payment over the phone"
-msgstr ""
+msgstr "Appelez-nous directement et nous pouvons, par téléphone, traiter en toute sécurité votre paiement par carte de crédit"
 
 msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
-msgstr ""
+msgstr "Transférez en toute sécurité des fonds entre votre compte bancaire aux États-Unis et la nôtre (normalement, gratuit)."
 
 #: templates/header_wizard.html:28 templates/registration/activate.html:11
 #: templates/registration/activation_complete.html:9
@@ -2241,7 +2241,7 @@ msgid "Test"
 msgstr "En Phase d’Essai"
 
 msgid "Draft"
-msgstr ""
+msgstr "Projet de Document"
 
 msgid "Add a Reminder"
 msgstr "Ajouter un message de rappel"
@@ -2499,7 +2499,7 @@ msgid "Enter your SMS text"
 msgstr "Entrez votre texte SMS"
 
 msgid "Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers."
-msgstr ""
+msgstr "Entrez les numéros de téléphone locaux, sans codes de pays. Utilisez une virgule (,) pour séparer les chiffres."
 
 msgid "Enter your recipient(s) telephone number. Use a comma (,) to separate the numbers."
 msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une virgule (,) pour séparer les numéros."
