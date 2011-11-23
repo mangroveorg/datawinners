@@ -595,7 +595,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "deadline_month": "30",
+        "deadline_month": "26",
         "deadline_type": "Same",
         "has_deadline": True,
         "frequency_period": "month",
@@ -642,7 +642,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "deadline_month": "30",
+        "deadline_month": "26",
         "deadline_type": "Following",
         "has_deadline": True,
         "frequency_period": "month",
@@ -688,7 +688,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "deadline_month": "30",
+        "deadline_month": "26",
         "deadline_type": "Following",
         "has_deadline": True,
         "frequency_period": "month",
@@ -734,7 +734,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     )
 
     monthly_reminder_and_deadline = {
-        "deadline_month": "30",
+        "deadline_month": "26",
         "deadline_type": "Same",
         "has_deadline": True,
         "frequency_period": "month",
