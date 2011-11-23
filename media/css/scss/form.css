@@ -325,3 +325,6 @@ select {
 
 .que_width ul.errorlist {
   margin-top: 5px; }
+
+#frequency_values select {
+  vertical-align: middle; }
