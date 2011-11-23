@@ -164,7 +164,7 @@ $(document).ready(function() {
                 should_post = false;
                 return false;
             }
-            if(email.trim().search(emailRegEx) == -1){
+            if($.trim(email).search(emailRegEx) == -1){
                 $('#web_user_error').show();
                 $('#web_user_error').html(email + gettext(": is not a valid email"));
                 should_post = false;
