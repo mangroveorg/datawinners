@@ -14,6 +14,16 @@ dbs = json.loads(data)
 
 dbs.remove('_users')
 
+def delete_dbs():
+    url = urllib2.urlopen('http://localhost:5984/_all_dbs')
+    data = url.read()
+    url.close()
+    dbs = json.loads(data)
+    dbs.remove('_users')
+    dbs.remove('_replicator')
+    for db in dbs:
+        s.delete(db)
+        
 def replicate_dbs():
     for (index,db) in enumerate(dbs):
         print db
@@ -23,8 +33,6 @@ def replicate_dbs():
         s.replicate(COUCH_SERVER_URL + db, 'http://localhost:5984/'+db)
         print "Started replication of %s" % db
 
-
-replicate_dbs()
 
 
 
