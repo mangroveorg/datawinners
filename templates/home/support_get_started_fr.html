@@ -1,0 +1,39 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Assistance {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/home/howto.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Commencer
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>Assistance</h1>
+         <ul>
+            <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
+            <li class="active"><a href="/fr/support/get-started/">Commencer</a></li>
+            <li><a href="/fr/support/find-answers/">Trouver des reponses (FAQs)</a></li>
+            <li><a href="/fr/support/ask-us/">Nous demander</a></li>
+        </ul>
+    </div>
+    <div id="main_content">
+
+
+    </div>
+    <div class="clear"></div>
+{% endblock %}

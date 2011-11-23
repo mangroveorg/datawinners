@@ -635,3 +635,9 @@ body{
 small{
     font-size:11px;
 }
+
+ol{
+    .lower_alpha{
+        list-style-type: lower-alpha;
+    }
+}

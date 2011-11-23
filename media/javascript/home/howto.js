@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var menu_number = $("#how_menu .title [rel]").length;
+    
     var active = null;
 
     function moveActive(n) {
@@ -16,7 +18,7 @@ $(document).ready(function() {
         var myDiv = $('#step' + n);
         myDiv.fadeIn();
         myDiv.addClass('active');
-        if(n == 4) {
+        if(n == menu_number) {
             $('#how_next').hide();
         } else {
             $('#how_next').show();
@@ -46,7 +48,7 @@ $(document).ready(function() {
     });
 
     $('#how_next').click(function(){
-        var n = (active < 4) ? active + 1 : 4;
+        var n = (active < menu_number) ? active + 1 : menu_number;
         swapContent(n);
     });
 

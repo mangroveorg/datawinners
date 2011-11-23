@@ -1,4 +1,4 @@
-#support-acc{
+.support-acc{
     .ui-accordion-header{
         font-family:Helvetica,Arial,sans-serif;
         font-size:13px;
@@ -29,4 +29,36 @@
             background:url('/media/images/dw_acc_arrow.gif') no-repeat left -20px;
         }
     }
+    td{
+        border: 1px solid #DDD;
+        padding: 0 10px;
+    }
 }
+
+.block_support{
+    h3{
+        font-size: 14px;
+    }
+    border-top:  1px solid #CCC;
+    border-bottom:  1px solid #CCC;
+    padding:  10px 0;
+    width: 350px;
+    display: inline;
+    float: left;
+    margin-right: 5px;
+    .read_more{
+        position: absolute;
+        top: 82px;
+        right: 5px;
+    }
+    .grid_5{
+        position: relative;
+    }
+}
+.block_support_hover{
+    -moz-box-shadow: 0 0 3px 3px #DDD;
+    -webkit-box-shadow: 0 0 3px 3px#DDD;
+    box-shadow: 0 0 3px 3px #DDD;
+
+}
+
