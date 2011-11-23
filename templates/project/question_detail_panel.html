@@ -91,17 +91,17 @@
     </li>
     <li data-bind="visible: viewModel.showAddRange()">
         <div class="margin_top_20">
-            <p>
+            <div class="question_option">
                 {% trans "Min:" %}
                 <input name="range_min" type="text" id="range_min"
                        data-bind="value:selectedQuestion().range_min, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-            </p>
+            </div>
 
-            <p>
+            <div class="question_option">
                 {% trans "Max:" %}
                 <input name="range_max" type="text" id="range_max"
                        data-bind="value:selectedQuestion().range_max, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-            </p>
+            </div>
         </div>
     </li>
     <li data-bind="visible: viewModel.showAddTextLength() && !selectedQuestion().is_entity_question()">

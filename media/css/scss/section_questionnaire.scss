@@ -49,11 +49,14 @@
         }
         .questionnaire_code{
             li{
-             > label{
-                display:inline;
-                margin-left:30px;
-                margin-right: -30px;
-            }
+                padding:5px 0 5px 30px !important;
+                #questionnaire-code-error {
+                    background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
+                }
+                label{
+                    display:inline;
+                    width:140px;
+                }
             }
         }
         .questionnare_header{

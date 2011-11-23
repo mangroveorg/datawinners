@@ -100,21 +100,21 @@ form{
 }
 div.error_arrow
 {
-            background: url(/media/images/arrow_error.png) no-repeat left 7px;
-            display: inline-block;
+            background: url(/media/images/arrow_error.png) no-repeat left 3px;
+            display: inline;
 }
 span.error_arrow,#questionnaire-code-error, label.error_arrow{
-            background: url(/media/images/arrow_error.png) no-repeat left 7px;
-            display: inline-block;
+            background: url(/media/images/arrow_error.png) no-repeat left 3px;
+            display: inline;
             float: left!important;
 }
 span .error_arrow,div.error_arrow,#questionnaire-code-error, label.error_arrow{
             label{
                 float:none;
                 color:#FFFFFF;
-                display:inline-block !important;
+                display:inline !important;
                 background: #c20303;
-                padding:3px 10px 3px 10px;
+                padding:5px 10px;
                 border:1px solid #00000;
                 -moz-border-radius:5px;
                 -webkit-border-radius:5px;
@@ -123,7 +123,7 @@ span .error_arrow,div.error_arrow,#questionnaire-code-error, label.error_arrow{
                 margin-left:10px !important;
                 font-size:12px;
                 font-weight:normal;
-                max-width:200px;
+                max-width:300px;
             }
         }
 .message-box{
@@ -375,4 +375,15 @@ select{
 .right_aligned_button{
     float:right;
     display:inline-block;
+}
+
+.question_option {
+    padding-bottom: 10px;
+    input {
+        margin: 0 !important;
+        vertical-align: middle;
+        &.error{
+            margin: 0 !important;
+        }
+    }
 }

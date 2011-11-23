@@ -55,3 +55,11 @@
 
 .question_list ol li { margin-top: -3px !important; }
 .question_list ol li a { margin-left: 5px; }
+
+div.error_arrow
+{
+    background: url(/media/images/arrow_error.png) no-repeat left 5px !important;
+}
+span.error_arrow,#questionnaire-code-error, label.error_arrow{
+    background: url(/media/images/arrow_error.png) no-repeat left 5px !important;
+}
