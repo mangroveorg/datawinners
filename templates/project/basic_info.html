@@ -11,6 +11,7 @@
         </div>
     {% endif %}
     <div class="line"></div>
+<ul>
     <li class="form-row-10px">
         {{ form.name.label_tag }}
         {{ form.name }}
@@ -47,7 +48,7 @@
         {{ form.devices.label_tag }}
         {{ form.devices }}
     </li>
-
+</ul>
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
         <input type="button" class="button" id="continue_project" value="{% trans "Continue" %}"/>

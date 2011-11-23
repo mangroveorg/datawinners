@@ -27,32 +27,37 @@
     float:left;
     clear:both;
     margin-bottom: 30px;
-    li{
-        list-style-type:None;
-        margin:20px 0 20px 0;
-        ul{
-            li{
-                margin: 10px 0 10px 0;
-                label{
-                    font-weight:normal;
-                    width:100%;
+    ul {
+        li{
+            list-style-type:None;
+            margin:20px 0 20px 0;
+            label{
+                float:none;
+                width:auto !important;
+            }
+            p {
+                clear:left;
+            }
+            ul{
+                float:none;
+                li{
+                    margin: 10px 0 10px 0;
+                    label{
+                        font-weight:normal;
+                        width:100%;
+                    }
                 }
             }
+            div.error_arrow label{
+                font-size: 14px !important;
+            }
+            select{
+                font-size: 15px;
+                width: 200px;
+                margin-left:25px;
+            }
         }
-        div.error_arrow label{
-            font-size: 14px !important;
-        }
-        select{
-            font-size: 15px;
-            width: 200px;
-            margin-left:25px;
-        }
-        input#id_questionnaire {
-            width: 50px;
-        }
-
     }
-
 }
 
 .help_icon{

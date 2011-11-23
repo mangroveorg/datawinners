@@ -22,22 +22,27 @@
   float: left;
   clear: both;
   margin-bottom: 30px; }
-  .clear_both li {
+  .clear_both ul li {
     list-style-type: None;
     margin: 20px 0 20px 0; }
-    .clear_both li ul li {
-      margin: 10px 0 10px 0; }
-      .clear_both li ul li label {
-        font-weight: normal;
-        width: 100%; }
-    .clear_both li div.error_arrow label {
+    .clear_both ul li label {
+      float: none;
+      width: auto !important; }
+    .clear_both ul li p {
+      clear: left; }
+    .clear_both ul li ul {
+      float: none; }
+      .clear_both ul li ul li {
+        margin: 10px 0 10px 0; }
+        .clear_both ul li ul li label {
+          font-weight: normal;
+          width: 100%; }
+    .clear_both ul li div.error_arrow label {
       font-size: 14px !important; }
-    .clear_both li select {
+    .clear_both ul li select {
       font-size: 15px;
       width: 200px;
       margin-left: 25px; }
-    .clear_both li input#id_questionnaire {
-      width: 50px; }
 
 .help_icon {
   display: inline; }
