@@ -322,3 +322,6 @@ select {
     vertical-align: middle; }
     .question_option input.error {
       margin: 0 !important; }
+
+.que_width ul.errorlist {
+  margin-top: 5px; }

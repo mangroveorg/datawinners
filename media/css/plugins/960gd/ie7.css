@@ -53,6 +53,15 @@
     width: 900px;
 }
 
+.que_width li .errorlist li{
+    width: auto;
+    max-width: 300px;
+}
+
+.que_width li .answer li {
+    width: auto;
+}
+
 .question_list ol li { margin-top: -3px !important; }
 .question_list ol li a { margin-left: 5px; }
 
