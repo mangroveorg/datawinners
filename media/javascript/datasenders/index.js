@@ -156,11 +156,11 @@ $(document).ready(function() {
         var post_data = [];
         var should_post = true;
         $('input:enabled.ds-email').each(function() {
-            var email = $(this).val();
+            var email = $.trim($(this).val());
             var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-            if (email.trim() == "") {
-                $('#web_user_error').show();
+            if (email == "") {
                 $('#web_user_error').html(gettext('Emails are mandatory'));
+                $('#web_user_error').show();
                 should_post = false;
                 return false;
             }
