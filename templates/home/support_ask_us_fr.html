@@ -1,0 +1,83 @@
+{% extends 'public_secondary.html' %}
+{% load i18n %}
+{% block page_title %} Assistance {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_ask_us.scss" rel="stylesheet" />
+{% endblock %}
+{% load i18n %}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery.validate.js"></script>
+    <script type="text/javascript" src="/media/javascript/messages_{% trans "en" %}.js"></script>
+    <script type="text/javascript" src="/media/javascript/home/contact_us.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Nous demander
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>Support</h1>
+        <ul>
+            <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
+            <li><a href="/fr/support/get-started/">Commencer</a></li>
+            <li><a href="/fr/support/find-answers/">Trouver des reponses (FAQs)</a></li>
+            <li class="active"><a href="/fr/support/ask-us/">Nous demander</a></li>
+        </ul>
+    </div>
+    <div id="main_content">
+
+        <div class="margin_left_20">
+            <p>
+                Envoyez une question ou un commentaire &agrave; nos &eacute;quipte service client.<br/>
+                Si vous avez un probl&eacute;me en utilisant cette page pour nous envoyer nous un message,<br/>
+                s'il vous plait, envoyez nous un e-mail &agrave; l'adresse <a href="mailto:support@datawinners.com">support@datawinners.com</a>
+            </p>
+            <form method="post" action="{% url datawinners.home.views.ask_us %}" id="contact_us" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="redirect_url" value="{{ flatpage.url }}"/>
+                <input type="hidden" name="to" value="support"/>
+                <label>Categorie:</label>
+                <select name="category">
+                    <option value="{% trans "Create questionnaire"%}">{% trans "Create questionnaire"%}</option>
+                    <option value="{% trans "Register a Subject/Data Sender" %}">{% trans "Register a Subject/Data Sender" %}</option>
+                    <option value="{% trans "Send data using SMS" %}">{% trans "Send data using SMS" %}</option>
+                    <option value="{% trans "Send data using  Internet" %}">{% trans "Send data using  Internet" %}</option>
+                    <option value="{% trans "Analyze data" %}">{% trans "Analyze data" %}</option>
+                    <option value="{% trans "My account" %}">{% trans "My account" %}</option>
+                    <option value="{% trans "General feedback" %}">{% trans "General feedback" %}</option>
+                    <option value="{% trans "Other" %}">{% trans "Other" %}</option>
+                </select>
+                <br/>
+                <br/>
+                <label>Votre email:</label>
+                <input type="text" name="email" id="email"/>
+                <br/>
+                <br/>
+                <label>Sujet:</label>
+                <input type="text" name="subject" id="subject"/>
+                <br/>
+                <br/>
+                <label>Message:</label>
+                <textarea rows="10" cols="20" name="message" id="message"></textarea>
+
+                <p>Attachez une capture d'ecran qui illustre le probl&egrave;me.</p>
+                <div class=""><input type="file" name="attachement"/></div>
+                <br/>
+                <input type="submit" value="Envoyer" id="submit"/>
+            </form>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

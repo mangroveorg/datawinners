@@ -2667,3 +2667,37 @@ msgstr ""
 
 msgid "Which subject are you reporting on?"
 msgstr ""
+
+
+msgid "Create questionnaire"
+msgstr ""
+
+msgid "Register a Subject/Data Sender"
+msgstr ""
+
+msgid "Send data using SMS"
+msgstr ""
+
+msgid "Send data using  Internet"
+msgstr ""
+
+msgid "Analyze data"
+msgstr ""
+
+msgid "My account"
+msgstr ""
+
+msgid "General feedback"
+msgstr ""
+
+msgid "Subscription Inquiry"
+msgstr ""
+
+msgid "Consulting"
+msgstr ""
+
+msgid "Technical Support"
+msgstr ""
+
+msgid "Billing"
+msgstr ""

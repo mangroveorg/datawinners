@@ -1,0 +1,84 @@
+{% extends 'public_secondary.html' %}
+{% load i18n %}
+{% block page_title %} Support {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_ask_us.scss" rel="stylesheet" />
+{% endblock %}
+
+{% load i18n %}
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery.validate.js"></script>
+    <script type="text/javascript" src="/media/javascript/messages_{% trans "en" %}.js"></script>
+    <script type="text/javascript" src="/media/javascript/home/contact_us.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/en/home/">Home</a> &gt; <a href="/en/support/">Support</a> &gt; Ask Us
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1>Support</h1>
+        <ul>
+            <li><a href="/en/support/case-studies/">Case studies</a></li>
+            <li><a href="/en/support/get-started/">Get Started</a></li>
+            <li><a href="/en/support/find-answers/">Find Answers (FAQs)</a></li>
+            <li class="active"><a href="/en/support/ask-us/">Ask Us</a></li>
+        </ul>
+    </div>
+    <div id="main_content">
+
+        <div class="margin_left_20">
+            <p>
+                Submit a question or comment to our customer service team.<br/>
+                If you have any problems using this page to send us a message,
+                please email us at <a href="mailto:support@datawinners.com">support@datawinners.com</a>
+            </p>
+            <form method="post" action="{% url datawinners.home.views.ask_us %}" id="contact_us" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="redirect_url" value="{{ flatpage.url }}"/>
+                <input type="hidden" name="to" value="support"/>
+                <label>Category:</label>
+                <select name="category">
+                    <option value="{% trans "Create questionnaire"%}">{% trans "Create questionnaire"%}</option>
+                    <option value="{% trans "Register a Subject/Data Sender" %}">{% trans "Register a Subject/Data Sender" %}</option>
+                    <option value="{% trans "Send data using SMS" %}">{% trans "Send data using SMS" %}</option>
+                    <option value="{% trans "Send data using  Internet" %}">{% trans "Send data using  Internet" %}</option>
+                    <option value="{% trans "Analyze data" %}">{% trans "Analyze data" %}</option>
+                    <option value="{% trans "My account" %}">{% trans "My account" %}</option>
+                    <option value="{% trans "General feedback" %}">{% trans "General feedback" %}</option>
+                    <option value="{% trans "Other" %}">{% trans "Other" %}</option>
+                </select>
+                <br/>
+                <br/>
+                <label>Your email:</label>
+                <input type="text" name="email" id="email"/>
+                <br/>
+                <br/>
+                <label>Subject:</label>
+                <input type="text" name="subject" id="subject"/>
+                <br/>
+                <br/>
+                <label>Message:</label>
+                <textarea rows="10" cols="20" name="message" id="message"></textarea>
+
+                <p>Attach a screen shot or document that illustrates your issue.</p>
+                <div class=""><input type="file" name="attachement"/></div>
+                <br/>
+                <input type="submit" value="Submit" id="submit"/>
+            </form>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

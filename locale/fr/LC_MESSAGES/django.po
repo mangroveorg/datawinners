@@ -2811,3 +2811,39 @@ msgstr "Remarque, vos projets dans votre compte d'essai seront toujours accessib
 
 msgid "upgrade edit note"
 msgstr "Editez cette information en cliquant sur les liens 'Votre profil' et 'Votre compte' en haut de cette page."
+
+
+
+
+msgid "Create questionnaire"
+msgstr "Créer un questionnaire"
+
+msgid "Register a Subject/Data Sender"
+msgstr "Enregistrer un Sujet/Envoyeurs de données"
+
+msgid "Send data using SMS"
+msgstr "Envoyer des données par SMS"
+
+msgid "Send data using  Internet"
+msgstr "Envoyer des données par internet"
+
+msgid "Analyze data"
+msgstr "Alanlyse de données"
+
+msgid "My account"
+msgstr "Mon compte"
+
+msgid "General feedback"
+msgstr "Retour en général"
+
+msgid "Subscription Inquiry"
+msgstr "Enquête de souscription"
+
+msgid "Consulting"
+msgstr "Conseil"
+
+msgid "Technical Support"
+msgstr "Support téchnique"
+
+msgid "Billing"
+msgstr "Facturation"

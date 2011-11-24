@@ -1,4 +1,5 @@
-{% extends 'public_secondary_fr.html' %}
+{% extends 'public_secondary.html' %}
+{% load i18n %}
 {% block page_title %} Nous contacter {% endblock %}
 
 {% load dw_tabs %}
@@ -8,7 +9,20 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/fr">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous ?</a> &gt; Nous contacter
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous ?</a> &gt; Nous contacter
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_contact_us.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/jquery.validate.js"></script>
+    <script type="text/javascript" src="/media/javascript/messages_{% trans "en" %}.js"></script>
+    <script type="text/javascript" src="/media/javascript/home/contact_us.js"></script>
 {% endblock %}
 
 {% block main_content %}
@@ -23,7 +37,71 @@
     </div>
     <div id="main_content">
         <div class="margin_left_20">
+            <div class="left_content">
+                <p>
+                    Envoyez une question ou un commentaire &agrave; nos &eacute;quipte service client.<br/>
+                    Si vous avez un probl&eacute;me en utilisant cette page pour nous envoyer nous un message,<br/>
+                    s'il vous plait, envoyez nous un e-mail &agrave; l'adresse <a href="mailto:info@datawinners.com">info@datawinners.com</a>
+                </p>
+                <form method="post" action="{% url datawinners.home.views.ask_us %}" id="contact_us" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="redirect_url" value="{{ flatpage.url }}"/>
+                    <input type="hidden" name="to" value="info"/>
+                    <label>Categorie:</label>
+                    <select name="category">
+                        <option value="{% trans "Subscription Inquiry"%}">{% trans "Subscription Inquiry"%}</option>
+                        <option value="{% trans "Consulting" %}">{% trans "Consulting" %}</option>
+                        <option value="{% trans "Technical Support" %}">{% trans "Technical Support" %}</option>
+                        <option value="{% trans "Billing" %}">{% trans "Billing" %}</option>
+                        <option value="{% trans "My account" %}">{% trans "My account" %}</option>
+                        <option value="{% trans "General feedback" %}">{% trans "General feedback" %}</option>
+                        <option value="{% trans "Other" %}">{% trans "Other" %}</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>Votre email:</label>
+                    <input type="text" name="email" id="email"/>
+                    <br/>
+                    <br/>
+                    <label>Sujet:</label>
+                    <input type="text" name="subject" id="subject"/>
+                    <br/>
+                    <br/>
+                    <label>Message:</label>
+                    <textarea rows="10" cols="20" name="message" id="message"></textarea>
 
+                    <p>Attachez une capture d'ecran qui illustre le probl&egrave;me.</p>
+                    <div class=""><input type="file" name="attachement"/></div>
+                    <br/>
+                    <input type="submit" value="Envoyer" id="submit"/>
+                </form>
+                <div class="clear"></div>
+            </div>
+            <div class="right_content">
+                <div class="block_1">
+                    <h1>Laissez-nous vous aider</h1>
+
+                    <p>
+                        Avez-vous besoin d'aide pour démarrer ou comptez-vous mettre en place un ambitieux projet de
+                        collecte de données qui nécessite une personnalisation de DataWinners ?
+                        <br/><br/>Nous offrons aussi des prestations de consultance.
+                    </p>
+                </div>
+                <div class="block_2">
+                    <h1>Essai gratuit</h1>
+
+                    <p>Essayez toutes les fonctionnalit&eacute;s de Datawinners gratuitement</p>
+
+                    <div id="how_nav">
+                        <div id="how_links" style="margin: 0;">
+                            <a href="/register/trial"
+                               id="how_try_button">Essai gratuit</a>
+                            ou <a href="/en/pricing">en savoir plus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
         </div>
     </div>
     <div class="clear"></div>
