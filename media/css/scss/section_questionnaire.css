@@ -34,7 +34,8 @@
 .wizard_content .content_wrapper .questionnaire_code li {
   padding: 5px 0 5px 30px !important; }
   .wizard_content .content_wrapper .questionnaire_code li #questionnaire-code-error {
-    background: url(/media/images/arrow_error.png) no-repeat left 3px !important; }
+    background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
+    float: none !important; }
   .wizard_content .content_wrapper .questionnaire_code li label {
     display: inline;
     width: 140px; }
@@ -154,3 +155,6 @@
 
 #que_code li {
   list-style-type: decimal; }
+
+#questionnaire-code {
+  float: none; }

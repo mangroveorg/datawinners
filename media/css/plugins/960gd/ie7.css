@@ -76,3 +76,8 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 .ui-widget-content .ui-widget-header {
     background: #3d3d3d;
 }
+
+#questionnaire-code{
+    vertical-align: middle;
+}
+

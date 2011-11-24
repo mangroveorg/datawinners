@@ -112,8 +112,8 @@
                         <input id='project-state' type='hidden' value="{{ project.state }}"/>
                         <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>
                         <input id='questionnaire-code' value="{{ questionnaire_code }}"/>
-
-                        <img src="/media/images/help_icon.png" class="help_icon" style="float:left; margin-bottom: 10px;">
+                        <span id="questionnaire-code-error"></span>
+                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
                         <div class="tooltip"><p>
                             <strong>{% trans "What is this?" %}</strong><br/>
                             {% trans "q_tooltip_question_code" %}
@@ -121,7 +121,7 @@
                             <strong>{% trans "What do I need to do?" %}</strong><br/>
                             {% trans "r_tooltip_question_code" %}
                         </p></div>
-                        <span id="questionnaire-code-error"></span>
+
                     </li>
                 </ul>
 
