@@ -72,3 +72,7 @@ div.error_arrow
 span.error_arrow,#questionnaire-code-error, label.error_arrow{
     background: url(/media/images/arrow_error.png) no-repeat left 5px !important;
 }
+
+.ui-widget-content .ui-widget-header {
+    background: #3d3d3d;
+}
