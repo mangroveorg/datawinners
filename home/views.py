@@ -31,16 +31,19 @@ def switch_language(request, language):
 def ask_us(request):
     if request.method == "GET":
         return redirect(index)
+
     subject = request.POST.get("subject", _("Support"))
     from_email = request.POST["email"]
+
     body = _("From")+": "+from_email+"\n"+\
            _("Category")+": "+request.POST["category"]+"\n\n"+\
-           request.POST["message"]\
-           +request.POST["to"]
-    to = "herihaja@hni.org"
-    #to = request.POST["to"]+"@datawinners.com"
+           request.POST["message"]
+    
+    to = request.POST["to"]+"@datawinners.com"
     email = EmailMessage(subject, body, from_email=from_email, to=[to])
+
     if request.FILES.has_key("attachement"):
         email.attach(request.FILES["attachement"].name, request.FILES["attachement"].read())
+
     email.send()
     return redirect(request.POST["redirect_url"])
