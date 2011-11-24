@@ -5,6 +5,9 @@
     width: 40px;
     float: none; }
 
+#range_min {
+  margin-left: 4px !important; }
+
 #range_max, #range_min {
   width: 60px;
   float: none;

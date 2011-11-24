@@ -81,3 +81,11 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
     vertical-align: middle;
 }
 
+#data_analysis_length select{
+        vertical-align:middle;
+}
+
+#data_analysis_filter input{
+        vertical-align:middle;
+}
+
