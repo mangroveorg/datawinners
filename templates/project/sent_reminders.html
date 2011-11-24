@@ -26,7 +26,6 @@
         {{ block.super }}
     {% endblock %}
     {% include "project/reminder_note.html" %}
-    {% if project.is_reminder_enabled %}
         <div class="margin_bottom_20">
             <strong>Deadline: </strong>{{ project.deadline.description }}
         </div>
@@ -48,9 +47,4 @@
             {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <div>
-            <strong>{% trans "Reminders are not enabled for this project." %}</strong>
-        </div>
-    {% endif %}
 {% endblock %}
