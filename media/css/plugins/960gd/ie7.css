@@ -89,3 +89,7 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
         vertical-align:middle;
 }
 
+#project_profile fieldset legend {
+    margin-left: -8px;
+}
+
