@@ -2188,19 +2188,7 @@ msgstr ""
 
 #: templates/header_wizard.html:29, public_header_wizard.html, register.html, register_for_trial.html
 
-msgid "Renews automatically each month. Cancel at any time without penalty."
-msgstr ""
-
-msgid "Save 10% by paying 6 months in advance"
-msgstr ""
-
 msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
-msgstr ""
-
-msgid "Call us directly and we can securely process your credit card payment over the phone"
-msgstr ""
-
-msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
 msgstr ""
 
 msgid "Sign Up"

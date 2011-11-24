@@ -117,17 +117,15 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
 
 def payment_details_form():
-    pay_monthly = ('pay_monthly', _(mark_safe(
-        "<div class='radio_title'>Monthly: $ 850 per month</div><div class='subtitle_for_radio_button'>Renews automatically each month. Cancel at any time without penalty.<div>")))
-    pay_half_yearly = ('half_yearly', _(mark_safe(
-        "<div class='radio_title'>6 months:$ 765 per month</div><div class='subtitle_for_radio_button'>Save 10% by paying 6 months in advance</div> ")))
+    pay_monthly = ('pay_monthly', _(mark_safe("<div class='radio_title'>Monthly: $ 850 per month</div><div class='subtitle_for_radio_button pay_monthly'><div>")))
+    pay_half_yearly = ('half_yearly', _(mark_safe("<div class='radio_title'>6 months:$ 765 per month</div><div class='subtitle_for_radio_button pay_half_yearly'><div> ")))
     INVOICE_PERIOD_CHOICES = (pay_monthly, pay_half_yearly)
 
     wire_transfer = ('wire_transfer', _(mark_safe("<div class='radio_title'>Wire transfer</div><div class='subtitle_for_radio_button'></div>")))
     credit_card = ('credit_card', _(mark_safe(
-        "<div class='radio_title'>Credit card</div><div class='subtitle_for_radio_button'>Call us directly and we can securely process your credit card payment over the phone</div>")))
+        "<div class='radio_title'>Credit card</div><div class='subtitle_for_radio_button credit_card'></div>")))
     pay_via_ach = ('pay_via_ach', _(mark_safe(
-        "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button'>Securely transfer funds between your US-based bank account and ours (normally free of charge).</div>")))
+        "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>")))
     PREFERRED_PAYMENT_CHOICES = (wire_transfer, credit_card, pay_via_ach)
 
     invoice_period = forms.ChoiceField(required=True, label=_('Invoice Period'), widget=forms.RadioSelect,

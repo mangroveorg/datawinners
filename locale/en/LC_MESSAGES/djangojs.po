@@ -4,6 +4,9 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
+
+
+
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -516,4 +519,16 @@ msgstr ""
 
 
 msgid "Agree terms and conditions"
+msgstr ""
+
+msgid "Renews automatically each month. Cancel at any time without penalty."
+msgstr ""
+
+msgid "Save 10% by paying 6 months in advance"
+msgstr ""
+
+msgid "Call us directly and we can securely process your credit card payment over the phone"
+msgstr ""
+
+msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
 msgstr ""

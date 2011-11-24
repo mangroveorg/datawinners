@@ -4,6 +4,8 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
+
+
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -525,3 +527,15 @@ msgstr " existe déjà"
 
 msgid "Agree terms and conditions"
 msgstr "Acceptez les termes et conditions"
+
+msgid "Renews automatically each month. Cancel at any time without penalty."
+msgstr "Renouvellement mensuel automatique. Annulation sans pénalité, faisable à tout moment."
+
+msgid "Save 10% by paying 6 months in advance"
+msgstr "Économisez 10% en payant 6 mois à l’avance"
+
+msgid "Call us directly and we can securely process your credit card payment over the phone"
+msgstr "Appelez-nous directement et nous pouvons, par téléphone, traiter en toute sécurité votre paiement par carte de crédit"
+
+msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
+msgstr "Transférez en toute sécurité des fonds entre votre compte bancaire aux États-Unis et la nôtre (normalement, gratuit)."

@@ -2209,20 +2209,8 @@ msgstr "Identifiez vous ici"
 msgid "Sign Up To Start Using DataWinners Now"
 msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
 
-msgid "Renews automatically each month. Cancel at any time without penalty."
-msgstr "Renouvellement mensuel automatique. Annulation sans pénalité, faisable à tout moment."
-
-msgid "Save 10% by paying 6 months in advance"
-msgstr "Économisez 10% en payant 6 mois à l’avance"
-
 msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
 msgstr "Nous prendrons contact avec vous par e-mail pour organiser le paiement.<br /> Quelle option de paiement préférez-vous?"
-
-msgid "Call us directly and we can securely process your credit card payment over the phone"
-msgstr "Appelez-nous directement et nous pouvons, par téléphone, traiter en toute sécurité votre paiement par carte de crédit"
-
-msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
-msgstr "Transférez en toute sécurité des fonds entre votre compte bancaire aux États-Unis et la nôtre (normalement, gratuit)."
 
 #: templates/header_wizard.html:28 templates/registration/activate.html:11
 #: templates/registration/activation_complete.html:9
