@@ -1,6 +1,7 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
 {% load dw_tabs %}
+{% load user_tags %}
 
 {% block page_js %}
     {{ block.super }}
@@ -29,8 +30,10 @@
                 <a href="#" class='sms_tester'>{% trans "Test SMS Questionnaire" %}</a>
                 {% include 'project/sms_tester_form.html' %}
             {% endif %}
+        {% if not user|is_datasender %}
             <a href="{{ project_links.delete_project_link }}"
                class="delete_project">{% trans "Delete this Project" %}</a>
+        {% endif %}
         </div>
     </div>
 
