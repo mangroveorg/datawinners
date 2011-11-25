@@ -62,7 +62,7 @@ msgstr "Numéro du bureau"
 #: accountmanagement/forms.py:53 accountmanagement/forms.py:84
 #: accountmanagement/forms.py:86 accountmanagement/forms.py:117
 msgid "Please enter a valid phone number"
-msgstr "Veuillez saisir un numéro de téléphone valide"
+msgstr "Mampidira nomeraon'na telefaonina mandeha"
 
 #: accountmanagement/forms.py:29 accountmanagement/forms.py:118
 msgid "Website Url"
@@ -218,22 +218,22 @@ msgstr "Veuillez ajouter le type puis le sujet"
 # message_provider/message_handler.py:43
 #: messageprovider/message_handler.py:49
 msgid "Unique identification number(ID) is:"
-msgstr "Le numéro d'identification unique (ID) est :"
+msgstr "Ny kaody famantarana dia (ID):"
 
 # message_provider/message_handler.py:48
 #: messageprovider/message_handler.py:52 messageprovider/messages.py:86
 msgid "We received : "
-msgstr "Nous avons reçu : "
+msgstr "Voarainay ny : "
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:86
 msgid "Thank you"
-msgstr "Merci"
+msgstr "Misaotra betsaka"
 
 # messageprovider/messages.py
 #: messageprovider/messages.py:89
 msgid "Registration successful."
-msgstr "Inscription réussie."
+msgstr "Voaray ny fisoratana anarana"
 
 #: project/forms.py:38
 msgid "Survey project: I want to collect data from the field"
@@ -2285,63 +2285,61 @@ msgid ""
 "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
 "questionnaire and resend SMS"
 msgstr ""
-"Erreur sur l'ID du questionnaire %s. Trouvez l'ID Questionnaire sur le "
-"questionnaire imprimé et renvoyer le SMS"
+"Diso ny kaody ID ny fanontaniana %s. Tadiavo ny kaodin'ny fanontaniana ID ny "
+"fanontaniana ao amin'ny taratasim-panontaniana ary avereno alefa ny SMS"
 
 msgid ""
 "This telephone number is not registered in our system. Please register or "
 "contact us at 033 20 426 89."
 msgstr ""
-"Ce numéro de téléphone n'est pas enregistré dans notre système.Veuillez "
-"vous inscrire ou contactez-nous au 033 426 20 89."
+"Tsy voarakitra aty aminay io nomerao io. Miverena misoratra anarana na "
+"antsoy ny 033 426 20 89."
 
 msgid ""
 "This entity %s reported on is not registered in our system. Please "
 "register entity or contact us at 033 20 426 89."
 msgstr ""
-"L'entité %s pour laquelle vous voulez envoyer un rapport n'existe pas."
-"Veuillez enregistrer la nouvelle entité ou contactez-nous au 033 20 426 "
-"89."
+"Ny lohahevitra %s tianao andefasana tatitra dia tsy misy. Avereno foronina "
+"na alefany lohahevitra na antsoy ny 033 20 426 89."
 
 msgid ""
 "Error: Invalid Submission. Locate the Questionnaire Code on the printed "
 "questionnaire and resend SMS starting with the Questionnaire Code"
 msgstr ""
-"Erreur: Erreur d'envoi. Repérez le code Questionnaire sur le "
-"questionnaire imprimé et renvoyer par SMS en commençant par le Code "
-"Questionnaire"
+"Diso: Misy diso ny zavatra nalefanao. Jereo ny taratasim-panontaniana ary "
+"avereno alefa ny SMS ka atomboy amin'ny kaodin'ny fanontaniana"
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Multiple "
 "responses have been submitted for question code : %s"
 msgstr ""
-"Erreur: Erreur d'envoi. Reportez-vous au questionnaire imprimé. Des "
-"réponses multiples ont été envoyées avec le même code question: %s"
+"Diso: Misy diso ny zavatra nalefanao. Jereo ny taratasim-panontaniana. "
+"Misy valiny maro nalefa tamin'ny kaody mitovy."
 
 msgid ""
 "Error. Invalid Submission. Refer to printed Questionnaire. Resend the "
 "question ID and answer for %s"
 msgstr ""
-"Erreur d'envoi. Reportez-vous au questionnaire imprimé. Renvoyer l'ID de "
-"la question et la réponse pour %s"
+"Diso: Misy diso ny zavatra nalefanao. Jereo ny taratasim-panontaniana. "
+"Avereno averina ny kaody ID ny fanontaniana sy ny valiny hoan'i %s"
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
-msgstr "L'ntité avec le numéro d'identification unique (ID) =% s existe déjà."
+msgstr "Ny lohahevitra manana ny kaody (ID) =%s dia efa misy."
 
 msgid "answer"
-msgstr "réponse"
+msgstr "valiny"
 
 msgid "Answer for question %s is required"
-msgstr "Réponse pour %s la question est obligatoire"
+msgstr "Ny valim-panontaniana %s dia tsy maintsy omena"
 
 msgid "The answer %s must be between %s and %s"
-msgstr "La réponse %s doit être comprise entre %s et %s"
+msgstr "Ny valim-panontaniana %s dia tsy maintsy anelanelan'ny %s sy ny %s"
 
 msgid "Patern should be ^[0-9]+$"
-msgstr "Le modèle devrait être ^[0-9]+$"
+msgstr "Ny valim-panontaniana dia tokony hanaraka ny môdely ^[0-9]+$"
 
 msgid "Mobile number is missing"
-msgstr "Numéro de mobile est manquant"
+msgstr "Tsy ampy nomeraon'ny finday"
 
 msgid "Please fill out atleast one location field"
 msgstr "Veuillez remplir au moins un champ de localisation"
@@ -2604,7 +2602,7 @@ msgstr "Diso ny  kaodin’ny lisitry ny fanontaniana %s. Jereo eo amin’ny lisi
 
 #, python-format
 msgid "This %s is not yet registered in the system. Please check the %s’s unique ID number and resubmit."
-msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny isa famantarana ID ho an'i %s ary avereno alefa ny SMS-nao"
+msgstr "Tsy mbola tafiditra anatin'ny solosaina ny %s. Amarino ny kaody ID ho an'i %s ary avereno alefa ny SMS-nao"
 
 #, python-format
 msgid "This %s %s is not registered in our system.Please register this %s or contact your supervisor."
@@ -2666,38 +2664,4 @@ msgid "You have used up your 100 SMS for the trial account. Please upgrade to a 
 msgstr ""
 
 msgid "Which subject are you reporting on?"
-msgstr ""
-
-
-msgid "Create questionnaire"
-msgstr ""
-
-msgid "Register a Subject/Data Sender"
-msgstr ""
-
-msgid "Send data using SMS"
-msgstr ""
-
-msgid "Send data using  Internet"
-msgstr ""
-
-msgid "Analyze data"
-msgstr ""
-
-msgid "My account"
-msgstr ""
-
-msgid "General feedback"
-msgstr ""
-
-msgid "Subscription Inquiry"
-msgstr ""
-
-msgid "Consulting"
-msgstr ""
-
-msgid "Technical Support"
-msgstr ""
-
-msgid "Billing"
 msgstr ""
