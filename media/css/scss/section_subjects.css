@@ -33,7 +33,8 @@
         font-size: 11px;
         font-weight: normal;
         margin-left: 120px;
-        width: auto; }
+        width: auto;
+        float: right !important; }
     .add_subject_form ul li .location_section li {
       float: none; }
     .add_subject_form ul li .location_section label {

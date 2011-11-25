@@ -317,11 +317,11 @@ class TestHelper(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
 
         form_code_mock.side_effect = FormModelDoesNotExistsException('')
-        models_mock.get_all_projects.return_value = []
+        models_mock.count_projects.return_value = 0
         self.assertEqual(helper.generate_questionnaire_code(dbm), "001")
 
         myproject = Mock(spec=Project)
-        models_mock.get_all_projects.return_value = [myproject]
+        models_mock.count_projects.return_value = 1
         self.assertEqual(helper.generate_questionnaire_code(dbm), "002")
 
         patcher.stop()
@@ -337,7 +337,7 @@ class TestHelper(unittest.TestCase):
         dbm = Mock(spec=DatabaseManager)
 
         myproject = Mock(spec=Project)
-        models_mock.get_all_projects.return_value = [myproject]
+        models_mock.count_projects.return_value = 1
 
         def expected_side_effect(*args, **kwargs):
             code = kwargs.get('code') or args[1]
