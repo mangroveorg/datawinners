@@ -51,7 +51,7 @@
 
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
                         <a href="#" class="delete_link"
-                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
                     </div>
                     <span class="selected_question_arrow"
                           data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
