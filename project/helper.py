@@ -171,8 +171,8 @@ def adapt_submissions_for_template(questions, submissions):
 
 
 def generate_questionnaire_code(dbm):
-    all_projects = models.get_all_projects(dbm)
-    code = len(all_projects) + 1
+    all_projects_count = models.count_projects(dbm)
+    code = all_projects_count + 1
     code = "%03d" % (code,)
     while True:
         try:

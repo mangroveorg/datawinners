@@ -293,3 +293,10 @@ def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
         return dbm.load_all_rows_in_view('projects_by_datasenders', startkey=data_sender_id, endkey=data_sender_id)
     return dbm.load_all_rows_in_view('all_projects')
+
+
+def count_projects(dbm, include_voided_projects=True):
+    if include_voided_projects:
+        return dbm.load_all_rows_in_view('count_projects', reduce = True, group_level=0)[0]['value']
+
+    return dbm.load_all_rows_in_view('count_projects', reduce = True, group_level=1, key=False)[0]['value']
