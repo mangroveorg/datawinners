@@ -40,7 +40,10 @@
                         {{ form.text }}
                         {{ form.text.errors }}
                     </li>
-                    <div id="message_count"><span id="messageCount"></span> {% trans "characters used" %}</div>
+
+                    <li>
+                        <div id="message_count"><span id="messageCount"></span> {% trans "characters used" %}</div>
+                    </li>
 
                     <li class="{{ form.to.css_classes }} form-row-10px">
                         {{ form.to.label_tag }}
@@ -53,10 +56,15 @@
                         {{ form.others }}
                         {{ form.others.errors }}
                     </li>
-                    <div id="message-submit" class="float_right">
-                        <a id="clear_broadcast_sms_form" class="cancel_link"> {% trans "Clear" %} </a>
-                        <input id="id_send_broadcast_sms_button" type="submit" value="{% trans "Send" %}" class="button">
-                    </div>
+
+                    <li class="float_right" id="message-submit">
+                        <div class="float_left margin_left_20 margin_top_10">
+                            <a id="clear_broadcast_sms_form" class="cancel_link"> {% trans "Clear" %} </a>
+                        </div>
+                        <div>
+                            <input id="id_send_broadcast_sms_button" type="submit" value="{% trans "Send" %}" class="button" />
+                        </div>
+                    </li>
                 </ul>
             </form>
         </div>
