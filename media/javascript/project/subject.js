@@ -18,10 +18,14 @@ $(document).ready(function(){
         width: 600,
         modal: true,
         title: gettext('Add A Subject'),
+        open:function(){
+            $("#add_subject_type_content").addClass("none");
+        },
         close: function() {
             $('#message').remove();
+            $("#add_subject_type").accordion('activate',0);
             $('#question_form').each (function(){
-              this.reset();
+                this.reset();
             });
             DW.validator.resetForm();
         }
