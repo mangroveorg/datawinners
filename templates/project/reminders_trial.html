@@ -18,7 +18,7 @@
     {{ block.super }}
     <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_broadcast_sms.scss" rel="stylesheet"/>
-    <link href="/media/css/scss/section_reminder.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_reminder.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -33,12 +33,10 @@
     {% endblock %}
     <div class="warning-message-box">
         <p>You can set Reminders here, however they will not be sent to your Data Senders. Sign up for a monthly
-        subscription to enable the full Reminder functionality.</p>
-        <div class="link_info">
-            <a href="/en/pricing/" class="trial_web_learn_more">Learn More</a>
-            {% if user.groups.all.0.name == 'NGO Admins' %}
+            subscription to enable the full Reminder functionality.</p>
+        {% if user.groups.all.0.name == 'NGO Admins' %}
             <a href="{% url datawinners.accountmanagement.views.upgrade %}" class="button">Subscribe Now</a>
-            {% endif %}
-        </div>
+        {% endif %}
+        <a href="/en/pricing/" class="trial_web_learn_more">Learn More</a>
     </div>
 {% endblock %}

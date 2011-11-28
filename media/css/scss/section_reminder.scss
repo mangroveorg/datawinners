@@ -20,6 +20,19 @@ label.error{
     top:-12px;
 }
 
+.warning-message-box{
+    overflow: hidden;
+    zoom: 1;
+    a{
+        float : right;
+        margin: 10px;
+    }
+    .trial_web_learn_more{
+        padding-top: 10px;
+    }
+}
+
+
 #reminder_form{
     width:930px;
 }

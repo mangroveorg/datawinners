@@ -26,11 +26,9 @@
     <div class="warning-message-box">
         <p>You can set Reminders here, however they will not be sent to your Data Senders. Sign up for a monthly
         subscription to enable the full Reminder functionality.</p>
-        <div class="link_info">
-            <a href="/en/pricing/" class="trial_web_learn_more">Learn More</a>
-            {% if user.groups.all.0.name == 'NGO Admins' %}
+        {% if user.groups.all.0.name == 'NGO Admins' %}
             <a href="{% url datawinners.accountmanagement.views.upgrade %}" class="button">Subscribe Now</a>
-            {% endif %}
-        </div>
+        {% endif %}
+        <a href="/en/pricing/" class="trial_web_learn_more">Learn More</a>
     </div>
 {% endblock %}

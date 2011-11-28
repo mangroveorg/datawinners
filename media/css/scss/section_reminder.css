@@ -16,6 +16,15 @@ label.error {
   left: 680px;
   top: -12px; }
 
+.warning-message-box {
+  overflow: hidden;
+  zoom: 1; }
+  .warning-message-box a {
+    float: right;
+    margin: 10px; }
+  .warning-message-box .trial_web_learn_more {
+    padding-top: 10px; }
+
 #reminder_form {
   width: 930px; }
 
