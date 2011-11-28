@@ -122,8 +122,14 @@ def import_data(request, manager):
     failure_imports = None
     imported_entities = {}
     try:
-        file_name = request.GET.get('qqfile')
-        responses = _handle_uploaded_file(file_name=file_name, file=request.raw_post_data, manager=manager)
+        #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
+        if 'qqfile' in request.GET:
+            file_name = request.GET.get('qqfile')
+            responses = _handle_uploaded_file(file_name=file_name, file=request.raw_post_data, manager=manager)
+        else:
+            file = request.FILES.get('qqfile')
+            responses = _handle_uploaded_file(file_name=file.name, file=file.read(), manager=manager)
+
         imported_entities = _get_imported_entities(responses)
         successful_imports = len(imported_entities)
         total = len(responses)
