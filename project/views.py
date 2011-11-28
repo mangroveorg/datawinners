@@ -69,7 +69,9 @@ def _make_project_links(project,questionnaire_code):
     project_links = {'overview_link': reverse(project_overview, args=[project_id]),
                      'activate_project_link': reverse(activate_project, args=[project_id]),
                      'delete_project_link': reverse(delete_project, args=[project_id]),
-                     'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id])}
+                     'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
+                     'current_language': translation.get_language()
+                     }
 
     if project.state == ProjectState.TEST or project.state == ProjectState.ACTIVE:
         project_links['data_analysis_link'] = reverse(project_data, args=[project_id, questionnaire_code])
