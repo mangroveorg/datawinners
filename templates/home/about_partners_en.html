@@ -1,4 +1,4 @@
-{% extends 'public_secondary_en.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Partners {% endblock %}
 
 {% load dw_tabs %}
@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/en">Home</a> &gt; <a href="/en/about-us">About us</a> &gt; Partners
+<a href="/en/home/">Home</a> &gt; <a href="/en/about-us">About us</a> &gt; Partners
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>ABOUT US</h1>
+        <h1><a href="/en/about-us/">ABOUT US</a></h1>
         <ul>
             <li><a href="/en/about-us/blog">Blog</a></li>
             <li class="active"><a href="/en/about-us/partners">Partners</a></li>
@@ -23,10 +23,20 @@
     </div>
     <div id="main_content">
         <div class="margin_left_20">
-            <p>An international partnership of private sector companies, academic institutions and non-governmental organizations are working collaboratively to create and manage DataWinners.com as an open-source project.  Human Network International (HNI) and ThoughtWorks, Inc. lead the effort to make this mobile data collection service responsive to the needs of development organizations worldwide.</p>
-            <p>DataWinners hosted service is one of the first applications built using the Mangrove data collection framework, itself an open source project that develops core tools for mobile data collection, aggregation, analysis, and visualization targeting SMS, Web, J2ME and Android via XForms. The Mangrove initiative is collaboration of ThoughtWorks, Inc, the Modi Research Lab at Columbia University and HNI.</p>
             <p>The goal of these open-sourced projects is to create a global community, working together to make mobile data collection better.  The entire code base for DataWinners and Mangrove is available for download.  We encourage partners to contribute code and ideas so DataWinners and Mangrove continue to innovate.</p>
             <p>We want to thank our partners, and beta-testers featured here.  They contribute significantly to our goal of offering an online, multi-channel, data collection platform to development organizations worldwide.</p>
+            
+            <p>An international partnership of private sector companies, academic institutions and non-governmental
+                organizations are working collaboratively to create and manage DataWinners.com as an open-source project.
+                Human Network International (HNI) and ThoughtWorks, Inc. lead the effort to make this mobile data
+                collection service responsive to the needs of development organizations worldwide.
+            </p>
+            <p>Our goal is to create a global community, working together to make mobile data collection better.
+                Click <a href="https://github.com/mangroveorg/mangrove">here</a> to access the code base.
+                We encourage partners to contribute code and ideas so DataWinners will continue to innovate.
+            </p>
+            
+            
             <div>
                 <div class="grid_5 alpha omega padding_top_20">
                     <img src="/media/images/dw_plogo_tw.gif" width="190"
@@ -49,9 +59,9 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>Mule Design </h2>
-                    <h3>Design Studio</h3>
+                    <h3>Design studio</h3>
                     <p>
-                        Mule Design is a San Francisco-based design studio that created the intuitive, user-friendly DataWinners application.
+                        Mule Design is a San Francisco-based design studio that created the intuitive, user-friendly DataWinners interface
                         <br/><a href="http://www.muledesign.com" target="_blank">www.muledesign.com</a>
                     </p>
                 </div>
@@ -81,7 +91,7 @@
                     <h2>Praekelt Foundation</h2>
                     <h3>Software development partner</h3>
                     <p>
-                        Praekelt Foundation builds open source, scalable mobile technologies and solutions to improve the health and wellbeing of people living in poverty.  The Mangrove project uses Vumi a scalable conversation engine for the delivery of SMS, Star Menu and chat messages to diverse audiences. 
+                        Praekelt Foundation builds open source, scalable mobile technologies and solutions to improve the health and wellbeing of people living in poverty.  The Mangrove project uses Vumi a scalable conversation engine for the delivery of SMS, Star Menu and chat messages to diverse audiences.
                         <br/><a href="http://www.praekeltfoundation.org" target="_blank">www.praekeltfoundation.org</a>
                     </p>
                 </div>
@@ -109,9 +119,10 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>UNICEF/Madagascar</h2>
-                    <h3>Beta Tester</h3>
+                    <h3>Beta tester</h3>
                     <p>
-                        The world's leading organization protecting the rights of children and young people. UNICEF in Madagascar is using DataWinners to collect nutrition dat and information on local radio programming.
+                        The world's leading organization protecting the rights of children and young people.
+                        UNICEF in Madagascar is using DataWinners to collect nutrition data and information on local radio programming.
                         <br/><a href="http://www.unicef.org" target="_blank">www.unicef.org</a>
                     </p>
                 </div>
@@ -124,10 +135,13 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>Catholic Relief Services/Madagascar</h2>
-                    <h3>Beta Tester</h3>
+                    <h3>Beta tester</h3>
                     <p>
-                        CRS is the international humanitarian agency of the Catholic community.
-                        <br/>CRS provides relief in emergency situations and helps people in the developing world break the cycle of poverty through community-based, sustainable development initiatives.  CRS is using DataWinners to collect data on water and hygiene projects in remote areas in North-Eastern Madagascar.
+                        CRS is the international humanitarian agency of the Catholic community in the United States.
+                        CRS provides relief in emergency situations and helps people in the developing world break
+                        the cycle of poverty through community-based, sustainable development initiatives.
+                        CRS is using DataWinners to collect data on water and hygiene projects in remote areas in
+                        Northeastern Madagascar.
                         <br/><a href="http://www.crs.org" target="_blank">www.crs.org</a>
                     </p>
                 </div>
@@ -140,7 +154,7 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>PSI/Madagascar</h2>
-                    <h3>Beta Tester</h3>
+                    <h3>Beta tester</h3>
                     <p>
                         PSI is a leading global health organization with programs targeting malaria, child survival, HIV and reproductive health.  PSI is using DataWinners to collect data for a large adolescent reproductive health project and stock information for a wide range of public health products.
                         <br/><a href="http://www.psi.org" target="_blank">www.psi.org</a>

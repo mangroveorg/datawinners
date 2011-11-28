@@ -2536,7 +2536,7 @@ msgid "Support"
 msgstr ""
 
 msgid "About us"
-msgstr ""
+msgstr "About Us"
 
 msgid "Our Partners &amp; Clients"
 msgstr ""
@@ -2780,10 +2780,10 @@ msgid "Analyze data"
 msgstr ""
 
 msgid "My account"
-msgstr ""
+msgstr "My Account"
 
 msgid "General feedback"
-msgstr ""
+msgstr "General Feedback"
 
 msgid "Subscription Inquiry"
 msgstr ""

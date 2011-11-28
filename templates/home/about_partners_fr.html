@@ -1,4 +1,4 @@
-{% extends 'public_secondary_fr.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Les Partenaires {% endblock %}
 
 {% load dw_tabs %}
@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/fr">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous ?</a> &gt; Partenaires
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous ?</a> &gt; Partenaires
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>QUI SOMMES-NOUS ?</h1>
+        <h1><a href="/fr/about-us/">QUI SOMMES-NOUS ?</a></h1>
         <ul>
             <li><a href="/fr/about-us/blog">Blog</a></li>
             <li class="active"><a href="/fr/about-us/partners">Partenaires</a></li>
@@ -23,10 +23,13 @@
     </div>
     <div id="main_content">
         <div class="margin_left_20">
-            <p>Un partenariat international unissant des entreprises du secteur privé, des institutions académiques et des organisations non gouvernementales travaille ensemble pour créer et gérer DataWinners.com comme un projet “open-source”. Human Network International (HNI) et ThoughtWorks, Inc. dirigent l'effort pour faire de ce service mobile de collecte de données une réponse aux besoins des organisations de développement ouvrant dans le monde entier.</p>
-            <p>Le service DataWinners hébergé est l'une des premières applications développées à l'aide du cadre Mangrove de collecte des données, qui est lui-même un projet open source développant des outils de base pour la collecte mobile, l'agrégation, l'analyse et la visualisation de données par le biais des SMS, du Web, du J2ME et de l’Android via XForms. L'initiative Mangrove est une collaboration de ThoughtWorks, Inc., du Laboratoire Modi Research de l'Université Columbia, et de HNI.</p>
             <p>L'objectif de ces projets open-source est de créer une communauté mondiale qui oeuvre ensemble pour une meilleure collecte mobile de données. La totalité du code de base pour DataWinners et Mangrove est disponible pour téléchargement. Nous encourageons les partenaires à contribuer à l’amélioration du code et la fourniture d’idées afin que DataWinners et Mangrove puissent continuer à innover.</p>
             <p>Nous tenons à remercier nos partenaires, et les bêta-testeurs ci-mentionnés. Ils contribuent de manière significative à notre objectif d'offrir une plate-forme de collecte de données en ligne et à canaux multiples au profit d’organismes de développement oeuvrant dans le monde entier.</p>
+            <p>Un partenariat international unissant des entreprises du secteur privé, des institutions académiques et des organisations non gouvernementales travaille ensemble pour créer et gérer DataWinners.com comme un projet “open-source”. Human Network International (HNI) et ThoughtWorks, Inc. dirigent l'effort pour faire de ce service mobile de collecte de données une réponse aux besoins des organisations de développement ouvrant dans le monde entier.</p>
+            <p>Notre objectif est de créer une communauté globale, travaillant ensemble pour rendre mieux la collecte de données par des mobiles.
+                Cliquez <a href="https://github.com/mangroveorg/mangrove">ici</a> pour accèder au code source.
+                Nous encourageons les partenaires de contribuer leurs code et leurs idées pour que DataWinners continuera à innover.
+            </p>
             <div>
                 <div class="grid_5 alpha omega padding_top_20">
                     <img src="/media/images/dw_plogo_tw.gif" width="190"
@@ -109,7 +112,7 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>UNICEF/Madagascar</h2>
-                    <h3>Beta Testeur</h3>
+                    <h3>Beta testeur</h3>
                     <p>
                         C’est le premier organisme mondial pour la protection des droits des enfants et des jeunes. A Madagascar, l'UNICEF utilise DataWinners pour collecter des données et des informations sur la nutrition au profit d’émissions radios locales.
                         <br/><a href="http://www.unicef.org" target="_blank">www.unicef.org</a>
@@ -124,7 +127,7 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>Catholic Relief Services/Madagascar</h2>
-                    <h3>Beta Testeur</h3>
+                    <h3>Beta testeur</h3>
                     <p>
                         CRS est l'agence humanitaire internationale de la communauté Catholique.
                         <br/>CRS apporte des secours dans les situations d'urgence et aide les gens des pays en voie de développement à briser le cycle de la pauvreté grâce à des initiatives de développement durable à l’échelle communautaire. CRS utilise DataWinners pour collecter des données sur les projets liés à l'eau et à l'hygiène dans les régions éloignées du Nord-Est de Madagascar.
@@ -140,7 +143,7 @@
                 </div>
                 <div class="grid_13 alpha omega float_right">
                     <h2>PSI/Madagascar</h2>
-                    <h3>Beta Testeur</h3>
+                    <h3>Beta testeur</h3>
                     <p>
                         PSI est une importante organisation mondiale de santé qui met en oeuvre des programmes qui ciblent le paludisme, la survie de l'enfant, le VIH et la santé de la reproduction. PSI utilise DataWinners pour collecter des données pour un grand projet de santé de la reproduction des adolescents et stocker des informations pour une large gamme de produits de santé publique.
                         <br/><a href="http://www.psi.org" target="_blank">www.psi.org</a>
