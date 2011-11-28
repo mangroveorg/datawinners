@@ -71,6 +71,10 @@ class Organization(models.Model):
         organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
         return organization_setting
 
+    def get_message_tracker(self, date):
+        message_tracker_tuple = MessageTracker.objects.get_or_create(organization=self, month=date)
+        return message_tracker_tuple[0]
+
         
 class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)

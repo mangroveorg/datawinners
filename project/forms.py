@@ -26,6 +26,10 @@ class BroadcastMessageForm(forms.Form):
         self.fields['text'].widget.attrs['id'] = 'sms_content'
         self.fields['others'].widget.attrs['watermark'] = ugettext_lazy('Enter local telephone numbers without country codes. Use a comma (,) to separate the numbers.')
 
+    def clean_others(self):
+        others = self.cleaned_data['others']
+        return [number.strip() for number in others.split(',') if number.strip() !='']
+
 
 class MyRadioFieldRenderer(RadioFieldRenderer):
     def __init__(self, name, value, attrs, choices):

@@ -314,15 +314,17 @@ def get_subject_report_questions(dbm):
     return [entity_id_question, activity_report_question]
 
 
-def broadcast_message(data_senders, message, organization_tel_number, other_numbers):
+def broadcast_message(data_senders, message, organization_tel_number, other_numbers, message_tracker):
     sms_client = SMSClient()
     for data_sender in data_senders:
         phone_number = data_sender.get('mobile_number') #This should not be a dictionary but the API in import_data should be fixed to return entity
         if phone_number is not None:
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
+            message_tracker.increment_outgoing_message_count()
             sms_client.send_sms(organization_tel_number, phone_number, message)
 
     for number in other_numbers:
         number = number.strip()
         logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
+        message_tracker.increment_outgoing_message_count()
         sms_client.send_sms(organization_tel_number, number, message)

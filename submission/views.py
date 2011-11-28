@@ -69,12 +69,10 @@ def find_dbm(request):
 def increment_message_counter(incoming_request):
     organization = incoming_request['organization']
     current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
-    message_tracker = MessageTracker.objects.filter(organization=organization, month=current_month)
-    if not message_tracker.count():
-        MessageTracker(organization=organization, month=current_month).save()
-    message_tracker[0].increment_incoming_message_count()
-    message_tracker[0].increment_outgoing_message_count()
-    if not message_tracker[0].should_handle_message():
+    message_tracker = organization.get_message_tracker(current_month)
+    message_tracker.increment_incoming_message_count()
+    message_tracker.increment_outgoing_message_count()
+    if not message_tracker.should_handle_message():
         incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
         return incoming_request
 

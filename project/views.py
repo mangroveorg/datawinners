@@ -484,12 +484,18 @@ def broadcast_message(request, project_id):
     if request.method == 'POST':
         form = BroadcastMessageForm(request.POST)
         if form.is_valid():
-            data_senders = load_all_subjects_of_type(dbm) if form.cleaned_data['to'] == "All" else project.get_data_senders(dbm)
+            data_senders = []
+            if form.cleaned_data['to'] == "All":
+                data_senders = load_all_subjects_of_type(dbm)
+            elif form.cleaned_data['to'] == "Associated":
+                data_senders = project.get_data_senders(dbm)
             profile = NGOUserProfile.objects.get(user = request.user)
             organization = Organization.objects.get(org_id = profile.org_id)
             organization_setting = OrganizationSetting.objects.get(organization = organization)
-            other_numbers = form.cleaned_data['others'].strip().split(',')
-            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.sms_tel_number, other_numbers)
+            current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+            message_tracker = organization.get_message_tracker(current_month)
+            other_numbers = form.cleaned_data['others']
+            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.sms_tel_number, other_numbers, message_tracker)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
