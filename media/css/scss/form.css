@@ -1,3 +1,4 @@
+
 form fieldset legend {
   font-size: 20px; }
 form ul li {
@@ -230,11 +231,6 @@ select {
 #type_message {
   float: left;
   clear: both; }
-
-#add_subject_type {
-  float: right;
-  clear: both;
-  width: 78% !important; }
 
 /* File up loader */
 #file-uploader {
