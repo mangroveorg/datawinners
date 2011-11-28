@@ -5,7 +5,7 @@
 {% load dw_tabs %}
 
 {% block navigation %}
-    {% activetab "tab_nav" "send_a_message" %}
+    {% activetab "tab_nav" "reminders" %}
     {{ block.super }}
 {% endblock %}
 
@@ -21,8 +21,16 @@
     <link href="/media/css/scss/section_reminder.scss" rel="stylesheet" />
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/broadcast_message.js"></script>
+{% endblock %}
 
 {% block content %}
+    {% block secondary_navigation_reminders %}
+        {% activetab "secondary_tab_nav" "message" %}
+        {{ block.super }}
+    {% endblock %}
     <div class="warning-message-box">
         You can set Reminders here, however they will not be sent to your Data Senders. Sign up for a monthly
         subscription to enable the full Reminder functionality.

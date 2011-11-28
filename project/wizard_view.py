@@ -164,7 +164,7 @@ def reminder_settings(request, project_id):
     project_links = _make_project_links(project, questionnaire.form_code)
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
-    html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
+    html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
     if request.method == 'GET':
         form = ReminderForm(data=(_reminder_info_about_project(project)))
         return render_to_response(html,
