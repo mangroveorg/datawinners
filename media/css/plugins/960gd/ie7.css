@@ -94,9 +94,18 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 }
 
 #add_subject_type h3{
-    width: 462px;
+    width: 477px;
 }
 
 #add_subject_type div{
-    width: 400px;
+    width: 415px;
+}
+
+.example{
+    clear: both;
+    margin-top: -20px;
+}
+
+#type_message{
+    width: 300px !important;
 }
