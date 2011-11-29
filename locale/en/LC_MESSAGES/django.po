@@ -1080,14 +1080,6 @@ msgstr ""
 msgid "Add Data Senders Manually"
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:66
-msgid "q_tooltip_datasenders_add_manually"
-msgstr "Add Data Senders one-by-one using the online registration form"
-
-#: templates/project/datasenders_wizard.html:69
-msgid "r_tooltip_datasenders_add_manually"
-msgstr "Click the blue \"Add Data Senders Manually\" button"
-
 #: templates/project/datasenders_wizard.html:72
 msgid "Enter your Data Senders individually"
 msgstr ""
@@ -1096,32 +1088,20 @@ msgstr ""
 msgid "Import a List of Data Senders"
 msgstr ""
 
-#: templates/project/datasenders_wizard.html:79
-msgid "q_tooltip_datasenders_import"
+#: templates/project/datasenders.html:79
+msgid "tooltip_datasenders_import"
 msgstr ""
-"Add a list of Data Senders all at once by importing an Excel (.xls) or a "
-"comma separated value (.csv) file"
+"Add a list of subjects by following these instructions:"
+"<br />1) Download the template by clicking on the \"Import Template\" link"
+"<br />2) Follow the template instructions to create a list of your Data Senders"
+"<br />3) Save the completed template on your computer"
+"<br />4) Click the \"Import List\" button"
+"<br />5) Click the \"Upload a File\" button"
+"<br />6) Select the completed template on your computer"
+"<br />7) Wait for the file to finish uploading"
 
-#: templates/project/datasenders_wizard.html:82
-msgid "r_tooltip_datasenders_import"
-msgstr ""
-"Follow these five easy steps to import a list of Data Senders<br />1) Open a "
-"new Excel spreadsheet. In cell A1, type form_code.  In cell B1, type T.  In "
-"cell C1 type N.  In cell D1 type M.In cell E1 type S.  In cell F1 type L.  "
-"In cell G1 type G.  In cell H1 type D.<br />2) In cell A2, type REG.  In "
-"cell B2, type Data Sender.  In cell C2, type the name of your Data Sender"
-"(example:  John Smith).  In cell D2, type the mobile telephone number of the "
-"Data Sender.In cell E2, type a unique ID code for the Data Sender."
-"DataWinners will automatically generate a unique ID number if you leave this "
-"cell blank.In cell F2, type the location of the Data Sender.In cell G2 type "
-"the GPS coordinates of the Data Sender (Right click on cell G2, choose "
-"\"Format Cells\",Choose \"Text\", then click \"OK\".  Then enter the GPS "
-"coordinates in the following format: 16.8665 47.53150.Remember do not "
-"include a comma).  In cell F2 type a short description of the Data Sender."
-"<br />3. Repeat step #2 for each Data Sender starting in cell A3.  Every "
-"Data Sender thereafter will occupy anew row (A4, A5, A6 etc.)<br />4. Save "
-"the file as (.csv) or (.xls)<br />5. Click on blue \"Import List\" button "
-"and follow instructions"
+msgid "tooltip_datasenders_add_manually"
+msgstr "Click the blue \"Add Data Senders Manually\" button and register Data Senders individually by completing the web form."
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
@@ -1862,7 +1842,7 @@ msgstr ""
 msgid "Import a List of Subjects"
 msgstr ""
 
-#: templates/project/subjects_wizard.html:79
+#: templates/project/subjects.html:79
 msgid "tooltip_subject_import"
 msgstr ""
 "Add a list of subjects by following these instructions:"

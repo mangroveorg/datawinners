@@ -1086,48 +1086,27 @@ msgstr "(Optionnel)"
 msgid "Add Data Senders Manually"
 msgstr "Ajoutez des Expéditeurs de Données Manuellement"
 
-#: templates/project/datasenders_wizard.html:66
-msgid "q_tooltip_datasenders_add_manually"
-msgstr "Ajoutez les envoyeurs un par un en utilisant le formulaire."
-
-#: templates/project/datasenders_wizard.html:69
-msgid "r_tooltip_datasenders_add_manually"
-msgstr "Cliquez sur le bouton bleu \"Ajouter les Envoyeurs manuellement\""
-
 #: templates/project/datasenders_wizard.html:72
 msgid "Enter your Data Senders individually"
 msgstr "Entrez les Envoyeurs un par un"
 
-#: templates/project/datasenders_wizard.html:76
+#: templates/project/datasenders.html:76
 msgid "Import a List of Data Senders"
 msgstr "Importez la liste des Envoyeurs"
 
-#: templates/project/datasenders_wizard.html:79
-msgid "q_tooltip_datasenders_import"
+msgid "tooltip_datasenders_import"
 msgstr ""
-"Ajoutez tous les Envoyeurs en important un fichier excel (.xls) ou un "
-"fichier csv (.csv)"
+"Ajoutez une liste de sujets en suivant ces instructions:"
+"<br />1) Téléchargez le modèle en cliquant sur le lien ‘Importer un Modèle’"
+"<br />2) Suivez les instructions relatives au modèle pour créer une liste de vos des Envoyeurs"
+"<br />3) Sauvegardez dans votre ordinateur le modèle dûment rempli"
+"<br />4) Cliquez sur le bouton ‘Importer la Liste’"
+"<br />5) Cliquez sur le bouton ‘Télécharger un Fichier’"
+"<br />6) Sélectionnez dans votre ordinateur le modèle dûment rempli"
+"<br />7) Attendez que le téléchargement du fichier soit terminé"
 
-#: templates/project/datasenders_wizard.html:82
-msgid "r_tooltip_datasenders_import"
-msgstr ""
-"Suivez ces cinq étapes faciles pour importer vos envoyeurs<br /> Ouvrez un "
-"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
-"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
-"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
-"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
-"saisissez REG. Dans la cellule B2, saisissez Data Sender. Dans la cellule C2 "
-"saississez le nom de l'envoyeur (exemple : John Smith). Dans la cellule D2, "
-"saisissez son numéro de mobile. Dans la cellule E2, saisissez son ID "
-"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
-"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
-"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
-"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
-"virgule). Dans la cellule F2 saisissez une description courte de votre envoyeur. "
-"<br/>3. Répétez l'étape #2 pour chaque envoyeur à partir de la cellule A3. "
-"Chaque envoyeur sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
-"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
-"\"Importez la liste\" et suivez les instructions."
+msgid "tooltip_datasenders_add_manually"
+msgstr "Cliquez sur le bouton bleu 'Ajouter des Envoyeurs Manuellement' et inscrivez chaque sujet individuellement en remplissant le formulaire Web."
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
