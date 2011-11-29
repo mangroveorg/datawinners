@@ -1555,19 +1555,11 @@ msgstr "Oui, nombre de caractères inférieur ou égal à"
 msgid "Instructions"
 msgstr "Instructions"
 
-#: templates/project/question_detail_panel.html:129
-msgid "q_tooltip_question_detail_instruction"
-msgstr ""
-"Lorsque vous imprimez le Questionnaire et le donnez à vos Expéditeurs de Données, "
-"ces<strong>Instructions</strong> apparaîtront en dessous de chaque question. Elles "
-"fournissent des informations d’ordre général ou d'autres renseignements importants pour aider les Expéditeurs de Données à répondre "
-"au questionnaire.<br/><br/>"
-
-#: templates/project/question_detail_panel.html:131
-msgid "r_tooltip_question_detail_instruction"
-msgstr ""
-"Saisissez-y toutes les informations spécifiques qui peuvent être importantes pour aider les Expéditeurs de "
-"Données à répondre au questionnaire."
+#: templates/project/question_detail_panel.html:130
+msgid "tooltip_question_detail_instruction"
+msgstr "Ces instructions expliquent les critères que vous définissez pour répondre à chaque question. "
+"Elles sont destinées à aider l'Expéditeur de Données. Lorsque vous imprimez le Questionnaire et le donnez à vos "
+"Expéditeurs de Données, ces instructions apparaîtront en dessous de chaque question."
 
 #: templates/project/question_table.html:4
 msgid "Question Number"
@@ -1609,23 +1601,13 @@ msgstr ""
 msgid "Add another Question"
 msgstr "Ajouter une question"
 
-#: templates/project/questionnaire.html:114
-#: templates/project/questionnaire_wizard.html:108
-msgid "q_tooltip_question_sms"
-msgstr ""
-"<strong>1 SMS est limité à 160 caractères.</strong><br />Le Décompte "
-"tallies the questionnaire code, Automatique fait le pointage du code questionnaire, de tous les codes "
-"des questions et des longueurs maximales pour toutes les réponses, et compte le nombre de caractères utilisés sur "
-"les 160 autorisés."
-
-#: templates/project/questionnaire.html:117
-#: templates/project/questionnaire_wizard.html:111
-msgid "r_tooltip_question_sms"
-msgstr ""
-"Utilisez ce décompte pour déterminer combien de questions vous pouvez ajouter au "
-"questionnaire tout en maintenant la réponse dans les limites de 1 SMS (160 caractères)."
-"Ne vous inquiétez pas, vous pouvez aller au-delà de 160 caractères. Cependant, plus d'un SMS "
-"seront nécessaires pour répondre à toutes les questions de votre questionnaire."
+#: templates/project/create_project.html:114
+msgid "tooltip_question_sms"
+msgstr "Utilisez ce décompte automatique pour déterminer le nombre maximal de caractères qu'un Expéditeur de Données "
+"devra saisir pour répondre à toutes les questions dans votre questionnaire. Pour garder les coûts de communication au "
+"niveau le plus bas, essayez de garder le nombre de caractères requis inférieur ou égal à 160 --- la longueur d'un seul "
+"SMS. Ne vous inquiétez pas, vous pouvez aller au-delà de 160 caractères. Cependant, plus d'un SMS seront nécessaires "
+"pour répondre à toutes les questions."
 
 #: templates/project/questionnaire_preview.html:8
 msgid "Print"
@@ -1655,19 +1637,13 @@ msgstr "Définissez les questions auxquelles vos envoyeurs doivent répondre."
 msgid "Questionnaire Code:"
 msgstr "Code Questionnaire"
 
-#: templates/project/questionnaire_wizard.html:77
-msgid "q_tooltip_question_code"
-msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctlyidentify your questionnaire. Use the recommended "
-"code or change it if you like."
-
-#: templates/project/questionnaire_wizard.html:80
-msgid "r_tooltip_question_code"
-msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
+#: templates/project/create_project.html:118
+msgid "tooltip_question_code"
+msgstr "Entrez une combinaison de 3-6 lettres et/ou de chiffres (ou les deux). Vos Expéditeurs de Données entreront en "
+"premier lieu ce code lors de l'envoi de leurs données via SMS. DataWinners utilise ce code unique pour identifier "
+"correctement votre questionnaire. L’utilisation des Codes Questionnaire permet à votre organisation de collecter "
+"simultanément desensembles de données multiples via un seul numéro de téléphone. Votre code questionnaire apparaîtra "
+"sur la version imprimée de votre questionnaire."
 
 #: templates/project/questionnaire_wizard.html:117
 msgid "SMS Preview"
@@ -2513,16 +2489,11 @@ msgstr "Enregistrer comme ébauche"
 msgid "Time Period"
 msgstr "Période"
 
-msgid "q_tooltip_project_name"
-msgstr "DataWinners identifie les projets par leur <strong>Nom</strong>. Il est "
-"important de donner à chaque projet un nom distinctif pour que vous "
-"puissiez les distinguer et les suivre aisément."
+msgid "tooltip_project_name"
+msgstr "Donnez à votre projet un nom court et descriptif afin que vous puissiez l'identifier parmi une liste de tous les projets."
 
-msgid "r_tooltip_project_name"
-msgstr ""
-"Donnez un nom à votre projet en saisissant un court descriptif dans ce champ. "
-"Ne vous inquiétez pas, vous pourrez toujours le changer plus tard."
-
+msgid "tooltip_error_language"
+msgstr "Vos Expéditeurs de Données recevront une Confirmation automatique et des messages d'Erreur venant de DataWinners en fonction de leur soumission. Choisissez la langue utilisés pour ces messages."
 
 #: templates/dashboard/overview.html
 msgid "Your project"
@@ -2853,3 +2824,16 @@ msgstr "Définir des rappels"
 
 msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your project"
 msgstr "En décochant cette case, rappels automatiques seront envoyés à tous les expéditeurs de données associées à votre projet"
+
+#Translations for tooltips on basic_info.html
+msgid "q_tooltip_questionnaire_about"
+msgstr ""
+
+msgid "r_tooltip_questionnaire_about"
+msgstr ""
+
+msgid "tooltip_devices"
+msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
+"Les SMS constituent un canal de collecte de données efficace pour les questionnaires de moins de 20 questions et dans les cas où les Expéditeurs de "
+"Données n’ont pas accès à Internet. "
+"Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."

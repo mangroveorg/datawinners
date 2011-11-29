@@ -15,14 +15,10 @@
     <li class="form-row-10px">
         {{ form.name.label_tag }}
         {{ form.name }}
-       <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
         <div class="tooltip"><p>
-                            <strong>{% trans "What is this?" %}</strong><br/>
-                            {% trans "q_tooltip_project_name" %}
-                            <br/><br/>
-                            <strong>{% trans "What do I need to do?" %}</strong><br/>
-                            {% trans "r_tooltip_project_name" %}
-                        </p></div>
+            {% trans "tooltip_project_name" %}
+        </p></div>
         {{ form.name.errors }}
         <p class="black_italic">{% trans "Example: Teacher attendance in Antananarivo" %}</p>
     </li>
@@ -35,17 +31,32 @@
 
     <li>
         {{ form.language.label_tag }}
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+        <div class="tooltip"><p>
+            {% trans "tooltip_error_language" %}
+        </p></div>
         {{ form.language }}
         {{ form.language.error }}
     </li>
     <li>
         {{ form.activity_report.label_tag }}
+        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+        <div class="tooltip"><p>
+            <strong>{% trans "What is this?" %}</strong><br />
+            {% trans "q_tooltip_questionnaire_about" %}
+            <br /><br />
+            <strong>{% trans "What do I need to do?" %}</strong><br />
+            {% trans "r_tooltip_questionnaire_about" %}
+        </p></div>
         {{ form.activity_report }}
         {{ form.entity_type }}
         {%  include 'entity/create_type.html' %}
     </li>
     <li>
         {{ form.devices.label_tag }}
+        <div class="tooltip"><p>
+            {% trans "tooltip_devices" %}
+        </p></div>
         {{ form.devices }}
     </li>
 </ul>

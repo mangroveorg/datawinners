@@ -1539,19 +1539,10 @@ msgstr ""
 msgid "Instructions"
 msgstr ""
 
-#: templates/project/question_detail_panel.html:129
-msgid "q_tooltip_question_detail_instruction"
-msgstr ""
-"When you print the Questionnaire and give it to your Data Senders, "
-"these<strong>Instructions</strong> will appear below each question. They "
-"providebackground or other important information to help Data Senders answer "
-"thequestionnaire.<br/><br/>"
-
-#: templates/project/question_detail_panel.html:131
-msgid "r_tooltip_question_detail_instruction"
-msgstr ""
-"Type in any specific information that may be important to help the Data "
-"Sender answer the question."
+#: templates/project/question_detail_panel.html:130
+msgid "tooltip_question_detail_instruction"
+msgstr "These instructions explain the answer criteria you set for each question. They are meant to help the Data Sender. "
+"When you print the Questionnaire and give it to your Data Senders, these instructions will appear below each question."
 
 #: templates/project/question_table.html:4
 msgid "Question Number"
@@ -1593,23 +1584,12 @@ msgstr ""
 msgid "Add another Question"
 msgstr ""
 
-#: templates/project/questionnaire.html:114
-#: templates/project/questionnaire_wizard.html:108
-msgid "q_tooltip_question_sms"
-msgstr ""
-"<strong>1 SMS is limited to 160 characters.</strong><br />The Running Count "
-"tallies the questionnaire code, all question codes andthe maximum lengths of "
-"all answers and keeps a running count of how many characters you have used "
-"out of 160."
-
-#: templates/project/questionnaire.html:117
-#: templates/project/questionnaire_wizard.html:111
-msgid "r_tooltip_question_sms"
-msgstr ""
-"Use this count to determine how many questions you can add to the "
-"questionnaire and still keep the response within 1 SMS (160 characters)."
-"Don't worry, you can go beyond 160 characters. However, more than one SMS "
-"will be required to answer all the questions in your questionnaire."
+#: templates/project/create_project.html:114
+msgid "tooltip_question_sms"
+msgstr "Use this running count to determine the maximum number of characters a Data Sender will have to enter to "
+"respond to all questions in your questionnaire. To keep communication costs down, try to keep the number of characters "
+"required to 160 or less, the length of a single SMS. Don't worry, you can go beyond 160 characters. However, more than "
+"one SMS will be required to answer all the questions."
 
 #: templates/project/questionnaire_preview.html:8
 msgid "Print"
@@ -1639,19 +1619,12 @@ msgstr ""
 msgid "Questionnaire Code:"
 msgstr ""
 
-#: templates/project/questionnaire_wizard.html:77
-msgid "q_tooltip_question_code"
-msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctlyidentify your questionnaire. Use the recommended "
-"code or change it if you like."
-
-#: templates/project/questionnaire_wizard.html:80
-msgid "r_tooltip_question_code"
-msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
+#: templates/project/create_project.html:118
+msgid "tooltip_question_code"
+msgstr "Enter a combination of 3-6 letters and/or numbers (or both). Your Data Senders will enter this code first when "
+"sending in their data using SMS. DataWinners uses this unique code to correctly identify your questionnaire. "
+"By using Questionnaire Codes, your organization can collect multiple data sets simultaneously using a single telephone number. "
+"Your questionnaire code will appear on the printed version of your questionnaire."
 
 #: templates/project/questionnaire_wizard.html:117
 msgid "SMS Preview"
@@ -2483,15 +2456,11 @@ msgstr ""
 msgid "Time Period"
 msgstr ""
 
-msgid "q_tooltip_project_name"
-msgstr "DataWinners stores projects by the <strong>Project Name</strong>. It is "
-"important to give each ofyour projects a separate name so when you have many "
-"projects running at the same time youcan easily track each project."
+msgid "tooltip_project_name"
+msgstr "Give your project a short, descriptive name so you can identify it among a list of all projects."
 
-msgid "r_tooltip_project_name"
-msgstr ""
-"Name your project by typing a short descriptive phrase in the Name this "
-"Project box. Don't worry,you can always edit your project name later."
+msgid "tooltip_error_language"
+msgstr "Your Data Senders will receive automatic Confirmation and Error messages from DataWinners based on their submission. Choose the language of these messages."
 
 #: templates/dashboard/overview.html
 msgid "Your project"
@@ -2802,3 +2771,18 @@ msgstr ""
 
 msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your project"
 msgstr ""
+
+#Translations for tooltips on basic_info.html
+msgid "q_tooltip_questionnaire_about"
+msgstr "Subjects are very important. They are the topic of your data collection questionnaires. "
+"Subjects are often people (patients, farmers, children under five)or things (health clinics, retail shops, water points). "
+"Subjects can also be peoplewho send you their monthly activity reports."
+
+msgid "r_tooltip_questionnaire_about"
+msgstr "Click one of the radio buttons to tell us the subject of your questionnaire. DataWinners willprovide you the "
+"step-by-step instructions for your choice. Don’t worry, you can always decideor change your mind later."
+
+msgid "tooltip_devices"
+msgstr "Your Data Senders can submit data using SMS and the Internet. "
+"SMS is an efficient data collection channel for questionnaires with less than 20 questions and where Data Senders have no Internet access. "
+"If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."

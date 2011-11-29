@@ -115,13 +115,8 @@
                         <span id="questionnaire-code-error"></span>
                         <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
                         <div class="tooltip"><p>
-                            <strong>{% trans "What is this?" %}</strong><br/>
-                            {% trans "q_tooltip_question_code" %}
-                            <br/><br/>
-                            <strong>{% trans "What do I need to do?" %}</strong><br/>
-                            {% trans "r_tooltip_question_code" %}
+                            {% trans "tooltip_question_code" %}
                         </p></div>
-
                     </li>
                 </ul>
 
@@ -140,21 +135,15 @@
 
                         <div id="question-detail-panel">
                             {% include 'project/question_detail_panel.html' %}
-                            <div class="grid_1 alpha omega">
-                                <img src="/media/images/help_icon.png" class="help_icon">
-
-                                <div class="tooltip"><p>
-                                    <strong>{% trans "What is this?" %}</strong><br/>
-                                    {% trans "q_tooltip_question_sms" %}
-                                    <br/><br/>
-                                    <strong>{% trans "What do I need to do?" %}</strong><br/>
-                                    {% trans "r_tooltip_question_sms" %}
-                                </p></div>
-                            </div>
+                            
 
                             <div class="grid_13 alpha omega">
                                 <div id='char-count'>
                                 </div>
+                                <img src="/media/images/help_icon.png" class="help_icon">
+                                <div class="tooltip"><p>
+                                    {% trans "tooltip_question_sms" %}
+                                </p></div>
                             </div>
                         </div>
                     </div>
