@@ -248,6 +248,8 @@ body {
       color: #3a9912;
       font-size: 15px;
       margin: 0 0 15px 0; }
+      #container_main_content #nav_content h1 a {
+        color: #3a9912; }
     #container_main_content #nav_content ul {
       margin: 0; }
       #container_main_content #nav_content ul li {

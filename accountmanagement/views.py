@@ -102,6 +102,18 @@ def is_expired(f):
         return f(*args, **kw)
     return wrapper
 
+def is_trial(f):
+    def wrapper(*args, **kw):
+        user = args[0].user
+        profile = user.get_profile()
+        organization = Organization.objects.get(org_id = profile.org_id)
+        if not organization.in_trial_mode:
+            return HttpResponseRedirect(django_settings.HOME_PAGE)
+        return f(*args, **kw)
+
+    return wrapper
+
+
 @login_required(login_url='/login')
 @is_admin
 def settings(request):
@@ -206,6 +218,7 @@ def _send_upgrade_email(user):
 
 
 @is_admin
+@is_trial
 def upgrade(request):
     profile = request.user.get_profile()
     organization = Organization.objects.get(org_id = profile.org_id)
