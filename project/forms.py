@@ -132,5 +132,5 @@ class ReminderForm(Form):
     number_of_days_after_deadline = DecimalField(required=False)
     reminder_text_after_deadline = CharField(widget=forms.Textarea, required=False)
 
-    whom_to_send_message = BooleanField(label=ugettext_lazy("Only send reminders to senders who have not already submitted data for the current deadline"),
+    whom_to_send_message = BooleanField(label=ugettext_lazy("By un-checking this box, automatic reminders will be sent to all data senders associated with your project"),
                                        required=False, initial=True)
