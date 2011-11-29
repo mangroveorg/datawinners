@@ -389,16 +389,6 @@ msgstr ""
 msgid "What is this?"
 msgstr "Qu'est ce que c'est ?"
 
-#: templates/entity_question_panel.html:11
-msgid "q_tooltip_question_panel_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
-"subject of your questionnaire.  For example, Clinic Name, Location, Phone "
-"Number."
-"Veuillez identifier par quelle critère vous voulez identifier et "
-"enregistrer chaque sujet de votre questionnaire. Exemple : nom d'une "
-"clinique, localité, numéro de téléphone."
-
 #: templates/entity_question_panel.html:13
 #: templates/entity_question_panel.html:22
 #: templates/entity/all_datasenders.html:17
@@ -427,18 +417,6 @@ msgstr ""
 #: templates/project/subjects_wizard.html:79
 msgid "What do I need to do?"
 msgstr "Qu'est ce que je dois faire ?"
-
-#: templates/entity_question_panel.html:14
-msgid "r_tooltip_question_panel_subject"
-msgstr "Vérifiez les questions en cliquant sur chacune d'elle dans l'ordre."
-
-#: templates/entity_question_panel.html:20
-msgid "q_tooltip_question_panel_data_sender"
-msgstr "Identifiez les informations que vous voulez collecter sur chaque envoyeur."
-
-#: templates/entity_question_panel.html:23
-msgid "r_tooltip_question_panel_data_sender"
-msgstr "Vérifiez les questions en cliquant sur chacune d'elle dans l'ordre."
 
 #: templates/entity_question_panel.html:45
 msgid "Question:"
@@ -1060,35 +1038,6 @@ msgstr "Faites un aperçu du questionnaire \"Envoyeurs\""
 msgid "Generating the questionnaire preview."
 msgstr "Voir un aperçu du questionnaire"
 
-#: templates/project/datasenders_wizard.html:44
-msgid "Step4"
-msgstr "Etape 4"
-
-#: templates/project/datasenders_wizard.html:47
-msgid "q_tooltip_datasenders_sender"
-msgstr ""
-"Les <strong>Envoyeurs</strong> sont important car ce sont les personnes qui "
-"vont répondre à votre questionnaire. Ils sont généralement basés sur le "
-"terrain. <br/><br/>Vous pouvez <strong>enregistrer les Envoyeurs</strong> "
-"en entrant quelques informations élémentaires (nom, localité, numéro de "
-"téléphone) à propos de chacun d'eux. DataWinners utilisera le numéro de "
-"téléphone de l'envoyeur comme son <strong>\" identifiant unique \"</strong>."
-"En enregistrant vos Envoyeurs, ils n'ont plus besoin d'envoyer certaines "
-"informations (exemple : nom) chaque fois qu'il répondent à un questionnaire. "
-"DataWinners identifiera chaque Envoyeur à partir de son numéro de téléphone."
-
-
-#: templates/project/datasenders_wizard.html:49
-msgid "r_tooltip_datasenders_sender"
-msgstr ""
-"Identifiez chaque information que vous voulez collecter sur vos Envoyeurs "
-"(nom, prénom, localité, numéro de téléphone, etc.) Vous aurez alors trois "
-"façons de les enregistrer : 1) Saisissez manuellement les détails en utilisant "
-"le <strong>formulaire en ligne</strong>, 2) <strong>Importez la liste</strong>; ou "
-"3) Imprimez le questionnaire \"Envoyeur\", donnez le à l'Envoyeur et <strong> "
-"demandez-lui de d'enregistrer</strong>. N'ayez aucune crainte, vous pourrez "
-"toujours éditer ces informations ultérieurement."
-
 #: templates/project/datasenders_wizard.html:51
 msgid ""
 "Register and manage approved Data Senders by editing the registration form "
@@ -1240,22 +1189,6 @@ msgstr "activés"
 #: templates/project/finish_and_test.html:152
 msgid "Test This Questionnaire"
 msgstr "Tester ce questionnaire"
-
-#: templates/project/finish_and_test.html:155
-msgid "q_tooltip_finish_test"
-msgstr ""
-"La fonction <strong>Tester ce questionnaire</strong> vous autorise à simuler "
-"une collecte de données et voir par vous même si le questionnaire est efficace. "
-"Après le test vous pouvez voir les données collectées en cliquant sur le menu "
-"\"Données\" en haut à droite sur cette page. Tester le questionnaire peut vous "
-"donner des information pour affiner et améliorer les questions et les types de "
-"réponses"
-
-#: templates/project/finish_and_test.html:158
-msgid "r_tooltip_finish_test"
-msgstr ""
-"Choisissez entre l'envoi par formulaire Web ou l'envoi par SMS et suivez les "
-"instructions à lécran pour terminer le test"
 
 #: templates/project/finish_and_test.html:162
 #: templates/project/finish_and_test.html:164
@@ -1409,42 +1342,6 @@ msgstr "du/de la"
 msgid "week"
 msgstr "semaine"
 
-#: templates/project/profile_languages.html:12
-#: templates/project/profile_subjects-questionnaire.html:34
-msgid "q_tooltip_profile_devices"
-msgstr ""
-"Devices are important because you can choose the <strong>communication "
-"channel</strong> people will use tosend you your data. Your choice depends "
-"on two questions: 1) How much data do you need to collectand 2) what devices "
-"do people already have. A good general rule is you can collect answers "
-"forabout 15 questions using SMS. For more extensive data collection needs in "
-"the field, we recommendusing a smart phone with the Android Operating "
-"system. If you have regional offices with goodinternet connectivity, you can "
-"also create your own online form."
-
-#: templates/project/profile_languages.html:15
-#: templates/project/profile_subjects-questionnaire.html:37
-msgid "r_tooltip_profile_devices"
-msgstr ""
-"Choose one, two or all three channels by clicking on the boxes. Don't worry, "
-"you can alwayschange your mind later."
-
-#: templates/project/profile_subjects-questionnaire.html:12
-msgid "q_tooltip_profile_subjects"
-msgstr ""
-"<strong>Subjects</strong> are very important. They are the topic of your "
-"data collectionquestionnaires. Subjects are often <strong>people</strong> "
-"(patients, farmers, children under five)or <strong>things</strong> (health "
-"clinics, retail shops, water points). Subjects can also be peoplewho send "
-"you their monthly activity reports.<br/><br/>"
-
-#: templates/project/profile_subjects-questionnaire.html:14
-msgid "r_tooltip_profile_subjects"
-msgstr ""
-"Click one of the radio buttons to tell us the subject of your questionnaire. "
-"DataWinners willprovide you the step-by-step instructions for your choice. "
-"Don’t worry, you can always decideor change your mind later."
-
 #: templates/project/question_detail_panel.html:4
 #: templates/project/question_table.html:5
 msgid "Question"
@@ -1455,40 +1352,9 @@ msgstr "Question"
 msgid "Code"
 msgstr "Code"
 
-#: templates/project/question_detail_panel.html:13
-msgid "q_tooltip_question_detail_code"
-msgstr ""
-"Each question in a questionnaire is identified by its own "
-"unique<strong>Question Code</strong>. This Question Code tells DataWinners "
-"whatquestion is answered by the Data Sender.<br/><br/>"
-
-#: templates/project/question_detail_panel.html:15
-msgid "r_tooltip_question_detail_code"
-msgstr ""
-"Enter a 1 or 2 character code (letters, numbers or both). Your Data "
-"Senderstype the \"+\" code followed by the question code (example: +rpd) for "
-"each question.This will tell DataWinners what question the Data Sender is "
-"answering."
-
 #: templates/project/question_detail_panel.html:22
 msgid "Answer Type"
 msgstr "Type de réponse "
-
-#: templates/project/question_detail_panel.html:26
-msgid "q_tooltip_question_detail_type"
-msgstr ""
-"Questionnaires collect data in several formats: numbers, text, multiple "
-"choiceand dates. The <strong>Answer Type</strong> identifies which format "
-"the DataSender must use when answering the question."
-
-#: templates/project/question_detail_panel.html:29
-msgid "r_tooltip_question_detail_type"
-msgstr ""
-"Select the <strong>Answer Type</strong> that the Data Sender will use "
-"whenanswering the question. Answers can be numbers, text, multiple choice, "
-"or dates.<br/>When using the <strong>Multiple Choice option</strong>, Data "
-"Senders will typein the letter (A, B, C etc.) that corresponds to the "
-"correct answer NOT the textin the answer field."
 
 #: templates/project/question_detail_panel.html:31
 msgid "Select what kind of answer you want from your Data Senders."
@@ -1562,20 +1428,6 @@ msgstr "Oui, nombre de caractères inférieur ou égal à"
 msgid "Instructions"
 msgstr "Instructions"
 
-#: templates/project/question_detail_panel.html:129
-msgid "q_tooltip_question_detail_instruction"
-msgstr ""
-"When you print the Questionnaire and give it to your Data Senders, "
-"these<strong>Instructions</strong> will appear below each question. They "
-"providebackground or other important information to help Data Senders answer "
-"thequestionnaire.<br/><br/>"
-
-#: templates/project/question_detail_panel.html:131
-msgid "r_tooltip_question_detail_instruction"
-msgstr ""
-"Type in any specific information that may be important to help the Data "
-"Sender answer the question."
-
 #: templates/project/question_table.html:4
 msgid "Question Number"
 msgstr "Numéro de la question"
@@ -1597,42 +1449,10 @@ msgstr "Aperçu du questionnaire"
 msgid "Questionnaire Code :"
 msgstr "Code Questionnaire :"
 
-#: templates/project/questionnaire.html:83
-msgid "q_tooltip_questionnaire_code"
-msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctly identify your questionnaire. Use the recommended "
-"code or change it if you like."
-
-#: templates/project/questionnaire.html:86
-msgid "r_tooltip_questionnaire_code"
-msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
-
 #: templates/project/questionnaire.html:102
 #: templates/project/questionnaire_wizard.html:98
 msgid "Add another Question"
 msgstr "Ajouter une question"
-
-#: templates/project/questionnaire.html:114
-#: templates/project/questionnaire_wizard.html:108
-msgid "q_tooltip_question_sms"
-msgstr ""
-"<strong>1 SMS is limited to 160 characters.</strong><br />The Running Count "
-"tallies the questionnaire code, all question codes andthe maximum lengths of "
-"all answers and keeps a running count of how many characters you have used "
-"out of 160."
-
-#: templates/project/questionnaire.html:117
-#: templates/project/questionnaire_wizard.html:111
-msgid "r_tooltip_question_sms"
-msgstr ""
-"Use this count to determine how many questions you can add to the "
-"questionnaire and still keep the response within 1 SMS (160 characters)."
-"Don't worry, you can go beyond 160 characters. However, more than one SMS "
-"will be required to answer all the questions in your questionnaire."
 
 #: templates/project/questionnaire_preview.html:8
 msgid "Print"
@@ -1662,20 +1482,6 @@ msgstr "Définissez les questions auxquelles vos envoyeurs doivent répondre."
 msgid "Questionnaire Code:"
 msgstr "Code Questionnaire"
 
-#: templates/project/questionnaire_wizard.html:77
-msgid "q_tooltip_question_code"
-msgstr ""
-"All questionnaires have a Unique Questionnaire Code. DataWinners uses this "
-"unique code to correctlyidentify your questionnaire. Use the recommended "
-"code or change it if you like."
-
-#: templates/project/questionnaire_wizard.html:80
-msgid "r_tooltip_question_code"
-msgstr ""
-"Enter a 3 letter code (letters and numbers). This questionnaire code will "
-"appear on the printed versionof your questionnaire. Your Data Senders will "
-"type in this code first when sending in their data."
-
 #: templates/project/questionnaire_wizard.html:117
 msgid "SMS Preview"
 msgstr "Aperçu du SMS"
@@ -1690,10 +1496,6 @@ msgstr ""
 #: templates/project/questionnaire_wizard.html:129
 msgid "OK"
 msgstr "OK"
-
-#: templates/project/questionnaire_wizard.html:134
-msgid "Next Step: Data Senders"
-msgstr "Etape suivante : Envoyeurs"
 
 #: templates/project/registered_datasenders.html:29
 msgid "Dis-Associate"
@@ -1780,34 +1582,6 @@ msgstr "Tous le monde"
 msgid "Reminders are not enabled for this project."
 msgstr "Les Messages de rappel ne sont pas activés pour ce projet."
 
-#: templates/project/reminders_wizard.html:34
-msgid "Step5:"
-msgstr "Etape 5 :"
-
-#: templates/project/reminders_wizard.html:37
-msgid "q_tooltip_reminders"
-msgstr ""
-"<strong>Reminders</strong> are important because they are the people who "
-"send you answers to yourquestionnaire. They are usually based in the field."
-"<br /><br />You can <strong>register Data Senders</strong> by entering some "
-"basic information (name, location,telephone number) about each Data Sender."
-"DataWinners will use the Data Sender's telephone number as the "
-"<strong>Unique Identification Number</strong>.By registering your Data "
-"Senders now they won't have to send you this information (example: name) "
-"each timethey respond to your questionnaire. DataWinners will recognize each "
-"Data Sender by his or her registeredtelephone number."
-
-#: templates/project/reminders_wizard.html:40
-msgid "r_tooltip_reminders"
-msgstr ""
-"Decide what information you want to collect for each Data Sender (first "
-"name, last name, location, mobilephone number, etc.) You then have three "
-"ways to register this information: 1) Manually enter the detailsusing the "
-"<strong>online form</strong>, 2) <strong>import a list</strong>; or, 3) "
-"Print out the DataSender Registration Questionnaire, give it to your Data "
-"Senders and ask your <strong>Data Senders to registerthemselves</strong>. "
-"Don’t worry, you can always edit this information later."
-
 #: templates/project/results.html:3
 msgid "All Data records"
 msgstr "Tous les enregistrements"
@@ -1867,32 +1641,6 @@ msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
 msgid "Preview Subject's questionnaire"
 msgstr "Faites un aperçu du questionnaire \"Sujets\""
 
-#: templates/project/subjects_wizard.html:46
-msgid "q_tooltip_subject_wizard_subject"
-msgstr ""
-"Your Data Senders collect data about <strong>Subjects</strong>, which are "
-"often people (patients, farmers)or things (health clinics, retail shops). "
-"<strong>Subjects</strong> can also be staff who send you theirmonthly "
-"activity reports.<br /><br />DataWinners gives you the option to "
-"<strong>Register Subjects</strong> by entering basic data (name,location, "
-"subject type) about each subject. DataWinners will then give each subject a "
-"<strong>UniqueIdentification Number ('ID')</strong>. Data Senders will "
-"always identify <strong>Subjects by</strong> theirID. This saves time and "
-"space in the SMS because Data Senders will not have to type the name, "
-"location andother information about the subject each time they send data."
-
-#: templates/project/subjects_wizard.html:49
-msgid "r_tooltip_subject_wizard_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
-"<strong>Subject</strong> ( For example:first name, last name, location, "
-"mobile phone number, etc.). You then have three ways to register "
-"thisinformation: 1) Manually enter the details using the <strong>online "
-"form</strong>, 2) <strong>import a list</strong>; or, 3) Print out the "
-"Subject Registration Questionnaire, give it to your Data Sendersand ask your "
-"<strong>Data</strong> <strong>Senders to register Subjects</strong> "
-"themselves. Don’t worry, youcan always edit this information later."
-
 #: templates/project/subjects_wizard.html:57
 msgid "Add Subjects now"
 msgstr "Ajoutez les sujets"
@@ -1901,15 +1649,6 @@ msgstr "Ajoutez les sujets"
 #: templates/project/subjects_wizard.html:71
 msgid "Add Subjects Manually"
 msgstr "Ajouter des sujets manuellement"
-
-#: templates/project/subjects_wizard.html:64
-msgid "q_tooltip_subject_wizard_add_manually"
-msgstr "Ajoutez les sujets un par un depuis le formulaire en ligne."
-
-#: templates/project/subjects_wizard.html:67
-msgid "r_tooltip_subject_wizard_add_manually"
-msgstr ""
-"Cliquez sur le bouton bleu \"Ajouter les Envoyeurs manuellement\""
 
 #: templates/project/subjects_wizard.html:70
 msgid "Enter your Subjects individually"
@@ -1964,18 +1703,6 @@ msgstr "Résumé"
 #: templates/project/tab_navigation.html:66
 msgid "Data"
 msgstr "Données"
-
-#: templates/project/tab_navigation.html:78
-msgid "tooltip_tab_navigation"
-msgstr ""
-"View, analyze and export your collected Data. Create an alert to be aware "
-"when something importanthappens.<br/>There are 3 main areas:<br/><strong>1. "
-"Summary</strong><br/>Look at the summary of each individual question to get "
-"a first impression ofyour Data.<br/><strong>2. Analysis</strong><br/>View "
-"your Data as a list, chart or map. Choose the sum, minimum or averageof a "
-"specific answer or see what which one was the most frequent.<br/><strong>3. "
-"All Data Records</strong><br/>View the list of all Data Records you have "
-"received from your Data Senders. Filter and export your list toExcel."
 
 #: templates/project/tab_navigation.html:90
 msgid "Web Submission"
