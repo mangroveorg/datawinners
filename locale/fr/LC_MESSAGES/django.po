@@ -1084,7 +1084,7 @@ msgstr "(Optionnel)"
 #: templates/project/datasenders_wizard.html:63
 #: templates/project/datasenders_wizard.html:73
 msgid "Add Data Senders Manually"
-msgstr "Ajouter des Envoyeurs manuellement"
+msgstr "Ajoutez des Expéditeurs de Données Manuellement"
 
 #: templates/project/datasenders_wizard.html:66
 msgid "q_tooltip_datasenders_add_manually"
@@ -1840,33 +1840,6 @@ msgstr "Utilisez cette "
 msgid "Import Template"
 msgstr "Importer un modèle"
 
-
-#: templates/project/subjects_wizard.html:46
-msgid "q_tooltip_subject_wizard_subject"
-msgstr ""
-"Your Data Senders collect data about <strong>Subjects</strong>, which are "
-"often people (patients, farmers)or things (health clinics, retail shops). "
-"<strong>Subjects</strong> can also be staff who send you theirmonthly "
-"activity reports.<br /><br />DataWinners gives you the option to "
-"<strong>Register Subjects</strong> by entering basic data (name,location, "
-"subject type) about each subject. DataWinners will then give each subject a "
-"<strong>UniqueIdentification Number ('ID')</strong>. Data Senders will "
-"always identify <strong>Subjects by</strong> theirID. This saves time and "
-"space in the SMS because Data Senders will not have to type the name, "
-"location andother information about the subject each time they send data."
-
-#: templates/project/subjects_wizard.html:49
-msgid "r_tooltip_subject_wizard_subject"
-msgstr ""
-"Decide what information you want to use to identify and register each "
-"<strong>Subject</strong> ( For example:first name, last name, location, "
-"mobile phone number, etc.). You then have three ways to register "
-"thisinformation: 1) Manually enter the details using the <strong>online "
-"form</strong>, 2) <strong>import a list</strong>; or, 3) Print out the "
-"Subject Registration Questionnaire, give it to your Data Sendersand ask your "
-"<strong>Data</strong> <strong>Senders to register Subjects</strong> "
-"themselves. Don’t worry, youcan always edit this information later."
-
 #: templates/project/subjects_wizard.html:57
 msgid "Add Subjects now"
 msgstr "Ajoutez les sujets"
@@ -1876,14 +1849,9 @@ msgstr "Ajoutez les sujets"
 msgid "Add Subjects Manually"
 msgstr "Ajouter des sujets manuellement"
 
-#: templates/project/subjects_wizard.html:64
-msgid "q_tooltip_subject_wizard_add_manually"
-msgstr "Ajoutez les sujets un par un depuis le formulaire en ligne."
-
-#: templates/project/subjects_wizard.html:67
-msgid "r_tooltip_subject_wizard_add_manually"
-msgstr ""
-"Cliquez sur le bouton bleu \"Ajouter les Envoyeurs manuellement\""
+#: templates/project/subjects.html:68
+msgid "tooltip_subject_wizard_add_manually"
+msgstr "Cliquez sur le bouton bleu 'Ajouter des Sujets Manuellement' et inscrivez chaque sujet individuellement en remplissant le formulaire Web."
 
 #: templates/project/subjects_wizard.html:70
 msgid "Enter your Subjects individually"
@@ -1893,32 +1861,17 @@ msgstr "Entrez les sujets un par un"
 msgid "Import a List of Subjects"
 msgstr "Importez la liste des sujets"
 
-#: templates/project/subjects_wizard.html:77
-msgid "q_tooltip_subject_wizard_import"
+#: templates/project/subjects.html:79
+msgid "tooltip_subject_import"
 msgstr ""
-"Ajoutez une liste de sujets en une seule fois en important un fichier Excel "
-"(.xls) ou un fichier CSV (.csv)"
-
-#: templates/project/subjects_wizard.html:80
-msgid "r_tooltip_subject_wizard_import"
-msgstr ""
-"Suivez ces cinq étapes faciles pour importer vos sujets :<br /> Ouvrez un "
-"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
-"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
-"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
-"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
-"saisissez REG. Dans la cellule B2, saisissez Subject Type. Dans la cellule C2 "
-"saississez le nom du sujet (exemple : Clinique du Nord). Dans la cellule D2, "
-"saisissez le numéro de mobile attaché au sujet. Dans la cellule E2, saisissez son ID "
-"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
-"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
-"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
-"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
-"virgule). Dans la cellule F2 saisissez une description courte du sujet. "
-"<br/>3. Répétez l'étape #2 pour chaque sujet à partir de la cellule A3. "
-"Chaque sujet sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
-"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
-"\"Importez la liste\" et suivez les instructions."
+"Ajoutez une liste de sujets en suivant ces instructions:"
+"<br />1) Téléchargez le modèle en cliquant sur le lien ‘Importer un Modèle’"
+"<br />2) Suivez les instructions relatives au modèle pour créer une liste de vos Sujets"
+"<br />3) Sauvegardez dans votre ordinateur le modèle dûment rempli"
+"<br />4) Cliquez sur le bouton ‘Importer la Liste’"
+"<br />5) Cliquez sur le bouton ‘Télécharger un Fichier’"
+"<br />6) Sélectionnez dans votre ordinateur le modèle dûment rempli"
+"<br />7) Attendez que le téléchargement du fichier soit terminé"
 
 #: templates/project/subjects_wizard.html:83
 msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"

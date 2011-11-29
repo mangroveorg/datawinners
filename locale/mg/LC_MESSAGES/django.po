@@ -1111,14 +1111,6 @@ msgstr "(Optionnel)"
 msgid "Add Data Senders Manually"
 msgstr "Ajouter des Envoyeurs manuellement"
 
-#: templates/project/datasenders_wizard.html:66
-msgid "q_tooltip_datasenders_add_manually"
-msgstr "Ajoutez les envoyeurs un par un en utilisant le formulaire."
-
-#: templates/project/datasenders_wizard.html:69
-msgid "r_tooltip_datasenders_add_manually"
-msgstr "Cliquez sur le bouton bleu \"Ajouter les Envoyeurs manuellement\""
-
 #: templates/project/datasenders_wizard.html:72
 msgid "Enter your Data Senders individually"
 msgstr "Entrez les Envoyeurs un par un"
@@ -1953,33 +1945,6 @@ msgstr "Entrez les sujets un par un"
 #: templates/project/subjects_wizard.html:74
 msgid "Import a List of Subjects"
 msgstr "Importez la liste des sujets"
-
-#: templates/project/subjects_wizard.html:77
-msgid "q_tooltip_subject_wizard_import"
-msgstr ""
-"Ajoutez une liste de sujets en une seule fois en important un fichier Excel "
-"(.xls) ou un fichier CSV (.csv)"
-
-#: templates/project/subjects_wizard.html:80
-msgid "r_tooltip_subject_wizard_import"
-msgstr ""
-"Suivez ces cinq étapes faciles pour importer vos sujets :<br /> Ouvrez un "
-"nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
-"B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
-"Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
-"G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
-"saisissez REG. Dans la cellule B2, saisissez Subject Type. Dans la cellule C2 "
-"saississez le nom du sujet (exemple : Clinique du Nord). Dans la cellule D2, "
-"saisissez le numéro de mobile attaché au sujet. Dans la cellule E2, saisissez son ID "
-"unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
-"les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
-"Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
-"les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
-"virgule). Dans la cellule F2 saisissez une description courte du sujet. "
-"<br/>3. Répétez l'étape #2 pour chaque sujet à partir de la cellule A3. "
-"Chaque sujet sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
-"4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
-"\"Importez la liste\" et suivez les instructions."
 
 #: templates/project/subjects_wizard.html:83
 msgid "Upload an excel (.xls) or csv file (.csv) of your Subjects"
