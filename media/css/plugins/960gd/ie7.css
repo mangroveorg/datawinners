@@ -109,3 +109,11 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 #type_message{
     width: 300px !important;
 }
+
+.create_proj_button a{
+    line-height: 45px;
+}
+
+.all_projects{
+    margin-top: -20px;
+}
