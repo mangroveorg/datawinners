@@ -758,14 +758,14 @@ msgstr ""
 
 #: templates/dashboard/home.html:31
 msgid "help_project_creation"
-msgstr "Follow the easy step-by-step process to create a new project."
+msgstr "Each project = one questionnaire. Don’t worry, you can create as many different projects as you like."
 
 #: templates/dashboard/home.html:40
 msgid "How to use Datawinners"
 msgstr ""
 
 #: templates/dashboard/home.html:41
-msgid "Get more information on what you can do with DataWinners."
+msgid "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box."
 msgstr ""
 
 #: templates/dashboard/home.html:44

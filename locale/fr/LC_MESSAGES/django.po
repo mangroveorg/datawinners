@@ -759,15 +759,15 @@ msgstr "Envois Web"
 
 #: templates/dashboard/home.html:31
 msgid "help_project_creation"
-msgstr "Suivez étape par étape la procedure pour créer un nouveau projet."
+msgstr "Chaque projet = un questionnaire. Ne vous inquiétez pas, vous pouvez créer autant de projets différents que vous le souhaitez."
 
 #: templates/dashboard/home.html:40
 msgid "How to use Datawinners"
 msgstr "Comment utiliser Datawinners"
 
 #: templates/dashboard/home.html:41
-msgid "Get more information on what you can do with DataWinners."
-msgstr "Obtenir plus d'information sur ce que vous pouvez faire avec DataWinners."
+msgid "Click on the triangle to the left of 'How to use DataWinners' to expand or collapse the box."
+msgstr "Cliquez sur le triangle à gauche de 'Comment utiliser DataWinners' pour agrandir ou réduire la boîte."
 
 #: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
