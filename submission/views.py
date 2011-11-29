@@ -125,8 +125,8 @@ def submit_to_player(incoming_request):
         message = incoming_request['datawinner_log'].error = get_exception_message_for(exception=exception, channel=SMS)
         incoming_request['datawinner_log'].save()
     except DataObjectNotFound as exception:
-        message = exception_messages.get(DataObjectNotFound).get(SMS)
-        message = message % (incoming_request['form_model'].entity_type[0], exception.data[1], incoming_request['form_model'].entity_type[0])
+        message1 = ugettext(exception_messages.get(DataObjectNotFound).get(SMS))
+        message = message1 % (incoming_request['form_model'].entity_type[0], exception.data[1], incoming_request['form_model'].entity_type[0])
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
     except Exception as exception:
