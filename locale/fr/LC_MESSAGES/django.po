@@ -2847,3 +2847,6 @@ msgstr "Support téchnique"
 
 msgid "Billing"
 msgstr "Facturation"
+
+msgid "Set Reminders"
+msgstr "Définir des rappels"

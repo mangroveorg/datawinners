@@ -2796,3 +2796,6 @@ msgstr ""
 
 msgid "Billing"
 msgstr ""
+
+msgid "Set Reminders"
+msgstr ""

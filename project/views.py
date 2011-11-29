@@ -458,7 +458,7 @@ def sent_reminders(request, project_id):
     questionnaire = FormModel.get(dbm, project.qid)
     organization = Organization.objects.get(org_id=request.user.get_profile().org_id)
     is_trial_account = organization.in_trial_mode
-    html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'
+    html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/sent_reminders.html'
     return render_to_response(html,
                 {'project': project, "project_links": _make_project_links(project, questionnaire.form_code),
                  'reminders':get_all_reminder_logs_for_project(project_id, dbm),
