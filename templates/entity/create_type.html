@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="add_subject_type">
-    <h3> <a id="add_new_subject_type" href="#">{% trans "Add a new subject type" %}</a></h3>
-    <div class="required form-row-10px" id="add_subject_type_content">
+    <h3 class="add_sub"> <a id="add_new_subject_type" href="#">{% trans "Add a new subject type" %}</a></h3>
+    <div class="required form-row-10px add_new_sub" id="add_subject_type_content">
         <input type="text" maxlength="20" name="entity_type_regex" id="id_entity_type_text">
         <input id = "add_type" type="button" value="{% trans 'Add' %}" class="button_blue"/>
         <label for="id_entity_type_text" class="example">{% trans "New Subject(eg clinic, waterpoint etc)" %}</label>

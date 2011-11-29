@@ -100,3 +100,11 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 #add_subject_type div{
     width: 363px;
 }
+
+.add_sub{
+    width: 462px !important;
+}
+
+.add_new_sub{
+    width: 400px !important;
+}
