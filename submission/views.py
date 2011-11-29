@@ -90,7 +90,13 @@ def find_parser(incoming_request):
         incoming_request['form_model'] = form_model
         incoming_request['submission_values'] = values
         incoming_request['datawinner_log'].form_code = form_code
-    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException,SMSParserWrongNumberOfAnswersException) as exception:
+    except SMSParserWrongNumberOfAnswersException as exception:
+        form_model = get_form_model_by_code(dbm, exception.data[0])
+        translation.activate(form_model.activeLanguages[0])
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
+        incoming_request['datawinner_log'].save()
+    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
         incoming_request['datawinner_log'].save()
