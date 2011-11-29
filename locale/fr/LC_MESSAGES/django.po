@@ -2759,10 +2759,14 @@ msgstr "En décochant cette case, rappels automatiques seront envoyés à tous l
 
 #Translations for tooltips on basic_info.html
 msgid "q_tooltip_questionnaire_about"
-msgstr ""
+msgstr "Les sujets sont très important. Ils sont les thèmes des questionnaires de votre collecte de données. "
+"Les sujets peuvent être des personnes (patients, fermiers, enfants de moins de cinq ans) ou des choses "
+"(centres de santés, petites échoppes, points d'eaux). Les sujets peuvent aussi être les personnes qui vous envoient "
+"leurs rapports d'activité mensuels."
 
 msgid "r_tooltip_questionnaire_about"
-msgstr ""
+msgstr "Cliquez sur un des boutons radios pour nous indiquer le sujet de votre questionnaire. DataWinners vous donnera "
+"des instructions étape par étape selon votre choix. Ne vous inquiétez pas, vous pouvez toujours changez votre choix plus tard"
 
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
