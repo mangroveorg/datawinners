@@ -2745,3 +2745,6 @@ msgid "tooltip_devices"
 msgstr "Your Data Senders can submit data using SMS and the Internet. "
 "SMS is an efficient data collection channel for questionnaires with less than 20 questions and where Data Senders have no Internet access. "
 "If any of your Data Senders have (or will have) access to the Internet, we recommened leaving the WEB box checked."
+
+msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
+msgstr ""

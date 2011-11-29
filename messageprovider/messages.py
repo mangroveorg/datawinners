@@ -57,6 +57,10 @@ exception_messages = {
         DEFAULT: u"Invalid message format.",
         SMS: u"Error: SMS Incorrect. Review printed questionnaire and re-send SMS."
     },
+    ex.SMSParserWrongNumberOfAnswersException: {
+        DEFAULT: u"Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS.",
+        SMS: u"Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
+    },
     ex.SubmissionParseException: {
         DEFAULT: u"Invalid message format.",
         WEB: u"The system is experiencing a problem right now. Please try again in a few minutes",
