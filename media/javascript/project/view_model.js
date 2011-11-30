@@ -75,11 +75,12 @@ var viewModel =
         viewModel.questions.valueHasMutated();
     },
     removeOptionFromQuestion:function(choice) {
-        var indexOfChoice = viewModel.selectedQuestion().choices().indexOf(choice);
+        var choices = viewModel.selectedQuestion().choices();
+        var indexOfChoice = $.inArray(choice, choices);
         var lastChoiceValue = choice['val'].charCodeAt(0);
         var i = indexOfChoice + 1;
-        for(i; i < viewModel.selectedQuestion().choices().length; i=i+1){
-            viewModel.selectedQuestion().choices()[i]['val'] = String.fromCharCode(lastChoiceValue);
+        for(i; i < choices.length; i=i+1){
+            choices[i]['val'] = String.fromCharCode(lastChoiceValue);
             lastChoiceValue = lastChoiceValue + 1;
         }
         viewModel.selectedQuestion().choices.remove(choice);
