@@ -2772,9 +2772,9 @@ msgstr "Cliquez sur un des boutons radios pour nous indiquer le sujet de votre q
 
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
-"Les SMS constituent un canal de collecte de données efficace pour les questionnaires de moins de 20 questions et dans les cas où les Expéditeurs de "
+"<br/>Les SMS constituent un canal de collecte de données efficace pour les questionnaires de moins de 20 questions et dans les cas où les Expéditeurs de "
 "Données n’ont pas accès à Internet. "
-"Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
+"<br/>Si certains de vos Expéditeurs de Données ont (ou auront) accès à Internet, nous vous recommandons de laisser la case 'WEB' cochée."
 
 msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
 msgstr "Erreur. SMS incorrect. Le nombre de données est insuffisant ou en surnombre. Revoyez le questionnaire imprimé et envoyez de nouveau le  SMS."
