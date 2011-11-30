@@ -2781,3 +2781,6 @@ msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou v
 
 msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
 msgstr "Erreur. SMS incorrect. Le nombre de données est insuffisant ou en surnombre. Revoyez le questionnaire imprimé et envoyez de nouveau le  SMS."
+
+msgid "Privacy and Policy"
+msgstr "Politique de Confidentialité"

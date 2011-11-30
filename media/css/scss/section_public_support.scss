@@ -4,7 +4,7 @@
         font-size:13px;
         font-weight:normal;
         margin:0;
-        padding:0;
+        padding: 0 0 0 20px;
         a{
             padding:5px 0 0 22px;
             &:hover{
@@ -22,11 +22,11 @@
         padding:0;
     }
     .ui-icon{
-        background:url('/media/images/dw_acc_arrow.gif') no-repeat left top;
+        background:url('/media/images/dw_acc_arrow.png') no-repeat left top;
     }
     .ui-state-active{
         .ui-icon{
-            background:url('/media/images/dw_acc_arrow.gif') no-repeat left -20px;
+            background:url('/media/images/dw_acc_arrow.png') no-repeat left -20px;
         }
     }
     td{
@@ -36,9 +36,6 @@
 }
 
 .block_support{
-    h3{
-        font-size: 14px;
-    }
     border-top:  1px solid #CCC;
     border-bottom:  1px solid #CCC;
     padding:  10px 0;
@@ -50,6 +47,9 @@
         position: absolute;
         top: 82px;
         right: 5px;
+    }
+    h3{
+        font-size: 14px;
     }
     .grid_5{
         position: relative;

@@ -1,10 +1,523 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'public_secondary.html' %}
+{% block page_title %} Support {% endblock %}
 
-</body>
-</html>
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+
+    <script type="text/javascript" src="/media/javascript/home/support.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/en/home/">Home</a> &gt; <a href="/en/support/">Support</a> &gt; Find Answers (FAQs)
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+       <h1><a href="/en/support/">SUPPORT</a></h1>
+        <ul>
+            <li><a href="/en/support/case-studies/">Case studies</a></li>
+            <li><a href="/en/support/get-started/">Get Started</a></li>
+            <li class="active"><a href="/en/support/find-answers/">Find Answers (FAQs)</a></li>
+            <li><a href="/en/support/ask-us/">Ask Us</a></li>
+        </ul>
+    </div>
+    <div id="main_content">
+
+        <div class="margin_left_20">
+            <div class="grid_18 font_size_14">
+                Browse our list of Frequently Asked Questions.
+            </div>
+            <br/>
+            <br/>
+            <h2>Questionnaire</h2>
+            <div class="support-acc">
+                <h3><a href="#">What is a Project Questionnaire?</a></h3>
+                <div>
+                    <p>
+                        A set of questions used to collect specific data for a project
+                        Examples:
+                    </p>
+                    <ul class="bulleted">
+                        <li>Activity Report</li>
+                        <li>Stock Reports</li>
+                        <li>Sales Receipts</li>
+                        <li>Household Survey</li>
+                        <li>Opinion Polls</li>
+                    </ul>
+                </div>
+                <h3><a href="#">What is the difference between a "General Activity Report" and a report about a Subject?</a></h3>
+                <div>
+                    <p>
+                        Data collection projects can be grouped into two broad categories:
+                        1)  General Activity Reports and;
+                        2) Detailed Reports about a Specific Subject.  With DataWinners, you can collect data for both.
+                    </p>
+                    <p>
+                        General Activity Reports
+                    </p>
+                    <p>
+                        A summary of work performed or supervised by the Data Senders themselves.  General Activity Reports typically collect macro level data on a regular, ongoing basis.  Examples of questions that might appear on a general activity report include:
+                    </p>
+                        <ul class="bulleted">
+                            <li>How many babies did you weigh last month?</li>
+                            <li>How many babies were underweight last month?</li>
+                        </ul>
+                    <p>
+                        Detailed Reports about a Specific Subject
+                    </p>
+                    <p>A detailed report about a specific person (child under five),
+                        place (District) object (health center) or event (focus group).
+                        Detailed Reports typically collect micro level data after a visit to (or from)
+                        the individual Subject.
+                        Examples of questions that might appear on a Detailed Report about a Specific Subject include:
+                    </p>
+                    <ul class="bulleted">
+                        <li>How many months old is this baby?</li>
+                        <li>How much does this baby weigh in kilograms?</li>
+                    </ul>
+                    <p>
+                        To facilitate data collection and improve accuracy,
+                        you can register each individual Subject in DataWinners prior
+                        to collecting data about them.
+                        Each Subject will receive a unique identification number .
+                        Data Senders then use the Subject’s unique ID when they report on
+                        the results of a visit to (or from) the Subject.
+                    </p>
+                    <p>
+                        Register each Subject with their geographical location and DataWinners
+                        will display all the subjects on a map.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is a Questionnaire Code?</a></h3>
+                <div>
+                    <p>The unique questionnaire ID established by the Project Manager within DataWinners.
+                        The Project Manager shares the questionnaire code with the Data
+                        Senders who in turn include the corresponding questionnaire code at the start of every
+                        SMS message.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is a Question Code?</a></h3>
+                <div>
+                    <p>For each Project Questionnaire the Project Manager establishes a set of unique
+                        Question Codes within DataWinner.
+                        The Project Manager shares the question code with the data senders who
+                        in turn pair the question code with their answer.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is an Answer?</a></h3>
+                <div>
+                    <p>The individual answer provided by the data sender to a particular question.</p>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <h2>Data Senders</h2>
+            <div class="support-acc">
+                <h3><a href="#">What is a Data Sender?</a></h3>
+                <div>
+                    <p>A person who sends in data via SMS or Internet.
+                        Data Senders are often based in the field.
+                    </p>
+                </div>
+
+                <h3><a href="#">Do I have to register Data Senders?</a></h3>
+                <div>
+                    <p>
+                        No.  Registration is optional.
+                        For some projects, you many want to allow anyone to send in data
+                        (example:  collecting reports from citizen journalists).
+                        For other projects, registering Data Senders helps.
+                        By registering, DataWinners will recognize the telephone number of the
+                        Data Sender and will accept the data.
+                        Click on the "Add a Data Sender" link on the
+                        Data Senders page to register a Data Sender.
+                    </p>
+                </div>
+
+                <h3><a href="#">Can a Data Sender self-register from the field via SMS?</a></h3>
+                <div>
+                    <p>No.  DataWinners will not accept submissions
+                       from non-registered telephones. However, a registered
+                       Data Sender can register a new Data Sender in the system by sending in the following SMS
+                        (omit all &lt;&gt;):
+                    </p>
+                    <p>
+                       Reg .t reporter .n &lt;name of Data Sender&gt; .m &lt;mobile phone number&gt; .l &lt;location&gt; .g
+                       &lt;gps coordinates of data sender&gt; (GPS Coordinates are optional)
+                    </p>
+                </div>
+
+                <h3><a href="#">Do I need to register my Data Sender's telephone number in a specific format?</a></h3>
+                <div>
+                    <p>Yes.  When registering a Data Sender,
+                        include the country code in the telephone number and omit all spaces and special characters.
+                        For example, in Madagascar, the phone number 033 12 345 67 would be registered
+                        as: 261331234567.
+                    </p>
+                </div>
+
+                <h3><a href="#">Do I need to register my Data Sender for each new project that I create?</a></h3>
+                <div>
+                    <p>No.  Once registered, a Data Sender is able to send in data for all current and future projects.
+                        However, Data Senders receive reminder messages only for projects for which they are associated.
+                        You can associate a Data Sender to a particular project by clicking on the
+                        Data Sender link at the top of the page.
+                    </p>
+                </div>
+
+                <h3><a href="#">Does my 'Data Sender' need to include his or her unique ID when submitting data?</a></h3>
+                <div>
+                    <p>No.  DataWinners will identify each Data Sender by their registered phone number.</p>
+                </div>
+
+                <h3><a href="#">What are success and error messages?</a></h3>
+                <div>
+                    <p>Each time a Data Senders submits data, DataWinners will evaluate the SMS and automatically send
+                       back a message. If the SMS contains any errors,
+                       DataWinners will send back an error message specifying the mistake made.
+                       If the SMS contains no errors, then DataWinners will send a success message back along with
+                       a summary of the submitted answers.
+                       The Data Sender can then review the summary and re-submit in case of any errors.
+                    </p>
+                </div>
+
+                <h3><a href="#">How do I change the language of the success and error messages that my Data Senders receive?</a></h3>
+                <div>
+                    <p>Choose the Success and error message language on the Define Project step.
+                       To change the language of these messages while still in the Test State of the project,
+                       click the "Edit this Project" link from the project overview page and choose the new language.
+                       Once a project is in its Active state, the message language is fixed and cannot be changed.
+                    </p>
+                </div>
+
+                <h3><a href="#">What languages can my Data Senders receive their Success and Error messages in?</a></h3>
+                <div>
+                    <p>In the current release of DataWinners,
+                       Success and Error messages can be sent in English, French and Malagasy.
+                    </p>
+                </div>
+
+                <h3><a href="#">Can I customize the Success and Error messages or add a new language or dialect?</a></h3>
+                <div>
+                    <p>In the current release of DataWinners, Success and Error
+                        Messages are not editable or customizable.
+                       However, we plan to implement these features in upcoming releases of DataWinners.
+                    </p>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <h2>Subjects</h2>
+            <div class="support-acc">
+                <h3><a href="#">What is a 'Subject'?</a></h3>
+                <div>
+                    <p>A Subject is  what your questionnaire is about;  a specific person,
+                       place, thing or event on which Data Senders report .
+                       DataWinners organizes the data analysis page around the questionnaire’s subject.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is the difference between a Subject Type and a Subject ?</a></h3>
+                <div>
+                    <p>
+                        A Subject Type is a general label for a group of registered Subjects. For example, you may create the Subject Type "Clinic." You could then register the following individual Subjects:
+                    </p>
+                    <ul class="bulleted">
+                        <li>North Clinic</li>
+                        <li>South Clinic</li>
+                        <li>East Clinic</li>
+                        <li>West Clinic</li>
+                    </ul>
+                </div>
+
+                <h3><a href="#">Can I report on more than one Subject Type per project?</a></h3>
+                <div>
+                    <p>
+                        No, each project/questionnaire can only be about one Subject.
+                        A Data Sender cannot report on more than one subject in one SMS.
+                        I’m not sure this is true…can’t a questionnaire include more than one subject?
+                        How about ‘What clinic are you reporting on?
+                    </p>
+                </div>
+
+                <h3><a href="#">Do I have to register 'Subjects' for my projects?</a></h3>
+                <div>
+                    <p>
+                        No.  However, it’s advantageous to register your subjects for several reasons.
+                    </p>
+                    <ul class="bulleted">
+                        <li>Facilitate data collection and improve accuracy.
+                            Each Subject you register with DataWinners receives a unique identification number.
+                            Data Senders then use the Subject’s unique ID when they report on the
+                            results of a visit to (or from) the Subject.
+                            Using these unique ID numbers simplifies subject identification and improves accuracy
+                        </li>
+                        <li>Register each Subject with their geographical location and
+                            DataWinners will display all the subjects on a map.
+                        </li>
+                    </ul>
+                </div>
+
+                <h3><a href="#">Can a Data Sender register a subject from the field/via SMS?</a></h3>
+                <div>
+                    <p>
+                        Data Senders can register new Subjects in the field. Use the following format (omit all &lt;&gt;):
+                    </p>
+                    <p>
+                         Reg .t &lt;type of subject&gt; .n &lt;name of Subject&gt; .m &lt;mobile phone number of Subject&gt; .l &lt;location of Subject&gt; .g &lt;gps coordinates of Subject&gt;
+                    </p>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <h2>Data Analysis</h2>
+            <div class="support-acc">
+                <h3><a href="#">What is a Data Record?</a></h3>
+                <div>
+                    <p>Single, completed electronic submission sent by the
+                        Data Sender in response to a Project Questionnaire; ie; SMS,
+                        completed form (web-based)
+                    </p>
+                </div>
+
+                <h3><a href="#">What is Data?</a></h3>
+                <div>
+                    <p>The entire collection of Data Records.
+                    </p>
+                </div>
+
+                <h3><a href="#">What do the pins on the map represent?</a></h3>
+                <div>
+                    <p>On any map, the pins represent either the registered
+                        Data Senders or the registered subjects. If the project type is a
+                        General Activity Report, then each pin on the map corresponds to one registered
+                        Data Sender. For a Detailed Reports about a
+                        Specific Subject, each pin on the map corresponds to one registered subject.
+                    </p>
+                </div>
+
+                <h3><a href="#">Why aren’t all of my registered Data Senders or Subjects on the map?</a></h3>
+                <div>
+                    <p>Only Data Senders and Subjects registered with their geographic location are displayed on the map.
+                    </p>
+                    <p>
+                        If you do not see a Data Sender or Subject on the map, it is likely that an error
+                        occurred when entering its coordinates or location during registration.
+                        Please review the registered Subject/Data Sender's GPS coordinates via the All
+                        Subjects/All Data Senders lists.
+                    </p>
+                    <p>
+                        The most likely cause for an error is choosing a non-auto-suggested
+                        location during the registration process of the Subject or Data Sender.
+                    </p>
+                </div>
+
+                <h3><a href="#">How do I add or delete a record that a Data Sender has submitted?</a></h3>
+                <div>
+                    <p>
+                        Add a record via the "Web Submission" link from the "Data" tab for any project.
+                        To delete a data record, click on the "All Data Records" page for the project,
+                        select the data record you wish to delete by clicking on the
+                        corresponding box in the left-most column, and select
+                        "Delete" from the Actions drop down menu.
+                    </p>
+                </div>
+
+                <h3><a href="#">What does the 'Submission Status' column refer to on the "All Data Records" page?</a></h3>
+                <div>
+                    <p>The Submission Status column indicates whether an incoming SMS was error free and accepted
+                        by the system, or contained one or more errors and was rejected by the system.
+                        The term "True" indicates the SMS submission was error free and accepted by the system.
+                        The term "False" indicates the SMS submission contained errors and was rejected by the system.
+                    </p>
+                    <p>
+                        The intention of displaying the "False" submissions is to serve as a diagnostic tool
+                        to help you identify what issues or problems your Data Senders are
+                        having when they send in their data.
+                    </p>
+                </div>
+
+                <h3><a href="#">What does the "Deleted Record" column refer to on the "All Data Records" page?</a></h3>
+                <div>
+                    <p>
+                        The Deleted Record column indicates whether a data record is included in the
+                        calculations/aggregations that appear on the "Analysis" page of the Data tab.
+                        The term "False" indicates that the data record has not been deleted,
+                        and is therefore included in the calculations/aggregations on the analysis page.
+                        The term "True" indicates that the record has been deleted and is therefore not included in the
+                        calculations/aggregations on the analysis page.
+                    </p>
+                </div>
+            </div>
+            <br/>
+            <br/>
+
+            <h2>DataWinners Accout Users</h2>
+            <div class="support-acc">
+                <h3><a href="#">What is an Account Administrator?</a></h3>
+                <div>
+                    <p>
+                        The individual that is registered within DataWinners as the point of contact for his
+                        or her respective organization for the DataWinners account.
+                        The Account Administrator has additional rights to the account in addition to
+                        those granted to all "Project Managers":  grant “Project Manager” privileges to
+                        individuals within the organization, update or change billing information,
+                        update or change organizational contact information (address, phone number)
+                        and close the organization’s DataWinners account.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is a Project Manager?</a></h3>
+                <div>
+                    <p>
+                        An individual who uses DW to collect data and/or communicate key messages.
+                        Project Manager can create new project questionnaires, register data senders and subjects,
+                        send SMS back out to the field and access and export all collected data.
+                    </p>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <h2>Technical FAQs</h2>
+            <div class="support-acc">
+                <h3><a href="#">What type of telephone can I user to send in data to my projects?</a></h3>
+                <div>
+                    <p>
+                        Any SMS-enabled mobile telephone in the world can send in data.
+                    </p>
+                </div>
+
+                <h3><a href="#">Where is DataWinners hosted?</a></h3>
+                <div>
+                    <p>The system is currently hosted with Linode in their London facility.
+                        Linode is an excellent virtual/cloud provider.
+                        Their website can be found <a href="http://www.linode.com/">here</a>.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is the technology stack behind DataWinners? </a></h3>
+                <div>
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>Database</td>
+                            <td>CouchDB</td>
+                        </tr>
+                        <tr>
+                            <td>Language</td>
+                            <td>Python</td>
+                        </tr>
+                        <tr>
+                            <td>Application Framework</td>
+                            <td>Django</td>
+                        </tr>
+                        <tr>
+                            <td>Key JavaScript Librairies</td>
+                            <td>jQuery</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                GIS Subsystem
+                            </td>
+                            <td>PostGIS, OpenLayers</td>
+                        </tr>
+                        <tr>
+                            <td>Messaging Layer</td>
+                            <td>Vumi</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3><a href="#">Is this open source? Who is the code base available to?</a></h3>
+                <div>
+                    <p>An international partnership of private sector companies, academic institutions and
+                        non-governmental organizations are working collaboratively to create and manage DataWinners.com
+                        as an open-source project.  Human Network International (HNI) and ThoughtWorks, Inc.
+                        lead the effort to make this mobile data collection service responsive to the needs of
+                        development organizations worldwide.
+                    </p>
+                    <p>DataWinners hosted service is one of the first applications built using the Mangrove data
+                        collection framework, itself an open source project that develops core tools for mobile data
+                        collection, aggregation, analysis, and visualization targeting SMS, Web, J2ME and Android via XForms.
+                        The Mangrove initiative is collaboration of ThoughtWorks, Inc, the Modi Research Lab at
+                        Columbia University and HNI.
+                    </p>
+                    <p>
+                        The goal of these open-sourced projects is to create a global community, working together
+                        to make mobile data collection better.  The entire code base for DataWinners and Mangrove
+                        is available for download <a href="https://github.com/mangroveorg/mangrove">here</a>.
+                        We encourage partners to contribute code and ideas so DataWinners and
+                        Mangrove continue to innovate.
+                    </p>
+                </div>
+
+                <h3><a href="#">Can the code be modified or manipulated?</a></h3>
+                <div>
+                    <p>
+                        Yes.  We encourage partners to contribute code and ideas so
+                        DataWinners and Mangrove continue to innovate.
+                    </p>
+                </div>
+
+                <h3><a href="#">What is the SMS interface built around?</a></h3>
+                <div>
+                    <p>
+                        DataWinners uses Vumi, an open source messaging transport
+                        created by the <a href="http://praekeltfoundation.org/">Praekelt Foundation</a> for core messaging services.
+                        Vumi can be interfaced with any number of SMS gateway providers and
+                        Mobile Network Operators (MNOs). In Madagascar, DataWinners integrates directly with
+                        <a href="http://africa.airtel.com/madagascar/">Airtel</a> via SMPP (as supported by Vumi).
+                        We also have integrations with gateway providers in India and
+                        <a href="http://www.clickatell.com/index_b.php">Clickatell</a> in the US.
+                    </p>
+                </div>
+
+                <h3><a href="#">How does DataWinners interface with local providers? </a></h3>
+                <div>
+                    <p>
+                        We sign agreements with mobile operators and SMS aggregators to connect DataWinners to every
+                        cell phone in the world. This means in a matter of a days, we can activate
+                        DataWinners in any country in the world.
+                    </p>
+                </div>
+
+                <h3><a href="#">What browsers does DataWinners support?</a></h3>
+                <div>
+                    <p>&nbsp;
+                    </p>
+                </div>
+
+                <h3><a href="#">What type of encryption is my collected data stored in?</a></h3>
+                <div>
+                    <p>&nbsp;
+                    </p>
+                </div>
+
+                <h3><a href="#">Can I host DataWinners on my own server?</a></h3>
+                <div>
+                    <p>&nbsp;
+                    </p>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

@@ -420,7 +420,7 @@ body{
 #how_menu{
     position:relative;
     padding-top:10px;
-    margin-bottom:40px;
+    margin: 0 auto 40px auto;
     width:720px;
     .title{
         width:180px;
@@ -436,10 +436,16 @@ body{
     #how_active{
         position:absolute;
         width:180px;
-        height:180px;
         top:0;
         left:0;
+    }
+    .how_active{
+        height: 180px;
         background:url("/media/images/dw_how_active.png") no-repeat center center;
+    }
+    .how_active1{
+        height:230px;
+        background:url("/media/images/dw_how_active1.png") no-repeat center center;
     }
 }
 #how_content{
@@ -642,5 +648,8 @@ small{
 ol{
     .lower_alpha{
         list-style-type: lower-alpha;
+    }
+    .lower_i{
+        list-style-type: lower-roman;
     }
 }
