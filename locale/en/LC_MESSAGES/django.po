@@ -2750,5 +2750,5 @@ msgstr "Your Data Senders can submit data using SMS and the Internet."
 msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
 msgstr ""
 
-msgid "Privacy and Policy"
+msgid "Privacy Policy"
 msgstr ""

@@ -2334,5 +2334,5 @@ msgstr ""
 msgid "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."
 msgstr "Diso ny SMS-nao. Tsy ampy na mihoatra ny isan'ny valiny nalefanao. Jereo ilay lisitry ny fanontaniana ary avereno alefa  indray  ny SMS."
 
-msgid "Privacy and Policy"
+msgid "Privacy Policy"
 msgstr ""

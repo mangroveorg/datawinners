@@ -138,7 +138,7 @@
         "fields": {
             "registration_required": false,
             "title": "Privacy and Policy in English",
-            "url": "/en/privacy-and-policy/",
+            "url": "/en/privacy-policy/",
             "template_name": "",
             "sites": [
                 4,
@@ -556,7 +556,7 @@
         "fields": {
             "registration_required": false,
             "title": "Privacy and Policy en Fran\u00e7ais",
-            "url": "/fr/privacy-and-policy/",
+            "url": "/fr/privacy-policy/",
             "template_name": "",
             "sites": [
                 4,
