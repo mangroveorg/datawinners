@@ -2661,7 +2661,7 @@ msgid "Internet"
 msgstr "Internet"
 
 msgid "DATA SENDERS"
-msgstr "EXPÉDITEURS DE DONNÉES"
+msgstr "ENVOYEURS"
 
 msgid "Add Senders"
 msgstr "Ajouter des Expéditeurs"
