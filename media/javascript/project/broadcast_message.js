@@ -57,6 +57,9 @@ DW.broadcast_sms.prototype={
     clearContent:function(){
         $(this.smsContentElement).val("");
         $(this.additional_column.telephoneNumbersElementId).val("");
+        $("#broadcast_sms_form label.error").each(function(){
+            $(this).remove();
+        });
         this.setMessageCount();
     },
     getSMSContent:function(){
