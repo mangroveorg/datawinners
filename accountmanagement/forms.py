@@ -43,6 +43,7 @@ class OrganizationForm(ModelForm):
 
     class Meta:
         model = Organization
+        exclude = ('in_trial_mode', 'active_date', 'is_deactivate_email_sent', 'addressline2', )
 
 
     def update(self):
