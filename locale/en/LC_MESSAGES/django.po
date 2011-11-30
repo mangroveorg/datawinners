@@ -2070,6 +2070,9 @@ msgstr ""
 msgid "Patern should be ^[0-9]+$"
 msgstr ""
 
+msgid "Invalid Mobile Number. Only Numbers and Dash(-) allowed."
+msgstr ""
+
 msgid "Mobile number is missing"
 msgstr ""
 
