@@ -5,14 +5,14 @@
   border: 1px solid #ccbf97; }
 
 .wizard_heading {
-  margin: 15px !important;
+  margin: 10px !important;
   font-size: 28px; }
 
 .wizard_content {
   margin-top: 15px !important; }
 
 .w_content {
-  margin: 15px !important;
+  margin: 10px !important;
   font-size: 14px; }
   .w_content p {
     line-height: 1.5em; }

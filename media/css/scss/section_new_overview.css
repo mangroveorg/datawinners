@@ -4,13 +4,16 @@
   margin: 10px; }
 
 .wizard_success_message {
-  height: auto;
+  height: 355px;
   background: url("/media/images/wizard_bg2.gif") repeat-x scroll left top transparent;
   border: 1px solid #ccbf97;
   margin-bottom: 20px; }
 
 .w_content li {
   margin-left: 50px; }
+
+.w_content div {
+  margin-left: 0; }
 
 .grid_23 {
   margin-top: 0px !important; }
@@ -30,12 +33,6 @@
   .left_half label {
     display: inline;
     font-size: 16px; }
-
-.my_sub p b{
-    font-size: 16px;
-    float: left;
-    margin-bottom: 5px;
-}
 
 .right_half {
   float: right;
