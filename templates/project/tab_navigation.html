@@ -95,13 +95,11 @@
 
 {% block secondary_navigation_data %}
 <ul class="secondary_tab">
-    <li class="{% ifactivetab 'secondary_tab_nav' 'summary' %}active{% else %}inactive{% endifactivetab %}">
+    <li>
         <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
-
         <div class="tooltip"><p>
             {% trans "tooltip_tab_navigation" %}
         </p></div>
-        <a href="#" class="{{ disable_link_class }}">{% trans "Summary" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'analysis' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.data_analysis_link }}" class="{{ disable_link_class }}">{% trans "Analysis" %}</a>
