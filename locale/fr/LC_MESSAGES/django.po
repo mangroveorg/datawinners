@@ -526,6 +526,9 @@ msgstr "Guide"
 msgid "Create a new project"
 msgstr "Ajouter un nouveau projet"
 
+msgid "Create a New Project"
+msgstr "Ajouter un Nouveau Projet"
+
 #: templates/step_wizard.html:25
 msgid "Are you sure you want to cancel this project?"
 msgstr "Etes-vous sûr de vouloir annuler ce projet ?"

@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, ugettext_lazy
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
@@ -47,7 +47,8 @@ def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-    project_summary = dict(name='Create a New Project')
+    name = ugettext_lazy("Create a New Project")
+    project_summary = dict(name=name)
     if request.method == 'GET':
         form = CreateProject(entity_list=entity_list)
         activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
