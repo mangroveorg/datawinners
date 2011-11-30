@@ -30,8 +30,10 @@
     </li>
 
     <li>
-        {{ form.language.label_tag }}
-        <img src="/media/images/help_icon.png" class="help_icon help" style="margin-top:-18px;float: right;margin-right: 370px">
+        <div class="help">
+            {{ form.language.label_tag }}
+        </div>
+        <img src="/media/images/help_icon.png" class="help_icon">
         <div class="tooltip"><p>
             {% trans "tooltip_error_language" %}
         </p></div>
@@ -39,8 +41,10 @@
         {{ form.language.error }}
     </li>
     <li>
-        {{ form.activity_report.label_tag }}
-        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-18px;float: right;margin-right: 630px">
+        <div class="help">
+            {{ form.activity_report.label_tag }}
+        </div>
+        <img src="/media/images/help_icon.png" class="help_icon">
         <div class="tooltip"><p>
             <strong>{% trans "What is this?" %}</strong><br />
             {% trans "q_tooltip_questionnaire_about" %}
@@ -53,8 +57,10 @@
         {%  include 'entity/create_type.html' %}
     </li>
     <li>
-        {{ form.devices.label_tag }}
-        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-7px;">
+        <div class="help">
+            {{ form.devices.label_tag }}
+        </div>
+        <img src="/media/images/help_icon.png" class="help_icon">
         <div class="tooltip"><p>
             {% trans "tooltip_devices" %}
         </p></div>
