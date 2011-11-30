@@ -46,7 +46,7 @@
 
 .container_24 .grid_23 .data_ana{
     clear: both;
-    width: 1600px !important;
+    width: 1860px !important;
 }
 
 .que_width li{
@@ -116,4 +116,8 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 
 .all_projects{
     margin-top: -20px;
+}
+
+.container_24 .content > ul {
+    width: 1860px;
 }
