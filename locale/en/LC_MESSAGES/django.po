@@ -1337,6 +1337,9 @@ msgstr ""
 msgid "Save & Create Project"
 msgstr ""
 
+msgid "Create Project"
+msgstr ""
+
 msgid "Back"
 msgstr ""
 

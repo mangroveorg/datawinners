@@ -1355,6 +1355,9 @@ msgstr "Continuer"
 msgid "Save & Create Project"
 msgstr "Enregistrer & créez projet"
 
+msgid "Create Project"
+msgstr "créez projet"
+
 msgid "Back"
 msgstr "Retour"
 
