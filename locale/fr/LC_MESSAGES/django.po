@@ -2411,15 +2411,6 @@ msgstr "Entrez votre numéro de téléphone du destinataire (s). Utilisez une vi
 msgid "characters used"
 msgstr "caractères utilisés"
 
-msgid "How often do you need data?"
-msgstr "A quelle fréquence voulez-vous obtenir des données"
-
-msgid "This is general activity report."
-msgstr "Ceci est un rapport global d’activité"
-
-msgid "I am collecting data about a specific subject."
-msgstr "Je collecte des données sur un domaine particulier"
-
 msgid "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own."
 msgstr "Nous vous avons donné des questions types ci-dessous. Vous pouvez les utiliser, les éditer, ou les supprimer et ajouter les votres."
 
@@ -2765,17 +2756,6 @@ msgstr "Définir des rappels"
 msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your project"
 msgstr "En décochant cette case, rappels automatiques seront envoyés à tous les expéditeurs de données associées à votre projet"
 
-#Translations for tooltips on basic_info.html
-msgid "q_tooltip_questionnaire_about"
-msgstr "Les sujets sont très important. Ils sont les thèmes des questionnaires de votre collecte de données. "
-"Les sujets peuvent être des personnes (patients, fermiers, enfants de moins de cinq ans) ou des choses "
-"(centres de santés, petites échoppes, points d'eaux). Les sujets peuvent aussi être les personnes qui vous envoient "
-"leurs rapports d'activité mensuels."
-
-msgid "r_tooltip_questionnaire_about"
-msgstr "Cliquez sur un des boutons radios pour nous indiquer le sujet de votre questionnaire. DataWinners vous donnera "
-"des instructions étape par étape selon votre choix. Ne vous inquiétez pas, vous pouvez toujours changez votre choix plus tard"
-
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
 "<br/>Les SMS constituent un canal de collecte de données efficace pour les questionnaires de moins de 20 questions et dans les cas où les Expéditeurs de "
@@ -2787,3 +2767,16 @@ msgstr "Erreur. SMS incorrect. Le nombre de données est insuffisant ou en surno
 
 msgid "Privacy Policy"
 msgstr "Politique de Confidentialité"
+
+#Translations for tooltips on basic_info.html
+msgid "tooltip_questionnaire_about"
+msgstr ""
+
+msgid "tooltip_summary_report"
+msgstr ""
+
+msgid "tooltip_individual_report"
+msgstr ""
+
+msgid "tooltip_add_subject"
+msgstr ""

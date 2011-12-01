@@ -46,12 +46,10 @@
         </div>
         <img src="/media/images/help_icon.png" class="help_icon">
         <div class="tooltip"><p>
-            <strong>{% trans "What is this?" %}</strong><br />
-            {% trans "q_tooltip_questionnaire_about" %}
-            <br /><br />
-            <strong>{% trans "What do I need to do?" %}</strong><br />
-            {% trans "r_tooltip_questionnaire_about" %}
+            {% trans "tooltip_questionnaire_about" %}
         </p></div>
+        <img src='/media/images/help_icon.png' class='help_icon' /><div class='tooltip summary'><p>{% trans 'tooltip_summary_report' %}</p></div>
+        <img src='/media/images/help_icon.png' class='help_icon' /><div class='tooltip individual'><p>{% trans 'tooltip_individual_report' %}</p></div>
         {{ form.activity_report }}
         {{ form.entity_type }}
         {%  include 'entity/create_type.html' %}

@@ -63,8 +63,8 @@ def get_translated_weekdays():
 
 class CreateProject(Form):
 
-    QUESTIONNAIRE_CHOICES = (('yes', _("This is general activity report.")),
-                             ('no', _("I am collecting data about a specific subject.")))
+    QUESTIONNAIRE_CHOICES = (('yes',_("I want Summary Reports.")),
+                             ('no', _("I want Individual Reports about a specific subject.")))
     CATEGORY_CHOICE = (('A person', _('A person')), ('A place', _('A place')),
                        ('A thing', _('A thing')), ('An event', _('An event')), )
     SUBJECT_CHOICE = (('Patient', _('Patient')), ('Farmer', _('Farmer')),
@@ -75,7 +75,7 @@ class CreateProject(Form):
 
     name = CharField(required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
-    activity_report = ChoiceField(label=_("What is this questionnaire about?"),
+    activity_report = ChoiceField(label=_(" What kind of data do you want to collect?"),
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='yes')
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
