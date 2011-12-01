@@ -12,7 +12,7 @@ from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
 
-from mangrove.errors.MangroveException import TrialAccountExpiredException
+from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, DataSenderOnTrialAccount
 from django.contrib.auth.views import login
@@ -31,7 +31,7 @@ def custom_login(request, template_name, authentication_form):
     else:
         try:
             return login(request, template_name=template_name, authentication_form=authentication_form)
-        except TrialAccountExpiredException:
+        except AccountExpiredException:
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
 
 def is_admin(f):
@@ -248,5 +248,3 @@ def upgrade(request):
             
         return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
                                                                    'form':form}, context_instance=RequestContext(request))
-
-

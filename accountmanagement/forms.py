@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
 from datawinners.entity.fields import PhoneNumberField
-from mangrove.errors.MangroveException import TrialAccountExpiredException
+from mangrove.errors.MangroveException import AccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
 
@@ -180,7 +180,7 @@ class LoginForm(AuthenticationForm):
     def check_trial_account_expired(self):
         org = Organization.objects.get(org_id=self.user_cache.get_profile().org_id)
         if org.is_expired():
-            raise TrialAccountExpiredException()
+            raise AccountExpiredException()
 
 
 class ResetPasswordForm(PasswordResetForm):

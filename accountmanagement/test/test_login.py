@@ -4,7 +4,7 @@ from nose.tools import raises
 from datawinners.accountmanagement.forms import LoginForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, OrganizationSetting
 from django.contrib.auth.models import User
-from mangrove.errors.MangroveException import TrialAccountExpiredException
+from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
 import unittest
@@ -45,7 +45,7 @@ class TestLogin(unittest.TestCase):
         self.organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", organization.name, self.org_id))
         self.organization_setting.save()
 
-    @raises(TrialAccountExpiredException)
+    @raises(AccountExpiredException)
     def test_should_raise_a_trial_account_expired_exception_if_trial_account_is_expired(self):
         self.org_id=OrganizationIdCreator().generateId()
         self.create_organization()
@@ -56,5 +56,3 @@ class TestLogin(unittest.TestCase):
         org = Organization.objects.get(org_id = self.org_id)
         self.organization_setting.delete()
         org.delete()
-
-
