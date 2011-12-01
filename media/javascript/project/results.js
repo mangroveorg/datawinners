@@ -110,26 +110,22 @@ $(document).ready(function(){
             $('#action').val(0);
        }
        else{
-            var answer = confirm(gettext("Are you sure you want to delete the selected record/s?"));
+           var answer = confirm(gettext("Are you sure you want to delete the selected record/s?"));
            if(answer){
                $.ajax({
                   type: 'POST',
                   url: window.location.pathname + "?rand="+ new Date().getTime(),
                   data:  {'id_list': JSON.stringify(ids), 'page_number':DW.current_page},
                   success:function(response) {
-                               $('#submission_table').empty();
-                               $('#submission_table').append(response);
-                               $('#action').val(0);
+                        $('#submission_table').empty();
+                        $('#submission_table').append(response);
                     },
-                 error: function(e) {
-                    $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
-                    $('#action').val(0);
-                }
+                  error: function(e) {
+                        $("#message_text").html("<div class='error_message message-box'>" + e.responseText + "</div>");
+                  }
              });
            }
-           else{
-               $("#action").val(0);
-           }
+           $("#action").val(0);
         }
        }
    });
