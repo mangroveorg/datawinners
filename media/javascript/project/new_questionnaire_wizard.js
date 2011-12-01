@@ -102,6 +102,8 @@ $(document).ready(function() {
                 viewModel.selectedQuestion().choices([
                     {text:gettext("default"), val:'a'}
                 ]);
+                $('.error_arrow').remove();
+                $('input[type=text]').removeClass('error');
             }
     );
     $('input[name=text_length]:radio').change(
