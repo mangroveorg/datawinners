@@ -122,7 +122,7 @@ def payment_details_form():
     pay_half_yearly = ('half_yearly', _(mark_safe("<div class='radio_title'>6 months:$ 765 per month</div><div class='subtitle_for_radio_button pay_half_yearly'><div> ")))
     INVOICE_PERIOD_CHOICES = (pay_monthly, pay_half_yearly)
 
-    wire_transfer = ('wire_transfer', _(mark_safe("<div class='radio_title'>Wire transfer</div><div class='subtitle_for_radio_button'></div>")))
+    wire_transfer = ('wire_transfer', _(mark_safe("<div class='radio_title'>Wire transfer</div>")))
     credit_card = ('credit_card', _(mark_safe(
         "<div class='radio_title'>Credit card</div><div class='subtitle_for_radio_button credit_card'></div>")))
     pay_via_ach = ('pay_via_ach', _(mark_safe(

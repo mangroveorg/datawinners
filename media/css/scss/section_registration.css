@@ -82,7 +82,8 @@ form ul li input[type=text], form ul li input[type=password] {
 
 .radio_title {
   font-size: 14px;
-  margin-bottom: 3px; }
+  margin-bottom: 3px;
+  width: 300px; }
 
 .subscribe_now {
   display: inline-table;
