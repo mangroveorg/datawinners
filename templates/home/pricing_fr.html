@@ -1,4 +1,4 @@
-{% extends 'public_secondary_fr.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Tarification {% endblock %}
 
 {% load dw_tabs %}
@@ -13,16 +13,19 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/fr">Accueil</a> &gt; Tarification
+<a href="/fr/home/">Accueil</a> &gt; Tarification
 {% endblock %}
 
 {% block main_content %}
 <div id="nav_content">
+    <h1><a href="/fr/pricing/">TARIFICATION</a></h1>
+    <ul>
+        <li class="active"><a href="/fr/pricing/">Tarification</a></li>
+    </ul>
 </div>
 <div id="main_content">
     <div class="margin_left_20">
         <div id="pricing">
-            {% if TRIAL_REGISTRATION_ENABLED %}
             <div class="grid_9 alpha omega">
                 <div class="container_plan">
                     <div class="plan">
@@ -41,11 +44,10 @@
                         </div>
                     </div>
                     <div class="badge">
-                        <img src="/media/images/dw_badge_world.png" width="80" height="80" alt="worldwide" />
+                        <img src="/media/images/dw_badge_tryit_fr.png" width="80" height="80" alt="worldwide" />
                     </div>
                 </div>
             </div>
-            {% endif %}
             <div class="grid_9 alpha omega">
                 <div class="container_plan">
                     <div class="plan">
@@ -53,7 +55,7 @@
                             <h2>Prêt à l’Emploi</h2>
                             $850 <small>par mois</small>
                             <br/><br/>
-                            <a href="javascript:void(0)" class="try_button">Abonnez-vous</a>
+                            <a href="/register/" class="try_button">Abonnez-vous</a>
                             <ul>
                                 <li>Accès complet à l'outil de collecte de données en ligne</li>
                                 <li>Un numéro de téléphone local pour votre organisation</li>
@@ -64,20 +66,12 @@
                         </div>
                     </div>
                     <div class="badge">
-                        <img src="/media/images/dw_badge_mada.png" width="80" height="80" alt="Madagascar" />
+                        <img src="/media/images/dw_badge_subscribe_fr.png" width="80" height="80" alt="Madagascar" />
                     </div>
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <h2>Plus d'informations</h2>
-        <ul class="bulleted">
-            <li><a href="#a1">Où est-ce que la plateforme DataWinners est-elle disponible</a></li>
-            <li><a href="#a2">Détails Importants sur l'Abonnement Mensuel</a></li>
-            <li><a href="#a3">Frais d'Abonnement Mensuel</a></li>
-            <li><a href="#a4">Paiement</a></li>
-            <li><a href="#a5">Besoin d'aide pour démarrer ?</a></li>
-        </ul>
         <a name="a1"></a><h2>Où est-ce que la plateforme DataWinners est-elle disponible</h2>
         <ul class="bulleted">
             <li>DataWinners est actuellement disponible à Madagascar</li>
@@ -99,7 +93,7 @@
             <li>Couverture : Airtel</li>
             <li>Facturation SMS Inversée <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
                 <div class="tooltip"><p>
-                    Les personnels de terrain ne paient rien pour l’envoi de leurs données via SMS. Ces SMS sortants sont déduits de votre paquet mensuel de 5000 SMS. 
+                    Les personnels de terrain ne paient rien pour l’envoi de leurs données via SMS. Ces SMS sortants sont déduits de votre paquet mensuel de 5000 SMS.
                 </p></div>
             </li>
         </ul>
@@ -120,12 +114,12 @@
         </table>
         <a name="a4"></a><h2>Paiement</h2>
         <ol>
-            <li><strong>Virement</strong></li>
-            <li><strong>Carte de crédit</strong><br/>Appelez-nous directement et nous pouvons par téléphone, procéder à votre paiement par carte de crédit en toute sécurité</li>
+            <li><strong>Virement.</strong></li>
+            <li><strong>Carte de crédit</strong><br/>Appelez-nous directement et nous pouvons par téléphone, procéder à votre paiement par carte de crédit en toute sécurité.</li>
             <li><strong>Paiement par transfert ACH </strong><br/>Transfert de fonds direct et sécurisé entre deux comptes bancaires basés aux États-Unis (gratuit , normalement).</li>
         </ol>
         <a name="a5"></a><h2>Besoin d'aide pour démarrer ?</h2>
-        <p>Si vous avez besoin d'aide pour démarrer, ou avez un projet de collecte de données ambitieux qui nécessite une solution personnalisée de la part de DataWinners, contactez-nous au info@datawinners.com ou utilisez notre formulaire de contact. </p>
+        <p>Si vous avez besoin d'aide pour démarrer, ou avez un projet de collecte de données ambitieux qui nécessite une solution personnalisée de la part de DataWinners, contactez-nous au <a href="mailto:info@datawinners.com">info@datawinners.com</a> ou utilisez notre formulaire de contact. </p>
         <p>Notre équipe possède une vaste expérience dans le développement des systèmes mobiles de collecte de données. Voir <a href="/fr/success-stories">Nos réussites.</a></p>
     </div>
 </div>

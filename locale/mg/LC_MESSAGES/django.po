@@ -2060,7 +2060,7 @@ msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
 #: templates/registration/activation_complete.html:9
 #: templates/registration/login.html:45
 #: templates/registration/password_reset_complete.html:9
-msgid "Sign In"
+msgid "Sign in"
 msgstr "S'identifier"
 
 msgid "Sign Up"
@@ -2335,4 +2335,7 @@ msgid "Error. Incorrect number of answers submitted. Review printed questionnair
 msgstr "Diso ny SMS-nao. Tsy ampy na mihoatra ny isan'ny valiny nalefanao. Jereo ilay lisitry ny fanontaniana ary avereno alefa  indray  ny SMS."
 
 msgid "Privacy Policy"
+msgstr ""
+
+msgid "Sign In"
 msgstr ""

@@ -2786,3 +2786,6 @@ msgstr ""
 
 msgid "%s of %s records uploaded"
 msgstr "%s sur %s dossiers téléchargées"
+
+msgid "Sign In"
+msgstr "S'identifier"
