@@ -1339,6 +1339,9 @@ msgstr "Date limite "
 msgid "Register Data Senders to see them on this map"
 msgstr "Enregistrez les Expéditeurs de Données pour les voir sur cette carte"
 
+msgid "Register %s to see them on this map"
+msgstr "Enregistrez les %s pour les voir sur cette carte"
+
 #: templates/project/profile.html:49
 msgid ""
 "Warning: Updating the associated type of the project questionnaire will "
