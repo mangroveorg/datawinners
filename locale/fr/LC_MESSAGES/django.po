@@ -2783,3 +2783,6 @@ msgstr ""
 
 msgid "tooltip_add_subject"
 msgstr ""
+
+msgid "%s of %s records uploaded"
+msgstr "%s sur %s dossiers téléchargées"

@@ -10,7 +10,7 @@ from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESC
 from mangrove.transport.player.parser import CsvParser, XlsParser
 from mangrove.transport.player.player import FilePlayer, Channel
 from mangrove.utils.types import sequence_to_str
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 def tabulate_failures(rows):
     tabulated_data = []
@@ -135,7 +135,7 @@ def import_data(request, manager):
         total = len(responses)
         failures = _get_failed_responses(responses)
         failure_imports = tabulate_failures(failures)
-        response_message = '%s of %s records uploaded' % (successful_imports, total)
+        response_message = ugettext_lazy('%s of %s records uploaded') % (successful_imports, total)
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
