@@ -121,3 +121,7 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 .container_24 .content > ul {
     width: 1860px;
 }
+
+.payment_details > li > div > ul {
+    margin-left: 0px !important;
+}
