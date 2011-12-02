@@ -28,6 +28,8 @@
     .clear_both ul li label {
       float: none;
       width: auto !important; }
+    .clear_both ul li label.example {
+      clear: both; }
     .clear_both ul li p {
       clear: left; }
     .clear_both ul li ul {
@@ -127,7 +129,8 @@ fieldset {
   padding-left: 20px; }
 
 #id_entity_type_text {
-  width: 280px; }
+  width: 275px;
+  margin-top: 5px; }
 
 .message-box {
   font-size: 13px; }

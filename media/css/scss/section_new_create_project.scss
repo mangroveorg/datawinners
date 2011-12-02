@@ -35,6 +35,9 @@
                 float:none;
                 width:auto !important;
             }
+            label.example{
+                clear:both;
+            }
             p {
                 clear:left;
             }
@@ -165,7 +168,8 @@ padding-left: 20px;
 }
 
 #id_entity_type_text {
-    width:280px;
+    width:275px;
+    margin-top:5px;
 }
 
 .message-box{
