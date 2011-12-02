@@ -1,9 +1,9 @@
 {% load i18n %}
+<img src='/media/images/help_icon.png' class='help_icon'>
+<div class='tooltip subject_tooltip'><p>{% trans 'tooltip_add_subject' %}</p></div>
 <div id="add_subject_type">
     <h3>
         <a id="add_new_subject_type" href="#">{% trans "Add a new subject type" %}</a>
-        <img src='/media/images/help_icon.png' class='help_icon'>
-        <div class='tooltip'><p>{% trans 'tooltip_add_subject' %}</p></div>
     </h3>
     <div class="required form-row-10px" id="add_subject_type_content">
         <input type="text" maxlength="20" name="entity_type_regex" id="id_entity_type_text">
