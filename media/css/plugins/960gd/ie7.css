@@ -125,3 +125,12 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 .payment_details > li > div > ul {
     margin-left: 0px !important;
 }
+
+#project_profile > ul > li > .summary_report{
+    margin-top:-10em;
+}
+
+#project_profile > ul > li > .individual_report{
+    margin-top:-7.3em;
+    margin-left:115px;
+}

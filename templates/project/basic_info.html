@@ -48,11 +48,11 @@
         <div class="tooltip"><p>
             {% trans "tooltip_questionnaire_about" %}
         </p></div>
-        <img src='/media/images/help_icon.png' class='help_icon summary_report' /><div class='tooltip summary_report_tooltip'><p>{% trans 'tooltip_summary_report' %}</p></div>
-        <img src='/media/images/help_icon.png' class='help_icon individual_report' /><div class='tooltip individual_report_tooltip'><p>{% trans 'tooltip_individual_report' %}</p></div>
         {{ form.activity_report }}
         {{ form.entity_type }}
         {%  include 'entity/create_type.html' %}
+        <img src='/media/images/help_icon.png' class='help_icon summary_report' /><div class='tooltip bottom summary_report_tooltip'><p>{% trans 'tooltip_summary_report' %}</p></div>
+        <img src='/media/images/help_icon.png' class='help_icon individual_report' /><div class='tooltip bottom individual_report_tooltip'><p>{% trans 'tooltip_individual_report' %}</p></div>
     </li>
     <li>
         <div class="help">

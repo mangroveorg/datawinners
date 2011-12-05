@@ -146,15 +146,17 @@ fieldset {
   float: left !important; }
 
 .summary_report {
-  margin-bottom: -55px;
-  margin-left: -150px; }
+  margin-top: -245px;
+  margin-left: 160px; }
 
 .summary_report_tooltip {
-  left: 690px !important; }
+  left: 690px !important;
+  top: 930px; }
 
 .individual_report {
-  margin-bottom: -125px;
+  margin-top: -177px;
   margin-left: 110px; }
 
 .individual_report_tooltip {
-  left: 820px !important; }
+  left: 820px !important;
+  top: 967px !important; }
