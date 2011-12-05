@@ -144,3 +144,17 @@ fieldset {
 
 .help label {
   float: left !important; }
+
+.summary_report {
+  margin-bottom: -55px;
+  margin-left: -150px; }
+
+.summary_report_tooltip {
+  left: 690px !important; }
+
+.individual_report {
+  margin-bottom: -125px;
+  margin-left: 110px; }
+
+.individual_report_tooltip {
+  left: 820px !important; }
