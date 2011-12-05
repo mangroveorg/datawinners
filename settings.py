@@ -192,12 +192,6 @@ LOGGING = {
     }
 }
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'test.datawinners@gmail.com'
-EMAIL_HOST_PASSWORD = 'd@t@winners'
-EMAIL_PORT = 587
-
 SCHEDULER_HOUR=21
 SCHEDULER_MINUTES=30
 API_KEYS = {
