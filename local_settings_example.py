@@ -12,6 +12,11 @@ DATABASES = {
     }
 }
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'test.datawinners@gmail.com'
+EMAIL_HOST_PASSWORD = 'd@t@winners'
+EMAIL_PORT = 587
 TRIAL_REGISTRATION_ENABLED = True
 
 HNI_SUPPORT_EMAIL_ID = 'dummy@dummy.com'
