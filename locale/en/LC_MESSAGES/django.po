@@ -2798,3 +2798,6 @@ msgstr "To collect individual reports about specific subjects, you have two choi
 
 msgid "Sign In"
 msgstr ""
+
+msgid "Latest news"
+msgstr ""

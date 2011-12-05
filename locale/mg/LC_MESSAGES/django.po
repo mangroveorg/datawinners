@@ -2339,3 +2339,6 @@ msgstr ""
 
 msgid "Sign In"
 msgstr ""
+
+msgid "Latest news"
+msgstr ""

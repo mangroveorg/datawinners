@@ -2789,3 +2789,6 @@ msgstr "%s sur %s dossiers téléchargées"
 
 msgid "Sign In"
 msgstr "S'identifier"
+
+msgid "Latest news"
+msgstr "Dernières actualités"
