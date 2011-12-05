@@ -9,7 +9,7 @@ module Bluepill
               @options = options
           end
           def run(pid)
-              system("ping -c2 192.168.0.151")
+              system("ping -c2 172.25.155.31")
           end
           def check(value)
               value
