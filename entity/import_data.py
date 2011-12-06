@@ -92,14 +92,8 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPO
 
 def _handle_uploaded_file(file_name, file, manager):
     base_name, extension = os.path.splitext(file_name)
-    if extension == '.csv':
-        csv_player = FilePlayer(manager, CsvParser(), Channel.CSV, get_location_tree())
-        response = csv_player.accept(file)
-    elif extension == '.xls':
-        xls_player = FilePlayer(manager, XlsParser(), Channel.XLS, get_location_tree())
-        response = xls_player.accept(file)
-    else:
-        raise InvalidFileFormatException()
+    player = FilePlayer.build(manager, extension, get_location_tree())
+    response = player.accept(file)
     return response
 
 
