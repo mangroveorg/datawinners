@@ -2792,3 +2792,6 @@ msgstr "S'identifier"
 
 msgid "Latest news"
 msgstr "Dernières actualités"
+
+msgid "required"
+msgstr "obligatoire"

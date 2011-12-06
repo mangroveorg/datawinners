@@ -2801,3 +2801,6 @@ msgstr ""
 
 msgid "Latest news"
 msgstr ""
+
+msgid "required"
+msgstr ""

@@ -1,8 +1,8 @@
 {% load i18n %}
 
 {% block page_scss %}
-    <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet" />
-    <link href="/media/css/scss/section_application.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_new_create_project.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_application.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
@@ -12,12 +12,20 @@
         <div class="line"></div>
         <div class="w_content">
             <div class="gray_text">{% trans "Now you can..." %} </div>
-            <li><a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">{% trans "Add data senders" %} </a>
-            <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p></li>
+            <li><a id="datasenders_edit_link"
+                   href="{{project_links.datasenders_link}}">{% trans "Add data senders" %} </a>
+                <span class="italic_grey">{% trans "required"  %}</span>
+                <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
+            </li>
             <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "Add subjects" %} </a>
-            <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p></li>
-            <li><a id="reminder_edit_link" href="{{project_links.setting_reminders_link}}">{% trans "Set reminders" %} </a>
-            <p class="black_italic">{% trans "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data." %} </p></li>
+
+                <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
+            </li>
+            <li><a id="reminder_edit_link"
+                   href="{{project_links.setting_reminders_link}}">{% trans "Set reminders" %} </a>
+
+                <p class="black_italic">{% trans "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data." %} </p>
+            </li>
             <div class="gray_text">{% trans "...or just start collecting data." %} </div>
         </div>
     </div>
