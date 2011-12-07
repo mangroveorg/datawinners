@@ -8,6 +8,9 @@ class OrganizationSettingAdmin(admin.ModelAdmin):
     list_display = ('organization_name', 'organization_id', 'type', 'payment_details', 'activation_date')
     fields = ('sms_tel_number', 'smsc')
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
     def organization_name(self, obj):
         return obj.organization.name
 
