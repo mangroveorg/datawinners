@@ -1,9 +1,10 @@
 .max_char {
   display: inline;
   margin-top: 20px; }
-  .max_char .inline input {
+  .max_char #max_length {
     width: 40px;
-    float: none; }
+    float: none;
+    margin-left: 20px; }
 
 #range_min {
   margin-left: 4px !important; }

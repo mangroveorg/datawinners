@@ -112,12 +112,12 @@
 
             <div class="max_char">
                 <input type="radio" name="text_length" value="length_limited"
-                       data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                <span class="inline">
-                    {% trans "Yes, maximum number of characters should be" %}
+                   data-bind="checked:selectedQuestion().length_limiter, valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                {% trans "Yes, maximum number of characters should be" %}
+                <div>
                     <input name="max_length" type="text" id="max_length"
-                           data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
-                </span>
+                   data-bind="value:selectedQuestion().max_length, visible: viewModel.showLengthLimiter(), valueUpdate: 'keyup', enable: viewModel.isEnabled()"/>
+                </div>
             </div>
         </div>
     </li>
