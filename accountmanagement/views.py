@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from datawinners.settings import EMAIL_HOST_USER, HNI_SUPPORT_EMAIL_ID
+from datawinners.settings import HNI_SUPPORT_EMAIL_ID
 
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm

@@ -56,7 +56,14 @@ def find_dbm(request):
 
     try:
         incoming_request['dbm'] = get_database_manager(request.user) if _from == TEST_REPORTER_MOBILE_NUMBER else get_db_manager_for(_from, _to)
+
     except UnknownOrganization as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
+        incoming_request['datawinner_log'].save()
+        return incoming_request
+
+    except NumberNotRegisteredException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
         incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
         incoming_request['datawinner_log'].save()

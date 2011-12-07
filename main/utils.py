@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from mangrove.datastore.database import get_db_manager
-from mangrove.errors.MangroveException import UnknownOrganization
+from mangrove.errors.MangroveException import UnknownOrganization, NumberNotRegisteredException
 
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.entity.helper import remove_hyphens
@@ -39,13 +39,16 @@ def get_organization_settings_for(data_sender_phone_no, org_tel_number, user=Non
 
     try:
         if org_tel_number == trial_account_phone_number:
-            if data_sender_phone_no == TEST_REPORTER_MOBILE_NUMBER:
-                profile = user.get_profile()
-                organization = Organization.objects.get(org_id=profile.org_id)
-                organization_settings = OrganizationSetting.objects.get(organization=organization)
-            else:
-                record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
-                organization_settings = OrganizationSetting.objects.get(organization=record.organization)
+            try:
+                if data_sender_phone_no == TEST_REPORTER_MOBILE_NUMBER:
+                    profile = user.get_profile()
+                    organization = Organization.objects.get(org_id=profile.org_id)
+                    organization_settings = OrganizationSetting.objects.get(organization=organization)
+                else:
+                    record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
+                    organization_settings = OrganizationSetting.objects.get(organization=record.organization)
+            except ObjectDoesNotExist:
+                raise NumberNotRegisteredException(data_sender_phone_no)
         else:
             organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
     except ObjectDoesNotExist:
