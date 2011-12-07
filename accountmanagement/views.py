@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMessage
+#from django.core.mail.message import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
@@ -213,9 +214,10 @@ def trial_expired(request):
 
 def _send_upgrade_email(user):
     subject = render_to_string('accountmanagement/upgrade_email_subject.txt')
-    body = render_to_string('accountmanagement/upgrade_email.txt', {'name':user.first_name})
-    EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID]).send()
-
+    body = render_to_string('accountmanagement/upgrade_email.html', {'name':user.first_name})
+    email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
+    email.content_subtype = "html"
+    email.send()
 
 @is_admin
 @is_trial
