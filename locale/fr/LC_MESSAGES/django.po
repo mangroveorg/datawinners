@@ -2801,3 +2801,6 @@ msgstr "%s avec %s=%s existe déjà."
 
 msgid "Sorry, the telephone number %s has already been registered"
 msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée"
+
+msgid "Job Title"
+msgstr "Nom de l’emploi"
