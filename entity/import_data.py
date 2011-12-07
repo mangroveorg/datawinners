@@ -5,13 +5,64 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER
 from mangrove.transport.player.parser import CsvParser, XlsParser
-from mangrove.transport.player.player import FilePlayer, Channel
+from mangrove.transport.player.player import Channel, Player, TransportInfo, Response
 from mangrove.utils.types import sequence_to_str
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
+#TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
+class FilePlayer(Player):
+    def __init__(self, dbm, parser, channel_name, location_tree=None):
+        Player.__init__(self, dbm, location_tree)
+        self.parser = parser
+        self.channel_name = channel_name
+
+    @classmethod
+    def build(cls, manager, extension, location_tree):
+        if extension == '.csv':
+            parser = CsvParser()
+            channel = Channel.CSV
+        elif extension == '.xls':
+            parser = XlsParser()
+            channel = Channel.XLS
+        else:
+            raise InvalidFileFormatException()
+        return FilePlayer(manager, parser, channel, location_tree)
+
+    def accept(self, file_contents):
+        responses = []
+        submissions = self.parser.parse(file_contents)
+        for (form_code, values) in submissions:
+            try:
+                transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
+                submission_id, form_submission = self.submit(transport_info, form_code, values)
+                response = Response(reporters=[], submission_id=submission_id, form_submission=form_submission)
+                if not form_submission.saved:
+                    response.errors = dict(error=form_submission.errors, row=values)
+                responses.append(response)
+            except DataObjectAlreadyExists as e:
+                response = Response(reporters=[], submission_id=None, form_submission=None)
+                response.success = False
+                message = ugettext("%s with %s = %s already exists.")
+                response.errors = dict(error=message % (e.data[2], e.data[0], e.data[1]), row=values)
+                responses.append(response)
+            except MultipleReportersForANumberException as e:
+                response = Response(reporters=[], submission_id=None, form_submission=None)
+                response.success = False
+                message = ugettext("Sorry, the telephone number %s has already been registered")
+                response.errors = dict(error=message % e.data[0], row=values)
+                responses.append(response)
+            except MangroveException as e:
+                response = Response(reporters=[], submission_id=None, form_submission=None)
+                response.success = False
+                response.errors = dict(error=e.message, row=values)
+                responses.append(response)
+        return responses
+
+#TODO This method is a proof that Exceptions needs to be handled by the client application
 def tabulate_failures(rows):
     tabulated_data = []
     for row in rows:
