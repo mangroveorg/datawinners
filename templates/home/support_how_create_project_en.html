@@ -1,0 +1,521 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Support {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_get_started.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/home/get_started.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/en/home/">Home</a> &gt; <a href="/en/support/">Support</a> &gt; Get started
+{% endblock %}
+
+{% block main_content %}
+    <div id="get-started-navigation">
+        <a href="javascript:void(0);" id="prev-step">&lt;- Previous page</a>
+        <a href="javascript:void(0);" id="next-step">Next page -&gt;</a>
+        <!--<a href="javascript:void(0);" id="to-sommaire">Table of Contents</a>-->
+        <div class="clear"></div>
+    </div>
+    <div id="main_content" class="frame">
+        <div class="margin_left_20" id="get_started_content">
+            <div class="get-started-step">
+                <h1>1	What is a DataWinners Project?</h1>
+                <p>DataWinners is an online do-it-yourself mobile data collection service.
+                   No matter what sector you work in,
+                   DataWinners can help you collect and analyze the data you need for any kind of project.
+                   Here are some examples:</p>
+                <h2>Summary Reports</h2>
+                <ol class="bulleted">
+                    <li>A community health worker sends in a monthly activity report<br/>
+                        Example question:  How many babies did you weigh last month?
+                    </li>
+                    <li>
+                        A young woman answers polling questions<br/>
+                        Example question:  Do you have access to clean water?
+                    </li>
+                </ol>
+                <h2>Individual Reports about a Specific Subject</h2>
+                <p>With DataWinners, you can go beyond collecting summaries;
+                    you can collect individual reports about a specific <span style="text-decoration: underline;">Subject</span>.
+                </p>
+                <p>Subjects are people (children under five), places (Districts),
+                   things (Health Clinics) or events (Trainings) that you want to collect data about.</p>
+                <p>Using DataWinners, you can register your Subjects and give each a unique ID number so you can:
+                    <ol class="lower-alpha">
+                        <li>Create detailed Questionnaires about them (like a medical record)</li>
+                        <li>Create several different Questionnaires about each Subject
+                            (if your register a clinic, you can create a Questionnaire to monitor stock and another to measure the quality of care at the clinic)
+                        </li>
+                    </ol>
+                </p>
+                <p>
+                    Examples:
+                    <ul class="bulleted">
+                        <li>A doctor examines a baby and sends in a medical record</li>
+                        <li>A supervisor measures the quality of care at a clinic</li>
+                        <li>An engineer measures the flow rate of a water pump</li>
+                    </ul>
+                </p>
+                <p>With DataWinners you can create a project to collect data for these projects and many more.</p>
+                <h2>What are the Main Features</h2>
+                <p>
+                    For each DataWinners project you can
+                    <ul class="bulleted">
+                        <li>Create a Questionnaire with the key data you want to collect</li>
+                        <li>Register your Data Senders (the people who send you the data)</li>
+                        <li>Register your Subjects (the specific topic of your Questionnaire e.g. patients, schools, villages, water pumps)</li>
+                        <li>Specify automatic Reminders to remind your Data Senders to send in their data</li>
+                    </ul>
+                </p>
+                <br/>
+                <fieldset class="with_border">
+                    <legend>Example</legend>
+                    <i>As program manager of a large child malnutrition project, Osi wants her Nutritional Agents in the field to send in key data after each child’s visit to a Feeding Center.</i>
+                    <br/><br/>
+                    <i>She reviews her current paper-based Feeding Center Visit Report form, talks with staff and decides:
+                        <ol>
+                            <li>Who she wants to collect data from (her Nutritional Agents are the Data Senders)</li>
+                            <li>The subject of her questionnaire (Each Child who visits)</li>
+                            <li>Which key questions she wants her Nutritional Agents to answer via SMS (example: How much does the child weigh in kilograms?)</li>
+                       </ol>
+                    </i>
+                    <i>Her next step is to create the Questionnaire in DataWinners.</i>
+                </fieldset>
+            </div>
+
+            <div class="get-started-step">
+                <h1>2	How to Create a Project</h1>
+                <p>Every time you sign in to DataWinners (<a href="http://www.datawinners.com/login">www.datawinners.com/login</a>), you will land on the Dashboard. </p>
+                <p>This page gives you an overview of all your projects and lets you create a new project. Think of each DataWinners’ “Project” as a single questionnaire.</p>
+                <img src="/media/images/dw_get-started-dashboard.png" width="721"/><br/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Create a new Project</strong>
+                        <p>Click on the Button Create a new Project to start your project.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h2>2.1	Fill out the Basic Information</h2>
+                <p>Give us some basic information about your project.</p>
+                <h3>2.1.1	Name &amp; Description</h3>
+                <p>DataWinners stores project by the Project Name.
+                    This way you can keep track of all your data collection projects running at the same time.
+                </p>
+                <img src="/media/images/dw_get_started_create_project.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Name your Project</strong>
+                        <p>Give your project a short, descriptive name so you can identify it among a list of all projects.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Add a Description</strong>&nbsp;<span style="color:#CCCCCC">optionnal</span>
+                        <p>Write a description so others can understand the goal of your project.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <h3>2.1.2	Language for your Data Senders</h3>
+                <p>Your Data Senders (the people who send in answers to your Questionnaire) will receive automatic Confirmation and Error messages from DataWinners based on their submission. </p>
+                <p>Choose a language for these messages.</p>
+                <img src="/media/images/dw_get_started_choose_language.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Choose a Language </strong>
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h3>2.1.3	A Summary Report vs. an Individual Report</h3>
+                <p>Choose between collecting Summary Reports or Individual Reports about a specific subject.</p>
+                <p>Don’t worry, if this sounds too complicated, you can decide later. Just choose the Summary Reports option for now.</p>
+                <h3>Summary Report</h3>
+                <p>Choose this option if you want answers to a basic list of questions.</p>
+                <fieldset class="with_border">
+                    <legend>Summary</legend>
+                    <i>
+                        Osi needs to collect a monthly activity report from each of her Nutritional Agents<br/>
+                        She asks her Data Senders the following questions:
+                        <ol>
+                            <li>What month and year are you reporting on?</li>
+                            <li>How many babies did you weigh last month?</li>
+                            <li>How many babies were severely malnourished?</li>
+                        </ol>
+                    </i>
+                    <p>DataWinners will display her data according to each Data Sender:
+                        <table cellspacing="0" cellpadding="0" class="border_1">
+                            <tr>
+                                <th width="120">Data Sender’s name</th>
+                                <th>What month and year are you reporting on?</th>
+                                <th>How many babies did you weigh last month?</th>
+                                <th>How many babies were severely malnourished?</th>
+                            </tr>
+                            <tr>
+                                <td>Nirina Rakotobe</td>
+                                <td>11.2011</td>
+                                <td>1213</td>
+                                <td>217</td>
+                            </tr>
+                            <tr>
+                                <td>Jacqueline Rajolina</td>
+                                <td>11.2011</td>
+                                <td>756</td>
+                                <td>78</td>
+                            </tr>
+                            <tr class="no_bord_bottom">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br/>
+                    </p>
+                </fieldset>
+                <h3>Individual Reports about a Specific Subject</h3>
+                <p>Individual Reports are about specific Subjects. Examples:</p>
+                <ul class="bulleted">
+                    <li>A doctor examines a baby. In this case, the Subject is the baby.</li>
+                    <li>A supervisor measures the quality of care at a clinic. The Subject is the clinic</li>
+                    <li>An engineer measures the flow rate of a water pump. The Subject is the water pump.</li>
+                </ul>
+
+                <p>These specific Subjects are the topic of your data collection questionnaires. Subjects are often</p>
+                <ul class="bulleted">
+                    <li>People (Patients, Farmers, Children under five, Employees) </li>
+                    <li>Things (Health clinics, Retail Shops, Water Pumps)</li>
+                    <li>Places (Region, District, Commune, Village) </li>
+                    <li>Events (Training, Performance, Public gathering)</li>
+                </ul>
+                <p>In each case, the person reporting on the assessment (Data Sender) must first tell you which specific Subject he is reporting on (Example Question: What water pump are you reporting on? - Answer: wp003).</p>
+                <fieldset class="with_border">
+                    <legend>Example</legend>
+                    <i>
+                        Osi needs key data after each child’s visit to a Feeding Center. She asks her Data Senders (Nutrition Agents) the following questions:
+                        <ol>
+                            <li>What baby are you reporting on?<br/>(Note, every baby has been registered and has a unique number)</li>
+                            <li>How much did the baby weigh in grams?</li>
+                            <li>What was the height of the baby in centimeters?</li>
+                        </ol>
+                        <p>DataWinners will display her data according to each Subject:
+                            <table cellpadding="0" cellspacing="0" class="border_1">
+                                <tr>
+                                    <th>Baby’s Number</th>
+                                    <th>Baby’s Name</th>
+                                    <th>When did the baby visit the feeding center?</th>
+                                    <th>How much did the baby weigh in grams?</th>
+                                    <th>What was the height of the baby in centimeters?</th>
+                                </tr>
+                                <tr>
+                                    <td>082452</td>
+                                    <td>AVERY-MAE</td>
+                                    <td>28.11.2011</td>
+                                    <td>2298</td>
+                                    <td>65</td>
+                                </tr>
+                                <tr>
+                                    <td>062475</td>
+                                    <td>AMELIA VO</td>
+                                    <td>02.12.2011</td>
+                                    <td>2456</td>
+                                    <td>69</td>
+                                </tr>
+                                <tr class="no_bord_bottom">
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br/>
+                        </p>
+                    </i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_subject.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Choose between a Summary Report or an Individual Report about a specific Subject</strong>
+                        <p>Click on the Link Add another Question</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Choose a Subject Type (For the Individual Report only)</strong>
+                        <p>
+                            <ul class="bulleted">
+                                <li>Choose a Subject Type. Select an existing Subject Type from a previous DataWinners Project </li>
+                                <li>Add your own new Subject Type. Example: Feeding Centers</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+
+                <h3>2.1.4	Device</h3>
+                <p>Devices are important because you can choose the communication channel people will use to send you your data.</p>
+                <p>Your choice depends on two questions:
+                    <ol>
+                        <li>How much data do you need to collect?</li>
+                        <li>What devices do people already have?</li>
+                    </ol>
+                </p>
+                <p>SMS is an efficient data collection channel for questionnaires with less than 20 questions and where Data Senders have no Internet access. For more extensive data collection needs, we recommend using a Web Form (Internet).</p>
+                <p>If any of your Data Senders have (or will have) access to the Internet, we recommend adding the WEB channel. They can then choose either SMS or WEB to send you the data.</p>
+                <p>Depending on what channels you choose, DataWinners will create automatically a printout version of the SMS Questionnaire and an online form for your Web Questionnaire.</p>
+                <img src="/media/images/dw_get_started_device.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Choose Devices</strong>
+                        <p>SMS is the default and always available. Add Web to have both channels available. Don’t worry; you can always change your mind later.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Continue to the next page</strong>
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h2>2.2	Create your Questionnaire</h2>
+                <p>The Questionnaire is the heart of every data collection project in DataWinners. Here you define what information you want to collect. Ask yourself 2 questions:</p>
+                <ol>
+                    <li>What key data do I need to collect from the field to gain insight and make the right decisions?</li>
+                    <li>How can I formulate the question so my Data Senders understand what I want from them?</li>
+                </ol>
+                <fieldset class="with_border">
+                    <legend>Example Project</legend>
+                    <i>Osi wants to monitor the nutritional status of individual children.  After each visit, Osi asks her Nutritional Agents to send in answers to these questions:
+                        <ul class="bulleted">
+                            <li>What is the unique identification number for the child?</li>
+                            <li>How old is the child in months?</li>
+                            <li>How much does the child weigh in kilograms?</li>
+                        </ul>
+                    </i>
+                </fieldset>
+                <h3>2.2.1	Overview</h3>
+                <p>Before you start, let us explain what you can do with the Questionnaire Builder.</p>
+                <div style="position: relative;">
+                    <img src="/media/images/dw_get_started_project_overview.png" width="721"/>
+                    <div class="instruction_bulle" style="left: 500px;top: 20px;">
+                        <strong><span class="numero">A.</span>&nbsp;Questionnaire Code</strong>
+                        <p>Every Questionnaire has a unique Code.  Data Senders start their SMS message with this code so DataWinners knows which Questionnaire the Data Sender is answering.<br/>
+                        <i>See Chapter 0</i>
+                        </p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 220px;">
+                        <strong><span class="numero">B.</span>&nbsp;Pre-defined Questions</strong>
+                        <p>We suggest some messages you might want to use. You can delete them if they don’t fit your project.<br/>
+                            <i>See Chapter 0</i>
+                        </p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 363px;">
+                        <strong><span class="numero">C.</span>&nbsp;Add your own Questions</strong>
+                        <p>Add your own project-specific questions for your Data Senders (e.g. field staff) to answer. <br/>
+                            <i>See Chapter 2.2.4</i>
+                        </p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 506px;">
+                        <strong><span class="numero">D.</span>&nbsp;SMS Counter</strong>
+                        <p>Keep track of how many characters your Data Senders need to answer your questions using SMS.<br/></p>
+                    </div>
+                </div>
+
+                <h3>2.2.2	Questionnaire Code</h3>
+                <p>DataWinners uses this unique code to correctly identify your SMS Questionnaire. </p>
+                <p>By using Questionnaire Codes, your organization can collect multiple data sets simultaneously using a single telephone number.
+                   Your Questionnaire Code will appear on the printed version of your Questionnaire.
+                   This Code is the first thing your Data Senders type in the SMS.
+                </p>
+                <fieldset class="with_border">
+                    <legend>Example Project</legend>
+                    <i>Osi creating a Questionnaire for her Child MalNutrion project. She and her colleagues use the abbreviation CMN. So she uses CMN for her Questionnaire Code.</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_questionnaire_code.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Define a Questionnaire Code</strong>
+                        <p>Enter a combination of 3-6 letters and/or numbers (or both). Your Data Senders will enter this code first when sending in their data using SMS. Example: CMN</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+
+                <h3>2.2.3	Pre-defined Questions</h3>
+                <p>Based on your decisions on the previous step, DataWinners suggest questions you might want to use for your data collection.</p>
+                <h3>Which subject are you reporting on?</h3>
+                <p>If you have chosen to create an Individual Report about a specific Subject (see Chapter 2.1.3) you need to ask your Data Senders which specific Subject (e.g. Child) they are reporting on.</p>
+                <fieldset class="with_border">
+                    <legend>Example</legend>
+                    <i>As program manager of a large child malnutrition project, Osi wants her Nutritional Agents in the field to send in key data after each child’s visit to a Feeding Center.<br/><br/>
+                    In DataWinners, Osi chooses “Individual Reports about a Specific Subject” and adds the Subject Type “Child”.<br/><br/>
+                    DataWinners automatically suggests, “Which child are you reporting on?” as the first question in the Questionnaire Builder.<br/><br/>
+                    Osi understands the importance of this question and decides to keep the “Which child are you reporting on?” question in her questionnaire.</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_custom_subject.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Specify pre-defined Question Text</strong>
+                        <p>Change the question text if you don’t like our suggestion.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h3>What is the reporting period for the activity?</h3>
+                <p>Many projects have a specific reporting period. A good example is a monthly activity report. </p>
+                <fieldset class="with_border">
+                    <legend>Example</legend>
+                    <i>The Nutritional Agents send in a Visit Report directly after each visit. They don’t have a specific reporting period.<br/><br/>
+                    Osi deletes this question, as it does not add any value to her project. She replaces it with, “What date did the child visit the Feeding Center”?</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_subject_questionnaire.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Specify Question</strong>
+                        <p>Customize the text to your reporting period. Example: e.g. What month and year are you reporting on?</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Select a Date Format</strong>
+                        <p>Select the Date Format your Data Senders are most comfortable with. Example: 12.2011</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h3>2.2.4	Your Questions</h3>
+                <p>Now specify your key questions for your Data Senders. Choose the kind of answer you want from your Data Senders (e.g. a number or date) and add restrictions to prevent them from sending in wrong data (example: the number must be between 0-10). </p>
+                <p>Feel free to experiment. You can always edit your questions later.</p>
+                <fieldset class="with_border">
+                    <legend>Example</legend>
+                    <i>To see if a child is severely malnourished, Osi need to know the age and the weight of a child. She specifies her first question: How old is the child in months?<br/><br/>
+                       The children at the Feeding Centers are between 0-60 months old. Osi specifies that the answer must be a number from 0-60.</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_your_questions.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Add a Question</strong>
+                        <p>Click on the Link Add another Question</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Change Question Text </strong>
+                        <p>Specify your question. Example: How old is the child in months?</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">3</span>
+                    <div class="instruction">
+                        <strong>Select an Answer Type</strong>
+                        <p>Select the type of answer you want from your Data Senders. Example: A number (for the age of the child)</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">4</span>
+                    <div class="instruction">
+                        <strong>Add Restrictions</strong>
+                        <p>Add a restriction if needed. Min=0 and Max=60 as a child is always between 0-60 months old</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">5</span>
+                    <div class="instruction">
+                        <strong>View Automatic Instructions</strong>
+                        <p>These instructions explain the answer restrictions you set for your question (Example:  “Answer must be a number between 0-60”). They are meant to help the Data Sender and increase the accuracy of your data.
+                            When you print the Questionnaire and give it to your Data Senders, these instructions will appear below each question.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h3>2.2.5	Save & Create your Project</h3>
+                <p>Once you are finished adding all your questions, click the yellow Save and Create button at the bottom of the screen. Don’t worry; you can always change your decisions at a later time</p>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Save & Create Project</strong>
+                        <p>Click on the button Save & Create Project</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="get-started-step">
+                <h1>3	Next steps</h1>
+                <p>Now that you have created your project, you can get familiar with the rest of the features DataWinners has to offer. </p>
+                <div style="position: relative;">
+                    <img src="/media/images/dw_get_started_project_creation_success.png" width="621"/>
+                    <div class="instruction_bulle" style="left: 500px;top: 20px;">
+                        <strong><span class="numero">A.</span>&nbsp;What’s next</strong>
+                        <p>Review our Next Steps to enhance your project.<br/></p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 120px;">
+                        <strong><span class="numero">B.</span>&nbsp;Test the Questionnaire</strong>
+                        <p>See if you can send in data for your Questionnaire</p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 223px;">
+                        <strong><span class="numero">C.</span>&nbsp;Edit Project Settings</strong>
+                        <p>Not happy with your earlier decisions? Change them.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="get-started-step">
+                <h1>4	 This might also interest you</h1>
+                <p>Please have a look around on our Website: <a href="http://www.datawinners.com/">www.datawinners.com</a></p>
+                <p>This might also interest you
+                    <ul class="bulleted">
+                        <li><a href="/en/what-is-datawinners">What is DataWinners</a></li>
+                        <li><a href="/en/support/case-studies/">Case Studies (Under Support)</a></li>
+                        <li><a href="/en/support/get-started/">Overview Video (Under Support -&gt; Get Started)</a></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

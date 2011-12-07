@@ -1,0 +1,71 @@
+#get_started_content{
+    .instruction_block{
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        span.numero{
+            margin: 10px 3px;
+            border: 3px solid #7fb11d;
+            color: #7fb11d;
+            width: 22px;
+            display:block;
+            border-radius: 5px;
+            -moz-border-radius: 30px;
+            padding-left: 13px;
+            padding-top: 6px;
+            height: 29px;
+            font-size: 16px;
+            -moz-box-shadow: 0 0 3px 3px #DDD;
+            float:left;
+        }
+        .instruction{
+            display: inline;
+            width: 660px;
+            border-left: 1px solid #CCCCCC;
+            padding: 5px;
+            float:right;
+        }
+    }
+    .no_top{
+        border-top: 0 !important;
+    }
+    .instruction_bulle{
+        margin: 10px 3px;
+        border: 3px solid #7fb11d;
+        width: 200px;
+        display:block;
+        border-radius: 5px;
+        -moz-border-radius: 10px;
+        padding-left: 13px;
+        padding-top: 6px;
+        -moz-box-shadow: 0 0 3px 3px #DDD;
+        position: absolute;
+        background: #FFFFFF;
+        span.numero{
+            color: #7fb11d;
+        }
+    }
+}
+.frame{
+    border: 1px solid #CCCCCC;
+    width: 800px !important;
+    padding: 10px;
+
+}
+
+.get-started-step{
+    width: 740px;
+    display: none;
+}
+
+#get-started-navigation{
+    width: 800px;
+    float: right;
+    padding: 10px;
+    margin-right: 5px;
+    #prev-step{
+        float: left;
+    }
+    #next-step{
+        float: right;
+    }
+}

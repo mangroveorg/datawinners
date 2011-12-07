@@ -138,6 +138,7 @@ body{
                         margin:0;
                         text-transform:uppercase;
                     }
+
                     a{
                         color:#043e6a;
                     }
@@ -345,6 +346,10 @@ body{
             margin:20px 0 0 0;
             font-size:16px;
         }
+        h3{
+           margin:20px 0 0 0;
+           font-size:14px;
+        }
         h4{
             font-size:11px;
             color:#555;
@@ -390,6 +395,28 @@ body{
         ol{
             margin:0 20px;
             padding:0 10px;
+        }
+        .with_border{
+             border: 1px solid #CCCCCC;
+             padding: 0 10px;
+             legend{
+                    padding: 0 10px;
+             }
+        }
+        table.border_1{
+            td, th{
+                border: 1px solid #CCCCCC;
+                padding: 5px;
+                text-align: center;
+            }
+            th{
+                background: #DDDDDD;
+            }
+            tr.no_bord_bottom{
+                th, td{
+                    border-bottom: 0;
+                }
+            }
         }
     }
 }
