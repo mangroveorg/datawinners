@@ -18,7 +18,8 @@
   background: url("/media/images/mobile1.jpg") no-repeat left top;
   height: 400px;
   width: 349px;
-  margin-top: 2px; }
+  margin: 30px;
+  margin-top: 60px; }
   .mobile textarea {
     height: 127px;
     margin-left: 56px;

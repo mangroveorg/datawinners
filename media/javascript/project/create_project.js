@@ -222,6 +222,7 @@ $(document).ready(function() {
     DW.subject_warning_dialog_module.init();
 
     devices.disableSMSElement();
+    DW.smsPreview();
     $('#id_entity_type').change(function() {
         if(is_edit || viewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");

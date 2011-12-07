@@ -5,8 +5,10 @@
     padding:0px !important;
 }
 
-.mobile #id_message{
-    margin-left:16px;
+.mobile #sms_preview{
+    margin-left:25px;
+    margin-top:145px;
+    overflow:hidden;
 }
 .add_subject_form ul li{
         float:none;

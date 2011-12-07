@@ -25,6 +25,7 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject_warning_dialog_module.js"></script>
     <script type="text/javascript" src="/media/javascript/project/create_project.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_helper.js"></script>
@@ -39,7 +40,7 @@
             <input id="choice_text" name="choice_text" class="required" type="text"
                    data-bind="value: text, uniqueName:true"/>
             <a href="questionnaire_wizard.html#" class='delete delete_link'
-               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
+               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data);}">{% trans "Delete" %}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template">
@@ -51,7 +52,7 @@
 
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
                         <a href="#" class="delete_link"
-                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
+                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question); DW.smsPreview();} else {viewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
                     </div>
                     <span class="selected_question_arrow"
                           data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
@@ -129,7 +130,7 @@
                             </div>
                             <div class="add_question">
                                 <a class="add_link" href="#"
-                                   data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">{% trans "Add another Question" %}</a>
+                                   data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
                             </div>
                         </div>
 
@@ -144,6 +145,10 @@
                                 <div class="tooltip"><p>
                                     {% trans "tooltip_question_sms" %}
                                 </p></div>
+                            </div>
+
+                            <div class="mobile">
+                                <textarea name="message" cols="30" rows="4" id="sms_preview"></textarea>
                             </div>
                         </div>
                     </div>

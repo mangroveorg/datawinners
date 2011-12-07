@@ -4,6 +4,7 @@ $(document).ready(function() {
     DW.charCount();
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
+    $('#question_form').live("click", DW.smsPreview);
     $('.delete').live("click", DW.charCount);
 
     $.validator.addMethod('spacerule', function(value, element, params) {
