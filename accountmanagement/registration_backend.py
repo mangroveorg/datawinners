@@ -10,6 +10,7 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import Organization, PaymentDetails
 from django.template.loader import render_to_string
+from datawinners.accountmanagement.registration_processors import get_registration_processor
 
 class RegistrationBackend(object):
     """
@@ -110,14 +111,8 @@ class RegistrationBackend(object):
 
         new_user = self._create_user(site, kwargs)
 
-
-        if organization.in_trial_mode == False:
-            payment_details = self._create_payment_details(organization,kwargs)
-            payment_details.save()
-
-        extra_context = {
-            'phone_number': "You can also send your data via sms to " + settings.TRIAL_ACCOUNT_PHONE_NUMBER + "."} if organization.in_trial_mode else {}
-        self._send_activation_email(new_user, site, extra_context)
+        registration_processor = get_registration_processor(organization)
+        registration_processor.process(new_user, site, kwargs)
         new_user.save()
 
         signals.user_registered.send(sender=self.__class__,

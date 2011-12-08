@@ -280,6 +280,9 @@ body {
     #container_main_content #main_content h2 {
       margin: 20px 0 0 0;
       font-size: 16px; }
+    #container_main_content #main_content h3 {
+      margin: 20px 0 0 0;
+      font-size: 14px; }
     #container_main_content #main_content h4 {
       font-size: 11px;
       color: #555;
@@ -317,6 +320,19 @@ body {
     #container_main_content #main_content ol {
       margin: 0 20px;
       padding: 0 10px; }
+    #container_main_content #main_content .with_border {
+      border: 1px solid #CCCCCC;
+      padding: 0 10px; }
+      #container_main_content #main_content .with_border legend {
+        padding: 0 10px; }
+    #container_main_content #main_content table.border_1 td, #container_main_content #main_content table.border_1 th {
+      border: 1px solid #CCCCCC;
+      padding: 5px;
+      text-align: center; }
+    #container_main_content #main_content table.border_1 th {
+      background: #DDDDDD; }
+    #container_main_content #main_content table.border_1 tr.no_bord_bottom th, #container_main_content #main_content table.border_1 tr.no_bord_bottom td {
+      border-bottom: 0; }
 
 #use_dw {
   margin: 20px 0; }
@@ -341,7 +357,7 @@ body {
 #how_menu {
   position: relative;
   padding-top: 10px;
-  margin-bottom: 40px;
+  margin: 0 auto 40px auto;
   width: 720px; }
   #how_menu .title {
     width: 180px;
@@ -354,10 +370,14 @@ body {
   #how_menu #how_active {
     position: absolute;
     width: 180px;
-    height: 180px;
     top: 0;
-    left: 0;
+    left: 0; }
+  #how_menu .how_active {
+    height: 180px;
     background: url("/media/images/dw_how_active.png") no-repeat center center; }
+  #how_menu .how_active1 {
+    height: 230px;
+    background: url("/media/images/dw_how_active1.png") no-repeat center center; }
 
 #how_content h2 {
   margin-bottom: 20px !important; }
@@ -520,3 +540,5 @@ small {
 
 ol .lower_alpha {
   list-style-type: lower-alpha; }
+ol .lower_i {
+  list-style-type: lower-roman; }
