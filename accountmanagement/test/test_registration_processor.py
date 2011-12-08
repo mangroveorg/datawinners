@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import shutil
 from django.contrib.auth.models import User
 from django.utils import unittest
 import os
@@ -11,8 +10,6 @@ from django.contrib.sites.models import Site
 import dircache
 from django.conf import settings
 from mangrove.utils.types import is_not_empty
-from nose.plugins.skip import SkipTest
-
 
 
 class TestRegistrationProcessor(unittest.TestCase):
@@ -53,9 +50,6 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         NGOUserProfile(user = self.user1,title = 'Mr.',org_id = self.paid_organization.org_id).save()
         NGOUserProfile(user = self.user2,title = 'Ms.',org_id = self.trial_organization.org_id).save()
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-        settings.EMAIL_FILE_PATH = '/tmp/email'
-        self.email_dir=settings.EMAIL_FILE_PATH+'/'
 
 
     def tearDown(self):
@@ -71,6 +65,8 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertTrue(isinstance(get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
 
     def test_should_process_registration_data_for_paid_acccount(self):
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+        settings.EMAIL_FILE_PATH = '/tmp/email'
 
         processor = get_registration_processor(self.paid_organization)
 
@@ -81,11 +77,11 @@ class TestRegistrationProcessor(unittest.TestCase):
         processor.process(self.user1, site, kwargs)
 
 
-        file_list = dircache.listdir(self.email_dir)
+        file_list = dircache.listdir('/tmp/email')
         emails = ''
         for email_file in file_list:
-            emails += (open(self.email_dir+email_file, 'r').read())
-        shutil.rmtree(settings.EMAIL_FILE_PATH)
+            emails += (open('/tmp/email/' + email_file, 'r').read())
+            os.remove('/tmp/email/' + email_file)
 
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: paid_account@mail.com', emails)
@@ -95,6 +91,9 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
     def test_should_process_registration_data_for_trial_acccount(self):
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+        settings.EMAIL_FILE_PATH = '/tmp/email1'
+
 
         processor = get_registration_processor(self.trial_organization)
 
@@ -103,11 +102,11 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user2, site, kwargs)
 
-        file_list = dircache.listdir(self.email_dir)
+        file_list = dircache.listdir('/tmp/email1')
         emails = ''
         for email_file in file_list:
-            emails += (open(self.email_dir+ email_file, 'r').read())
-        shutil.rmtree(settings.EMAIL_FILE_PATH)
+            emails += (open('/tmp/email1/'+ email_file, 'r').read())
+            os.remove('/tmp/email1/' + email_file)
 
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: trial_account@mail.com', emails)
