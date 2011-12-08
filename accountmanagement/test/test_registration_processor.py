@@ -53,12 +53,16 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         NGOUserProfile(user = self.user1,title = 'Mr.',org_id = self.paid_organization.org_id).save()
         NGOUserProfile(user = self.user2,title = 'Ms.',org_id = self.trial_organization.org_id).save()
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+        settings.EMAIL_FILE_PATH = '/tmp/email'
+
 
     def tearDown(self):
         self.user1.delete()
         self.user2.delete()
         self.paid_organization.delete()
         self.trial_organization.delete()
+        shutil.rmtree(settings.EMAIL_FILE_PATH)
 
 
     def test_should_get_the_correct_registration_processor(self):
@@ -67,8 +71,6 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertTrue(isinstance(get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
 
     def test_should_process_registration_data_for_paid_acccount(self):
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-        settings.EMAIL_FILE_PATH = '/tmp/email'
 
         processor = get_registration_processor(self.paid_organization)
 
@@ -80,11 +82,10 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
-        file_list = dircache.listdir('/tmp/email')
+        file_list = dircache.listdir(settings.EMAIL_FILE_PATH)
         emails = ''
         for email in file_list:
-            emails += (open('/tmp/email/'+email, 'r').read())
-            os.remove('/tmp/email/'+email)
+            emails += (open(settings.EMAIL_FILE_PATH+email, 'r').read())
 
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: paid_account@mail.com', emails)
@@ -93,8 +94,6 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertIn(activation_link, emails)
 
     def test_should_process_registration_data_for_trial_acccount(self):
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-        settings.EMAIL_FILE_PATH = '/tmp/email1'
 
         processor = get_registration_processor(self.trial_organization)
 
@@ -103,11 +102,10 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user2, site, kwargs)
 
-        file_list = dircache.listdir('/tmp/email1')
+        file_list = dircache.listdir(settings.EMAIL_FILE_PATH)
         emails = ''
         for email in file_list:
-            emails += (open('/tmp/email1/'+email, 'r').read())
-            os.remove('/tmp/email1/'+email)
+            emails += (open(settings.EMAIL_FILE_PATH+email, 'r').read())
 
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: trial_account@mail.com', emails)
