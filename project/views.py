@@ -20,7 +20,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
-from datawinners.accountmanagement.models import Organization, NGOUserProfile
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
@@ -495,10 +495,11 @@ def broadcast_message(request, project_id):
                 data_senders = project.get_data_senders(dbm)
             profile = NGOUserProfile.objects.get(user = request.user)
             organization = Organization.objects.get(org_id = profile.org_id)
+            organization_setting = OrganizationSetting.objects.get(organization = organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization.get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization.settings.sms_tel_number, other_numbers, message_tracker)
+            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.sms_tel_number, other_numbers, message_tracker)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
@@ -869,5 +870,6 @@ def sender_registration_form_preview(request, project_id=None):
 def _get_organization_telephone_number(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    return organization.settings.get_organisation_sms_number()
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    return organization_settings.get_organisation_sms_number()
 

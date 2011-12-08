@@ -9,13 +9,15 @@ from django.conf import settings
 from mangrove.datastore.database import get_db_manager
 from mangrove.errors.MangroveException import UnknownOrganization, NumberNotRegisteredException
 
-from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount, TEST_REPORTER_MOBILE_NUMBER, OrgSettings
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.entity.helper import remove_hyphens
 
 def get_database_manager(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    return get_db_manager(server=settings.COUCH_DB_SERVER, database=organization.settings.document_store)
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    db = organization_settings.document_store
+    return get_db_manager(server=settings.COUCH_DB_SERVER, database=db)
 
 def include_of_type(entity,type):
     return True if entity.type_path[0] == type else False
@@ -41,14 +43,14 @@ def get_organization_settings_for(data_sender_phone_no, org_tel_number, user=Non
                 if data_sender_phone_no == TEST_REPORTER_MOBILE_NUMBER:
                     profile = user.get_profile()
                     organization = Organization.objects.get(org_id=profile.org_id)
-                    organization_settings = organization.settings
+                    organization_settings = OrganizationSetting.objects.get(organization=organization)
                 else:
                     record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
-                    organization_settings = record.organization
+                    organization_settings = OrganizationSetting.objects.get(organization=record.organization)
             except ObjectDoesNotExist:
                 raise NumberNotRegisteredException(data_sender_phone_no)
         else:
-            organization_settings = OrgSettings.objects.get(sms_tel_number=org_tel_number)
+            organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
     except ObjectDoesNotExist:
         raise UnknownOrganization(org_tel_number)
     return organization_settings

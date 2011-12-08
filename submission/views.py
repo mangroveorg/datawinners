@@ -12,7 +12,7 @@ from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.player.player import SMSPlayer, TransportInfo
 
-from datawinners.accountmanagement.models import Organization, TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, MessageTracker
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, get_db_manager_for, get_organization_settings_for
 from datawinners.messageprovider.messages import exception_messages, SMS
@@ -147,7 +147,8 @@ def submit_to_player(incoming_request):
 def _test_mode_numbers(request):
     profile = request.user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    _to = organization.settings.get_organisation_sms_number()
+    organization_settings = OrganizationSetting.objects.get(organization=organization)
+    _to = organization_settings.get_organisation_sms_number()
     _from = TEST_REPORTER_MOBILE_NUMBER
     return _from, _to
 
