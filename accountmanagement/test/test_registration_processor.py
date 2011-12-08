@@ -2,6 +2,7 @@
 import shutil
 from django.contrib.auth.models import User
 from django.utils import unittest
+import os
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
@@ -79,17 +80,17 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
-#        list = dircache.listdir('/tmp/email')
-#        emails = ''
-#        for email in list:
-#            emails += (open('/tmp/email/'+email, 'r').read())
-#
-#        shutil.rmtree('/tmp/email/')
-#        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
-#        self.assertIn('To: paid_account@mail.com', emails)
-#        self.assertIn('Subject: Account activation on test_site', emails)
-#        activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
-#        self.assertIn(activation_link, emails)
+        file_list = dircache.listdir('/tmp/email')
+        emails = ''
+        for email in file_list:
+            emails += (open('/tmp/email/'+email, 'r').read())
+            os.remove('/tmp/email/'+email)
+
+        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
+        self.assertIn('To: paid_account@mail.com', emails)
+        self.assertIn('Subject: Account activation on test_site', emails)
+        activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
+        self.assertIn(activation_link, emails)
 
     def test_should_process_registration_data_for_trial_acccount(self):
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
@@ -102,15 +103,15 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user2, site, kwargs)
 
-#        list = dircache.listdir('/tmp/email')
-#        emails = ''
-#        for email in list:
-#            emails += (open('/tmp/email/'+email, 'r').read())
-#
-#        shutil.rmtree('/tmp/email/')
-#        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
-#        self.assertIn('To: trial_account@mail.com', emails)
-#        self.assertIn('Subject: DataWinners Trial Account Activation', emails)
-#        self.assertIn('Hello first_name2 last_name2,', emails)
-#        activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user2)).activation_key + '/'
-#        self.assertIn(activation_link, emails)
+        file_list = dircache.listdir('/tmp/email')
+        emails = ''
+        for email in file_list:
+            emails += (open('/tmp/email/'+email, 'r').read())
+            os.remove('/tmp/email/'+email)
+
+        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
+        self.assertIn('To: trial_account@mail.com', emails)
+        self.assertIn('Subject: DataWinners Trial Account Activation', emails)
+        self.assertIn('Hello first_name2 last_name2,', emails)
+        activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user2)).activation_key + '/'
+        self.assertIn(activation_link, emails)
