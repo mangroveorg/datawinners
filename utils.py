@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import xlwt
 from datetime import datetime
-from datawinners.accountmanagement.models import OrganizationSetting, Organization
+from datawinners.accountmanagement.models import Organization
 from mangrove.datastore.database import get_db_manager
 
 def clean_date(date_val):
@@ -32,9 +32,7 @@ def get_excel_sheet(raw_data, sheet_name):
 
 
 def get_database_manager_for_org(organization):
-    organization_settings = OrganizationSetting.objects.get(organization=organization)
-    db = organization_settings.document_store
-    return get_db_manager(database=db)
+    return get_db_manager(database=organization.settings.document_store)
 
 def get_organization(request):
     profile = request.user.get_profile()

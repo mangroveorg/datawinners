@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners.accountmanagement.models import Organization, OrganizationSetting
+from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.views import is_new_user
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
@@ -48,8 +48,7 @@ def index(request):
 def _get_organization_sms_number_for(user):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id=profile.org_id)
-    organization_settings = OrganizationSetting.objects.get(organization=organization)
-    org_number = organization_settings.get_organisation_sms_number()
+    org_number = organization.settings.get_organisation_sms_number()
     return org_number
 
 @login_required(login_url='/login')

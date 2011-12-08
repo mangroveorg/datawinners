@@ -10,6 +10,55 @@ from datawinners.accountmanagement.organization_id_creator import OrganizationId
 
 TEST_REPORTER_MOBILE_NUMBER = '0000000000'
 
+def create_organization(org_details):
+    organization = Organization(name=org_details.get('organization_name'),
+                            sector=org_details.get('organization_sector'),
+                            address=org_details.get('organization_address'),
+                            city=org_details.get('organization_city'),
+                            state=org_details.get('organization_state'),
+                            country=org_details.get('organization_country'),
+                            zipcode=org_details.get('organization_zipcode'),
+                            office_phone=org_details.get('organization_office_phone'),
+                            website=org_details.get('organization_website'),
+                            org_id=OrganizationIdCreator().generateId())
+
+    organization.settings =_configure_organization_settings(organization.name, organization.org_id)
+    return organization
+
+def create_trial_organization(org_details):
+    organization = Organization(name=org_details.get('organization_name'),
+                            sector=org_details.get('organization_sector'),
+                            city=org_details.get('organization_city'),
+                            country=org_details.get('organization_country'),
+                            org_id=OrganizationIdCreator().generateId(),
+                            in_trial_mode = True)
+    
+    organization.settings = _configure_organization_settings(organization.name, organization.org_id)
+    return organization
+
+class SMSC(models.Model):
+    vumi_username = models.TextField()
+
+    def __unicode__(self):
+        return self.vumi_username
+    
+class OrgSettings(models.Model):
+    in_trial_mode = models.BooleanField(default=False)
+    active_date = models.DateTimeField(blank=True, null=True)
+    is_deactivate_email_sent = models.BooleanField(False)
+    document_store = models.TextField()
+    sms_tel_number = models.TextField(unique=True, null=True)
+    smsc = models.ForeignKey(SMSC, null=True,
+                             blank=True)
+
+    def get_organisation_sms_number(self):
+        if self.in_trial_mode:
+            return settings.TRIAL_ACCOUNT_PHONE_NUMBER
+        return self.sms_tel_number
+
+    def __unicode__(self):
+        return self.document_store
+
 class Organization(models.Model):
     name = models.TextField()
     sector = models.TextField()
@@ -22,54 +71,15 @@ class Organization(models.Model):
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)
     org_id = models.TextField(primary_key=True)
-    in_trial_mode = models.BooleanField(default=False)
-    active_date = models.DateTimeField(blank=True, null=True)
-    is_deactivate_email_sent = models.BooleanField(False)
+    settings = models.ForeignKey(OrgSettings, null=True)
 
     def is_expired(self, current_time = None):
-        if not self.in_trial_mode or self.active_date is None:
+        if not self.settings.in_trial_mode or self.settings.active_date is None:
             return False
         if current_time is None:
             current_time = datetime.datetime.now()
-        diff_days = (current_time - self.active_date).days
+        diff_days = (current_time - self.settings.active_date).days
         return diff_days >= settings.EXPIRED_DAYS_FOR_TRIAL_ACCOUNT
-
-    @classmethod
-    def create_organization(cls, org_details):
-        organization = Organization(name=org_details.get('organization_name'),
-                                sector=org_details.get('organization_sector'),
-                                address=org_details.get('organization_address'),
-                                city=org_details.get('organization_city'),
-                                state=org_details.get('organization_state'),
-                                country=org_details.get('organization_country'),
-                                zipcode=org_details.get('organization_zipcode'),
-                                office_phone=org_details.get('organization_office_phone'),
-                                website=org_details.get('organization_website'),
-                                org_id=OrganizationIdCreator().generateId()
-        )
-        organization._configure_organization_settings()
-        return organization
-
-    @classmethod
-    def create_trial_organization(cls, org_details):
-        organization = Organization(name=org_details.get('organization_name'),
-                                sector=org_details.get('organization_sector'),
-                                city=org_details.get('organization_city'),
-                                country=org_details.get('organization_country'),
-                                org_id=OrganizationIdCreator().generateId(),
-                                in_trial_mode = True
-        )
-        organization_setting = organization._configure_organization_settings()
-        return organization
-
-
-    #TODO SHould be removed??
-    def _configure_organization_settings(self):
-        organization_setting = OrganizationSetting()
-        organization_setting.organization = self
-        self.organization_setting = organization_setting
-        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
-        return organization_setting
 
     def get_message_tracker(self, date):
         message_tracker_tuple = MessageTracker.objects.get_or_create(organization=self, month=date)
@@ -98,29 +108,7 @@ class PaymentDetails(models.Model):
     organization = models.ForeignKey(Organization)
     invoice_period = models.TextField()
     preferred_payment = models.TextField()
-
-class SMSC(models.Model):
-    vumi_username = models.TextField()
-
-    def __unicode__(self):
-        return self.vumi_username
-
-class OrganizationSetting(models.Model):
-    organization = models.ForeignKey(Organization, unique=True)
-    document_store = models.TextField()
-    sms_tel_number = models.TextField(unique=True, null=True)
-    smsc = models.ForeignKey(SMSC, null=True,
-                             blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
-
-    def get_organisation_sms_number(self):
-        if self.organization.in_trial_mode:
-            return settings.TRIAL_ACCOUNT_PHONE_NUMBER
-        return self.sms_tel_number
-
-
-    def __unicode__(self):
-        return self.organization.name
-
+    
 class MessageTracker(models.Model):
 
     organization = models.ForeignKey(Organization)
@@ -137,7 +125,7 @@ class MessageTracker(models.Model):
         self.save()
 
     def should_handle_message(self):
-        if self.organization.in_trial_mode:
+        if self.organization.settings.in_trial_mode:
             if (self.incoming_sms_count + self.outgoing_sms_count) > 100:
                 return False
 
@@ -153,8 +141,7 @@ class MessageTracker(models.Model):
         self.organization.name, self.incoming_sms_count, self.outgoing_sms_count)
 
 
-
-
-
-
-
+def _configure_organization_settings(name, org_id):
+    organization_setting = OrgSettings()
+    organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", name, org_id))
+    return organization_setting

@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf import settings
 import logging
-from datawinners.accountmanagement.models import OrganizationSetting
+from datawinners.accountmanagement.models import OrgSettings
 from datawinners.scheduler.vumiclient import VumiClient, Connection
 from mangrove.utils.types import is_not_empty
 logger = logging.getLogger("datawinners.reminders")
@@ -10,7 +10,7 @@ class SMSClient(object):
 
     def send_sms(self,from_tel,to_tel, message):
         if is_not_empty(from_tel):
-            smsc = OrganizationSetting.objects.filter(sms_tel_number = from_tel)[0].smsc
+            smsc = OrgSettings.objects.filter(sms_tel_number = from_tel)[0].smsc
             if smsc is not None:
                 client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
                 client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))

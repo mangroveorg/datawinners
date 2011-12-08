@@ -2,7 +2,7 @@
 from _collections import defaultdict
 from datetime import date, datetime
 from datawinners import  settings
-from datawinners.accountmanagement.models import OrganizationSetting, Organization
+from datawinners.accountmanagement.models import Organization
 from datawinners.project.models import Reminder, Project
 from datawinners.scheduler.smsclient import SMSClient
 
@@ -33,9 +33,8 @@ def send_reminders_scheduled_on(on_date,sms_client):
         paid_organization = _get_paid_organization()
         for org in paid_organization:
             logger.info("Organization %s" % org.name )
-            org_setting = OrganizationSetting.objects.filter(organization=org)[0]
-            manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=org_setting.document_store)
-            send_reminders_for_an_organization(org,on_date,sms_client,from_number = org_setting.sms_tel_number, dbm =manager)
+            manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=org.settings.document_store)
+            send_reminders_for_an_organization(org,on_date,sms_client,from_number = org.settings.sms_tel_number, dbm =manager)
         logger.info("Done sending reminders." )
     except Exception as e:
         logger.exception("Exception while sending reminders")

@@ -53,7 +53,7 @@
             "office_phone": "919880734937",
             "state": "MH",
             "address": "Don Bosco Road, Yerwada",
-            "active_date": "2011-10-17 04:54:47"
+            "settings":1
 
         }
     },
@@ -71,7 +71,7 @@
             "office_phone": "91-99766-76893",
             "state": "MH",
             "address": "Don Bosco Road, Yerwada",
-            "active_date": "2011-04-17 04:54:47"
+            "settings":2
         }
     },
     {
@@ -88,8 +88,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
-            "active_date": "2011-04-17 04:54:47"
+            "settings":3
         }
     },    {
         "pk": "COJ00001",
@@ -105,8 +104,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
-            "active_date": "2020-11-17 04:54:47"
+            "settings": 4
         }
     },    {
         "pk": "COJ00002",
@@ -122,8 +120,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
-            "active_date": "2020-10-17 04:54:47"
+            "settings": 5
         }
     }, {
         "pk": "COJ00003",
@@ -139,8 +136,7 @@
             "office_phone": "91-99766-76893",
             "state": "SH",
             "address": "Don Bosco Road, Yerwada",
-            "in_trial_mode": true,
-            "active_date": "2020-10-17 04:54:47"
+            "settings": 6
         }
     },
     {
@@ -211,54 +207,58 @@
     },
     {
         "pk": 1,
-        "model": "accountmanagement.organizationsetting",
+        "model": "accountmanagement.orgsettings",
         "fields": {
-            "organization": "SLX364903",
             "document_store": "hni_testorg_slx364903",
-            "sms_tel_number": "919880734937"
+            "sms_tel_number": "919880734937",
+            "active_date": "2011-10-17 04:54:47"
         }
     } ,
     {
         "pk": 2,
-        "model": "accountmanagement.organizationsetting",
+        "model": "accountmanagement.orgsettings",
         "fields": {
-            "organization": "COJ409579",
             "document_store": "hni_testorg_coj409579",
-            "sms_tel_number": "0123498765"
+            "sms_tel_number": "0123498765",
+            "active_date": "2011-04-17 04:54:47"
         }
     },
     {
         "pk": 3,
-        "model": "accountmanagement.organizationsetting",
+        "model": "accountmanagement.orgsettings",
         "fields": {
-            "organization": "COJ00000",
             "document_store": "hni_testorg_coj00000",
-            "sms_tel_number": "987654321"
+            "sms_tel_number": "987654321",
+            "in_trial_mode": true,
+            "active_date": "2011-04-17 04:54:47"
         }
     },    {
         "pk": 4,
-        "model": "accountmanagement.organizationsetting",
+        "model": "accountmanagement.orgsettings",
         "fields": {
-            "organization": "COJ00001",
             "document_store": "hni_testorg_coj00001",
-            "sms_tel_number": "987654322"
+            "sms_tel_number": "987654322",
+            "active_date": "2020-11-17 04:54:47",
+            "in_trial_mode": true
         }
     },    {
         "pk": 5,
-        "model": "accountmanagement.organizationsetting",
+        "model": "accountmanagement.orgsettings",
         "fields": {
-            "organization": "COJ00002",
             "document_store": "hni_testorg_coj00002",
-            "sms_tel_number": "987654323"
+            "sms_tel_number": "987654323",
+            "in_trial_mode": true,
+            "active_date": "2020-10-17 04:54:47"
         }
     },
     {
         "pk": 6,
-        "model": "accountmanagement.organizationsetting",
+        "model": "accountmanagement.orgsettings",
         "fields": {
-            "organization": "COJ00003",
             "document_store": "hni_testorg_coj00003",
-            "sms_tel_number": "987654324"
+            "sms_tel_number": "987654324",
+            "in_trial_mode": true,
+            "active_date": "2020-10-17 04:54:47"
         }
     },
     {

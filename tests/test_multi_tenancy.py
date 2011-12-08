@@ -4,7 +4,7 @@ from unittest.case import SkipTest
 import couchdb
 from django.test import Client
 from django.conf import settings
-from datawinners.accountmanagement.models import Organization, OrganizationSetting, TEST_REPORTER_MOBILE_NUMBER
+from datawinners.accountmanagement.models import Organization, TEST_REPORTER_MOBILE_NUMBER
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
 from mangrove.datastore.database import get_db_manager
@@ -44,8 +44,7 @@ class TestMultiTenancy(unittest.TestCase):
         self.assertIsNotNone(response)
 
         organization = Organization.objects.get(name="TEST_ORG_NAME")
-        organization_settings = OrganizationSetting.objects.get(organization=organization)
-        organization_db_name = organization_settings.document_store
+        organization_db_name = organization.settings.document_store
 
         expected_org_db_name = ("hni_test_org_name_%s" % (organization.org_id,)).lower()
         self.assertEqual(expected_org_db_name, organization_db_name)

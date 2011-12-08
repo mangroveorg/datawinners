@@ -2,7 +2,7 @@
 import couchdb
 import datetime
 from django.conf import settings
-from datawinners.accountmanagement.models import Organization, OrganizationSetting,NGOUserProfile
+from datawinners.accountmanagement.models import Organization, OrgSettings
 from mangrove.datastore.database import get_db_manager
 
 
@@ -13,7 +13,7 @@ def create_org_database(sender, user, request, **kwargs):
     org = Organization.objects.get(org_id=profile.org_id)
     active_organization(org)
 
-    org_settings = OrganizationSetting.objects.get(organization=org)
+    org_settings = OrgSettings.objects.get(organization=org)
     db_name = org_settings.document_store
     #    Explicitly create the new database. Should fail it db already exists.
     server = couchdb.client.Server(settings.COUCH_DB_SERVER)

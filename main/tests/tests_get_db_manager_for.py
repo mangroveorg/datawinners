@@ -1,5 +1,5 @@
 import unittest
-from datawinners.accountmanagement.models import DataSenderOnTrialAccount, OrganizationSetting, Organization
+from datawinners.accountmanagement.models import DataSenderOnTrialAccount
 from datawinners.main.utils import get_db_manager_for
 from django.conf import settings
 from mangrove.datastore.database import get_db_manager
