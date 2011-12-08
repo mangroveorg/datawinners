@@ -39,6 +39,10 @@
   clear: both; }
 
 #add_subject_type {
-  float: right;
+  float: left;
   clear: both;
-  width: 82% !important; }
+  width: 50% !important;
+  margin-left: 50px;
+  margin-top: 5px; }
+  #add_subject_type label.example {
+    clear: both; }

@@ -56,7 +56,12 @@
 }
 
 #add_subject_type{
-    float: right;
+    float: left;
     clear: both;
-    width: 82% !important;
+    width: 50% !important;
+    margin-left:50px;
+    margin-top:5px;
+    label.example{
+        clear:both;
+    }
 }
