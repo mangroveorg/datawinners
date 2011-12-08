@@ -10,11 +10,25 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_video.scss" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/home/howto.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="/media/javascript/knockout.js"></script>
+    <script type="text/javascript" src="/media/javascript/home/jsapi.js"></script>
+    <script type="text/javascript" src="/media/javascript/home/video.js"></script>
+    <script type="text/html" id="video-thumb-template">
+        <br/>
+        {% templatetag openvariable %}each(i,video) videos{% templatetag closevariable %}
+             <div data-bind="click: loadVideo" class="thumb">
+                 <img data-bind="attr: {src: src}" width="100" alt=""/>
+             </div>
+        {% templatetag openvariable %}/each{% templatetag closevariable %}
+        <div class="clear"></div>
+    </script>
+    
 {% endblock %}
 
 {% block page_breadcrumbs %}
@@ -34,6 +48,15 @@
     <div id="main_content">
         <div class="margin_left_20">
             <div class="left_content">
+                <h2>Introduction to DataWinners</h2>
+                <p>Take a tour and see how DataWinners can help you collect the data you need.</p>
+                <div id="videoDiv"></div>
+                <div id="thumbs" data-bind="template: 'video-thumb-template'">
+                    
+                </div>
+
+                
+                <h2>Tutorial</h2>
               <p>This <a href="/en/support/how-to-create-project/">tutorial</a> will help you get started with DataWinners.</p>
               <a href="/media/files/DataWinnersTutorial_CreateAProject.en.pdf" target="_blank">Create a new project</a> &nbsp;(PDF, 14 pages, 1.4MB)<br/>
               You want to create a new project. Let us take you through the process, step-by-step
@@ -52,7 +75,7 @@
                     <p>
                         Do you have any questions about DataWinners?
                     </p>
-                    See <a href="/en/support/find-answers/">Find Answers</a>.
+                    See <a href="/en/support/find-answers/">Find Answers</a>.
                 </div>
 
                 <div class="block_1">

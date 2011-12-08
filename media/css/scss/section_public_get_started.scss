@@ -46,10 +46,9 @@
     }
 }
 .frame{
-    border: 1px solid #CCCCCC;
+    border: 0px !important;
     width: 800px !important;
     padding: 10px;
-
 }
 
 .get-started-step{
@@ -58,14 +57,30 @@
 }
 
 #get-started-navigation{
-    width: 800px;
+    width: 820px;
     float: right;
-    padding: 10px;
-    margin-right: 5px;
+    position: relative;
+    padding: 10px 0 ;
+    margin: 10px 5px 0 0;
     #prev-step{
         float: left;
     }
     #next-step{
         float: right;
     }
+    #to-table-of-contents{
+        position: absolute;
+        left: 350px;
+    }
+}
+
+#head{
+    margin-top: 20px;
+    float:right;
+    width: 825px;
+}
+
+.border_bottom{
+    border-bottom: 1px solid #CCCCCC;
+    width: 820px;
 }
