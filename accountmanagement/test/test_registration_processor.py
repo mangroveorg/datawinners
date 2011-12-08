@@ -55,6 +55,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         NGOUserProfile(user = self.user2,title = 'Ms.',org_id = self.trial_organization.org_id).save()
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
         settings.EMAIL_FILE_PATH = '/tmp/email'
+        self.email_dir=settings.EMAIL_FILE_PATH+'/'
 
 
     def tearDown(self):
@@ -62,7 +63,6 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.user2.delete()
         self.paid_organization.delete()
         self.trial_organization.delete()
-        shutil.rmtree(settings.EMAIL_FILE_PATH)
 
 
     def test_should_get_the_correct_registration_processor(self):
@@ -80,18 +80,19 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user1, site, kwargs)
 
-        self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
-        file_list = dircache.listdir(settings.EMAIL_FILE_PATH)
+        file_list = dircache.listdir(self.email_dir)
         emails = ''
-        for email in file_list:
-            emails += (open(settings.EMAIL_FILE_PATH+email, 'r').read())
+        for email_file in file_list:
+            emails += (open(self.email_dir+email_file, 'r').read())
+        shutil.rmtree(settings.EMAIL_FILE_PATH)
 
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: paid_account@mail.com', emails)
         self.assertIn('Subject: Account activation on test_site', emails)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
         self.assertIn(activation_link, emails)
+        self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
     def test_should_process_registration_data_for_trial_acccount(self):
 
@@ -102,10 +103,11 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user2, site, kwargs)
 
-        file_list = dircache.listdir(settings.EMAIL_FILE_PATH)
+        file_list = dircache.listdir(self.email_dir)
         emails = ''
-        for email in file_list:
-            emails += (open(settings.EMAIL_FILE_PATH+email, 'r').read())
+        for email_file in file_list:
+            emails += (open(self.email_dir+ email_file, 'r').read())
+        shutil.rmtree(settings.EMAIL_FILE_PATH)
 
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: trial_account@mail.com', emails)
