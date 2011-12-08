@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import shutil
 from django.contrib.auth.models import User
 from django.utils import unittest
 from registration.models import RegistrationProfile
@@ -82,8 +83,8 @@ class TestRegistrationProcessor(unittest.TestCase):
         emails = ''
         for email in list:
             emails += (open('/tmp/email/'+email, 'r').read())
-            os.remove('/tmp/email/'+email)
 
+        shutil.rmtree('/tmp/email/')
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: paid_account@mail.com', emails)
         self.assertIn('Subject: Account activation on test_site', emails)
@@ -105,8 +106,8 @@ class TestRegistrationProcessor(unittest.TestCase):
         emails = ''
         for email in list:
             emails += (open('/tmp/email/'+email, 'r').read())
-            os.remove('/tmp/email/'+email)
 
+        shutil.rmtree('/tmp/email/')
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: trial_account@mail.com', emails)
         self.assertIn('Subject: DataWinners Trial Account Activation', emails)
