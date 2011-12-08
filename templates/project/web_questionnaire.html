@@ -21,6 +21,11 @@
 
 {% endblock %}
 
+{% block page_js %}
+    {{ block.super }}
+    <script src="/media/javascript/project/web_questionnaire.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
     {% block secondary_navigation_data %}
         {% activetab "secondary_tab_nav" "web_questionnaire" %}
