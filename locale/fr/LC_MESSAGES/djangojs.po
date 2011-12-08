@@ -412,16 +412,16 @@ msgid "Subject Registration Preview"
 msgstr "Aperçu du sujet"
 
 msgid "Which subject are you reporting on?"
-msgstr "Votre rapport concerne quel sujet ?"
+msgstr "Votre rapport concerne quel sujet?"
 
 msgid "What is the reporting period for the activity?"
-msgstr "Votre rapport concerne quelle période ?"
+msgstr "Votre rapport concerne quelle période?"
 
 msgid "What is associated subject type?"
 msgstr "Quel est le type de sujet associé?"
 
 msgid "What is the subject's name?"
-msgstr "Quel est le nom du sujet ?"
+msgstr "Quel est le nom du sujet?"
 
 msgid "What is the subject's Unique ID Number"
 msgstr "Quel est l'ID unique du sujet"
@@ -539,3 +539,6 @@ msgstr "Appelez-nous directement et nous pouvons, par téléphone, traiter en to
 
 msgid "Securely transfer funds between your US-based bank account and ours (normally free of charge)."
 msgstr "Transférez en toute sécurité des fonds entre votre compte bancaire aux États-Unis et la nôtre (normalement, gratuit)."
+
+msgid "subject"
+msgstr "sujet"

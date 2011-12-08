@@ -2,7 +2,8 @@ DW.change_description = function(){
     $(viewModel.questions()).each(function (question) {
         var question_title = this.title();
         if (this.is_entity_question()) {
-            this.title(question_title.replace('subject', $('#id_entity_type').val()));
+            var subject_name = gettext("subject");
+            this.title(question_title.replace(subject_name, $('#id_entity_type').val()));
         }
       });
     viewModel.questions.valueHasMutated();
