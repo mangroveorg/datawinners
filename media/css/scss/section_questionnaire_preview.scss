@@ -34,6 +34,8 @@
  #que_code{
     li{
         list-style-type:decimal;
+        float:left;
+        clear:both;
     }
  }
 

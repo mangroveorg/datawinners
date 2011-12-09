@@ -22,7 +22,9 @@
     float: left; }
 
 #que_code li {
-  list-style-type: decimal; }
+  list-style-type: decimal;
+  float: left;
+  clear: both; }
 
 #print_page a {
   color: #0070ac;
@@ -37,7 +39,7 @@
     .questionnaire_title li p, .questionnaire_title li h5 {
       float: left; }
     .questionnaire_title li h5 {
-      margin: -5px 0  0 10px; }
+      margin: -5px 0 0 10px; }
     .questionnaire_title li p.content {
       margin-left: 10px; }
 
