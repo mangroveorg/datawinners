@@ -5,13 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMessage
-#from django.core.mail.message import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from datawinners.settings import HNI_SUPPORT_EMAIL_ID
+from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm
@@ -212,9 +211,9 @@ def trial_expired(request):
     return render_to_response("registration/trial_account_expired_message.html")
 
 
-def _send_upgrade_email(user):
-    subject = render_to_string('accountmanagement/upgrade_email_subject.txt')
-    body = render_to_string('accountmanagement/upgrade_email.html', {'name':user.first_name})
+def _send_upgrade_email(user, language):
+    subject = render_to_string('accountmanagement/upgrade_email_subject_'+language+'.txt')
+    body = render_to_string('accountmanagement/upgrade_email_'+language+'.html', {'name':user.first_name})
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
@@ -244,7 +243,7 @@ def upgrade(request):
                 tracker = message_tracker[0]
                 tracker.reset()
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
-            _send_upgrade_email(request.user)
+            _send_upgrade_email(request.user, request.LANGUAGE_CODE)
             messages.success(request,_("upgrade success message") )
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
             
