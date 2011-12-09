@@ -89,19 +89,6 @@ class TestRegistrationProcessor(unittest.TestCase):
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
         self.assertIn(activation_link, emails)
 
-        payment_detail = PaymentDetails.objects.filter(organization=self.paid_organization)
-        self.assertTrue(is_not_empty(payment_detail))
-        payment_detail.delete()
-
-        processor.process(self.user1, site, 'fr', kwargs)
-
-        file_list = dircache.listdir('/tmp/email')
-        emails = ''
-        for email_file in file_list:
-            emails += (open('/tmp/email/' + email_file, 'r').read())
-            os.remove('/tmp/email/' + email_file)
-
-        self.assertIn('Bonjour first_name1 last_name1,', emails)
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
     def test_should_process_registration_data_for_trial_acccount(self):
@@ -122,22 +109,10 @@ class TestRegistrationProcessor(unittest.TestCase):
             emails += (open('/tmp/email1/' + email_file, 'r').read())
             os.remove('/tmp/email1/' + email_file)
 
+        self.assertIn('Content-Type: text/html', emails)
         self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
         self.assertIn('To: trial_account@mail.com', emails)
         self.assertIn('Subject: DataWinners Trial Account Activation', emails)
         self.assertIn('Hello first_name2 last_name2,', emails)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user2)).activation_key + '/'
         self.assertIn(activation_link, emails)
-
-        processor.process(self.user2, site, 'fr', kwargs)
-
-        file_list = dircache.listdir('/tmp/email1')
-        emails = ''
-        for email_file in file_list:
-            emails += (open('/tmp/email1/' + email_file, 'r').read())
-            os.remove('/tmp/email1/' + email_file)
-
-        self.assertIn("Subject: Confirmation du Compte d'Essai DataWinners", emails)
-        self.assertIn('Bonjour first_name2 last_name2,', emails)
-
-
