@@ -18,8 +18,8 @@ from mangrove.transport.reporter import find_reporter
 def _find_reporter_name(dbm, row):
     channel = row.value.get("channel")
     if channel == player.Channel.SMS:
-        reporter = find_reporter(dbm, row.value["source"])
-        reporter = reporter[0].get("name")
+        reporters = dbm.load_all_rows_in_view('reporters_by_number_and_name',key=(row.value["source"]))
+        reporter = reporters[0].value
     else:
         reporter = ""
     return reporter
