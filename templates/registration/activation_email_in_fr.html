@@ -1,0 +1,33 @@
+<html>
+<body>
+<p>Bonjour {{ name }},</p>
+
+<p>Merci d’avoir souscrit un Abonnement Mensuel Auprès de DataWinners!</p>
+
+<p>Cliquez sur ce lien pour activer votre compte DataWinners:</p>
+
+<p>http://{{ site.domain }}{% url registration_activate activation_key %}</p>
+
+<p>Ce lien est valide pour {{ expiration_days }} jours.</p>
+
+<p>Dans les prochaines 24 heures, vous recevrez de notre part un e-mail de confirmation contenant les informations sur
+    le paiement et les options de numéro de téléphone. En attendant, vous pouvez commencer à utiliser DataWinners pour
+    créer vos questionnaires et collecter des données via Internet.</p>
+
+<p>Dès réception de votre paiement, vous pouvez commencer à collecter des données à l'aide de SMS.</p>
+
+<p>Si vous avez besoin d'aide pour démarrer, consultez notre <a href="http://www.datawinners.com/faq">Foire Aux
+    Questions</a> ainsi que les autres formes
+    <a href="http://www.datawinners.com/support">d’assistance</a> en ligne.</p>
+
+<p>Restez en contact! Vous pouvez nous voir sur <a href="https://twitter.com/#!/datawinners ">Twitter</a>, publier sur
+    notre mur <a href="http://www.facebook.com/DataWinners">Facebook</a>, et commenter sur notre <a
+            href="http://datawinners.wordpress.com/ ">blog</a>. Le
+    blog est un excellent moyen pour apprendre sur les nouvelles fonctionnalités et les événements à venir de
+    DataWinners.</p>
+
+<p>Encore merci pour votre soutien,</p>
+
+<p>Votre Equipe DataWinners</p>
+</body>
+</html>

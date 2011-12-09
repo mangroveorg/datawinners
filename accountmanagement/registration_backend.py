@@ -33,8 +33,8 @@ class RegistrationBackend(object):
       expires, activation will be disallowed).
 
     * The creation of the templates
-      ``registration/activation_email_subject.txt`` and
-      ``registration/activation_email.html``, which will be used for
+      ``registration/activation_email_subject_in_en.txt`` and
+      ``registration/activation_email_in_en.html``, which will be used for
       the activation email. See the notes for this backends
       ``register`` method for details regarding these templates.
 
@@ -111,7 +111,7 @@ class RegistrationBackend(object):
         new_user = self._create_user(site, kwargs)
 
         registration_processor = get_registration_processor(organization)
-        registration_processor.process(new_user, site, kwargs)
+        registration_processor.process(new_user, site, request.LANGUAGE_CODE, kwargs)
         new_user.save()
 
         signals.user_registered.send(sender=self.__class__,

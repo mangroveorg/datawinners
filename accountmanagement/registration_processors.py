@@ -14,14 +14,14 @@ class TrialAccountRegistrationProcessor(object):
     def __init__(self, organization):
         self.organization = organization
 
-    def process(self, user, site, kwargs=None):
+    def process(self, user, site, language, kwargs=None):
         if not kwargs: kwargs = {}
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
                     'name': user.first_name + ' ' + user.last_name}
-        subject = render_to_string('registration/activation_email_subject_for_trial_account_in_en.txt')
-        message = render_to_string('registration/activation_email_for_trial_account_in_en.html',
+        subject = render_to_string('registration/activation_email_subject_for_trial_account_in_'+language+'.txt')
+        message = render_to_string('registration/activation_email_for_trial_account_in_'+language+'.html',
                                    ctx_dict)
         email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
         email.content_subtype = "html"
@@ -32,9 +32,9 @@ class PaidAccountRegistrationProcessor(object):
     def __init__(self, organization):
         self.organization = organization
 
-    def process(self, user, site, kwargs):
+    def process(self, user, site, language, kwargs):
         self._make_payment_details(kwargs)
-        self._send_activation_email(site, user)
+        self._send_activation_email(site, user, language)
 
     def _make_payment_details(self, kwargs):
         invoice_period = kwargs['invoice_period']
@@ -43,15 +43,14 @@ class PaidAccountRegistrationProcessor(object):
                                                        preferred_payment=preferred_payment)
         payment_details.save()
 
-    def _send_activation_email(self, site, user):
+    def _send_activation_email(self, site, user, language):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
                     'name': user.first_name + ' ' + user.last_name}
-        subject = render_to_string('registration/activation_email_subject.txt',
-                                   ctx_dict)
+        subject = render_to_string('registration/activation_email_subject_in_'+language+'.txt')
         subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
-        message = render_to_string('registration/activation_email.html',
+        message = render_to_string('registration/activation_email_in_'+language+'.html',
                                    ctx_dict)
         email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
         email.content_subtype = "html"
