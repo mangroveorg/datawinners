@@ -2667,8 +2667,8 @@ msgid "Add Senders"
 msgstr "Ajouter des Expéditeurs"
 
 #broadcast_message.html
-msgid "Your message has been sent successfully. View your message in Sent Messages"
-msgstr "Votre message a été envoyé avec succès. Afficher votre message dans les Messages Envoyés"
+msgid "Your message has been sent successfully."
+msgstr "Votre message a été envoyé avec succès."
 
 #accountmanagement/form.py
 msgid "Please Select..."

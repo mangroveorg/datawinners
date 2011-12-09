@@ -2634,7 +2634,7 @@ msgid "Add Senders"
 msgstr ""
 
 #broadcast_message.html
-msgid "Your message has been sent successfully. View your message in Sent Messages"
+msgid "Your message has been sent successfully."
 msgstr ""
 
 #accountmanagement/form.py
