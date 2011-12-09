@@ -8,8 +8,7 @@ from django.contrib.auth.models import Group
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import Organization, PaymentDetails
-from django.template.loader import render_to_string
+from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.registration_processors import get_registration_processor
 
 class RegistrationBackend(object):

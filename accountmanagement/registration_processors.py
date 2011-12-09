@@ -20,8 +20,8 @@ class TrialAccountRegistrationProcessor(object):
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
                     'name': user.first_name + ' ' + user.last_name}
-        subject = render_to_string('registration/activation_email_subject_for_trial_account.txt')
-        message = render_to_string('registration/activation_email_for_trial_account.html',
+        subject = render_to_string('registration/activation_email_subject_for_trial_account_in_en.txt')
+        message = render_to_string('registration/activation_email_for_trial_account_in_en.html',
                                    ctx_dict)
         email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
         email.content_subtype = "html"

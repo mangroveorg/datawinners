@@ -64,7 +64,7 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         self.assertTrue(isinstance(get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
 
-    def test_should_process_registration_data_for_paid_acccount(self):
+    def test_should_process_registration_data_for_paid_acccount_in_english(self):
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
         settings.EMAIL_FILE_PATH = '/tmp/email'
 
@@ -76,19 +76,21 @@ class TestRegistrationProcessor(unittest.TestCase):
         processor.process(self.user1, site, kwargs)
 
         file_list = dircache.listdir('/tmp/email')
-        emails = [self.xyz(single_file, '/tmp/email/') for single_file in file_list]
-        self.assertEqual(1, len(emails))
-        email = emails[0]
-        self.assertIn('Content-Type: text/html', email)
-        self.assertIn('From: ' + settings.EMAIL_HOST_USER, email)
-        self.assertIn('To: paid_account@mail.com', email)
-        self.assertIn('Subject: Account activation on test_site', email)
-        self.assertIn('Hello first_name1 last_name1,', email)
+        emails = ''
+        for email_file in file_list:
+            emails += (open('/tmp/email/' + email_file, 'r').read())
+            os.remove('/tmp/email/' + email_file)
+
+        self.assertIn('Content-Type: text/html', emails)
+        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
+        self.assertIn('To: paid_account@mail.com', emails)
+        self.assertIn('Subject: Account activation on test_site', emails)
+        self.assertIn('Hello first_name1 last_name1,', emails)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
-        self.assertIn(activation_link, email)
+        self.assertIn(activation_link, emails)
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
-    def test_should_process_registration_data_for_trial_acccount(self):
+    def test_should_process_registration_data_for_trial_acccount_in_english(self):
         settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
         settings.EMAIL_FILE_PATH = '/tmp/email1'
 
@@ -101,18 +103,14 @@ class TestRegistrationProcessor(unittest.TestCase):
         processor.process(self.user2, site, kwargs)
 
         file_list = dircache.listdir('/tmp/email1')
-        emails = [self.xyz(single_file, '/tmp/email1/') for single_file in file_list]
+        emails = ''
+        for email_file in file_list:
+            emails += (open('/tmp/email1/' + email_file, 'r').read())
+            os.remove('/tmp/email1/' + email_file)
 
-        self.assertEqual(1, len(emails))
-        email = emails[0]
-        self.assertIn('From: ' + settings.EMAIL_HOST_USER, email)
-        self.assertIn('To: trial_account@mail.com', email)
-        self.assertIn('Subject: DataWinners Trial Account Activation', email)
-        self.assertIn('Hello first_name2 last_name2,', email)
+        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
+        self.assertIn('To: trial_account@mail.com', emails)
+        self.assertIn('Subject: DataWinners Trial Account Activation', emails)
+        self.assertIn('Hello first_name2 last_name2,', emails)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user2)).activation_key + '/'
-        self.assertIn(activation_link, email)
-
-    def xyz(self, single_file, email_folder):
-       email =  open(email_folder + single_file, 'r').read()
-       os.remove(email_folder + single_file)
-       return email
+        self.assertIn(activation_link, emails)
