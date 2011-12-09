@@ -2804,3 +2804,11 @@ msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée"
 
 msgid "Job Title"
 msgstr "Nom de l’emploi"
+
+msgid "broadcast_trial_warning_message"
+msgstr "A partir de ce site, vous pouvez envoyer des SMS en Groupe ; cependant cette fonctionnalité n'est pas disponible pour les utilisateurs de compte d'Essai."
+" Souscrivez-vous à un abonnement mensuel pour pouvoir envoyer via Web des SMS en Groupe au titre de votre compte DataWinners."
+
+msgid "reminder_trial_warning_message"
+msgstr "A partir de ce site, vous pouvez ajouter des messages de Rappel ; cependant cette fonctionnalité n'est pas disponible pour les utilisateurs de compte d'Essai."
+" Souscrivez-vous à un abonnement mensuel pour pouvoir envoyer des messages de Rappel à vos Expéditeurs de Données."

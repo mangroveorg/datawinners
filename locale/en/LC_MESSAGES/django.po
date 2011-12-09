@@ -2813,3 +2813,11 @@ msgstr ""
 
 msgid "Job Title"
 msgstr ""
+
+msgid "broadcast_trial_warning_message"
+msgstr "You can send Broadcast SMS messages from here, however this feature is not available to Trial account users."
+" Sign up for a monthly subscription to send Broadcast SMS messages from your DataWinners account."
+
+msgid "reminder_trial_warning_message"
+msgstr "You can add Reminders here, however this feature is not available to Trial account users."
+" Sign up for a monthly subscription to send Reminders to your Data Senders."
