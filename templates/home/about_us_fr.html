@@ -3,27 +3,28 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "about" %}
-{{ block.super }}
+    {% activetab "main_nav" "about" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/home/support.js"></script>
+    <script type="text/javascript"
+            src="/media/javascript/home/support.js"></script>
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/fr/home/">Accueil</a> &gt; Qui sommes-nous ?
+    <a href="/fr/home/">Accueil</a> &gt; Qui sommes-nous ?
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>QUI SOMMES-NOUS ?</h1>
+        <h1><a href="/fr/about-us/">QUI SOMMES-NOUS ?</a></h1>
         <ul>
             <li><a href="/fr/about-us/blog">Blog</a></li>
             <li><a href="/fr/about-us/partners">Partenaires</a></li>
@@ -34,34 +35,48 @@
     <div id="main_content">
         <div class="margin_left_20">
             <p>
-                Human Network International (HNI) helps organizations to embrace, reshape and maximize the use of
-                information and communication technology in innovative, productive and sustainable ways.
+                Human Network International (HNI) aide les organisations à
+                adopter, remodeler et maximiser l'utilisation de la technologie
+                de l'information et des communications d’une façon innovatrice,
+                productive et durable.
             </p>
+
             <p>
-                We are a nonprofit 501(c)(3) organization based in Washington, D.C. with offices in Madagascar.
-                HNI has received financial and in-kind support from a variety of sources including foundations
-                and institutions based around the world.
+                Nous sommes un organisme à but non lucratif 501(c)(3) basé à
+                Washington, D.C., avec des bureaux à Madagascar. HNI a reçu des
+                appuis financiers et en nature provenant de diverses sources, y
+                compris des fondations et des institutions basées à travers le
+                monde.
                 <br/>
-                <a href="http://www.hni.org/">Visit HNI's website</a>
+                <a href="http://www.hni.org/">Visiter le site Web de HNI</a>
             </p>
 
             <div class="grid_18 alpha omega margin_top_20">
                 <div class="grid_9 alpha block_support">
                     <div class="grid_4 omega">
-                        <img src="/media/images/dw_tt_blog.jpg" width="150"/><br/>
+                        <img src="/media/images/dw_tt_blog.jpg"
+                             width="150"/><br/>
                     </div>
-                    <div class="grid_5 omega">
-                        Stay current with DataWinners: new features, upcoming events,  spotlights on current projects and more!
-                        <a href="/en/about-us/blog/" class="read_more more">Read More</a>
+                    <div class="grid_5 omega" style="line-height: 17px;">
+                        Restez à jour avec DataWinners: nouvelles
+                        fonctionnalités, événements à venir, points de
+                        situation sur les projets actuels et plus d’autres
+                        encore!
+                        <a href="/fr/about-us/blog/" class="read_more more">En
+                            savoir plus</a>
                     </div>
                 </div>
                 <div class="block_support">
                     <div class="grid_4 omega">
-                        <img src="/media/images/dw_tt_partners.jpg" width="150"/><br/>
+                        <img src="/media/images/dw_tt_partners.jpg"
+                             width="150"/><br/>
                     </div>
-                    <div class="grid_5 omega" style="position:relative;">
-                        Read how HNI works collaboratively with international partners to create and manage DataWinners as an open-source project.
-                        <a href="/en/about-us/partners/" class="read_more more">Read More</a>
+                    <div class="grid_5 omega" style="line-height: 17px;">
+                        Lisez comment HNI travaille en collaboration avec des
+                        partenaires internationaux pour créer et gérer
+                        DataWinners comme un projet open-source.
+                        <a href="/fr/about-us/partners/"
+                           class="read_more more">Lire la suite</a>
                     </div>
                 </div>
             </div>
@@ -69,20 +84,27 @@
             <div class="grid_18 alpha omega margin_top_20">
                 <div class="block_support">
                     <div class="grid_4 alpha">
-                        <img src="/media/images/dw_tt_clients.jpg" width="150"/><br/>
+                        <img src="/media/images/dw_tt_clients.jpg"
+                             width="150"/><br/>
                     </div>
-                    <div class="grid_5 omega">
-                        Learn how HNI builds the capacity of development partners to collect data and make better decisions.
-                        <a href="/en/about-us/clients/" class="read_more more">Read More</a>
+                    <div class="grid_5 omega" style="line-height: 17px;">
+                        Apprenez comment HNI renforce la capacité des
+                        partenaires de développement à collecter des données et
+                        à prendre de meilleures décisions.
+                        <a href="/fr/about-us/clients/" class="read_more more">En
+                            savoir plus</a>
                     </div>
                 </div>
                 <div class="block_support">
                     <div class="grid_4 alpha">
-                        <img src="/media/images/dw_tt_contact.jpg" width="150"/><br/>
+                        <img src="/media/images/dw_tt_contact.jpg"
+                             width="150"/><br/>
                     </div>
-                    <div class="grid_5 omega">
-                        Ask a question or send a comment.  Customer service is our #1 priority.
-                        <a href="/en/about-us/contact-us/" class="read_more more">Read More</a>
+                    <div class="grid_5 omega" style="line-height: 17px;">
+                        Posez une question ou envoyez un commentaire. Le
+                        service clientèle est notre priorité #1.
+                        <a href="/fr/about-us/contact-us/"
+                           class="read_more more">Lire la suite</a>
                     </div>
                 </div>
             </div>

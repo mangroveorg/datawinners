@@ -3,31 +3,35 @@
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "support" %}
-{{ block.super }}
+    {% activetab "main_nav" "support" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet" />
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/home/howto.js"></script>
+    <script type="text/javascript"
+            src="/media/javascript/home/howto.js"></script>
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/en/home/">Home</a> &gt; <a href="/en/support/">Assistance</a> &gt; Etude de cas
+    <a href="/fr/home/">Home</a> &gt; <a
+        href="/fr/support/">Assistance</a> &gt; Etude de cas
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
         <h1><a href="/fr/support/">ASSISTANCE</a></h1>
-         <ul>
-            <li class="active"><a href="/fr/support/case-studies/">Etude de cas</a></li>
+        <ul>
+            <li class="active"><a href="/fr/support/case-studies/">Etude de
+                cas</a></li>
             <li><a href="/fr/support/get-started/">Commencer</a></li>
-            <li><a href="/fr/support/find-answers/">Trouver des reponses (FAQs)</a></li>
+            <li><a href="/fr/support/find-answers/">Trouver des reponses
+                (FAQs)</a></li>
             <li><a href="/fr/support/ask-us/">Nous demander</a></li>
         </ul>
     </div>
@@ -35,31 +39,37 @@
 
         <div class="margin_left_20">
             <div class="grid_18">
-                <p class="font_size_14">Osi is the program manager for a child nutriton project.
-                Click on each image below to see how Osi uses DataWinners for her data collection needs.
+                <p class="font_size_14">OSI est le gestionnaire de programme
+                    pour un projet de nutriton infantile. Cliquez sur chaque
+                    image ci-dessous pour voir comment Osi utilise DataWinners
+                    pour ses besoins de collecte de données.
                 </p>
             </div>
             <div class="clear"></div>
             <br/>
             <br/>
+
             <div class="text_align_center">
-                <div id="how_menu" style="width: 640px;">
+                <div id="how_menu" style="width: 540px; margin: auto;">
                     <div class="title">
                         <a href="javascript:void(0)" rel="1">
-                            <img src="/media/images/dw_support1.png" width="180" alt="How it works" />
-                            <strong>Monthly Report</strong>
+                            <img src="/media/images/dw_support1.png"
+                                 width="180" alt="How it works"/>
+                            <strong>Rapport Mensuel</strong>
                         </a>
                     </div>
                     <div class="title">
                         <a href="javascript:void(0)" rel="2">
-                            <img src="/media/images/dw_support2.png" width="180" alt="How it works" />
-                            <strong>Detail Report</strong>
+                            <img src="/media/images/dw_support2.png"
+                                 width="180" alt="How it works"/>
+                            <strong>Rapport des Faits</strong>
                         </a>
                     </div>
                     <div class="title">
                         <a href="javascript:void(0)" rel="3">
-                            <img src="/media/images/dw_support3.png" width="180" alt="How it works" />
-                            <strong>Supervisor Report</strong>
+                            <img src="/media/images/dw_support3.png"
+                                 width="180" alt="How it works"/>
+                            <strong>Rapport des Superviseurs</strong>
                         </a>
                     </div>
                     <div class="clear"></div>
@@ -70,205 +80,214 @@
 
             <div id="how_content">
                 <div id="step1" class="container active">
-                    <h1>MONTHLY ACTIVITY REPORTS</h1>
-                    <h2>1.  Replace Costly and Inefficient Paper-Based Data Collection Efforts</h2>
-                    <div>
-                        <p>Osi has a problem: As program manager of a large child malnutrition project,
-                            she cannot get timely, accurate and complete data from Nutritional Agents at each of her
-                            Feeding Centers.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h1>RAPPORTS D'ACTIVITE MENSUELS</h1>
 
-                    <h2>2. Upgrade to Data Collection via SMS</h2>
-                    <div>
-                        <p>Osi decides to collect her data via mobile phone.
-                            She reviews her paper-based monthly summary report form, talks with staff and
-                            decides:
-                            1) who she wants to collect data from (Nutritional Agents);
-                            2) The subject of her questionnaire (Feeding Centers) and
-                            3) which key questions she wants her Nutritional Agents to answer via SMS
-                            (example: How many children did you weigh last month?)
-                        </p>
-                        <p>
-                            She creates the questionnaire using
-                            DataWinners friendly questionnaire builder.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>1. Remplacer les Efforts Coûteux et Inefficaces de
+                        Collecte de Données sur Papier</h2>
 
-                    <h2>3. Create Training Materials to Teach Staff How to Send in Data Via SMS</h2>
-                    <div>
-                        <p>DataWinners creates for Osi a template of her Questionnaire.
-                            Osi uses the template to train her Nutritional
-                            Agents to send in monthly summary reports via SMS.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>Osi a un problème: En tant que gestionnaire de programme
+                        d'un grand projet de malnutrition infantile, elle ne
+                        peut pas obtenir à temps des données exactes et
+                        complètes provenant de ses Agents de Nutrition au
+                        niveau de chacun de ses Centres de Nutrition.
+                    </p>
 
-                    <h2>4. Use DataWinners to send reminders</h2>
-                    <div>
-                        <p>Osi sets an automatic reminder to be sent to all
-                            Nutritional Agents who haven’t yet submitted their report.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>2. Basculer vers la Collecte de Données via SMS</h2>
 
-                    <h2>5. View your Data from DataWinners website</h2>
-                    <div>
-                        <p>The day after the submission deadline,
-                            Osi logs in to her DataWinners account and sees
-                            complete monthly reports from all 100 Feeding Centers.
-                            For the first time, Osi has all her data, on time.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>Osi décide de collecter ses données via des téléphones
+                        portables. Elle examine la version papier de ses
+                        formulaires de rapport de synthèse mensuel,
+                        s’entretient avec le personnel et décide: 1) de la part
+                        de qui veut-elle collecter les données (Agents de
+                        Nutrition) ; 2) le sujet de son questionnaire (Centres
+                        de Nutrition) et 3) quelles sont les questions clés
+                        auxquelles elle veut que ses Agents de Nutrition
+                        répondent par SMS (par exemple: Combien d'enfants
+                        aviez-vous pesé le mois dernier?)
+                        <br/>Elle crée le questionnaire en utilisant le
+                        générateur convivial de questionnaire de DataWinners.
+                    </p>
 
-                    <h2>6. Share Your Data</h2>
-                    <div>
-                        <p>Osi provides her supervisor with a link to the monthly summary data.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>3. Créer des Matériels de Formation pour Enseigner au
+                        Personnel Comment Envoyer des Données Via SMS</h2>
 
-                    <h2>7. Make better decisions</h2>
-                    <div>
-                        <p>Her supervisor is thrilled to have the information.
-                            Osi and the supervisor review the data and decide to
-                            make changes at several Feeding Centers.
-                            Osi congratulates many of her Nutritional
-                            Agents both for sending in their information and for meeting their project goals.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>DataWinners crée pour Osi un modèle pour son
+                        questionnaire. Osi utilise le modèle pour former ses
+                        Agents de Nutrition à l’envoi par SMS de leurs rapports
+                        de synthèse mensuels
+                    </p>
 
+                    <h2>4. Utiliser DataWinners pour envoyer des messages de
+                        rappel</h2>
+
+                    <p>Osi fixe un rappel automatique prévu pour être envoyé à
+                        tous les Agents de Nutrition qui n'ont pas encore
+                        soumis leur rapport.</p>
+
+                    <h2>5. Visualiser vos Données à Partir du Site Web de
+                        DataWinners</h2>
+
+                    <p>Le jour qui suit la date limite de soumission des
+                        données, Osi se connecte à son compte DataWinners et
+                        voit les rapports mensuels complets provenant de tous
+                        ses 100 Centres de Nutrition. Pour la première fois,
+                        l'Osi a pu obtenir à temps toutes ses données.
+                    </p>
+
+                    <h2>6. Partagez vos Données</h2>
+
+                    <p>Osi fournit à son superviseur le lien menant vers les
+                        données de synthèse mensuelle.</p>
+
+                    <h2>7. Prendre de meilleures décisions</h2>
+
+                    <p>Son superviseur est ravie d'obtenir ces informations.
+                        Osi et le superviseur examinent les données et décident
+                        d’apporter des changements au niveau de plusieurs
+                        Centres de Nutrition. Osi félicite beaucoup ses Agents
+                        de Nutrition, tant pour avoir envoyé leurs données que
+                        pour avoir permis d’atteindre les objectifs de leur
+                        projet.
+                    </p>
                 </div>
                 <div id="step2" class="container">
-                    <h1>DETAILED RECORDS</h1>
-                    <h2>1.  Collect Multiple Reports Simultaneously</h2>
-                    <div>
-                        <p>In addition to Monthly Summary Reports, Osi also wants her Nutritional Agents to send in key data after each child’s visit to a Feeding Center.</p>
-                    </div>
-                    <div class="clear"></div>
+                    <h1>Rapport DES FAITS</h1>
 
-                    <h2>2. Improve the quality of your data</h2>
-                    <div>
-                        <p>Osi creates a second data collection project in her DataWinners account.
-                            She reviews her paper-based Feeding Center Visit Report form, talks with staff and decides:
-                            1) who she wants to collect data from (Nutritional Agents);
-                            2) The subject of her questionnaire (Each Child who visits) and
-                            3) which key questions she wants her Nutritional Agents to answer via SMS
-                            (example: How much does the child weigh in kilograms?)
-                        </p>
-                        <p>She creates the questionnaire using DataWinners friendly questionnaire builder.</p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>1. Collecter Plusieurs Rapports Simultanément</h2>
 
-                    <h2>3.  Register Each Child in DataWinners</h2>
-                    <div>
-                        <p>Osi uses her DataWinners account to create a simple registration form for each
-                            child who visits a feeding center:
-                            <ol class="lower_alpha">
-                                <li>What is the child's first name?</li>
-                                <li>What is the child's last name?</li>
-                                <li>Child's date of birth?</li>
-                                <li>Mother's telephone number?</li>
-                            </ol>
-                        </p>
-                        <p>Once the Nutrional Agents send in the answers to these registration questions,
-                            DataWinners generates a unique identification number for each child.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>En plus des Rapports de Synthèse Mensuels, Osi veut
+                        également que ses Agents de Nutrition lui envoient des
+                        données clés après la visite de chaque enfant auprès
+                        d’un Centre de Nutrition.
+                    </p>
 
-                    <h2>4.  Create Training Materials that Teach Staff How to Send in Data Via SMS</h2>
-                    <div>
-                        <p>DataWinners creates for Osi a template of her Questionnaire.
-                            Osi uses the template to train her Nutritional Agents to send in the feeding
-                            center visit reports via SMS.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>2. Améliorer la qualité de vos données</h2>
 
-                    <h2>5. View Data from DataWinners Website</h2>
-                    <div>
-                        <p>On a daily basis, Osi can review the feeding center visit reports in real time from all 100
-                            of her Feeding Centers.  Osi can identify each severely malnourished child and
-                            work with Nutritional Agent on a recovery plan
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>Osi crée un deuxième projet de collecte de données dans
+                        son compte DataWinners. Elle examine la version papier
+                        actuelle du Formulaire de Rapport de Visite du Centre
+                        de Nutrition, s’entretient avec le personnel et décide:
+                        1) de la part de qui veut-elle collecter les données
+                        (Agents de Nutrition) ; 2) le sujet de son
+                        questionnaire (Chaque Enfant venu pour une visite) et
+                        3) quelles sont les questions clés auxquelles elle veut
+                        que ses Agents de Nutrition répondent par SMS (par
+                        exemple: Combien pèse l'enfant en kilogrammes?)
+                        <br/>Elle crée le questionnaire en utilisant le
+                        générateur convivial de questionnaire de DataWinners.
+                    </p>
 
-                    <h2>6. Compare Results over Time</h2>
-                    <div>
-                        <p>Using DataWinners data analysis tools,
-                           Osi can track the progress of each child over time.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>3. Inscrire Chaque Enfant dans DataWinners</h2>
 
+                    <p>Osi utilise son compte DataWinners pour créer un
+                        formulaire simple d'inscription pour chaque enfant qui
+                        visite un centre de nutrition:</p>
+                    <ol>
+                        <li>Quel est le prénom de l'enfant?</li>
+                        <li>Quel est le nom de l'enfant?</li>
+                        <li>La date de naissance de l'enfant?</li>
+                        <li>Le numéro de téléphone de la mère?</li>
+                    </ol>
+                    <p>Dès que les Agents de Nutrition envoient les réponses à
+                        ces questions d'inscription, DataWinners génère un
+                        numéro d'identification unique pour chaque enfant.
+                    </p>
+
+                    <h2>4. Créer des Matériels de Formation qui Enseignent le
+                        Personnel Comment Envoyer des Données Via SMS</h2>
+
+                    <p>DataWinners crée pour Osi un modèle pour son
+                        questionnaire. Osi utilise le modèle pour former ses
+                        Agents de Nutrition à l’envoi par SMS de leurs rapports
+                        de visite du centre de nutrition.
+                    </p>
+
+                    <h2>5. Visialiser les Données à Partir du Site Web de
+                        DataWinners</h2>
+
+                    <p>Chaque jour, Osi peut en temps réel, examiner les
+                        rapports de visite des centres de nutrition émanant de
+                        la totalité de ses 100 centres de nutrition. Osi peut
+                        identifier chaque enfant sévèrement malnutri et
+                        travailler avec l'Agent de Nutrition concerné pour
+                        mettre en œuvre un plan de redressement
+                    </p>
+
+                    <h2>6. Comparer les Résultats au Fil du Temps</h2>
+
+                    <p>Par l’utilisation des outils d'analyse de données de
+                        DataWinners, Osi peut suivre l’évolution de chaque
+                        enfant au fil du temps.</p>
                 </div>
                 <div id="step3" class="container">
-                    <h1>SUPERVISOR REPORTS</h1>
-                    <h2>1. Quality Assurance Data</h2>
-                    <div>
-                        <p>Osi wants to collect quality assurance data from her Regional Supervisors after each visit to a Feeding Center.  </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h1>RAPPORTS DES SUPERVISEURS</h1>
 
-                    <h2>2. Create a New Project in DataWinners</h2>
-                    <div>
-                        <p>Osi creates a third data collection project in her DataWinners account.
-                            She reviews her paper-based Feeding Center Quality Assurance Report form,
-                            talks with staff and decides:
-                            1) who she wants to collect data from (Regional Supervisors);
-                            2) The subject of her questionnaire (Feeding Center) and
-                            3) which key questions she wants her Supervisors to answer via SMS
-                            (example: What overall grade, out of five do you give this Feeding Center?)
-                        </p>
-                        <p>She creates the questionnaire using DataWinners friendly questionnaire builder.</p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>1. Données d’Assurance de la Qualité</h2>
 
-                    <h2>3.  Register Each Feeding Center in DataWinners</h2>
-                    <div>
-                        <p>Osi uses her DataWinners account to create a simple registration form for each feeding center:
-                            <ul>
-                                <li>What is name of Feeding Center?</li>
-                                <li>Where is Feeding Center located?</li>
-                            </ul>
-                        </p>
-                        <p>Once Osi answers these questions, DataWinners generates a unique identification number
-                        for each Feeding Center</p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>Osi veut collecter des données d'assurance de la qualité
+                        de la part de ses Superviseurs Régionaux après chaque
+                        visite auprès d’un Centre de Nutrition.</p>
 
-                    <h2>4.  Create Training Materials that Teach Staff How to Send in Data Via SMS</h2>
-                    <div>
-                        <p>DataWinners creates for Osi a template of her Questionnaire.
-                            Osi uses the template to train her Supervisors
-                            to send in the feeding center visit reports via SMS.
-                        </p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>2. Créez un Nouveau Projet dans DataWinners</h2>
 
-                    <h2>5. View Data from DataWinners Website</h2>
-                    <div>
-                        <p>On a daily basis, Osi can review the Feeding Center Quality Assurance reports in real time.  Osi can identify which Feeding Centers require immediate assistance.</p>
-                    </div>
-                    <div class="clear"></div>
+                    <p>Osi crée un troisième projet de collecte de données dans
+                        son compte DataWinners. Elle étudie la version papier
+                        de son Formulaire de Rapport d'Assurance de la Qualité
+                        du Centre de Nutrition, s’entretient avec le personnel,
+                        et décide: 1) de la part de qui veut-elle collecter les
+                        données (Superviseurs Régionaux) ; 2) le sujet de son
+                        questionnaire (Centre de Nutrition) et 3) à quelles
+                        questions clés souhaite-t-elle que ses superviseurs
+                        répondent par SMS (par exemple: Quelle note globale sur
+                        cinq donnez-vous à ce Centre de Nutrition?)
+                        <br/>Elle crée le questionnaire en utilisant le
+                        générateur convivial de questionnaire de DataWinners.
+                    </p>
 
-                    <h2>6. Compare Results over Time</h2>
-                    <div>
-                        <p>Using DataWinners data analysis tools, Osi can track the progress of each Feeding Center over time.</p>
-                    </div>
-                    <div class="clear"></div>
+                    <h2>3. Inscrire Chaque Centre de Nutrition de
+                        DataWinners</h2>
 
+                    <p>Osi utilise son compte DataWinners pour créer un
+                        formulaire simple d'inscription pour chaque Centre de
+                        Nutrition:</p>
+                    <ul>
+                        <li>Quel est le nom du Centre de Nutrition?</li>
+                        <li>Où est situé le Centre de Nutrition?</li>
+                    </ul>
+                    <p>Dès que Osi répond à ces questions, DataWinners génère
+                        un numéro d'identification unique pour chaque Centre de
+                        Nutrition</p>
+
+                    <h2>4. Créer des Matériels de Formation qui Enseignent le
+                        Personnel Comment Envoyer des Données Via SMS</h2>
+
+                    <p>DataWinners crée pour Osi un modèle pour son
+                        questionnaire. Osi utilise le modèle pour former ses
+                        Superviseurs à l’envoi par SMS de leurs rapports de
+                        visite d’un centre de nutrition.
+                    </p>
+
+                    <h2>5. Visualiser les Données à Partir du Site Web de
+                        DataWinners</h2>
+
+                    <p>Chaque jour, Osi peut en temps réel, examiner les
+                        Rapports d'Assurance de la Qualité du Centre de
+                        Nutrition. Osi peut identifier les Centres de Nutrition
+                        qui nécessitent une assistance immédiate.
+                    </p>
+
+                    <h2>6. Comparer les Résultats au Fil du Temps</h2>
+
+                    <p>Avec l’utilisation des outils d'analyse de données de
+                        DataWinners, Osi peut suivre le progrès de chaque
+                        Centre de Nutrition au fil du temps.</p>
                 </div>
             </div>
             <div id="how_nav" class="margin_top_20">
-                <div id="how_prev"><a href="javascript:void(0)">&laquo; Previous</a></div>
-                <div id="how_next"><a href="javascript:void(0)">Next &raquo;</a></div>
+                <div id="how_prev"><a href="javascript:void(0)">&laquo;
+                    Etape précédente</a></div>
+                <div id="how_next"><a
+                        href="javascript:void(0)">Etape suivante &raquo;</a></div>
                 <div class="clear"></div>
             </div>
         </div>

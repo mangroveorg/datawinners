@@ -1,0 +1,568 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Assistance {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+{% activetab "main_nav" "support" %}
+{{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_get_started.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/home/get_started.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; <a href="/fr/support/get-started/">Commencer</a> &gt; Comment cr&eacute;er un projet
+{% endblock %}
+
+{% block main_content %}
+    <div id="head">
+        <h1>Comment cr&eacute;er un projet</h1>
+        <br/>
+
+        <div class="border_bottom">
+            <a class="float_left" href="/fr/support/get-started/">&lt;&lt; Retour vers Commencer</a>
+            <span class="float_right">T&eacute;l&eacute;charger: <a href="/media/files/DataWinnersTutorial_CreateAProject.fr.pdf">PDF, 14 pages, 1.4 MB</a><br/></span>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div id="get-started-navigation">
+        <a href="javascript:void(0);" id="prev-step">&lt;- Page pr&eacute;c&eacute;dente</a>
+        <a href="javascript:void(0);" id="next-step">Page suivante -&gt;</a>
+        <a href="javascript:void(0);" id="to-table-of-contents">Table des Mati&egrave;res</a>
+        <div class="clear"></div>
+    </div>
+    <div id="main_content" class="frame">
+
+        <div class="margin_left_20" id="get_started_content">
+            <div class="get-started-step" id="table-of-contents">
+                <h1>Table des Mati&egrave;res</h1>
+                <ol>
+                    <li><h2>QU'EST CE QU'UN PROJET DATAWINNERS?</h2></li>
+                    <li><h2>COMMENT CREER UN PROJET</h2>
+                        <ul>
+                            <li>
+                                <h3>Remplir les Informations de Base</h3>
+                                <ul>
+                                    <li>Nom &amp; Description</li>
+                                    <li>Langue &agrave; Utiliser par vos exp&eacute;diteurs de donn&eacute;es</li>
+                                    <li>Rapport de synth&egrave;se vs. Rapport individuel</li>
+                                    <li>Canal de communication</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <h3>Cr&eacute;er votre Questionnaire</h3>
+                                <ul>
+                                    <li>Aper&ccedil;u</li>
+                                    <li>Code questionnaire</li>
+                                    <li>Questions pr&eacute;d&eacute;finies</li>
+                                    <li>Vos Questions</li>
+                                    <li>Enregistrer &amp; Cr&eacute;er votre projet</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><h2>ETAPES SUIVANTES</h2></li>
+                    <li><h2>CECI POURRAIT EGALEMENT VOUS INTERESSER</h2></li>
+                </ol>
+            </div>
+
+            <div class="get-started-step">
+                <h1>1	Qu'est-ce qu'un Projet DataWinners?</h1>
+                <p>DataWinners est un service mobile de collecte de donn&eacute;es en ligne à monter soi-même. Peu importe le secteur dans lequel vous travaillez, DataWinners peut vous aider à collecter et à analyser les donn&eacute;es dont vous avez besoin pour tout type de projet. Voici quelques exemples:</p>
+                <h2>Rapports Sommaires</h2>
+                <ol class="bulleted">
+                    <li>Un agent de sant&eacute; communautaire envoie un rapport d'activit&eacute; mensuel<br/>
+                        Exemple de question: Combien de b&eacute;b&eacute;s aviez-vous pes&eacute; le mois dernier?
+                    </li>
+                    <li>
+                        Une jeune femme r&eacute;pond aux questions de type oui ou non<br/>
+                        Exemple de question: Avez-vous acc&egrave;s à l'eau potable?
+                    </li>
+                </ol>
+                <h2>Rapports Individuels sur un Sujet Sp&eacute;cifique</h2>
+                <p>Avec DataWinners, vous pouvez aller au-delà de la collecte de rapports sommaires, vous pouvez collecter des rapports individuels sur un <span style="text-decoration: underline;">sujet</span> sp&eacute;cifique.
+                </p>
+                <p>
+                    Les Sujets sont des gens (Enfants de moins de cinq ans), des lieux (Districts), des choses (Centres de Sant&eacute;) ou des &eacute;v&eacute;nements (Formations) sur lesquels vous voulez collecter des donn&eacute;es.
+                </p>
+                <p>En utilisant DataWinners, vous pouvez inscrire vos Sujets et donner à chacun d’eux un num&eacute;ro d’ID unique pour que vous puissiez:
+                    <ol class="lower-alpha">
+                        <li>Cr&eacute;er des Questionnaires d&eacute;taill&eacute;s à leur sujet (tel un dossier m&eacute;dical)</li>
+                        <li>Cr&eacute;er plusieurs Questionnaires diff&eacute;rents concernant chaque Sujet (si vous inscrivez une clinique comme sujet, vous pouvez cr&eacute;er un Questionnaire pour le suivi des stocks, et un autre pour mesurer la qualit&eacute; des soins fournis à la clinique)
+                        </li>
+                    </ol>
+                </p>
+                <p>
+                    Exemples:
+                    <ul class="bulleted">
+                        <li>Un m&eacute;decin examine un b&eacute;b&eacute; et envoie un dossier m&eacute;dical</li>
+                        <li>Un superviseur mesure la qualit&eacute; des soins au niveau d’une clinique</li>
+                        <li>Un ing&eacute;nieur mesure le d&eacute;bit d'une pompe à eau</li>
+                    </ul>
+                </p>
+                <p>Avec DataWinners, vous pouvez cr&eacute;er un projet visant à collecter des donn&eacute;es pour ces projets et pour bien d'autres.</p>
+                <h2>Quelles en sont les Caract&eacute;ristiques Principales</h2>
+                <p>
+                    Pour chaque projet DataWinners vous pouvez
+                    <ul class="bulleted">
+                        <li>Cr&eacute;er un Questionnaire avec les principales donn&eacute;es que vous souhaitez collecter</li>
+                        <li>Inscrire vos Exp&eacute;diteurs de Donn&eacute;es (les gens qui vous envoient des donn&eacute;es)</li>
+                        <li>Inscrire vos Sujets (le th&egrave;me sp&eacute;cifique de votre Questionnaire; comme par exemple, les patients, les &eacute;coles, les villages, les pompes à eau)</li>
+                        <li>Sp&eacute;cifier des Rappels automatiques pour rappeler à vos Exp&eacute;diteurs de Donn&eacute;es d’envoyer leurs donn&eacute;es</li>
+                    </ul>
+                </p>
+                <br/>
+                <fieldset class="with_border">
+                    <legend>Exemple de</legend>
+                    <i>En tant que gestionnaire de programme d'un grand projet sur la malnutrition infantile, Osi veut que ses Agents de Nutrition sur le terrain lui envoient des donn&eacute;es cl&eacute;s apr&egrave;s la visite de chaque enfant aupr&egrave;s d’un Centre de Nutrition.</i>
+                    <br/><br/>
+                    <i>Elle examine la version papier actuelle du Formulaire de Rapport de Visite du Centre de Nutrition, s’entretient avec le personnel et d&eacute;cide::
+                        <ol>
+                            <li>De la part de qui elle veut collecter les donn&eacute;es (ses Agents de Nutrition sont les Exp&eacute;diteurs de Donn&eacute;es)</li>
+                            <li>Le Sujet de son questionnaire (Chaque Enfant venu pour une visite)</li>
+                            <li>Quelles sont les questions cl&eacute;s auxquelles elle veut que ses Agents de Nutrition r&eacute;pondent par SMS (par exemple: Combien p&egrave;se l'enfant en kilogrammes?)</li>
+                       </ol>
+                    </i>
+                    <i>L’&eacute;tape suivante consiste pour elle à cr&eacute;er le Questionnaire dans DataWinners.</i>
+                </fieldset>
+            </div>
+
+            <div class="get-started-step">
+                <h1>2	Comment Cr&eacute;er un Projet</h1>
+                <p>Chaque fois que vous vous connectez à DataWinners (<a href="http://www.datawinners.com/login">www.datawinners.com/login</a>), vous atterrirez sur le Tableau de Bord.</p>
+                <p>Cette page vous donne un aperçu de tous vos projets et vous permet de cr&eacute;er un nouveau projet. Consid&eacute;rez chaque «Projet» DataWinners comme un seul questionnaire.</p>
+                <img src="/media/images/dw_get-started-dashboard_fr.png" width="721"/><br/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Cr&eacute;er un nouveau Projet</strong>
+                        <p>Cliquez sur le Bouton Cr&eacute;er un nouveau Projet pour d&eacute;marrer votre projet.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h2>2.1	Remplir les Informations de Base</h2>
+                <p>Donnez-nous quelques informations de base concernant votre projet. </p>
+                <h3>2.1.1	Nom &amp; Description</h3>
+                <p>DataWinners enregistre le projet par le Nom du Projet.
+                    De cette fa&ccedil;on, vous pouvez faire le suivi de tous vos projets de collecte de donn&eacute;es fonctionnant simultan&eacute;ment.
+                </p>
+                <img src="/media/images/dw_get_started_create_project_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Nommer votre Projet</strong>
+                        <p>Donnez à votre projet un nom court et descriptif pour que vous puissiez l'identifier parmi une liste de tous les projets.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Ajouter une Description </strong>&nbsp;<span style="color:#CCCCCC">facultatif</span>
+                        <p>Saisissez une description afin que les autres puissent comprendre le but de votre projet.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <h3>2.1.2	Langue à utiliser par vos Exp&eacute;diteurs de Donn&eacute;es</h3>
+                <p>Vos Exp&eacute;diteurs de Donn&eacute;es (les gens qui envoient des r&eacute;ponses à votre Questionnaire) recevront une Confirmation et des messages d'Erreur automatiques venant de DataWinners, en fonction de leur soumission.</p>
+                <p>Choisissez une langue pour ces messages.</p>
+                <img src="/media/images/dw_get_started_choose_language_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Choisir une langue</strong>
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <h3>2.1.3	Rapport Sommaire vs Rapport Individuel</h3>
+                <p>Choisissez entre collecter des Rapports Sommaires ou des Rapports Individuels sur un sujet sp&eacute;cifique.</p>
+                <p>Ne vous inqui&eacute;tez pas, si cela vous semble trop compliqu&eacute;, vous pouvez d&eacute;cider plus tard. Pour le moment, choisissez l'option Rapports Sommaires.</p>
+                <h3>Rapport Sommaire</h3>
+                <p>Choisissez cette option si vous voulez des r&eacute;ponses à une liste &eacute;l&eacute;mentaire de questions.</p>
+                <fieldset class="with_border">
+                    <legend>Exemple de</legend>
+                    <i>
+                        Osi a besoin de collecter un rapport mensuel d'activit&eacute; provenant de chacun de ses Agents de Nutrition<br/>
+                        Elle pose à ses Exp&eacute;diteurs de Donn&eacute;es les questions suivantes:
+                        <ol>
+                            <li>Quel mois et quelle ann&eacute;e votre rapport concerne-t-il?</li>
+                            <li>Combien de b&eacute;b&eacute;s aviez-vous pes&eacute; le mois dernier?</li>
+                            <li>Combien de b&eacute;b&eacute;s ont &eacute;t&eacute; trouv&eacute;s s&eacute;v&egrave;rement malnutris ?</li>
+                        </ol>
+                    </i>
+                    <p>DataWinners affichera ses donn&eacute;es en fonction de chaque Exp&eacute;diteur de Donn&eacute;es:
+                        <table cellspacing="0" cellpadding="0" class="border_1">
+                            <tr>
+                                <th width="120">Nom de l'Exp&eacute;diteur de Donn&eacute;es</th>
+                                <th>Quel mois et quelle ann&eacute;e votre rapport concerne-t-il ?</th>
+                                <th>Combien de b&eacute;b&eacute;s aviez-vous pes&eacute; le mois dernier?</th>
+                                <th>Combien de b&eacute;b&eacute;s ont &eacute;t&eacute; trouv&eacute;s s&eacute;v&egrave;rement malnutris?</th>
+                            </tr>
+                            <tr>
+                                <td>Nirina Rakotobe</td>
+                                <td>11.2011</td>
+                                <td>1213</td>
+                                <td>217</td>
+                            </tr>
+                            <tr>
+                                <td>Jacqueline Rajolina</td>
+                                <td>11.2011</td>
+                                <td>756</td>
+                                <td>78</td>
+                            </tr>
+                            <tr class="no_bord_bottom">
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br/>
+                    </p>
+                </fieldset>
+                <h3>Rapports Individuels sur un Sujet Sp&eacute;cifique</h3>
+                <p>Les Rapports individuels concernent des Sujets sp&eacute;cifiques. Exemples:</p>
+                <ul class="bulleted">
+                    <li>Un m&eacute;decin examine un b&eacute;b&eacute;. Dans ce cas, le Sujet est le b&eacute;b&eacute;.</li>
+                    <li>Un superviseur &eacute;value la qualit&eacute; des soins dans une clinique. Le Sujet est la clinique</li>
+                    <li>Un ing&eacute;nieur mesure le d&eacute;bit d'une pompe à eau. Le Sujet est la pompe à eau.</li>
+                </ul>
+
+                <p>Ces Sujets sp&eacute;cifiques constituent l’objet de vos questionnaires de collecte de donn&eacute;es. Les Sujets sont souvent des</p>
+                <ul class="bulleted">
+                    <li>Gens (Patients, Agriculteurs, Enfants de moins de cinq ans, Employ&eacute;s)</li>
+                    <li>Choses (Dispensaires, Magasins de D&eacute;tail, Pompes à Eau)</li>
+                    <li>Lieux (R&eacute;gion, District, Commune, Village)</li>
+                    <li>&eacute;v&eacute;nements (Formation, Performance, Rassemblement Publique)</li>
+                </ul>
+                <p>Dans chaque cas, la personne faisant son rapport d'&eacute;valuation (Exp&eacute;diteur de Donn&eacute;es) doit d'abord vous
+                   dire sur quel Sujet sp&eacute;cifique va-t-il soumettre un rapport
+                   (Exemple de Question: A propos de quelle pompe à eau voulez vous faire un rapport ? - R&eacute;ponse: wp003). </p>
+                <fieldset class="with_border">
+                    <legend>Exemple de</legend>
+                    <i>
+                        Osi a besoin de donn&eacute;es cl&eacute;s apr&egrave;s la visite de chaque enfant aupr&egrave;s d’un Centre de Nutrition.
+                        Elle pose à ses Exp&eacute;diteurs de Donn&eacute;es (Agents de Nutrition), les questions suivantes:
+                        <ol>
+                            <li>A propos de quel b&eacute;b&eacute; votre rapport concerne-t-il?<br/>(Remarque : chaque b&eacute;b&eacute; a &eacute;t&eacute; enregistr&eacute; et poss&egrave;de un num&eacute;ro unique)</li>
+                            <li>Combien pesait le b&eacute;b&eacute; en grammes?</li>
+                            <li>Quelle &eacute;tait la taille du b&eacute;b&eacute; en centim&egrave;tres?</li>
+                        </ol>
+                        <p>DataWinners affichera ses donn&eacute;es en fonction de chaque Sujet:
+                            <table cellpadding="0" cellspacing="0" class="border_1">
+                                <tr>
+                                    <th>Num&eacute;ro du B&eacute;b&eacute;</th>
+                                    <th>Nom du B&eacute;b&eacute;</th>
+                                    <th>Quand le b&eacute;b&eacute; a-t-il visit&eacute; le Centre de Nutrition?</th>
+                                    <th>Combien pesait le b&eacute;b&eacute; en grammes?</th>
+                                    <th>Quelle &eacute;tait la taille du b&eacute;b&eacute; en centim&egrave;tres?</th>
+                                </tr>
+                                <tr>
+                                    <td>082452</td>
+                                    <td>AVERY-MAE</td>
+                                    <td>28.11.2011</td>
+                                    <td>2298</td>
+                                    <td>65</td>
+                                </tr>
+                                <tr>
+                                    <td>062475</td>
+                                    <td>AMELIA VO</td>
+                                    <td>02.12.2011</td>
+                                    <td>2456</td>
+                                    <td>69</td>
+                                </tr>
+                                <tr class="no_bord_bottom">
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br/>
+                        </p>
+                    </i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_subject_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Faire le Choix entre un Rapport Sommaire et un Rapport Individuel sur un Sujet sp&eacute;cifique</strong>
+                        <p>Cliquez sur le lien Ajouter une autre Question</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Choisir un Type de Sujet (Pour le Rapport Individuel seulement)</strong>
+                        <p>
+                            <ul class="bulleted">
+                                <li>Choisissez un Type de Sujet. S&eacute;lectionnez un Type de Sujet existant à partir d'un Projet DataWinners ant&eacute;rieur</li>
+                                <li>Ajoutez votre propre nouveau Type de Sujet. Exemple: Centres de Nutrition</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+
+                <h3>2.1.4	Canal de communication</h3>
+                <p>Les canaux de communication sont importants car vous pouvez choisir le canal de
+                    communication que les gens vont utiliser pour vous envoyer vos donn&eacute;es. </p>
+                <p>Votre choix d&eacute;pend de deux questions: 
+                    <ol>
+                        <li>Quel volume de donn&eacute;es avez-vous besoin de collecter?</li>
+                        <li>De quels modes de communication les gens disposent-ils d&eacute;jà?</li>
+                    </ol>
+                </p>
+                <p>Le SMS est un canal de collecte de donn&eacute;es efficace pour des questionnaires de moins de 20 questions et dans les cas où les Exp&eacute;diteurs de Donn&eacute;es n’ont pas acc&egrave;s à Internet.
+                            Pour des besoins de collecte de donn&eacute;es plus vastes, nous recommandons l'utilisation d’un Formulaire Web (Internet).</p>
+                <p>Si certains de vos Exp&eacute;diteurs de Donn&eacute;es ont (ou auront) acc&egrave;s à Internet, nous recommandons l'ajout du canal Web. Pour vous envoyer les donn&eacute;es, ils peuvent alors le faire soit par SMS ou via le Web.</p>
+                <p>D&eacute;pendant des canaux que vous choisissez, DataWinners va automatiquement cr&eacute;er une version imprim&eacute;e du Questionnaire SMS et un formulaire en ligne pour votre Questionnaire Web.</p>
+                <img src="/media/images/dw_get_started_device_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Choisir les Canaux de Communication</strong>
+                        <p>Le canal SMS est l'option par d&eacute;faut, et est toujours disponible. Ajoutez Web pour avoir les deux canaux disponibles. Ne vous inqui&eacute;tez pas ; vous pouvez toujours changer d'avis plus tard.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Aller à la page suivante</strong>
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h2>2.2	Cr&eacute;er votre Questionnaire</h2>
+                <p>Dans DataWinners, le Questionnaire est le cœur de chaque projet de collecte de donn&eacute;es. Ici, vous d&eacute;finissez quelles sont les informations que vous souhaitez collecter. Posez-vous les deux questions suivantes:</p>
+                <ol>
+                    <li>Quelles sont les donn&eacute;es cl&eacute;s que j’ai besoin de collecter à partir du terrain pour mieux appr&eacute;hender la situation et prendre les bonnes d&eacute;cisions?</li>
+                    <li>Comment puis-je formuler la question pour que mes Exp&eacute;diteurs de Donn&eacute;es comprennent ce que j’attends d’eux?</li>
+                </ol>
+                <fieldset class="with_border">
+                    <legend>Exemple de Project</legend>
+                    <i>Osi veut suivre l'&eacute;tat nutritionnel de chaque enfant. Apr&egrave;s chaque visite, Osi demande à ses Agents de Nutrition de lui envoyer les r&eacute;ponses aux questions suivantes:
+                        <ul class="bulleted">
+                            <li>Quel est le num&eacute;ro d'identification unique attribu&eacute; à l'enfant?</li>
+                            <li>Quel est l'&acirc;ge de l'enfant en mois?</li>
+                            <li>Quel est le poids de l'enfant en kilogrammes?</li>
+                        </ul>
+                    </i>
+                </fieldset>
+                <h3>2.2.1	Aper&ccedil;u</h3>
+                <p>Avant de commencer, laissez-nous vous expliquer ce que vous pouvez faire avec le G&eacute;n&eacute;rateur de Questionnaire.</p>
+                <div style="position: relative;">
+                    <img src="/media/images/dw_get_started_project_overview_fr.png" width="721"/>
+                    <div class="instruction_bulle" style="left: 500px;top: 20px;">
+                        <strong><span class="numero">A.</span>&nbsp;Code questionnaire</strong>
+                        <p>Un Code unique est attribu&eacute; à chaque Questionnaire. Les Exp&eacute;diteurs de Donn&eacute;es d&eacute;butent leur SMS avec ce code pour que DataWinners puisse savoir à quel Questionnaire l’Exp&eacute;diteur de Donn&eacute;es fournit des r&eacute;ponses. <br/>
+                        <i>Voir chapitre 2.2.2</i>
+                        </p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 240px;">
+                        <strong><span class="numero">B.</span>&nbsp;Questions pr&eacute;d&eacute;finies</strong>
+                        <p>Nous sugg&eacute;rons des messages que vous pourriez vouloir utiliser. Vous pouvez les supprimer s’ils ne conviennent pas à votre projet.<br/>
+                            <i>Voir chapitre 2.2.3</i>
+                        </p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 400px;">
+                        <strong><span class="numero">C.</span>&nbsp;Ajoutez vos propres questions</strong>
+                        <p>Ajoutez vos propres questions sp&eacute;cifiques à votre projet et auxquelles vos Exp&eacute;diteurs de Donn&eacute;es (ex : le personnel sur le terrain) doivent r&eacute;pondre. <br/>
+                            <i>Voir chapitre 2.2.4</i>
+                        </p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 596px;">
+                        <strong><span class="numero">D.</span>&nbsp;Compteur de SMS</strong>
+                        <p>Sachez le nombre de caract&egrave;res dont vos Exp&eacute;diteurs de Donn&eacute;es ont besoin pour r&eacute;pondre à vos Questions par SMS.<br/></p>
+                    </div>
+                </div>
+
+                <h3>2.2.2	Code questionnaire</h3>
+                <p>DataWinners utilise ce code unique pour identifier correctement votre Questionnaire SMS.</p>
+                <p>En utilisant les Codes Questionnaires, votre organisation peut
+                    simultan&eacute;ment collecter des ensembles de donn&eacute;es multiples en
+                    utilisant un seul num&eacute;ro de t&eacute;l&eacute;phone.
+                    Votre Code Questionnaire apparaîtra sur la version imprim&eacute;e de votre Questionnaire.
+                    Ce Code est la premi&egrave;re chose que vos Exp&eacute;diteurs de Donn&eacute;es tapent dans le SMS.
+                </p>
+                <fieldset class="with_border">
+                    <legend>Exemple de project</legend>
+                    <i>Osi cr&eacute;e un Questionnaire pour son projet MalNutritionInfantile. Elle et ses coll&egrave;gues utilisent l’abr&eacute;viation MNI. Par cons&eacute;quent, elle utilise MNI comme Code Questionnaire.</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_questionnaire_code_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>D&eacute;finir  un Code Questionnaire</strong>
+                        <p>Entrez une combinaison de 3-6 lettres et/ou de chiffres (ou les deux). Vos Exp&eacute;diteurs de Donn&eacute;es saisirons ce code en premier lors de l'envoi de leurs donn&eacute;es via SMS. Exemple: MNI</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+
+                <h3>2.2.3	Questions Pr&eacute;d&eacute;finies</h3>
+                <p>Bas&eacute; sur vos d&eacute;cisions lors de l'&eacute;tape pr&eacute;c&eacute;dente, DataWinners sugg&egrave;re des questions que vous pourriez utiliser pour votre collecte de donn&eacute;es.</p>
+                <h3>Sur quel Sujet votre rapport porte-t-il?</h3>
+                <p>Si vous avez choisi de cr&eacute;er un Rapport Individuel portant sur un Sujet sp&eacute;cifique (voir Chapitre 2.1.3), vous devez demander à vos Exp&eacute;diteurs de Donn&eacute;es sur quel Sujet sp&eacute;cifique (par exemple : Enfant) leur rapport porte-t-il.</p>
+                <fieldset class="with_border">
+                    <legend>Exemple de Projet</legend>
+                    <i>En tant que gestionnaire de programme d'un grand projet de malnutrition infantile, Osi veut que ses Agents de Nutrition sur le terrain lui envoient des donn&eacute;es cl&eacute;s apr&egrave;s la visite de chaque enfant aupr&egrave;s d’un Centre de Nutrition.<br/><br/>
+                        Dans DataWinners, Osi choisit « Rapports Individuels portant sur un Sujet Sp&eacute;cifique » et ajoute le Type de Sujet « Enfant »<br/><br/>
+                        DataWinners sugg&egrave;re automatiquement, « Sur quel enfant votre rapport porte-t-il? » comme premi&egrave;re question dans le G&eacute;n&eacute;rateur de Questionnaire.<br/><br/>
+                        Osi saisit l'importance de cette question et d&eacute;cide de garder la question « Sur quel enfant votre rapport porte-t-il? » dans son Questionnaire.
+                    </i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_custom_subject_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Pr&eacute;ciser le Contenu de la Question Pr&eacute;d&eacute;finie</strong>
+                        <p>Changez le contenu de la question si notre suggestion ne vous convient pas.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h3>Quelle est la p&eacute;riode de soumission du rapport pour l'activit&eacute;?</h3>
+                <p>Les Agents de Nutrition envoient syst&eacute;matiquement un Rapport de Visite apr&egrave;s chaque visite. Ils n'ont pas une p&eacute;riode sp&eacute;cifique pour la soumission de leur rapport.</p>
+                <fieldset class="with_border">
+                    <legend>Exemple de projet</legend>
+                    <i>Les Agents de Nutrition envoient syst&eacute;matiquement un Rapport de Visite apr&egrave;s chaque visite. Ils n'ont pas une p&eacute;riode sp&eacute;cifique pour la soumission de leur rapport.<br/><br/>
+                    Osi supprime cette question car elle ne pr&eacute;sente aucune valeur pour son projet. Elle la remplace par « Quelle &eacute;tait la date de la visite de l'enfant aupr&egrave;s du Centre de Nutrition »?</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_subject_questionnaire_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Pr&eacute;ciser la Question</strong>
+                        <p>Adaptez le contenu à votre p&eacute;riode de soumission de rapport. Exemple: Sur quel mois et quelle ann&eacute;e votre rapport porte-t-il?</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Choisir un Format de Date</strong>
+                        <p>Choisissez le Format de Date avec lequel vos Exp&eacute;diteurs de Donn&eacute;es sont plus à l’aise. Exemple: 12.2011</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h3>2.2.4	Vos Questions</h3>
+                <p>Sp&eacute;cifiez maintenant vos questions cl&eacute;s pour vos Exp&eacute;diteurs de Donn&eacute;es. Choisissez le type de r&eacute;ponse que vous attendez de vos Exp&eacute;diteurs de Donn&eacute;es (par exemple : un chiffre ou une date), et ajoutez des restrictions pour les empêcher d'envoyer des donn&eacute;es erron&eacute;es (par exemple: le chiffre doit être compris entre 0-10). </p>
+                <p>N'h&eacute;sitez pas à faire des essais. Vous pouvez toujours modifier vos questions plus tard.</p>
+                <fieldset class="with_border">
+                    <legend>Exemple de projet</legend>
+                    <i>Pour savoir si un enfant est s&eacute;v&egrave;rement malnutri, Osi a besoin de connaître son &acirc;ge et son poids. Elle pr&eacute;cise sa premi&egrave;re question: Quel est l'&acirc;ge de l'enfant en mois?<br/><br/>
+                       Les enfants en visite aupr&egrave;s des Centres de Nutrition sont &acirc;g&eacute;s de 0-60 mois. Osi pr&eacute;cise que la r&eacute;ponse doit être un nombre compris entre 0 et 60.</i>
+                </fieldset>
+                <img src="/media/images/dw_get_started_your_questions_fr.png" width="721"/>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Ajouter une Question</strong>
+                        <p>Cliquez sur le lien Ajouter une autre Question</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">2</span>
+                    <div class="instruction">
+                        <strong>Changer le Contenu de la Question</strong>
+                        <p>Pr&eacute;cisez votre question. Exemple: Quel est l'&acirc;ge de l'enfant en mois?</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">3</span>
+                    <div class="instruction">
+                        <strong>S&eacute;lectionner un Type de R&eacute;ponse</strong>
+                        <p>S&eacute;lectionnez le type de r&eacute;ponse que vous attendez de vos Exp&eacute;diteurs de Donn&eacute;es. Exemple: Un chiffre (pour l'&acirc;ge de l'enfant)</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">4</span>
+                    <div class="instruction">
+                        <strong>Ajouter des Restrictions</strong>
+                        <p>Ajoutez une restriction si n&eacute;cessaire. Min=0 et Max=60 car l’&acirc;ge de chaque enfant est toujours compris entre 0-60 mois</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="instruction_block no_top">
+                    <span class="numero">5</span>
+                    <div class="instruction">
+                        <strong>Visualiser les Instructions Automatiques</strong>
+                        <p>De telles instructions expliquent les restrictions que vous d&eacute;finissez pour r&eacute;pondre à votre question (Exemple: « La r&eacute;ponse doit être un chiffre compris entre 0-60 »). Elles sont destin&eacute;es à aider l'Exp&eacute;diteur de Donn&eacute;es et à am&eacute;liorer la pr&eacute;cision de vos donn&eacute;es. Lorsque vous imprimez le Questionnaire et le donnez à vos Exp&eacute;diteurs de Donn&eacute;es, ces instructions apparaîtront en dessous de chaque question.</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <h3>2.2.5	Enregistrer &amp; Cr&eacute;er votre Projet</h3>
+                <p>Une fois que vous avez fini d'ajouter toutes vos questions, cliquez sur le bouton jaune Enregistrer et Cr&eacute;er situ&eacute; en bas de l'&eacute;cran. Ne vous inqui&eacute;tez pas; vous pouvez toujours changer vos d&eacute;cisions ult&eacute;rieurement</p>
+                <div class="instruction_block">
+                    <span class="numero">1</span>
+                    <div class="instruction">
+                        <strong>Enregistrer &amp; Cr&eacute;er un Projet</strong>
+                        <p>Cliquez sur le bouton Enregistrer &amp; Cr&eacute;er le Projet</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="get-started-step">
+                <h1>3	Etapes Suivantes</h1>
+                <p>Maintenant que vous avez cr&eacute;&eacute; votre projet, vous pouvez vous familiariser avec le reste des fonctionnalit&eacute;s que vous offre DataWinners.</p>
+                <div style="position: relative;">
+                    <img src="/media/images/dw_get_started_project_creation_success_fr.png" width="621"/>
+                    <div class="instruction_bulle" style="left: 500px;top: 20px;">
+                        <strong><span class="numero">A.</span>&nbsp;Et ensuite?</strong>
+                        <p>Voyez nos Etapes Suivantes pour am&eacute;liorer votre projet.<br/></p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 120px;">
+                        <strong><span class="numero">B.</span>&nbsp;Tester le Questionnaire</strong>
+                        <p>Essayez si vous pouvez envoyer des donn&eacute;es pour votre Questionnaire.</p>
+                    </div>
+                    <div class="instruction_bulle" style="left: 500px;top: 223px;">
+                        <strong><span class="numero">C.</span>&nbsp;Modifier le Param&eacute;trage du Projet</strong>
+                        <p>Peu content de vos d&eacute;cisions ant&eacute;rieures? Modifiez-les.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="get-started-step">
+                <h1>4	Ceci pourrait &eacute;galement vous int&eacute;resser</h1>
+                <p>Nous vous invitons à faire un tour sur notre site Web: <a href="http://www.datawinners.com/">www.datawinners.com</a></p>
+                <p>Ceci pourrait &eacute;galement vous int&eacute;resser
+                    <ul class="bulleted">
+                        <li><a href="/fr/what-is-datawinners">Qu'est-ce que DataWinners</a></li>
+                        <li><a href="/fr/support/case-studies/">&Eacute;tudes de cas (Sous Assistance)</a></li>
+                        <li><a href="/fr/support/get-started/">Vid&eacute;o de Pr&eacute;sentation (Sous Assistance -&gt; Commencer)</a></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

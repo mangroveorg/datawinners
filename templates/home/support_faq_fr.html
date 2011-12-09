@@ -1,0 +1,941 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Assistance {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+    {% activetab "main_nav" "support" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_public_support.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+
+    <script type="text/javascript"
+            src="/media/javascript/home/support.js"></script>
+{% endblock %}
+
+{% block page_breadcrumbs %}
+    <a href="/fr/home/">Accueil</a> &gt; <a
+        href="/fr/support/">Assistance</a> &gt; Trouver des réponses (FAQs)
+{% endblock %}
+
+{% block main_content %}
+    <div id="nav_content">
+        <h1><a href="/fr/support/">ASSISTANCE</a></h1>
+        <ul>
+            <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
+            <li><a href="/fr/support/get-started/">Commencer</a></li>
+            <li class="active"><a href="/fr/support/find-answers/">Trouver des
+                réponses (FAQs)</a></li>
+            <li><a href="/fr/support/ask-us/">Nous demander</a></li>
+        </ul>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+            <h2>Informations d'Ordre Général</h2>
+
+            <div class="support-acc">
+            <h3><a href="#">Qu'est-ce Que DataWinners?</a></h3>
+
+            <div>
+                <p>
+                    <strong>DataWinners est le premier service de collecte
+                        mobile de données entièrement intégré. DW vous
+                        permet de collecter des données via SMS à partir de
+                        n'importe où, à l'aide de n'importe quel téléphone.
+                        Et du fait que votre abonnement DataWinners vous
+                        donne droit à des paquets de SMS pré-payés, nous
+                        vous évitons les longues négociations avec les
+                        opérateurs téléphoniques et les Passerelles
+                        SMS.</strong>
+                </p>
+            </div>
+
+            <h3><a href="#">Comment Est-Ce Que Cela Fonctionne?</a></h3>
+
+            <div>
+                <p>
+                    Lorsque vous souscrivez pour un abonnement à
+                    DataWinners, vous obtiendrez: 1) l'accès au site Web de
+                    DataWinners; 2) un numéro de téléphone local dans votre
+                    pays de projet et, 3) un paquet de SMS.
+                </p>
+
+                <p>
+                    Depuis le site Web DataWinners, vous pouvez:
+                </p>
+                <ul>
+                    <li>Concevoir et établir des questionnaires de collecte
+                        de données (formulaires) pour votre projet
+                    </li>
+                    <li>Créer du matériel de formation qui enseigne votre
+                        personnel sur le formatage des réponses par SMS à
+                        vos questionnaires
+                    </li>
+                    <li>Enregistrer les Expéditeurs de Données et les
+                        sujets
+                    </li>
+                    <li>Créer des rappels automatiques qui envoient des
+                        messages SMS rappelant au personnel d'envoyer des
+                        données
+                    </li>
+                </ul>
+                <p>Sur le Terrain:<br/><br/>
+                    Votre personnel rassemblent les réponses à vos
+                    questionnaires et envoient ces réponses par SMS au
+                    numéro local fourni par DataWinners. Le service
+                    fonctionne avec n'importe quel téléphone qui peut
+                    envoyer des SMS
+                </p>
+
+                <p>Retour à DataWinners:<br/><br/>
+                    Vous pouvez visualiser, analyser et télécharger vos
+                    données en temps réel.<br/>
+                    Vous pouvez partager vos données en définissant des
+                    autorisations d'utilisation du compte et du nom
+                    d'utilisateur, ce qui permettrait à d'autres personnes
+                    issues de votre organisation d'avoir un accès immédiat
+                    aux informations critiques du projet.
+                </p>
+            </div>
+
+            <h3><a href="#">Que pouvez-vous faire avec DataWinners?</a>
+            </h3>
+
+            <div>
+                <p>
+                    Tout. Voici quelques exemples quant aux fonctionnalités
+                    de DataWinners:
+                </p>
+                <ul class="bulleted">
+                    <li>Suivi des stocks (médicaments, moustiquaires)</li>
+                    <li>Synthèse des activités mensuelles (patients ayant
+                        visité un centre de santé)
+                    </li>
+                    <li>Enquêtes de satisfaction de la clientèle</li>
+                    <li>Suivi des accusés de vente</li>
+                    <li>Suivi des points d'eau</li>
+                </ul>
+            </div>
+
+            <h3><a href="#">Qu'est-ce qui fait la différence avec
+                DataWinners?</a></h3>
+
+            <div>
+                <p>DataWinners vous permet de collecter des données dans
+                    les milieux les plus difficiles d'accès où les systèmes
+                    à base de papier sont coûteux et souvent voués à
+                    l'échec.
+                </p>
+
+                <p>Contrairement aux outils mobiles de collecte de données
+                    nécessitant de l'expérience dans la configuration et la
+                    manipulation des logiciels, vous pouvez utiliser
+                    DataWinners sans aucune expérience en Technologie de
+                    l'Information (TI).
+                </p>
+
+                <p>DataWinners a déjà résolu la partie la plus difficile de
+                    la collecte de données par SMS - la négociation avec
+                    les services de télécommunication. Votre abonnement
+                    DataWinners couvre les coûts de la collecte de données
+                    par SMS, y compris un numéro de téléphone local et des
+                    SMS prépayés.
+                </p>
+            </div>
+
+            <h3><a href="#">Combien coûte DataWinners?</a></h3>
+
+            <div>
+                <p>
+                    Notre objectif est d'offrir des services DataWinners
+                    dans n'importe quel pays dans le monde pour moins de
+                    1.000$/mois. Consultez notre Page des Tarifications
+                    ici. Ce tarif comprend l'accès aux outils de collecte
+                    de données de DataWinners conçus par soi-même, un
+                    paquet de SMS avec un numéro de téléphone local et une
+                    capacité de collecte de données pratiquement illimitée.
+                    Les coûts varient de pays en pays selon les taux que
+                    nous avons négociés avec les opérateurs de
+                    télécommunications.
+                </p>
+            </div>
+
+            <h3><a href="#">Où puis-je utiliser DataWinners?</a></h3>
+
+            <div>
+                <p>
+                    Partout où un téléphone mobile peut envoyer des SMS.
+                    Pour une liste complète des pays et de notre plan de
+                    déploiement, consultez notre <a
+                        href="/fr/pricing/"><strong>Page des Tarifications
+                    ici</strong></a>. Vous pouvez accéder à votre compte
+                    DataWinners à partir de n'importe où, à l'aide d'un
+                    navigateur Web,.
+                </p>
+            </div>
+
+            <h3><a href="#">Puis-je essayer DataWinners sans avoir à
+                s'abonner?</a></h3>
+
+            <div>
+                <p>
+                    Oui. DataWinners propose un <span
+                        style="text-decoration: underline">compte d'essai</span>
+                    gratuit de 30 jours qui vous permet d'essayer toutes
+                    les fonctionnalités de DataWinners. Vous pouvez
+                    concevoir des questionnaires en ligne, collecter une
+                    quantité illimitée de données en utilisant l'Internet,
+                    et même essayer de soumettre des données par SMS.
+                    Cliquez ici <a href="/register/trial/">pour plus
+                    d'informations</a>.
+                </p>
+            </div>
+
+            <h3><a href="#">Quel type de téléphones mobiles fonctionne-t-il
+                avec DataWinners?</a></h3>
+
+            <div>
+                <p>
+                    N'importe quel téléphone existant dans le monde et
+                    pouvant envoyer des SMS peut envoyer des données.
+                </p>
+            </div>
+
+            <h3><a href="#">Puis-je obtenir de l'aide?</a></h3>
+
+            <div>
+                <p>
+                    Absolument. Consultez nos pages d'aide et nos <a
+                        href=""><strong>tutoriels</strong></a>, ou
+                    contactez-nous à l'adresse support@DataWinners.com
+                </p>
+            </div>
+
+            <h3><a href="#">Quelles sont les langues supportées par
+                DataWinners?</a></h3>
+
+            <div>
+                <p>
+                    <strong>Le site Web de DataWinners est actuellement
+                        disponible en Anglais et en Français. Sélectionnez
+                        votre langue sur le coin supérieur droit de chaque
+                        page. Nous prévoyons d'ajouter d'autres langues
+                        bientôt. Vous pouvez construire votre questionnaire
+                        dans toutes les langues. L'utilisateur peut
+                        également spécifier la langue (Anglais, Français ou
+                        Malagasy) pour les messages de Succès de l'envoi de
+                        données et des messages d'Erreur renvoyés
+                        automatiquement aux Expéditeurs de
+                        Données.</strong>
+                </p>
+            </div>
+
+            <h3><a href="#">Est-ce une open source? Qui peut disposer de la
+                base du code?</a></h3>
+
+            <div>
+                <p>
+                    Un partenariat international de sociétés privées,
+                    d'institutions académiques et d'organisations non
+                    gouvernementales travaillent en collaboration pour
+                    créer et gérer DataWinners.com comme un projet
+                    open-source. Human Network International (HNI) et
+                    ThoughtWorks, Inc. dirigent l'effort pour faire de ce
+                    service mobile de collecte de données un outil
+                    répondant aux besoins des organismes de développement
+                    dans le monde entier.
+                </p>
+
+                <p>
+                    Le service hébergé de DataWinners est l'une des
+                    premières applications conçues à l'aide du cadre de
+                    collecte des données Mangrove, lui-même étant un projet
+                    open source qui développe des outils de base pour la
+                    collecte mobile, l'agrégation, l'analyse et la
+                    visualisation des données ciblant les SMS, le Web, le
+                    J2ME et l'Android via XForms. L'initiative Mangrove est
+                    une collaboration entre ThoughtWorks, Inc, le
+                    laboratoire Modi Research Lab de l'Université de
+                    Columbie et HNI.
+                </p>
+
+                <p>
+                    L'objectif de ces projets open-source est de créer une
+                    communauté mondiale, travaillant ensemble pour
+                    améliorer la collecte mobile de données. La totalité du
+                    code de base pour DataWinners et Mangrove est
+                    disponible pour téléchargement ici. Nous encourageons
+                    nos partenaires à contribuer au code et aux idées afin
+                    que DataWinners et Mangrove puissent continuer à
+                    innover.
+                </p>
+            </div>
+
+            <h3><a href="#">Puis-je envoyer mes données en utilisant les
+                smartphones?</a></h3>
+
+            <div>
+                <p>
+                    DataWinners a commencé avec les SMS parce que nos
+                    clients avaient besoin d'un outil qui fonctionnait dans
+                    les endroits les plus limités en ressources dans le
+                    monde. Grâce à sa collaboration avec Mangrove,
+                    DataWinners est en train de développer des outils pour
+                    les systèmes J2ME et Android prévus sortir au cours du
+                    premier trimestre de 2012, dans les futures versions de
+                    DataWinners
+                </p>
+            </div>
+            </div>
+
+            <h2>Les Expéditeurs de Données</h2>
+
+            <div class="support-acc">
+                <h3><a href="#">Qu'est-ce qu'un Expéditeur de Données?</a></h3>
+
+                <div>
+                    <p>
+                        Une personne qui envoie des données via des SMS ou via
+                        l'Internet est un Expéditeur de Données. En enregistrant en
+                        premier lieu vos Expéditeurs de Données auprès de DataWinners,
+                        vous donnez à des gens l'autorisation d'envoyer des données.
+                        Puis, DataWinners reconnaîtra les Expéditeurs de Données par
+                        leurs numéros de téléphone ou par leurs adresses e-mail.
+                    </p>
+                </div>
+
+                <h3><a href="#">Dois-je inscrire les Expéditeurs de Données?</a></h3>
+
+                <div>
+                    <p>
+                        Oui. L'inscription est requise. Lors de l'inscription, il vous
+                        sera demandé d'inclure le numéro de téléphone que l'Expéditeur
+                        de Données utilisera pour envoyer des SMS. Quand les
+                        Expéditeurs de Données envoient des données par SMS,
+                        DataWinners reconnaîtra le numéro de téléphone inscrit et
+                        acceptera les données. Tout SMS venant d'un numéro non-inscrit
+                        sera rejeté et l'Expéditeur de Données recevra un message
+                        d'Erreur automatique.
+                    </p>
+                </div>
+
+                <h3><a href="#">Dois-je inscrire le numéro de téléphone de l'Expéditeur
+                    de Données dans un format spécifique?</a></h3>
+
+                <div>
+                    <p>
+                        Oui. Lors de l'inscription d'un Expéditeur de Données, incluez
+                        le code pays dans le numéro de téléphone et omettez tous les
+                        espaces et les caractères spéciaux. Par exemple, à Madagascar,
+                        le numéro de téléphone 033 12 345 67 serait inscrit comme:
+                        261331234567.
+                    </p>
+                </div>
+
+                <h3><a href="#">Un Expéditeur de Données peut-il s'inscrire lui-même à
+                    partir du terrain à l'aide de SMS?</a></h3>
+
+                <div>
+                    <p>
+                        Non. DataWinners n'acceptera aucune soumission venant des
+                        téléphones non-inscrits. Toutefois, un Expéditeur de Données
+                        inscrit peut inscrire un nouvel Expéditeur de Données dans le
+                        système en envoyant le SMS suivant (omettre tout <>):
+                    </p>
+
+                    <p>
+                        Reg .t reporter .n &lt;nom de l'Expéditeur de Données&gt; .m
+                        &lt;numéro du téléphone mobile&gt; .l &lt;localité&gt; .g &lt;coordonnées
+                        gps de l'Expéditeur de Données&gt; (les coordonnées GPS sont
+                        facultatives)
+                    </p>
+                </div>
+
+                <h3><a href="#">Dois-je inscrire mon Expéditeur de Données pour chaque
+                    nouveau projet que je crée?</a></h3>
+
+                <div>
+                    <p>
+                        Non. Une fois inscrit, un Expéditeur de Données peut envoyer
+                        des données pour tous les projets actuels et futurs. Toutefois,
+                        les Expéditeurs de Données ne reçoivent des messages de rappel
+                        que pour les projets auxquels ils sont associés. Vous pouvez
+                        associer un Expéditeur de Données à un projet particulier en
+                        cliquant d'abord sur le lien Expéditeur de Données situé en
+                        haut de la page. Sélectionnez ensuite les Expéditeurs de
+                        Données que vous voulez associer à votre projet. Après,
+                        choisissez l'option "Ajouter au Projet" à partir de la liste
+                        déroulante de la boîte "Actions" située en haut de la page.
+                        Enfin, choisissez les projets auxquels vous souhaiteriez
+                        associer vos Expéditeurs de Données.
+                    </p>
+                </div>
+
+                <h3><a href="#">Mon Expéditeur de Données doit-il inclure son numéro
+                    d'Identification unique lors de la soumission de données?</a></h3>
+
+                <div>
+                    <p>
+                        Non. DataWinners identifiera chaque Expéditeur de Données par
+                        le numéro de téléphone à lui inscrit.
+                    </p>
+                </div>
+
+                <h3><a href="#">Qu'est-ce que les messages de Succès et d'Erreur?</a>
+                </h3>
+
+                <div>
+                    <p>
+                        Chaque fois qu'un Expéditeur de Données soumet des données,
+                        DataWinners évaluera le SMS et enverra automatiquement un
+                        message en retour. Si le SMS contient des erreurs, DataWinners
+                        enverra en retour un message d'Erreur précisant l'erreur
+                        commise. Si le SMS ne contient aucune erreur, alors DataWinners
+                        enverra un message de Succès de l'envoi, en même temps qu'un
+                        résumé des réponses soumises. L'Expéditeur de Données peut
+                        alors examiner le résumé et faire une nouvelle soumission en
+                        cas d'éventuelles erreurs involontaires.
+                    </p>
+                </div>
+
+                <h3><a href="#">Comment puis-je changer la langue des messages de
+                    Succès et d'Erreur que mes Expéditeurs de Données reçoivent?</a>
+                </h3>
+
+                <div>
+                    <p>
+                        Choisissez la langue des messages de succès et d'erreur sur la
+                        page Créer un Projet. Pour changer la langue de ces messages
+                        tout en étant encore dans l'État d'Essai du projet, cliquez sur
+                        le lien "Modifier ce Projet" de la page d'aperçu du projet, et
+                        choisissez la nouvelle langue. Une fois qu'un projet est dans
+                        son Etat Actif, la langue des messages est fixe et ne peut pas
+                        être changée.
+                    </p>
+                </div>
+
+                <h3><a href="#">Dans quelles langues mes Expéditeurs de Données
+                    peuvent-ils recevoir leurs messages de Succès et d'Erreur?</a></h3>
+
+                <div>
+                    <p>
+                        Dans la version actuelle de DataWinners, les messages de Succès
+                        et d'Erreur peuvent être envoyés en Anglais, en Français et en
+                        Malagasy.
+                    </p>
+                </div>
+
+                <h3><a href="#">Puis-je personnaliser les messages de Succès et
+                    d'Erreur ou ajouter une nouvelle langue ou dialecte?</a></h3>
+
+                <div>
+                    <p>
+                        Dans la version actuelle de DataWinners, les messages de Succès
+                        et d'Erreur ne sont pas modifiables ou personnalisables.
+                        Cependant, nous prévoyons de mettre en œuvre ces
+                        fonctionnalités dans les prochaines versions de DataWinners.
+                    </p>
+                </div>
+            </div>
+
+            <h2>Sujets</h2>
+
+            <div class="support-acc">
+            <h3><a href="#">Qu'est-ce qu'un ‘Sujet'?</a></h3>
+
+            <div>
+                <p>
+                    Un Sujet est ce que votre questionnaire concerne; une personne
+                    précise, un lieu, une chose ou un événement à propos duquel les
+                    Expéditeurs de Données soumettent un rapport.
+                </p>
+
+                <p>
+                    Dans de nombreux cas, l'Expéditeur de Données interagit avec un
+                    Sujet, puis envoie un rapport individuel portant sur
+                    l'interaction:
+                </p>
+                <ul class="bulleted">
+                    <li>Un médecin examine un bébé. Dans ce cas, le sujet est le
+                        bébé.
+                    </li>
+                    <li>Un superviseur évalue la qualité des soins fournis au
+                        niveau d'une clinique. Le sujet est à la clinique
+                    </li>
+                    <li>Un ingénieur mesure le débit d'une pompe à eau. Le sujet
+                        est la pompe à eau.
+                    </li>
+                    <li>Un commercial vend des produits à un détaillant: Le sujet
+                        est le détaillant.
+                    </li>
+                </ul>
+            </div>
+
+            <h3><a href="#">Quelle est la différence entre un Rapport de Synthèse
+                et un Rapport Individuel sur un sujet spécifique?</a></h3>
+
+            <div>
+                <p>
+                    Les projets de collecte de données peuvent être regroupés en
+                    deux grandes catégories: 1) les Rapports de Synthèse, et 2) les
+                    Rapports Individuels sur un sujet spécifique. A l'aide de
+                    DataWinners, vous pouvez collecter des données pour l'une ou
+                    pour ces deux catégories.
+                </p>
+
+                <p>
+                    <strong>Rapports de Synthèse</strong><br/><br/>
+                    Les Rapports de Synthèse sont des réponses à une liste
+                    élémentaire de questions.<br/><br/>
+                    Exemples:
+                </p>
+                <ul class="bulleted">
+                    <li>Un agent de santé communautaire envoie un rapport
+                        d'activité mensuel
+                        <blockquote>(exemple de question: Combien de bébés
+                            aviez-vous pesé le mois dernier?)
+                        </blockquote>
+                    </li>
+                    <li>Une jeune femme répond à des questions de choix
+                        <blockquote>(Exemple de question: Avez-vous accès à l'eau
+                            potable?).
+                        </blockquote>
+                    </li>
+                </ul>
+                <p>
+                    DataWinners affichera vos données en fonction de chaque
+                    Expéditeur de Données:
+                </p>
+
+                <p>APERCU DE LA PAGE D'ANALYSE</p>
+                <table>
+                    <tr>
+                        <td>NOM DE L'EXPEDITEUR DE DONNEES</td>
+                        <td>QUEL MOIS ET QUELLE ANNEE VOTRE RAPPORT CONCERNE-T-IL ?
+                        </td>
+                        <td>COMBIEN DE BEBES AVIEZ-VOUS PESE LE MOIS DERNIER?</td>
+                        <td>COMBIEN DE BEBES ONT-ILS ETE TROUVES SEVEREMENT
+                            MALNUTRIS?
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SHANNON</td>
+                        <td>11.2011</td>
+                        <td>1213</td>
+                        <td>217</td>
+                    </tr>
+                    <tr>
+                        <td>DAVID</td>
+                        <td>11.2011</td>
+                        <td>756</td>
+                        <td>78</td>
+                    </tr>
+                </table>
+
+                <p>
+                    <strong>Rapports Individuels sur un sujet spécifique</strong>
+                </p>
+
+                <p>Avec DataWinners, vous pouvez aller au-delà de collecte de
+                    Rapports de Synthèse; Vous pouvez collecter des rapports
+                    individuels sur un sujet spécifique. Vous pouvez inscrire des
+                    gens, des lieux ainsi que des choses, et donner à chacun d'eux
+                    un numéro d'identification unique qui vous permet de: 1) créer
+                    des questionnaires détaillés à leur sujet (comme un dossier
+                    médical), 2) créer plusieurs questionnaires différents
+                    concernant chaque sujet (si vous inscrivez une clinique, vous
+                    pouvez créer un questionnaire pour suivre le stock et un autre
+                    pour mesurer la qualité des soins fournis auprès de la
+                    clinique).
+                </p>
+
+                <p>Exemples:</p>
+                <ul class="bulleted">
+                    <li>Un médecin examine un bébé et envoie un dossier médical
+                    </li>
+                    <li>Un superviseur mesure la qualité des soins au niveau d'une
+                        clinique
+                    </li>
+                    <li>Un ingénieur mesure le débit d'une pompe à eau</li>
+                </ul>
+                <p>Dans chaque cas, les Expéditeurs de Données (en d'autres termes,
+                    les gens sur le terrain) doivent d'abord identifier le "sujet"
+                    spécifique (bébé/clinique/pompe à eau).
+                </p>
+
+                <p>Par exemple, l'Expéditeur de Données devrait tout d'abord
+                    répondre à la question: "A propos de quel bébé votre rapport
+                    concerne-t-il?"
+                </p>
+
+                <p>Toutes les questions suivantes seraient au sujet du bébé.
+                    (Exemple: "Combien le bébé pesait-il?")
+                </p>
+
+                <p>DataWinners affichera vos données en fonction de chaque Sujet
+                    (Bébé):
+                </p>
+
+                <p>APERCU DE LA PAGE D'ANALYSE
+                </p>
+                <table>
+                    <tr>
+                        <td>NOM DU BEBE</td>
+                        <td>QUAND LE BEBE A-T-IL VISITE LE CENTRE DE NUTRITION?
+                        </td>
+                        <td>COMBIEN PESAIT LE BEBE EN GRAMMES?</td>
+                        <td>QUELLE ETAIT LA TAILLE DU BEBE EN CENTIMETRES?</td>
+                    </tr>
+                    <tr>
+                        <td>AVERY-MAE</td>
+                        <td>28.11.2011</td>
+                        <td>2298</td>
+                        <td>65</td>
+                    </tr>
+                    <tr>
+                        <td>AMELIA VO</td>
+                        <td>02.12.2011</td>
+                        <td>2456</td>
+                        <td>69</td>
+                    </tr>
+                </table>
+                <p>Pour faciliter la collecte des données et améliorer la précision,
+                    vous pouvez inscrire chaque Sujet individuel dans DataWinners avant
+                    de recueillir des données à leur sujet. Chaque Sujet recevra un
+                    numéro d'identification unique. Puis, les Expéditeurs de Données
+                    utilisent l'identification unique du Sujet quand ils soumettent
+                    leur rapport sur les résultats d'une visite (ou auprès) du Sujet.
+                </p>
+
+                <p>Inscrivez chaque Sujet avec leur situation géographique et
+                    DataWinners affichera individuellement chaque sujet sur une carte.
+                </p>
+            </div>
+
+            <h3><a href="#">Quelle est la différence entre un Type de Sujet et d'un
+                Sujet Individuel?</a></h3>
+
+            <div>
+                <p>
+                    Un Type de Sujet est une denomination d'ordre général. Par exemple,
+                    vous créez le Type de Sujet "Clinique". Vous pourriez ensuite
+                    inscrire les Sujets individuels suivants:
+                </p>
+                <ul class="bulleted">
+                    <li>Clinique du Nord</li>
+                    <li>Clinique du Sud</li>
+                    <li>Clinique de l'Est</li>
+                    <li>Clinique de l'Ouest</li>
+                </ul>
+            </div>
+
+            <h3><a href="#">Quels avantages procurent l'inscription de ‘Sujets' pour
+                mes projets?</a></h3>
+
+            <div>
+                <p>Pour collecter les rapports individuels sur des sujets spécifiques,
+                    vous avez deux choix.
+                </p>
+
+                <p>1. Chaque fois, vous pouvez demander à vos Expéditeurs de Données
+                    d'envoyer des informations d'ordre général concernant le sujet
+                    (Exemple: Quel est le nom du bébé ? Où habite le bébé?)
+                </p>
+
+                <p>Ou</p>
+
+                <p>2. Inscrire des informations d'ordre général concernant le sujet
+                    d'abord, puis aller de l'avant en demandant à vos Expéditeurs de
+                    Données d'identifier chaque sujet en utilisant un numéro unique
+                    (par exemple: « Quel est le numéro d'identification unique du bébé
+                    ? » Réponse: bab072)
+                </p>
+
+                <p>L'utilisation de numéros d'identification uniques comportent trois
+                    avantages importants:
+                </p>
+
+                <p>1. Améliorer la qualité de vos données. Souvent, les Expéditeurs de
+                    Données font des fautes d'orthographe (Exemple: un Expéditeur de
+                    Données écrit le nom d'un bébé comme "Avery" lors de la première
+                    visite, puis "Avary" au cours de la seconde). Lorsque des fautes
+                    d'orthographe arrivent, vous devez « nettoyer » vos données en
+                    déterminant si "Avery" et "Avary" sont deux bébés différents, ou un
+                    même bébé. Avec les numéros d'identification uniques, les erreurs
+                    se produisent moins souvent.
+                </p>
+
+                <p>2. Rend la collecte de données plus facile en réduisant le nombre de
+                    questions. Il est plus facile pour vos Expéditeurs de Données de
+                    répondre à une question (quel est le numéro d'identification du
+                    bébé?) plutôt que, disons, quatre questions d'ordre général (1.
+                    Quel est le nom du bébé? 2. Où habite le bébé? 3. Quel âge a le
+                    bébé? 4. Quel est le nom de la mère?)
+                </p>
+
+                <p>3. Une fois que les sujets sont inscrits dans DataWinners, vous
+                    pouvez collecter une variété de données à leur sujet. Vous pourrez
+                    peut-être vouloir collecter plusieurs différents rapports
+                    individuels pour un sujet (exemple: un rapport lorsque le bébé est
+                    vu au niveau d'un centre de nutrition et un deuxième rapport,
+                    lorsque l'agent communautaire effectue une visite du bébé chez
+                    lui). Après avoir inscrit le bébé dans DataWinners, vos Expéditeurs
+                    de Données peuvent utiliser le numéro d'identification unique du
+                    bébé pour de multiples questionnaires.
+                </p>
+
+                <p>Si vous souhaitez inscrire vos sujets dans DataWinners, la première
+                    étape est d'identifier le type de sujet (Exemple: Patients,
+                    Clinique, Pompe à Eau).
+                </p>
+
+                <p>Les Sujets peuvent être des Gens (Patients, Agriculteur, Employé);
+                    des Lieux (Région, District, Commune); des Choses (Dispensaires,
+                    Magasin de Détail, Pompe à Eau), ou des Evénements (Formation,
+                    Performance, Rassemblement Publique)
+                </p>
+
+                <p>Vous pouvez choisir un Type de Sujet existant déjà inscrit à votre
+                    compte DataWinners, ou spécifier un nouveau Type de Sujet.
+                </p>
+
+                <p>Une fois que vous choisissez un type de sujet (exemple: Bébé), vous
+                    verrez cette question apparaître dans votre générateur de
+                    questionnaire: « A propos de quel bébé votre rapport concerne-t-il?
+                    ».
+                </p>
+
+                <p>Dans une étape ultérieure, vous:
+                </p>
+                <ol>
+                    <li>Créerez votre questionnaire d'inscription du sujet (avec les
+                        questions d'ordre général que vous voulez pour chaque sujet)
+                    </li>
+                    <li>Inscrirez la liste de vos sujets dans DataWinners pour qu'à
+                        chacun d'eux, un numéro d'identification unique puisse être
+                        attribué.
+                    </li>
+                </ol>
+            </div>
+
+            <h3><a href="#">Un Expéditeur de Données peut-il inscrire un sujet à partir
+                du terrain à l'aide de SMS?</a></h3>
+
+            <div>
+                <p>Oui. Les Expéditeurs de Données peuvent inscrire de nouveaux Sujets
+                    à partir du terrain. Utilisez le format suivant (omit all <>):
+                </p>
+
+                <p>Reg .t &lt;type de sujet&gt; .n &lt;nom du Sujet&gt; .m &lt;numéro
+                    de téléphone mobile du Sujet&gt; .l &lt;localisation du Sujet&gt;
+                    .g &lt;coordonnées gps du Sujet&gt;
+                </p>
+            </div>
+            </div>
+
+            <h2>Analyse des Données</h2>
+
+            <div class="support-acc">
+                <h3><a href="#">Que représentent les épingles sur la carte?</a></h3>
+
+                <div>
+                    <p>
+                        Sur n'importe quelle carte, les épingles représentent soit les
+                        Expéditeurs de Données inscrits, soit les Sujets inscrits. Si
+                        le type de projet est un Rapport de Synthèse, alors chaque
+                        épingle sur la carte correspond à un Expéditeur de Données
+                        inscrits. Pour les Rapports Individuels sur un Sujet
+                        Spécifique, chaque épingle sur la carte correspond à un Sujet
+                        inscrit.
+                    </p>
+                </div>
+
+                <h3><a href="#">Pourquoi est-ce que ce ne sont tous mes Expéditeurs de
+                    Données ou Sujets inscrits qui sont affichés sur la carte?</a></h3>
+
+                <div>
+                    <p>Seuls les Expéditeurs de Données et les Sujets inscrits avec
+                        leur localisation géographique sont affichés sur la carte.
+                    </p>
+
+                    <p>Si vous ne voyez pas un Expéditeur de Données ou un Sujet sur la
+                        carte, il est probable qu'une erreur s'est produite lors de la
+                        saisie de ses coordonnées ou de sa localisation lors de
+                        l'inscription. Veuillez réviser les coordonnées GPS du Sujet/de
+                        l'Expéditeur Données inscrits en allant dans les pages Tous
+                        Sujets/Tous Expéditeurs de Données.
+                    </p>
+                </div>
+
+                <h3><a href="#">Comment puis-je ajouter ou supprimer un enregistrement
+                    que l'Expéditeur de Données a soumis?</a></h3>
+
+                <div>
+                    <p>
+                        Pour tout projet, ajoutez un enregistrement en utilisant le
+                        lien "Soumission Web" à partir de l'onglet "Données". Pour
+                        supprimer un enregistrement de données, cliquez sur l'onglet
+                        "Données" pour votre projet, puis cliquez sur la page "Tous les
+                        Enregistrements de Données" page. Ensuite, sélectionnez
+                        l'enregistrement des données que vous souhaitez supprimer en
+                        cliquant sur la boîte correspondante située sur la colonne de
+                        gauche et choisissez "Supprimer" à partir du menu déroulant des
+                        Actions.
+                    </p>
+                </div>
+
+                <h3><a href="#">A quoi se réfère la colonne ‘Statut de la Soumission'
+                    de la page "Tous les Enregistrements de Données"?</a></h3>
+
+                <div>
+                    <p>La colonne Statut de la Soumission indique soit qu'un SMS
+                        entrant a été exempt d'erreur et accepté par le système, ou
+                        contient une ou plusieurs erreurs et a été rejeté par le
+                        système. Le terme ‘Vrai' indique que la soumission de SMS a été
+                        exempte d'erreur et acceptée. Le terme ‘Faux' indique que la
+                        soumission de SMS contenait des erreurs et a été rejetée.
+                    </p>
+
+                    <p>L'affichage du statut "Faux" des soumissions a pour but de
+                        servir comme un outil de diagnostic pour vous aider à
+                        identifier les difficultés ou problèmes que vos Expéditeurs de
+                        Données pourraient avoir lors de l'envoi des données.
+                    </p>
+                </div>
+
+                <h3><a href="#">A quoi se réfère la colonne ‘Enregistrement Supprimé'
+                    de la page "Tous les Enregistrements de Données"? </a></h3>
+
+                <div>
+                    <p>La colonne Enregistrement Supprimé peut indiquer qu'un
+                        enregistrement de données a été supprimé par l'utilisateur. La
+                        colonne Enregistrement Supprimé s'affiche toujours sur la page
+                        "Tous les Enregistrements de Données", mais n'apparaît pas sur
+                        la page “Analyse”.
+                    </p>
+
+                    <p>Le terme "False" indique que l'enregistrement de données n'a pas
+                        été supprimé, et est donc inclus dans les calculs/agrégations
+                        de la page d'analyse. Le terme "Vrai" indique que
+                        l'enregistrement a été supprimé et n'est donc pas inclus dans
+                        les calculs/agrégations de la page d'analyse.
+                    </p>
+                </div>
+            </div>
+
+            <h2>FAQ Techniques </h2>
+
+            <div class="support-acc">
+                <h3><a href="#">Où est-ce que DataWinners est-il hébergé?</a></h3>
+
+                <div>
+                    <p>
+                        Le système est actuellement hébergé à Londres, par Linode - un
+                        établissement localisé au RU. Linode est un excellent
+                        fournisseur virtuel. Leur site Web est accessible <a
+                            href="http://www.linode.com/" target="_blank">ici</a>.
+                    </p>
+                </div>
+
+                <h3><a href="#">Où sont stockées mes données?</a></h3>
+
+                <div>
+                    <p>
+                        Vos données sont stockées sur des serveurs sécurisés auprès de
+                        Linode.com au Royaume-Uni
+                    </p>
+                </div>
+
+                <h3><a href="#">Quelle technologie se trouve-t-elle derrière
+                    DataWinners?</a></h3>
+
+                <div>
+                    <table>
+                        <tr>
+                            <td>Base de Données</td>
+                            <td>CouchDB</td>
+                        </tr>
+                        <tr>
+                            <td>Langage</td>
+                            <td>Python</td>
+                        </tr>
+                        <tr>
+                            <td>Cadre d'application</td>
+                            <td>Django</td>
+                        </tr>
+                        <tr>
+                            <td>Principales Bibliothèques JavaScript</td>
+                            <td>jQuery</td>
+                        </tr>
+                        <tr>
+                            <td>Sous-Système GIS</td>
+                            <td>PostGIS, OpenLayers</td>
+                        </tr>
+                        <tr>
+                            <td>Système de Messagerie</td>
+                            <td>Vumi</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3><a href="#">Le Code peut-il être modifié ou manipulé?</a></h3>
+
+                <div>
+                    <p>
+                        Oui. Nous encourageons nos partenaires à contribuer à
+                        l'amélioration du code et à la suggérer des idées pour que
+                        DataWinners et Mangrove puissent continuer à innover.
+                    </p>
+                </div>
+
+                <h3><a href="#">Comment l'interface SMS a-t-il été conçu?</a></h3>
+
+                <div>
+                    <p>
+                        DataWinners utilise Vumi, un système de messagerie open source
+                        créé par la Fondation Praekelt pour les services de messagerie
+                        de base. Vumi peut être interfacé avec n'importe quel nombre de
+                        fournisseurs de passerelle SMS et d'Opérateurs de Réseaux
+                        Mobiles (MNO). À Madagascar, DataWinners s'intègre directement
+                        avec Airtel via SMPP (supporté par Vumi). Nous avons également
+                        des intégrations avec des fournisseurs de passerelle en Inde et
+                        avec Clickatell aux Etats-Unis.
+                    </p>
+                </div>
+
+                <h3><a href="#">Comment l'interface de DataWinners fonctionne-t-il avec
+                    les fournisseurs locaux?</a></h3>
+
+                <div>
+                    <p>
+                        Nous signons des accords avec des opérateurs mobiles et des
+                        agrégateurs de SMS pour connecter DataWinners à chaque
+                        téléphone cellulaire dans le monde. Cela signifie que pour une
+                        affaire de quelques jours, nous pouvons activer DataWinners
+                        dans n'importe quel pays dans le monde.
+                    </p>
+                </div>
+
+                <h3><a href="#">Quels sont les navigateurs supportés par
+                    DataWinners?</a></h3>
+
+                <div>
+                    <ol>
+                        <li>Internet Explorer 7 et ses versions plus récentes</li>
+                        <li>Firefox 3.0 et ses versions plus récentes</li>
+                        <li>Safari 5.1 et ses versions plus récentes</li>
+                        <li>Chrome (15.0.874.106) et ses versions plus récentes</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}
