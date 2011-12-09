@@ -10,7 +10,7 @@ from django.contrib.sites.models import Site
 import dircache
 from django.conf import settings
 from mangrove.utils.types import is_not_empty
-
+from django.core import mail
 
 class TestRegistrationProcessor(unittest.TestCase):
     def prepare_organization(self):
@@ -65,8 +65,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.assertTrue(isinstance(get_registration_processor(self.paid_organization), PaidAccountRegistrationProcessor))
 
     def test_should_process_registration_data_for_paid_acccount(self):
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-        settings.EMAIL_FILE_PATH = '/tmp/email'
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
         processor = get_registration_processor(self.paid_organization)
 
@@ -75,26 +74,24 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user1, site, 'en', kwargs)
 
-        file_list = dircache.listdir('/tmp/email')
-        emails = ''
-        for email_file in file_list:
-            emails += (open('/tmp/email/' + email_file, 'r').read())
-            os.remove('/tmp/email/' + email_file)
+        emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
 
-        self.assertIn('Content-Type: text/html', emails)
-        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
-        self.assertIn('To: paid_account@mail.com', emails)
-        self.assertIn('Subject: DataWinners Monthly Subscription Account Confirmation', emails)
-        self.assertIn('Hello first_name1 last_name1,', emails)
+        self.assertEqual(1, len(emails))
+        sent_email = emails[0]
+
+        self.assertEqual("html", sent_email.content_subtype)
+        self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
+        self.assertEqual(['paid_account@mail.com'], sent_email.to)
+        self.assertEqual([settings.HNI_SUPPORT_EMAIL_ID], sent_email.bcc)
+        self.assertEqual('DataWinners Monthly Subscription Account Confirmation', sent_email.subject)
+        self.assertIn('Hello first_name1 last_name1,', sent_email.body)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
-        self.assertIn(activation_link, emails)
+        self.assertIn(activation_link, sent_email.body)
 
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
     def test_should_process_registration_data_for_trial_acccount(self):
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-        settings.EMAIL_FILE_PATH = '/tmp/email1'
-
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
         processor = get_registration_processor(self.trial_organization)
 
@@ -103,16 +100,15 @@ class TestRegistrationProcessor(unittest.TestCase):
 
         processor.process(self.user2, site, 'en', kwargs)
 
-        file_list = dircache.listdir('/tmp/email1')
-        emails = ''
-        for email_file in file_list:
-            emails += (open('/tmp/email1/' + email_file, 'r').read())
-            os.remove('/tmp/email1/' + email_file)
+        emails = [mail.outbox.pop() for i in range(len(mail.outbox))]
 
-        self.assertIn('Content-Type: text/html', emails)
-        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
-        self.assertIn('To: trial_account@mail.com', emails)
-        self.assertIn('Subject: DataWinners Trial Account Activation', emails)
-        self.assertIn('Hello first_name2 last_name2,', emails)
+        self.assertEqual(1, len(emails))
+        sent_email = emails[0]
+
+        self.assertEqual("html", sent_email.content_subtype)
+        self.assertEqual(settings.EMAIL_HOST_USER, sent_email.from_email)
+        self.assertEqual(['trial_account@mail.com'], sent_email.to)
+        self.assertEqual('DataWinners Trial Account Activation', sent_email.subject)
+        self.assertIn('Hello first_name2 last_name2,', sent_email.body)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user2)).activation_key + '/'
-        self.assertIn(activation_link, emails)
+        self.assertIn(activation_link, sent_email.body)
