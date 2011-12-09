@@ -6,12 +6,11 @@ from datawinners import settings
 from datawinners.accountmanagement.models import PaymentDetails
 
 def get_registration_processor(organization):
-    return TrialAccountRegistrationProcessor(organization) if organization.in_trial_mode \
-                else PaidAccountRegistrationProcessor(organization)
+    return TrialAccountRegistrationProcessor(organization) if organization.in_trial_mode\
+    else PaidAccountRegistrationProcessor(organization)
 
 
 class TrialAccountRegistrationProcessor(object):
-
     def __init__(self, organization):
         self.organization = organization
 
@@ -20,7 +19,7 @@ class TrialAccountRegistrationProcessor(object):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                     'site': site,
-                    'name':user.first_name + ' ' + user.last_name}
+                    'name': user.first_name + ' ' + user.last_name}
         subject = render_to_string('registration/activation_email_subject_for_trial_account.txt')
         message = render_to_string('registration/activation_email_for_trial_account.html',
                                    ctx_dict)
@@ -29,10 +28,7 @@ class TrialAccountRegistrationProcessor(object):
         email.send()
 
 
-
-
 class PaidAccountRegistrationProcessor(object):
-
     def __init__(self, organization):
         self.organization = organization
 
@@ -50,11 +46,14 @@ class PaidAccountRegistrationProcessor(object):
     def _send_activation_email(self, site, user):
         ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                    'site': site}
+                    'site': site,
+                    'name': user.first_name + ' ' + user.last_name}
         subject = render_to_string('registration/activation_email_subject.txt',
                                    ctx_dict)
         subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
-        message = render_to_string('registration/activation_email.txt',
+        message = render_to_string('registration/activation_email.html',
                                    ctx_dict)
-        user.email_user(subject, message, settings.EMAIL_HOST_USER)
+        email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
+        email.content_subtype = "html"
+        email.send()
 

@@ -35,7 +35,7 @@ class RegistrationBackend(object):
 
     * The creation of the templates
       ``registration/activation_email_subject.txt`` and
-      ``registration/activation_email.txt``, which will be used for
+      ``registration/activation_email.html``, which will be used for
       the activation email. See the notes for this backends
       ``register`` method for details regarding these templates.
 
@@ -150,27 +150,3 @@ class RegistrationBackend(object):
         group = Group.objects.filter(name="NGO Admins")
         new_user.groups.add(group[0])
         return new_user
-
-    def _send_activation_email(self, user, site, extra_context={}):
-        ctx_dict = {'activation_key': RegistrationProfile.objects.get(user=user).activation_key,
-                    'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                    'site': site}
-        ctx_dict.update(extra_context)
-
-        subject = render_to_string('registration/activation_email_subject.txt',
-                                   ctx_dict)
-        # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
-
-        message = render_to_string('registration/activation_email.txt',
-                                   ctx_dict)
-
-        user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
-
-    def _create_payment_details(self, organization ,kwargs):
-        invoice_period = kwargs['invoice_period']
-        preferred_payment = kwargs['preferred_payment']
-
-        payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,preferred_payment= preferred_payment)
-
-        return payment_details

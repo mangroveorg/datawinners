@@ -73,21 +73,19 @@ class TestRegistrationProcessor(unittest.TestCase):
         site = Site(domain='test', name='test_site')
         kwargs = dict(invoice_period='', preferred_payment='')
 
-
         processor.process(self.user1, site, kwargs)
 
-
         file_list = dircache.listdir('/tmp/email')
-        emails = ''
-        for email_file in file_list:
-            emails += (open('/tmp/email/' + email_file, 'r').read())
-            os.remove('/tmp/email/' + email_file)
-
-        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
-        self.assertIn('To: paid_account@mail.com', emails)
-        self.assertIn('Subject: Account activation on test_site', emails)
+        emails = [self.xyz(single_file, '/tmp/email/') for single_file in file_list]
+        self.assertEqual(1, len(emails))
+        email = emails[0]
+        self.assertIn('Content-Type: text/html', email)
+        self.assertIn('From: ' + settings.EMAIL_HOST_USER, email)
+        self.assertIn('To: paid_account@mail.com', email)
+        self.assertIn('Subject: Account activation on test_site', email)
+        self.assertIn('Hello first_name1 last_name1,', email)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user1)).activation_key + '/'
-        self.assertIn(activation_link, emails)
+        self.assertIn(activation_link, email)
         self.assertTrue(is_not_empty(PaymentDetails.objects.filter(organization=self.paid_organization)))
 
     def test_should_process_registration_data_for_trial_acccount(self):
@@ -103,14 +101,18 @@ class TestRegistrationProcessor(unittest.TestCase):
         processor.process(self.user2, site, kwargs)
 
         file_list = dircache.listdir('/tmp/email1')
-        emails = ''
-        for email_file in file_list:
-            emails += (open('/tmp/email1/'+ email_file, 'r').read())
-            os.remove('/tmp/email1/' + email_file)
+        emails = [self.xyz(single_file, '/tmp/email1/') for single_file in file_list]
 
-        self.assertIn('From: ' + settings.EMAIL_HOST_USER, emails)
-        self.assertIn('To: trial_account@mail.com', emails)
-        self.assertIn('Subject: DataWinners Trial Account Activation', emails)
-        self.assertIn('Hello first_name2 last_name2,', emails)
+        self.assertEqual(1, len(emails))
+        email = emails[0]
+        self.assertIn('From: ' + settings.EMAIL_HOST_USER, email)
+        self.assertIn('To: trial_account@mail.com', email)
+        self.assertIn('Subject: DataWinners Trial Account Activation', email)
+        self.assertIn('Hello first_name2 last_name2,', email)
         activation_link = 'http://test/activate/'+ (RegistrationProfile.objects.get(user=self.user2)).activation_key + '/'
-        self.assertIn(activation_link, emails)
+        self.assertIn(activation_link, email)
+
+    def xyz(self, single_file, email_folder):
+       email =  open(email_folder + single_file, 'r').read()
+       os.remove(email_folder + single_file)
+       return email
