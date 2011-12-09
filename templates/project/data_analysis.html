@@ -101,7 +101,7 @@
                 <td>
                     <select class="aggregation_type">
                         {% for choice in each %}
-                            <option>{% trans choice %}</option>
+                            <option value="{{ choice }}">{% trans choice %}</option>
                         {% endfor %}
                     </select>
                 </td>
