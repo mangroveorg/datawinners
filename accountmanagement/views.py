@@ -213,6 +213,7 @@ def trial_expired(request):
 
 def _send_upgrade_email(user, language):
     subject = render_to_string('accountmanagement/upgrade_email_subject_'+language+'.txt')
+    subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
     body = render_to_string('accountmanagement/upgrade_email_'+language+'.html', {'name':user.first_name})
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"

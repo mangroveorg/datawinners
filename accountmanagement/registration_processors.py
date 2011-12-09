@@ -21,6 +21,7 @@ class TrialAccountRegistrationProcessor(object):
                     'site': site,
                     'name': user.first_name + ' ' + user.last_name}
         subject = render_to_string('registration/activation_email_subject_for_trial_account_in_'+language+'.txt')
+        subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
         message = render_to_string('registration/activation_email_for_trial_account_in_'+language+'.html',
                                    ctx_dict)
         email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
