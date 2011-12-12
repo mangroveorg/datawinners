@@ -1,4 +1,4 @@
-{% extends 'public_secondary_fr.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Fonctionnalités {% endblock %}
 
 {% load dw_tabs %}
@@ -14,13 +14,13 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/en">Accueil</a> &gt; <a href="/en/what-is-datawinners">Qu’est-ce
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/what-is-datawinners">Qu’est-ce
     que DataWinners</a> &gt; Fonctionnalités
 {% endblock %}
 
 {% block main_content %}
 <div id="nav_content">
-    <h1>QU'EST-CE QUE DATAWINNERS</h1>
+    <h1><a href="/fr/what-is-datawinners/">QU'EST-CE QUE DATAWINNERS</a></h1>
     <ul>
         <li><a href="/fr/what-is-datawinners/how-it-works">Comment Est-ce Que
             Cela Marche ?</a></li>
@@ -31,81 +31,193 @@
 </div>
 <div id="main_content">
     <div class="margin_left_20">
-        <p>DataWinners dispose des fonctionnalités suivantes pour vous aider à
-            collecter des données émanant du terrain</p>
+        <div class="left_content" id="features_content">
+            <p>DataWinners dispose des fonctionnalités suivantes pour vous aider à
+                collecter des données émanant du terrain</p>
 
-        <h3>Editeur de Questionnaire</h3>
-        <ul class="bulleted">
-            <li>Transformez votre liste de questions clés en un questionnaire
-                en ligne
-            </li>
-            <li>Spécifiez le type de réponse : Texte, chiffre, date, choix
-                multiple, etc.
-            </li>
-            <li>Fixez des critères de validation pour améliorer la précision.
-                Exemple : La réponse doit se situer entre 1 et 100
-            </li>
-            <li>Surveillez le nombre de caractères des SMS requis pour envoyer
-                les réponses aux questions clés
-            </li>
-        </ul>
-        <h3>Phase de Test</h3>
-        <ul class="bulleted">
-            <li>Testez au cours de la phase de test : Finalisez votre
-                questionnaire et formez vos Expéditeurs de Données
-            </li>
-            <li>Envoyez les réponses tests via :
-                <ul class="bulleted">
-                    <li>SMS en utilisant votre téléphone</li>
-                    <li>Notre émulateur téléphonique en ligne</li>
-                    <li>Formulaire Web</li>
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Editeur de Questionnaire" class="popbox" href="/media/images/dw_feat_builder_fr.jpg"><img width="120" height="180" class="capture" alt="Editeur de Questionnaire" src="/media/images/dw_feat_builder.gif"></a>
+                    <div class="plus"><a title="Editeur de Questionnaire" class="popbox" href="/media/images/dw_feat_builder_fr.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3>Editeur de Questionnaire</h3>
+                <ul class="bulleted margin_null">
+                    <li>Transformez votre liste de questions clés en un questionnaire
+                        en ligne
+                    </li>
+                    <li>Spécifiez le type de réponse : Texte, chiffre, date, choix
+                        multiple, etc.
+                    </li>
+                    <li>Fixez des critères de validation pour améliorer la précision.
+                        Exemple : La réponse doit se situer entre 1 et 100
+                    </li>
+                    <li>Surveillez le nombre de caractères des SMS requis pour envoyer
+                        les réponses aux questions clés
+                    </li>
                 </ul>
-            </li>
-            <li>Dès que vous avez activé votre projet, commencez à collecter
-                des données réelles en utilisant une base de données vide
-            </li>
-        </ul>
-        <h3>Des Canaux Multiples: SMS, Internet</h3>
-        <ul class="bulleted">
-            <li>Utilisez soit l’Internet, les SMS, ou les deux pour collecter
-                vos données
-            </li>
-            <li>Vos expéditeurs de données (personnels de terrain) peuvent
-                utiliser leur téléphone individuel. Même les plus simples des
-                téléphones peuvent envoyer des données par SMS
-            </li>
-            <li>Collectez les données en commençant par les régions les plus
-                éloignées
-            </li>
-        </ul>
-        <h3>Rappels &amp; Messages</h3>
-        <ul class="bulleted">
-            <li>Créez des rappels automatiques pour aviser les Expéditeurs de
-                Données qui n’ont pas encore envoyé leurs réponses
-            </li>
-            <li>Envoyez des accusés de réception automatiques et des messages
-                d’erreur à vos Expéditeurs de Données ; exemple : «
-                Félicitations Shilpa ! Nous avons bien reçu vos données »
-            </li>
-        </ul>
-        <h3>Cartographie</h3>
-        <ul class="bulleted">
-            <li>Visualisez les points de collecte de données affichés avec
-                précision sur une carte
-            </li>
-            <li>Triez la carte selon la période, la localisation géographique,
-                les questions du rapport, ainsi de suite !
-            </li>
-        </ul>
-        <h3>Analysez les Données</h3>
-        <ul class="bulleted">
-            <li>Analysez les données avec l’aide des listes et des cartes</li>
-            <li>Effectuez de simples calculs statistiques sur vos données</li>
-            <li>Exportez vos données en un seul clic</li>
-            <li>Triez les données pour les consulter par date, localisation ou
-                question
-            </li>
-        </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Phase de Test" class="popbox" href="/media/images/dw_feat_review_fr.jpg"><img width="120" height="180" class="capture" alt="Phase de Test" src="/media/images/dw_feat_review.gif"></a>
+                    <div class="plus"><a title="Phase de Test" class="popbox" href="/media/images/dw_feat_review_fr.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3>Phase de Test</h3>
+                <ul class="bulleted margin_null">
+                    <li>Testez au cours de la phase de test : Finalisez votre
+                        questionnaire et formez vos Expéditeurs de Données
+                    </li>
+                    <li>Envoyez les réponses tests via :
+                        <ul class="bulleted">
+                            <li>SMS en utilisant votre téléphone</li>
+                            <li>Notre émulateur téléphonique en ligne</li>
+                            <li>Formulaire Web</li>
+                        </ul>
+                    </li>
+                    <li>Dès que vous avez activé votre projet, commencez à collecter
+                        des données réelles en utilisant une base de données vide
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Des Canaux Multiples: SMS, Internet" class="popbox" href="/media/images/dw_screen1.jpg"><img width="120" height="180" class="capture" alt="Des Canaux Multiples: SMS, Internet" src="/media/images/dw_screen1.gif"></a>
+                    <div class="plus"><a title="Des Canaux Multiples: SMS, Internet" class="popbox" href="/media/images/dw_screen1.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3>Des Canaux Multiples: SMS, Internet</h3>
+                <ul class="bulleted margin_null">
+                    <li>Utilisez soit l’Internet, les SMS, ou les deux pour collecter
+                        vos données
+                    </li>
+                    <li>Vos expéditeurs de données (personnels de terrain) peuvent
+                        utiliser leur téléphone individuel. Même les plus simples des
+                        téléphones peuvent envoyer des données par SMS
+                    </li>
+                    <li>Collectez les données en commençant par les régions les plus
+                        éloignées
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Rappels &amp; Messages" class="popbox" href="/media/images/dw_feat_reminders_fr.jpg"><img width="120" height="180" class="capture" alt="Rappels &amp; Messages" src="/media/images/dw_feat_reminders.gif"></a>
+                    <div class="plus"><a title="Rappels &amp; Messages" class="popbox" href="/media/images/dw_feat_reminders_fr.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3>Rappels &amp; Messages</h3>
+                <ul class="bulleted margin_null">
+                    <li>Créez des rappels automatiques pour aviser les Expéditeurs de
+                        Données qui n’ont pas encore envoyé leurs réponses
+                    </li>
+                    <li>Envoyez des accusés de réception automatiques et des messages
+                        d’erreur à vos Expéditeurs de Données ; exemple : «
+                        Félicitations Shilpa ! Nous avons bien reçu vos données »
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Cartographie" class="popbox" href="/media/images/dw_feat_map_fr.jpg"><img width="120" height="180" class="capture" alt="Data Mapping" src="/media/images/dw_feat_map.gif"></a>
+                    <div class="plus"><a title="Cartographie" class="popbox" href="/media/images/dw_feat_map_fr.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3>Cartographie</h3>
+                <ul class="bulleted magin_null">
+                    <li>Visualisez les points de collecte de données affichés avec
+                        précision sur une carte
+                    </li>
+                    <li>Triez la carte selon la période, la localisation géographique,
+                        les questions du rapport, ainsi de suite !
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Analysez les Données" class="popbox" href="/media/images/dw_feat_analysis_fr.jpg"><img width="120" height="180" class="capture" alt="Analysez les Données" src="/media/images/dw_feat_analysis.gif"></a>
+                    <div class="plus"><a title="Data Analysis" class="popbox" href="/media/images/dw_feat_analysis_fr.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3>Analysez les Données</h3>
+                <ul class="bulleted margin_null">
+                    <li>Analysez les données avec l’aide des listes et des cartes</li>
+                    <li>Effectuez de simples calculs statistiques sur vos données</li>
+                    <li>Exportez vos données en un seul clic</li>
+                    <li>Triez les données pour les consulter par date, localisation ou
+                        question
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div id="popbox">
+                <img src="/media/images/dw_screen1.jpg" alt="" />
+            </div>
+            <div style="display: none">
+                <img src="/media/images/dw_feat_builder_fr.jpg" alt=""/>
+                <img src="/media/images/dw_feat_review_fr.jpg" alt=""/>
+                <img src="dw_feat_reminders_fr.jpg" alt=""/>
+                <img src="" alt=""/>
+                <img src="/media/images/dw_feat_map_fr.jpg" alt=""/>
+                <img src="dw_feat_analysis_fr.jpg" alt=""/>
+            </div>
+        </div>
+        <div class="right_content">
+            <div class="block_1">
+                	<h1>Comment Est-ce Que Cela Marche?</h1>
+	                <p>
+    	                Obtenez un aperçu rapide du processus de la collecte des données.
+                	    <br>Voir <a href="/fr/what-is-datawinners/how-it-works">Comment Est-ce Que Cela Marche</a>
+	                </p>
+    	        </div>
+
+    	        <div class="block_1">
+                	<h1>Avantages</h1>
+	                <p>
+						Jetez un oeil sur tous les avantages de DataWinners.
+                	    <br>Voir les <a href="/fr/what-is-datawinners/features">avantages</a>
+	                </p>
+    	        </div>
+
+    	        <div class="block_1">
+                	<h1>Nos succ&eacute;s</h1>
+	                <p>
+						Voyez comment d'autres ont b&eacute;n&eacute;fici&eacute; de DataWinners.
+                	    <br>Voir <a href="/fr/success-stories/">Nos succ&eacute;s</a>
+	                </p>
+    	        </div>
+
+    	        <div class="block_1">
+                	<h1>Essai gratuit</h1>
+                	<div id="how_nav">
+	                <p>
+						Essayez toutes les fonctionalités c'est enti&egrave;ment gratuit.
+
+                	    <br><a href="/fr/pricing/">Plus de renseignement</a> ou
+                	    <div id="how_links" class="margin_null">
+                	    	<a href="/register/trial/" id="how_try_button">Essai gratuit</a>
+                	    </div>
+                	</p>
+                	</div>
+    	        </div>
+        </div>
     </div>
 </div>
 <div class="clear"></div>

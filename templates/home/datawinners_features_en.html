@@ -1,4 +1,4 @@
-{% extends 'public_secondary_en.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Features {% endblock %}
 
 {% load dw_tabs %}
@@ -9,18 +9,17 @@
 
 {% block page_js %}
 {{ block.super }}
-<script src="/media/javascript/home/features.js"
-        type="text/javascript"></script>
+<script src="/media/javascript/home/features.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/en">Home</a> &gt; <a href="/en/what-is-datawinners">What is
+<a href="/en/home/">Home</a> &gt; <a href="/en/what-is-datawinners">What is
     DataWinners</a> &gt; Features
 {% endblock %}
 
 {% block main_content %}
 <div id="nav_content">
-    <h1>WHAT IS DATAWINNERS</h1>
+    <h1><a href="/en/what-is-datawinners/">WHAT IS DATAWINNERS</a></h1>
     <ul>
         <li><a href="/en/what-is-datawinners/how-it-works">How it Works</a>
         </li>
@@ -31,72 +30,191 @@
 </div>
 <div id="main_content">
     <div class="margin_left_20">
-        <p>DataWinners provides the following the features to help you collect
-            data from the field.</p>
-        <h3>Questionnaire Builder</h3>
-        <ul>
-            <li>Turn your list of key questions into an online questionnaire
-            </li>
-            <li>Specify the answer type: Text, number, date, multiple choice,
-                etc.
-            </li>
-            <li>Set validation criteria to improve accuracy. Example: Answer
-                must be between 1 - 100
-            </li>
-            <li>Monitor the SMS character count required to send in answers to
-                key questions
-            </li>
-        </ul>
-        <h3>Test Phase</h3>
-        <ul>
-            <li>Experiment in the test phase: Finalize your questionnaire and
-                train your Data Senders
-            </li>
-            <li>Send in test answers via:
-                <ul>
-                    <li>SMS using your phone</li>
-                    <li>Our online telephone emulator</li>
-                    <li>Web form</li>
+        <div class="left_content" id="features_content">
+            <p>DataWinners provides the following features to help you collect
+                data from the field.</p>
+
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a href="/media/images/dw_feat_builder_en.jpg" class="popbox" title="Step-by-step Wizard"><img src="/media/images/dw_feat_builder.gif" width="120" height="180" alt="Step-by-step Wizard" class="capture" /></a>
+                    <div class="plus"><a href="/media/images/dw_feat_builder_en.jpg" class="popbox" title="Step-by-step Wizard"><img src="/media/images/dw_popup_plus.png" width="40" height="40" alt="" /></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3 class="margin_top_20">Questionnaire Builder</h3>
+                <ul class="bulleted maring_null">
+                    <li>Turn your list of key questions into an online questionnaire
+                    </li>
+                    <li>Specify the answer type: Text, number, date, multiple choice,
+                        etc.
+                    </li>
+                    <li>Set validation criteria to improve accuracy. Example: Answer
+                        must be between 1 - 100
+                    </li>
+                    <li>Monitor the SMS character count required to send in answers to
+                        key questions
+                    </li>
                 </ul>
-            </li>
-            <li>Start collecting real data with an empty database once you
-                activate your project
-            </li>
-        </ul>
-        <h3>Multiple Channels: SMS, Internet</h3>
-        <ul>
-            <li>Use either the Internet, SMS, or both to collect your data</li>
-            <li>Your data senders (field staff) can use their personal phone.
-                Even the simplest phones can send data using SMS
-            </li>
-            <li>Collect data from the most remote areas</li>
-        </ul>
-        <h3>Reminders & Messages</h3>
-        <ul>
-            <li>Set automatic reminders to notify Data Senders who have not yet
-                sent in their answers
-            </li>
-            <li>Send your Data Senders automatic success and error messages,
-                e.g. “Congrats Shilpa! We successfully received your data”
-            </li>
-        </ul>
-        <h3>Mapping</h3>
-        <ul>
-            <li>See all data collection points accurately displayed on a map
-            </li>
-            <li>Filter map based on time period, geographic area, report
-                questions and more!
-            </li>
-        </ul>
-        <h3>Data Analysis</h3>
-        <ul>
-            <li>Analyze data via lists and maps</li>
-            <li>Perform simple statistical calculations on your data</li>
-            <li>Export your data in a single click</li>
-            <li>Filter data to view data by date, location, indicator or
-                question
-            </li>
-        </ul>
+            </div>
+            <div class="clear"></div>
+
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Test Phase" class="popbox" href="/media/images/dw_feat_review_en.jpg"><img width="120" height="180" class="capture" alt="Test " src="/media/images/dw_feat_review.gif"></a>
+                    <div class="plus"><a title="Test phase" class="popbox" href="/media/images/dw_feat_review_en.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3 class="margin_top_20">Test Phase</h3>
+                <ul class="bulleted margin_null">
+                    <li>Experiment in the test phase: Finalize your questionnaire and
+                        train your Data Senders
+                    </li>
+                    <li>Send in test answers via:
+                        <ul class="bulleted">
+                            <li>SMS using your phone</li>
+                            <li>Our online telephone emulator</li>
+                            <li>Internet</li>
+                        </ul>
+                    </li>
+                    <li>Start collecting real data with an empty database once you
+                        activate your project
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Multiple Channels: SMS, Internet" class="popbox" href="/media/images/dw_screen1.jpg"><img width="120" height="180" class="capture" alt="Multiple Channels: SMS, Internet" src="/media/images/dw_screen1.gif"></a>
+                    <div class="plus"><a title="Multiple Channels: SMS, Internet" class="popbox" href="/media/images/dw_screen1.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3 class="margin_top_20">Multiple Channels: SMS, Internet</h3>
+                <ul class="bulleted margin_null">
+                    <li>Use either the Internet, SMS or both to collect your data</li>
+                    <li>Your Data Senders (field staff) can use their personal phone.
+                        Even the simplest phones can send data using SMS
+                    </li>
+                    <li>Collect data from the most remote areas</li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Reminders & Messages" class="popbox" href="/media/images/dw_feat_reminders_en.jpg"><img width="120" height="180" class="capture" alt="Multiple Channels: SMS, Internet" src="/media/images/dw_feat_reminders.gif"></a>
+                    <div class="plus"><a title="Reminders & Messages" class="popbox" href="/media/images/dw_feat_reminders_en.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3 class="margin_top_20">Reminders & Messages</h3>
+                <ul class="bulleted margin_null">
+                    <li>Send automatic reminders to your Data Senders</li>
+                    <li>Send your Data Senders automatic success and error messages,
+                        e.g. “Congrats Shilpa! We successfully received your data”
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Data Mapping" class="popbox" href="/media/images/dw_feat_map_en.jpg"><img width="120" height="180" class="capture" alt="Data Mapping" src="/media/images/dw_feat_map.gif"></a>
+                    <div class="plus"><a title="Data Mapping" class="popbox" href="/media/images/dw_feat_map_en.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3 class="margin_top_20">Mapping</h3>
+                <ul class="bulleted margin_null">
+                    <li>See all data collection points accurately displayed on a map
+                    </li>
+                    <li>Filter map based on time period, geographic area, report
+                        questions and more
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+
+            <div class="grid_4 alpha omega">
+                <div class="screen">
+                    <a title="Data Analysis" class="popbox" href="/media/images/dw_feat_analysis_en.jpg"><img width="120" height="180" class="capture" alt="Data Analysis" src="/media/images/dw_feat_analysis.gif"></a>
+                    <div class="plus"><a title="Data Analysis" class="popbox" href="/media/images/dw_feat_analysis_en.jpg"><img width="40" height="40" alt="" src="/media/images/dw_popup_plus.png"></a></div>
+                </div>
+            </div>
+            <div class="grid_8 alpha omega float_right">
+                <h3 class="margin_top_20">Data Analysis</h3>
+                <ul class="bulleted margin_null">
+                    <li>Analyze data using spreadsheets and maps</li>
+                    <li>Perform simple statistical calculations</li>
+                    <li>Export your data in a single click</li>
+                    <li>Filter to view data by date, location, or question
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div id="popbox">
+                <img src="/media/images/dw_screen1.jpg" alt="" />
+            </div>
+            <div style="display: none">
+                <img src="/media/images/dw_feat_builder_en.jpg" alt=""/>
+                <img src="/media/images/dw_feat_review_en.jpg" alt=""/>
+                <img src="dw_feat_reminders_fr.jpg" alt=""/>
+                <img src="" alt=""/>
+                <img src="/media/images/dw_feat_map_en.jpg" alt=""/>
+                <img src="dw_feat_analysis_en.jpg" alt=""/>
+            </div>
+        </div>
+
+
+
+        <div class="right_content">
+            <div class="block_1">
+                <h1>How it works</h1>
+                <p>
+                    Get a quick overview of the the data collection process.
+                    <br>See <a href="/en/what-is-datawinners/how-it-works">How it Works</a>
+                </p>
+            </div>
+
+            <div class="block_1">
+                <h1>Benefits</h1>
+                <p>
+                    Have a look at all the benefits of DataWinners.
+                    <br>See <a href="/en/what-is-datawinners/benefits">Benefits</a>
+                </p>
+            </div>
+
+            <div class="block_1">
+                <h1>Success Stories</h1>
+                <p>
+                    See how others have benefited from DataWinners.
+                    <br>See <a href="/en/success-stories/">Success Stories</a>
+                </p>
+            </div>
+
+            <div class="block_1">
+                <h1>Try it Free</h1>
+                <div id="how_nav">
+                <p>
+                    Try out all the features completely free.
+
+                    <br><a href="/en/pricing/">Learn more</a> or
+                    <div id="how_links" class="margin_null">
+                        <a href="/register/trial/" id="how_try_button">Try it Free</a>
+                    </div>
+                </p>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 <div class="clear"></div>

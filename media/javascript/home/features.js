@@ -14,7 +14,7 @@ $(document).ready(function() {
     }
 
     $('.popbox').click(function(){
-        showDialog($(this).href, $(this).attr('title'));
+        showDialog($(this).attr("href"), $(this).attr('title'));
         return false;
     });
 });
