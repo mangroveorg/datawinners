@@ -46,4 +46,16 @@ $(document).ready(function() {
                 });
     });
 
+    $("#read_more").dialog({
+        title: gettext("Read More"),
+        modal: true,
+        autoOpen: false,
+        width: 750
+    });
+
+    $('.help_icon').click(function(){
+        $("#read_more").dialog("open");
+        return false;
+    });
+
 });

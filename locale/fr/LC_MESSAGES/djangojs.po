@@ -542,3 +542,6 @@ msgstr "Transférez en toute sécurité des fonds entre votre compte bancaire au
 
 msgid "subject"
 msgstr "sujet"
+
+msgid "Read More"
+msgstr ""

@@ -535,3 +535,6 @@ msgstr ""
 
 msgid "subject"
 msgstr ""
+
+msgid "Read More"
+msgstr ""

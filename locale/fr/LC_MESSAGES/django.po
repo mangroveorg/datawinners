@@ -2781,6 +2781,9 @@ msgstr ""
 msgid "tooltip_add_subject"
 msgstr ""
 
+msgid "tooltip_add_subject_read_more"
+msgstr ""
+
 msgid "%s of %s records uploaded"
 msgstr "%s sur %s dossiers téléchargées"
 
