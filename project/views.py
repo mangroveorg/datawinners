@@ -329,7 +329,7 @@ def export_data(request):
 
 
 def _create_excel_response(raw_data_list, file_name):
-    response = HttpResponse(mimetype="application/ms-excel")
+    response = HttpResponse(mimetype="application/vnd.ms-excel")
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (file_name,)
     wb = utils.get_excel_sheet(raw_data_list, 'data_log')
     wb.save(response)
