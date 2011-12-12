@@ -16,12 +16,7 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $( "#how_to" ).accordion({ collapsible: true, active: 0 });
-            $( "#projects" ).accordion({ header: '.project_header', autoHeight: false, collapsible: true,active:100 });
-        })
-    </script>
+    <script type="text/javascript" src="/media/javascript/home/dashboard.js"></script>
 {% endblock %}
 
 {% block navigation %}
@@ -53,9 +48,9 @@
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
+                <span class="project_id none">{{ project.id }}</span>
                 <span class="header">{{ project.name|capfirst }} </span>
-                <span class="success_error">{{ project.success }} {% trans "successful"%} |
-                {{ project.errors }} {% trans "error"%}</span>
+                <span id="submission_success_breakup_{{ project.id }}" class="success_error"></span>
             </div>
             <div>
                 <a class="go_to_project"href="{{ project.link }}">{% trans "go to this project" %}»</a>

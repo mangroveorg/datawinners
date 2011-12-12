@@ -1,15 +1,18 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import json
+from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
+from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
 from datawinners.accountmanagement.views import is_datasender
 
 from datawinners.main.utils import get_database_manager
-from datawinners.project.models import ProjectState
+from datawinners.project.models import ProjectState, Project
 from datawinners.project.wizard_view import edit_project
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.player import player
@@ -32,6 +35,20 @@ def _make_message(row):
         message = row.value["error_message"]
     return message
 
+@login_required(login_url='/login')
+@csrf_exempt
+def get_submission(request, project_id):
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, project_id)
+    form_model = FormModel.get(dbm, project.qid)
+    rows = dbm.load_all_rows_in_view('submissionlog', startkey=[form_model.form_code], endkey=[form_model.form_code, {}],
+                                     group=True, group_level=1, reduce=True)
+    submission_success,submission_errors = 0, 0
+    for row in rows:
+        submission_success = row["value"]["success"]
+        submission_errors = row["value"]["count"] - row["value"]["success"]
+    response = json.dumps([submission_success, submission_errors])
+    return HttpResponse(response)
 
 def _get_submission_breakup(dbm, form_code):
     submission_success = 0
@@ -82,7 +99,7 @@ def dashboard(request):
         submissions, success, errors = get_submissions(manager, form_model.form_code)
 
         project = dict(name=row['value']['name'], link=link, submissions=submissions, success=success, errors=errors,
-                       inactive=is_project_inactive(row))
+                       inactive=is_project_inactive(row), id=row['value']['_id'])
         project_list.append(project)
 
     return render_to_response('dashboard/home.html',
