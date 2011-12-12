@@ -1,6 +1,7 @@
 DW.viewModel = {};
 
 $(document).ready(function() {
+    $('#help_icon_for_add_subject').addClass('subject_tooltip_img_main')
      $('#autogen').unbind('change').change(function(event) {
         if ($('#autogen').attr('checked') != true) {
             $('#short_name').attr('disabled', '');

@@ -158,6 +158,11 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
     margin-top: -10px;
 }
 
+.subject_tooltip_img_main{
+    margin-left:0px !important;
+    margin-top: -10px;
+}
+
 .subject_tooltip{
     margin-left: -0px;
     margin-top: -50px;
