@@ -22,3 +22,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
+
+HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'

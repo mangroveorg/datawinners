@@ -1,10 +1,13 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
 from django.views.generic.base import TemplateView
 from django.utils.translation import ugettext as _
 from django.core.mail import EmailMessage
+from django.conf import settings
+import feedparser
+from BeautifulSoup import BeautifulSoup
+import time
 
 class FeatureAwareTemplateView(TemplateView):
     def get_context_data(self, **kwargs):
@@ -47,3 +50,31 @@ def ask_us(request):
 
     email.send()
     return redirect(request.POST["redirect_url"])
+
+
+def _remove_social_links(content):
+    soup = BeautifulSoup(content)
+    social_links = soup.findAll('a', {'rel': 'nofollow'})
+    [link.extract() for link in social_links]
+    return soup.renderContents()
+
+
+def blog(request, language):
+    rss = feedparser.parse(settings.HNI_BLOG_FEED)
+    posts = []
+    for feed in rss.entries:
+        content = _remove_social_links(feed.content[0].value)
+        created_month = time.strftime("%b", feed.updated_parsed)
+        created_day = feed.updated_parsed.tm_mday
+        row = dict(
+            link = feed.link,
+            title = feed.title,
+            content = content,
+            created_month = created_month,
+            created_day = created_day,
+        )
+        posts.append(row)
+
+    request.session['django_language'] = language
+    template = "home/about_blog_%s.html" % (language,)
+    return render_to_response(template, {"posts": posts, "rss": rss}, context_instance=RequestContext(request))

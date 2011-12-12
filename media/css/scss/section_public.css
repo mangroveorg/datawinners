@@ -542,3 +542,39 @@ ol .lower_alpha {
   list-style-type: lower-alpha; }
 ol .lower_i {
   list-style-type: lower-roman; }
+
+.blog-post img.alignnone {
+  border: 5px solid #EFEFEF; }
+.blog-post .blog-header {
+  width: 720px; }
+  .blog-post .blog-header h2 {
+    padding-left: 10px;
+    border-bottom: 1px solid #67AA58;
+    margin: 8px 0 0 0 !important; }
+    .blog-post .blog-header h2 a {
+      color: #000000 !important; }
+    .blog-post .blog-header h2 a:hover {
+      text-decoration: none !important; }
+  .blog-post .blog-header .blog-date {
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    float: left;
+    text-align: center;
+    background: #67AA58; }
+    .blog-post .blog-header .blog-date .wrap {
+      padding: 3px;
+      color: #ffffff;
+      font-size: 12px; }
+      .blog-post .blog-header .blog-date .wrap .blog-day {
+        display: block;
+        width: 34px;
+        height: 20px;
+        line-height: 22px;
+        font-size: 18px;
+        font-weight: bolder;
+        color: #67AA58;
+        background: #ffffff; }
+  .blog-post .blog-header .blog-title {
+    width: 680px;
+    float: right; }
