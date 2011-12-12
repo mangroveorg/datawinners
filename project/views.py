@@ -2,7 +2,6 @@
 import json
 import datetime
 from time import mktime
-import mimetypes, os
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import Form
 from django import forms
@@ -10,7 +9,6 @@ from django.forms.widgets import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.utils.encoding import smart_str
 from django.views.decorators.csrf import csrf_exempt
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type
@@ -26,7 +24,7 @@ from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 import helper
-from datawinners.project import models, wizard_view
+from datawinners.project import models
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.queries import get_entity_count_for_type
 from mangrove.datastore.entity_type import get_all_entity_types
@@ -749,7 +747,8 @@ def web_questionnaire(request, project_id=None):
     form_model = FormModel.get(manager, project.qid)
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
-
+    if project.state == ProjectState.TEST:
+        return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
