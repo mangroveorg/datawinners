@@ -2374,3 +2374,6 @@ msgstr ""
 
 msgid "Reports are over due. Please submit immediately."
 msgstr ""
+
+msgid "Enter an id, or allow us to generate it"
+msgstr ""
