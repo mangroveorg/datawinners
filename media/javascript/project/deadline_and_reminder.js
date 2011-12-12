@@ -54,9 +54,24 @@ DW.DeadlineDetails.prototype = {
     }
 };
 
+DW.ReminderDetails = function(){
+    this.number_of_days_before_deadline = 'input[name=number_of_days_before_deadline]';
+    this.number_of_days_after_deadline = 'input[name=number_of_days_after_deadline]';
+};
+
+DW.ReminderDetails.prototype = {
+    init: function(){
+        $(this.number_of_days_before_deadline).attr('maxlength', '3')
+        $(this.number_of_days_after_deadline).attr('maxlength', '3')
+        return true;
+    }
+};
+
 var deadlineDetails = new DW.DeadlineDetails;
+var reminderDetails = new DW.ReminderDetails;
 $(document).ready(function() {
     deadlineDetails.init();
+    reminderDetails.init();
     /*
     $(deadlineDetails.deadlineEnabledControl).change(function(){
         deadlineDetails.init();
