@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
 from django.views.generic.base import TemplateView
@@ -14,6 +15,11 @@ class FeatureAwareTemplateView(TemplateView):
         context = super(FeatureAwareTemplateView, self).get_context_data(**kwargs)
         return RequestContext(self.request, context)
 
+def custom_home(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+    else:
+        return index(request)
 
 def index(request):
     language = request.session.get("django_language", "en")
