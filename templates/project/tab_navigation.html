@@ -23,8 +23,7 @@
 
 {% block section_title %}
     <div class="project_detail" id="img_need_help">
-        <h2 class="project_title" > {{ project.name }}
-           <img src="/media/images/help_button.png" align="right"/></h2>
+        <h2 class="project_title" > {{ project.name }}</h2>
         <div class="project_detail">
             <span class="project_status">{% trans "Project status:" %}
                     <span class="{{ project.state }}_state">{% trans project.state %}</span>
