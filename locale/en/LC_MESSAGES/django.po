@@ -502,7 +502,7 @@ msgstr ""
 "<h5>Subscription Details</h5><p>Learn more about</p>"
 "<p><ul><li>Where DataWinners is available</li>"
 "<li>Key details of Monthly Subscription</li>"
-"<li>Our Conuslting Service</li></ul></p>"
+"<li>Our Consulting Service</li></ul></p>"
 "<p>See our <a href='/en/pricing/'>Pricing page</a></p>"
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
