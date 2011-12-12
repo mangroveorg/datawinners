@@ -6,6 +6,9 @@ $(document).ready(function() {
         $("#type_message").removeClass("message-box");
         $("#add_subject_type_content").removeClass("none");
         $("#id_entity_type_text").val("");
+        $("#summary_report").addClass("sum_report");
+        $("#individual_report").addClass("ind_report");
+        $("#summary_report_tooltip").addClass("sum_report_tooltip");
     });
 
     function should_append(options, new_type) {

@@ -149,12 +149,24 @@ fieldset {
   margin-top: -245px;
   margin-left: 160px; }
 
+.sum_report {
+  margin-top: -425px;
+  margin-left: 160px; }
+
 .summary_report_tooltip {
   left: 690px !important;
   top: 930px; }
 
+.sum_report_tooltip {
+  left: 690px !important;
+  top: 930px !important; }
+
 .individual_report {
   margin-top: -177px;
+  margin-left: 110px; }
+
+.ind_report {
+  margin-top: -360px;
   margin-left: 110px; }
 
 .individual_report_tooltip {

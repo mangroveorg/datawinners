@@ -132,3 +132,22 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
     margin-top:-7.3em;
     margin-left:115px;
 }
+
+.sum_report{
+    margin-top:-18em !important;
+    margin-left: 160px;
+}
+
+.summary_report_tooltip{
+    left:300px !important;
+    top:930px !important;
+}
+
+.ind_report{
+    margin-top:-15.5em !important;
+    margin-left:110px;
+}
+.individual_report_tooltip{
+    left:430px !important;
+    top:967px !important;
+}
