@@ -54,22 +54,19 @@
             </div>
             <div>
                 <a class="go_to_project"href="{{ project.link }}">{% trans "go to this project" %}»</a>
+                {% if project.inactive %}
+                    <strong>{% trans "This project is inactive"%}</strong><br/>
+                {% endif %}
+                <table>
+                    <tbody id="submissionList"></tbody>
+                </table>
                 {% if not project.inactive %}
-                    {% if project.submissions|length > 0 %}
+                    <span class="project_id none">{{ project.id }}</span>
                         <table>
-                        {% for submission in project.submissions %}
-                            <tr>
-                                <td>{{ submission.created }}</td>
-                                <td>{{ submission.reporter }}</td>
-                                <td>{{ submission.message }}</td>
-                            </tr>
-                        {% endfor %}
+                        <tbody class="submission_list">
+
+                        </tbody>
                         </table>
-                    {% else %}
-                        <strong>{% trans "No submissions present for this project" %}</strong><br/>
-                    {% endif %}
-                {% else %}
-                        <strong>{% trans "This project is inactive"%}</strong><br/>
                 {% endif %}
             </div>
         {% endfor %}

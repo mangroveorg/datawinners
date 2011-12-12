@@ -37,7 +37,7 @@ def _make_message(row):
 
 @login_required(login_url='/login')
 @csrf_exempt
-def get_submission(request, project_id):
+def get_submission_breakup(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     form_model = FormModel.get(dbm, project.qid)
@@ -50,33 +50,22 @@ def get_submission(request, project_id):
     response = json.dumps([submission_success, submission_errors])
     return HttpResponse(response)
 
-def _get_submission_breakup(dbm, form_code):
-    submission_success = 0
-    submission_errors = 0
-    rows = dbm.load_all_rows_in_view('submissionlog', startkey=[form_code], endkey=[form_code, {}],
-                                     group=True, group_level=1, reduce=True)
-    for row in rows:
-        submission_success = row["value"]["success"]
-        submission_errors = row["value"]["count"] - row["value"]["success"]
-    return submission_errors, submission_success
-
-
-def get_submissions(dbm, form_code):
-    rows = dbm.load_all_rows_in_view('submissionlog', reduce=False, descending=True, startkey=[form_code, {}],
-                                     endkey=[form_code], limit=7)
-    if not rows:
-        return [], 0, 0
-
+def get_submission_about_project(request, project_id):
+    dbm = get_database_manager(request.user)
+    project = Project.load(dbm.database, project_id)
+    form_model = FormModel.get(dbm, project.qid)
+    rows = dbm.load_all_rows_in_view('submissionlog', reduce=False, descending=True, startkey=[form_model.form_code, {}],
+                                     endkey=[form_model.form_code], limit=7)
     submission_list = []
     for row in rows:
         reporter = _find_reporter_name(dbm, row)
         message = _make_message(row)
-        submission = dict(message=message, created=row.value["submitted_on"], reporter=reporter,
+        submission = dict(message=message, created=row.value["submitted_on"].strftime("%B %d %y %H:%M"), reporter=reporter,
                           status=row.value["status"])
         submission_list.append(submission)
-    submission_errors, submission_success = _get_submission_breakup(dbm, form_code)
-    return submission_list, submission_success, submission_errors
 
+    submission_response = json.dumps(submission_list)
+    return HttpResponse(submission_response)
 
 def is_project_inactive(row):
     return row['value']['state'] == ProjectState.INACTIVE
@@ -94,12 +83,7 @@ def dashboard(request):
         link = reverse("project-overview", args=(row['value']['_id'],))
         if row['value']['state'] == ProjectState.INACTIVE:
             link = reverse(edit_project,args=(row['value']['_id'],))
-
-        form_model = manager.get(row['value']['qid'], FormModel)
-        submissions, success, errors = get_submissions(manager, form_model.form_code)
-
-        project = dict(name=row['value']['name'], link=link, submissions=submissions, success=success, errors=errors,
-                       inactive=is_project_inactive(row), id=row['value']['_id'])
+        project = dict(name=row['value']['name'], link=link, inactive=is_project_inactive(row), id=row['value']['_id'])
         project_list.append(project)
 
     return render_to_response('dashboard/home.html',
