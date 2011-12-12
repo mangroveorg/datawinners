@@ -73,7 +73,7 @@ class CreateProject(Form):
 
     DEVICE_CHOICES = (('sms', 'SMS'), ('web', 'WEB'))
 
-    name = CharField(required=True, label=_("Name"))
+    name = CharField(max_length=50,required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
     activity_report = ChoiceField(label=_(" What kind of data do you want to collect?"),
                                   choices=QUESTIONNAIRE_CHOICES,
