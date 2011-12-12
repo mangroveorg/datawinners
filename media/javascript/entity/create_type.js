@@ -53,7 +53,7 @@ $(document).ready(function() {
         width: 750
     });
 
-    $('.help_icon').click(function(){
+    $('#help_icon_for_add_subject').click(function(){
         $("#read_more").dialog("open");
         return false;
     });
