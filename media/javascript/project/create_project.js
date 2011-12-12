@@ -12,6 +12,7 @@ DW.init_view_model = function (question_list) {
     viewModel.selectedQuestion.valueHasMutated();
     DW.current_code = viewModel.questions().length + 1; //This variable holds the next question code to be generated.
     viewModel.hasAddedNewQuestions = false;
+    DW.smsPreview();
 };
 
 DW.devices=function(smsElement){
@@ -222,7 +223,6 @@ $(document).ready(function() {
     DW.subject_warning_dialog_module.init();
 
     devices.disableSMSElement();
-    DW.smsPreview();
     $('#id_entity_type').change(function() {
         if(is_edit || viewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");
