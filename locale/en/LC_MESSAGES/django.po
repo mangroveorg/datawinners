@@ -2821,3 +2821,30 @@ msgstr "You can send Broadcast SMS messages from here, however this feature is n
 msgid "reminder_trial_warning_message"
 msgstr "You can add Reminders here, however this feature is not available to Trial account users."
 " Sign up for a monthly subscription to send Reminders to your Data Senders."
+
+msgid "Enter Data Sender's number eg: +61 (123) 456-7890 "
+msgstr ""
+
+msgid "Subscribe Now"
+msgstr ""
+
+msgid "Learn More"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "Last Day"
+msgstr ""
+
+msgid "Reports are due in 2 days. Please submit soon."
+msgstr ""
+
+msgid "number of days after deadline"
+msgstr ""
+
+msgid "Reports are due today. Please submit soon."
+msgstr ""
+
+msgid "Reports are over due. Please submit immediately."
+msgstr ""

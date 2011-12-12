@@ -7,7 +7,7 @@
         <li class="form-row-10px">
             <div id="frequency_values">
                 <ul>
-                    <li>Every</li>
+                    <li>{% trans "Every" %}</li>
                     <li>{{ form.frequency_period }}</li>
                     {% include 'project/profile_deadline_week_block.html' %}
                     {% include 'project/profile_deadline_month_block.html' %}
@@ -22,7 +22,7 @@
 
     <div id="reminders_section">
         <fieldset>
-            <legend>Reminders</legend>
+            <legend>{% trans "Reminders" %}</legend>
             <ul>
                 <li>
                     {{ form.should_send_reminders_before_deadline }}

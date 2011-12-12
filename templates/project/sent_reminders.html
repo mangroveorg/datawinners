@@ -26,14 +26,14 @@
         {{ block.super }}
     {% endblock %}
         <div class="margin_bottom_20">
-            <strong>Deadline: </strong>{{ project.deadline.description }}
+            <strong>{% trans "Deadline" %}: </strong>{% trans project.deadline.description %}
         </div>
         <table class="styled_table">
             <thead>
-            <th>When</th>
-            <th>To</th>
-            <th>Message</th>
-            <th>Date</th>
+            <th>{% trans "When" %}</th>
+            <th>{% trans "To" %}</th>
+            <th>{% trans "Message" %}</th>
+            <th>{% trans "Date" %}</th>
             </thead>
             <tbody>
             {% for reminder in reminders %}

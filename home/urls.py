@@ -8,4 +8,4 @@ urlpatterns = patterns('',
         (r'^home/ask-us/', ask_us),
         (r'fr/about-us/blog/$', blog, {'language': 'fr'}),
         (r'en/about-us/blog/$', blog, {'language': 'en'}),
-    )
+)

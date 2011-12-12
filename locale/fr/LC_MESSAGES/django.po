@@ -133,7 +133,7 @@ msgstr "Projets"
 #: templates/project/reminders_wizard.html:55
 #: templates/project/tab_navigation.html:58
 msgid "Data Senders"
-msgstr "Envoyeurs"
+msgstr "Envoyeurs de données"
 
 #: dashboard/views.py:90 templates/main_navigation.html:19
 #: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
@@ -524,7 +524,7 @@ msgstr "Guide"
 #: templates/step_wizard.html:19 templates/dashboard/home.html:30
 #: templates/project/index.html:28
 msgid "Create a new project"
-msgstr "Ajouter un nouveau projet"
+msgstr "Créer un nouveau projet"
 
 msgid "Create a New Project"
 msgstr "Ajouter un Nouveau Projet"
@@ -775,11 +775,8 @@ msgstr "Cliquez sur le triangle à gauche de 'Comment utiliser DataWinners' pour
 #: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
 msgstr ""
-"DataWinners est un service mobile de collecte de données en ligne conçu et "
-"créé pour les professionnels du développement. Avec DataWinners, vous "
-"collectez et analysez les données dont vous avez besoin en utilisant des "
-"équipements déjà en votre possession - un ordinateur, l'Internet et des "
-"téléphones portables ordinaires."
+"DataWinners est un outil de collecte et de communication de données."
+"<br/>Cliquez sur Créer un nouveau Projet pour commencer."
 
 #: templates/dashboard/home.html:49
 msgid "Your projects"
@@ -918,7 +915,7 @@ msgstr "Ajouter des sujets un par un avec le formulaire en ligne"
 msgid ""
 "Click the blue \"Add a subject\" link and follow the step-by-step "
 "instructions"
-msgstr "Cliquez sur le bouton \"Ajouter un sujet\" et suivez les instructions étape par étape."
+msgstr "Cliquez sur le bouton bleu \"Ajouter un sujet\" et suivez les instructions étape par étape."
 
 #: templates/entity/all_subjects.html:64
 msgid "q_all_subjects"
@@ -1087,7 +1084,7 @@ msgstr "(Optionnel)"
 #: templates/project/datasenders_wizard.html:63
 #: templates/project/datasenders_wizard.html:73
 msgid "Add Data Senders Manually"
-msgstr "Ajoutez des Expéditeurs de Données Manuellement"
+msgstr "Ajouter des Expéditeurs de Données Manuellement"
 
 #: templates/project/datasenders_wizard.html:72
 msgid "Enter your Data Senders individually"
@@ -1095,7 +1092,7 @@ msgstr "Entrez les Envoyeurs un par un"
 
 #: templates/project/datasenders.html:76
 msgid "Import a List of Data Senders"
-msgstr "Importez la liste des Envoyeurs"
+msgstr "Importer une liste d'expéditeurs"
 
 msgid "tooltip_datasenders_import"
 msgstr ""
@@ -1109,12 +1106,12 @@ msgstr ""
 "<br />7) Attendez que le téléchargement du fichier soit terminé"
 
 msgid "tooltip_datasenders_add_manually"
-msgstr "Cliquez sur le bouton bleu 'Ajouter des Envoyeurs Manuellement' et inscrivez chaque sujet individuellement en remplissant le formulaire Web."
+msgstr "Cliquez sur le bouton bleu 'Ajouter des expéditeurs Manuellement' et inscrivez chaque sujet individuellement en remplissant le formulaire Web."
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
-msgstr "TéléchargeZ un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
-"liste de vos Envoyeurs"
+msgstr "Télécharger un fichier excel (.xls) ou un fichier csv (.csv) contenant la "
+"liste de vos expéditeurs"
 
 #: templates/project/finish_and_test.html:41
 msgid ""
@@ -1820,17 +1817,17 @@ msgstr "Modifier les questions en cliquant sur chacune d'entre elles"
 
 #: templates/project/subjects.html:41
 msgid "Preview Subject's questionnaire"
-msgstr "Faites un aperçu du questionnaire \"Sujets\""
+msgstr "Aperçu du questionnaire du Sujet"
 
 msgid "Use this "
-msgstr "Utilisez cette "
+msgstr "Utilisez ce "
 
 msgid "Import Template"
-msgstr "Importer un modèle"
+msgstr "modèle d'importation"
 
 #: templates/project/subjects_wizard.html:57
 msgid "Add Subjects now"
-msgstr "Ajoutez les sujets"
+msgstr "Ajoutez des sujets maintenant"
 
 #: templates/project/subjects_wizard.html:61
 #: templates/project/subjects_wizard.html:71
@@ -1886,7 +1883,7 @@ msgstr "Activer un projet"
 
 #: templates/project/tab_navigation.html:26
 msgid "Test SMS Questionnaire"
-msgstr "Testez le Questionnaire SMS"
+msgstr "Tester le Questionnaire SMS"
 
 #: templates/project/tab_navigation.html:30
 msgid ""
@@ -2344,7 +2341,7 @@ msgid "Terms and Conditions"
 msgstr "Termes et Conditions"
 
 msgid "Activate this Project"
-msgstr "Activez ce projet"
+msgstr "Activer ce projet"
 
 msgid "Delete this Project"
 msgstr "Supprimer ce projet"
@@ -2360,7 +2357,7 @@ msgid "Set reminders"
 msgstr "Définir des Messages de Rappel"
 
 msgid "Register each Data Sender (e.g. field staff) to enable them to send data into your project."
-msgstr "Enregistrer chaque Envoyeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
+msgstr "Enregistrer chaque expéditeur de Données (exemple: personnel de terrain) afin de leur permettre d'envoyer des données dans votre projet."
 
 msgid "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map."
 msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détail, village) pour lesquel vous avez besoin de collecter des données et que vous souhaitez suivre sur une carte."
@@ -2440,7 +2437,7 @@ msgid "Now you can..."
 msgstr "Maintenant vous pouvez..."
 
 msgid "...or just start collecting data."
-msgstr "...ou juste commencer à colleter des données."
+msgstr "...ou juste commencer à collecter des données."
 
 msgid "input data"
 msgstr "donnée en entrée"
@@ -2466,7 +2463,7 @@ msgid "What is DataWinners"
 msgstr "Qu’est-ce que DataWinners"
 
 msgid "Success Stories"
-msgstr "Nos succès"
+msgstr "Nos réussites"
 
 msgid "Pricing"
 msgstr "Tarification"
@@ -2812,3 +2809,30 @@ msgstr "A partir de ce site, vous pouvez envoyer des SMS en Groupe ; cependant c
 msgid "reminder_trial_warning_message"
 msgstr "A partir de ce site, vous pouvez ajouter des messages de Rappel ; cependant cette fonctionnalité n'est pas disponible pour les utilisateurs de compte d'Essai."
 " Souscrivez-vous à un abonnement mensuel pour pouvoir envoyer des messages de Rappel à vos Expéditeurs de Données."
+
+msgid "Enter Data Sender's number eg: +61 (123) 456-7890 "
+msgstr "Entrez le numéro de l'expediteur de données"
+
+msgid "Subscribe Now"
+msgstr "Abonnez-vous maintenant"
+
+msgid "Learn More"
+msgstr "En savoir plus"
+
+msgid "on"
+msgstr "le"
+
+msgid "Last Day"
+msgstr "Dernier jour"
+
+msgid "Reports are due in 2 days. Please submit soon."
+msgstr ""
+
+msgid "number of days after deadline"
+msgstr "nombre de jours après la date limite"
+
+msgid "Reports are due today. Please submit soon."
+msgstr ""
+
+msgid "Reports are over due. Please submit immediately."
+msgstr ""

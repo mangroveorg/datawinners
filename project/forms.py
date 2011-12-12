@@ -114,7 +114,7 @@ class ReminderForm(Form):
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select,
                                    required=False, )
     deadline_month = ChoiceField(
-        choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, 'Last Day')])), widget=forms.Select,
+        choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, ugettext_lazy('Last Day'))])), widget=forms.Select,
         required=False)
     deadline_week = ChoiceField(choices=(get_translated_weekdays()), widget=forms.Select(attrs={'data-bind': 'random'}),
                                 required=False)
@@ -129,7 +129,7 @@ class ReminderForm(Form):
     reminder_text_on_deadline = CharField(widget=forms.Textarea, required=False)
 
     should_send_reminders_after_deadline = BooleanField(label=ugettext_lazy("days after the deadline"), required=False, initial=False)
-    number_of_days_after_deadline = DecimalField(required=False)
+    number_of_days_after_deadline = DecimalField(required=False, label=ugettext_lazy("number of days after deadline"))
     reminder_text_after_deadline = CharField(widget=forms.Textarea, required=False)
 
     whom_to_send_message = BooleanField(label=ugettext_lazy("By un-checking this box, automatic reminders will be sent to all data senders associated with your project"),

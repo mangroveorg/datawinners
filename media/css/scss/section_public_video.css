@@ -1,4 +1,6 @@
-#thumbs div.thumb {
-  float: left;
-  margin: 0 5px;
-  display: inline; }
+#thumbs {
+  width: 440px; }
+  #thumbs div.thumb {
+    float: left;
+    margin: 0 5px;
+    display: inline; }
