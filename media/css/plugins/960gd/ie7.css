@@ -133,21 +133,32 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
     margin-left:115px;
 }
 
-.sum_report{
-    margin-top:-18em !important;
-    margin-left: 160px;
+.summary_report{
+    margin-top:-85px !important;
+    margin-left:-70px;
 }
 
 .summary_report_tooltip{
-    left:300px !important;
+    left:310px !important;
     top:930px !important;
 }
 
-.ind_report{
-    margin-top:-15.5em !important;
-    margin-left:110px;
+.individual_report{
+    margin-top:-50px !important;
+    margin-left:60px !important;
 }
+
 .individual_report_tooltip{
-    left:430px !important;
+    left:440px !important;
     top:967px !important;
+}
+
+.subject_tooltip_img{
+    margin-left:-75px;
+    margin-top: -10px;
+}
+
+.subject_tooltip{
+    margin-left: -0px;
+    margin-top: -50px;
 }
