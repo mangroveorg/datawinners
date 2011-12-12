@@ -233,13 +233,13 @@ select {
 
 /* File up loader */
 #file-uploader {
-  width: 420px;
+  width: 520px;
   margin: 10px 20px 20px 0; }
   #file-uploader h6 {
     float: left;
     margin: 10px 20px 0 0; }
-  #file-uploader .file_uploader {
-    float: left; }
+  #file-uploader #file_uploader {
+    width: 160px; }
   #file-uploader .qq-upload-button {
     border: 1px solid #D4972D;
     -moz-border-radius: 3px;
@@ -253,7 +253,9 @@ select {
     color: #6F451D;
     font-family: "Arial";
     font-weight: bold;
-    padding: 6px 12px 6px 11px; }
+    padding: 6px 0;
+    width: 160px;
+    text-align: center; }
 
 /* UI Dialog */
 .ui-dialog-title {

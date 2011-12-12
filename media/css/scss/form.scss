@@ -278,14 +278,14 @@ select{
 
 /* File up loader */
 #file-uploader{
-    width:420px;
+    width:520px;
     margin:10px 20px 20px 0;
     h6{
         float:left;
         margin:10px 20px 0 0;
     }
-    .file_uploader{
-        float:left;
+    #file_uploader{
+        width:160px;
     }
     .qq-upload-button{
         border: 1px solid #D4972D;
@@ -297,7 +297,9 @@ select{
         color: #6F451D;
         font-family: "Arial";
         font-weight: bold;
-        padding: 6px 12px 6px 11px;
+        padding: 6px 0;
+        width:160px;
+        text-align:center;
     }
 }
 
