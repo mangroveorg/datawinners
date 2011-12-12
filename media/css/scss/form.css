@@ -233,13 +233,14 @@ select {
 
 /* File up loader */
 #file-uploader {
-  width: 520px;
+  width: 480px;
   margin: 10px 20px 20px 0; }
   #file-uploader h6 {
     float: left;
     margin: 10px 20px 0 0; }
   #file-uploader #file_uploader {
-    width: 160px; }
+    width: 160px;
+    float: left; }
   #file-uploader .qq-upload-button {
     border: 1px solid #D4972D;
     -moz-border-radius: 3px;

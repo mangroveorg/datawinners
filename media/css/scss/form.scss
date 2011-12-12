@@ -278,7 +278,7 @@ select{
 
 /* File up loader */
 #file-uploader{
-    width:520px;
+    width:480px;
     margin:10px 20px 20px 0;
     h6{
         float:left;
@@ -286,6 +286,7 @@ select{
     }
     #file_uploader{
         width:160px;
+        float:left;
     }
     .qq-upload-button{
         border: 1px solid #D4972D;
