@@ -54,14 +54,14 @@ DW.DeadlineDetails.prototype = {
         var frequency = $(this.frequencyPeriodControl).val();
         var deadline_type_value = $(this.deadlineTypeControl).val();
         if (frequency == 'week') {
-            var selected_weekday_text = $(this.deadlineWeekControl).val();
+            var selected_weekday_text = $(this.deadlineWeekControl+" :selected").text();
             if (deadline_type_value == 'Following') {
                 deadline_example = interpolate(gettext("%(day)s of the week following the reporting week"), { day : selected_weekday_text}, true);
             } else {
                 deadline_example = interpolate(gettext("%(day)s of the reporting week"), { day : selected_weekday_text }, true);
             }
         } else if (frequency == 'month') {
-            var selected_month_day_text = $(this.deadlineMonthControl).val();
+            var selected_month_day_text = $(this.deadlineMonthControl+" :selected").text();
             if (deadline_type_value == 'Following') {
                 deadline_example = interpolate(gettext("%(day)s of October for September report"), { day : selected_month_day_text }, true);
             } else {
