@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization
+from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile
 from mangrove.utils.types import is_empty, is_not_empty
 
 admin.site.disable_action('delete_selected')
@@ -59,7 +59,7 @@ class MessageTrackerAdmin(DatawinnerAdmin):
 
 
 class OrganizationAdmin(DatawinnerAdmin):
-    list_display = ('organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'active_date')
+    list_display = ('organization_name', 'complete_address', 'office_phone', 'website', 'paid', 'active_date','admin_name','admin_email','admin_mobile_number','admin_office_phone')
 
     def organization_name(self, obj):
         return obj.name
@@ -67,9 +67,45 @@ class OrganizationAdmin(DatawinnerAdmin):
     def paid(self, obj):
         return "No" if obj.in_trial_mode else "Yes"
 
+    def _get_ngo_admin(self, organization):
+        user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
+        admin_users = [x.user for x in user_profiles if x.user.groups.filter(name="NGO Admins")]
+        #right now there is only one ngo admin
+        return admin_users[0] if is_not_empty(admin_users) else NullAdmin()
+
+    def admin_email(self, obj):
+        return self._get_ngo_admin(obj).email
+
+    def admin_office_phone(self, obj):
+        admin_user = self._get_ngo_admin(obj)
+        return admin_user.get_profile().office_phone
+
+    def admin_mobile_number(self, obj):
+        admin_user = self._get_ngo_admin(obj)
+        return admin_user.get_profile().mobile_phone
+
+    def admin_name(self, obj):
+        admin_user = self._get_ngo_admin(obj)
+        return self._get_full_name(admin_user)
+
     def complete_address(self, obj):
         complete_address = [obj.address, obj.addressline2, obj.city, obj.zipcode, obj.state, obj.country]
         return ", ".join([element for element in complete_address if is_not_empty(element)])
+
+    def _get_full_name(self,user):
+        return user.first_name + ' ' + user.last_name
+
+
+class NullAdmin:
+    def __init__(self):
+        self.email=''
+        self.mobile_phone=''
+        self.office_phone=''
+        self.first_name=''
+        self.last_name=''
+
+    def get_profile(self):
+        return self
 
 
 admin.site.unregister(Group)
