@@ -10,16 +10,13 @@ DW.DeadlineDetails = function(){
     this.month_block_class = '.month_block';
     this.week_block_class = '.week_block';
     this.reminders_block_id = '#reminders_section';
+    this.deadline_exampple = '#deadline_example'
 };
 
 DW.DeadlineDetails.prototype = {
-    init: function(){
-        //var is_deadline_enabled = ($(this.deadlineEnabledCheckedControl).val() === "True");
-        //if(is_deadline_enabled){
-            this.show();
-        //}else{
-          //  this.hide();
-       // }
+    init: function() {
+        this.show();
+        this.update_example();
         return true; //It's a Best Practice to return either true or false when there are only side effects happening inside a method.
     },
     hide: function(){
@@ -51,6 +48,28 @@ DW.DeadlineDetails.prototype = {
     toggle_when_week_is_selected: function(){
         $(this.week_block_class).show();
         $(this.month_block_class).hide();
+    },
+    update_example: function(){
+        var deadline_example = "";
+        var frequency = $(this.frequencyPeriodControl).val();
+        var deadline_type_value = $(this.deadlineTypeControl).val();
+        if (frequency == 'week') {
+            var selected_weekday_text = $(this.deadlineWeekControl).val();
+            if (deadline_type_value == 'Following') {
+                deadline_example = interpolate(gettext("%(day)s of the week following the reporting week"), { day : selected_weekday_text}, true);
+            } else {
+                deadline_example = interpolate(gettext("%(day)s of the reporting week"), { day : selected_weekday_text }, true);
+            }
+        } else if (frequency == 'month') {
+            var selected_month_day_text = $(this.deadlineMonthControl).val();
+            if (deadline_type_value == 'Following') {
+                deadline_example = interpolate(gettext("%(day)s of October for September report"), { day : selected_month_day_text }, true);
+            } else {
+                deadline_example = interpolate(gettext("%(day)s of October for October report"), { day : selected_month_day_text }, true);
+            }
+        }
+        $(this.deadline_exampple).text(deadline_example);
+
     }
 };
 
@@ -61,8 +80,8 @@ DW.ReminderDetails = function(){
 
 DW.ReminderDetails.prototype = {
     init: function(){
-        $(this.number_of_days_before_deadline).attr('maxlength', '3')
-        $(this.number_of_days_after_deadline).attr('maxlength', '3')
+        $(this.number_of_days_before_deadline).attr('maxlength', '3');
+        $(this.number_of_days_after_deadline).attr('maxlength', '3');
         return true;
     }
 };
@@ -72,12 +91,15 @@ var reminderDetails = new DW.ReminderDetails;
 $(document).ready(function() {
     deadlineDetails.init();
     reminderDetails.init();
-    /*
-    $(deadlineDetails.deadlineEnabledControl).change(function(){
-        deadlineDetails.init();
-    });
-    */
     $(deadlineDetails.frequencyPeriodControl).change(function(){
         deadlineDetails.show();
+        deadlineDetails.update_example();
     });
+    $(deadlineDetails.deadlineWeekControl).change(function(){
+        deadlineDetails.update_example();
+    });
+    $(this.deadlineTypeControl).change(function(){
+        deadlineDetails.update_example();
+    });
+    
 });
