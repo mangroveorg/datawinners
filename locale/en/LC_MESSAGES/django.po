@@ -2879,3 +2879,6 @@ msgstr ""
 
 msgid "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
 msgstr ""
+
+msgid "Reminder settings saved successfully."
+msgstr ""

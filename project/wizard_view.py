@@ -18,6 +18,7 @@ from django.contrib import messages
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import  FormModel
 from mangrove.utils.types import is_string
+from django.utils.translation import ugettext as _
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -178,7 +179,7 @@ def reminder_settings(request, project_id):
             organization = Organization.objects.get(org_id = org_id)
             project = _add_reminder_info_to_project(form.cleaned_data, project, organization)
             project.save(dbm)
-            messages.success(request, 'Reminder settings saved successfully')
+            messages.success(request, _("Reminder settings saved successfully."))
             return HttpResponseRedirect('')
 
 def _reminder_info_about_project(project):

@@ -2867,3 +2867,5 @@ msgstr "<div class='radio_title'>Carte de crédit</div><div class='subtitle_for_
 msgid "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
 msgstr "<div class='radio_title'>Paiement par transfert ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
 
+msgid "Reminder settings saved successfully."
+msgstr "Paramètres des rappels enregistrés avec succès."
