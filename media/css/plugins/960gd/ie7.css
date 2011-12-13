@@ -175,3 +175,8 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 #questionnaire_preview li{
     width:500px;
 }
+
+.add_subject_form ul li label.error {
+    margin-right: 118px;
+    width: 100px
+}
