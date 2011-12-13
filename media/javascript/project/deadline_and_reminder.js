@@ -10,7 +10,7 @@ DW.DeadlineDetails = function(){
     this.month_block_class = '.month_block';
     this.week_block_class = '.week_block';
     this.reminders_block_id = '#reminders_section';
-    this.deadline_exampple = '#deadline_example'
+    this.deadline_example = '#deadline_example'
 };
 
 DW.DeadlineDetails.prototype = {
@@ -56,19 +56,19 @@ DW.DeadlineDetails.prototype = {
         if (frequency == 'week') {
             var selected_weekday_text = $(this.deadlineWeekControl+" :selected").text();
             if (deadline_type_value == 'Following') {
-                deadline_example = interpolate(gettext("%(day)s of the following week"), { day : selected_weekday_text}, true);
+                deadline_example = interpolate(gettext("Example: %(day)s of the week following the reporting week"), { day : selected_weekday_text}, true);
             } else {
-                deadline_example = interpolate(gettext("%(day)s of the same week"), { day : selected_weekday_text }, true);
+                deadline_example = interpolate(gettext("Example: %(day)s of the reporting week"), { day : selected_weekday_text }, true);
             }
         } else if (frequency == 'month') {
             var selected_month_day_text = $(this.deadlineMonthControl+" :selected").text();
             if (deadline_type_value == 'Following') {
-                deadline_example = interpolate(gettext("%(day)s of the following month"), { day : selected_month_day_text }, true);
+                deadline_example = interpolate(gettext("Example: %(day)s of October for September report"), { day : selected_month_day_text }, true);
             } else {
-                deadline_example = interpolate(gettext("%(day)s of the same month"), { day : selected_month_day_text }, true);
+                deadline_example = interpolate(gettext("Example: %(day)s of October for October report"), { day : selected_month_day_text }, true);
             }
         }
-        $(this.deadline_exampple).text(deadline_example);
+        $(this.deadline_example).html(deadline_example);
 
     }
 };
