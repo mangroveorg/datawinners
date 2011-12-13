@@ -69,7 +69,8 @@ def _create_entity_id_question(dbm, entity_id_question_code):
     entity_id_question = TextField(name=name, code=entity_id_question_code,
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
-                                   constraints=[TextLengthConstraint(min=1, max=12)])
+                                   constraints=[TextLengthConstraint(min=1, max=12)],
+                                   instruction=(ugettext('Answer must be a word or phrase %d characters maximum') % 12))
     return entity_id_question
 
 
@@ -102,11 +103,25 @@ def create_questionnaire(post, dbm):
         return _create_activity_report_questionnaire(dbm,post,entity_type)
     return _create_subject_questionnaire(dbm, post, entity_type)
 
+
+def _create_entity_id_question_for_activity_report(dbm):
+    entity_data_dict_type = get_or_create_data_dict(dbm=dbm, name="eid", slug="entity_id", primitive_type="string",
+                                                    description="Entity ID")
+    name = ugettext("I am submitting this data on behalf of")
+    entity_id_question = TextField(name=name, code='eid',
+                                   label="Entity being reported on",
+                                   entity_question_flag=True, ddtype=entity_data_dict_type,
+                                   constraints=[TextLengthConstraint(min=1, max=12)],
+                                   instruction= ugettext("Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"))
+    return entity_id_question
+
+
+
 def update_questionnaire_with_questions(form_model, question_set, dbm):
     form_model.delete_all_fields()
 
     if form_model.entity_defaults_to_reporter():
-        form_model.add_field(_create_entity_id_question(dbm, 'eid'))
+        form_model.add_field(_create_entity_id_question_for_activity_report(dbm))
 
     for question in question_set:
         form_model.add_field(create_question(question, dbm))

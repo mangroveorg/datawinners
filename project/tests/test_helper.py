@@ -1,24 +1,19 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datetime import datetime
 
 import unittest
-from unittest.case import skip
 from mock import Mock, patch
-from datawinners.accountmanagement.models import Organization
 from datawinners.project import helper
-from datawinners.project.models import Project, Reminder
+from datawinners.project.models import Project
 from datawinners.project.views import _get_imports_subjects_post_url
 from mangrove.datastore.database import  DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, Field
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
 from mangrove.form_model.form_model import FormModel
 from mangrove.datastore import data
 from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-from mangrove.transport.player.player import TransportInfo
-from mangrove.transport.submissions import Submission
 
 
 class TestHelper(unittest.TestCase):
@@ -437,6 +432,23 @@ class TestHelper(unittest.TestCase):
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
+
+    def test_should_update_questionnaire_with_question_for_activity_report(self):
+        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": False,
+                 "min_length": 1, "max_length": ""},
+                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                 "range_min": 0, "range_max": 100},
+                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                 "is_entity_question": False}
+        ]
+        form_model = FormModel(self.dbm, "act_rep", "act_rep", "test", [], ["reporter"], "test")
+        questionnaire = helper.update_questionnaire_with_questions(form_model, post, self.dbm)
+        self.assertEqual(4, len(questionnaire.fields))
+        entity_id_question = questionnaire.entity_question
+        self.assertEqual('eid', entity_id_question.code)
+        self.assertEqual('I am submitting this data on behalf of',entity_id_question.name)
+        self.assertEqual("Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10", entity_id_question.instruction)
+
 
 class TestPreviewCreator(unittest.TestCase):
     def test_should_create_basic_fields_in_preview(self):

@@ -2882,3 +2882,12 @@ msgstr ""
 
 msgid "Reminder settings saved successfully."
 msgstr ""
+
+msgid "Answer must be a word or phrase %d characters maximum"
+msgstr ""
+
+msgid "Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"
+msgstr ""
+
+msgid "I am submitting this data on behalf of"
+msgstr ""
