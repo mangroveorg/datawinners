@@ -1,11 +1,10 @@
 DW.viewModel = {};
 
 $(document).ready(function() {
-    $('#help_icon_for_add_subject').addClass('subject_tooltip_img_main')
+     $('#help_icon_for_add_subject').addClass('subject_tooltip_img_main');
      $('#autogen').unbind('change').change(function(event) {
         if ($('#autogen').attr('checked') != true) {
             $('#short_name').attr('disabled', '');
-
         }
         else {
             $('#short_name').removeClass('error');
@@ -19,8 +18,9 @@ $(document).ready(function() {
         if ($('#question_form').valid()) {
             $(this).after("<span class='ajax_loader_small'></span>");
             DW.viewModel.message.l($('#id_location').val());
-            if (DW.viewModel.message.s())
+            if (DW.viewModel.message.s()){
                 DW.viewModel.message.s(DW.viewModel.message.s().toLowerCase());
+            }
             $.post('/submit', {'format': 'json', 'data': JSON.stringify(ko.toJS(DW.viewModel), null, 1)},
                     function(response) {
                         var d = $.parseJSON(response);
