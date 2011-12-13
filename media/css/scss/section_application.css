@@ -75,3 +75,6 @@ table.error_table td {
 
 .bold {
   font-weight: bold; }
+
+#whom_to_send_help_text {
+  margin-left: 26px; }
