@@ -25,8 +25,8 @@
                 <p class="content italic">{{ example_sms }}</p>
             </li>
         </ul>
-        <ul class="questionnaire_preview" id="que_code">
-            <ol>
+        <div class="clear"></div>
+        <ol class="olpreview">
             {% for question in questions %}
                 <li>
                     <h6>{% trans question.description %}</h6>
@@ -54,8 +54,7 @@
                     </div>
                 </li>
             {% endfor %}
-            </ol>
-        </ul>
+        </ol>
     </div>
     <script>
         $(document).ready(function() {

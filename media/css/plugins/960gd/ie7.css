@@ -40,10 +40,6 @@
     width: 500px !important;
 }
 
-#que_code li{
-     clear: both;
-    }
-
 #question_form .que_list li{
     margin-left: 13px;
 }

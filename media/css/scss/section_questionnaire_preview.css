@@ -46,3 +46,18 @@
 p.instructions {
   font-style: italic;
   font-size: 12px; }
+
+.olpreview {
+  padding-left: 20px; }
+  .olpreview li {
+    float: none !important;
+    vertical-align: top; }
+    .olpreview li h6 {
+      padding: 0;
+      margin: 0; }
+    .olpreview li .answer {
+      float: none;
+      clear: left !important; }
+      .olpreview li .answer ol {
+        list-style-type: none !important;
+        margin-left: 10px; }

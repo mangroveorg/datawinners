@@ -68,3 +68,23 @@
     font-style:italic;
     font-size:12px;
  }
+
+ .olpreview {
+    padding-left:20px;
+    li{
+        float:none !important;
+        vertical-align:top;
+        h6{
+            padding:0;
+            margin:0;
+        }
+        .answer{
+            float:none;
+            clear:left !important;
+            ol{
+                list-style-type:none !important;
+                margin-left:10px;
+            }
+        }
+    }
+ }
