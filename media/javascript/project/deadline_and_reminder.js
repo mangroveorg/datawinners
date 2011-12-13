@@ -98,8 +98,10 @@ $(document).ready(function() {
     $(deadlineDetails.deadlineWeekControl).change(function(){
         deadlineDetails.update_example();
     });
-    $(this.deadlineTypeControl).change(function(){
+    $(deadlineDetails.deadlineMonthControl).change(function(){
         deadlineDetails.update_example();
     });
-    
+    $(deadlineDetails.deadlineTypeControl).change(function(){
+        deadlineDetails.update_example();
+    });
 });
