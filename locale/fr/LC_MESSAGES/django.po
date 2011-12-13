@@ -28,7 +28,7 @@ msgstr "Autre"
 
 #: accountmanagement/forms.py:20 accountmanagement/forms.py:90
 msgid "Organization Sector"
-msgstr "Secteur de l'organisation"
+msgstr "Secteur d’activités"
 
 #: accountmanagement/forms.py:21 accountmanagement/forms.py:110
 msgid "Address"
@@ -52,7 +52,7 @@ msgstr "Code postal"
 
 #: accountmanagement/forms.py:27 accountmanagement/forms.py:116
 msgid "Office Phone Number"
-msgstr "Numéro du bureau"
+msgstr "Numéro de téléphone bureau"
 
 #: accountmanagement/forms.py:28 accountmanagement/forms.py:51
 #: accountmanagement/forms.py:53 accountmanagement/forms.py:84
@@ -70,7 +70,7 @@ msgstr "Prénom"
 
 #: accountmanagement/forms.py:47
 msgid "Last name"
-msgstr "Nom de Famille"
+msgstr "Nom"
 
 #: accountmanagement/forms.py:49 accountmanagement/forms.py:75
 msgid "Enter a valid email address. Example:name@organization.com"
@@ -78,11 +78,11 @@ msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
 
 #: accountmanagement/forms.py:50 accountmanagement/forms.py:83
 msgid "Office Phone"
-msgstr "Numéro du bureau"
+msgstr "Numéro de téléphone bureau"
 
 #: accountmanagement/forms.py:52 accountmanagement/forms.py:85
 msgid "Mobile Phone"
-msgstr "Numéro de mobile"
+msgstr "Numéro de téléphone mobile"
 
 #: accountmanagement/forms.py:60
 msgid ""
@@ -493,7 +493,7 @@ msgstr "Javascript est désactivé dans votre navigateur, Veuillez l'activer."
 msgid "about_DW"
 msgstr ""
 "<h5>À propos DataWinners</h5><p>DataWinners est un service de collecte de données "
-"par téléphonie mobile; Conçu et construit pour les professionnels du développement. "
+"par téléphonie mobile; conçu et développé pour les professionnels du développement. "
 "</p><p>Avec DataWinners, vous recueillez et analysez les données dont vous avez besoin "
 "en utilisant les équipements déja en votre possession - un ordinateur, l'internet et "
 "les téléphones mobiles de base.</p>"
@@ -644,7 +644,7 @@ msgstr "Tous les utilisateurs"
 
 #: templates/accountmanagement/account/add_user.html:25
 msgid "Point of Contact"
-msgstr "Personne à contacter"
+msgstr "Contact principal"
 
 #: templates/accountmanagement/account/add_user.html:25
 msgid "Account Administrator"
@@ -2120,13 +2120,13 @@ msgid "Already registered?"
 msgstr "Avez-vous un compte ?"
 
 msgid "Sign in here"
-msgstr "Identifiez vous ici"
+msgstr "Identifiez-vous ici"
 
 msgid "Sign Up To Start Using DataWinners Now"
 msgstr "Inscrivez vous maintenant pour commencer à utiliser DataWinners"
 
 msgid "We will contact you via email to arrange the payment.<br /> Which payment option do you prefer?"
-msgstr "Nous prendrons contact avec vous par e-mail pour organiser le paiement.<br /> Quelle option de paiement préférez-vous?"
+msgstr "Nous vous contacterons par e-mail pour organiser le paiement.<br/> Quelle option de paiement préférez-vous?"
 
 #: templates/header_wizard.html:28 templates/registration/activate.html:11
 #: templates/registration/activation_complete.html:9
@@ -2671,7 +2671,7 @@ msgstr "Votre message a été envoyé avec succès."
 msgid "Please Select..."
 msgstr "Veuillez Choisir ..."
 msgid "Commercial Business"
-msgstr "Opérations Commerciales"
+msgstr "Commerce"
 
 msgid "Education"
 msgstr "Éducation"
@@ -2803,7 +2803,7 @@ msgid "Sorry, the telephone number %s has already been registered"
 msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée"
 
 msgid "Job Title"
-msgstr "Nom de l’emploi"
+msgstr "Titre"
 
 msgid "broadcast_trial_warning_message"
 msgstr "A partir de ce site, vous pouvez envoyer des SMS en Groupe ; cependant cette fonctionnalité n'est pas disponible pour les utilisateurs de compte d'Essai."
@@ -2842,3 +2842,28 @@ msgstr ""
 
 msgid "Enter an id, or allow us to generate it"
 msgstr "Entrez un id ou permettez-nous de le générer"
+
+msgid "Payment Details"
+msgstr "Détails paiement"
+
+msgid "Invoice Period"
+msgstr "Période de Facturation"
+
+msgid "<div class='radio_title'>Monthly: $ 850 per month</div><div class='subtitle_for_radio_button pay_monthly'></div>"
+msgstr "<div class='radio_title'>Mensuelle: $ 850 par mois</div><div class='subtitle_for_radio_button pay_monthly'></div>"
+
+msgid "<div class='radio_title'>6 months:$ 765 per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> "
+msgstr "<div class='radio_title'>6 mois: $ 765 par mois</div><div class='subtitle_for_radio_button pay_half_yearly'></div>"
+
+msgid "Preferred Payment"
+msgstr "Mode de paiement préféré"
+
+msgid "<div class='radio_title'>Wire transfer</div>"
+msgstr "<div class='radio_title'>Virement</div>"
+
+msgid "<div class='radio_title'>Credit card</div><div class='subtitle_for_radio_button credit_card'></div>"
+msgstr "<div class='radio_title'>Carte de crédit</div><div class='subtitle_for_radio_button credit_card'></div>"
+
+msgid "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
+msgstr "<div class='radio_title'>Paiement par transfert ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
+
