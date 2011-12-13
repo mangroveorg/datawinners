@@ -56,3 +56,8 @@ fieldset {
 
 #frequency_values ul li {
   display: inline; }
+
+.whom_to_send_help_text {
+  margin-left: 26px;
+  font-style: italic;
+  color: #666666; }
