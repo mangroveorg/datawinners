@@ -75,7 +75,7 @@ class CreateProject(Form):
 
     name = CharField(max_length=50,required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
-    activity_report = ChoiceField(label=_(" What kind of data do you want to collect?"),
+    activity_report = ChoiceField(label=_("What kind of data do you want to collect?"),
                                   choices=QUESTIONNAIRE_CHOICES,
                                   widget=forms.RadioSelect, required=False, initial='yes')
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),

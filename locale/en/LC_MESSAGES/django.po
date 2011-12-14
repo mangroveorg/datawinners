@@ -2744,23 +2744,21 @@ msgstr "If you need the following question, “What subject are you reporting on
 
 msgid "tooltip_summary_report"
 msgstr "Choose the Summary Report option if you want your Data Senders(in other words,people in the field) to answer a basic list of questions."
-"<br/>Examples: A community health worker sends in a monthly activity report"
+"<br/>Examples:<br/>1) A community health worker sends in a monthly activity report"
 "<br/>(example question:  How many babies did you weigh last month?)"
-"<br/>A young woman answers polling questions"
+"<br/>2) A young woman answers polling questions"
 "<br/>(Example question:  Do you have access to clean water?)."
 "<br/>DataWinners will display your data according to each Data Sender:"
-"<br/>SCREEN SHOT OF ANALYSIS PAGE"
-
+    
 msgid "tooltip_individual_report"
 msgstr "Individual Reports are about specific subjects."
-"<br/>Examples: 1) A doctor examines a baby. In this case, the subject is the baby."
+"<br/>Examples: <br/>1) A doctor examines a baby. In this case, the subject is the baby."
 "<br/>2) A supervisor measures the quality of care at a clinic. The subject is the clinic"
 "<br/>3) An engineer measures the flow rate of a water pump.  The subject is the water pump."
 "<br/>In each case, the Data Senders (in other words, people in the field) must first identify the specific “subject” (baby/clinic/water pump)."
 "<br/>For example, the Data Sender would first answer the question: “What baby are you reporting on?”"
 "<br/>All subsequent questions would be about the baby.  (Example:  “How much did the baby weigh?”)"
 "<br/>DataWinners will display your data according to each Subject (Baby):"
-"SCREEN SHOT OF ANALYSIS PAGE"
 
 msgid "tooltip_add_subject"
 msgstr "To collect individual reports about specific subjects, you have two choices."
@@ -2920,4 +2918,13 @@ msgid "Enter a Data sender name"
 msgstr ""
 
 msgid "Enter a type for the Data sender"
+msgstr ""
+
+msgid "What kind of data do you want to collect?"
+msgstr ""
+
+msgid "I want Summary Reports."
+msgstr ""
+
+msgid "I want Individual Reports about a specific subject."
 msgstr ""
