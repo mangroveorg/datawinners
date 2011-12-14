@@ -21,19 +21,6 @@ from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
 
-def registration_complete(request, user=None):
-    return render_to_response('registration/registration_complete.html')
-
-
-def custom_login(request, template_name, authentication_form):
-    if request.user.is_authenticated():
-        return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
-    else:
-        try:
-            return login(request, template_name=template_name, authentication_form=authentication_form)
-        except AccountExpiredException:
-            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
-
 def is_admin(f):
     def wrapper(*args, **kw):
         user = args[0].user
@@ -113,6 +100,18 @@ def is_trial(f):
 
     return wrapper
 
+def registration_complete(request, user=None):
+    return render_to_response('registration/registration_complete.html')
+
+
+def custom_login(request, template_name, authentication_form):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
+    else:
+        try:
+            return login(request, template_name=template_name, authentication_form=authentication_form)
+        except AccountExpiredException:
+            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
 
 @login_required(login_url='/login')
 @is_admin
@@ -210,15 +209,6 @@ def edit_user(request):
 def trial_expired(request):
     return render_to_response("registration/trial_account_expired_message.html")
 
-
-def _send_upgrade_email(user, language):
-    subject = render_to_string('accountmanagement/upgrade_email_subject_'+language+'.txt')
-    subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
-    body = render_to_string('accountmanagement/upgrade_email_'+language+'.html', {'name':user.first_name})
-    email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
-    email.content_subtype = "html"
-    email.send()
-
 @is_admin
 @is_trial
 def upgrade(request):
@@ -250,3 +240,11 @@ def upgrade(request):
             
         return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
                                                                    'form':form}, context_instance=RequestContext(request))
+
+def _send_upgrade_email(user, language):
+    subject = render_to_string('accountmanagement/upgrade_email_subject_'+language+'.txt')
+    subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
+    body = render_to_string('accountmanagement/upgrade_email_'+language+'.html', {'name':user.first_name})
+    email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
+    email.content_subtype = "html"
+    email.send()
