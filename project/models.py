@@ -72,9 +72,9 @@ class Reminder(models.Model):
         else:
             return deadline.current_deadline(on_date)
 
-    def log(self, dbm, project_id, date, sent_status='sent', number_of_sms=0):
+    def log(self, dbm, project_id, date, to_number, sent_status='sent', number_of_sms=0):
         log = ReminderLog(dbm=dbm, reminder=self, project_id=project_id, date=date, sent_status=sent_status,
-                          number_of_sms=number_of_sms)
+                          number_of_sms=number_of_sms, to_number=to_number)
         log.save()
         return log
 
@@ -105,7 +105,7 @@ class ReminderLogDocument(DocumentBase):
 class ReminderLog(DataObject):
     __document_class__ = ReminderLogDocument
 
-    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_id=None):
+    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_id=None, to_number=""):
         DataObject.__init__(self, dbm)
         if reminder is not None:
             if reminder.reminder_mode == ReminderMode.ON_DEADLINE:
@@ -114,7 +114,7 @@ class ReminderLog(DataObject):
                 reminder_mode = str(reminder.day) + ' days ' + self._format_string_before_saving(reminder.reminder_mode)
             doc = ReminderLogDocument(reminder_id=reminder.id, project_id=project_id, sent_status=sent_status,
                                       number_of_sms=number_of_sms, date=date, message=reminder.message,
-                                      remind_to=self._format_string_before_saving(reminder.remind_to),
+                                      remind_to=self._format_string_before_saving(to_number),
                                       reminder_mode=reminder_mode)
             DataObject._set_document(self, doc)
 

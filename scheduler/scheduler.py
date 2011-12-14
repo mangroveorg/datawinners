@@ -65,7 +65,6 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
         smses_sent = sms_client.send_reminder(from_number,on_date,project,reminder,dbm)
         if smses_sent > 0:
             reminders_sent.append(reminder)
-            reminder.log(dbm, project.id, on_date, number_of_sms=smses_sent)
     logger.info("Reminders scheduled: %d " % len(reminders_to_be_sent) )
     logger.info("Reminders sent: %d " % len(reminders_sent) )
     return reminders_sent

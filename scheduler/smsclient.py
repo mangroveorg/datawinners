@@ -23,5 +23,6 @@ class SMSClient(object):
             sms_sent = self.send_sms(from_number, data_sender["mobile_number"], reminder.message)
             if sms_sent:
                 count += 1
+                reminder.log(dbm, project.id, on_date, number_of_sms=1, to_number=data_sender["mobile_number"])
             logger.info("Reminder sent for %s, Message: %s" % (data_sender["mobile_number"],reminder.message,) )
         return count
