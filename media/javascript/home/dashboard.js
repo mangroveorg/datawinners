@@ -1,27 +1,26 @@
-DW.dashboard_project=function(project_id){
-    this.project_id=project_id;
-
-
+DW.dashboard_project=function(){
 };
 
 DW.dashboard_project.prototype={
-    getSubmissionDetails:function(){
-        $.get('/submission/details/'+ this.project_id +'/', this._get_submission_data);
+    getSubmissionDetails:function(submission_response){
+        var submissions = $.parseJSON(submission_response);
+        if (submissions.length<=0){
+            return gettext("No submissions present for this project");
+        }
+        return $.tmpl("submissionTemplate", submissions);
     },
     create_submission_template:function(submission_template_id){
         var markup = "<tr><td>${created}</td><td>${reporter}</td><td>${message}</td></tr>";
         $.template( submission_template_id, markup );
 
     },
+    showSubmissionBreakup:function(project_id){
+        $.get('/submission/breakup/'+project_id+'/', function(data){
+            var success_breakup = $.parseJSON(data);
+            $('#submission_success_breakup_'+project_id).html(success_breakup[0]+gettext(" successful | ")+success_breakup[1]+gettext(" errors"));
+        });
 
-    _parse_submission_data:function(data){
-            var submissions = $.parseJSON(data);
-            if (submissions.length<=0){
-                return gettext("No submissions present for this project");
-            }
-            return $.tmpl("submissionTemplate", submissions);
     }
-
 
 };
 
@@ -33,7 +32,6 @@ $(document).ready(function() {
 
     var project=new DW.dashboard_project();
     project.create_submission_template('submissionTemplate')
-    var no_submission_message = "No submissions present for this project";
 
     $( "#projects" ).accordion({
         header: '.project_header',
@@ -46,24 +44,13 @@ $(document).ready(function() {
                 return false;
             }
             $.get('/submission/details/'+ id +'/', function(data) {
-                var submissions = $.parseJSON(data);
-                var submission_content = gettext("No submissions present for this project");
-                if (submissions.length > 0) {
-                    submission_content = $.tmpl("submissionTemplate", submissions);
-                }
-                $(ui.newContent).find('.submission_list').html(submission_content);
+                $(ui.newContent).find('.submission_list').html(project.getSubmissionDetails(data));
             });
         }
     });
 
-    var project_ids = [];
     $('.project_id').each(function(){
-
-        var id = $(this).html();
-        $.get('/submission/breakup/'+id+'/', function(data){
-            var success_breakup = $.parseJSON(data);
-            $('#submission_success_breakup_'+id).html(success_breakup[0]+gettext(" successful | ")+success_breakup[1]+gettext(" errors"));
-        });
+        project.showSubmissionBreakup($(this).html());
     });
 
 });
