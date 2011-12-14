@@ -19,7 +19,13 @@ DW.dashboard_project.prototype={
             var success_breakup = $.parseJSON(data);
             $('#submission_success_breakup_'+project_id).html(success_breakup[0]+gettext(" successful | ")+success_breakup[1]+gettext(" errors"));
         });
-
+    },
+    toggleAjaxLoader:function(htmlElement, should_show){
+        if(should_show){
+            htmlElement.removeClass("none");
+        }else{
+            htmlElement.addClass("none");
+        }
     }
 
 };
@@ -31,7 +37,7 @@ $(document).ready(function() {
     });
 
     var project=new DW.dashboard_project();
-    project.create_submission_template('submissionTemplate')
+    project.create_submission_template('submissionTemplate');
 
     $( "#projects" ).accordion({
         header: '.project_header',
@@ -39,12 +45,16 @@ $(document).ready(function() {
         collapsible: true,
         active:100,
         change: function(event, ui){
-            var id = $(ui.newContent).find('.project_id').html();
-            if(id == null){
+            var accordionContentElement = $(ui.newContent);
+            var id = accordionContentElement.find('.project_id').html();
+            if((id == null) || (accordionContentElement.attr("content_loaded") === 'true')){
                 return false;
             }
+            project.toggleAjaxLoader(accordionContentElement.find('.ajax_loader_image'), true);
             $.get('/submission/details/'+ id +'/', function(data) {
-                $(ui.newContent).find('.submission_list').html(project.getSubmissionDetails(data));
+                accordionContentElement.find('.submission_list').html(project.getSubmissionDetails(data));
+                project.toggleAjaxLoader(accordionContentElement.find('.ajax_loader_image'), false);
+                accordionContentElement.attr("content_loaded", true);
             });
         }
     });
