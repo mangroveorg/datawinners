@@ -784,7 +784,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli017").delete()
         qid17 = form_model17.save()
     project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE, devices=["sms", "web"], activity_report='yes', sender_group="close")
+                       entity_type='clinic', devices=["sms", "web"], activity_report='yes', sender_group="close")
     project17.qid = qid17
     project17.state = ProjectState.TEST
     try:
