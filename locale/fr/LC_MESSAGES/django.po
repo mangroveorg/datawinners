@@ -2878,3 +2878,18 @@ msgstr "Entrez le numéro d'identification de l'Expéditeur de données. Cliquez
 
 msgid "I am submitting this data on behalf of"
 msgstr "Je soumets cette donnée pour le compte de"
+
+msgid "What is associated Data sender type?"
+msgstr "Quel est le type de sujet associé ?"
+
+msgid "What is the Data sender's name?"
+msgstr "Quel est le nom de l'envoyeur de données?"
+
+msgid "What is the Data sender's location?"
+msgstr "Quel est la localité de l'envoyeur de données?"
+
+msgid "What is the Data sender's GPS co-ordinates?"
+msgstr "Quel sont les coordonnées GPS de la localité de l'envoyeur de données ?"
+
+msgid "What is the mobile number associated with the Data sender?"
+msgstr "Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
