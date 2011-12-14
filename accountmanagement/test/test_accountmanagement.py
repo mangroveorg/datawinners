@@ -1,10 +1,19 @@
 from django.test import TestCase
 from django.test import Client
 from nose.plugins.skip import SkipTest
+from datawinners.accountmanagement.views import _get_email_template_name_for_reset_password
 
 class TestAccountManagement(TestCase):
     def setUp(self):
         self.client = Client()
+
+    def test_should_get_email_template_for_reset_password_for_english(self):
+        template_name = _get_email_template_name_for_reset_password('en')
+        self.assertEqual('registration/password_reset_email_en.html', template_name)
+
+    def test_should_get_email_template_for_reset_password_for_french(self):
+        template_name = _get_email_template_name_for_reset_password('fr')
+        self.assertEqual('registration/password_reset_email_fr.html', template_name)
 
     def test_should_render_register_view(self):
         response = self.client.post('/register/')

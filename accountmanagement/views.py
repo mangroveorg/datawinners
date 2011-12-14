@@ -13,9 +13,9 @@ from django.template.loader import render_to_string
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 
 from mangrove.errors.MangroveException import AccountExpiredException
-from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm
+from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm
 from datawinners.accountmanagement.models import Organization, NGOUserProfile, PaymentDetails, MessageTracker, DataSenderOnTrialAccount
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, password_reset
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
@@ -112,6 +112,14 @@ def custom_login(request, template_name, authentication_form):
             return login(request, template_name=template_name, authentication_form=authentication_form)
         except AccountExpiredException:
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
+
+
+def _get_email_template_name_for_reset_password(language):
+    return 'registration/password_reset_email_' + language + '.html'
+
+
+def custom_reset_password(request):
+    return password_reset(request, email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE),password_reset_form=ResetPasswordForm)
 
 @login_required(login_url='/login')
 @is_admin
