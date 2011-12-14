@@ -8,6 +8,8 @@
     padding: 5px 0 0 22px; }
     .support-acc .ui-accordion-header a:hover {
       text-decoration: none !important; }
+.support-acc .ui-accordion-content {
+  padding-left: 25px !important; }
 .support-acc .ui-state-default, .support-acc .ui-state-active, .support-acc .ui-widget-content {
   background: none;
   border: none; }
@@ -30,7 +32,8 @@
   width: 350px;
   display: inline;
   float: left;
-  margin-right: 5px; }
+  margin-right: 5px;
+  height: 98px; }
   .block_support .read_more {
     position: absolute;
     top: 82px;

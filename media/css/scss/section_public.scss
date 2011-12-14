@@ -261,6 +261,10 @@ body{
             font-size:11px;
             font-weight:bold;
             text-transform:uppercase;
+            display:block;
+            height:16px;
+            width:710px;
+            overflow:hidden;
         }
     }
 }
@@ -453,8 +457,9 @@ body{
         width:180px;
         float:left;
         text-align:center;
+        line-height:14px;
         a{
-            color:#043E6A !important;
+            color:#044C83 !important;
             &:hover{
                 text-decoration:none !important;
             }
@@ -495,7 +500,9 @@ body{
 }
 #how_nav{
     #how_links{
-        margin:30px 0 0;
+        margin:20px 0 0 0;
+        padding-top:10px;
+        border-top:1px solid #DDDDDD;
         text-align:center;
         #how_try_button{
             display:block;

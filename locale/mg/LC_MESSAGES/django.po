@@ -2401,3 +2401,6 @@ msgstr ""
 
 msgid "<div class='radio_title'>Pay via ACH</div><div class='subtitle_for_radio_button pay_via_ach'></div>"
 msgstr ""
+
+msgid "Learn more about DataWinners on our"
+msgstr ""

@@ -4,14 +4,13 @@ $(document).ready(function() {
     var active = null;
 
     function moveActive(n) {
-        $('#how_active').animate({left: (180 * (parseInt(n) - 1)) + 'px'}, 500, 'swing');
+        $('#how_active').animate({left: (180 * (parseInt(n, 10) - 1)) + 'px'}, 500, 'swing');
     }
 
     function hideContent(n) {
         var myDiv = $('#step' + n);
         myDiv.hide();
         myDiv.removeClass('active');
-        active = null;
     }
 
     function showContent(n) {
@@ -28,13 +27,13 @@ $(document).ready(function() {
         } else {
             $('#how_prev').show();
         }
-        active = n;
     }
 
     function swapContent(n) {
         hideContent(active);
         moveActive(n);
         showContent(n);
+        active = parseInt(n, 10);
     }
 
     $('#how_menu a').click(function(){

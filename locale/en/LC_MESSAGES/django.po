@@ -2928,3 +2928,6 @@ msgstr ""
 
 msgid "I want Individual Reports about a specific subject."
 msgstr ""
+
+msgid "Learn more about DataWinners on our"
+msgstr ""

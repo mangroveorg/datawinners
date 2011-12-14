@@ -217,7 +217,11 @@ body {
       color: #555;
       font-size: 11px;
       font-weight: bold;
-      text-transform: uppercase; }
+      text-transform: uppercase;
+      display: block;
+      height: 16px;
+      width: 710px;
+      overflow: hidden; }
 
 #container_breadcrumbs {
   height: 55px;
@@ -362,9 +366,10 @@ body {
   #how_menu .title {
     width: 180px;
     float: left;
-    text-align: center; }
+    text-align: center;
+    line-height: 14px; }
     #how_menu .title a {
-      color: #043E6A !important; }
+      color: #044C83 !important; }
       #how_menu .title a:hover {
         text-decoration: none !important; }
   #how_menu #how_active {
@@ -392,7 +397,9 @@ body {
   display: block; }
 
 #how_nav #how_links {
-  margin: 30px 0 0;
+  margin: 20px 0 0 0;
+  padding-top: 10px;
+  border-top: 1px solid #DDDDDD;
   text-align: center; }
   #how_nav #how_links #how_try_button {
     display: block;
