@@ -48,7 +48,6 @@
         <div id="projects">
         {% for project in projects %}
             <div class="project_header">
-                <span class="project_id none">{{ project.id }}</span>
                 <span class="header">{{ project.name|capfirst }} </span>
                 <span id="submission_success_breakup_{{ project.id }}" class="success_error"></span>
             </div>

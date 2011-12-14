@@ -1,12 +1,38 @@
+DW.dashboard_project=function(project_id){
+    this.project_id=project_id;
+
+
+};
+
+DW.dashboard_project.prototype={
+    getSubmissionDetails:function(){
+        $.get('/submission/details/'+ this.project_id +'/', this._get_submission_data);
+    },
+    create_submission_template:function(submission_template_id){
+        var markup = "<tr><td>${created}</td><td>${reporter}</td><td>${message}</td></tr>";
+        $.template( submission_template_id, markup );
+
+    },
+
+    _parse_submission_data:function(data){
+            var submissions = $.parseJSON(data);
+            if (submissions.length<=0){
+                return gettext("No submissions present for this project");
+            }
+            return $.tmpl("submissionTemplate", submissions);
+    }
+
+
+};
+
 $(document).ready(function() {
     $( "#how_to" ).accordion({
         collapsible: true,
         active: 0
     });
 
-    var markup = "<tr><td>${created}</td><td>${reporter}</td><td>${message}</td></tr>";
-    $.template( "submissionTemplate", markup );
-
+    var project=new DW.dashboard_project();
+    project.create_submission_template('submissionTemplate')
     var no_submission_message = "No submissions present for this project";
 
     $( "#projects" ).accordion({
@@ -30,9 +56,9 @@ $(document).ready(function() {
         }
     });
 
-    project_ids = [];
+    var project_ids = [];
     $('.project_id').each(function(){
-        
+
         var id = $(this).html();
         $.get('/submission/breakup/'+id+'/', function(data){
             var success_breakup = $.parseJSON(data);
