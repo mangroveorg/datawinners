@@ -56,8 +56,9 @@ p.instructions {
       padding: 0;
       margin: 0; }
     .olpreview li .answer {
+      margin-bottom: 5px;
       float: none;
       clear: left !important; }
       .olpreview li .answer ol {
-        list-style-type: none !important;
-        margin-left: 10px; }
+        margin-left: 20px;
+        list-style: lower-alpha; }

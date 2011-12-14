@@ -79,11 +79,12 @@
             margin:0;
         }
         .answer{
+            margin-bottom:5px;
             float:none;
             clear:left !important;
             ol{
-                list-style-type:none !important;
-                margin-left:10px;
+                margin-left:20px;
+                list-style: lower-alpha;
             }
         }
     }
