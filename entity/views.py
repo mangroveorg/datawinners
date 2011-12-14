@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount,Organization
-from datawinners.accountmanagement.views import is_datasender, is_new_user
+from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
 from datawinners.entity import helper
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
@@ -226,7 +226,7 @@ def create_web_users(request):
             profile.save()
             reset_form = PasswordResetForm({"email": user.email})
             reset_form.is_valid()
-            reset_form.save()
+            reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
 
         return HttpResponse(json.dumps({'success':True, 'message':"Users has been created"}))
 

@@ -168,7 +168,7 @@ def new_user(request):
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
-                reset_form.save()
+                reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
                 form = UserProfileForm()
                 add_user_success = True
 
