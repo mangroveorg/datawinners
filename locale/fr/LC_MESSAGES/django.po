@@ -2893,3 +2893,19 @@ msgstr "Quel sont les coordonnées GPS de la localité de l'envoyeur de données
 
 msgid "What is the mobile number associated with the Data sender?"
 msgstr "Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
+
+
+msgid "Enter the Data sender's number"
+msgstr "Entrez le numéro de l'expéditeur des données de"
+
+msgid "Enter lat and long. Eg 20.6, 47.3"
+msgstr "Entrez lat et long terme. Ex 20.6, 47.3"
+
+msgid "Enter a region, district, or commune"
+msgstr "Saisissez une région, district ou commune"
+
+msgid "Enter a Data sender name"
+msgstr "Entrez le nom de l'expéditeur jour"
+
+msgid "Enter a type for the Data sender"
+msgstr "Entrez un type de données pour l'expéditeur"

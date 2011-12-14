@@ -2906,3 +2906,18 @@ msgstr ""
 
 msgid "What is the mobile number associated with the Data sender?"
 msgstr ""
+
+msgid "Enter the Data sender's number"
+msgstr ""
+
+msgid "Enter lat and long. Eg 20.6, 47.3"
+msgstr ""
+
+msgid "Enter a region, district, or commune"
+msgstr ""
+
+msgid "Enter a Data sender name"
+msgstr ""
+
+msgid "Enter a type for the Data sender"
+msgstr ""
