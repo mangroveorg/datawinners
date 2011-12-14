@@ -2829,16 +2829,16 @@ msgid "Last Day"
 msgstr "Dernier jour"
 
 msgid "Reports are due in 2 days. Please submit soon."
-msgstr ""
+msgstr "Les rapports sont dus en 2 jours. S'il vous plaît soumettre prochainement."
 
 msgid "number of days after deadline"
 msgstr "nombre de jours après la date limite"
 
 msgid "Reports are due today. Please submit soon."
-msgstr ""
+msgstr "Les rapports sont dus aujourd'hui. S'il vous plaît soumettre prochainement."
 
 msgid "Reports are over due. Please submit immediately."
-msgstr ""
+msgstr "Les rapports sont plus dues. S'il vous plaît soumettre immédiatement."
 
 msgid "Enter an id, or allow us to generate it"
 msgstr "Entrez un id ou permettez-nous de le générer"
