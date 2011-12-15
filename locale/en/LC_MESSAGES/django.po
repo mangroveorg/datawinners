@@ -338,7 +338,7 @@ msgstr ""
 msgid "The day of the deadline"
 msgstr ""
 
-msgid "Only send reminders to senders who have not already submitted data for the current deadline"
+msgid "Only send reminders to senders who have not already submitted data for the current deadline."
 msgstr ""
 #: project/views.py:824
 msgid "Successfully submitted"
@@ -2936,6 +2936,17 @@ msgstr ""
 msgid "Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button."
 msgstr ""
 
-msgid "Subscribe Now"
+msgid "Enter a type for the subject"
 msgstr ""
 
+msgid "Enter a id, or allow us to generate it"
+msgstr ""
+
+msgid "Enter the subject's number"
+msgstr ""
+
+msgid "Upgrade"
+msgstr ""
+
+msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
+msgstr ""

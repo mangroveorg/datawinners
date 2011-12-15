@@ -348,8 +348,8 @@ msgstr "jours avant la date de l'échéance"
 msgid "The day of the deadline"
 msgstr "Le jour de l'échéance"
 
-msgid "Only send reminders to senders who have not already submitted data for the current deadline"
-msgstr "N’envoie des rappels qu’aux expéditeurs qui n’ont pas encore soumis des données à la date de l’échéance actuelle"
+msgid "Only send reminders to senders who have not already submitted data for the current deadline."
+msgstr "N’envoie des rappels qu’aux expéditeurs qui n’ont pas encore soumis des données à la date de l’échéance actuelle."
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
@@ -2869,7 +2869,7 @@ msgid "Enter Data Sender's number eg: +61 (123) 456-7890 "
 msgstr "Entrez le numéro de l'expediteur de données"
 
 msgid "Subscribe Now"
-msgstr "Abonnez-vous maintenant"
+msgstr "Abonnez-vous"
 
 msgid "Learn More"
 msgstr "En savoir plus"
@@ -2976,5 +2976,17 @@ msgstr "En savoir plus sur DataWinners sur notre"
 msgid "Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button."
 msgstr "Votre compte est un Compte d'Essai avec quelques restrictions. Pour passer à la version complète, cliquez sur le bouton 'Abonnez-vous'."
 
-msgid "Subscribe Now"
+msgid "Enter a type for the subject"
+msgstr "Entrez un type pour le sujet"
+
+msgid "Enter a id, or allow us to generate it"
+msgstr "Entrez un numéro d'identification ou permettez-nous de le générer"
+
+msgid "Enter the subject's number"
+msgstr "Entrez le numéro de téléphone du sujet"
+
+msgid "Upgrade"
 msgstr "Abonnez-vous"
+
+msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
+msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données associés à votre projet"
