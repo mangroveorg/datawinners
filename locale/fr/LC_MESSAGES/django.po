@@ -22,6 +22,9 @@ msgstr ""
 msgid "Organization name"
 msgstr "Nom de l'organisation"
 
+msgid "Organization Name"
+msgstr "Nom de l'organisation"
+
 #: accountmanagement/forms.py:19
 msgid "Other"
 msgstr "Autre"
@@ -2969,3 +2972,9 @@ msgstr "Je veux des Rapports Individuels sur un sujet spécifique"
 
 msgid "Learn more about DataWinners on our"
 msgstr "En savoir plus sur DataWinners sur notre"
+
+msgid "Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button."
+msgstr "Votre compte est un Compte d'Essai avec quelques restrictions. Pour passer à la version complète, cliquez sur le bouton 'Abonnez-vous'."
+
+msgid "Subscribe Now"
+msgstr "Abonnez-vous"

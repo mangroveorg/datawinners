@@ -73,8 +73,8 @@
     <div class="grid_4 alpha omega dashboard_right">
     {% if trial_account and user.groups.all.0.name == 'NGO Admins' %}
     <ul class="news">
-        <li>Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button.</li>
-        <li><a href="/upgrade/" class="button">Subscribe Now</a></li>
+        <li>{% trans "Your account is a Trial Account with some limitations. To upgrade click on the 'Subscribe Now' button." %}</li>
+        <li><a href="/upgrade/" class="button">{% trans "Subscribe Now" %}</a></li>
         <li><a href="/en/pricing/">Learn More</a></li>
     </ul>
     {% endif %}
