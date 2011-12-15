@@ -20,6 +20,8 @@ from datawinners.submission.models import DatawinnerLog, SMSResponse
 from datawinners.messageprovider.message_handler import get_exception_message_for
 
 import logging
+from location.LocationTree import get_location_hierarchy
+
 logger = logging.getLogger("django")
 
 @csrf_view_exempt
@@ -116,7 +118,7 @@ def activate_language(incoming_request):
 
 def submit_to_player(incoming_request):
     try:
-        sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree())
+        sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(), get_location_hierarchy=get_location_hierarchy)
         response = sms_player.accept(incoming_request['transport_info'], incoming_request['form_model'].form_code, incoming_request['submission_values'])
         message = SMSResponse(response).text()
     except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:

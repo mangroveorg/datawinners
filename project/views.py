@@ -48,6 +48,7 @@ from django.utils import translation
 
 import logging
 from mangrove.utils.types import is_empty
+from location.LocationTree import get_location_hierarchy
 
 
 logger = logging.getLogger("django")
@@ -761,7 +762,7 @@ def web_questionnaire(request, project_id=None):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager, get_location_tree()).accept(_create_request(questionnaire_form, request.user.username))
+            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(_create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()

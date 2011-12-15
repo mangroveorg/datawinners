@@ -14,9 +14,11 @@ from mangrove.utils.types import sequence_to_str
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
+from location.LocationTree import get_location_hierarchy
+
 class FilePlayer(Player):
-    def __init__(self, dbm, parser, channel_name, location_tree=None):
-        Player.__init__(self, dbm, location_tree)
+    def __init__(self, dbm, parser, channel_name, location_tree=None, get_location_hierarchy=None):
+        Player.__init__(self, dbm, location_tree, get_location_hierarchy)
         self.parser = parser
         self.channel_name = channel_name
 
@@ -30,7 +32,7 @@ class FilePlayer(Player):
             channel = Channel.XLS
         else:
             raise InvalidFileFormatException()
-        return FilePlayer(manager, parser, channel, location_tree)
+        return FilePlayer(manager, parser, channel, location_tree, get_location_hierarchy)
 
     def accept(self, file_contents):
         responses = []

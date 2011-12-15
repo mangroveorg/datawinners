@@ -11,12 +11,13 @@ from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.parser import KeyBasedSMSParser
 from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
+from location.LocationTree import get_location_hierarchy
 
 class TestImportData(TestCase):
     def setUp(self):
         self.dbm = get_db_manager(database='mangrove-test')
         self._create_entities()
-        self.player = SMSPlayer(self.dbm, get_location_tree())
+        self.player = SMSPlayer(self.dbm, get_location_tree(), get_location_hierarchy=get_location_hierarchy)
         self.transport = TransportInfo(transport="sms", source="1234", destination="5678")
         initializer.run(self.dbm)
 
