@@ -2748,8 +2748,7 @@ msgstr "Choose the Summary Report option if you want your Data Senders(in other 
 "<br/>(example question:  How many babies did you weigh last month?)"
 "<br/>2) A young woman answers polling questions"
 "<br/>(Example question:  Do you have access to clean water?)."
-"<br/>DataWinners will display your data according to each Data Sender:"
-    
+
 msgid "tooltip_individual_report"
 msgstr "Individual Reports are about specific subjects."
 "<br/>Examples: <br/>1) A doctor examines a baby. In this case, the subject is the baby."
@@ -2758,7 +2757,6 @@ msgstr "Individual Reports are about specific subjects."
 "<br/>In each case, the Data Senders (in other words, people in the field) must first identify the specific “subject” (baby/clinic/water pump)."
 "<br/>For example, the Data Sender would first answer the question: “What baby are you reporting on?”"
 "<br/>All subsequent questions would be about the baby.  (Example:  “How much did the baby weigh?”)"
-"<br/>DataWinners will display your data according to each Subject (Baby):"
 
 msgid "tooltip_add_subject"
 msgstr "To collect individual reports about specific subjects, you have two choices."

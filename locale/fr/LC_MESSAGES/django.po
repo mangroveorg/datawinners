@@ -2782,7 +2782,6 @@ msgstr "Choisissez l'option Rapport de Synthèse si vous voulez que vos Expédit
 "(exemple de question: Combien de bébés aviez-vous pesé le mois dernier?)"
 "<br/>2) Une jeune femme répond à des questions de choix"
 "(Exemple de question: Avez-vous accès à l'eau pota"
-"<br/>DataWinners affichera vos données en fonction de chaque Expéditeur de Données:"
 
 msgid "tooltip_individual_report"
 msgstr "Les Rapports Individuels portent sur des sujets spéc"
@@ -2793,7 +2792,6 @@ msgstr "Les Rapports Individuels portent sur des sujets spéc"
 "identifier le 'sujet' spécifique (bébé/clinique/pompe à eau)"
 "<br/>Par exemple, l'Expéditeur de Données devrait tout d'abord répondre à la question: 'A propos de quel bébé votre rapport concerne-t-il?'"
 "<br/>Toutes les questions suivantes seraient au sujet du bébé. (Exemple: 'Combien pesait le bébé?')"
-"<br/>DataWinners affichera vos données en fonction de chaque Sujet (Bébé):"
 
 msgid "tooltip_add_subject"
 msgstr "Pour collecter des Rapports Individuels sur des sujets spécifiques, vous avez deux choix."
