@@ -24,7 +24,7 @@ DATABASES = {
     }
 }
 
-HNI_SUPPORT_EMAIL_ID = 'dmcafee@hni.org'
+HNI_SUPPORT_EMAIL_ID = 'yadavr@thoughtworks.com'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
