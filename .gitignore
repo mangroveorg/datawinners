@@ -1,4 +1,5 @@
 .idea
 *.pyc
 log/
+local_settings.py
 
