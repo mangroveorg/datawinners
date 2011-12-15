@@ -14,7 +14,8 @@ div.olLayerDiv {
 
 .olLayerGoogleCopyright {
     left: 2px;
-    bottom: 2px;  
+    bottom: 2px;
+    visibility: hidden;
 }
 .olLayerGooglePoweredBy {
     left: 2px;
