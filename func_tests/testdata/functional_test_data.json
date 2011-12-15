@@ -1,0 +1,38 @@
+{
+    "docs": [
+        {
+            "_id": "nogo@mail.com",
+            "_rev": "1-e97fcfef2f9930c643c71f01ad179017",
+            "first_name": "No",
+            "last_name": "Go",
+            "title": "Mr.",
+            "modified": null,
+            "organization_id": "XGS362317",
+            "created": "2011-03-28T12:00:23Z",
+            "last_login": null,
+            "password": "sha1$461d7$1cb66727420b41774f14067d87069a9ba4655853",
+            "type": "UserModel",
+            "email": "nogo@mail.com"
+        },
+        {
+            "_id": "XGS362317",
+            "_rev": "1-934ecf5e9e5302bf82c339bc55990915",
+            "sector": "PublicHealth",
+            "city": "pune",
+            "name": "testorg",
+            "country": "IND",
+            "zipcode": "440099",
+            "modified": null,
+            "website": "",
+            "office_phone": "",
+            "state": "",
+            "addressline2": "",
+            "created": "2011-03-28T12:00:23Z",
+            "addressline1": "testaddress",
+            "administrators": [
+                "nogo@mail.com"
+            ],
+            "type": "OrganizationModel"
+        }
+    ]
+}

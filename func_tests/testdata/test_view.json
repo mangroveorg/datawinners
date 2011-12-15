@@ -1,0 +1,9 @@
+{
+    "language": "javascript",
+    "views": {
+        "by_loc_and_time": {
+            "map": "function(doc) {\nfor (i in doc.path){\n emit([i,doc.path[i],doc.year,doc.month,doc.date], doc.population);\n}\n  \n}",
+            "reduce": "function(key,values,rereduce){\n\treturn sum(values);\n}"
+        }
+    }
+}
