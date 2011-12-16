@@ -6,7 +6,6 @@ import os
 import sys
 
 PROJECT_DIR = os.path.dirname(__file__)
-sys.path.append(os.path.join(PROJECT_DIR, '../../src'))
 
 
 def git_clone_if_not_present(code_dir):
