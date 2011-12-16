@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.location.LocationTree import get_location_tree
+from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, RemindTo, ReminderMode
 from datawinners.submission.views import SMS
@@ -803,7 +803,7 @@ def load_sms_data_for_cli001(manager):
     LAST_WEEK = today - timedelta(days=7)
     THIS_MONTH = datetime(today.year, today.month, 2, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=6)
-    sms_player = SMSPlayer(manager, get_location_tree())
+    sms_player = SMSPlayer(manager, get_location_tree(), get_location_hierarchy=get_location_hierarchy)
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)

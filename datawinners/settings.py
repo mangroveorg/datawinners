@@ -139,23 +139,23 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'accountmanagement',
+    'datawinners.accountmanagement',
     'registration',
     'django.contrib.admin',
     'compressor',
-    'main',
-    'project',
-    'dashboard',
-    'location',
-    'entity',
-    'submission',
+    'datawinners',
+    'datawinners.main',
+    'datawinners.project',
+    'datawinners.dashboard',
+    'datawinners.location',
+    'datawinners.entity',
+    'datawinners.submission',
     'django_extensions',
     'django.contrib.flatpages',
     'south',
-    'home',
+    'datawinners.home',
     'django_nose'
 )
-
 COMPILER_FORMATS = {
     '.sass': {
         'binary_path': 'sass',

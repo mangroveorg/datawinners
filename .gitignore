@@ -3,4 +3,4 @@ email
 *.pyc
 log/
 local_settings.py
-
+*.mo
