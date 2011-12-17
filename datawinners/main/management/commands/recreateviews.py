@@ -1,7 +1,10 @@
 from django.core.management.base import BaseCommand
+
+from mangrove.bootstrap import initializer
+
 from datawinners.main.initial_couch_fixtures import load_test_managers, load_all_managers
 from datawinners.main.utils import  sync_views
-import mangrove
+
 
 
 class Command(BaseCommand):
@@ -14,6 +17,6 @@ class Command(BaseCommand):
         for manager in managers:
             print ("Database %s") % (manager.database_name,)
             print "Syncing Views....."
-            mangrove.datastore.views.sync_views(manager)
+            initializer.sync_views(manager)
             sync_views(manager)
             print "Done."

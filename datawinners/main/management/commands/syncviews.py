@@ -1,7 +1,10 @@
 from django.core.management.base import BaseCommand
+
+from mangrove.bootstrap.initializer import sync_views as mangrove_sync_views
+
 from datawinners.main.initial_couch_fixtures import load_test_managers, load_all_managers
 from datawinners.main.utils import sync_views as datawinners_sync_views
-from mangrove.datastore.views import sync_views as mangrove_sync_views
+
 
 
 class Command(BaseCommand):

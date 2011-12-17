@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import load_data, load_test_managers,  load_all_managers
 import mangrove
 from mangrove.datastore.database import _delete_db_and_remove_db_manager, get_db_manager
+from mangrove.bootstrap import initializer
 
 
 class Command(BaseCommand):
@@ -19,7 +20,7 @@ class Command(BaseCommand):
             _delete_db_and_remove_db_manager(manager)
             recreated_manager = get_db_manager(server=settings.COUCH_DB_SERVER, database=manager.database_name)
             print "Syncing Views....."
-            mangrove.datastore.views.create_views(recreated_manager)
+            initializer.sync_views(recreated_manager)
 
         print "Loading data....."
         load_data()

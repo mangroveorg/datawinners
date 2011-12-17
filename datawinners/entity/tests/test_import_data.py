@@ -1,34 +1,33 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from django.test import TestCase
+from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.entity.import_data import load_subject_registration_data
 from datawinners.location.LocationTree import get_location_tree
-from mangrove import initializer
-from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
+from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.parser import KeyBasedSMSParser
-from mangrove.transport.player.player import SMSPlayer, TransportInfo, Request
-from location.LocationTree import get_location_hierarchy
+from mangrove.transport.player.player import SMSPlayer, TransportInfo
+from datawinners.location.LocationTree import get_location_hierarchy
 
-class TestImportData(TestCase):
+class TestImportData(MangroveTestCase):
     def setUp(self):
-        self.dbm = get_db_manager(database='mangrove-test')
+        MangroveTestCase.setUp(self)
         self._create_entities()
-        self.player = SMSPlayer(self.dbm, get_location_tree(), get_location_hierarchy=get_location_hierarchy)
+        self.player = SMSPlayer(self.manager, get_location_tree(), get_location_hierarchy=get_location_hierarchy)
         self.transport = TransportInfo(transport="sms", source="1234", destination="5678")
-        initializer.run(self.dbm)
+        initializer.run(self.manager)
 
     def tearDown(self):
-        _delete_db_and_remove_db_manager(self.dbm)
+        MangroveTestCase.tearDown(self)
 
 
     def test_should_load_all_subjects(self):
         self._register_entities()
 
-        subjects = load_subject_registration_data(self.dbm)
+        subjects = load_subject_registration_data(self.manager)
 
         self.assertEqual(4, len(subjects))
 
@@ -50,12 +49,12 @@ class TestImportData(TestCase):
 
     def _create_entities(self):
         self.entity_type = ['clinic']
-        define_type(self.dbm, self.entity_type)
-        define_type(self.dbm, ['reporter'])
-        self.name_type = DataDictType(self.dbm, name='Name', slug='name', primitive_type='string')
-        self.telephone_number_type = DataDictType(self.dbm, name='telephone_number', slug='telephone_number',
+        define_type(self.manager, self.entity_type)
+        define_type(self.manager, ['reporter'])
+        self.name_type = DataDictType(self.manager, name='Name', slug='name', primitive_type='string')
+        self.telephone_number_type = DataDictType(self.manager, name='telephone_number', slug='telephone_number',
                                                   primitive_type='string')
-        rep1 = create_entity(self.dbm, ['reporter'], 'rep1')
+        rep1 = create_entity(self.manager, ['reporter'], 'rep1')
         rep1.add_data(data=[(MOBILE_NUMBER_FIELD, '1234', self.telephone_number_type),
             (NAME_FIELD, "Test_reporter", self.name_type)], submission=dict(submission_id="2"))
 

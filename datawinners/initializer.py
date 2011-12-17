@@ -2,7 +2,7 @@
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from datawinners.main.utils import  sync_views
 
-from mangrove import initializer as mangrove_intializer
+from mangrove.bootstrap import initializer as mangrove_intializer
 from mangrove.datastore.datadict import get_or_create_data_dict
 from mangrove.datastore.entity import create_entity, get_by_short_code
 from mangrove.errors.MangroveException import DataObjectNotFound

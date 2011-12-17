@@ -2,7 +2,7 @@
 from mock import Mock
 from django.test import TestCase
 from datawinners.entity.import_data import import_data
-from mangrove import initializer
+from mangrove.bootstrap import initializer
 from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager
 from mangrove.datastore.queries import get_entity_count_for_type
 

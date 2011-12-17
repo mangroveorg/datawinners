@@ -1,11 +1,11 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import date
 
-import unittest
+from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from mock import Mock, patch
 from datawinners.main.utils import create_views
 from datawinners.project.models import Project, get_all_projects, ProjectState
-from mangrove.datastore.database import get_db_manager, _delete_db_and_remove_db_manager, DatabaseManager
+from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import Entity
@@ -15,32 +15,32 @@ from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.form_model.validation import TextLengthConstraint
 
 
-class TestProjectModel(unittest.TestCase):
+class TestProjectModel(MangroveTestCase):
     def setUp(self):
-        self.dbm = get_db_manager(database='mangrove-test')
-        create_views(self.dbm)
+        MangroveTestCase.setUp(self)
+        create_views(self.manager)
         self.project1 = Project(name="Test1", goals="Testing", project_type="Survey", entity_type="Clinic",
                                 devices=['web'])
-        self.project1_id = self.project1.save(self.dbm)
+        self.project1_id = self.project1.save(self.manager)
         self.project2 = Project(name="Test2", goals="Testing", project_type="Survey", entity_type="Clinic",
                                 devices=['web'])
-        self.project2_id = self.project2.save(self.dbm)
+        self.project2_id = self.project2.save(self.manager)
 
         self._create_form_model_for_project(self.project1)
 
     def tearDown(self):
-        _delete_db_and_remove_db_manager(self.dbm)
+        MangroveTestCase.tearDown(self)
 
     def test_get_all_projects(self):
-        projects = get_all_projects(self.dbm)
+        projects = get_all_projects(self.manager)
         self.assertEquals(len(projects), 2)
 
     def test_get_one_project(self):
-        self.assertEquals(Project.load(self.dbm.database, self.project1_id)['_id'], self.project1_id)
+        self.assertEquals(Project.load(self.manager.database, self.project1_id)['_id'], self.project1_id)
 
     def test_should_update_project(self):
         self.project1.update(dict(name='Test1', devices=['web', 'sms'], goals="New goals"))
-        self.project1.save(self.dbm)
+        self.project1.save(self.manager)
         self.assertEquals(self.project1.name, 'test1')
         self.assertEquals(self.project1.goals, 'New goals')
         self.assertEquals(self.project1.devices, ['web', 'sms'])
@@ -48,20 +48,20 @@ class TestProjectModel(unittest.TestCase):
     def test_project_name_should_be_unique(self):
         project = Project(name="Test2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
         with self.assertRaises(DataObjectAlreadyExists):
-            project.save(self.dbm)
+            project.save(self.manager)
 
     def test_project_name_should_be_case_insensitively_unique(self):
         project = Project(name="tEsT2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
         with self.assertRaises(DataObjectAlreadyExists):
-            project.save(self.dbm)
+            project.save(self.manager)
 
     def test_should_check_for_unique_name_while_update_project(self):
         self.project1.update(dict(name='Test2', devices=['web', 'sms'], goals="New goals"))
         with self.assertRaises(DataObjectAlreadyExists):
-            self.project1.save(self.dbm)
+            self.project1.save(self.manager)
 
     def _create_form_model_for_project(self, project):
-        ddtype = DataDictType(self.dbm, name='Default String Datadict Type', slug='string_default',
+        ddtype = DataDictType(self.manager, name='Default String Datadict Type', slug='string_default',
                               primitive_type='string')
         question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
                               language="eng", entity_question_flag=True, ddtype=ddtype)
@@ -69,23 +69,23 @@ class TestProjectModel(unittest.TestCase):
                               defaultValue="some default value", language="eng",
                               constraints=[TextLengthConstraint(5, 10)],
                               ddtype=ddtype)
-        self.form_model = FormModel(self.dbm, name=self.project1.name, form_code="abc", fields=[question1, question2],
+        self.form_model = FormModel(self.manager, name=self.project1.name, form_code="abc", fields=[question1, question2],
                                     entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
         qid = self.form_model.save()
         project.qid = qid
-        project.save(self.dbm)
+        project.save(self.manager)
 
     def test_should_update_questionnaire(self):
         self.project1.name = "New Name"
-        self.project1.update_questionnaire(self.dbm)
-        form_model = self.dbm.get(self.project1.qid, FormModel)
+        self.project1.update_questionnaire(self.manager)
+        form_model = self.manager.get(self.project1.qid, FormModel)
         self.assertEqual("New Name", form_model.name)
 
     def test_should_activate_form_on_project_activate(self):
-        form_model = self.dbm.get(self.project1.qid, FormModel)
+        form_model = self.manager.get(self.project1.qid, FormModel)
         self.assertFalse(form_model.is_active())
-        self.project1.activate(self.dbm)
-        form_model = self.dbm.get(self.project1.qid, FormModel)
+        self.project1.activate(self.manager)
+        form_model = self.manager.get(self.project1.qid, FormModel)
         self.assertTrue(form_model.is_active())
         self.assertEquals(ProjectState.ACTIVE, self.project1.state)
 

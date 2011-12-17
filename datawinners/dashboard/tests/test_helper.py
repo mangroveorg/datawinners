@@ -2,7 +2,7 @@
 import unittest
 from unittest.case import SkipTest
 from mock import Mock
-from datawinners.maps import helper
+from datawinners.dashboard import helper
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 
