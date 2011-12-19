@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from nose.plugins.skip import SkipTest
 from datawinners.accountmanagement.views import _get_email_template_name_for_reset_password
+from tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
 
 class TestAccountManagement(TestCase):
     def setUp(self):
@@ -39,21 +40,17 @@ class TestAccountManagement(TestCase):
         response = self.client.post('/account/')
         self.assertEquals(response.status_code, 302)
 
-    @SkipTest
     def test_should_render_account_view_if_logged_in(self):
-        self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
-        response = self.client.post('/account/')
-#        self.assertRedirects(response,'/dashboard/')
-        self.assertEquals(response.status_code, 302)
-#        self.assertContains(response,'Dashboard')
-#        self.assertContains(response,'Dashboard')
+        self.login_with_default_test_user()
+        response = self.client.get('/account/')
+        self.assertEquals(200,response.status_code)
 
     def test_should_render_profile_view_if_not_logged_in(self):
         response = self.client.get('/profile/')
-        self.assertEquals(response.status_code,302)
+        self.assertEquals(302,response.status_code)
 
     def test_should_render_profile_view_if_logged_in(self):
-        self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
+        self.login_with_default_test_user()
         response = self.client.get('/profile/')
         self.assertEquals(response.status_code,200)
 
@@ -61,23 +58,19 @@ class TestAccountManagement(TestCase):
         response = self.client.post('/account/users/')
         self.assertEquals(response.status_code, 302)
 
-    @SkipTest
     def test_should_render_account_users_view_if_logged_in(self):
-        self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
+        self.login_with_default_test_user()
         response = self.client.get('/account/users/')
-        self.assertEquals(response.status_code, 302)
-#        self.assertRedirects(response,'/dashboard/',status_code=302,target_status_code=200)
-        
-    @SkipTest
-    def test_should_render_account_user_new_view_if_not_logged_in(self):
-        response = self.client.post('/account/user/new/')
-        self.assertEquals(response.status_code, 302)
-#        self.assertContains(response,'Sign In to Your Account on DataWinners')
+        self.assertEquals(response.status_code, 200)
 
-    @SkipTest
-    def test_should_render_account_user_new_view_if_logged_in(self):
-        self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
-        response = self.client.post('/account/user/new/')
-#        self.assertRedirects(response,'/dashboard/',status_code=302,target_status_code=200)
+    def test_should_not_render_account_user_new_view_if_not_logged_in(self):
+        response = self.client.get('/account/user/new/')
         self.assertEquals(response.status_code, 302)
-#        self.assertContains(response,'Dashboard')
+
+    def test_should_render_account_user_new_view_if_logged_in(self):
+        self.login_with_default_test_user()
+        response = self.client.post('/account/user/new/')
+        self.assertEquals(response.status_code, 200)
+
+    def login_with_default_test_user(self):
+        self.client.login(username=DEFAULT_TEST_USER, password=DEFAULT_TEST_PASSWORD)
