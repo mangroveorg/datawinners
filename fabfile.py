@@ -97,12 +97,12 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
     """
     set_mangrove_commit_sha(branch, mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
-    
+
     mangrove_code_dir = home_dir + '/mangrove'
     datawinners_code_dir = home_dir + '/datawinners'
     with settings(warn_only=True):
         check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
-        check_out_datawinners_code(mangrove_build_number, mangrove_code_dir, virtual_env)
+        check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env)
         with cd(datawinners_code_dir + '/datawinners'):
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
