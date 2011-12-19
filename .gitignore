@@ -1,6 +1,71 @@
-email
-.idea
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 *.pyc
-log/
-local_settings.py
+*.jar
+
+# Auto generated files #
+########################
+docs/_build/*
+.buildinfo
+.doctrees
 *.mo
+
+# Logs, databases, packages #
+#############################
+*.log
+*.sql
+*.sqlite
+*.db
+*.egg
+*.egg-info
+*.swp
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# backup & tmp files #
+######################
+*~
+\#*\#
+*.orig
+*.tmp
+.sass-cache
+
+# OS/editor specific files #
+############################
+ve/
+build/*
+pip-log.txt
+xunit*.xml
+.coverage
+coverage.xml
+.idea
+screenshots
+
+# gitflow specific files #
+##########################
+gitflow/
+
+# Local settings files #
+########################
+localsettings.py
+local_settings.py
+
+# SCSS Generated Files #
+datawinners/.sass-cache/
+
+# compressor Generated Files #
+datawinners/media/CACHE
+
+# Emacs files
+.ropeproject
