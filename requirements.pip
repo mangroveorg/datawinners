@@ -6,7 +6,7 @@ coverage==3.4
 simplejson
 ipython
 mock
-selenium==2.9
+selenium==2.15
 iso8601
 pytz
 http://github.com/diptanu/django-registration/tarball/master#egg=django-registration0.8

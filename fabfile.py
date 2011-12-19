@@ -8,10 +8,13 @@ import sys
 PROJECT_DIR = os.path.dirname(__file__)
 
 
-def git_clone_if_not_present(code_dir):
+def git_clone_datawinners_if_not_present(code_dir):
+    if run("test -d %s" % code_dir).failed:
+        run("git clone git://github.com/mangroveorg/datawinners.git %s" % code_dir)
+        
+def git_clone_mangrove_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
         run("git clone git://github.com/mangroveorg/mangrove.git %s" % code_dir)
-
 
 def activate_and_run(virtual_env, command):
     run('source %s/bin/activate && ' % virtual_env + command)
@@ -50,38 +53,61 @@ def start_gunicorn(virtual_env):
     activate_and_run(virtual_env, "gunicorn_django -D -b 0.0.0.0:8000 --pid=mangrove_gunicorn")
 
 
-def deploy(build_number, home_dir, virtual_env, environment="test", branch="develop"):
+def set_mangrove_commit_sha(branch, mangrove_build_number):
+    if mangrove_build_number == 'lastSuccessfulBuild':
+        mangrove_build_number = run(
+            "curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
+    run(
+        "export MANGROVE_COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
+            branch, mangrove_build_number))
+    
+def set_datawinner_commit_sha(datawinner_build_number):
+    if datawinner_build_number == 'lastSuccessfulBuild':
+        datawinner_build_number = run(
+            "curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
+    run(
+        "export DATWINNER_COMMIT_SHA=`curl http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
+            datawinner_build_number))
+
+def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env):
+    git_clone_mangrove_if_not_present(mangrove_code_dir)
+    with cd(mangrove_code_dir):
+        run("git reset --hard HEAD")
+        sync_branch(branch)
+        delete_if_branch_exists(mangrove_build_number)
+        run("git checkout -b %s $MANGROVE_COMMIT_SHA" % (mangrove_build_number, ))
+        run("git checkout .")
+        activate_and_run(virtual_env, "python setup.py develop")
+        
+def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env):
+    git_clone_datawinners_if_not_present(datawinners_code_dir)
+    with cd(datawinners_code_dir):
+        run("git reset --hard HEAD")
+        sync_branch("develop")
+        delete_if_branch_exists(datawinner_build_number)
+        run("git checkout -b %s $DATAWINNER_COMMIT_SHA" % (datawinner_build_number, ))
+        run("git checkout .")
+        activate_and_run(virtual_env, "python setup.py develop")
+
+def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop"):
     """build_number : hudson build number to be deployed
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
     """
-    ENVIRONMENT_CONFIGURATIONS = {
-        "showcase": "showcase_local_settings.py",
-        "test": "test_local_settings.py",
-        "master": "showcase_local_settings.py"
-    }
-
-    if build_number == 'lastSuccessfulBuild':
-        build_number = run("curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
-
-    run("export COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
-    branch, build_number))
-
-    code_dir = home_dir + '/mangrove'
+    set_mangrove_commit_sha(branch, mangrove_build_number)
+    set_datawinner_commit_sha(datawinner_build_number)
+    
+    mangrove_code_dir = home_dir + '/mangrove'
+    datawinners_code_dir = home_dir + '/datawinners'
     with settings(warn_only=True):
-        git_clone_if_not_present(code_dir)
-        with cd(code_dir):
-            run("git reset --hard HEAD")
-            sync_branch(branch)
-            delete_if_branch_exists(build_number)
-            run("git checkout -b %s $COMMIT_SHA" % (build_number, ))
-            run("git checkout .")
+            check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
+            check_out_datawinners_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
             activate_and_run(virtual_env, "pip install -r requirements.pip")
-        with cd(code_dir + '/src/datawinners'):
-            run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
+        with cd(datawinners_code_dir):
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
+            activate_and_run(virtual_env, "python manage.py updatedb syncall")
             activate_and_run(virtual_env, "python manage.py compilemessages")
             restart_gunicorn(virtual_env)
 
