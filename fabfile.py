@@ -72,7 +72,7 @@ def set_datawinner_commit_sha(datawinner_build_number):
 def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env):
     git_clone_mangrove_if_not_present(mangrove_code_dir)
     with cd(mangrove_code_dir):
-        run("cd %s", mangrove_code_dir)
+        run("cd %s" % mangrove_code_dir)
         run("git reset --hard HEAD")
         sync_branch(branch)
         delete_if_branch_exists(mangrove_build_number)
@@ -84,7 +84,7 @@ def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, vi
 def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env):
     git_clone_datawinners_if_not_present(datawinners_code_dir)
     with cd(datawinners_code_dir):
-        run("cd %s", datawinners_code_dir)
+        run("cd %s" % datawinners_code_dir)
         run("git reset --hard HEAD")
         sync_branch("develop")
         delete_if_branch_exists(datawinner_build_number)
@@ -106,6 +106,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
         check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
         check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env)
         with cd(datawinners_code_dir + '/datawinners'):
+            run("cd %s/datawinners" % datawinners_code_dir)
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
