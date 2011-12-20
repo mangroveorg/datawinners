@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from mangrove.utils.helpers import slugify
+from django.template.defaultfilters import slugify
 import xlwt
 from datetime import datetime
 from mangrove.datastore.database import get_db_manager
