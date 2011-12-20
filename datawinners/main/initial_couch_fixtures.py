@@ -19,7 +19,8 @@ from mangrove.form_model.field import TextField, IntegerField, DateField, Select
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code, GEO_CODE_FIELD
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.parser import KeyBasedSMSParser
-from mangrove.transport.player.player import Request, SMSPlayer, TransportInfo
+from mangrove.transport.player.player import SMSPlayer
+from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
 from mangrove.transport.submissions import Submission
 
