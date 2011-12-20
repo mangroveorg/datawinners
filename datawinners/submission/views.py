@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
-from django.conf import settings
 from django.http import HttpResponse
 from django.utils import translation
 from django.utils.translation import ugettext
@@ -10,7 +9,8 @@ from django.views.decorators.http import require_http_methods
 from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, UnknownOrganization, SMSParserWrongNumberOfAnswersException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
-from mangrove.transport.player.player import SMSPlayer, TransportInfo
+from mangrove.transport.player.player import SMSPlayer
+from mangrove.transport import TransportInfo
 
 from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, MessageTracker
 from datawinners.location.LocationTree import get_location_tree
@@ -119,7 +119,7 @@ def activate_language(incoming_request):
 def submit_to_player(incoming_request):
     try:
         sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(), get_location_hierarchy=get_location_hierarchy)
-        response = sms_player.accept(incoming_request['transport_info'], incoming_request['form_model'].form_code, incoming_request['submission_values'])
+        response = sms_player.accept(incoming_request['transport_info'], incoming_request['form_model'], incoming_request['submission_values'])
         message = SMSResponse(response).text()
     except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
         message = incoming_request['datawinner_log'].error = get_exception_message_for(exception=exception, channel=SMS)

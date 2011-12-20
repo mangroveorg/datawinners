@@ -7,14 +7,15 @@ from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code
 from mangrove.transport.player.parser import CsvParser, XlsParser
-from mangrove.transport.player.player import Channel, Player, TransportInfo, Response
+from mangrove.transport import Channel, TransportInfo, Response
+from mangrove.transport.player.player import Player
 from mangrove.utils.types import sequence_to_str
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
-from location.LocationTree import get_location_hierarchy
+from datawinners.location.LocationTree import get_location_hierarchy
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None, get_location_hierarchy=None):
@@ -40,7 +41,8 @@ class FilePlayer(Player):
         for (form_code, values) in submissions:
             try:
                 transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
-                submission_id, form_submission = self.submit(transport_info, form_code, values)
+                form_model = get_form_model_by_code(self.dbm, form_code)
+                submission_id, form_submission = self.submit(transport_info, form_model, values)
                 response = Response(reporters=[], submission_id=submission_id, form_submission=form_submission)
                 if not form_submission.saved:
                     response.errors = dict(error=form_submission.errors, row=values)

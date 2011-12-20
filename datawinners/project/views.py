@@ -33,7 +33,8 @@ from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
 from mangrove.transport.player import player
-from mangrove.transport.player.player import WebPlayer, Request, TransportInfo
+from mangrove.transport.player.player import WebPlayer
+from mangrove.transport import Request, TransportInfo
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from django.contrib import messages
 from mangrove.utils.dates import convert_to_epoch

@@ -24,7 +24,8 @@ from datawinners.project import helper as project_helper, models
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm, SubjectForm
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER
-from mangrove.transport.player.player import Request, WebPlayer, TransportInfo
+from mangrove.transport.player.player import WebPlayer
+from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 

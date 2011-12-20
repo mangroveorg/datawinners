@@ -7,12 +7,12 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import FormModel
 from mangrove.transport.player.parser import XlsParser
-from mangrove.transport.player.player import Channel
+from mangrove.transport import Channel
 import xlwt
 
 class TestXlsPlayer(unittest.TestCase):
     def _mock_form_model(self):
-        self.get_form_model_mock_patcher = patch('mangrove.transport.player.player.get_form_model_by_code')
+        self.get_form_model_mock_patcher = patch('datawinners.entity.import_data.get_form_model_by_code')
         get_form_model_mock = self.get_form_model_mock_patcher.start()
         self.form_model_mock = Mock(spec=FormModel)
         get_form_model_mock.return_value = self.form_model_mock
@@ -40,13 +40,11 @@ class TestXlsPlayer(unittest.TestCase):
             for col_number, val in enumerate(row.split(',')):
                 ws.write(row_number, col_number, val)
         wb.save(self.file_name)
+
         self.player = FilePlayer(self.dbm, self.parser, Channel.XLS, loc_tree)
-        self.generate_code_patcher = patch(
-            "mangrove.transport.player.player.Player._update_submission_with_short_code_if_registration_form")
-        self.generate_code_patcher.start()
 
     def tearDown(self):
-        self.generate_code_patcher.stop()
+        self.get_form_model_mock_patcher.stop()
 
     def test_should_import_xls_string(self):
         self.player.accept(file_contents=open(self.file_name).read())

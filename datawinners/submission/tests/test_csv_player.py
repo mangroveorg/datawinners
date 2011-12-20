@@ -5,21 +5,14 @@ from datawinners.entity.import_data import FilePlayer
 from mangrove.datastore.database import DatabaseManager
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.player import player
 from mangrove.transport.player.parser import CsvParser
-from mangrove.transport.player.player import Channel
+from mangrove.transport import Channel
 
 
 class TestCsvPlayer(unittest.TestCase):
-    def _mock_short_code_generator(self):
-        self.original_code_generator = player._set_short_code
-        self.original_handler_for_reg_form = player.Player._update_submission_with_short_code_if_registration_form
-        player._set_short_code = Mock(spec=player._set_short_code)
-        player.Player._update_submission_with_short_code_if_registration_form = Mock(
-            spec=player.Player._update_submission_with_short_code_if_registration_form)
 
     def _mock_form_model(self):
-        self.get_form_model_mock_patcher = patch('mangrove.transport.player.player.get_form_model_by_code')
+        self.get_form_model_mock_patcher = patch('datawinners.entity.import_data.get_form_model_by_code')
         get_form_model_mock = self.get_form_model_mock_patcher.start()
         self.form_model_mock = Mock(spec=FormModel)
         get_form_model_mock.return_value = self.form_model_mock
@@ -38,13 +31,10 @@ class TestCsvPlayer(unittest.TestCase):
                                 CLF1,CL004,13,Dr. D,204
                                 CLF1,CL005,14,Dr. E,205
 """
-        self._mock_short_code_generator()
         self._mock_form_model()
         self.player = FilePlayer(self.dbm, self.parser, Channel.CSV, loc_tree)
 
     def tearDown(self):
-        player._set_short_code = self.original_code_generator
-        player.Player._update_submission_with_short_code_if_registration_form = self.original_handler_for_reg_form
         self.get_form_model_mock_patcher.stop()
 
     def test_should_import_csv_string(self):
