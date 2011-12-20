@@ -19,12 +19,11 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
 from datawinners.project.wizard_view import edit_project
 from mangrove.form_model.form_model import FormModel
-from mangrove.transport.player import player
-from mangrove.transport.reporter import find_reporter
+from mangrove.transport import Channel
 
 def _find_reporter_name(dbm, row):
     channel = row.value.get("channel")
-    if channel == player.Channel.SMS:
+    if channel == Channel.SMS:
         reporters = dbm.load_all_rows_in_view('reporters_by_number_and_name',key=(row.value["source"]))
         reporter = reporters[0].value
     else:
