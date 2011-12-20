@@ -4,7 +4,7 @@ import xlwt
 from datetime import datetime
 from mangrove.datastore.database import get_db_manager
 
-
+VAR = "HNI"
 def get_excel_sheet(raw_data, sheet_name):
     wb = xlwt.Workbook()
     ws = wb.add_sheet(sheet_name)
@@ -41,7 +41,7 @@ def convert_to_ordinal(number):
     return u'%sth' % number
 
 def generate_document_store_name(organization_name,organization_id):
-    return slugify("%s_%s_%s" % ("HNI", organization_name, organization_id))
+    return slugify("%s_%s_%s" % (VAR, organization_name, organization_id))
 
 def get_organization_settings_from_request(request):
     from datawinners.accountmanagement.models import OrganizationSetting

@@ -1,16 +1,15 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
-from datetime import datetime
 from django.test.client import RequestFactory
 from mock import Mock
+from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST
 import utils
-from pytz import UTC
 
 class TestUtils(unittest.TestCase):
 
     def test_should_generate_excel_sheet(self):
-        raw_data = [["cid002", 'shweta', 55], ["cid001", 'asif', 35]]
-        header_list = ["field1", "field2", 'field3']
+        raw_data = RAW_DATA
+        header_list = HEADER_LIST
         raw_data.insert(0,header_list)
         sheet_name = 'test'
         wb = utils.get_excel_sheet(raw_data, sheet_name)
@@ -18,14 +17,13 @@ class TestUtils(unittest.TestCase):
         self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
 
     def test_should_write_date_value_to_excel_sheet(self):
-         date = datetime(2011, 6, 22, 5, 20, 43, 661771, tzinfo=UTC)
-         raw_data = [["cid002", 'shweta', date], ["cid001", 'asif', date]]
+         raw_data = RAW_DATA
          wb = utils.get_excel_sheet(raw_data, "test")
-         self.assertEquals(2, len(wb.get_sheet(0).rows))
+         self.assertEquals(3, len(wb.get_sheet(0).rows))
          self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
 
     def test_should_return_organization(self):
-        org_id = 'SLX364903'
+        org_id = DEFAULT_TEST_ORG_ID
         request = self._get_request_mock(org_id)
 
         organization = utils.get_organization(request)
@@ -39,7 +37,7 @@ class TestUtils(unittest.TestCase):
         self.assertEquals('77th',utils.convert_to_ordinal(77))
 
     def test_generate_document_store(self):
-        self.assertEquals(u'hni_abc_1234', utils.generate_document_store_name(u'abc',u'1234'))
+        self.assertEquals(u'hni_testorg_slx364903', utils.generate_document_store_name(DEFAULT_TEST_ORG_NAME,DEFAULT_TEST_ORG_ID))
 
     def _get_request_mock(self,org_id):
         request = RequestFactory().get('/account/')
