@@ -2,7 +2,7 @@
 import unittest
 from django.test.client import RequestFactory
 from mock import Mock
-from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST
+from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST, DEFAULT_TEST_ORG_TEL_NO
 import utils
 
 class TestUtils(unittest.TestCase):
@@ -38,6 +38,11 @@ class TestUtils(unittest.TestCase):
 
     def test_generate_document_store(self):
         self.assertEquals(u'hni_testorg_slx364903', utils.generate_document_store_name(DEFAULT_TEST_ORG_NAME,DEFAULT_TEST_ORG_ID))
+
+    def test_should_return_organization_setting(self):
+        request = self._get_request_mock(DEFAULT_TEST_ORG_ID)
+        org_setting = utils.get_organization_settings_from_request(request)
+        self.assertEquals(DEFAULT_TEST_ORG_TEL_NO,org_setting.sms_tel_number)
 
     def _get_request_mock(self,org_id):
         request = RequestFactory().get('/account/')
