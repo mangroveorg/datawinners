@@ -20,6 +20,7 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
+from datawinners.utils import get_organization
 
 def is_admin(f):
     def wrapper(*args, **kw):
@@ -125,8 +126,7 @@ def custom_reset_password(request):
 @is_admin
 def settings(request):
     if request.method == 'GET':
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
+        organization = get_organization(request)
         organization_form = OrganizationForm(instance=organization)
         return render_to_response("accountmanagement/account/org_settings.html",
                 {'organization_form': organization_form}, context_instance=RequestContext(request))
@@ -221,7 +221,7 @@ def trial_expired(request):
 @is_trial
 def upgrade(request):
     profile = request.user.get_profile()
-    organization = Organization.objects.get(org_id = profile.org_id)
+    organization = get_organization(request)
     if request.method == 'GET':
         form = UpgradeForm()
         return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,

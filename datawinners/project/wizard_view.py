@@ -19,6 +19,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import  FormModel
 from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
+from datawinners.utils import get_organization
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -143,8 +144,7 @@ def reminders(request, project_id):
         from datawinners.project.views import _make_project_links
         project_links = _make_project_links(project, questionnaire.form_code)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
+        organization = get_organization(request)
         from datawinners.project.views import  _format_reminders, create_reminder
         return render_to_response('project/reminders.html',
                 {'project': project, 

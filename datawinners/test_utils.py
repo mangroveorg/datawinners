@@ -1,6 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from datetime import datetime
+from django.test.client import RequestFactory
+from mock import Mock
 import utils
 from pytz import UTC
 
@@ -21,4 +23,18 @@ class TestUtils(unittest.TestCase):
          wb = utils.get_excel_sheet(raw_data, "test")
          self.assertEquals(2, len(wb.get_sheet(0).rows))
          self.assertEquals(3, wb.get_sheet(0).row(0).get_cells_count())
-  
+
+    def test_should_return_organization(self):
+        org_id = 'SLX364903'
+        request = self._get_request_mock(org_id)
+
+        organization = utils.get_organization(request)
+        self.assertEquals(organization.org_id,org_id)
+
+    def _get_request_mock(self,org_id):
+        request = RequestFactory().get('/account/')
+        request.user = Mock()
+        mock_profile = Mock()
+        mock_profile.org_id = Mock(return_value=org_id)
+        request.user.get_profile = Mock(return_value=mock_profile)
+        return request

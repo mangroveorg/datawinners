@@ -10,6 +10,7 @@ from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
+from datawinners.utils import get_organization
 
 @login_required(login_url='/login')
 @is_new_user
@@ -45,9 +46,8 @@ def index(request):
                               context_instance=RequestContext(request))
 
 
-def _get_organization_sms_number_for(user):
-    profile = user.get_profile()
-    organization = Organization.objects.get(org_id=profile.org_id)
+def _get_organization_sms_number_for(request):
+    organization = get_organization(request)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     org_number = organization_settings.get_organisation_sms_number()
     return org_number
@@ -55,7 +55,7 @@ def _get_organization_sms_number_for(user):
 @login_required(login_url='/login')
 def failed_submissions(request):
     logs = DatawinnerLog.objects.all()
-    org_number = _get_organization_sms_number_for(user=request.user)
+    org_number = _get_organization_sms_number_for(request)
     org_logs = [log for log in logs if log.to_number == org_number]
     return render_to_response('alldata/failed_submissions.html', {'logs': org_logs},
                               context_instance=RequestContext(request))

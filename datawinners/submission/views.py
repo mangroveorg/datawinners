@@ -21,6 +21,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 
 import logging
 from location.LocationTree import get_location_hierarchy
+from datawinners.utils import get_organization
 
 logger = logging.getLogger("django")
 
@@ -141,8 +142,7 @@ def submit_to_player(incoming_request):
 
 
 def _test_mode_numbers(request):
-    profile = request.user.get_profile()
-    organization = Organization.objects.get(org_id=profile.org_id)
+    organization = get_organization(request)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     _to = organization_settings.get_organisation_sms_number()
     _from = TEST_REPORTER_MOBILE_NUMBER
@@ -159,8 +159,7 @@ def _get_from_and_to_numbers(request):
 
 def _find_organization(request):
     if request.POST.get('test_mode'):
-        profile = request.user.get_profile()
-        organization = Organization.objects.get(org_id=profile.org_id)
+        organization = get_organization(request)
         return organization
 
     _from = request.POST["from_msisdn"]

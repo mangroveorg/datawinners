@@ -808,7 +808,7 @@ def questionnaire_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
+                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
 
 
@@ -846,7 +846,7 @@ def subject_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                  'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
+                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
 
 
@@ -865,12 +865,11 @@ def sender_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
                 'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request.user)},
+                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request)},
                                   context_instance=RequestContext(request))
 
-def _get_organization_telephone_number(user):
-    profile = user.get_profile()
-    organization = Organization.objects.get(org_id=profile.org_id)
+def _get_organization_telephone_number(request):
+    organization = utils.get_organization(request)
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     return organization_settings.get_organisation_sms_number()
 
