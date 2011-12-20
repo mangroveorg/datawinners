@@ -4,7 +4,7 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.models import  User
 from django.db import models
-from django.template.defaultfilters import slugify
+from utils import generate_document_store_name
 
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
@@ -68,7 +68,7 @@ class Organization(models.Model):
         organization_setting = OrganizationSetting()
         organization_setting.organization = self
         self.organization_setting = organization_setting
-        organization_setting.document_store = slugify("%s_%s_%s" % ("HNI", self.name, self.org_id))
+        organization_setting.document_store = generate_document_store_name(self.name,self.org_id)
         return organization_setting
 
     def get_message_tracker(self, date):

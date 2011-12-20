@@ -1,5 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import translation
 from django.utils.translation import ugettext
@@ -31,6 +33,13 @@ logger = logging.getLogger("django")
 def sms(request):
     message = Responder().respond(request)
     return HttpResponse(message)
+
+@login_required(login_url='/login')
+@csrf_view_exempt
+@csrf_response_exempt
+@require_http_methods(['POST'])
+def test_sms(request):
+    return HttpResponse('Hi')
 
 
 class Responder(object):
