@@ -17,14 +17,15 @@ class TestWebSMSRequestProcessor(unittest.TestCase):
 
     def test_should_put_dbm_in_request_for_web_sms_submission(self):
         processor = WebSMSDBMRequestProcessor()
-        processor.process(self.request)
-        self.assertEqual(generate_document_store_name(DEFAULT_TEST_ORG_NAME,DEFAULT_TEST_ORG_ID), self.request['dbm'].database_name)
+        mangrove_request = dict()
+        processor.process(self.request, mangrove_request)
+        self.assertEqual(generate_document_store_name(DEFAULT_TEST_ORG_NAME,DEFAULT_TEST_ORG_ID), mangrove_request['dbm'].database_name)
 
     def test_should_put_transport_info_in_request_for_web_sms_submission(self):
         processor = WebSMSTransportInfoRequestProcessor()
-        processor.process(self.request)
-        self.assertEqual(SMS,self.request['transport_info'].transport)
-        self.assertEqual(TEST_REPORTER_MOBILE_NUMBER,self.request['transport_info'].source)
+        mangrove_request = dict()
+        processor.process(self.request, mangrove_request)
+        self.assertEqual(SMS,mangrove_request['transport_info'].transport)
+        self.assertEqual(TEST_REPORTER_MOBILE_NUMBER,mangrove_request['transport_info'].source)
         organization_telephone_number = get_organization_settings_from_request(self.request).get_organisation_sms_number()
-        self.assertEqual(organization_telephone_number,self.request['transport_info'].destination)
-
+        self.assertEqual(organization_telephone_number,mangrove_request['transport_info'].destination)
