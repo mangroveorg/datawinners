@@ -43,6 +43,10 @@ def convert_to_ordinal(number):
 def generate_document_store_name(organization_name,organization_id):
     return slugify("%s_%s_%s" % ("HNI", organization_name, organization_id))
 
+def get_organization_settings_from_request(request):
+    from datawinners.accountmanagement.models import OrganizationSetting
+    return OrganizationSetting.objects.get(organization = get_organization(request))
+
 def _clean_date(date_val):
     new_date_val = date_val.replace(tzinfo=None)
     return new_date_val
@@ -54,3 +58,4 @@ def _clean(row):
             each = _clean_date(each)
         new_row.append(each)
     return new_row
+

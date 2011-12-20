@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import translation
@@ -8,13 +7,13 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
-from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, UnknownOrganization, SMSParserWrongNumberOfAnswersException
+from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, SMSParserWrongNumberOfAnswersException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import TransportInfo
 
-from datawinners.accountmanagement.models import OrganizationSetting, Organization, TEST_REPORTER_MOBILE_NUMBER, MessageTracker
+from datawinners.accountmanagement.models import   TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, get_db_manager_for, get_organization_settings_for
 from datawinners.messageprovider.messages import exception_messages, SMS
@@ -24,6 +23,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 import logging
 from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
+from utils import get_organization_settings_from_request
 
 logger = logging.getLogger("django")
 
@@ -151,9 +151,7 @@ def submit_to_player(incoming_request):
 
 
 def _test_mode_numbers(request):
-    organization = get_organization(request)
-    organization_settings = OrganizationSetting.objects.get(organization=organization)
-    _to = organization_settings.get_organisation_sms_number()
+    _to = get_organization_settings_from_request(request).get_organisation_sms_number()
     _from = TEST_REPORTER_MOBILE_NUMBER
     return _from, _to
 
