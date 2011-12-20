@@ -29,7 +29,17 @@ class TestUtils(unittest.TestCase):
         request = self._get_request_mock(org_id)
 
         organization = utils.get_organization(request)
-        self.assertEquals(organization.org_id,org_id)
+        self.assertEquals(org_id,organization.org_id)
+
+    def test_convert_to_ordinal(self):
+        self.assertEquals('12th',utils.convert_to_ordinal(12))
+        self.assertEquals('21st',utils.convert_to_ordinal(21))
+        self.assertEquals('32nd',utils.convert_to_ordinal(32))
+        self.assertEquals('43rd',utils.convert_to_ordinal(43))
+        self.assertEquals('77th',utils.convert_to_ordinal(77))
+
+    def test_generate_document_store(self):
+        self.assertEquals(u'hni_abc_1234', utils.generate_document_store_name(u'abc',u'1234'))
 
     def _get_request_mock(self,org_id):
         request = RequestFactory().get('/account/')
