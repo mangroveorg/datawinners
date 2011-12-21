@@ -7,12 +7,10 @@ from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import define_type
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD, get_form_model_by_code
-from mangrove.transport.player.parser import KeyBasedSMSParser
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer
-from mangrove.transport import TransportInfo
+from mangrove.transport import TransportInfo, Request
 from datawinners.location.LocationTree import get_location_hierarchy
-from mangrove.transport.facade import Request
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
@@ -62,7 +60,7 @@ class TestImportData(MangroveTestCase):
 
 
     def _register_entity(self, text):
-        self.player.accept(Request(text,self.transport))
+        self.player.accept(Request(text, self.transport))
 
     def _register_entities(self):
         self._register_entity('reg .t clinic .s 1 .g 1 1 .n clinic0')

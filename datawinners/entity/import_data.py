@@ -1,4 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from copy import copy
+from mangrove.transport.submissions import Submission
 import os
 from django.conf import settings
 from datawinners.location.LocationTree import get_location_tree
@@ -39,11 +41,15 @@ class FilePlayer(Player):
         responses = []
         submissions = self.parser.parse(file_contents)
         for (form_code, values) in submissions:
+            transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
+            submission = Submission(self.dbm, transport_info, form_code, copy(values))
+            submission.save()
             try:
-                transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
                 form_model = get_form_model_by_code(self.dbm, form_code)
-                submission_id, form_submission = self.submit(transport_info, form_model, values)
-                response = Response(reporters=[], submission_id=submission_id, form_submission=form_submission)
+                form_submission = self.submit(transport_info, form_model, values)
+                submission.update(True, form_submission.errors, form_submission.data_record_id,
+                                  form_submission.form_model.is_in_test_mode())
+                response = Response(reporters=[], submission_id=submission.uuid, form_submission=form_submission)
                 if not form_submission.saved:
                     response.errors = dict(error=form_submission.errors, row=values)
                 responses.append(response)
