@@ -7,7 +7,12 @@ from mangrove.utils.types import is_empty, is_sequence, sequence_to_str
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, get_submission_success_message, get_registration_success_message, get_validation_failure_error_message
 
 
-def get_exception_message_for(exception, channel=None):
+def default_formatter(exception, message):
+    if isinstance(exception, MangroveException) and exception.data is not None and "%s" in message:
+        return message % exception.data
+    return message
+
+def get_exception_message_for(exception, channel=None,formatter=default_formatter):
     ex_type = type(exception)
     if channel is not None:
         message_dict = exception_messages.get(ex_type)
@@ -20,9 +25,7 @@ def get_exception_message_for(exception, channel=None):
     else:
         message = exception_messages[ex_type][DEFAULT]
         message = _(message)
-    if isinstance(exception, MangroveException) and exception.data is not None and "%s" in message:
-        return message % exception.data
-    return message
+    return formatter(exception, message)
 
 
 def get_submission_error_message_for(errors):
