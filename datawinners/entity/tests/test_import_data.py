@@ -12,6 +12,7 @@ from mangrove.transport.player.parser import KeyBasedSMSParser
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import TransportInfo
 from datawinners.location.LocationTree import get_location_hierarchy
+from mangrove.transport.facade import Request
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
@@ -61,9 +62,7 @@ class TestImportData(MangroveTestCase):
 
 
     def _register_entity(self, text):
-        form_code, values = KeyBasedSMSParser().parse(text)
-        form_model = get_form_model_by_code(self.manager, form_code)
-        self.player.accept(self.transport, form_model, values)
+        self.player.accept(Request(text,self.transport))
 
     def _register_entities(self):
         self._register_entity('reg .t clinic .s 1 .g 1 1 .n clinic0')

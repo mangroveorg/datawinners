@@ -46,7 +46,7 @@ def get_success_msg_for_submission_using(response):
 
 
 def get_success_msg_for_registration_using(response, source):
-    resp_string = (_("Unique identification number(ID) is:") + " %s") % (response.short_code)
+    resp_string = (_("Unique identification number(ID) is:") + " %s") % (response.short_code,)
     thanks = get_registration_success_message() % resp_string
     if source == "sms":
         return thanks + _("We received : ") + get_expanded_response(response.processed_data)
