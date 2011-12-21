@@ -24,7 +24,7 @@ import logging
 from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
 from utils import get_organization_settings_from_request
-
+from mangrove.transport.facade import Request
 logger = logging.getLogger("django")
 
 @csrf_view_exempt
@@ -129,7 +129,8 @@ def activate_language(incoming_request):
 def submit_to_player(incoming_request):
     try:
         sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(), get_location_hierarchy=get_location_hierarchy)
-        response = sms_player.accept(incoming_request['transport_info'], incoming_request['form_model'], incoming_request['submission_values'])
+        mangrove_request = Request(message=incoming_request['incoming_message'], transportInfo=incoming_request['transport_info'])
+        response = sms_player.accept(mangrove_request)
         message = SMSResponse(response).text()
     except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
         message = incoming_request['datawinner_log'].error = get_exception_message_for(exception=exception, channel=SMS)

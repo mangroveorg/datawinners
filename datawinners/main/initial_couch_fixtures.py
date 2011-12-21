@@ -6,7 +6,7 @@ from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager
-from datawinners.project.models import Project, ProjectState, Reminder, RemindTo, ReminderMode
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from datawinners.submission.views import SMS
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
@@ -16,13 +16,11 @@ from pytz import UTC
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code, GEO_CODE_FIELD
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
-from mangrove.transport.player.parser import KeyBasedSMSParser
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
-from mangrove.transport.submissions import Submission
 
 class DateTimeMocker(object):
     def __init__(self):
@@ -809,136 +807,136 @@ def load_sms_data_for_cli001(manager):
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321")
-    sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322")
-    sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "reg .t  clinic .n  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("reg .t  clinic .n  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321", transport)
+    sms_player.accept(mangrove_request)
+
+    mangrove_request = Request("reg .t  clinic .n  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322", transport)
+    sms_player.accept(mangrove_request)
+
+    mangrove_request = Request("reg .t  clinic .n  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323", transport)
+    sms_player.accept(mangrove_request)
+    
+    mangrove_request = Request("reg .t  clinic .n  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324", transport)
+    response = sms_player.accept(mangrove_request)
+    
+    mangrove_request = Request(
+        "reg .t  clinic .n  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "reg .t  clinic .n  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "reg .t  clinic .n  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "reg .t  clinic .n  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "reg .t  clinic .n  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "reg .t  clinic .n  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "reg .t  clinic .n  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331", transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
     datetime_mocker.set_date_time_now(FEB)
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid001 .NA Mr. Tessy .FA 58 .RD 28.02.2011 .BG c .SY ade .GPS 79.2 20.34567")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid002 .NA Mr. Adam .FA 62 .RD 15.02.2011 .BG a .SY ab .GPS 74.2678 23.3567")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid003 .NA Ms. Beth .FA 75 .RD 09.02.2011 .BG b .SY bc .GPS 18.245 29.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request(
+        "cli001 .EID cid001 .NA Mr. Tessy .FA 58 .RD 28.02.2011 .BG c .SY ade .GPS 79.2 20.34567", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid002 .NA Mr. Adam .FA 62 .RD 15.02.2011 .BG a .SY ab .GPS 74.2678 23.3567", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid003 .NA Ms. Beth .FA 75 .RD 09.02.2011 .BG b .SY bc .GPS 18.245 29.3123", transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(MARCH)
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid004 .NA Jannita .FA 90 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid005 .NA Aanda .FA 58 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cid001 .NA Ianda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid001 .NA ànita .FA 45 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid004 .NA Amanda .FA 81 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cid005 .NA Vanda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid003 .NA ànnita .FA 80 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid002 .NA Amanda .FA 69 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cid004 .NA Panda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid005 .NA ànnita .FA 50 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid003 .NA Jimanda .FA 86 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cli10 .NA Kanda (",) .FA 64 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid004 .NA ànnita .FA 30 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid005 .NA Qamanda  .FA 47 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cid001 .NA Huanda (*_*) .FA 74 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request(
+        "cli001 .EID cid004 .NA Jannita .FA 90 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid005 .NA Aanda .FA 58 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cid001 .NA Ianda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid001 .NA ànita .FA 45 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid004 .NA Amanda .FA 81 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cid005 .NA Vanda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid003 .NA ànnita .FA 80 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid002 .NA Amanda .FA 69 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cid004 .NA Panda (",) .FA 34 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid005 .NA ànnita .FA 50 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid003 .NA Jimanda .FA 86 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cli10 .NA Kanda (",) .FA 64 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid004 .NA ànnita .FA 30 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid005 .NA Qamanda  .FA 47 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cid001 .NA Huanda (*_*) .FA 74 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(DEC_2010)
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli12 .NA Jugal .FA 47 .RD 15.12.2010 .BG d .SY ace .GPS -58.3452 19.3345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli11 .NA De'melo .FA 38 .RD 27.12.2010 .BG c .SY ba .GPS 81.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli13 .NA Dono`mova .FA 24 .RD 06.12.2010 .BG b .SY cd .GPS 65.23452 -28.3456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli15 .NA Aàntra .FA 89 .RD 11.12.2010 .BG a .SY bd .GPS 45.234 89.32345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request(
+        "cli001 .EID cli12 .NA Jugal .FA 47 .RD 15.12.2010 .BG d .SY ace .GPS -58.3452 19.3345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cli11 .NA De'melo .FA 38 .RD 27.12.2010 .BG c .SY ba .GPS 81.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cli13 .NA Dono`mova .FA 24 .RD 06.12.2010 .BG b .SY cd .GPS 65.23452 -28.3456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cli15 .NA Aàntra .FA 89 .RD 11.12.2010 .BG a .SY bd .GPS 45.234 89.32345", transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(NOV_2010)
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli12 .NA ànnita .FA 90 .RD 07.11.2010 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli14 .NA Amanda .FA 67 .RD 12.11.2010 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cli9 .NA ànnita .FA 90 .RD 17.11.2010 .BG b .SY bbe .GPS 45.233 28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        "cli001 .EID cid007 .NA Amanda .FA 73 .RD 12.11.2010 .BG c .SY bd .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse(
-        'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452 15.3345')
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request(
+        "cli001 .EID cli12 .NA ànnita .FA 90 .RD 07.11.2010 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cli14 .NA Amanda .FA 67 .RD 12.11.2010 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cli9 .NA ànnita .FA 90 .RD 17.11.2010 .BG b .SY bbe .GPS 45.233 28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        "cli001 .EID cid007 .NA Amanda .FA 73 .RD 12.11.2010 .BG c .SY bd .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request(
+        'cli001 .EID cli8 .NA Kanda (",) .FA 34 .RD 27.11.2010 .BG d .SY be .GPS 38.3452 15.3345', transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(PREV_MONTH)
     month = today.month - 1
@@ -948,68 +946,68 @@ def load_sms_data_for_cli001(manager):
         year = today.year - 1
     Last_month_date = "12." + str(month) + "." + str(year)
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli11 .NA Aàntra .FA 98 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234 89.32345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli12 .NA ànnita .FA 37 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli11 .NA Aàntra .FA 95 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234 89.32345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli12 .NA ànnita .FA 35 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli9 .NA Demelo .FA 32 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli10 .NA Zorro .FA 43 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli11 .NA Aàntra .FA 91 .RD " + Last_month_date + " .BG a .SY be .GPS -45.234 89.32345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli12 .NA ànnita .FA 45 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 98 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234 89.32345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 37 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 38 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 48 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 95 .RD " + Last_month_date + " .BG a .SY cb .GPS -45.234 89.32345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 35 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli9 .NA Demelo .FA 32 .RD " + Last_month_date + " .BG c .SY ba .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli10 .NA Zorro .FA 43 .RD " + Last_month_date + " .BG b .SY cd .GPS 23.23452 -28.3456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli11 .NA Aàntra .FA 91 .RD " + Last_month_date + " .BG a .SY be .GPS -45.234 89.32345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli12 .NA ànnita .FA 45 .RD " + Last_month_date + " .BG d .SY cbe .GPS -78.233 -28.3324", transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.set_date_time_now(THIS_MONTH)
     current_month_date = "01." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli13 .NA Dmanda .FA 69 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli14 .NA Vamand .FA 36 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452 115.3345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli15 .NA M!lo .FA 88 .RD " + current_month_date + " .BG b .SY ba .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli16 .NA K!llo .FA 88 .RD " + current_month_date + " .BG a .SY ac .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli13 .NA Dmanda .FA 89 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2 69.3123")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli14 .NA Vamand .FA 56 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452 115.3345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli15 .NA M!lo .FA 45 .RD " + current_month_date + " .BG c .SY ca .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli16 .NA K!llo .FA 28 .RD " + current_month_date + " .BG b .SY ae .GPS 19.672 92.33456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli001 .EID cli13 .NA Dmanda .FA 69 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli14 .NA Vamand .FA 36 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452 115.3345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli15 .NA M!lo .FA 88 .RD " + current_month_date + " .BG b .SY ba .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli16 .NA K!llo .FA 88 .RD " + current_month_date + " .BG a .SY ac .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli13 .NA Dmanda .FA 89 .RD " + current_month_date + " .BG c .SY ce .GPS 40.2 69.3123", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli14 .NA Vamand .FA 56 .RD " + current_month_date + " .BG a .SY ace .GPS 58.3452 115.3345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli15 .NA M!lo .FA 45 .RD " + current_month_date + " .BG c .SY ca .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli16 .NA K!llo .FA 28 .RD " + current_month_date + " .BG b .SY ae .GPS 19.672 92.33456", transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker.end_mock()
 
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli17 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli18 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli001 .EID cli17 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli18 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324", transport)
+    response = sms_player.accept(mangrove_request)
 
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli17 .NA Catty .FA 98 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli18 .NA àntra .FA 58 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233 -28.3324")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli001 .EID cli17 .NA Catty .FA 98 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli18 .NA àntra .FA 58 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli001 .EID cli9 .NA Tinnita .RD " + today_date + " .FA 27 .BG d .SY ace .GPS -78.233 -28.3324", transport)
+    response = sms_player.accept(mangrove_request)
 
     FROM_NUMBER = '919970059125'
     TO_NUMBER = '919880734937'
@@ -1019,28 +1017,28 @@ def load_sms_data_for_cli001(manager):
     datetime_mocker2.set_date_time_now(LAST_WEEK)
     last_week_date = str(LAST_WEEK.day) + "." + str(LAST_WEEK.month) + "." + str(LAST_WEEK.year)
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse("cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli010 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli010 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli010 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse("cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli012 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli012 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli012 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 4
-    form_code, values = KeyBasedSMSParser().parse("cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli011 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli011 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli011 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
     FROM_NUMBER = '919970059125'
     TO_NUMBER = '919880734937'
@@ -1049,36 +1047,36 @@ def load_sms_data_for_cli001(manager):
     datetime_mocker2.set_date_time_now(PREV_MONTH)
     last_week_date = str(PREV_MONTH.day) + "." + str(PREV_MONTH.month) + "." + str(PREV_MONTH.year)
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli013 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli013 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli013 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli013 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli013 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli013 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli015 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli015 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli015 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli015 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli015 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli015 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli014 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli014 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli014 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli014 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli014 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli014 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli016 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli016 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli016 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli016 .EID cli13 .NA Dmanda .FA 69 .RD " + last_week_date + " .BG c .SY ce .GPS 40.2 69.3123 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli016 .EID cli14 .NA Vamand .FA 36 .RD " + last_week_date + " .BG a .SY ace .GPS 58.3452 115.3345 .RM b", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli016 .EID cli15 .NA M!lo .FA 88 .RD " + last_week_date + " .BG b .SY ba .GPS 19.672 92.33456 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
 
 
     FROM_NUMBER = '917798987102'
@@ -1089,36 +1087,36 @@ def load_sms_data_for_cli001(manager):
 
     this_month = str(THIS_MONTH.day) + "." + str(THIS_MONTH.month) + "." + str(THIS_MONTH.year)
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli013 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli013 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli013 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli013 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli013 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli013 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli014 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli014 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli014 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli014 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli014 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli014 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli015 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli015 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli015 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli015 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli015 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli015 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli016 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli016 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli016 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli016 .EID cli16 .NA Catty .FA 78 .RD " + this_month + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli016 .EID cli17 .NA àntra .FA 28 .RD " + this_month + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli016 .EID cli18 .NA Tinnita .RD " + this_month + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
     datetime_mocker2.end_mock()
 
@@ -1128,28 +1126,28 @@ def load_sms_data_for_cli001(manager):
 
     today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli010 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli010 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli010 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli011 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli011 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli011 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
     # Total number of identical records = 3
-    form_code, values = KeyBasedSMSParser().parse("cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
-    form_code, values = KeyBasedSMSParser().parse("cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d")
-    response = sms_player.accept(transport, get_form_model_by_code(manager, form_code), values)
+    mangrove_request = Request("cli012 .EID cli16 .NA Catty .FA 78 .RD " + today_date + " .BG b .SY dce .GPS 33.23452 -68.3456 .RM a", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli012 .EID cli17 .NA àntra .FA 28 .RD " + today_date + " .BG a .SY adb .GPS -45.234 169.32345 .RM c", transport)
+    response = sms_player.accept(mangrove_request)
+    mangrove_request = Request("cli012 .EID cli18 .NA Tinnita .RD " + today_date + " .FA 37 .BG d .SY ace .GPS -78.233 -28.3324 .RM d", transport)
+    response = sms_player.accept(mangrove_request)
 
 def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_org_pk, register_a_datasender):
     organization = Organization.objects.get(pk=trial_org_pk)
