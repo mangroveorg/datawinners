@@ -4,7 +4,7 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.models import  User
 from django.db import models
-from utils import generate_document_store_name
+from datawinners.utils import generate_document_store_name
 
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 
