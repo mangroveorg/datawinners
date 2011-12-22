@@ -7,7 +7,7 @@ from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
-from mangrove.errors.MangroveException import MangroveException, SubmissionParseException, FormModelDoesNotExistsException, NumberNotRegisteredException, DataObjectNotFound, SMSParserInvalidFormatException, MultipleSubmissionsForSameCodeException, SMSParserWrongNumberOfAnswersException
+from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.transport.player.parser import SMSParserFactory
 from mangrove.transport.player.player import SMSPlayer
@@ -16,7 +16,7 @@ from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import   TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, get_db_manager_for, get_organization_settings_for
-from datawinners.messageprovider.messages import exception_messages, SMS
+from datawinners.messageprovider.messages import SMS
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from datawinners.messageprovider.message_handler import get_exception_message_for
 
@@ -25,6 +25,8 @@ from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
 from utils import get_organization_settings_from_request
 from mangrove.transport.facade import Request
+from messageprovider.exception_handler import handle
+
 logger = logging.getLogger("django")
 
 @csrf_view_exempt
@@ -103,20 +105,8 @@ def find_parser(incoming_request):
         incoming_request['form_model'] = form_model
         incoming_request['submission_values'] = values
         incoming_request['datawinner_log'].form_code = form_code
-    except SMSParserWrongNumberOfAnswersException as exception:
-        form_model = get_form_model_by_code(dbm, exception.data[0])
-        translation.activate(form_model.activeLanguages[0])
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
-    except (SubmissionParseException,SMSParserInvalidFormatException,MultipleSubmissionsForSameCodeException) as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
-    except FormModelDoesNotExistsException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
+    except Exception as exception:
+        incoming_request['outgoing_message'] = handle(exception, incoming_request)
 
     incoming_request['next_state'] = activate_language
     return incoming_request
@@ -132,20 +122,8 @@ def submit_to_player(incoming_request):
         mangrove_request = Request(message=incoming_request['incoming_message'], transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
         message = SMSResponse(response).text()
-    except (SubmissionParseException, FormModelDoesNotExistsException,) as exception:
-        message = incoming_request['datawinner_log'].error = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['datawinner_log'].save()
-    except NumberNotRegisteredException as exception:
-        message = incoming_request['datawinner_log'].error = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['datawinner_log'].save()
-    except DataObjectNotFound as exception:
-        message1 = ugettext(exception_messages.get(DataObjectNotFound).get(SMS))
-        message = message1 % (incoming_request['form_model'].entity_type[0], exception.data[1], incoming_request['form_model'].entity_type[0])
-    except MangroveException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
     except Exception as exception:
-        logger.exception('SMS Processing failure: message')
-        message = get_exception_message_for(exception=exception, channel=SMS)
+        message = handle(exception, incoming_request)
 
     incoming_request['outgoing_message'] = message
     return incoming_request
