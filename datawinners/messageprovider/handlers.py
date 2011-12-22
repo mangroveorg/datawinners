@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.utils import translation
-from form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code
 import mangrove.errors.MangroveException as ex
 from messageprovider.message_handler import get_exception_message_for
 from messageprovider.messages import SMS
