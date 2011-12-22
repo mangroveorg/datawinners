@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     $("#send_sms").unbind('click').click(function() {
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
-        $.post('/submission', {'message':$("#id_message").val(), 'test_mode':true}, function(response) {
+        $.post('/test_sms_submission/', {'message':$("#id_message").val(), 'test_mode':true}, function(response) {
                     $("#id_message").val(response);
                 });
     });

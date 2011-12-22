@@ -37,22 +37,17 @@ def get_organization_settings_for(data_sender_phone_no, org_tel_number, user=Non
     org_tel_number = remove_hyphens(org_tel_number)
     trial_account_phone_number = remove_hyphens(settings.TRIAL_ACCOUNT_PHONE_NUMBER)
 
-    try:
-        if org_tel_number == trial_account_phone_number:
-            try:
-                if data_sender_phone_no == TEST_REPORTER_MOBILE_NUMBER:
-                    profile = user.get_profile()
-                    organization = Organization.objects.get(org_id=profile.org_id)
-                    organization_settings = OrganizationSetting.objects.get(organization=organization)
-                else:
-                    record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
-                    organization_settings = OrganizationSetting.objects.get(organization=record.organization)
-            except ObjectDoesNotExist:
-                raise NumberNotRegisteredException(data_sender_phone_no)
-        else:
+    if org_tel_number == trial_account_phone_number:
+        try:
+            record = DataSenderOnTrialAccount.objects.get(mobile_number=data_sender_phone_no)
+            organization_settings = OrganizationSetting.objects.get(organization=record.organization)
+        except ObjectDoesNotExist:
+            raise NumberNotRegisteredException(data_sender_phone_no)
+    else:
+        try:
             organization_settings = OrganizationSetting.objects.get(sms_tel_number=org_tel_number)
-    except ObjectDoesNotExist:
-        raise UnknownOrganization(org_tel_number)
+        except ObjectDoesNotExist:
+            raise UnknownOrganization(org_tel_number)
     return organization_settings
 
 def create_views(dbm):

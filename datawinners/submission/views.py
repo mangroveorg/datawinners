@@ -40,36 +40,22 @@ def sms(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
-def test_sms(request):
-    return HttpResponse('Hi')
-
-
-class Responder(object):
-
-    def __init__(self):
-        self.next_state_processor = find_dbm
-
-    def respond(self, incoming_request):
-        request = self.next_state_processor(incoming_request)
-        if request.get('outgoing_message'):
-            return request['outgoing_message']
-
-        self.next_state_processor = request['next_state']
-        return self.respond(request)
-
+def web_sms(request):
+    message = Responder(next_state_processor=find_dbm_for_web_sms).respond(request)
+    return HttpResponse(message)
 
 def find_dbm(request):
     _from, _to = _get_from_and_to_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
     incoming_request = {'incoming_message': request.POST["message"],
                         'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
-                                                        to_number=_to)}
+                            to_number=_to)}
 
     if _to is None:
         incoming_request['outgoing_message'] = ugettext("Your organization does not have a telephone number assigned. Please contact DataWinners Support.")
         return incoming_request
     incoming_request['transport_info'] = TransportInfo(transport=SMS, source=_from, destination=_to)
     try:
-        incoming_request['dbm'] = get_database_manager(request.user) if _from == TEST_REPORTER_MOBILE_NUMBER else get_db_manager_for(_from, _to)
+        incoming_request['dbm'] = get_db_manager_for(_from, _to)
 
     except MangroveException as exception:
         message = get_exception_message_for(exception=exception, channel=SMS)
@@ -80,6 +66,42 @@ def find_dbm(request):
     incoming_request['organization'] = _find_organization(request)
     incoming_request['next_state'] = increment_message_counter
     return incoming_request
+
+class Responder(object):
+
+    def __init__(self,next_state_processor=find_dbm):
+        self.next_state_processor = next_state_processor
+
+    def respond(self, incoming_request):
+        request = self.next_state_processor(incoming_request)
+        if request.get('outgoing_message'):
+            return request['outgoing_message']
+
+        self.next_state_processor = request['next_state']
+        return self.respond(request)
+
+
+
+def find_dbm_for_web_sms(request):
+    _from, _to = _test_mode_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
+    incoming_request = {'incoming_message': request.POST["message"],
+                        'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
+                            to_number=_to)}
+
+    incoming_request['transport_info'] = TransportInfo(transport=SMS, source=_from, destination=_to)
+    try:
+        incoming_request['dbm'] = get_database_manager(request.user)
+
+    except MangroveException as exception:
+        message = get_exception_message_for(exception=exception, channel=SMS)
+        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
+        incoming_request['datawinner_log'].save()
+        return incoming_request
+
+    incoming_request['organization'] = get_organization(request)
+    incoming_request['next_state'] = increment_message_counter
+    return incoming_request
+
 
 def increment_message_counter(incoming_request):
     organization = incoming_request['organization']
@@ -136,18 +158,11 @@ def _test_mode_numbers(request):
 
 
 def _get_from_and_to_numbers(request):
-    if request.POST.get('test_mode'):
-        return _test_mode_numbers(request)
-
     _from = request.POST["from_msisdn"]
     _to = request.POST["to_msisdn"]
     return _from, _to
 
 def _find_organization(request):
-    if request.POST.get('test_mode'):
-        organization = get_organization(request)
-        return organization
-
     _from = request.POST["from_msisdn"]
     _to = request.POST["to_msisdn"]
     return get_organization_settings_for(_from, _to).organization
