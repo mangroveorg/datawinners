@@ -15,3 +15,7 @@ class WebSMSTransportInfoRequestProcessor(object):
         _from = TEST_REPORTER_MOBILE_NUMBER
 
         mangrove_request['transport_info']=TransportInfo(SMS, _from, _to)
+
+class SMSMessageRequestProcessor(object):
+    def process(self, http_request, mangrove_request):
+        mangrove_request['message']=http_request.POST['message']

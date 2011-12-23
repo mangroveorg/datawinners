@@ -23,6 +23,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 import logging
 from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
+from submission.request_processor import WebSMSTransportInfoRequestProcessor, WebSMSDBMRequestProcessor
 from utils import get_organization_settings_from_request
 from mangrove.transport.facade import Request
 from messageprovider.exception_handler import handle
@@ -88,16 +89,8 @@ def find_dbm_for_web_sms(request):
                         'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
                             to_number=_to)}
 
-    incoming_request['transport_info'] = TransportInfo(transport=SMS, source=_from, destination=_to)
-    try:
-        incoming_request['dbm'] = get_database_manager(request.user)
-
-    except MangroveException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
-        return incoming_request
-
+    WebSMSTransportInfoRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
+    WebSMSDBMRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
     incoming_request['next_state'] = increment_message_counter
     return incoming_request
