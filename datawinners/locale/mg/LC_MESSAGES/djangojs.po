@@ -523,3 +523,12 @@ msgstr " existe déjà"
 
 msgid "Agree terms and conditions"
 msgstr "Acceptez les termes et conditions"
+
+msgid " successful | "
+msgstr ""
+
+msgid " errors"
+msgstr ""
+
+msgid "No submissions present for this project"
+msgstr ""

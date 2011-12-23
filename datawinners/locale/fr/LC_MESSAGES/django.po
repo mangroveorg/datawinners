@@ -136,7 +136,7 @@ msgstr "Projets"
 #: templates/project/reminders_wizard.html:55
 #: templates/project/tab_navigation.html:58
 msgid "Data Senders"
-msgstr "Envoyeurs de données"
+msgstr "Expéditeurs de données"
 
 #: dashboard/views.py:90 templates/main_navigation.html:19
 #: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
@@ -778,7 +778,7 @@ msgstr "Cliquez sur le triangle à gauche de 'Comment utiliser DataWinners' pour
 #: templates/dashboard/home.html:44
 msgid "help_how_to_use_dw"
 msgstr ""
-"DataWinners est un outil de collecte et de communication de données."
+"DataWinners est un outil de collecte et de communication de données, à gérer soi-même pour aider à prendre de meilleures décisions"
 "<br/>Cliquez sur Créer un nouveau Projet pour commencer."
 
 #: templates/dashboard/home.html:49
@@ -2434,7 +2434,7 @@ msgid "Your project"
 msgstr "Vos projet"
 
 msgid "You successfully created your questionnaire!"
-msgstr "Vous avez créé votre questionnaire avec succès"
+msgstr "Vous avez créé votre questionnaire avec succès!"
 
 msgid "Now you can..."
 msgstr "Maintenant vous pouvez..."

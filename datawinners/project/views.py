@@ -144,7 +144,6 @@ def index(request):
         delete_link = reverse(delete_project, args=[project_id])
         project = dict(delete_link=delete_link,name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link, activate_link=activate_link, state=row['value']['state'])
-        project["created"] = project["created"].strftime("%d %B, %Y")
         project_list.append(project)
     return render_to_response('project/index.html', {'projects': project_list},
                               context_instance=RequestContext(request))

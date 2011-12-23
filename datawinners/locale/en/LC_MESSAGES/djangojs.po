@@ -538,3 +538,12 @@ msgstr ""
 
 msgid "Read More"
 msgstr ""
+
+msgid " successful | "
+msgstr ""
+
+msgid " errors"
+msgstr ""
+
+msgid "No submissions present for this project"
+msgstr ""

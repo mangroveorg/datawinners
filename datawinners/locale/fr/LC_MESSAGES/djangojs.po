@@ -545,3 +545,12 @@ msgstr "sujet"
 
 msgid "Read More"
 msgstr ""
+
+msgid " successful | "
+msgstr " succès | "
+
+msgid " errors"
+msgstr " erreurs"
+
+msgid "No submissions present for this project"
+msgstr "Aucune donnée pour ce projet"
