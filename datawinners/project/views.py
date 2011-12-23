@@ -92,13 +92,12 @@ def _make_project_links(project,questionnaire_code):
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
         project_links['setting_reminders_link'] = reverse(reminder_settings, args=[project_id])
         project_links['broadcast_message_link'] = reverse(broadcast_message, args=[project_id])
-
-    if project.state == ProjectState.ACTIVE:
-        project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
         if 'web' in project.devices:
             project_links['test_questionnaire_link'] = reverse(web_questionnaire, args=[project_id])
         else:
             project_links['test_questionnaire_link'] = ""
+    if project.state == ProjectState.ACTIVE:
+        project_links['questionnaire_link'] = reverse(questionnaire, args=[project_id])
 
     return project_links
 
@@ -751,8 +750,6 @@ def web_questionnaire(request, project_id=None):
     form_model = FormModel.get(manager, project.qid)
     QuestionnaireForm = _create_django_form_from_form_model(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
-    if project.state == ProjectState.TEST:
-        return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
@@ -779,7 +776,6 @@ def web_questionnaire(request, project_id=None):
         except Exception as exception:
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
-
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})
