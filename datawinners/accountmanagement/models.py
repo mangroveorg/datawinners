@@ -72,8 +72,7 @@ class Organization(models.Model):
         return organization_setting
 
     def get_message_tracker(self, date):
-        message_tracker_tuple = MessageTracker.objects.get_or_create(organization=self, month=date)
-        return message_tracker_tuple[0]
+        return MessageTracker.objects.get_or_create(organization=self, month=date)[0]
 
         
 class DataSenderOnTrialAccount(models.Model):

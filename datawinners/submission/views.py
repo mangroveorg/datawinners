@@ -90,7 +90,7 @@ def find_dbm_for_web_sms(request):
 
     MangroveWebSMSRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
-    incoming_request['next_state'] = increment_message_counter
+    incoming_request['next_state'] = find_parser
     return incoming_request
 
 
