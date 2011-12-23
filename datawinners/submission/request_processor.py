@@ -18,4 +18,11 @@ class WebSMSTransportInfoRequestProcessor(object):
 
 class SMSMessageRequestProcessor(object):
     def process(self, http_request, mangrove_request):
-        mangrove_request['message']=http_request.POST['message']
+        mangrove_request['incoming_message']=http_request.POST['message']
+
+
+class MangroveWebSMSRequestProcessor(object):
+    middlewares=[SMSMessageRequestProcessor(),WebSMSTransportInfoRequestProcessor(),WebSMSDBMRequestProcessor()]
+    def process(self, http_request, mangrove_request):
+        for middleware in self.middlewares:
+            middleware.process(http_request,mangrove_request)

@@ -23,7 +23,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 import logging
 from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
-from submission.request_processor import WebSMSTransportInfoRequestProcessor, WebSMSDBMRequestProcessor
+from submission.request_processor import WebSMSTransportInfoRequestProcessor, WebSMSDBMRequestProcessor, SMSMessageRequestProcessor, MangroveWebSMSRequestProcessor
 from utils import get_organization_settings_from_request
 from mangrove.transport.facade import Request
 from messageprovider.exception_handler import handle
@@ -85,12 +85,10 @@ class Responder(object):
 
 def find_dbm_for_web_sms(request):
     _from, _to = _test_mode_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
-    incoming_request = {'incoming_message': request.POST["message"],
-                        'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
+    incoming_request = {'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
                             to_number=_to)}
 
-    WebSMSTransportInfoRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
-    WebSMSDBMRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
+    MangroveWebSMSRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
     incoming_request['next_state'] = increment_message_counter
     return incoming_request
