@@ -1,7 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import json
 import datetime
+import logging
 from time import mktime
+
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import Form
 from django import forms
@@ -10,6 +12,33 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
+from django.conf import settings
+from django.utils import translation
+from django.core.urlresolvers import reverse
+from django.contrib import messages
+
+import helper
+
+from mangrove.datastore.data import EntityAggregration
+from mangrove.datastore.queries import get_entity_count_for_type
+from mangrove.datastore.entity_type import get_all_entity_types
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
+from mangrove.form_model import form_model
+from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
+from mangrove.transport.player.player import WebPlayer
+from mangrove.transport import Request, TransportInfo
+from mangrove.transport.submissions import Submission, get_submissions, submission_count
+from mangrove.utils.dates import convert_to_epoch
+from mangrove.datastore import aggregrate as aggregate_module
+from mangrove.utils.json_codecs import encode_json
+from mangrove.utils.types import is_empty
+from mangrove.transport import Channel
+
+import datawinners.utils as utils
+
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
@@ -23,34 +52,8 @@ from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
 from datawinners.entity.forms import SubjectUploadForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
-import helper
+from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
-from mangrove.datastore.data import EntityAggregration
-from mangrove.datastore.queries import get_entity_count_for_type
-from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
-from mangrove.form_model import form_model
-from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
-from mangrove.transport.player import player
-from mangrove.transport.player.player import WebPlayer
-from mangrove.transport import Request, TransportInfo
-from mangrove.transport.submissions import Submission, get_submissions, submission_count
-from django.contrib import messages
-from mangrove.utils.dates import convert_to_epoch
-from mangrove.datastore import aggregrate as aggregate_module
-from mangrove.utils.json_codecs import encode_json
-from django.core.urlresolvers import reverse
-import datawinners.utils as utils
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
-from django.conf import settings
-from django.utils import translation
-
-import logging
-from mangrove.utils.types import is_empty
-from location.LocationTree import get_location_hierarchy
-
 
 logger = logging.getLogger("django")
 
@@ -775,7 +778,7 @@ def web_questionnaire(request, project_id=None):
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
             logger.exception('Web Submission failure:-')
-            error_message = _(get_exception_message_for(exception=exception, channel=player.Channel.WEB))
+            error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
