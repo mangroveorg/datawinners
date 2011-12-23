@@ -47,7 +47,7 @@ class FilePlayer(Player):
             try:
                 form_model = get_form_model_by_code(self.dbm, form_code)
                 form_submission = self.submit(form_model, values)
-                submission.update(True, form_submission.errors, form_submission.data_record_id,
+                submission.update(form_submission.saved, form_submission.errors, form_submission.data_record_id,
                                   form_submission.form_model.is_in_test_mode())
                 response = Response(reporters=[], submission_id=submission.uuid, form_submission=form_submission)
                 if not form_submission.saved:
