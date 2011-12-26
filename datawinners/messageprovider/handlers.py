@@ -1,17 +1,18 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.utils import translation
-from mangrove.form_model.form_model import get_form_model_by_code
+from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 import mangrove.errors.MangroveException as ex
 from messageprovider.message_handler import get_exception_message_for
 from messageprovider.messages import SMS
+from submission.models import DatawinnerLog
 
 def default_exception_handler(exception, request):
     return  get_exception_message_for(exception=exception, channel=SMS)
 
 def default_exception_handler_with_logger(exception, request):
-    response = request['datawinner_log'].error = get_exception_message_for(exception=exception, channel=SMS)
-    request['datawinner_log'].save()
-    return response
+    exception_message = get_exception_message_for(exception=exception, channel=SMS)
+    create_failure_log(exception_message, request)
+    return exception_message
 
 def data_object_not_found_handler(exception, request):
     return get_exception_message_for(exception=exception, channel=SMS, formatter=data_object_not_found_formatter)
@@ -34,6 +35,15 @@ exception_handlers = {
 def data_object_not_found_formatter(data_object_not_found_exception, message):
     entity_type, param, value = data_object_not_found_exception.data
     return message % (entity_type,value,entity_type)
+
+def create_failure_log(exception_message, request):
+    log = DatawinnerLog()
+    log.error = exception_message
+    log.form_code = request.get(FORM_CODE)
+    log.message = request.get('incoming_message')
+    log.from_number = request['transport_info'].source
+    log.to_number = request['transport_info'].destination
+    log.save()
 
 def _activate_language(exception, request):
     form_model = get_form_model_by_code(request['dbm'], exception.data[0])

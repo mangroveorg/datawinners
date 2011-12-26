@@ -15,7 +15,7 @@ from mangrove.transport import TransportInfo
 
 from datawinners.accountmanagement.models import   TEST_REPORTER_MOBILE_NUMBER
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager, get_db_manager_for, get_organization_settings_for
+from datawinners.main.utils import  get_db_manager_for, get_organization_settings_for
 from datawinners.messageprovider.messages import SMS
 from datawinners.submission.models import DatawinnerLog, SMSResponse
 from datawinners.messageprovider.message_handler import get_exception_message_for
@@ -23,7 +23,8 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 import logging
 from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
-from submission.request_processor import WebSMSTransportInfoRequestProcessor, WebSMSDBMRequestProcessor, SMSMessageRequestProcessor, MangroveWebSMSRequestProcessor
+from submission.request_processor import    MangroveWebSMSRequestProcessor
+from submission.submission_utils import PostSMSProcessorLanguageActivator
 from utils import get_organization_settings_from_request
 from mangrove.transport.facade import Request
 from messageprovider.exception_handler import handle
@@ -130,7 +131,7 @@ def activate_language(incoming_request):
 
 def submit_to_player(incoming_request):
     try:
-        sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(), get_location_hierarchy=get_location_hierarchy)
+        sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(), get_location_hierarchy=get_location_hierarchy,post_sms_parser_processors=[PostSMSProcessorLanguageActivator(incoming_request['dbm'],incoming_request)])
         mangrove_request = Request(message=incoming_request['incoming_message'], transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
         message = SMSResponse(response).text()
