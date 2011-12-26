@@ -116,7 +116,6 @@ def find_parser(incoming_request):
         form_code, values = sms_parser.parse(incoming_message)
         form_model = get_form_model_by_code(dbm, form_code)
         incoming_request['form_model'] = form_model
-        incoming_request['submission_values'] = values
         incoming_request['datawinner_log'].form_code = form_code
     except Exception as exception:
         incoming_request['outgoing_message'] = handle(exception, incoming_request)
