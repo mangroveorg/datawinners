@@ -96,12 +96,9 @@ def find_dbm_for_web_sms(request):
 
 
 def increment_message_counter(incoming_request):
-    organization = incoming_request['organization']
-    current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
-    message_tracker = organization.get_message_tracker(current_month)
-    message_tracker.increment_incoming_message_count()
-    message_tracker.increment_outgoing_message_count()
-    if not message_tracker.should_handle_message():
+    organization =incoming_request['organization']
+    organization.increment_all_message_count()
+    if organization.has_exceed_message_limit():
         incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
         return incoming_request
 

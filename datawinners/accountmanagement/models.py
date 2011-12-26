@@ -4,6 +4,7 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.models import  User
 from django.db import models
+from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT
 from datawinners.utils import generate_document_store_name
 
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
@@ -62,6 +63,16 @@ class Organization(models.Model):
         organization_setting = organization._configure_organization_settings()
         return organization
 
+    def has_exceed_message_limit(self):
+        if self.in_trial_mode and self._has_exceeded_limit_for_trial_account():
+                return True
+        return False
+
+    def increment_all_message_count(self):
+        current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+        message_tracker = self._get_message_tracker(current_month)
+        message_tracker.increment_incoming_message_count()
+        message_tracker.increment_outgoing_message_count()
 
     #TODO SHould be removed??
     def _configure_organization_settings(self):
@@ -71,10 +82,20 @@ class Organization(models.Model):
         organization_setting.document_store = generate_document_store_name(self.name,self.org_id)
         return organization_setting
 
-    def get_message_tracker(self, date):
+    def _get_message_tracker(self, date):
         return MessageTracker.objects.get_or_create(organization=self, month=date)[0]
 
-        
+    def _get_all_message_trackers(self):
+        return MessageTracker.objects.filter(organization=self)
+
+    def _get_total_message_count(self):
+        message_trackers = self._get_all_message_trackers()
+        return sum([message_tracker.get_total_message_count() for message_tracker in message_trackers])
+
+    def _has_exceeded_limit_for_trial_account(self):
+        return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
+
+
 class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)
     organization = models.ForeignKey(Organization)
@@ -135,12 +156,8 @@ class MessageTracker(models.Model):
         self.outgoing_sms_count += 1
         self.save()
 
-    def should_handle_message(self):
-        if self.organization.in_trial_mode:
-            if (self.incoming_sms_count + self.outgoing_sms_count) > 100:
-                return False
-
-        return True
+    def get_total_message_count(self):
+        return self.incoming_sms_count + self.outgoing_sms_count
 
     def reset(self):
         self.incoming_sms_count = 0

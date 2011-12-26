@@ -498,7 +498,7 @@ def broadcast_message(request, project_id):
             organization = Organization.objects.get(org_id = profile.org_id)
             organization_setting = OrganizationSetting.objects.get(organization = organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
-            message_tracker = organization.get_message_tracker(current_month)
+            message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
             helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.sms_tel_number, other_numbers, message_tracker)
             form = BroadcastMessageForm()
