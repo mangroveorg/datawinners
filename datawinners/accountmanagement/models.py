@@ -63,7 +63,7 @@ class Organization(models.Model):
         organization_setting = organization._configure_organization_settings()
         return organization
 
-    def has_exceed_message_limit(self):
+    def has_exceeded_message_limit(self):
         if self.in_trial_mode and self._has_exceeded_limit_for_trial_account():
                 return True
         return False

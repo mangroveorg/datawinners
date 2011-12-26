@@ -66,7 +66,7 @@ def find_dbm(request):
         return incoming_request
 
     incoming_request['organization'] = _find_organization(request)
-    incoming_request['next_state'] = increment_message_counter
+    incoming_request['next_state'] = process_sms_counter
     return incoming_request
 
 class Responder(object):
@@ -88,14 +88,14 @@ def find_dbm_for_web_sms(request):
     incoming_request = dict()
     MangroveWebSMSRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
-    incoming_request['next_state'] = increment_message_counter
+    incoming_request['next_state'] = process_sms_counter
     return incoming_request
 
 
-def increment_message_counter(incoming_request):
+def process_sms_counter(incoming_request):
     organization =incoming_request['organization']
     organization.increment_all_message_count()
-    if organization.has_exceed_message_limit():
+    if organization.has_exceeded_message_limit():
         incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
         return incoming_request
 
