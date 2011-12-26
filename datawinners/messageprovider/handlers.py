@@ -39,7 +39,7 @@ def data_object_not_found_formatter(data_object_not_found_exception, message):
 def create_failure_log(exception_message, request):
     log = DatawinnerLog()
     log.error = exception_message
-    log.form_code = request.get(FORM_CODE)
+    log.form_code = request.get(FORM_CODE,'')
     log.message = request.get('incoming_message')
     log.from_number = request['transport_info'].source
     log.to_number = request['transport_info'].destination

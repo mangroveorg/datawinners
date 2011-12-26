@@ -105,7 +105,7 @@ def increment_message_counter(incoming_request):
         incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
         return incoming_request
 
-    incoming_request['next_state'] = find_parser
+    incoming_request['next_state'] = submit_to_player
     return incoming_request
 
 def find_parser(incoming_request):
