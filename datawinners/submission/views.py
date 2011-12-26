@@ -85,13 +85,10 @@ class Responder(object):
 
 
 def find_dbm_for_web_sms(request):
-    _from, _to = _test_mode_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
-    incoming_request = {'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
-                            to_number=_to)}
-
+    incoming_request = dict()
     MangroveWebSMSRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
-    incoming_request['next_state'] = find_parser
+    incoming_request['next_state'] = increment_message_counter
     return incoming_request
 
 
@@ -102,27 +99,6 @@ def increment_message_counter(incoming_request):
         incoming_request['outgoing_message'] = ugettext("You have used up your 100 SMS for the trial account. Please upgrade to a monthly subscription to continue sending in data to your projects.")
         return incoming_request
 
-    incoming_request['next_state'] = submit_to_player
-    return incoming_request
-
-def find_parser(incoming_request):
-    incoming_message = incoming_request['incoming_message']
-    dbm = incoming_request['dbm']
-    sms_parser = SMSParserFactory().getSMSParser(message=incoming_message,
-                                                 dbm=dbm)
-    try:
-        form_code, values = sms_parser.parse(incoming_message)
-        form_model = get_form_model_by_code(dbm, form_code)
-        incoming_request['form_model'] = form_model
-        incoming_request['datawinner_log'].form_code = form_code
-    except Exception as exception:
-        incoming_request['outgoing_message'] = handle(exception, incoming_request)
-
-    incoming_request['next_state'] = activate_language
-    return incoming_request
-
-def activate_language(incoming_request):
-    translation.activate(incoming_request['form_model'].activeLanguages[0])
     incoming_request['next_state'] = submit_to_player
     return incoming_request
 
