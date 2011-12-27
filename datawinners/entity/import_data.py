@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
+from mangrove.transport.facade import RegistrationWorkFlow
 from mangrove.transport.submissions import Submission
 import os
 from django.conf import settings
@@ -46,6 +47,8 @@ class FilePlayer(Player):
             submission.save()
             try:
                 form_model = get_form_model_by_code(self.dbm, form_code)
+                if form_model.is_registration_form():
+                    values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree, self.get_location_hierarchy).process(values)
                 form_submission = self.submit(form_model, values)
                 submission.update(form_submission.saved, form_submission.errors, form_submission.data_record_id,
                                   form_submission.form_model.is_in_test_mode())
