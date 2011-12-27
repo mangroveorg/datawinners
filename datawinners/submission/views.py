@@ -52,9 +52,7 @@ def find_dbm(request):
                         'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
                             to_number=_to)}
 
-    if _to is None:
-        incoming_request['outgoing_message'] = ugettext("Your organization does not have a telephone number assigned. Please contact DataWinners Support.")
-        return incoming_request
+
     incoming_request['transport_info'] = TransportInfo(transport=SMS, source=_from, destination=_to)
     try:
         incoming_request['dbm'] = get_db_manager_for(_from, _to)
