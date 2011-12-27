@@ -547,3 +547,24 @@ msgstr ""
 
 msgid "No submissions present for this project"
 msgstr ""
+
+msgid "Example: %(day)s of the week following the reporting week"
+msgstr ""
+
+msgid "Example: %(day)s of the reporting week"
+msgstr ""
+
+msgid "Example: %(day)s of October for September report"
+msgstr ""
+
+msgid "Example: %(day)s of October for October report"
+msgstr ""
+
+msgid "Start date"
+msgstr ""
+
+msgid "End date"
+msgstr ""
+
+msgid "Done"
+msgstr ""

@@ -193,6 +193,8 @@ def _reminder_info_about_project(project):
         else:
             data['deadline_week'] = deadline_information['deadline_week']
         data['deadline_type'] = deadline_information['deadline_type']
+        data['deadline_type_week'] = deadline_information['deadline_type']
+        data['deadline_type_month'] = deadline_information['deadline_type']
         reminder_before_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.BEFORE_DEADLINE, project_id=project.id)
         if  reminder_before_deadline.count()>0:
             data['should_send_reminders_before_deadline'] = True

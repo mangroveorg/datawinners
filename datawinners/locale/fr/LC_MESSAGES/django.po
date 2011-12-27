@@ -253,7 +253,7 @@ msgstr "A chaque fois que l'envoyeur a des données à communiquer"
 
 #: project/forms.py:43
 msgid "Every"
-msgstr "Tous/toutes les"
+msgstr "Chaque"
 
 #: project/forms.py:46
 msgid "Name this Project"
@@ -312,12 +312,18 @@ msgid "Yes"
 msgstr "Oui"
 
 #: project/forms.py:62
-msgid "Same"
-msgstr "Le/la même"
+msgid "Same month"
+msgstr "même mois"
+
+msgid "Same week"
+msgstr "même semaine"
 
 #: project/forms.py:62
-msgid "Following"
-msgstr "Après le/la"
+msgid "Following month"
+msgstr "mois suivant"
+
+msgid "Following week"
+msgstr "semaine suivante"
 
 #: project/forms.py:63
 msgid "Do you want to remind DataSenders to send in their data?"
@@ -349,7 +355,7 @@ msgid "The day of the deadline"
 msgstr "Le jour de l'échéance"
 
 msgid "Only send reminders to senders who have not already submitted data for the current deadline."
-msgstr "N’envoie des rappels qu’aux expéditeurs qui n’ont pas encore soumis des données à la date de l’échéance actuelle."
+msgstr "Envoyer des rappels uniquement aux expéditeurs qui n’ont pas encore soumis des données à la date de l’échéance actuelle."
 
 #: templates/datasender_form.html:51 templates/step_wizard.html:20
 #: templates/step_wizard.html.py:27 templates/subject_form.html:61
@@ -799,7 +805,7 @@ msgstr "Aller à ce projet"
 
 #: templates/dashboard/home.html:71
 msgid "No submissions present for this project"
-msgstr "Aucunes données pour ce projet"
+msgstr "Aucune donnée pour ce projet"
 
 #: templates/dashboard/home.html:74
 msgid "This project is inactive"
@@ -908,7 +914,7 @@ msgstr "Autoriser l'accès à l'envoi web"
 
 #: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"
-msgstr "Tous les Envoyeurs"
+msgstr "Tous les Expéditeurs"
 
 #: templates/entity/all_subjects.html:11
 msgid "Add subjects one-by-one using the online registration form"
@@ -954,7 +960,7 @@ msgstr "Tous les sujets"
 #: templates/entity/create_datasender.html:3
 #: templates/entity/create_datasender.html:4
 msgid "Add A Data Sender"
-msgstr "Ajoutez un Envoyeur"
+msgstr "Ajouter un Expéditeur"
 
 #: templates/entity/create_subject.html:3
 #: templates/entity/create_subject.html:4
@@ -1004,7 +1010,7 @@ msgstr "Cliquer pour sélectionner une période"
 
 #: templates/project/data_analysis.html:78 templates/project/results.html:72
 msgid "Filter"
-msgstr "Filtre"
+msgstr "Filtrer"
 
 #: templates/project/data_analysis.html:84
 msgid "View Data By:"
@@ -1029,11 +1035,11 @@ msgstr "Carte"
 #: templates/project/datasenders.html:3
 #: templates/project/registered_datasenders.html:3
 msgid "Projects - Data Senders"
-msgstr "Projet - Envoyeurs"
+msgstr "Projet - Expéditeurs"
 
 #: templates/project/datasenders.html:34
 msgid "Preview Data sender's questionnaire"
-msgstr "Faites un aperçu du questionnaire \"Envoyeurs\""
+msgstr "Faites un aperçu du questionnaire de l'Expéditeur de Données"
 
 #: templates/project/datasenders.html:37
 #: templates/project/finish_and_test.html:179
@@ -1046,24 +1052,24 @@ msgstr "Voir un aperçu du questionnaire"
 #: templates/project/datasenders_wizard.html:47
 msgid "q_tooltip_datasenders_sender"
 msgstr ""
-"Les <strong>Envoyeurs</strong> sont important car ce sont les personnes qui "
+"Les <strong>Expéditeurs</strong> sont important car ce sont les personnes qui "
 "vont répondre à votre questionnaire. Ils sont généralement basés sur le "
-"terrain. <br/><br/>Vous pouvez <strong>enregistrer les Envoyeurs</strong> "
+"terrain. <br/><br/>Vous pouvez <strong>enregistrer les Expéditeurs</strong> "
 "en entrant quelques informations élémentaires (nom, localité, numéro de "
 "téléphone) à propos de chacun d'eux. DataWinners utilisera le numéro de "
 "téléphone de l'envoyeur comme son <strong>\" identifiant unique \"</strong>."
-"En enregistrant vos Envoyeurs, ils n'ont plus besoin d'envoyer certaines "
+"En enregistrant vos Expéditeurs, ils n'ont plus besoin d'envoyer certaines "
 "informations (exemple : nom) chaque fois qu'il répondent à un questionnaire. "
-"DataWinners identifiera chaque Envoyeur à partir de son numéro de téléphone."
+"DataWinners identifiera chaque Expéditeur à partir de son numéro de téléphone."
 
 #: templates/project/datasenders_wizard.html:49
 msgid "r_tooltip_datasenders_sender"
 msgstr ""
-"Identifiez chaque information que vous voulez collecter sur vos Envoyeurs "
+"Identifiez chaque information que vous voulez collecter sur vos Expéditeurs "
 "(nom, prénom, localité, numéro de téléphone, etc.) Vous aurez alors trois "
 "façons de les enregistrer : 1) Saisissez manuellement les détails en utilisant "
 "le <strong>formulaire en ligne</strong>, 2) <strong>Importez la liste</strong>; ou "
-"3) Imprimez le questionnaire \"Envoyeur\", donnez le à l'Envoyeur et <strong> "
+"3) Imprimez le questionnaire \"Expéditeur\", donnez le à l'Expéditeur et <strong> "
 "demandez-lui de d'enregistrer</strong>. N'ayez aucune crainte, vous pourrez "
 "toujours éditer ces informations ultérieurement."
 
@@ -1072,12 +1078,12 @@ msgid ""
 "Register and manage approved Data Senders by editing the registration form "
 "below. You can also do this at a later time."
 msgstr ""
-"Enregistrez et gérez les Envoyeurs en remplissant le formulaire ci-dessous. "
+"Enregistrez et gérez les Expéditeurs en remplissant le formulaire ci-dessous. "
 "Vous pourrez également le faire ultérieurement"
 
 #: templates/project/datasenders_wizard.html:59
 msgid "Add Data Senders now"
-msgstr "Ajoutez des Envoyeurs"
+msgstr "Ajouter des Expéditeurs maintenant"
 
 #: templates/project/datasenders_wizard.html:60
 #: templates/project/subjects_wizard.html:58
@@ -1091,7 +1097,7 @@ msgstr "Ajouter des Expéditeurs de Données Manuellement"
 
 #: templates/project/datasenders_wizard.html:72
 msgid "Enter your Data Senders individually"
-msgstr "Entrez les Envoyeurs un par un"
+msgstr "Entrez les Expéditeurs un par un"
 
 #: templates/project/datasenders.html:76
 msgid "Import a List of Data Senders"
@@ -1101,7 +1107,7 @@ msgid "tooltip_datasenders_import"
 msgstr ""
 "Ajoutez une liste de sujets en suivant ces instructions:"
 "<br />1) Téléchargez le modèle en cliquant sur le lien ‘Importer un Modèle’"
-"<br />2) Suivez les instructions relatives au modèle pour créer une liste de vos des Envoyeurs"
+"<br />2) Suivez les instructions relatives au modèle pour créer une liste de vos des Expéditeurs"
 "<br />3) Sauvegardez dans votre ordinateur le modèle dûment rempli"
 "<br />4) Cliquez sur le bouton ‘Importer la Liste’"
 "<br />5) Cliquez sur le bouton ‘Télécharger un Fichier’"
@@ -1125,11 +1131,11 @@ msgstr "Félicitations! Vous venez de créer votre projet. Revoyez les détails 
 
 #: templates/project/finish_and_test.html:47
 msgid "Review"
-msgstr "Vérifiez"
+msgstr "Vérifier"
 
 #: templates/project/finish_and_test.html:48
 msgid "Review and verify the summary of your project on this page."
-msgstr "Vérifier et voyez le récapitulatif de votre projet sur cette page"
+msgstr "Vérifier et voir le récapitulatif de votre projet sur cette page"
 
 #: templates/project/finish_and_test.html:49
 msgid "Verify the specifications of your project"
@@ -1154,7 +1160,7 @@ msgstr "Description du projet :"
 
 #: templates/project/finish_and_test.html:71
 msgid "Devices:"
-msgstr "Canaaux :"
+msgstr "Canaux :"
 
 #: templates/project/finish_and_test.html:75
 #: templates/project/finish_and_test.html:98
@@ -1189,7 +1195,7 @@ msgstr "Questions :"
 
 #: templates/project/finish_and_test.html:126
 msgid "Number of data senders :"
-msgstr "Nombre d'envoyeurs :"
+msgstr "Nombre d'expéditeurs :"
 
 #: templates/project/finish_and_test.html:137
 #: templates/project/finish_and_test.html:199
@@ -1215,14 +1221,14 @@ msgstr ""
 "une collecte de données et voir par vous même si le questionnaire est efficace. "
 "Après le test vous pouvez voir les données collectées en cliquant sur le menu "
 "\"Données\" en haut à droite sur cette page. Tester le questionnaire peut vous "
-"donner des information pour affiner et améliorer les questions et les types de "
+"donner des informations pour affiner et améliorer les questions et les types de "
 "réponses"
 
 #: templates/project/finish_and_test.html:158
 msgid "r_tooltip_finish_test"
 msgstr ""
 "Choisissez entre l'envoi par formulaire Web ou l'envoi par SMS et suivez les "
-"instructions à lécran pour terminer le test"
+"instructions à l'écran pour terminer le test"
 
 #: templates/project/finish_and_test.html:162
 #: templates/project/finish_and_test.html:164
@@ -1231,7 +1237,7 @@ msgstr "Questionnaire SMS"
 
 #: templates/project/finish_and_test.html:163
 msgid "Test your Questionnaire by this SMS tester"
-msgstr "Testez votre Questionnaire avec ce simulateur d'envoi pas SMS"
+msgstr "Testez votre Questionnaire avec ce simulateur d'envoi par SMS"
 
 #: templates/project/finish_and_test.html:167
 msgid "Web Questionnaire"
@@ -1243,7 +1249,7 @@ msgstr "Faites un aperçu et imprimez votre questionnaire"
 
 #: templates/project/finish_and_test.html:171
 msgid "Data Sender"
-msgstr "Envoyeurs"
+msgstr "Expéditeurs"
 
 #: templates/project/finish_and_test.html:172
 msgid "Subject"
@@ -1379,8 +1385,11 @@ msgstr "Toujours le/la"
 
 #: templates/project/profile_deadline_month_block.html:8
 #: templates/project/profile_deadline_week_block.html:8
-msgid "of the"
-msgstr "du/de la"
+msgid "of-the-week"
+msgstr "de la"
+
+msgid "of-the-month"
+msgstr "du"
 
 #: templates/project/profile_deadline_month_block.html:8
 msgid "month"
@@ -1473,7 +1482,7 @@ msgstr ""
 
 #: templates/project/question_detail_panel.html:31
 msgid "Select what kind of answer you want from your Data Senders."
-msgstr "Quel type de réponse attendez-vous de vos envoyeurs"
+msgstr "Quel type de réponse attendez-vous de vos expéditeurs"
 
 #: templates/project/question_detail_panel.html:34
 msgid "Word or Phrase"
@@ -1603,7 +1612,7 @@ msgstr "Imprimer"
 
 #: templates/project/questionnaire_preview.html:11
 msgid "SMS your answers to"
-msgstr "Envoyez vos réponses par SMS à"
+msgstr "Envoyez vos réponses par SMS à :"
 
 #: templates/project/questionnaire_preview.html:15
 msgid "Project Name:"
@@ -1611,7 +1620,7 @@ msgstr "Nom du projet :"
 
 #: templates/project/questionnaire_preview.html:19
 msgid "Questionnarie Code:"
-msgstr "Code Questionnaire"
+msgstr "Code Questionnaire :"
 
 #: templates/project/questionnaire_preview.html:23
 msgid "Example SMS:"
@@ -1619,7 +1628,7 @@ msgstr "Exemple de SMS :"
 
 #: templates/project/questionnaire_wizard.html:62
 msgid "Define the questions you want your Data Senders to answer."
-msgstr "Définissez les questions auxquelles vos envoyeurs doivent répondre."
+msgstr "Définissez les questions auxquelles vos expéditeurs doivent répondre."
 
 #: templates/project/questionnaire_wizard.html:70
 msgid "Questionnaire Code:"
@@ -1652,7 +1661,7 @@ msgstr "Dissocier"
 
 #: templates/project/registered_datasenders.html:33
 msgid "Select"
-msgstr "Sélectionnez"
+msgstr "Sélectionner"
 
 #: templates/project/registered_datasenders.html:34
 #: templates/project/registered_subjects.html:28
@@ -1770,7 +1779,7 @@ msgstr "Testez le Questionnaire SMS"
 
 #: templates/project/sms_tester_form.html:12
 msgid "Verify you can send in test answers"
-msgstr "Vérifier que vous pouvez envoyer vos réponses de test"
+msgstr "Vérifiez que vous pouvez envoyer vos réponses de test"
 
 #: templates/project/sms_tester_form.html:15
 msgid "Send in your test answers."
@@ -1786,8 +1795,8 @@ msgstr ""
 "<p>Remarque : Quand vous activez un projet, toutes les données de test sont "
 "supprimées automatiquement.</p><p>Vous avez 2 options</p><p>A. Cliquez sur "
 "l'écran du mobile et saisissez votre message de test.</p><p>B. Enregistrez-"
-"vous en tant qu'envoyeur de données. Puis envoyez par SMS votre sms de test"
-"au numéro de téléphone donné par DataWinners.</p>"
+"vous en tant qu'expéditeur de données. Puis envoyez par SMS votre sms de test"
+" au numéro de téléphone donné par DataWinners.</p>"
 
 #: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
@@ -1843,11 +1852,11 @@ msgstr "Cliquez sur le bouton bleu 'Ajouter des Sujets Manuellement' et inscrive
 
 #: templates/project/subjects_wizard.html:70
 msgid "Enter your Subjects individually"
-msgstr "Entrez les sujets un par un"
+msgstr "Entrer les sujets un par un"
 
 #: templates/project/subjects_wizard.html:74
 msgid "Import a List of Subjects"
-msgstr "Importez la liste des sujets"
+msgstr "Importer la liste des sujets"
 
 #: templates/project/subjects.html:79
 msgid "tooltip_subject_import"
@@ -1926,7 +1935,7 @@ msgstr "Enregistrer des sujets"
 
 #: templates/project/tab_navigation.html:110
 msgid "Registered Data Senders"
-msgstr "Envoyeurs enregistrés"
+msgstr "Expéditeurs enregistrés"
 
 #: templates/project/tab_navigation.html:113
 msgid "Registration Questionnaire"
@@ -2157,7 +2166,7 @@ msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
 
 msgid "Enter each data sender's email address below. Each can submit data via the internet"
-msgstr "Entrez l'adresse e-mail chaque envoyeur de données ci-dessous. Chacun peut soumettre des données via Internet"
+msgstr "Entrez l'adresse e-mail chaque expéditeur de données ci-dessous. Chacun peut soumettre des données via Internet"
 
 msgid "Reporter ID"
 msgstr "ID "
@@ -2263,7 +2272,7 @@ msgstr "Attention: La modification du Type de Sujet va supprimer toutes les ques
 "collectées. Etes-vous sûr de vouloir continuer ?"
 
 msgid "Access to Web Submission has been given to your DataSenders"
-msgstr "Un accès à la page d'envoi web a été donné à vos envoyeurs de données"
+msgstr "Un accès à la page d'envoi web a été donné à vos expéditeurs de données"
 
 
 msgid "User has been added successfully"
@@ -2351,7 +2360,7 @@ msgstr "Supprimer ce projet"
 
 #messages on overview.html page
 msgid "Add data senders"
-msgstr "Ajouter des Envoyeur de Données"
+msgstr "Ajouter des Expéditeurs de Données"
 
 msgid "Add subjects"
 msgstr "Ajouter des Sujets"
@@ -2366,7 +2375,7 @@ msgid "Register each Subject (e.g. patient, retail shop, village) you need to co
 msgstr "Enregistrer chaque Sujet (exemples: patient, boutique de vente au détail, village) pour lesquel vous avez besoin de collecter des données et que vous souhaitez suivre sur une carte."
 
 msgid "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data."
-msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Envoyeur de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
+msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Expéditeurs de Données (exemple: vers le personnel de terrain) pour assurer une collecte en temps opportun de vos données."
 
 #create_project.html
 msgid "Create your project in a few easy steps."
@@ -2526,18 +2535,18 @@ msgid "What is the mobile number associated with the subject?"
 msgstr "Quel est le numéro de téléphone portable associé au sujet ?"
 
 msgid "What is the data sender's name?"
-msgstr "Quel est le nom de l'envoyeur de données?"
+msgstr "Quel est le nom de l'expéditeur de données?"
 
 msgid "What is the data sender's location?"
-msgstr "Quel est la localité de l'envoyeur de données?"
+msgstr "Quel est la localité de l'expéditeur de données?"
 
 msgid "What is the data sender's GPS co-ordinates?"
 msgstr ""
-"Quel sont les coordonnées GPS de la localité de l'envoyeur de données ?"
+"Quel sont les coordonnées GPS de la localité de l'expéditeur de données ?"
 
 msgid "What is the mobile number associated with the data sender?"
 msgstr ""
-"Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
+"Quel est le numéro de téléphone portable associé à l'expéditeur de données?"
 
 msgid ""
 "Error with Questionnaire ID %s. Find the Questionnaire ID on the printed "
@@ -2661,7 +2670,7 @@ msgid "Internet"
 msgstr "Internet"
 
 msgid "DATA SENDERS"
-msgstr "ENVOYEURS"
+msgstr "EXPÉDITEURS"
 
 msgid "Add Senders"
 msgstr "Ajouter des Expéditeurs"
@@ -2724,7 +2733,7 @@ msgid "Create questionnaire"
 msgstr "Créer un questionnaire"
 
 msgid "Register a Subject/Data Sender"
-msgstr "Enregistrer un Sujet/Envoyeurs de données"
+msgstr "Enregistrer un Sujet/Expéditeurs de données"
 
 msgid "Send data using SMS"
 msgstr "Envoyer des données par SMS"
@@ -2757,7 +2766,7 @@ msgid "Set Reminders"
 msgstr "Définir des rappels"
 
 msgid "By un-checking this box, automatic reminders will be sent to all data senders associated with your project"
-msgstr "En décochant cette case, rappels automatiques seront envoyés à tous les expéditeurs de données associées à votre projet"
+msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les expéditeurs de données associés à votre projet"
 
 msgid "tooltip_devices"
 msgstr "Vos Expéditeurs de Données peuvent soumettre des données par SMS ou via Internet. "
@@ -2881,16 +2890,16 @@ msgid "Last Day"
 msgstr "Dernier jour"
 
 msgid "Reports are due in 2 days. Please submit soon."
-msgstr "Les rapports sont dus en 2 jours. S'il vous plaît soumettre prochainement."
+msgstr "Les rapports sont dûs dans 2 jours. S’il vous plaît soumettez rapidement."
 
 msgid "number of days after deadline"
 msgstr "nombre de jours après la date limite"
 
 msgid "Reports are due today. Please submit soon."
-msgstr "Les rapports sont dus aujourd'hui. S'il vous plaît soumettre prochainement."
+msgstr "Les rapports sont dûs aujourd’hui. S’il vous plaît soumettez rapidement. "
 
 msgid "Reports are over due. Please submit immediately."
-msgstr "Les rapports sont plus dues. S'il vous plaît soumettre immédiatement."
+msgstr "Les rapports sont en retard. S’il vous plaît soumettez immédiatement. "
 
 msgid "Enter an id, or allow us to generate it"
 msgstr "Entrez un id ou permettez-nous de le générer"
@@ -2935,16 +2944,16 @@ msgid "What is associated Data sender type?"
 msgstr "Quel est le type de sujet associé ?"
 
 msgid "What is the Data sender's name?"
-msgstr "Quel est le nom de l'envoyeur de données?"
+msgstr "Quel est le nom de l'expéditeur de données?"
 
 msgid "What is the Data sender's location?"
-msgstr "Quel est la localité de l'envoyeur de données?"
+msgstr "Quel est la localité de l'expéditeur de données?"
 
 msgid "What is the Data sender's GPS co-ordinates?"
-msgstr "Quel sont les coordonnées GPS de la localité de l'envoyeur de données ?"
+msgstr "Quel sont les coordonnées GPS de la localité de l'expéditeur de données ?"
 
 msgid "What is the mobile number associated with the Data sender?"
-msgstr "Quel est le numéro de téléphone portable associé à l'envoyeur de données?"
+msgstr "Quel est le numéro de téléphone portable associé à l'expéditeur de données?"
 
 msgid "Enter the Data sender's number"
 msgstr "Entrez le numéro de l'expéditeur des données de"
@@ -2990,3 +2999,6 @@ msgstr "Abonnez-vous"
 
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
 msgstr "En décochant cette case, les rappels automatiques seront envoyés à tous les Expéditeurs de Données associés à votre projet"
+
+msgid "Specify when you want to send automatic Reminders to your Data Senders"
+msgstr "Spécifiez quand est-ce que que vous voulez envoyer des Rappels automatiques à vos Expéditeurs de Données"

@@ -159,10 +159,10 @@ msgstr "Mois dernier"
 
 #: media/javascript/project/data_analysis.js:43
 msgid "Year to date"
-msgstr "Du début de l'année à la date"
+msgstr "Du début de l'année à date"
 
 msgid "Date Range"
-msgstr ""
+msgstr "Intervalle de date"
 
 #: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"
@@ -477,7 +477,7 @@ msgid "No matching records found"
 msgstr "Aucun enregistrement trouvé"
 
 msgid "No data available in table"
-msgstr "Aucune données disponible dans la table"
+msgstr "Aucune donnée disponible dans le tableau"
 
 msgid "Loading..."
 msgstr "Chargement..."
@@ -554,3 +554,24 @@ msgstr " erreurs"
 
 msgid "No submissions present for this project"
 msgstr "Aucune donnée pour ce projet"
+
+msgid "Example: %(day)s of the week following the reporting week"
+msgstr "Exemple: %(day)s de la semaine suivante"
+
+msgid "Example: %(day)s of the reporting week"
+msgstr "Exemple: %(day)s de la même semaine"
+
+msgid "Example: %(day)s of October for September report"
+msgstr "Exemple: Le %(day)s octobre pour le rapport du mois de septembre"
+
+msgid "Example: %(day)s of October for October report"
+msgstr "Exemple: Le %(day)s octobre pour le rapport du mois d'octobre"
+
+msgid "Start date"
+msgstr "Date début"
+
+msgid "End date"
+msgstr "Date fin"
+
+msgid "Done"
+msgstr "Terminé"

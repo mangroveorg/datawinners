@@ -118,6 +118,12 @@ class ReminderForm(Form):
         required=False)
     deadline_week = ChoiceField(choices=(get_translated_weekdays()), widget=forms.Select(attrs={'data-bind': 'random'}),
                                 required=False)
+    deadline_type_week = ChoiceField(choices=(('Same', _('Same week')), ('Following', _('Following week'))), widget=forms.Select(attrs={'class':'deadline_type'}),
+                                required=False)
+
+    deadline_type_month = ChoiceField(choices=(('Same', _('Same month')), ('Following', _('Following month'))), widget=forms.Select(attrs={'class':'deadline_type'}),
+                                required=False)
+
     deadline_type = ChoiceField(choices=(('Same', _('Same')), ('Following', _('Following'))), widget=forms.Select,
                                 required=False)
 

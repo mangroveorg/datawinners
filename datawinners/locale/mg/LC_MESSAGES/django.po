@@ -2404,3 +2404,6 @@ msgstr ""
 
 msgid "Learn more about DataWinners on our"
 msgstr ""
+
+msgid "Specify when you want to send automatic Reminders to your Data Senders"
+msgstr ""

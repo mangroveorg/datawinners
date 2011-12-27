@@ -31,7 +31,7 @@
         {{ block.super }}
     {% endblock %}
     <div>
-    <span class="italic_grey bold">Specify when you want to send automatic Reminders to your Data Senders</span>
+    <span class="italic_grey bold">{% trans "Specify when you want to send automatic Reminders to your Data Senders" %}</span>
         {% if messages %}
             {% for message in messages %}
                 <div class="success-message-box reminder-success">

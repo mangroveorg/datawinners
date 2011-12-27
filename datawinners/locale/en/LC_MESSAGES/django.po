@@ -305,14 +305,20 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+
 #: project/forms.py:62
-msgid "Same"
+msgid "Same month"
+msgstr ""
+
+msgid "Same week"
 msgstr ""
 
 #: project/forms.py:62
-msgid "Following"
+msgid "Following month"
 msgstr ""
 
+msgid "Following week"
+msgstr ""
 #: project/forms.py:63
 msgid "Do you want to remind DataSenders to send in their data?"
 msgstr ""
@@ -1361,8 +1367,11 @@ msgstr ""
 
 #: templates/project/profile_deadline_month_block.html:8
 #: templates/project/profile_deadline_week_block.html:8
-msgid "of the"
-msgstr ""
+msgid "of-the-week"
+msgstr "of the"
+
+msgid "of-the-month"
+msgstr "of the"
 
 #: templates/project/profile_deadline_month_block.html:8
 msgid "month"
@@ -2949,4 +2958,7 @@ msgid "Upgrade"
 msgstr ""
 
 msgid "By un-checking this box, automatic reminders will be sent to all Data Senders associated with your project"
+msgstr ""
+
+msgid "Specify when you want to send automatic Reminders to your Data Senders"
 msgstr ""

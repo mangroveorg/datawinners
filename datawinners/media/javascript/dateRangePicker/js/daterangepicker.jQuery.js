@@ -43,11 +43,11 @@ jQuery.fn.daterangepicker = function(settings){
 			allDatesAfter: 'All Dates After', 
 			dateRange: 'Date Range'
 		},
-		rangeStartTitle: 'Start date',
-		rangeEndTitle: 'End date',
+		rangeStartTitle: gettext('Start date'),
+		rangeEndTitle: gettext('End date'),
 		nextLinkText: 'Next',
 		prevLinkText: 'Prev',
-		doneButtonText: 'Done',
+		doneButtonText: gettext('Done'),
 		earliestDate: Date.parse('-15years'), //earliest date allowed 
 		latestDate: Date.parse('+15years'), //latest date allowed 
 		rangeSplitter: '-', //string to use between dates in single input

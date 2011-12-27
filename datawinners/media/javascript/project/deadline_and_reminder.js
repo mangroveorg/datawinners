@@ -10,11 +10,16 @@ DW.DeadlineDetails = function(){
     this.month_block_class = '.month_block';
     this.week_block_class = '.week_block';
     this.reminders_block_id = '#reminders_section';
-    this.deadline_example = '#deadline_example'
+    this.deadline_example = '#deadline_example';
+    this.deadline_types = 'select.deadline_type';
+    this.deadline_type_month = '#id_deadline_type_month';
+    this.deadline_type_week = '#id_deadline_type_week';
 };
 
 DW.DeadlineDetails.prototype = {
     init: function() {
+        $(this.deadline_types).attr('name', 'deadline_type');
+        $(this.deadline_types).attr('disabled', 'disabled');
         this.show();
         this.update_example();
         return true; //It's a Best Practice to return either true or false when there are only side effects happening inside a method.
@@ -27,10 +32,10 @@ DW.DeadlineDetails.prototype = {
         $(this.reminders_block_id).hide();
     },
     show: function(){
-        this.toggle_week_and_month_controls();
         $(this.deadlineSectionSelectControls).each(function(){
             $(this).removeAttr('disabled');
         });
+        this.toggle_week_and_month_controls();
         $(this.reminders_block_id).show();
     },
     toggle_week_and_month_controls: function(){
@@ -44,16 +49,21 @@ DW.DeadlineDetails.prototype = {
     toggle_when_month_is_selected: function(){
         $(this.month_block_class).show();
         $(this.week_block_class).hide();
+        $(this.deadline_type_month).removeAttr('disabled');
+        $(this.deadline_type_week).attr('disabled', 'disabled');
     },
     toggle_when_week_is_selected: function(){
         $(this.week_block_class).show();
         $(this.month_block_class).hide();
+        $(this.deadline_type_week).removeAttr('disabled');
+        $(this.deadline_type_month).attr('disabled', 'disabled');
     },
     update_example: function(){
         var deadline_example = "";
         var frequency = $(this.frequencyPeriodControl).val();
-        var deadline_type_value = $(this.deadlineTypeControl).val();
+
         if (frequency == 'week') {
+            var deadline_type_value = $(this.deadline_type_week).val();
             var selected_weekday_text = $(this.deadlineWeekControl+" :selected").text();
             if (deadline_type_value == 'Following') {
                 deadline_example = interpolate(gettext("Example: %(day)s of the week following the reporting week"), { day : selected_weekday_text}, true);
@@ -61,6 +71,7 @@ DW.DeadlineDetails.prototype = {
                 deadline_example = interpolate(gettext("Example: %(day)s of the reporting week"), { day : selected_weekday_text }, true);
             }
         } else if (frequency == 'month') {
+            var deadline_type_value = $(this.deadline_type_month).val();
             var selected_month_day_text = $(this.deadlineMonthControl+" :selected").text();
             if (deadline_type_value == 'Following') {
                 deadline_example = interpolate(gettext("Example: %(day)s of October for September report"), { day : selected_month_day_text }, true);
@@ -101,7 +112,7 @@ $(document).ready(function() {
     $(deadlineDetails.deadlineMonthControl).change(function(){
         deadlineDetails.update_example();
     });
-    $(deadlineDetails.deadlineTypeControl).change(function(){
+    $(deadlineDetails.deadline_types).change(function(){
         deadlineDetails.update_example();
     });
 });
