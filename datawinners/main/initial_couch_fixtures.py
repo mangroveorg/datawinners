@@ -7,7 +7,7 @@ from datawinners.accountmanagement.models import OrganizationSetting, Organizati
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
-from datawinners.submission.views import SMS
+from datawinners.messageprovider.messages import SMS
 from mangrove.datastore.database import get_db_manager
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
