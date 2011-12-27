@@ -6,6 +6,7 @@ from django.utils import translation
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from accountmanagement.models import OrganizationSetting
 
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import get_form_model_by_code
@@ -23,9 +24,11 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 import logging
 from location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
-from submission.request_processor import    MangroveWebSMSRequestProcessor
+from messageprovider.handlers import create_failure_log
+from submission.organization_finder import OrganizationFinder
+from submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor
 from submission.submission_utils import PostSMSProcessorLanguageActivator
-from utils import get_organization_settings_from_request
+from utils import get_organization_settings_from_request, get_database_manager_for_org
 from mangrove.transport.facade import Request
 from messageprovider.exception_handler import handle
 
@@ -46,24 +49,29 @@ def web_sms(request):
     message = Responder(next_state_processor=find_dbm_for_web_sms).respond(request)
     return HttpResponse(message)
 
+
+def _get_organization(request):
+    _from, _to = _get_from_and_to_numbers(request)
+    organization, error = OrganizationFinder().find(_from, _to)
+    return error, organization
+
+
 def find_dbm(request):
-    _from, _to = _get_from_and_to_numbers(request) #This is the http post request. After this state, the request being sent is a python dictionary
-    incoming_request = {'incoming_message': request.POST["message"],
-                        'datawinner_log': DatawinnerLog(message=request.POST["message"], from_number=_from,
-                            to_number=_to)}
+    incoming_request = {}
+    #This is the http post request. After this state, the request being sent is a python dictionary
+    error, organization = _get_organization(request)
 
-
-    incoming_request['transport_info'] = TransportInfo(transport=SMS, source=_from, destination=_to)
-    try:
-        incoming_request['dbm'] = get_db_manager_for(_from, _to)
-
-    except MangroveException as exception:
-        message = get_exception_message_for(exception=exception, channel=SMS)
-        incoming_request['outgoing_message'] = incoming_request['datawinner_log'].error = message
-        incoming_request['datawinner_log'].save()
+    if error is not None:
+        incoming_request['outgoing_message']=error
+        create_failure_log(error,incoming_request)
         return incoming_request
 
-    incoming_request['organization'] = _find_organization(request)
+    incoming_request['dbm'] = get_database_manager_for_org(organization)
+    incoming_request['organization'] = organization
+
+    SMSMessageRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
+    SMSTransportInfoRequestProcessor().process(http_request=request,mangrove_request=incoming_request)
+
     incoming_request['next_state'] = process_sms_counter
     return incoming_request
 
