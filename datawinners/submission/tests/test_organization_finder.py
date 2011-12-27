@@ -1,7 +1,7 @@
 import unittest
 import settings
-from submission.organization_finder import OrganizationFinder
-from tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_ORG_ID
+from datawinners.submission.organization_finder import OrganizationFinder
+from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_ORG_ID
 
 class TestOrganizationFinder(unittest.TestCase):
     def test_should_find_organization_for_trial_account(self):
