@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
-from mangrove.transport.facade import RegistrationWorkFlow
 from mangrove.transport.submissions import Submission
 import os
 from django.conf import settings
@@ -15,6 +14,9 @@ from mangrove.transport.player.parser import CsvParser, XlsParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
 from mangrove.utils.types import sequence_to_str
+from mangrove.datastore import entity
+from mangrove.transport.facade import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
+from mangrove.transport import reporter
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
@@ -38,6 +40,16 @@ class FilePlayer(Player):
             raise InvalidFileFormatException()
         return FilePlayer(manager, parser, channel, location_tree, get_location_hierarchy)
 
+    def _process(self,form_code, values):
+        form_model = get_form_model_by_code(self.dbm, form_code)
+        values = GeneralWorkFlow().process(values)
+        if form_model.is_registration_form():
+            values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree, self.get_location_hierarchy).process(values)
+        if form_model.entity_defaults_to_reporter():
+            reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()), form_model.entity_type)
+            values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
+        return form_model, values
+
     def accept(self, file_contents):
         responses = []
         submissions = self.parser.parse(file_contents)
@@ -46,9 +58,7 @@ class FilePlayer(Player):
             submission = Submission(self.dbm, transport_info, form_code, copy(values))
             submission.save()
             try:
-                form_model = get_form_model_by_code(self.dbm, form_code)
-                if form_model.is_registration_form():
-                    values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree, self.get_location_hierarchy).process(values)
+                form_model, values = self._process(form_code, values)
                 form_submission = self.submit(form_model, values)
                 submission.update(form_submission.saved, form_submission.errors, form_submission.data_record_id,
                                   form_submission.form_model.is_in_test_mode())
