@@ -43,6 +43,8 @@ def web_sms(request):
 def find_dbm(request):
     incoming_request = {}
     #This is the http post request. After this state, the request being sent is a python dictionary
+    SMSMessageRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
+    SMSTransportInfoRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     error, organization = _get_organization(request)
 
     if error is not None:
@@ -52,9 +54,6 @@ def find_dbm(request):
 
     incoming_request['dbm'] = get_database_manager_for_org(organization)
     incoming_request['organization'] = organization
-
-    SMSMessageRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
-    SMSTransportInfoRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
 
     incoming_request['next_state'] = process_sms_counter
     return incoming_request
