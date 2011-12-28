@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from collections import OrderedDict
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
 from datawinners.entity.import_data import load_subject_registration_data
@@ -13,6 +14,8 @@ from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport.player.parser import CsvParser
 from mangrove.transport.facade import Channel
 from mangrove.transport import TransportInfo, Request
+from mangrove.transport.submissions import Submission
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.form_model.form_model import FormModel
 from datawinners.location.LocationTree import get_location_hierarchy
 
@@ -117,9 +120,21 @@ class TestFilePlayer(MangroveTestCase):
         self.csv_data_about_reporter = """
                                 FORM_CODE,t,n,l,d,m
                                 REG,"reporter",Dr. A,Pune,"Description",201
-                                REG,"reporter",Dr. B,Pune,"Description",202
-                                REG,"reporter",Dr. C,Pune,"Description",203
-                                REG,"reporter",Dr. D,Pune,"Description",204
+        """
+        self.csv_data_with_same_mobile_number = """
+                                FORM_CODE,t,n,l,d,m
+                                REG,"reporter",Dr. A,Pune,"Description",201
+                                REG,"reporter",Dr. B,Pune,"Description",201
+        """
+        self.csv_data_with_exception = """
+                                FORM_CODE,t,n,l,d,m
+                                REG,"reporter",Dr. A,Pune,"Description",201
+                                REG,"reporter",Dr. B,Pune,"Description",201
+                                REG,"reporter",Dr. C,Pune,"Description",202
+        """
+        self.csv_data_with_missing_name = """
+                                FORM_CODE,t,n,l,d,m
+                                REG,"reporter",,Pune,"Description",201
         """
         self.parser = CsvParser()
         self.file_player = FilePlayer(self.manager,self.parser, Channel.CSV, DummyLocationTree(),dummy_get_location_hierarchy)
@@ -130,10 +145,38 @@ class TestFilePlayer(MangroveTestCase):
     def test_should_import_csv_string_if_it_contains_data_about_reporters(self):
         responses = self.file_player.accept(self.csv_data_about_reporter)
         self.assertTrue(responses[0].success)
-        self.assertTrue(responses[1].success)
-        self.assertTrue(responses[2].success)
-        self.assertTrue(responses[3].success)
+        submission_log = Submission.get(self.manager, responses[0].submission_id)
+        self.assertEquals(True, submission_log. status)
+        self.assertEquals("csv", submission_log.channel)
+        self.assertEquals("reg", submission_log.form_code)
+        self.assertEquals({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
 
     def test_should_import_csv_string_if_it_contains_data_for_activity_reporters(self):
         responses = self.file_player.accept(self.csv_data_for_activity_report)
         self.assertTrue(responses[0].success)
+        submission_log = Submission.get(self.manager, responses[0].submission_id)
+        self.assertEquals("csv", submission_log.channel)
+        self.assertEquals(u'rep1', responses[0].short_code)
+
+    def test_should_give_error_for_multiple_reporter_with_same_mobile_number(self):
+        responses = self.file_player.accept(self.csv_data_with_same_mobile_number)
+        self.assertTrue(responses[0].success)
+        self.assertFalse(responses[1].success)
+        self.assertEqual(u'Sorry, the telephone number 201 has already been registered',responses[1].errors['error'])
+
+    def test_should_import_next_value_if_exception_with_previous(self):
+        responses = self.file_player.accept(self.csv_data_with_exception)
+        self.assertTrue(responses[0].success)
+        self.assertFalse(responses[1].success)
+        self.assertTrue(responses[2].success)
+        submission_log = Submission.get(self.manager, responses[0].submission_id)
+        self.assertEquals({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
+        self.assertEquals({'row':{'t':u'reporter', 'n':u'Dr. B','l':[u'arantany'],'d':u'Description','m':u'201','g':'-12 60','s':u'rep3'}, 'error':u'Sorry, the telephone number 201 has already been registered'}, responses[1].errors)
+        submission_log = Submission.get(self.manager, responses[2].submission_id)
+        self.assertEquals({'t':'reporter', 'n':'Dr. C','l':'Pune','d':'Description','m':'202'}, submission_log.values)
+
+    def test_should_give_error_for_missing_field(self):
+        responses = self.file_player.accept(self.csv_data_with_missing_name)
+        self.assertFalse(responses[0].success)
+        self.assertEqual(OrderedDict([('n', 'Answer for question n is required')]),responses[0].errors['error'])
+
