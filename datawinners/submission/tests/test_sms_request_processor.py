@@ -2,7 +2,7 @@ import unittest
 from django.contrib.auth.models import User
 from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
 from messageprovider.messages import SMS
-from submission.request_processor import SMSTransportInfoRequestProcessor, SMSDBMRequestProcessor
+from submission.request_processor import SMSTransportInfoRequestProcessor
 from tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME
 from tests.fake_request import FakeRequest
 from utils import get_organization_settings_from_request, generate_document_store_name
