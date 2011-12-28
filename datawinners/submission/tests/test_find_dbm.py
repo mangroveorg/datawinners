@@ -1,0 +1,27 @@
+import unittest
+from django.contrib.auth.models import User
+from django.test.client import RequestFactory
+from settings import TRIAL_ACCOUNT_PHONE_NUMBER
+from submission.views import find_dbm
+from tests.data import TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_USER
+from tests.fake_request import FakeRequest
+
+class TestFindDBM(unittest.TestCase):
+    def setUp(self):
+        self.user = User.objects.get(username=DEFAULT_TEST_USER)
+        self.sms_message = '018 12.10.2011'
+
+    def test_should_go_to_next_state_if_post_data_is_correct(self):
+        request = FakeRequest(post=dict(from_msisdn=TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,to_msisdn=DEFAULT_TEST_ORG_TEL_NO,message=self.sms_message), user=self.user)
+        incoming_request = find_dbm(request)
+        self.assertTrue('outgoing_message' not in incoming_request.keys())
+
+    def test_should_return_error_message_when_organization_number_is_unregistered(self):
+        request = FakeRequest(post=dict(from_msisdn=TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO,to_msisdn='1234567',message=self.sms_message), user=self.user)
+        incoming_request = find_dbm(request)
+        self.assertTrue('outgoing_message' in incoming_request.keys())
+
+    def test_should_return_error_message_when_datasenders_number_is_unregistered(self):
+        request = FakeRequest(post=dict(from_msisdn='1234567',to_msisdn=TRIAL_ACCOUNT_PHONE_NUMBER,message=self.sms_message), user=self.user)
+        incoming_request = find_dbm(request)
+        self.assertTrue('outgoing_message' in incoming_request.keys())
