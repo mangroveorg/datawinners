@@ -16,6 +16,8 @@ class TestXlsPlayer(unittest.TestCase):
         get_form_model_mock = self.get_form_model_mock_patcher.start()
         self.form_model_mock = Mock(spec=FormModel)
         get_form_model_mock.return_value = self.form_model_mock
+        self.form_model_mock.is_registration_form = Mock(return_value=False)
+        self.form_model_mock.entity_defaults_to_reporter = Mock(return_value=False)
 
     def setUp(self):
         loc_tree = Mock()
