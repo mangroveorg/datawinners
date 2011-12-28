@@ -2,6 +2,7 @@
 import unittest
 from django.test.client import RequestFactory
 from mock import Mock
+from accountmanagement.models import Organization
 from datawinners.tests.data import DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, RAW_DATA, HEADER_LIST, DEFAULT_TEST_ORG_TEL_NO
 import utils
 
@@ -44,6 +45,11 @@ class TestUtils(unittest.TestCase):
         org_setting = utils.get_organization_settings_from_request(request)
         self.assertEquals(DEFAULT_TEST_ORG_TEL_NO,org_setting.sms_tel_number)
 
+    def test_should_return_database_manager(self):
+        organization = Organization.objects.get(pk=DEFAULT_TEST_ORG_ID)
+        dbm = utils.get_database_manager_for_org(organization)
+        self.assertEquals(utils.generate_document_store_name(DEFAULT_TEST_ORG_NAME,DEFAULT_TEST_ORG_ID),dbm.database_name)
+        
     def _get_request_mock(self,org_id):
         request = RequestFactory().get('/account/')
         request.user = Mock()
