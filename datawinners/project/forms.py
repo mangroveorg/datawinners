@@ -108,9 +108,6 @@ class CreateProject(Form):
 
 
 class ReminderForm(Form):
-#    FREQUENCY_CHOICES = ((False, _("No deadline. Senders can submit data any time.")), (True, _("Every")))
-#    has_deadline = ChoiceField(label=_("Time Period"),
-#                                    choices=FREQUENCY_CHOICES, widget=forms.RadioSelect, initial=False)
     frequency_period = ChoiceField(choices=(('week', _('Week')), ('month', _('Month'))), widget=forms.Select,
                                    required=False, )
     deadline_month = ChoiceField(
@@ -140,3 +137,24 @@ class ReminderForm(Form):
 
     whom_to_send_message = BooleanField(label=ugettext_lazy("Only send reminders to senders who have not already submitted data for the current deadline."),
                                        required=False, initial=True)
+
+    def clean(self):
+
+        msg = _("This field is required")
+
+        if self.cleaned_data.get('should_send_reminders_before_deadline'):
+            if self.cleaned_data.get('number_of_days_before_deadline') is None:
+                self._errors['number_of_days_before_deadline'] = self.error_class([msg])
+            if self.cleaned_data.get('reminder_text_before_deadline') == '':
+                self.errors['reminder_text_before_deadline'] = self.error_class([msg])
+
+        if self.cleaned_data.get('should_send_reminders_on_deadline') and self.cleaned_data.get('reminder_text_on_deadline') == '':
+            self.errors['reminder_text_on_deadline'] = self.error_class([msg])
+
+        if self.cleaned_data.get('should_send_reminders_after_deadline'):
+            if self.cleaned_data.get('number_of_days_after_deadline') is None:
+                self.errors['number_of_days_after_deadline'] = self.error_class([msg])
+            if self.cleaned_data.get('reminder_text_after_deadline') == '':
+                self.errors['reminder_text_after_deadline'] = self.error_class([msg])
+
+        return self.cleaned_data

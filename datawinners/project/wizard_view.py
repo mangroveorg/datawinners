@@ -181,7 +181,11 @@ def reminder_settings(request, project_id):
             project.save(dbm)
             messages.success(request, _("Reminder settings saved successfully."))
             return HttpResponseRedirect('')
-
+        else:
+            return render_to_response(html,
+                    {'project_links': project_links,'project': project,
+                     'form':form},context_instance=RequestContext(request))
+            
 def _reminder_info_about_project(project):
     data = {}
     deadline_information = project.reminder_and_deadline
