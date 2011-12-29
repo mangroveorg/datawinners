@@ -27,6 +27,7 @@
 
     </script>
     <script type="text/javascript" src="/media/javascript/project/finish_and_test.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/create_project.js"></script>
     <script type="text/javascript" src="/media/javascript/project/sms_tester.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_preview.js"></script>
@@ -103,7 +104,7 @@
                 </li>
                   {% endfor %}
             </ol>
-            <a id="questionnaire_edit_link" href="{{project_links.questionnaire_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+            <a id="questionnaire_edit_link" href="{% if project.state == 'Active' %}{{project_links.questionnaire_link}}{% else %}{% url edit_project project.id %}{% endif %}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
             <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %}</p></div>
         </div>
         </div>
