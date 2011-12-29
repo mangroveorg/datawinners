@@ -42,6 +42,7 @@ var viewModel =
         }
         viewModel.changeSelectedQuestion(viewModel.questions()[next_index]);
         viewModel.hasAddedNewQuestions = true;
+        viewModel.setQuestionCode(index);
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {
@@ -123,5 +124,12 @@ var viewModel =
     },
     isTypeEnabled: function(){
         return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag();
+    },
+    setQuestionCode:function(index){
+        DW.current_code = index+1;
+        var new_code = DW.current_code;
+        for ( var i=index;i< viewModel.questions().length;i++){
+            viewModel.questions()[i].code(DW.generateQuestionCode());
+        }
     }
 };
