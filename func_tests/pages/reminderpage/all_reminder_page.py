@@ -10,17 +10,12 @@ class AllReminderPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
-    def click_schedule_reminder_tab(self):
-        CommonUtilities(self.driver).wait_for_element(3,SCHEDULED_REMINDERS_LINK)
-        self.driver.find(SCHEDULED_REMINDERS_LINK).click()
-
     def click_sent_reminder_tab(self):
         self.driver.find(SENT_REMINDERS_LINK).click()
 
-    def navigate_send_message_tab(self):
-        self.driver.find(SEND_MESSAGE_TAB).click()
-        return BroadcastSmsPage(self.driver)
-
-    def navigate_reminder_settings_tab(self):
+    def click_reminder_settings_tab(self):
         self.driver.find(REMINDER_SETTINGS_TAB).click()
         return ReminderSettingsPage(self.driver)
+
+    def get_warning_message(self):
+        return self.driver.find(REMINDER_NOT_WORK_FOR_TRIAL_MSG).text

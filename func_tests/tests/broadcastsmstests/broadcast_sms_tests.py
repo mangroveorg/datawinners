@@ -27,7 +27,7 @@ class TestBroadcastSMS(BaseTest):
         all_project_page = self._prerequisites_of_edit_project()
         project_overview_page = all_project_page.navigate_to_project_overview_page(
             fetch_(PROJECT_NAME, from_(ACTIVATED_PROJECT_DATA)))
-        send_message_page = project_overview_page.navigate_to_reminder_page().navigate_send_message_tab()
+        send_message_page = project_overview_page.navigate_send_message_tab()
         return send_message_page
 
     def _prerequisites_of_edit_project(self):

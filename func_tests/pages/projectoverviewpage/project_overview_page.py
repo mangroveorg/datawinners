@@ -43,3 +43,7 @@ class ProjectOverviewPage(Page):
     def open_sms_tester_light_box(self):
         self.driver.find(TEST_QUESTIONNAIRE_LINK).click()
         return SMSTesterLightBoxPage(self.driver)
+
+    def navigate_send_message_tab(self):
+        self.driver.find(SEND_MESSAGE_TAB).click()
+        return BroadcastSmsPage(self.driver)

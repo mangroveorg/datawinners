@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import time
 from pages.lightbox.light_box_locator import TITLE_LABEL
 from pages.lightbox.light_box_page import LightBox
 from framework.utils.data_fetcher import *
 from pages.createprojectpage.create_project_locator import *
+from pages.projectoverviewpage.project_overview_locator import PROJECT_STATUS_LABEL
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from tests.createprojecttests.create_project_data import *
 from pages.page import Page
@@ -87,6 +89,7 @@ class CreateProjectPage(Page):
 
     def save_and_create_project_successfully(self):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
+        time.sleep(3)
         return ProjectOverviewPage(self.driver)
 
     def save_and_create_project(self):

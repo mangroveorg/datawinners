@@ -5,7 +5,7 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.createprojecttests.create_project_data import VALID_DATA
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES
-from tests.remindertests.reminder_data import WARNING_MESSAGE, REMINDER_NOT_WORK_FOR_TRIAL_MSG
+from tests.remindertests.reminder_data import WARNING_MESSAGE
 from nose.plugins.skip import SkipTest
 
 class TestReminderSend(BaseTest):
@@ -16,11 +16,6 @@ class TestReminderSend(BaseTest):
         dashboard_page = DashboardPage(self.driver)
         return dashboard_page
 
-    def create_project_to_reminder_page(self, create_project_page):
-        project_overview_page = create_project_page.save_and_create_project_successfully()
-        reminder_page = project_overview_page.navigate_to_reminder_page()
-        return reminder_page
-
     def start_create_normal_project(self):
         dashboard_page = self.login_with(TRIAL_CREDENTIALS_VALIDATES)
         create_project_page = dashboard_page.navigate_to_create_project_page()
@@ -29,9 +24,9 @@ class TestReminderSend(BaseTest):
 
 #    @attr("functional_test")
 #    def test_trial_account_should_see_reminder_not_work_message_when_creating_project(self):
-#        create_project_page = self.start_create_normal_project()
-#        self.create_project_to_reminder_page(create_project_page)
-#        message = self.driver.find(REMINDER_NOT_WORK_FOR_TRIAL_MSG).text
+#        project_overview_page = self.start_create_normal_project()
+#        reminder_page = project_overview_page.navigate_to_reminder_page()
+#
 #        self.assertEqual(WARNING_MESSAGE, message)
 
     def active_project_and_go_to_all_reminder_page(self, project_overview_page):
@@ -55,5 +50,6 @@ class TestReminderSend(BaseTest):
         all_reminders_page.click_sent_reminder_tab()
         message = self.driver.find(REMINDER_NOT_WORK_FOR_TRIAL_MSG).text
         self.assertEqual(WARNING_MESSAGE, message)
+
 
 
