@@ -312,3 +312,6 @@ span.tooltip {
 
 .subject_tooltip p {
   width: 390px !important; }
+
+.clear-left {
+  clear: left; }
