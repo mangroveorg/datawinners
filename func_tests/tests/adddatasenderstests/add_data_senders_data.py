@@ -13,7 +13,7 @@ BLANK_FIELDS = {NAME: "",
                 MOBILE_NUMBER: "",
                 COMMUNE: "",
                 GPS: "",
-                ERROR_MSG: "Name Enter Data Sender's name This field is required.Mobile Number Enter Data Sender's number eg: +61 (123) 456-7890 This field is required.Please fill out at least one location field correctly.Please fill out at least one location field correctly."}
+                ERROR_MSG: "Name Enter Data Sender's name This field is required.Mobile Number Enter Data Sender's number This field is required.Please fill out at least one location field correctly.Please fill out at least one location field correctly."}
 
 VALID_DATA = {NAME: "Mickey Duck",
               MOBILE_NUMBER: "9876-543-210",
