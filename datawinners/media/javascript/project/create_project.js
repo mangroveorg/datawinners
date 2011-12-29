@@ -257,6 +257,7 @@ $(document).ready(function() {
 
     $('#save_and_create').click(function(){
         if(questionnnaire_code.processValidation() && questionnaire_form.processValidation()){
+            $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
             DW.post_project_data('Test', function(response){
                 return '/project/overview/' + response.project_id;
             });
