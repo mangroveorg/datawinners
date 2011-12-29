@@ -178,7 +178,7 @@ msgid "Enter Data Sender's name"
 msgstr ""
 
 #: entity/forms.py:32
-msgid "Enter Data Sender's number eg: "
+msgid "Enter Data Sender's number"
 msgstr ""
 
 #: entity/forms.py:33

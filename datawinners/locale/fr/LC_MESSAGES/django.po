@@ -179,8 +179,8 @@ msgid "Enter Data Sender's name"
 msgstr "Entrez le nom de l'envoyeur"
 
 #: entity/forms.py:32
-msgid "Enter Data Sender's number eg: "
-msgstr "Entrez le nom de l'envoyeur ex : "
+msgid "Enter Data Sender's number"
+msgstr "Entrez le nom de l'envoyeur"
 
 #: entity/forms.py:33
 msgid "Enter region, district or commune"
