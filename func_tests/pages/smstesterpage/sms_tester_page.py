@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import time
 from framework.utils.common_utils import CommonUtilities
 from pages.smstesterpage.sms_tester_locator import *
 from pages.page import Page
