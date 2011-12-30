@@ -53,6 +53,21 @@ def start_gunicorn(virtual_env):
     activate_and_run(virtual_env, "gunicorn_django -D -b 0.0.0.0:8000 --pid=mangrove_gunicorn")
 
 
+def restart_servers():
+    stop_servers()
+    start_servers()
+
+
+def stop_servers():
+    run("sudo service uwsgi stop")
+    run("sudo service nginx stop")
+
+
+def start_servers():
+    run("sudo service uwsgi start")
+    run("sudo service nginx start")
+
+
 def set_mangrove_commit_sha(branch, mangrove_build_number):
     if mangrove_build_number == 'lastSuccessfulBuild':
         mangrove_build_number = run(
@@ -92,7 +107,7 @@ def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, vi
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
-def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop"):
+def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env, branch="develop", environment="showcase"):
     """build_number : hudson build number to be deployed
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
@@ -110,8 +125,12 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
+            activate_and_run(virtual_env, "python manage.py updatedb syncall")
             activate_and_run(virtual_env, "python manage.py compilemessages")
-            restart_gunicorn(virtual_env)
+            if environment == "test":
+                restart_gunicorn(virtual_env)
+            else:
+                restart_servers()
 
 
 def showcase():
