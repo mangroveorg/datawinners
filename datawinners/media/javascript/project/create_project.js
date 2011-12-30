@@ -243,7 +243,7 @@ $(document).ready(function() {
 
     $('#continue_project').click(function(){
         if (!basic_project_info.isValid()){
-            $('body').animate({scrollTop:0}, 'slow');
+            $('html,body').animate({scrollTop:0}, 'slow');
             return false;
         }
         basic_project_info.hide();
