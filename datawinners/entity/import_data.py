@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
-import threading
 from mangrove.transport.submissions import Submission
 import os
 from django.conf import settings
@@ -22,8 +21,6 @@ from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
 from datawinners.location.LocationTree import get_location_hierarchy
-
-_lock = threading.Lock()
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None, get_location_hierarchy=None):
@@ -170,8 +167,7 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPO
 def _handle_uploaded_file(file_name, file, manager):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, get_location_tree())
-    with _lock:
-        response = player.accept(file)
+    response = player.accept(file)
     return response
 
 
