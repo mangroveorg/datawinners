@@ -15,8 +15,8 @@
     }
  }
  .alpha_list{
-    input{
-        float:none;
+    #choice_text{
+        width:300px !important;
     }
     .error_arrow{
         float:none !important;
@@ -47,6 +47,7 @@
     width:525px;
  }
  #max_length{
+    margin-left:25px;
     width:50px;
     float:none;
  }

@@ -9,8 +9,8 @@
   width: 100px; }
 #question_form .alpha_list {
   margin-left: 20px; }
-  #question_form .alpha_list input {
-    float: none; }
+  #question_form .alpha_list #choice_text {
+    width: 300px !important; }
   #question_form .alpha_list .error_arrow {
     float: none !important;
     background-position: 0px 3px !important; }
@@ -28,6 +28,8 @@
   float: left;
   width: 525px; }
 #question_form #max_length {
+  margin-left: 25px;
+  margin-top: 10px;
   width: 50px;
   float: none; }
 #question_form #not_wizard .error_arrow {

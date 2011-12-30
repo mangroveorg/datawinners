@@ -180,3 +180,7 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 .container_24 .grid_24 {
     width: 970px;
 }
+
+#choice_text{
+    width:250px !important;
+}

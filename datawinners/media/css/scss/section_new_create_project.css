@@ -9,7 +9,8 @@
   font-size: 28px; }
 
 .wizard_content {
-  margin-top: 15px !important; }
+  margin-top: 15px !important;
+  width: 1000px !important; }
 
 .w_content {
   margin: 10px !important;
