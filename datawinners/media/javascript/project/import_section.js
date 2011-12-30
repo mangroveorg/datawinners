@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $(".import_subject_form").dialog({
         autoOpen: false,
-        width: 520,
+        width: 650,
         modal: true,
         title: gettext('Import a List'),
         close: function() {
