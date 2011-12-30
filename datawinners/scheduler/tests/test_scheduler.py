@@ -43,6 +43,12 @@ class TestScheduler(unittest.TestCase):
         self.reminder3.remind_to = RemindTo.ALL_DATASENDERS
         self.reminder3.get_sender_list.return_value = self.data_senders
 
+        self.reminder4 = Mock(spec=Reminder)
+        self.reminder4.should_be_send_on.return_value = True
+        self.reminder4.message = 'reminder4 message'
+        self.reminder4.remind_to = RemindTo.ALL_DATASENDERS
+        self.reminder4.get_sender_list.return_value = Exception()
+
         self.reminders = [self.reminder1, self.reminder2, self.reminder3]
         self.sms_client = SMSClient()
         self.sms_client.send_sms=Mock()
@@ -109,3 +115,10 @@ class TestScheduler(unittest.TestCase):
         self.organization.save()
         organizations = _get_paid_organization()
         self.assertNotIn(self.organization,organizations)
+
+    def test_should_continue_with_sending_reminders_if_exception_in_prev(self):
+        reminders_sent = send_reminders_on(self.project,[self.reminder4,self.reminder1,self.reminder3], self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        self.assertEqual(2,len(reminders_sent))
+        self.assertNotIn(self.reminder4,reminders_sent)
+        self.assertIn(self.reminder1,reminders_sent)
+        self.assertIn(self.reminder3,reminders_sent)

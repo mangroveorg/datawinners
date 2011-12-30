@@ -51,7 +51,11 @@ def send_reminders_for_an_organization(org,on_date,sms_client,from_number,dbm):
         project = dbm._load_document(project_id, Project)
         if not project.has_deadline():
             continue
-        send_reminders_on(project,reminders,on_date,sms_client,from_number,dbm)
+        #send reminders to next projects in the queue if their is any error while sending reminders to previous project
+        try:
+            send_reminders_on(project,reminders,on_date,sms_client,from_number,dbm)
+        except Exception as ex:
+            logger.exception("Exception while sending reminders for this project")
 
 def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
     """
@@ -62,7 +66,12 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
     reminders_sent = []
     reminders_to_be_sent = [reminder for reminder in reminders if reminder.should_be_send_on(project.deadline(),on_date) ]
     for reminder in reminders_to_be_sent:
-        smses_sent = sms_client.send_reminder(from_number,on_date,project,reminder,dbm)
+        #send next reminder if their is any error in sending reminder
+        try:
+            smses_sent = sms_client.send_reminder(from_number,on_date,project,reminder,dbm)
+        except Exception as ex:
+            logger.exception("Exception while sending Reminder")
+
         if smses_sent > 0:
             reminders_sent.append(reminder)
     logger.info("Reminders scheduled: %d " % len(reminders_to_be_sent) )
