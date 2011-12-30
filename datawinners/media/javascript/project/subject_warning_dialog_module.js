@@ -15,9 +15,11 @@ DW.continue_flip = function(){
     if (DW.subject_warning_dialog_module.is_subject_selected()) {
         DW.init_view_model(subject_report_questions);
         DW.change_description();
+        basic_project_info.show_subject_link();
     }
     else {
         DW.init_view_model(activity_report_questions);
+        basic_project_info.hide_subject_link();
     }
     DW.current_subject = $('#id_entity_type').val();
     DW.current_project_selected = DW.subject_warning_dialog_module.get_selected_project();

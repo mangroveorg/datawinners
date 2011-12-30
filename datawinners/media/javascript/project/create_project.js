@@ -165,6 +165,13 @@ DW.basic_project_info.prototype={
     },
     hide: function(){
         $(this.project_info_form_element).hide();
+    },
+    show_subject_link:function(){
+        $('#add_subject_type').show()
+    },
+    hide_subject_link:function(){
+        $("#add_subject_type").accordion("activate",-1)
+        $('#add_subject_type').hide()
     }
 };
 
@@ -222,7 +229,9 @@ $(document).ready(function() {
     ko.applyBindings(viewModel);
     DW.subject_warning_dialog_module.init();
 
+    basic_project_info.hide_subject_link();
     devices.disableSMSElement();
+
     $('#id_entity_type').change(function() {
         if(is_edit || viewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");
