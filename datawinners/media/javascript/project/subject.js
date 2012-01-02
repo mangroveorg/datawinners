@@ -23,7 +23,7 @@ $(document).ready(function(){
         },
         close: function() {
             $('#message').remove();
-            $("#add_subject_type").accordion('activate',0);
+            $("#add_subject_type").accordion({collapsible: true,autoHeight:false, active:false});
             $('#question_form').each (function(){
                 this.reset();
             });
