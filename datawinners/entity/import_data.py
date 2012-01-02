@@ -72,12 +72,6 @@ class FilePlayer(Player):
                 message = ugettext("%s with %s = %s already exists.")
                 response.errors = dict(error=message % (e.data[2], e.data[0], e.data[1]), row=values)
                 responses.append(response)
-            except MultipleReportersForANumberException as e:
-                response = Response(reporters=[], submission_id=None, form_submission=None)
-                response.success = False
-                message = ugettext("Sorry, the telephone number %s has already been registered")
-                response.errors = dict(error=message % e.data[0], row=values)
-                responses.append(response)
             except MangroveException as e:
                 response = Response(reporters=[], submission_id=None, form_submission=None)
                 response.success = False
