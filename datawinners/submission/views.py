@@ -76,7 +76,7 @@ def find_dbm_for_web_sms(request):
     incoming_request = dict()
     MangroveWebSMSRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     incoming_request['organization'] = get_organization(request)
-    incoming_request['next_state'] = process_sms_counter
+    incoming_request['next_state'] = submit_to_player
     return incoming_request
 
 
