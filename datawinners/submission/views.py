@@ -65,7 +65,7 @@ class Responder(object):
 
     def respond(self, incoming_request):
         request = self.next_state_processor(incoming_request)
-        if request.get('outgoing_message'):
+        if request.has_key('outgoing_message'):
             return request['outgoing_message']
 
         self.next_state_processor = request['next_state']
