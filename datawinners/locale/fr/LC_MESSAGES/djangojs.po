@@ -575,3 +575,6 @@ msgstr "Date fin"
 
 msgid "Done"
 msgstr "Terminé"
+
+msgid "Between 1 -- 12 characters"
+msgstr ""

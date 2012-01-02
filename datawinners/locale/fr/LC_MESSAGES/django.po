@@ -285,7 +285,7 @@ msgstr "Canal"
 
 #: project/forms.py:54
 msgid "Choose your language for success and error messages to Data Senders"
-msgstr "Choisissez votre langue pour les messages d'erreur et de succès à retourner aux envoyeurs de données"
+msgstr "Choisissez votre langue pour les messages d'erreur et de succès à retourner aux expéditeurs de données"
 
 #: project/forms.py:56
 msgid "How often do you need the data?"
@@ -327,7 +327,7 @@ msgstr "semaine suivante"
 
 #: project/forms.py:63
 msgid "Do you want to remind DataSenders to send in their data?"
-msgstr "Voulez-vous envoyer des massages de rappel aux envoyeurs de données?"
+msgstr "Voulez-vous envoyer des massages de rappel aux expéditeurs de données?"
 
 #: project/forms.py:70
 msgid "Enter a project name"
@@ -448,7 +448,7 @@ msgstr "Vérifiez les questions en cliquant sur chacune d'elle dans l'ordre."
 
 #: templates/entity_question_panel.html:20
 msgid "q_tooltip_question_panel_data_sender"
-msgstr "Identifiez les informations que vous voulez collecter sur chaque envoyeur."
+msgstr "Identifiez les informations que vous voulez collecter sur chaque expéditeur."
 
 #: templates/entity_question_panel.html:23
 msgid "r_tooltip_question_panel_data_sender"
@@ -635,6 +635,10 @@ msgstr "Entrez le numéro de téléphone du sujet"
 msgid "Geocode"
 msgstr "Géocode"
 
+msgid "Phone No."
+msgstr "Nº tel"
+
+
 #: templates/subject_table.html:10 templates/entity/datasenders_table.html:10
 #: templates/project/registered_datasenders.html:37
 #: templates/project/registered_subjects.html:31
@@ -742,7 +746,7 @@ msgstr "Erreur"
 
 #: templates/alldata/index.html:7
 msgid "View all failed submissions"
-msgstr "Voir les erreurs d'envoi"
+msgstr "Voir toutes les erreurs d'envoi"
 
 #: templates/alldata/index.html:28 templates/project/index.html:33
 msgid "Created On"
@@ -831,15 +835,15 @@ msgstr "créez un nouveau projet"
 
 #: templates/entity/all_datasenders.html:9
 msgid "Add a data sender"
-msgstr "Ajoutez un Expéditeur"
+msgstr "Ajouter un Expéditeur"
 
 #: templates/entity/all_datasenders.html:15
 msgid "q_all_datasenders_add_manually"
-msgstr "Ajouter les envoyeurs un par un en utilisant le formulaire d'enregistrment en ligne"
+msgstr "Ajouter les expéditeurs un par un en utilisant le formulaire d'enregistrement en ligne"
 
 #: templates/entity/all_datasenders.html:18
 msgid "r_all_datasenders_add_manually"
-msgstr "Cliquez sur le bouton bleu \" Ajouter un envoyeur \" et suivez les instructions étape par étape"
+msgstr "Cliquez sur le bouton bleu \" Ajouter un expéditeur \" et suivez les instructions étape par étape"
 
 #: templates/entity/all_datasenders.html:56
 #: templates/entity/all_subjects.html:56
@@ -855,27 +859,27 @@ msgstr "Télécharger un fichier CSV ou XLS"
 #: templates/entity/all_datasenders.html:63
 msgid "q_all_datasenders_import"
 msgstr ""
-"Ajouter les envoyeurs dans une lister en une seule opération en important un "
+"Ajouter les expéditeurs dans une lister en une seule opération en important un "
 "fichier Excel (.xls) ou un fichier CSV (.csv)"
 
 #: templates/entity/all_datasenders.html:66
 msgid "r_all_datasenders_import"
 msgstr ""
-"Suivez ces cinq étapes faciles pour importer vos envoyeurs<br /> Ouvrez un "
+"Suivez ces cinq étapes faciles pour importer vos expéditeurs<br /> Ouvrez un "
 "nouveau classeur Excel. Dans la cellule A1, saisissez form_code. Dans la cellule "
 "B1, saissisez T. Dans la cellule C1 saisissez N. Dans la cellule D1 saissisez M."
 "Dans la cellule E1 saisissez S. Dans la cellule F1 saissisez L. Dans la cellule "
 "G1 saississez G. Dans la cellule H1 saisissez D.<br/>2) Dans la cellule A2, "
 "saisissez REG. Dans la cellule B2, saisissez Data Sender. Dans la cellule C2 "
-"saississez le nom de l'envoyeur (exemple : John Smith). Dans la cellule D2, "
+"saississez le nom de l'expéditeur (exemple : John Smith). Dans la cellule D2, "
 "saisissez son numéro de mobile. Dans la cellule E2, saisissez son ID "
 "unique. Dans la cellule F2, saisissez sa localité. Dans la cellule G2 saisissez "
 "les coordonnées GPS de sa localité (faites un clic droit sur G2, choisissez \""
 "Format de cellule\", choisissez \"Texte\", puis cliquez sur \"OK\". Puis entrez "
 "les coordonnées GPS dans le format suivant : 16.8665 47.53150. Ne mettez pas de "
-"virgule). Dans la cellule F2 saisissez une description courte de votre envoyeur. "
-"<br/>3. Répétez l'étape #2 pour chaque envoyeur à partir de la cellule A3. "
-"Chaque envoyeur sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
+"virgule). Dans la cellule F2 saisissez une description courte de votre expéditeur. "
+"<br/>3. Répétez l'étape #2 pour chaque expéditeur à partir de la cellule A3. "
+"Chaque expéditeur sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
 "4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
 "\"Importez la liste\" et suivez les instructions."
 
@@ -966,7 +970,7 @@ msgstr "Ajouter un Expéditeur"
 #: templates/entity/create_subject.html:4
 #: templates/entity/all_subjects.html:7
 msgid "Add a Subject"
-msgstr "Ajoutez un sujet"
+msgstr "Ajouter un sujet"
 
 #: templates/entity/create_type.html:3
 msgid "Add a new subject type"
@@ -1057,7 +1061,7 @@ msgstr ""
 "terrain. <br/><br/>Vous pouvez <strong>enregistrer les Expéditeurs</strong> "
 "en entrant quelques informations élémentaires (nom, localité, numéro de "
 "téléphone) à propos de chacun d'eux. DataWinners utilisera le numéro de "
-"téléphone de l'envoyeur comme son <strong>\" identifiant unique \"</strong>."
+"téléphone de l'expéditeur comme son <strong>\" identifiant unique \"</strong>."
 "En enregistrant vos Expéditeurs, ils n'ont plus besoin d'envoyer certaines "
 "informations (exemple : nom) chaque fois qu'il répondent à un questionnaire. "
 "DataWinners identifiera chaque Expéditeur à partir de son numéro de téléphone."
@@ -1362,10 +1366,10 @@ msgstr "Continuer"
 
 #: templates/project/profile.html:61
 msgid "Save & Create Project"
-msgstr "Enregistrer & créez projet"
+msgstr "Enregistrer & créer le projet"
 
 msgid "Create Project"
-msgstr "créez projet"
+msgstr "Créez projet"
 
 msgid "Back"
 msgstr "Retour"
@@ -2041,11 +2045,11 @@ msgstr "Mot de passe oublié ?"
 #: templates/registration/password_reset_form.html:14
 msgid ""
 "Type the full email address you use to sign in to your DataWinners Account."
-msgstr "Entrez votre adresse email pour vous connecter à DataWinners."
+msgstr "Entrez l'adresse email que vous utilisez pour vous connecter à DataWinners."
 
 #: templates/registration/password_reset_form.html:15
 msgid "We will email you a code to this Email."
-msgstr "Nous allons vous envoyer un code sur cet email"
+msgstr "Nous allons vous envoyer un code à cet email"
 
 #: templates/registration/password_reset_form.html:26
 msgid "Get Password"
@@ -2126,7 +2130,7 @@ msgid "Your Organization"
 msgstr "Votre organisation"
 
 msgid "Point of Contact / Account Administrator"
-msgstr "Personne à contacter / Administrateur du compte"
+msgstr "Contact / Administrateur du compte"
 
 msgid "Already registered?"
 msgstr "Avez-vous un compte ?"
@@ -2379,22 +2383,22 @@ msgstr "Mettre en place des rappels automatiques par SMS à envoyer vers vos Exp
 
 #create_project.html
 msgid "Create your project in a few easy steps."
-msgstr "Créer votre projet en quelques étapes faciles."
+msgstr "Créez votre projet en quelques étapes faciles."
 
 msgid "Name your project and provide basic information about it."
-msgstr "Nommer votre projet et en fournir des informations élémentaires."
+msgstr "Nommez votre projet et en fournir des informations élémentaires."
 
 msgid "Write and edit your questions."
-msgstr "Saisir et éditer vos questions."
+msgstr "Saisissez et éditez vos questions."
 
 msgid "Save and create your project."
-msgstr "Sauvegarder et créer votre projet."
+msgstr "Sauvegardez et créez votre projet."
 
 msgid "Send A Message"
 msgstr "Envoyer un message"
 
 msgid "Text:"
-msgstr "texte:"
+msgstr "Texte:"
 
 msgid "To:"
 msgstr "Pour:"
@@ -2424,7 +2428,7 @@ msgid "characters used"
 msgstr "caractères utilisés"
 
 msgid "We have provided you with example questions below. You can use the provided question, edit them, delete them or write your own."
-msgstr "Nous vous avons donné des questions types ci-dessous. Vous pouvez les utiliser, les éditer, ou les supprimer et ajouter les votres."
+msgstr "Vous pouvez utiliser, éditer, ou supprimer les questions types ci-dessous et ajouter les vôtres."
 
 msgid "Save as Draft"
 msgstr "Enregistrer comme ébauche"
@@ -2436,7 +2440,7 @@ msgid "tooltip_project_name"
 msgstr "Donnez à votre projet un nom court et descriptif afin que vous puissiez l'identifier parmi une liste de tous les projets."
 
 msgid "tooltip_error_language"
-msgstr "Vos Expéditeurs de Données recevront une Confirmation automatique et des messages d'Erreur venant de DataWinners en fonction de leur soumission. Choisissez la langue utilisés pour ces messages."
+msgstr "Vos Expéditeurs de Données recevront une Confirmation automatique et des messages d'Erreur venant de DataWinners en fonction de leur soumission. Choisissez la langue utilisée pour ces messages."
 
 #: templates/dashboard/overview.html
 msgid "Your project"
@@ -2638,7 +2642,7 @@ msgid "You have used up your 100 SMS for the trial account. Please upgrade to a 
 msgstr "Vous avez utilisé vos 100 SMS pour le compte d'essai. S'il vous plaît passer à un abonnement mensuel de continuer à envoyer des données à vos projets."
 
 msgid "Which subject are you reporting on?"
-msgstr "Votre rapport concerne quel sujet ?"
+msgstr "Votre rapport porte sur quel sujet?"
 
 #Create project Page:
 msgid "Basic Information"
@@ -2742,22 +2746,22 @@ msgid "Send data using  Internet"
 msgstr "Envoyer des données par internet"
 
 msgid "Analyze data"
-msgstr "Alanlyse de données"
+msgstr "Alanlyser des données"
 
 msgid "My account"
 msgstr "Mon compte"
 
 msgid "General feedback"
-msgstr "Retour en général"
+msgstr "Feedback général"
 
 msgid "Subscription Inquiry"
-msgstr "Enquête de souscription"
+msgstr "Demande d'Abonnement"
 
 msgid "Consulting"
 msgstr "Conseil"
 
 msgid "Technical Support"
-msgstr "Support téchnique"
+msgstr "Support technique"
 
 msgid "Billing"
 msgstr "Facturation"
@@ -2787,20 +2791,20 @@ msgstr "Si vous avez besoin de la question suivante dans votre questionnaire 'Su
  "apparaissant à côté de chaque choix"
 
 msgid "tooltip_summary_report"
-msgstr "Choisissez l'option Rapport de Synthèse si vous voulez que vos Expéditeurs de Données (en d'autres termes, "
+msgstr "Choisissez l'option Rapport sommaire si vous voulez que vos Expéditeurs de Données (en d'autres termes, "
 "les gens sur le terrain) répondent à une liste élémentaire de questions"
 "<br/>Exemples:"
 "<br/>1) Un agent de santé communautaire soumet un rapport d'activité mensuel"
 "(exemple de question: Combien de bébés aviez-vous pesé le mois dernier?)"
-"<br/>2) Une jeune femme répond à des questions de choix"
-"(Exemple de question: Avez-vous accès à l'eau pota"
+"<br/>2) Une jeune femme répond à des questions de choix "
+"(Exemple de question: Avez-vous accès à l'eau potable"
 
 msgid "tooltip_individual_report"
-msgstr "Les Rapports Individuels portent sur des sujets spéc"
+msgstr "Les Rapports Individuels portent sur des sujets spécifiques"
 "<br/>Exemples: <br/> 1) Un médecin examine un bébé. Dans ce cas, le sujet est le bébé."
 "<br/>2) Un superviseur évalue la qualité des soins au niveau d’une clinique. Le sujet est la clinique"
 "<br/>3) Un ingénieur mesure le débit d'une pompe à eau. Le sujet est la pompe à eau."
-"<br/>Dans chaque cas, les Expéditeurs de Données (en d'autres termes, les gens sur le terrain) doiventt d'abord "
+"<br/>Dans chaque cas, les Expéditeurs de Données (en d'autres termes, les gens sur le terrain) doivent d'abord "
 "identifier le 'sujet' spécifique (bébé/clinique/pompe à eau)"
 "<br/>Par exemple, l'Expéditeur de Données devrait tout d'abord répondre à la question: 'A propos de quel bébé votre rapport concerne-t-il?'"
 "<br/>Toutes les questions suivantes seraient au sujet du bébé. (Exemple: 'Combien pesait le bébé?')"
@@ -2905,7 +2909,7 @@ msgid "Enter an id, or allow us to generate it"
 msgstr "Entrez un id ou permettez-nous de le générer"
 
 msgid "Payment Details"
-msgstr "Détails paiement"
+msgstr "Détails de paiement"
 
 msgid "Invoice Period"
 msgstr "Période de Facturation"
@@ -2974,7 +2978,7 @@ msgid "What kind of data do you want to collect?"
 msgstr "Quels types de données voulez-vous collecter?"
 
 msgid "I want Summary Reports."
-msgstr "Je veux des Rapports de Synthèse"
+msgstr "Je veux des Rapports Sommaires."
 
 msgid "I want Individual Reports about a specific subject."
 msgstr "Je veux des Rapports Individuels sur un sujet spécifique"
@@ -3002,3 +3006,6 @@ msgstr "En décochant cette case, les rappels automatiques seront envoyés à to
 
 msgid "Specify when you want to send automatic Reminders to your Data Senders"
 msgstr "Spécifiez quand est-ce que que vous voulez envoyer des Rappels automatiques à vos Expéditeurs de Données"
+
+msgid "Between %d -- %d characters"
+msgstr "Entre %d -- %d caractères"

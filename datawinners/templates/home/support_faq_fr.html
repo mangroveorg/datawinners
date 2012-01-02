@@ -1,5 +1,5 @@
 {% extends 'public_secondary.html' %}
-{% block page_title %} Assistance {% endblock %}
+{% block page_title %} Trouvez des réponses {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -21,7 +21,7 @@
 
 {% block page_breadcrumbs %}
     <a href="/fr/home/">Accueil</a> &gt; <a
-        href="/fr/support/">Assistance</a> &gt; Trouver des réponses (FAQs)
+        href="/fr/support/">Assistance</a> &gt; Trouvez des réponses (FAQs)
 {% endblock %}
 
 {% block main_content %}
@@ -29,14 +29,18 @@
         <h1><a href="/fr/support/">ASSISTANCE</a></h1>
         <ul>
             <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
-            <li><a href="/fr/support/get-started/">Commencer</a></li>
-            <li class="active"><a href="/fr/support/find-answers/">Trouver des
+            <li><a href="/fr/support/get-started/">Commencez</a></li>
+            <li class="active"><a href="/fr/support/find-answers/">Trouvez des
                 réponses (FAQs)</a></li>
-            <li><a href="/fr/support/ask-us/">Nous demander</a></li>
+            <li><a href="/fr/support/ask-us/">Demandez-nous</a></li>
         </ul>
     </div>
     <div id="main_content">
         <div class="margin_left_20">
+            <div class="grid_18 font_size_14">
+                Parcourez notre liste de Questions Fréquemment Posées.
+            </div>
+            
             <h2>Informations d'Ordre Général</h2>
 
             <div class="support-acc">
@@ -46,8 +50,7 @@
                 <p>
                     <strong>DataWinners est le premier service de collecte
                         mobile de données entièrement intégré. DW vous
-                        permet de collecter des données via SMS à partir de
-                        n'importe où, à l'aide de n'importe quel téléphone.
+                        permet de collecter des données via SMS n'importe où, à l'aide de n'importe quel téléphone.
                         Et du fait que votre abonnement DataWinners vous
                         donne droit à des paquets de SMS pré-payés, nous
                         vous évitons les longues négociations avec les
@@ -56,14 +59,14 @@
                 </p>
             </div>
 
-            <h3><a href="#">Comment Est-Ce Que Cela Fonctionne?</a></h3>
+            <h3><a href="#">Comment ça Marche?</a></h3>
 
             <div>
                 <p>
                     Lorsque vous souscrivez pour un abonnement à
-                    DataWinners, vous obtiendrez: 1) l'accès au site Web de
-                    DataWinners; 2) un numéro de téléphone local dans votre
-                    pays de projet et, 3) un paquet de SMS.
+                    DataWinners, vous obtiennez: 1) l'accès au site Web de
+                    DataWinners; 2) un numéro de téléphone local dans le
+                    pays où a lieu votre projet et, 3) un paquet de SMS.
                 </p>
 
                 <p>
@@ -118,7 +121,7 @@
                         visité un centre de santé)
                     </li>
                     <li>Enquêtes de satisfaction de la clientèle</li>
-                    <li>Suivi des accusés de vente</li>
+                    <li>Collecte des Factures de Ventes</li>
                     <li>Suivi des points d'eau</li>
                 </ul>
             </div>
@@ -175,7 +178,7 @@
                     déploiement, consultez notre <a
                         href="/fr/pricing/"><strong>Page des Tarifications
                     ici</strong></a>. Vous pouvez accéder à votre compte
-                    DataWinners à partir de n'importe où, à l'aide d'un
+                    DataWinners n'importe où, à l'aide d'un
                     navigateur Web,.
                 </p>
             </div>
@@ -257,7 +260,7 @@
                     premières applications conçues à l'aide du cadre de
                     collecte des données Mangrove, lui-même étant un projet
                     open source qui développe des outils de base pour la
-                    collecte mobile, l'agrégation, l'analyse et la
+                    collecte mobile de données, l'agrégation, l'analyse et la
                     visualisation des données ciblant les SMS, le Web, le
                     J2ME et l'Android via XForms. L'initiative Mangrove est
                     une collaboration entre ThoughtWorks, Inc, le
@@ -477,22 +480,20 @@
                 </ul>
             </div>
 
-            <h3><a href="#">Quelle est la différence entre un Rapport de Synthèse
+            <h3><a href="#">Quelle est la différence entre un Rapport de Sommaire
                 et un Rapport Individuel sur un sujet spécifique?</a></h3>
 
             <div>
                 <p>
                     Les projets de collecte de données peuvent être regroupés en
-                    deux grandes catégories: 1) les Rapports de Synthèse, et 2) les
+                    deux grandes catégories: 1) les Rapports Sommaire, et 2) les
                     Rapports Individuels sur un sujet spécifique. A l'aide de
                     DataWinners, vous pouvez collecter des données pour l'une ou
                     pour ces deux catégories.
                 </p>
 
                 <p>
-                    <strong>Rapports de Synthèse</strong><br/><br/>
-                    Les Rapports de Synthèse sont des réponses à une liste
-                    élémentaire de questions.<br/><br/>
+                    <strong>Rapports Sommaire</strong><br/><br/>
                     Exemples:
                 </p>
                 <ul class="bulleted">
@@ -502,7 +503,7 @@
                             aviez-vous pesé le mois dernier?)
                         </blockquote>
                     </li>
-                    <li>Une jeune femme répond à des questions de choix
+                    <li>Une jeune femme répond à des questions à choix
                         <blockquote>(Exemple de question: Avez-vous accès à l'eau
                             potable?).
                         </blockquote>
@@ -513,7 +514,6 @@
                     Expéditeur de Données:
                 </p>
 
-                <p>APERCU DE LA PAGE D'ANALYSE</p>
                 <table>
                     <tr>
                         <td>NOM DE L'EXPEDITEUR DE DONNEES</td>
@@ -543,7 +543,7 @@
                 </p>
 
                 <p>Avec DataWinners, vous pouvez aller au-delà de collecte de
-                    Rapports de Synthèse; Vous pouvez collecter des rapports
+                    Rapports Sommaire; Vous pouvez collecter des rapports
                     individuels sur un sujet spécifique. Vous pouvez inscrire des
                     gens, des lieux ainsi que des choses, et donner à chacun d'eux
                     un numéro d'identification unique qui vous permet de: 1) créer
@@ -570,8 +570,7 @@
                 </p>
 
                 <p>Par exemple, l'Expéditeur de Données devrait tout d'abord
-                    répondre à la question: "A propos de quel bébé votre rapport
-                    concerne-t-il?"
+                    répondre à la question: "Sur quel bébé votre rapport porte-t-il?"
                 </p>
 
                 <p>Toutes les questions suivantes seraient au sujet du bébé.
@@ -748,7 +747,7 @@
                     <p>
                         Sur n'importe quelle carte, les épingles représentent soit les
                         Expéditeurs de Données inscrits, soit les Sujets inscrits. Si
-                        le type de projet est un Rapport de Synthèse, alors chaque
+                        le type de projet est un Rapport Sommaire, alors chaque
                         épingle sur la carte correspond à un Expéditeur de Données
                         inscrits. Pour les Rapports Individuels sur un Sujet
                         Spécifique, chaque épingle sur la carte correspond à un Sujet
@@ -756,7 +755,7 @@
                     </p>
                 </div>
 
-                <h3><a href="#">Pourquoi est-ce que ce ne sont tous mes Expéditeurs de
+                <h3><a href="#">Pourquoi est-ce que ce ne sont pas tous mes Expéditeurs de
                     Données ou Sujets inscrits qui sont affichés sur la carte?</a></h3>
 
                 <div>
@@ -780,9 +779,8 @@
                     <p>
                         Pour tout projet, ajoutez un enregistrement en utilisant le
                         lien "Soumission Web" à partir de l'onglet "Données". Pour
-                        supprimer un enregistrement de données, cliquez sur l'onglet
-                        "Données" pour votre projet, puis cliquez sur la page "Tous les
-                        Enregistrements de Données" page. Ensuite, sélectionnez
+                        supprimer un enregistrement de données, puis cliquez sur la page "Tous les
+                        Enregistrements de Données" relatif au projet. Ensuite, sélectionnez
                         l'enregistrement des données que vous souhaitez supprimer en
                         cliquant sur la boîte correspondante située sur la colonne de
                         gauche et choisissez "Supprimer" à partir du menu déroulant des
@@ -802,10 +800,9 @@
                         soumission de SMS contenait des erreurs et a été rejetée.
                     </p>
 
-                    <p>L'affichage du statut "Faux" des soumissions a pour but de
-                        servir comme un outil de diagnostic pour vous aider à
+                    <p>L'affichage du statut "Faux" des soumissions sert d'outil de diagnostic pour vous aider à
                         identifier les difficultés ou problèmes que vos Expéditeurs de
-                        Données pourraient avoir lors de l'envoi des données.
+                        Données ont lors de l'envoi des données.
                     </p>
                 </div>
 
@@ -930,7 +927,6 @@
                         <li>Internet Explorer 7 et ses versions plus récentes</li>
                         <li>Firefox 3.0 et ses versions plus récentes</li>
                         <li>Safari 5.1 et ses versions plus récentes</li>
-                        <li>Chrome (15.0.874.106) et ses versions plus récentes</li>
                     </ol>
                 </div>
             </div>

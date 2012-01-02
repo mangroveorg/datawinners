@@ -1,180 +1,271 @@
-{% extends 'public_secondary_fr.html' %}
+{% extends 'public_secondary.html' %}
 {% block page_title %} Clients {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
-{% activetab "main_nav" "about" %}
-{{ block.super }}
+    {% activetab "main_nav" "about" %}
+    {{ block.super }}
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/home/fr">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous
+    <a href="/fr/home/">Accueil</a> &gt; <a href="/fr/about-us">Qui sommes-nous
     ?</a> &gt; Clients
 {% endblock %}
 
 {% block main_content %}
-<div id="nav_content">
-    <h1>QUI SOMMES-NOUS ?</h1>
-    <ul>
-        <li><a href="/fr/about-us/blog">Blog</a></li>
-        <li><a href="/fr/about-us/partners">Partenaires</a></li>
-        <li class="active"><a href="/fr/about-us/clients">Clients</a></li>
-        <li><a href="/fr/about-us/contact-us">Nous contacter</a>
-    </ul>
-</div>
-<div id="main_content">
-    <div class="margin_left_20">
-        <p>Human Network International renforce la capacité des partenaires de
-            développement à collecter des données et à prendre de meilleures
-            décisions. </p>
+    <div id="nav_content">
+        <h1><a href="/fr/about-us/">QUI SOMMES-NOUS ?</a></h1>
+        <ul>
+            <li><a href="/fr/about-us/blog">Blog</a></li>
+            <li><a href="/fr/about-us/partners">Partenaires</a></li>
+            <li class="active"><a href="/fr/about-us/clients">Clients</a></li>
+            <li><a href="/fr/about-us/contact-us">Nous contacter</a>
+        </ul>
+    </div>
+    <div id="main_content">
+        <div class="margin_left_20">
+            <div class="left_content">
+                <p>Human Network International renforce la capacité des
+                    partenaires de
+                    développement à collecter des données et à prendre de
+                    meilleures
+                    décisions. </p>
 
-        <p>Les Principaux Clients :</p>
+                <p>Les Principaux Clients :</p>
 
-        <div>
-            <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_worldbank.gif" width="190"
-                     height="60" alt="Worldbank"/>
-            </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>La Banque Mondiale et le Gouvernement de Madagascar </h2>
+                <div>
+                    <div class="grid_5 alpha omega padding_top_20">
+                        <img src="/media/images/dw_clogo_worldbank.gif"
+                             width="190"
+                             height="60" alt="Worldbank"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2>La Banque Mondiale et le Gouvernement de
+                            Madagascar </h2>
 
-                <p>
-                    Le Gouvernement de Madagascar a eu recours à HNI pour deux
-                    projets distincts qui utilisent des prêts octroyés par la
-                    Banque mondiale. Le premier consistait à créer pour le
-                    Ministère de la Santé, une application pour collecter par
-                    SMS, et stocker des informations concernant les médicaments
-                    vitaux contre le VIH provenant d'un réseau de médecins
-                    autorisés à administrer dits médicaments. Le second était
-                    de travailler avec l'Office National de Nutrition pour la
-                    collecte par SMS, des données de rapport d'activités
-                    mensuelles provenant d'un vaste réseau d'agents
-                    communautaires de nutrition.
-                    <br/><a href="http://www.worldbank.org" target="_blank">www.worldbank.org</a>
-                </p>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_mariestopes.gif" width="190"
-                     height="70" alt="Marie Stopes"/>
-            </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>Marie Stopes Madagascar </h2>
+                        <p>
+                            Le Gouvernement de Madagascar a eu recours à HNI
+                            pour deux
+                            projets distincts qui utilisent des prêts octroyés
+                            par la
+                            Banque mondiale. Le premier consistait à créer pour
+                            le
+                            Ministère de la Santé, une application pour
+                            collecter par
+                            SMS, et stocker des informations concernant les
+                            médicaments
+                            vitaux contre le VIH provenant d'un réseau de
+                            médecins
+                            autorisés à administrer lesdits médicaments. Le
+                            second était
+                            de travailler avec l'Office National de Nutrition
+                            pour la
+                            collecte par SMS, des données de rapport
+                            d'activités
+                            mensuelles provenant d'un vaste réseau d'agents
+                            communautaires de nutrition.
+                            <br/><a href="http://www.worldbank.org"
+                                    target="_blank">www.worldbank.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega padding_top_20">
+                        <img src="/media/images/dw_clogo_mariestopes.gif"
+                             width="190"
+                             height="70" alt="Marie Stopes"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2>Marie Stopes Madagascar </h2>
 
-                <p>
-                    MSI est l’un des plus importants organismes internationaux
-                    de planification familiale dans le monde
-                    <br/>MSI fournit des services de planification familiale et
-                    de santé de la reproduction de qualité à des millions de
-                    femmes les plus pauvres et les plus vulnérables du monde.
-                    MSI/Madagascar a eu recours à HNI pour trois initiatives
-                    distinctes. La première application concerne la collecte
-                    par SMS, des données mensuelles sur les clientes provenant
-                    d'un réseau de médecins du secteur privé regroupés sous la
-                    marque "Blue Star". La seconde concerne la collecte par
-                    SMS, des données de satisfaction des clientes émanant des
-                    femmes venues se faire consulter auprès des cliniques
-                    affiliées à Marie Stopes International. Le troisième projet
-                    permet aux cliniques exploitées par Marie Stopes de
-                    soumettre des rapports mensuels via l’Internet.
-                    <br/><a href="http://www.mariestopes.org" target="_blank">www.mariestopes.org</a>
-                </p>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_rti.gif" width="190"
-                     height="60" alt="RTI"/>
-            </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>RTI International</h2>
+                        <p>
+                            MSI est l’un des plus importants organismes
+                            internationaux
+                            de planification familiale dans le monde
+                            <br/>MSI offre des services de planification
+                            familiale et
+                            de santé de la reproduction de qualité à des
+                            millions de
+                            femmes les plus pauvres et les plus vulnérables du
+                            monde.
+                            MSI/Madagascar a eu recours à HNI pour trois
+                            initiatives
+                            distinctes. La première application concerne la
+                            collecte
+                            par SMS, des données mensuelles sur les clientes
+                            provenant
+                            d'un réseau de médecins du secteur privé regroupés
+                            sous la
+                            marque "Blue Star". La seconde concerne la collecte
+                            par
+                            SMS, des données de satisfaction des clientes
+                            émanant des
+                            femmes venues se faire consulter auprès des
+                            cliniques
+                            affiliées à Marie Stopes International. Le
+                            troisième projet
+                            permet aux cliniques exploitées par Marie Stopes de
+                            soumettre des rapports mensuels via l’Internet.
+                            <br/><a href="http://www.mariestopes.org"
+                                    target="_blank">www.mariestopes.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega padding_top_20">
+                        <img src="/media/images/dw_clogo_rti.gif" width="190"
+                             height="60" alt="RTI"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2>RTI International</h2>
 
-                <p>
-                    RTI effectue des recherches et fournit des services
-                    techniques à des agences gouvernementales, des universités,
-                    des fondations, des entreprises privées, et d'autres
-                    organisations. HNI et RTI oeuvrent ensemble sur deux
-                    différentes initiatives. La première application permet aux
-                    superviseurs basés dans les communautés de soumettre les
-                    données de leurs rapports d'activité mensuelle par SMS. La
-                    seconde application permet aux employés de RTI de soumettre
-                    leurs rapports de supervision et leurs résultats de la
-                    formation via SMS.
-                    <br/><a href="http://www.rti.org" target="_blank">www.rti.org</a>
-                </p>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_ci.gif" width="190"
-                     height="60" alt="CI"/>
-            </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>Conservation International</h2>
+                        <p>
+                            RTI effectue des recherches et fournit des services
+                            techniques à des agences gouvernementales, des
+                            universités,
+                            des fondations, des entreprises privées, et
+                            d'autres
+                            organisations. HNI et RTI &oelig;uvrent ensemble
+                            sur deux
+                            différentes initiatives. La première application
+                            permet aux
+                            superviseurs basés dans les communautés de
+                            soumettre les
+                            données de leurs rapports d'activité mensuelle par
+                            SMS. La
+                            seconde application permet aux employés de RTI de
+                            soumettre
+                            leurs rapports de supervision et leurs résultats de
+                            formation via SMS.
+                            <br/><a href="http://www.rti.org" target="_blank">www.rti.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega padding_top_20">
+                        <img src="/media/images/dw_clogo_ci.gif" width="190"
+                             height="60" alt="CI"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2>Conservation International</h2>
 
-                <p>
-                    CI est un organisme à but non lucratif, qui applique des
-                    innovations dans les sciences, l'économie, la politique et
-                    la participation communautaire pour protéger la
-                    biodiversité de la Terre partout dans le monde. CI a eu
-                    recours à HNI pour l’aider à renforcer ses capacités
-                    internes à collecter par SMS, les informations sur les
-                    petites subventions. HNI a également créé une deuxième
-                    application qui permet au Personnel des Parcs Nationaux
-                    d’utiliser les SMS pour rapporter les activités illégales
-                    perpétrées dans l’une ou l’autre des zones protégées de
-                    Madagascar.
-                    <br/><a href="http://www.conservation.org" target="_blank">www.conservation.org</a>
-                </p>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_bngrc.gif" width="190"
-                     height="80" alt="BNGRC"/>
-            </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>Bureau National pour la Gestion des Risques et des
-                    Catastrophes </h2>
+                        <p>
+                            CI est un organisme à but non lucratif, qui
+                            applique des
+                            innovations dans les sciences, l'économie, la
+                            politique et
+                            la participation communautaire pour protéger la
+                            biodiversité de la Terre partout dans le monde. CI
+                            a eu
+                            recours à HNI pour l’aider à renforcer ses
+                            capacités
+                            internes à collecter par SMS, les informations sur
+                            les
+                            petites subventions. HNI a également créé une
+                            deuxième
+                            application qui permet au Personnel des Parcs
+                            Nationaux
+                            d’utiliser les SMS pour rapporter les activités
+                            illégales
+                            perpétrées dans l’une ou l’autre des zones
+                            protégées de
+                            Madagascar.
+                            <br/><a href="http://www.conservation.org"
+                                    target="_blank">www.conservation.org</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega padding_top_20">
+                        <img src="/media/images/dw_clogo_bngrc.gif" width="190"
+                             height="80" alt="BNGRC"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2>Bureau National pour la Gestion des Risques et des
+                            Catastrophes </h2>
 
-                <p>
-                    Catholic Relief Services (CRS) a eu recours à HNI pour
-                    renforcer les capacités internes du Bureau National pour la
-                    Gestion des Risques et des Catastrophes (connu sous le
-                    sigle français BNGRC) pour collecter les rapports cruciaux
-                    des dégâts provenant des sites post-catastrophe via SMS.
-                    <br/><a href="http://www.bngrc.mg" target="_blank">www.bngrc.mg</a>
-                </p>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="grid_5 alpha omega padding_top_20">
-                <img src="/media/images/dw_clogo_ambatovy.gif" width="190"
-                     height="60" alt="Ambatovy"/>
-            </div>
-            <div class="grid_13 alpha omega float_right">
-                <h2>Ambatovy </h2>
+                        <p>
+                            Catholic Relief Services (CRS) a eu recours à HNI
+                            pour
+                            renforcer les capacités internes du Bureau National
+                            pour la
+                            Gestion des Risques et des Catastrophes (connu sous
+                            le
+                            sigle français BNGRC) pour collecter les rapports
+                            critiques
+                            des dégâts provenant des sites post-catastrophe via
+                            SMS.
+                            <br/><a href="http://www.bngrc.mg" target="_blank">www.bngrc.mg</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div>
+                    <div class="grid_5 alpha omega padding_top_20">
+                        <img src="/media/images/dw_clogo_ambatovy.gif"
+                             width="190"
+                             height="60" alt="Ambatovy"/>
+                    </div>
+                    <div class="grid_7 alpha omega float_right">
+                        <h2>Ambatovy </h2>
 
-                <p>
-                    Ambatovy est une entreprise minière d’extraction à long
-                    terme de nickel et de cobalt de grand tonnage, implantée à
-                    Madagascar. Elle constitue le plus important investissement
-                    étranger dans le pays, et figurera bientôt parmi les plus
-                    grandes entités minières de nickel au monde. Ambatovy a eu
-                    recours à HNI pour l’aider à collecter les rapports de
-                    plainte provenant du terrain.
-                    <br/><a href="http://www.ambatovy.com" target="_blank">www.ambatovy.com</a>
-                </p>
+                        <p>
+                            Ambatovy est une entreprise minière d’extraction à
+                            long
+                            terme de nickel et de cobalt de grand tonnage,
+                            implantée à
+                            Madagascar. Elle constitue le plus important
+                            investissement
+                            étranger dans le pays, et figurera bientôt parmi
+                            les plus
+                            grandes entités minières de nickel au monde.
+                            Ambatovy a eu
+                            recours à HNI pour l’aider à collecter les rapports
+                            de
+                            plainte provenant du terrain.
+                            <br/><a href="http://www.ambatovy.com"
+                                    target="_blank">www.ambatovy.com</a>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
             </div>
-            <div class="clear"></div>
+            <div class="right_content">
+                <div class="block_1">
+                    <h1>Nos Partenaires Clés</h1>
+
+                    <p>En savoir plus sur nos partenaires et sur ce projet
+                        libre.
+                        <br/>Voir <a href="/fr/about-us/partners/">Nos Partenaires Clés</a>
+                    </p>
+                </div>
+                <div class="block_1">
+                	<h1>Nos succ&egrave;s</h1>
+	                <p>
+						Voyez comment d'autres ont b&eacute;n&eacute;fici&eacute; de DataWinners.
+                	    <br>Voir <a href="/fr/success-stories/">Nos succ&egrave;s</a>
+	                </p>
+    	        </div>
+
+    	        <div class="block_1">
+                	<h1>Essai gratuit</h1>
+                	<div id="how_nav">
+	                <p>
+						Essayez toutes les fonctionalités c'est enti&egrave;ment gratuit.
+
+                	    <br><a href="/fr/pricing/">En savoir plus</a> ou
+                	    <div id="how_links" class="margin_null">
+                	    	<a href="/register/trial/" id="how_try_button">Essai gratuit</a>
+                	    </div>
+                	</p>
+                	</div>
+    	        </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="clear"></div>
+    <div class="clear"></div>
 {% endblock %}

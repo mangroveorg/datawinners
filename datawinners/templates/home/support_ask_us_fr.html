@@ -1,6 +1,6 @@
 {% extends 'public_secondary.html' %}
 {% load i18n %}
-{% block page_title %} Assistance {% endblock %}
+{% block page_title %} Demandez-nous {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -22,32 +22,32 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Nous demander
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Demandez-nous
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>Support</h1>
+        <h1><a href="/fr/support/">ASSISTANCE</a></h1>
         <ul>
             <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
-            <li><a href="/fr/support/get-started/">Commencer</a></li>
-            <li><a href="/fr/support/find-answers/">Trouver des reponses (FAQs)</a></li>
-            <li class="active"><a href="/fr/support/ask-us/">Nous demander</a></li>
+            <li><a href="/fr/support/get-started/">Commencez</a></li>
+            <li><a href="/fr/support/find-answers/">Trouvez des reponses (FAQs)</a></li>
+            <li class="active"><a href="/fr/support/ask-us/">Demandez-nous</a></li>
         </ul>
     </div>
     <div id="main_content">
 
         <div class="margin_left_20">
             <p>
-                Envoyez une question ou un commentaire &agrave; nos &eacute;quipte service client.<br/>
-                Si vous avez un probl&eacute;me en utilisant cette page pour nous envoyer nous un message,<br/>
+                Envoyez une question ou un commentaire &agrave; notre &eacute;quipe de service à la clientèle,<br/>
+                Si vous rencontrez un probl&egrave;me pour nous envoyer nous un message à partir de cette page,<br/>
                 s'il vous plait, envoyez nous un e-mail &agrave; l'adresse <a href="mailto:support@datawinners.com">support@datawinners.com</a>
             </p>
             <form method="post" action="{% url datawinners.home.views.ask_us %}" id="contact_us" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="redirect_url" value="{{ flatpage.url }}"/>
                 <input type="hidden" name="to" value="support"/>
-                <label>Categorie:</label>
+                <label>Cat&eacute;gorie:</label>
                 <select name="category">
                     <option value="{% trans "Create questionnaire"%}">{% trans "Create questionnaire"%}</option>
                     <option value="{% trans "Register a Subject/Data Sender" %}">{% trans "Register a Subject/Data Sender" %}</option>
@@ -71,9 +71,13 @@
                 <label>Message:</label>
                 <textarea rows="10" cols="20" name="message" id="message"></textarea>
 
-                <p>Attachez une capture d'ecran qui illustre le probl&egrave;me.</p>
-                <div class=""><input type="file" name="attachement"/></div>
-                <br/>
+                <p>Joingnez une capture d'écran ou un document qui illustre le probl&egrave;me.</p>
+                <div style="position: relative;margin-bottom: 5px;">
+                    <input type="submit" style="left: 155px;width: 79px;top:1px;position: absolute;" value="Parcourir..." onclick="return false;"/>
+                    <input type="text" disabled="disabled" style="background-color: #FFFFFF;left: 0px;width: 150px;height: 15px;top:1px;position: absolute;" />
+                    <input type="file" name="attachement"  id="input_file" style="z-index: 4;left:0px;opacity:0;position:absolute;">
+                </div>
+                <br/><br/>
                 <input type="submit" value="Envoyer" id="submit"/>
             </form>
             <div class="clear"></div>

@@ -30,7 +30,9 @@ $(document).ready(function() {
         $('#registration_form').submit();
     });
     
-    $("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #content-terms");
+    //$("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #content-terms");
+
+    $("#content_of_terms_and_conditions").load($("#link-terms-and-conditions").attr("href")+" #container_main_content");
 
      $("#content_of_terms_and_conditions").dialog({
         autoOpen: false,

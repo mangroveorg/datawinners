@@ -602,6 +602,9 @@ msgstr "Entrez le numéro du sujet"
 msgid "Geocode"
 msgstr "Géocode"
 
+msgid "Phone No."
+msgstr ""
+
 #: templates/subject_table.html:10 templates/entity/datasenders_table.html:10
 #: templates/project/registered_datasenders.html:37
 #: templates/project/registered_subjects.html:31
@@ -2406,4 +2409,7 @@ msgid "Learn more about DataWinners on our"
 msgstr ""
 
 msgid "Specify when you want to send automatic Reminders to your Data Senders"
+msgstr ""
+
+msgid "Between %d -- %d characters"
 msgstr ""

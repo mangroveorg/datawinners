@@ -71,10 +71,13 @@
                     <br/>
                     <label>Message:</label>
                     <textarea rows="10" cols="20" name="message" id="message"></textarea>
-
                     <p>Attach a screen shot or document that illustrates your issue.</p>
-                    <div class=""><input type="file" name="attachement"/></div>
-                    <br/>
+                    <div style="position: relative;margin-bottom: 5px;">
+                        <input type="submit" style="left: 155px;width: 79px;top:1px;position: absolute;" value="Browse..." onclick="return false;"/>
+                        <input type="text" disabled="disabled" style="background-color: #FFFFFF;left: 0px;width: 150px;height: 15px;top:1px;position: absolute;" />
+                        <input type="file" name="attachement"  id="input_file" style="z-index: 4;left:0px;opacity:0;position:absolute;">
+                    </div>
+                    <br/><br/>
                     <input type="submit" value="Submit" id="submit"/>
                 </form>
                 <div class="clear"></div>
@@ -91,9 +94,7 @@
                 </div>
                 <div class="block_2">
                     <h1>Try it Free</h1>
-
                     <p>Try out the full functionality completely free.</p>
-
                     <div id="how_nav">
                         <div id="how_links" style="margin: 0;">
                             <a href="/register/trial"

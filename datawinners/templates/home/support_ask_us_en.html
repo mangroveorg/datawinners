@@ -1,6 +1,6 @@
 {% extends 'public_secondary.html' %}
 {% load i18n %}
-{% block page_title %} Support {% endblock %}
+{% block page_title %} Ask Us {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -13,7 +13,6 @@
     <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
     <link href="/media/css/scss/section_public_ask_us.scss" rel="stylesheet" />
 {% endblock %}
-
 {% load i18n %}
 {% block page_js %}
     {{ block.super }}
@@ -28,7 +27,7 @@
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>Support</h1>
+       <h1><a href="/en/support/">SUPPORT</a></h1>
         <ul>
             <li><a href="/en/support/case-studies/">Case studies</a></li>
             <li><a href="/en/support/get-started/">Get Started</a></li>
@@ -40,7 +39,7 @@
 
         <div class="margin_left_20">
             <p>
-                Submit a question or comment to our customer service team.<br/>
+                Ask a question or send a comment to our customer service team.<br/>
                 If you have any problems using this page to send us a message,
                 please email us at <a href="mailto:support@datawinners.com">support@datawinners.com</a>
             </p>
@@ -73,8 +72,12 @@
                 <textarea rows="10" cols="20" name="message" id="message"></textarea>
 
                 <p>Attach a screen shot or document that illustrates your issue.</p>
-                <div class=""><input type="file" name="attachement"/></div>
-                <br/>
+                <div style="position: relative;margin-bottom: 5px;">
+                    <input type="submit" style="left: 155px;width: 79px;top:1px;position: absolute;" value="Browse..." onclick="return false;"/>
+                    <input type="text" disabled="disabled" style="background-color: #FFFFFF;left: 0px;width: 150px;height: 15px;top:1px;position: absolute;" />
+                    <input type="file" name="attachement"  id="input_file" style="z-index: 4;left:0px;opacity:0;position:absolute;">
+                </div>
+                <br/><br/>
                 <input type="submit" value="Submit" id="submit"/>
             </form>
             <div class="clear"></div>

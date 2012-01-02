@@ -149,6 +149,13 @@ fieldset {
   margin-top: -145px;
   margin-left: -70px; }
 
+#report_type_fr .summary_report {
+  margin-left: -19px !important; }
+#report_type_fr .individual_report {
+  margin-left: 94px !important; }
+#report_type_fr #help_icon_for_add_subject {
+  margin-left: -114px; }
+
 .summary_report_tooltip {
   left: 690px !important;
   top: 930px!important; }

@@ -40,7 +40,7 @@
         {{ form.language }}
         {{ form.language.error }}
     </li>
-    <li>
+    <li id="report_type_{% trans "en" %}">
         <div class="help">
             {{ form.activity_report.label_tag }}
         </div>
@@ -50,7 +50,7 @@
         </p></div>
         {{ form.activity_report }}
         {{ form.entity_type }}
-        <img src='/media/images/help_icon.png' class='help_icon summary_report'/><div class='tooltip bottom summary_report_tooltip'><p>{% trans 'tooltip_summary_report' %}</p></div>
+        <img src='/media/images/help_icon.png' class='help_icon summary_report' /><div class='tooltip bottom summary_report_tooltip'><p>{% trans 'tooltip_summary_report' %}</p></div>
         <img src='/media/images/help_icon.png' class='help_icon individual_report' /><div class='tooltip bottom individual_report_tooltip'><p>{% trans 'tooltip_individual_report' %}</p></div>
         {%  include 'entity/create_type.html' %}
 
