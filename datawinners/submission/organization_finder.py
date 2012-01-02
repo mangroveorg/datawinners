@@ -13,7 +13,7 @@ class OrganizationFinder(object):
             record = DataSenderOnTrialAccount.objects.get(mobile_number=from_number)
             organization_settings = OrganizationSetting.objects.get(organization=record.organization)
         except ObjectDoesNotExist:
-            return None, (u"Sorry, this number %s is not registered with us.") % (from_number)
+            return None, (u"Sorry, this number %s is not registered with us.") % (from_number,)
         return organization_settings.organization, None
 
 
@@ -21,7 +21,7 @@ class OrganizationFinder(object):
         try:
             organization_settings = OrganizationSetting.objects.get(sms_tel_number=to_number)
         except ObjectDoesNotExist:
-            return None, u'No organization found for telephone number %s' % to_number
+            return None, u'No organization found for telephone number %s' % (to_number,)
         return organization_settings.organization, None
 
 

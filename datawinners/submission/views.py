@@ -45,7 +45,7 @@ def find_dbm(request):
     #This is the http post request. After this state, the request being sent is a python dictionary
     SMSMessageRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
     SMSTransportInfoRequestProcessor().process(http_request=request, mangrove_request=incoming_request)
-    error, organization = _get_organization(request)
+    organization, error = _get_organization(request)
 
     if error is not None:
         incoming_request['outgoing_message'] = error
@@ -110,8 +110,7 @@ def submit_to_player(incoming_request):
 
 def _get_organization(request):
     _from, _to = _get_from_and_to_numbers(request)
-    organization, error = OrganizationFinder().find(_from, _to)
-    return error, organization
+    return OrganizationFinder().find(_from, _to)
 
 
 def _get_from_and_to_numbers(request):
