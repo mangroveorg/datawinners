@@ -65,7 +65,4 @@ class TestDataAnalysis(BaseTest):
         data_analysis_page = self.prerequisites_of_data_analysis()
         data_analysis_page.date_range_dict[fetch_(DATE_RANGE, from_(FILTER_BY_YEAR_TO_DATE))]()
         data_analysis_page.filter_data()
-        data_list1 = data_analysis_page.get_all_data_records()
-        data_analysis_page.go_to_next_page()
-        data_list1+=data_analysis_page.get_all_data_records()
-        self.assertEquals(fetch_(DATA_RECORDS, from_(FILTER_BY_YEAR_TO_DATE)), data_list1)
+        self.assertEquals(fetch_(DATA_RECORDS, from_(FILTER_BY_YEAR_TO_DATE)), data_analysis_page.get_all_data_records_from_multiple_pages())
