@@ -6,6 +6,7 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException, N
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
 from mangrove.transport.player.player import Response
+from messageprovider.message_handler import get_expanded_response
 
 
 class TestGetExceptionMessageHandler(unittest.TestCase):
@@ -64,6 +65,14 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         form_submission_mock.cleaned_data = {'name': 'tester'}
         response = Response(reporters=[], submission_id=123, form_submission=form_submission_mock)
         message = get_success_msg_for_submission_using(response)
+        self.assertEqual(expected_message, message)
+
+    def test_should_return_expanded_response_message_for_submission_of_response_dict(self):
+        expected_message = "age: 12 name: tester choice: red"
+        form_submission_mock = Mock()
+        form_submission_mock.cleaned_data = {'name': 'tester', 'age': 12, 'choice': ['red']}
+        response = Response(reporters=[{"name": "rep1"}], submission_id=123, form_submission=form_submission_mock)
+        message = get_expanded_response(response.processed_data)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_registration_with_short_code(self):

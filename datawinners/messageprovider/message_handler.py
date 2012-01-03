@@ -33,9 +33,11 @@ def get_submission_error_message_for(errors):
 
 
 def get_expanded_response(response_dict):
+    if 'eid' in response_dict:
+        response_dict.pop('eid')
     stringified_dict = OrderedDict()
-    for k,v in response_dict.items():
-        stringified_dict[k] = _stringify(v)
+    for question_code,answer in response_dict.items():
+        stringified_dict[question_code] = _stringify(answer)
     expanded_response = " ".join([": ".join(each) for each in stringified_dict.items()])
     return expanded_response
 
