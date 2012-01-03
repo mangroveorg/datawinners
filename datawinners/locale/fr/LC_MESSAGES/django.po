@@ -3009,3 +3009,9 @@ msgstr "Spécifiez quand est-ce que que vous voulez envoyer des Rappels automati
 
 msgid "Between %d -- %d characters"
 msgstr "Entre %d -- %d caractères"
+
+msgid "Account Activation"
+msgstr "Activation de compte"
+
+msgid "You have already activated your account. Please sign in"
+msgstr "Vous avez déjà activé votre compte. S'il vous plaît, <a href=\"/login\">identifiez-vous</a>"

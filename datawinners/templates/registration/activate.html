@@ -1,7 +1,7 @@
 {% extends "layout_registration.html" %}
 {% load i18n %}
-{% block page_title %}{% trans "Activation Confirmation" %}{% endblock %}
-{% block section_title %} {% trans "Activation Confirmation" %}{% endblock %}
+{% block page_title %}{% trans "Account Activation" %}{% endblock %}
+{% block section_title %} {% trans "Account Activation" %}{% endblock %}
 
 {% block content %}
 <div class="span-18 box">
@@ -13,6 +13,8 @@
 {% else %}
 
 <p class="message-box">{% trans "Account activation failed" %}</p>
+<br/>
+<div>{% trans "You have already activated your account. Please sign in" %}</div>
 
 {% endif %}
 

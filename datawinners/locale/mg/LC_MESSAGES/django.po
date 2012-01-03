@@ -2413,3 +2413,9 @@ msgstr ""
 
 msgid "Between %d -- %d characters"
 msgstr ""
+
+msgid "Account Activation"
+msgstr ""
+
+msgid "You have already activated your account. Please sign in"
+msgstr "You have already activated your account. Please <a href=\"/login\">sign in</a>"
