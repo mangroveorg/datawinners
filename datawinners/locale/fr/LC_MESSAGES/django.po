@@ -978,7 +978,7 @@ msgstr "Ajouter un nouveau type de sujet"
 
 #: templates/entity/create_type.html:9
 msgid "New Subject(eg clinic, waterpoint etc)"
-msgstr "Nouveau sujet (ex : clinique, point d'eau, etc...)"
+msgstr "Nouveau sujet (ex : clinique, pompe publique, etc...)"
 
 #: templates/project/data_analysis.html:3
 msgid "Data Analysis"

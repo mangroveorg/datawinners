@@ -160,13 +160,20 @@
             <a href="#" class="button" id="ok_button">{% trans "OK" %}</a>
         </div>
 
-        <div class="right_aligned_button create_project">
-            <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
-            {% if project.state != 'Test' %}
-                <input type="button" class="button" id="save_as_draft" value="{% trans "Save as Draft" %}">
-            {% endif %}
-            <input type="button" class="button" id="save_and_create" value="{% trans "Save & Create Project" %}"/>
-            <input type="button" class="button" id="back_to_project" value="{% trans "Back" %}"/>
+        <div class="create_project">
+            <div class="grid_5">
+                <input type="button" class="button_wizard_back" id="back_to_project" value="{% trans "Back" %}"/>
+            </div>
+            <div class="grid_15 float_right">
+                <div class="right_aligned_button">
+                    <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
+                    {% if project.state != 'Test' %}
+                        <input type="button" class="button_wizard_blue" id="save_as_draft" value="{% trans "Save as Draft" %}">
+                    {% endif %}
+                    <input type="button" class="button_wizard_next" id="save_and_create" value="{% trans "Save & Create Project" %}"/>
+                </div>
+            </div>
+            <div class="clear-both"></div>
         </div>
     </div>
 

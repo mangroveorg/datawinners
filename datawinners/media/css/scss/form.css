@@ -206,7 +206,57 @@ select {
   color: #6F451D !important;
   font-family: "Arial";
   font-weight: bold;
-  padding: 6px 23px 6px 22px;
+  padding: 6px 23px 5px 22px;
+  cursor: pointer;
+  cursor: hand; }
+
+.button_wizard_blue {
+  border: 1px solid #99bcd1 !important;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background: #c6deec;
+  /* for non-css3 browsers */
+  background: -webkit-gradient(linear, left top, left bottom, from(#e1eff7), to(#c6deec));
+  /* for webkit browsers */
+  background: -moz-linear-gradient(top, #e1eff7, #c6deec);
+  /* for firefox 3.6+ */
+  color: #0070AC !important;
+  font-family: "Arial";
+  font-weight: bold;
+  padding: 6px 23px 5px 22px;
+  cursor: pointer;
+  cursor: hand; }
+
+.button_wizard_back {
+  border: none !important;
+  background: #ffffff !important;
+  color: #0070AC !important;
+  font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
+  font-size: 13px;
+  padding: 6px 0;
+  text-align: left;
+  cursor: pointer;
+  cursor: hand; }
+
+.button_wizard_next {
+  width: 180px;
+  height: 29px;
+  border: none !important;
+  background: url("/media/images/button_wizard_next.png") no-repeat top left;
+  color: #6F451D !important;
+  font-family: "Arial";
+  font-weight: bold;
+  cursor: pointer;
+  cursor: hand; }
+
+.button_wizard_next_small {
+  width: 120px;
+  height: 29px;
+  border: none !important;
+  background: url("/media/images/button_wizard_next_small.png") no-repeat top left;
+  color: #6F451D !important;
+  font-family: "Arial";
+  font-weight: bold;
   cursor: pointer;
   cursor: hand; }
 
