@@ -1,5 +1,5 @@
 {% extends 'public_secondary.html' %}
-{% block page_title %} Assistance {% endblock %}
+{% block page_title %} Commencez {% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
@@ -32,66 +32,60 @@
 {% endblock %}
 
 {% block page_breadcrumbs %}
-<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Commencer
+<a href="/fr/home/">Accueil</a> &gt; <a href="/fr/support/">Assistance</a> &gt; Commencez
 {% endblock %}
 
 {% block main_content %}
     <div id="nav_content">
-        <h1>Assistance</h1>
+        <h1><a href="/fr/support/">Assistance</a></h1>
          <ul>
             <li><a href="/fr/support/case-studies/">Etude de cas</a></li>
-            <li class="active"><a href="/fr/support/get-started/">Commencer</a></li>
-            <li><a href="/fr/support/find-answers/">Trouver des reponses (FAQs)</a></li>
-            <li><a href="/fr/support/ask-us/">Nous demander</a></li>
+            <li class="active"><a href="/fr/support/get-started/">Commencez</a></li>
+            <li><a href="/fr/support/find-answers/">Trouvez des reponses (FAQs)</a></li>
+            <li><a href="/fr/support/ask-us/">Demandez-nous</a></li>
         </ul>
     </div>
     <div id="main_content">
         <div class="margin_left_20">
             <div class="left_content">
-                <h2>Introduction to DataWinners</h2>
-                <p>Take a tour and see how DataWinners can help you collect the data you need.</p>
-                <div id="videoDiv"></div>
-                <div id="thumbs" data-bind="template: 'video-thumb-template'">
+                <h2>Tutoriel</h2>
+              <p>Ce tutoriel va vous aider à démarrer avec DataWinners.</p>
+              <p><a href="/media/files/DataWinnersTutorial_CreateAProject.fr.pdf" target="_blank">Créer un nouveau projet</a> &nbsp;(PDF, 14 pages, 1.4MB)<br/>
+              <em>Vous voulez créer un nouveau projet. Laissez-nous vous montrer les procédures à suivre étape par étape.</em></p>
+<h2>Vous avez une idée ?</h2>
+Si vous avez une idée sur un tutoriel que vous voulez avoir, <a href="/fr/about-us/contact-us/">faites-nous savoir</a>.
 
-                </div>
-
-
-                <h2>Tutorial</h2>
-              <p>This <a href="/en/support/how-to-create-project/">tutorial</a> will help you get started with DataWinners.</p>
-              <a href="/media/files/DataWinnersTutorial_CreateAProject.en.pdf" target="_blank">Create a new project</a> &nbsp;(PDF, 14 pages, 1.4MB)<br/>
-              You want to create a new project. Let us take you through the process, step-by-step
             </div>
             <div class="right_content">
                 <div class="block_1">
-                    <h1>Let us help you</h1>
+                    <h1>Laissez-nous vous aider</h1>
                     <p>
-                        If you need help getting started or have an ambitious
-                        data collection project that requires a DataWinners custom solution,
-                        <a href="/en/about-us/contact-us/">contact us</a>.
+Si vous avez besoin d'aide pour débuter ou avez un ambitieux projet de collecte de données qui nécessite une personnalisation de DataWinners,
+                        <a href="/fr/about-us/contact-us/">contactez-nous</a>.
                     </p>
                 </div>
                 <div class="block_1">
-                    <h1>Find Answers</h1>
+                    <h1>Trouvez des réponses</h1>
                     <p>
-                        Do you have any questions about DataWinners?
+                        Avez-vous des questions à propos de DataWinners?
                     </p>
-                    See <a href="/en/support/find-answers/">Find Answers</a>.
-                </div>
-
-                <div class="block_1">
-                    <h1>Case Studies</h1>
-                    <p>
-                        Get a quick overview of the the data collection process.
-                    </p>
-                    See <a href="/en/support/case-studies/">Case Studies</a>.
+                    Voir <a href="/fr/support/find-answers/">Trouvez des réponses</a>.
                 </div>
 
                 <div class="block_1">
-                    <h1>How it Works</h1>
+                    <h1>Etudes de cas</h1>
                     <p>
-                        Get a quick overview of the the data collection process.
+                        Obtenez un aperçu rapide du processus de la collecte des données.
                     </p>
-                    See <a href="/en/what-is-datawinners/how-it-works/">How it Works</a>.
+                    Voir les <a href="/fr/support/case-studies/">Etudes de Cas</a>.
+                </div>
+
+                <div class="block_1">
+                    <h1>Comment ça Marche ?</h1>
+                    <p>
+                        Obtenez un aperçu rapide du processus de la collecte des données.
+                    </p>
+                    Voir <a href="/fr/what-is-datawinners/how-it-works/">Comment ça Marche</a>.
                 </div>
             </div>
         </div>
