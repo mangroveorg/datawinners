@@ -136,3 +136,12 @@ DW.generateQuestionCode = function() {
     return code;
 };
 
+DW.change_question_title_for_reporting_period = function(replaceto,replacewith){
+    $(viewModel.questions()).each(function (question) {
+        if (viewModel.selectedQuestion().event_time_field_flag()) {
+            var question_title = viewModel.selectedQuestion().title();
+            viewModel.selectedQuestion().title(question_title.replace(replaceto,replacewith));
+        }
+      });
+    viewModel.questions.valueHasMutated();
+};

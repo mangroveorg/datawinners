@@ -248,6 +248,13 @@ $(document).ready(function() {
         }
     });
 
+    $('input[name="date_format"]').change(function() {
+        if($('input[name="date_format"]:checked').val() == 'mm.yyyy')
+            DW.change_question_title_for_reporting_period('period','month');
+        else
+            DW.change_question_title_for_reporting_period('month','period');
+    });
+
     basic_project_info.createValidationRules();
 
     $('#continue_project').click(function(){
