@@ -1,4 +1,5 @@
 from django.db import models
+from datawinners.accountmanagement.models import Organization
 from datawinners.messageprovider.message_handler import _get_response_message
 
 class DatawinnerLog(models.Model):
@@ -8,6 +9,7 @@ class DatawinnerLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     form_code = models.TextField(default="") #Because if there is grabage sms which doesnt have any whitespace before 20 chars this would break
     error = models.TextField()
+    organization = models.ForeignKey(Organization, null=True)
 
 
 #TODO: Move all message templating for responses here.
