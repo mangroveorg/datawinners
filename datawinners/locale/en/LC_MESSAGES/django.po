@@ -2114,7 +2114,7 @@ msgstr ""
 msgid "Your Organization"
 msgstr ""
 
-msgid "Your Account Administrator"
+msgid "Point of Contact / Your Account Administrator"
 msgstr ""
 
 msgid "Already registered?"
@@ -2822,7 +2822,7 @@ msgstr ""
 msgid "Sorry, the telephone number %s has already been registered"
 msgstr ""
 
-msgid "Job Title"
+msgid "Job title"
 msgstr ""
 
 msgid "broadcast_trial_warning_message"
@@ -2975,4 +2975,10 @@ msgid "My Subjects"
 msgstr ""
 
 msgid "My Data Senders"
+msgstr ""
+
+msgid "Phone Number"
+msgstr ""
+
+msgid "Website"
 msgstr ""

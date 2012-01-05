@@ -2047,8 +2047,8 @@ msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
 msgid "Your Organization"
 msgstr "Votre organisation"
 
-msgid "Point of Contact / Account Administrator"
-msgstr "Personne à contacter / Administrateur du compte"
+msgid "Point of Contact / Your Account Administrator"
+msgstr "Personne à contacter / Administrateur de votre compte"
 
 msgid "Already registered?"
 msgstr "Avez-vous un compte ?"
@@ -2419,3 +2419,9 @@ msgstr ""
 
 msgid "You have already activated your account. Please sign in"
 msgstr "You have already activated your account. Please <a href=\"/login\">sign in</a>"
+
+msgid "Phone Number"
+msgstr ""
+
+msgid "Website"
+msgstr ""

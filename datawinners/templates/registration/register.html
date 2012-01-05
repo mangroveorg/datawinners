@@ -8,17 +8,20 @@
     <script type="text/javascript" src="/media/javascript/registration/register.js"></script>
 {% endblock %}
 
+{% block already_registered_link %}
+    {% include "registration/already_registered_link.html" %} 
+{% endblock %}
+
 {% block content %}
     <div class="span-18 box">
         <fieldset>
-           
+             <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>
              <form id="registration_form" action="" method="POST">
                     {% csrf_token %}
                     <div class="form-5px">
                         <ul class="organization">
                             <li>
                                 <h3 class="highlighted_title">{%  trans "Your Organization" %}<br/></h3>
-                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
                             </li>
                             <li class="{{ form.organization_name.css_classes }} form-row-10px">
                                 {{ form.organization_name|field_label }}
@@ -41,6 +44,15 @@
                                 {{ form.organization_address.errors }}
 
                             </li>
+
+                            <li class="{{ form.organization_addressline2.css_classes  }} form-row-10px">
+                                {{ form.organization_addressline2|field_label }}
+                                {{ form.organization_addressline2 }}
+
+                                {{ form.organization_addressline2.errors }}
+
+                            </li>
+
                             <li class="{{ form.organization_city.css_classes  }} form-row-10px">
                                 {{ form.organization_city|field_label }}
                                 {{ form.organization_city }}
@@ -81,20 +93,19 @@
                                 {{ form.organization_website }}
 
                                 {{ form.organization_website.errors }}
-
+                                <p class="black_italic">{% trans "Example: www.organization.com" %}</p>
                             </li>
                         </ul>
                         <ul class="administrative">
                             <li>
-                                <h3 class="highlighted_title">{%  trans "Your Account Administrator" %}</h3>
-                                <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
+                                <h3 class="highlighted_title">{%  trans "Point of Contact / Your Account Administrator" %}</h3>
                             </li>
                              <li class="{{ form.title.css_classes  }} form-row-10px">
                                 {{ form.title|field_label }}
                                 {{ form.title }}
 
                                  {{ form.title.errors }}
-
+                                 <p class="black_italic">{% trans "Example: Program Director" %}</p>
                              </li>
                             <li class="{{ form.first_name.css_classes  }} form-row-10px">
                                 {{ form.first_name|field_label }}
@@ -118,17 +129,19 @@
                                 {{ form.email.errors }}
 
                             </li>
-                            <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
-                                {{ form.mobile_phone|field_label }}
-                                {{ form.mobile_phone }}
-                                {{ form.mobile_phone.errors }}
+                            <li class="{{ form.office_phone.css_classes  }} form-row-10px">
+                                {{ form.office_phone|field_label }}
+                                {{ form.office_phone }}
+
+                                {{ form.office_phone.errors }}
+                                <p class="black_italic">{% trans "Example: +261 333745269" %}</p>
                             </li>
                             <li class="{{ form.password1.css_classes  }} form-row-10px">
                                 {{ form.password1|field_label }}
                                 {{ form.password1 }}
 
                                 {{ form.password1.errors }}
-
+                                <p class="black_italic">{% trans "Example: Minimum	of 6 characters in length" %}</p>
                             </li>
                             <li class="{{ form.password2.css_classes  }} form-row-10px">
                                 {{ form.password2|field_label }}
@@ -168,7 +181,6 @@
                             </li>
                             <li class="margin_top_20">
                                 <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}" class="button" />
-                                <div class="grid_7 margin_top_10 last">{%  trans "Already registered?" %} <a href="{% url django.contrib.auth.views.login %}">{%  trans "Sign in here" %}</a></div>
                             </li>
                         </ul>
                     </div>

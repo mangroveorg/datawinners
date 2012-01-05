@@ -2123,8 +2123,8 @@ msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
 msgid "Your Organization"
 msgstr "Votre organisation"
 
-msgid "Your Account Administrator"
-msgstr "Vos Administrateur du compte"
+msgid "Point of Contact / Your Account Administrator"
+msgstr "Contact / Administrateur de votre compte"
 
 msgid "Already registered?"
 msgstr "Avez-vous un compte ?"
@@ -2740,7 +2740,7 @@ msgid "Send data using  Internet"
 msgstr "Envoyer des données par internet"
 
 msgid "Analyze data"
-msgstr "Alanlyser des données"
+msgstr "Analyser des données"
 
 msgid "My account"
 msgstr "Mon compte"
@@ -2861,7 +2861,7 @@ msgstr "%s avec %s=%s existe déjà."
 msgid "Sorry, the telephone number %s has already been registered"
 msgstr "Désolé, le %s numéro de téléphone a déjà été enregistrée"
 
-msgid "Job Title"
+msgid "Job title"
 msgstr "Titre"
 
 msgid "broadcast_trial_warning_message"
@@ -3015,3 +3015,9 @@ msgstr "Mes sujets"
 
 msgid "My Data Senders"
 msgstr "Mes expéditeurs"
+
+msgid "Phone Number"
+msgstr "Numéro de téléphone"
+
+msgid "Website"
+msgstr "Site web"

@@ -25,6 +25,14 @@
 #container_content .content {
   padding: 20px;
   min-height: 300px !important; }
+#container_content .section_description {
+  font-style: italic;
+  color: #A0A0A0;
+  font-weight: normal; }
+#container_content .black_italic {
+  font-style: italic;
+  clear: left;
+  margin-left: 170px; }
 
 .signin_form {
   margin: 50px 0 0px 70px; }

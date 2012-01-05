@@ -1,8 +1,14 @@
 {% extends 'layout_application.html' %}
+{% load i18n %}
 {% block layout_scss %}
 {% include 'application_scss.html' %}
 <link href="/media/css/scss/section_registration.scss" rel="stylesheet" />
 <link href="/media/css/scss/section_public.scss" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/registration/country.{% trans "en" %}.js"></script>
 {% endblock %}
 {% block body %}
 {% block header %}
@@ -32,6 +38,8 @@
         {% block content %} {% endblock %}
       </div>
         {% block right_hand_section %}
+            {% block already_registered_link %}
+            {% endblock %}
             <div class="grid_7 right_hand_section alpha omega about_datawinners">
             {% trans "about_DW" %}
             </div>

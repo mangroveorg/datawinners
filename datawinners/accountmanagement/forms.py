@@ -39,7 +39,7 @@ class OrganizationForm(ModelForm):
     country = forms.CharField(max_length=30, required=True, label=_('Country'))
     zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
     office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
-    website = forms.URLField(required=False, label=_('Website Url'))
+    website = forms.URLField(required=False, label=_('Website'))
 
     class Meta:
         model = Organization
@@ -56,12 +56,12 @@ class OrganizationForm(ModelForm):
 class UserProfileForm(forms.Form):
     required_css_class = 'required'
 
-    title = forms.CharField(max_length=30, required=False, label=_("Job Title"))
+    title = forms.CharField(max_length=30, required=False, label=_("Job title"))
     first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
     username = forms.EmailField(max_length=30, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
-    mobile_phone = PhoneNumberField(required = True, label=_("Phone Number"))
+    office_phone = PhoneNumberField(required = True, label=_("Phone Number"))
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -77,7 +77,7 @@ class EditUserProfileForm(UserProfileForm):
 class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     required_css_class = 'required'
 
-    title = forms.CharField(label=_("Job Title"), max_length=30, required=False)
+    title = forms.CharField(label=_("Job title"), max_length=30, required=False)
     email = forms.EmailField(widget=forms.TextInput(attrs=dict({'class': 'required'},
                                                                                     maxlength=75)),
                              label=_("Email address"),
@@ -90,7 +90,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
     first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
-    mobile_phone = PhoneNumberField(required = True, label=_("Phone Number"))
+    office_phone = PhoneNumberField(required = True, label=_("Phone Number"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
@@ -126,7 +126,7 @@ def payment_details_form():
     PREFERRED_PAYMENT_CHOICES = (wire_transfer, credit_card, pay_via_ach)
 
     invoice_period = forms.ChoiceField(required=True, label=_('Invoice Period'), widget=forms.RadioSelect,
-                                       choices=INVOICE_PERIOD_CHOICES, initial='pay_monthly', help_text="O, no, Help")
+                                       choices=INVOICE_PERIOD_CHOICES, help_text="O, no, Help")
 
     preferred_payment = forms.ChoiceField(required=False, label=_('Preferred Payment'), widget=forms.RadioSelect,
                                           choices=PREFERRED_PAYMENT_CHOICES, initial=False)
@@ -136,12 +136,13 @@ def payment_details_form():
 
 class FullRegistrationForm(MinimalRegistrationForm):
     organization_address = forms.CharField(required=True, max_length=30, label=_('Address'))
+    organization_addressline2 = forms.CharField(required=False, max_length=30, label=_('Address line 2'))
     organization_state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",
                                             error_message=_("Please enter a valid Postal / Zip code"),
                                             label=_('Postal / Zip Code'))
     organization_office_phone = PhoneNumberField(required = False, label=_("Office Phone Number"))
-    organization_website = forms.URLField(required=False, label=_('Website Url'))
+    organization_website = forms.URLField(required=False, label=_('Website'))
 
     invoice_period, preferred_payment = payment_details_form()
 

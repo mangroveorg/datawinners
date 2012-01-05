@@ -40,6 +40,7 @@ class Organization(models.Model):
         organization = Organization(name=org_details.get('organization_name'),
                                 sector=org_details.get('organization_sector'),
                                 address=org_details.get('organization_address'),
+                                addressline2=org_details.get('organization_addressline2'),
                                 city=org_details.get('organization_city'),
                                 state=org_details.get('organization_state'),
                                 country=org_details.get('organization_country'),
