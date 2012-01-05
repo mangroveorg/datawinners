@@ -22,6 +22,6 @@ class TestFindDBM(unittest.TestCase):
         self.assertTrue('outgoing_message' in incoming_request.keys())
 
     def test_should_return_error_message_when_datasenders_number_is_unregistered(self):
-        request = FakeRequest(post=dict(from_msisdn='1234567',to_msisdn=TRIAL_ACCOUNT_PHONE_NUMBER,message=self.sms_message), user=self.user)
+        request = FakeRequest(post=dict(from_msisdn='1234567',to_msisdn=TRIAL_ACCOUNT_PHONE_NUMBER[0],message=self.sms_message), user=self.user)
         incoming_request = find_dbm(request)
         self.assertTrue('outgoing_message' in incoming_request.keys())

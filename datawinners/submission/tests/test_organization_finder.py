@@ -5,14 +5,19 @@ from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID, TRIAL_ACCOUNT_
 
 class TestOrganizationFinder(unittest.TestCase):
     def test_should_find_organization_for_trial_account(self):
-        organization,error = OrganizationFinder().find(TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, settings.TRIAL_ACCOUNT_PHONE_NUMBER)
+        organization,error = OrganizationFinder().find(TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, settings.TRIAL_ACCOUNT_PHONE_NUMBER[0])
         # this organization is created in test data
         self.assertEqual(TRIAL_ACCOUNT_ORGANIZATION_ID,organization.org_id)
 
     def test_should_return_error_when_datasender_is_not_registered_for_trial_account(self):
-        organization,error = OrganizationFinder().find("123", settings.TRIAL_ACCOUNT_PHONE_NUMBER)
+        organization,error = OrganizationFinder().find("123", settings.TRIAL_ACCOUNT_PHONE_NUMBER[1])
         # this organization is created in test data
         self.assertEqual(u"Sorry, this number 123 is not registered with us.",error)
+
+    def test_should_return_the_same_trial_organization_if_sms_sent_to_any_trial_account_number(self):
+        trial_organization1,error1 = OrganizationFinder().find(TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, settings.TRIAL_ACCOUNT_PHONE_NUMBER[0])
+        trial_organization2,error2 = OrganizationFinder().find(TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, settings.TRIAL_ACCOUNT_PHONE_NUMBER[1])
+        self.assertEqual(trial_organization1, trial_organization2)
 
     def test_should_return_error_when_organization_doesnot_exists(self):
         organization,error = OrganizationFinder().find("123", "678")

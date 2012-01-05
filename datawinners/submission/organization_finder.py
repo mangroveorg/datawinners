@@ -4,7 +4,7 @@ import settings
 
 class OrganizationFinder(object):
     def find(self, from_number, to_number):
-        if to_number == settings.TRIAL_ACCOUNT_PHONE_NUMBER:
+        if to_number in settings.TRIAL_ACCOUNT_PHONE_NUMBER:
             return self.find_trial_account_organization(from_number)
         return self.find_paid_organization(to_number)
 
