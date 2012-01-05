@@ -139,7 +139,7 @@ msgid "Data Senders"
 msgstr "Expéditeurs de données"
 
 msgid "All Data Senders"
-msgstr "Tous les Expéditeurs de données"
+msgstr "Tous les Expéditeurs"
 
 #: dashboard/views.py:90 templates/main_navigation.html:19
 #: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
@@ -922,10 +922,6 @@ msgstr "Retirer d'un projet"
 msgid "Give Web Submission Access"
 msgstr "Autoriser l'accès à l'envoi web"
 
-#: templates/entity/all_datasenders.html:118
-msgid "All Data Senders"
-msgstr "Tous les Expéditeurs"
-
 #: templates/entity/all_subjects.html:11
 msgid "Add subjects one-by-one using the online registration form"
 msgstr "Ajouter des sujets un par un avec le formulaire en ligne"
@@ -962,10 +958,6 @@ msgstr ""
 "Chaque sujet sera inséré dans une nouvelle ligne (A4, A5, A6 etc.)<br/> "
 "4. Enregistrez le fichier en (.csv) ou (.xls)<br/>5. Cliquez sur le bouton "
 "\"Importez la liste\" et suivez les instructions."
-
-#: templates/entity/all_subjects.html:85
-msgid "All Subjects"
-msgstr "Tous les sujets"
 
 #: templates/entity/create_datasender.html:3
 #: templates/entity/create_datasender.html:4
@@ -2718,7 +2710,7 @@ msgstr "Eau et Assainissement"
 
 #blue tab
 msgid "Review and Test"
-msgstr "Réviser et Mettre à l’Essai"
+msgstr "Réviser et tester"
 
 #datasender-tab
 msgid "Import List"
@@ -3021,3 +3013,9 @@ msgstr "Activation de compte"
 
 msgid "You have already activated your account. Please sign in"
 msgstr "Vous avez déjà activé votre compte. S'il vous plaît, <a href=\"/login\">identifiez-vous</a>"
+
+msgid "My Subjects"
+msgstr "Mes sujets"
+
+msgid "My Data Senders"
+msgstr "Mes expéditeurs"

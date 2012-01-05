@@ -2974,3 +2974,9 @@ msgstr ""
 
 msgid "You have already activated your account. Please sign in"
 msgstr "You have already activated your account. Please <a href=\"/login\">sign in</a>"
+
+msgid "My Subjects"
+msgstr ""
+
+msgid "My Data Senders"
+msgstr ""
