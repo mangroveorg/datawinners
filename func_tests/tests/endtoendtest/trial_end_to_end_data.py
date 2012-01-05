@@ -19,7 +19,6 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: "Autom
                                                  FIRST_NAME: "Mickey",
                                                  LAST_NAME: "Jackson",
                                                  EMAIL: "ngo",
-                                                 ADMIN_OFFICE_NUMBER: "23-45-678-567",
                                                  ADMIN_MOBILE_NUMBER: "23-45-678-567",
                                                  REGISTRATION_PASSWORD: REGISTRATION_PASSWORD,
                                                  REGISTRATION_CONFIRM_PASSWORD: REGISTRATION_PASSWORD,

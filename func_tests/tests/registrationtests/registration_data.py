@@ -23,9 +23,7 @@ REGISTRATION_CONFIRM_PASSWORD = 'password2'
 WIRE_TRANSFER = 'wire_transfer'
 PAY_MONTHLY = 'pay_monthly'
 ERROR_MESSAGE = 'message'
-ADMIN_OFFICE_NUMBER = "office_phone"
 ADMIN_MOBILE_NUMBER = "mobile_phone"
-ADMIN_SKYPE_ID = "skype"
 ORGANIZATION_SECTOR_DROP_DOWN_LIST = by_css("select#id_organization_sector")
 ABOUT_DATAWINNERS_BOX = by_xpath('//div[@class="grid_7 right_hand_section alpha omega about_datawinners"')
 AGREE_TERMS = "agree-terms"
@@ -45,8 +43,6 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: u"ÑGÓ 001"
                                                  LAST_NAME: u"Gö",
                                                  EMAIL: u"ngo",
                                                  ADMIN_MOBILE_NUMBER: "23-45-678-567",
-                                                 ADMIN_OFFICE_NUMBER: "23-45-678-567",
-                                                 ADMIN_SKYPE_ID: "tty01",
                                                  REGISTRATION_PASSWORD: u"ngo001",
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                                                  PAY_MONTHLY: PAY_MONTHLY,
@@ -61,6 +57,7 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: u"ÑG�
                                                  FIRST_NAME: u"Nö",
                                                  LAST_NAME: u"Gö",
                                                  EMAIL: u"ngo",
+                                                 ADMIN_MOBILE_NUMBER: "23-45-678-567",
                                                  REGISTRATION_PASSWORD: REGISTRATION_PASSWORD,
                                                  REGISTRATION_CONFIRM_PASSWORD: REGISTRATION_PASSWORD}
 
@@ -78,13 +75,11 @@ EXISTING_EMAIL_ADDRESS = {ORGANIZATION_NAME: u"NGO 001",
                           FIRST_NAME: u"No",
                           LAST_NAME: u"Go",
                           EMAIL: u"tester150411@gmail.com",
-                          ADMIN_MOBILE_NUMBER: "2345adbc234",
-                          ADMIN_OFFICE_NUMBER: "2345adbc234",
-                          ADMIN_SKYPE_ID: "tty01",
+                          ADMIN_MOBILE_NUMBER: "2345234",
                           REGISTRATION_PASSWORD: u"ngo001",
                           REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
 
-EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number Optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address.Office Phone Optional Please enter a valid phone number.Mobile Phone Optional Please enter a valid phone number."
+EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number Optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address."
 
 INVALID_EMAIL_FORMAT = {ORGANIZATION_NAME: u"NGO 001",
                         ORGANIZATION_SECTOR: u"PublicHealth",
@@ -100,12 +95,10 @@ INVALID_EMAIL_FORMAT = {ORGANIZATION_NAME: u"NGO 001",
                         LAST_NAME: u"Go",
                         EMAIL: u"com.invalid@email",
                         ADMIN_MOBILE_NUMBER: "+91678646792-67",
-                        ADMIN_OFFICE_NUMBER: "+91678-64679267",
-                        ADMIN_SKYPE_ID: "tty01",
                         REGISTRATION_PASSWORD: u"ngo001",
                         REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
 
-INVALID_EMAIL_FORMAT_ERROR_MESSAGE = u"Office Phone Number Please enter a valid phone number.Email address Enter a valid email address. Example:name@organization.comOffice Phone Please enter a valid phone number.Mobile Phone Please enter a valid phone number."
+INVALID_EMAIL_FORMAT_ERROR_MESSAGE = u"Office Phone Number Please enter a valid phone number.Email address Enter a valid email address. Example:name@organization.com"
 
 UNMATCHED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                       ORGANIZATION_SECTOR: u"PublicHealth",
@@ -121,8 +114,6 @@ UNMATCHED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                       LAST_NAME: u"Go",
                       EMAIL: u"valid@email.com",
                       ADMIN_MOBILE_NUMBER: "(91)678646792-67",
-                      ADMIN_OFFICE_NUMBER: "(91)678-64679267",
-                      ADMIN_SKYPE_ID: "tty01",
                       REGISTRATION_PASSWORD: u"password",
                       REGISTRATION_CONFIRM_PASSWORD: u"different_password"}
 
@@ -141,9 +132,7 @@ WITHOUT_ENTERING_REQUIRED_FIELDS = {ORGANIZATION_NAME: u"",
                                     FIRST_NAME: u"",
                                     LAST_NAME: u"",
                                     EMAIL: u"",
-                                    ADMIN_MOBILE_NUMBER: "",
-                                    ADMIN_OFFICE_NUMBER: "",
-                                    ADMIN_SKYPE_ID: "",
+                                    ADMIN_MOBILE_NUMBER: "123455",
                                     REGISTRATION_PASSWORD: u"",
                                     REGISTRATION_CONFIRM_PASSWORD: u""}
 
@@ -162,8 +151,6 @@ WITHOUT_PREFERRED_PAYMENT = {ORGANIZATION_NAME: u"ÑGÓ 001",
                                                  LAST_NAME: u"Gö",
                                                  EMAIL: u"ngo",
                                                  ADMIN_MOBILE_NUMBER: "23-45-678-567",
-                                                 ADMIN_OFFICE_NUMBER: "23-45-678-567",
-                                                 ADMIN_SKYPE_ID: "tty01",
                                                  REGISTRATION_PASSWORD: u"ngo001",
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                                                  PAY_MONTHLY: PAY_MONTHLY}
@@ -183,10 +170,8 @@ INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        FIRST_NAME: u"No",
                        LAST_NAME: u"Go",
                        EMAIL: u"ngo002@ngo.com",
-                       ADMIN_MOBILE_NUMBER: "6786AB4679267",
-                       ADMIN_OFFICE_NUMBER: "678CD64679267",
-                       ADMIN_SKYPE_ID: "tty01",
+                       ADMIN_MOBILE_NUMBER: "6786679267",
                        REGISTRATION_PASSWORD: u"ngo001",
                        REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
 
-INVALID_WEBSITE_URL_ERROR_MESSAGE= u"Office Phone Number Optional Please enter a valid phone number.Website Url Optional Enter a valid URL.Office Phone Optional Please enter a valid phone number.Mobile Phone Optional Please enter a valid phone number."
+INVALID_WEBSITE_URL_ERROR_MESSAGE= u"Office Phone Number Optional Please enter a valid phone number.Website Url Optional Enter a valid URL."
