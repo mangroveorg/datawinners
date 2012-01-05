@@ -1,4 +1,5 @@
 import json
+from django.contrib.auth import login
 from django.test import TestCase
 from django.test.client import Client
 
@@ -7,6 +8,7 @@ class TestPlaces(TestCase):
 
     def test_places(self):
         client = Client()
+        client.login(username="tester150411@gmail.com", password="tester150411")
         response = client.get('/places', {'term': "amb"})
         grouped_places = json.loads(response.content)
 

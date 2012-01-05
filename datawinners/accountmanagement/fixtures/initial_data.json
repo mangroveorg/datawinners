@@ -44,9 +44,9 @@
         "model": "accountmanagement.organization",
         "fields": {
             "sector": "PublicHealth",
-            "city": "Pune",
+            "city": "Anatanovario",
             "name": "Testorg",
-            "country": "IND",
+            "country": "Madagascar",
             "org_id": "SLX364903",
             "zipcode": "445676",
             "website": "https://help.org/",

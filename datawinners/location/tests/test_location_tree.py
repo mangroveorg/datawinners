@@ -25,9 +25,13 @@ class TestLocationTree(TestCase):
                                                                                                          long=46.854321))
     def test_should_get_filtered_list_group_by_levels(self):
         expected_location_group = defaultdict(list)
-        expected_location_group[u'LEVEL3'] = [u'AMBOANJO,MANAKARA ATSIMO,VATOVAVY FITOVINANY', u'AMBATOMANJAKA,MIARINARIVO,ITASY']
+        expected_location_group[u'LEVEL3'] = [u'AMBATOMANJAKA,MIARINARIVO,ITASY', u'AMBOANJO,MANAKARA ATSIMO,VATOVAVY FITOVINANY']
         actual_location_groups = get_location_groups_for_country(country="Madagascar", start_with="amb")
         self.assertEqual(expected_location_group, actual_location_groups)
+
+    def test_should_return_empty_list_for_unknown_country(self):
+        actual_location_groups = get_location_groups_for_country(country="India", start_with="amb")
+        self.assertEqual(defaultdict(list), actual_location_groups)
 
     @SkipTest
     def test_should_get_centroid_for_location_based_on_level_given(self):

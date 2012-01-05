@@ -12,23 +12,23 @@ def get_location_groups_for_country(country, start_with):
     cursor = connection.cursor()
     search_string = start_with.lower().encode('utf-8')
 
-    data_dict = {'like': search_string + '%'}
+    data_dict = {'like': search_string + '%', 'country': country}
     sql = """
     (select distinct 'LEVEL4' as LEVEL, name_4||','||name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
-where name_4  ILIKE CAST(%(like)s as TEXT) limit 10)
+where name_4  ILIKE CAST(%(like)s as TEXT) and lower(name_0) = LOWER(%(country)s) limit 10 )
                  union
 (select distinct 'LEVEL3' as LEVEL,  name_3||','||name_2||','||name_1 as NAME
   from location_locationlevel l
-where name_3  ILIKE CAST(%(like)s as TEXT) limit 10)
+where name_3  ILIKE CAST(%(like)s as TEXT) and lower(name_0) = LOWER(%(country)s) limit 10)
                 union
 (select distinct 'LEVEL2' as LEVEL,  name_2||','||name_1 as NAME
   from location_locationlevel l
-where name_2  ILIKE CAST(%(like)s as TEXT) limit 5)
+where name_2  ILIKE CAST(%(like)s as TEXT) and lower(name_0) = LOWER(%(country)s) limit 5)
   union
 (select distinct 'LEVEL1' as LEVEL,  name_1 as NAME
   from location_locationlevel l
-where name_1  ILIKE CAST(%(like)s as TEXT) limit 5)
+where name_1  ILIKE CAST(%(like)s as TEXT) and lower(name_0) = LOWER(%(country)s) limit 5)
 order by LEVEL
     """
 
