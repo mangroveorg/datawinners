@@ -61,10 +61,7 @@ class UserProfileForm(forms.Form):
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
     username = forms.EmailField(max_length=30, required=True, label=_("Email"), error_messages={
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
-    mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
-    office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
-    skype = forms.CharField(max_length=30, required=False, label="Skype")
-
+    mobile_phone = PhoneNumberField(required = True, label=_("Phone Number"))
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -93,8 +90,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
     first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
-    office_phone = PhoneNumberField(required = False, label=_("Office Phone"))
-    mobile_phone = PhoneNumberField(required = False, label=_("Mobile Phone"))
+    mobile_phone = PhoneNumberField(required = True, label=_("Phone Number"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
@@ -139,7 +135,6 @@ def payment_details_form():
 
 
 class FullRegistrationForm(MinimalRegistrationForm):
-    skype = forms.CharField(max_length=30, required=False, label="Skype")
     organization_address = forms.CharField(required=True, max_length=30, label=_('Address'))
     organization_state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
     organization_zipcode = forms.RegexField(required=True, max_length=30, regex="^[a-zA-Z\d-]*$",

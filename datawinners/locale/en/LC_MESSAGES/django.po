@@ -78,12 +78,8 @@ msgstr ""
 msgid "Enter a valid email address. Example:name@organization.com"
 msgstr ""
 
-#: accountmanagement/forms.py:50 accountmanagement/forms.py:83
-msgid "Office Phone"
-msgstr ""
-
 #: accountmanagement/forms.py:52 accountmanagement/forms.py:85
-msgid "Mobile Phone"
+msgid "Phone Number"
 msgstr ""
 
 #: accountmanagement/forms.py:60
@@ -2118,7 +2114,7 @@ msgstr ""
 msgid "Your Organization"
 msgstr ""
 
-msgid "Point of Contact / Account Administrator"
+msgid "Your Account Administrator"
 msgstr ""
 
 msgid "Already registered?"

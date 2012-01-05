@@ -54,23 +54,11 @@
             
             {{ profile_form.username.errors }}
           </li>
-          <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-            {{ profile_form.office_phone|field_label }}
-            {{ profile_form.office_phone }}
-            
-            {{ profile_form.office_phone.errors }}
-          </li>
           <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
             {{ profile_form.mobile_phone|field_label }}
             {{ profile_form.mobile_phone }}
             
             {{ profile_form.mobile_phone.errors }}
-          </li>
-          <li class="{{ form.skype.css_classes  }} form-row-10px">
-            {{ profile_form.skype|field_label }}
-            {{ profile_form.skype }}
-            
-            {{ profile_form.skype.errors }}
           </li>
           <li class="margin_top_20">
             <input type="submit" value="{% trans 'Register' %}"  class="button" />

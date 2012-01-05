@@ -79,12 +79,8 @@ msgstr "Nom"
 msgid "Enter a valid email address. Example:name@organization.com"
 msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
 
-#: accountmanagement/forms.py:50 accountmanagement/forms.py:83
-msgid "Office Phone"
-msgstr "Numéro de téléphone bureau"
-
 #: accountmanagement/forms.py:52 accountmanagement/forms.py:85
-msgid "Mobile Phone"
+msgid "Phone Number"
 msgstr "Numéro de téléphone mobile"
 
 #: accountmanagement/forms.py:60
@@ -2127,8 +2123,8 @@ msgstr "Inscrivez vous pour essayer gratuitement DataWinners"
 msgid "Your Organization"
 msgstr "Votre organisation"
 
-msgid "Point of Contact / Account Administrator"
-msgstr "Contact / Administrateur du compte"
+msgid "Your Account Administrator"
+msgstr "Vos Administrateur du compte"
 
 msgid "Already registered?"
 msgstr "Avez-vous un compte ?"
