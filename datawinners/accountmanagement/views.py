@@ -162,9 +162,8 @@ def new_user(request):
                 user.groups.add(group[0])
                 user.save()
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
-                                                  office_phone=form.cleaned_data['office_phone'],
                                                   mobile_phone=form.cleaned_data['mobile_phone'],
-                                                  skype=form.cleaned_data['skype'], org_id=org_id)
+                                                  org_id=org_id)
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
@@ -192,8 +191,8 @@ def edit_user(request):
         profile = request.user.get_profile()
         form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
                                              last_name=profile.user.last_name,
-                                             username=profile.user.username, office_phone=profile.office_phone,
-                                             mobile_phone=profile.mobile_phone, skype=profile.skype))
+                                             username=profile.user.username,
+                                             mobile_phone=profile.mobile_phone))
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
@@ -206,9 +205,7 @@ def edit_user(request):
             user.save()
             ngo_user_profile = NGOUserProfile.objects.get(user=user)
             ngo_user_profile.title = form.cleaned_data['title']
-            ngo_user_profile.office_phone = form.cleaned_data['office_phone']
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
-            ngo_user_profile.skype = form.cleaned_data['skype']
             ngo_user_profile.save()
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
