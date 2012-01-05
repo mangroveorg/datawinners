@@ -138,6 +138,9 @@ msgstr "Projets"
 msgid "Data Senders"
 msgstr "Expéditeurs de données"
 
+msgid "All Data Senders"
+msgstr "Tous les Expéditeurs de données"
+
 #: dashboard/views.py:90 templates/main_navigation.html:19
 #: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
 #: templates/entity/all_subjects.html:5
@@ -148,6 +151,9 @@ msgstr "Expéditeurs de données"
 #: templates/project/tab_navigation.html:52
 msgid "Subjects"
 msgstr "Sujets"
+
+msgid "All Subjects"
+msgstr "Tous Les Sujets"
 
 #: dashboard/views.py:90
 msgid "Data Records"
