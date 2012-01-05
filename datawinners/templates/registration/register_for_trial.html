@@ -49,7 +49,7 @@
                         </ul>
                         <ul class="administrative">
                             <li>
-                                <h3 class="highlighted_title">{% trans "Point of Contact / Account Administrator" %}</h3>
+                                <h3 class="highlighted_title">{% trans "Your Account Administrator" %}</h3>
                                 <h6 class="section_description">{% trans "All fields are required unless marked optional." %}</h6>                            </li>
                             </li>
                              <li class="{{ form.title.css_classes  }} form-row-10px">
@@ -80,12 +80,6 @@
 
                                 {{ form.email.errors }}
 
-                            </li>
-                            <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-                                {{ form.office_phone|field_label }}
-                                {{ form.office_phone }}
-
-                                {{ form.office_phone.errors }}
                             </li>
                             <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
                                 {{ form.mobile_phone|field_label }}

@@ -13,6 +13,7 @@ class TestFullRegistrationForm(unittest.TestCase):
                      'last_name': 'b',
                      'email': uppercase_email_id,
                      'password1': 'a', 'password2': 'a', 'organization_name': 'ad',
+                     'mobile_phone':'1234567',
                      'organization_address': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
                      'organization_zipcode': 'asd', 'organization_sector': 'Other', 'invoice_period':'pay_monthly'
         }
@@ -31,6 +32,7 @@ class TestFullRegistrationForm(unittest.TestCase):
                      'email': 'A@b.com',
                      'password1': 'a',
                      'password2': 'b',
+                     'mobile_phone':'1234567',
                      'organization_name': 'ad',
                      'organization_addressline1': 'asa',
                      'organization_city': 'aaa',
