@@ -37,6 +37,7 @@ class TestAddDataSender(unittest.TestCase):
         """
         add_data_sender_page = self.page
         add_data_sender_page.add_data_sender_with(VALID_DATA)
+
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
 

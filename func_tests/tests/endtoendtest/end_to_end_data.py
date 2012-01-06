@@ -130,6 +130,12 @@ VALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                               GPS: "48.955267  1.816013",
                               SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep2."}
 
+VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
+                              MOBILE_NUMBER: "12345678901",
+                              COMMUNE: "urbaine",
+                              GPS: "48.955267  1.816013",
+                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep2."}
+
 # valid entity data
 VALID_SUBJECT_TYPE1 = {ENTITY_TYPE: "Waterpoint", SUCCESS_MESSAGE: "Entity definition successful"}
 VALID_SUBJECT_TYPE2 = {ENTITY_TYPE: "Well", SUCCESS_MESSAGE: "Entity definition successful"}

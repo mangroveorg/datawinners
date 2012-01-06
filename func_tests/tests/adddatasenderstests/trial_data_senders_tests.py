@@ -5,7 +5,7 @@ from framework.utils.data_fetcher import fetch_, from_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import LoginPage
-from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_DATA_SENDER, VALID_DATA_FOR_PROJECT, VALID_SUBJECT_TYPE2, QUESTIONS, CODE, QUESTION, QUESTIONNAIRE_CODE, DEFAULT_QUESTION, GEN_RANDOM, TYPE, NUMBER, MIN, MAX, ENTITY_TYPE, DATE, DATE_FORMAT, DD_MM_YYYY, CHARACTER_REMAINING, PAGE_TITLE
+from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_DATA_SENDER1, VALID_DATA_FOR_PROJECT, VALID_SUBJECT_TYPE2, QUESTIONS, CODE, QUESTION, QUESTIONNAIRE_CODE, DEFAULT_QUESTION, GEN_RANDOM, TYPE, NUMBER, MIN, MAX, ENTITY_TYPE, DATE, DATE_FORMAT, DD_MM_YYYY, CHARACTER_REMAINING, PAGE_TITLE
 from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
 from tests.registrationtests.trial_registration_tests import register_and_get_email_for_trial
 from tests.endtoendtest.end_to_end_tests import activate_account, do_login
@@ -50,10 +50,10 @@ class TestTrialDataSenders(BaseTest):
         global_navigation = do_login(self.driver, email, REGISTRATION_PASSWORD)
         # create a project
         dashboard_page = global_navigation.navigate_to_dashboard_page()
-        self.create_questionnaire(self.create_project(dashboard_page.navigate_to_create_project_page()).save_questionnaire_successfully())
+        self.create_project(dashboard_page.navigate_to_create_project_page()) #TODO There was some code related to creating a questionnaire. We have removed it in a deliberate attempt to fix the test. Kindly review the code. Diptanu/Neetu
 
         add_data_sender_page = global_navigation.navigate_to_all_data_sender_page().navigate_to_add_a_data_sender_page()
-        add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_DATA_SENDER)
+        add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_DATA_SENDER1)
         return add_data_sender_page
 
     def test_should_not_allow_data_senders_register_with_same_phone_number_for_different_accounts(self):

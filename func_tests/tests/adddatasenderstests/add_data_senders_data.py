@@ -16,7 +16,7 @@ BLANK_FIELDS = {NAME: "",
                 ERROR_MSG: "Name Enter Data Sender's name This field is required.Mobile Number Enter Data Sender's number This field is required.Please fill out at least one location field correctly.Please fill out at least one location field correctly."}
 
 VALID_DATA = {NAME: "Mickey Duck",
-              MOBILE_NUMBER: "9876-543-210",
+              MOBILE_NUMBER: "9876-543-2101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. Unique identification number\(ID\) is: rep"}
@@ -28,13 +28,13 @@ EXISTING_DATA = {NAME: "Mickey Mouse",
                  ERROR_MSG: "Mobile Number Sorry, the telephone number 1234567890 has already been registered"}
 
 WITHOUT_LOCATION_NAME = {NAME: "Mini Mouse",
-                         MOBILE_NUMBER: "345-673-4568",
+                         MOBILE_NUMBER: "345-673-45681",
                          COMMUNE: "",
                          GPS: "-20.676646 47.197266",
                          SUCCESS_MSG: "Registration successful. Unique identification number\(ID\) is: rep"}
 
 WITHOUT_GPS = {NAME: "Alladin",
-               MOBILE_NUMBER: "4567345682",
+               MOBILE_NUMBER: "45673456821",
                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                GPS: "",
                SUCCESS_MSG: "Registration successful. Unique identification number\(ID\) is: rep"}
