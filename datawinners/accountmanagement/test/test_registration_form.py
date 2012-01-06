@@ -12,9 +12,8 @@ class TestFullRegistrationForm(unittest.TestCase):
         base_form = {'first_name': 'a',
                      'last_name': 'b',
                      'email': uppercase_email_id,
-                     'office_phone':'+261 33 333 33',
+                     'mobile_phone':'+261 33 333 33',
                      'password1': 'a', 'password2': 'a', 'organization_name': 'ad',
-                     'mobile_phone':'1234567',
                      'organization_address': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
                      'organization_zipcode': 'asd', 'organization_sector': 'Other', 'invoice_period':'pay_monthly'
         }

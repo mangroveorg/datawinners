@@ -81,7 +81,7 @@ msgstr "Entrez une adresse email valide. Exemple : name@organisation.com"
 
 #: accountmanagement/forms.py:52 accountmanagement/forms.py:85
 msgid "Phone Number"
-msgstr "Numéro de téléphone mobile"
+msgstr "Numéro de téléphone"
 
 #: accountmanagement/forms.py:60
 msgid ""

@@ -35,6 +35,7 @@
             {{ profile_form.title }}
             
             {{ profile_form.title.errors }}
+            <p class="black_italic">{% trans "Example: Program Director" %}</p>
           </li>
           <li class="{{ form.first_name.css_classes  }} form-row-10px">
             {{ profile_form.first_name|field_label }}
@@ -54,11 +55,12 @@
             
             {{ profile_form.username.errors }}
           </li>
-          <li class="{{ form.office_phone.css_classes  }} form-row-10px">
-            {{ profile_form.office_phone|field_label }}
-            {{ profile_form.office_phone }}
+          <li class="{{ form.mobile_phone.css_classes  }} form-row-10px">
+            {{ profile_form.mobile_phone|field_label }}
+            {{ profile_form.mobile_phone }}
             
-            {{ profile_form.office_phone.errors }}
+            {{ profile_form.mobile_phone.errors }}
+            <p class="black_italic">{% trans "Example: +261 333745269" %}</p>
           </li>
           <li class="margin_top_20">
             <input type="submit" value="{% trans 'Register' %}"  class="button" />
