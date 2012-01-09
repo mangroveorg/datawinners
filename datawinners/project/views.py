@@ -867,7 +867,6 @@ def sender_registration_form_preview(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 def _get_organization_telephone_number(request):
-    organization = utils.get_organization(request)
-    organization_settings = OrganizationSetting.objects.get(organization=organization)
-    return organization_settings.get_organisation_sms_number()
-
+    organization_settings = utils.get_organization_settings_from_request(request)
+    organization_number = organization_settings.get_organisation_sms_number()
+    return ' or '.join(organization_number) if isinstance(organization_number, list) else organization_number
