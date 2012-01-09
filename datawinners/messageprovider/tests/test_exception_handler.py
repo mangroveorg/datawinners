@@ -6,16 +6,19 @@ from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.errors.MangroveException import NumberNotRegisteredException, DataObjectNotFound, SMSParserWrongNumberOfAnswersException
 from mock import Mock, patch
 from mangrove.transport import TransportInfo
+from accountmanagement.models import Organization
 from messageprovider.exception_handler import handle
 from messageprovider.handlers import create_failure_log
 from messageprovider.message_handler import get_exception_message_for
 from messageprovider.messages import SMS, exception_messages
 from submission.models import DatawinnerLog
+from tests.data import DEFAULT_TEST_ORG_ID
 
 class TestExceptionHandler(unittest.TestCase):
 
     def setUp(self):
-        self.request = dict(incoming_message='message',transport_info=TransportInfo(transport='SMS',source='123',destination='456'))
+        self.request = dict(incoming_message='message',
+            transport_info=TransportInfo(transport='SMS',source='123',destination='456'))
 
     def test_should_handle_NumberNotRegisteredException(self):
         patcher = patch('messageprovider.handlers.create_failure_log')
@@ -57,12 +60,14 @@ class TestExceptionHandler(unittest.TestCase):
     def test_should_create_failure_log(self):
         self.request[FORM_CODE]='code'
         error_message = "error message"
+        self.request['organization']=Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
         create_failure_log(error_message,self.request)
         log = DatawinnerLog.objects.all().order_by('-created_at')[0]
         self.assertEqual(error_message,log.error)
         self.assertEqual(self.request[FORM_CODE],log.form_code)
         self.assertEqual(self.request['transport_info'].source,log.from_number)
         self.assertEqual(self.request['transport_info'].destination,log.to_number)
+        self.assertEqual(self.request['organization'],log.organization)
         log.delete()
 
     def test_should_create_failure_log_when_form_code_is_not_present(self):
@@ -73,4 +78,5 @@ class TestExceptionHandler(unittest.TestCase):
         self.assertEqual('',log.form_code)
         self.assertEqual(self.request['transport_info'].source,log.from_number)
         self.assertEqual(self.request['transport_info'].destination,log.to_number)
+        self.assertEqual(None,log.organization)
         log.delete()

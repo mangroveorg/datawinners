@@ -43,6 +43,7 @@ def create_failure_log(error_message, request):
     log.message = request.get('incoming_message')
     log.from_number = request['transport_info'].source
     log.to_number = request['transport_info'].destination
+    log.organization = request.get('organization')
     log.save()
 
 def _activate_language(exception, request):
