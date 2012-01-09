@@ -67,6 +67,7 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
     reminders_to_be_sent = [reminder for reminder in reminders if reminder.should_be_send_on(project.deadline(),on_date) ]
     for reminder in reminders_to_be_sent:
         #send next reminder if their is any error in sending reminder
+        smses_sent = 0
         try:
             smses_sent = sms_client.send_reminder(from_number,on_date,project,reminder,dbm)
         except Exception as ex:

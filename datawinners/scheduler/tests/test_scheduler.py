@@ -117,7 +117,18 @@ class TestScheduler(unittest.TestCase):
         self.assertNotIn(self.organization,organizations)
 
     def test_should_continue_with_sending_reminders_if_exception_in_prev(self):
-        reminders_sent = send_reminders_on(self.project,[self.reminder4,self.reminder1,self.reminder3], self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        def expected_side_effect(*args, **kwargs):
+            reminder_message = args[3].message
+            if reminder_message == "reminder4 message":
+                raise Exception()
+            else:
+                return 1
+
+        self.sms_client.send_reminder = Mock()
+        self.sms_client.send_reminder.side_effect = expected_side_effect
+
+        reminders = [self.reminder1, self.reminder4, self.reminder3]
+        reminders_sent = send_reminders_on(self.project, reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
         self.assertEqual(2,len(reminders_sent))
         self.assertNotIn(self.reminder4,reminders_sent)
         self.assertIn(self.reminder1,reminders_sent)
