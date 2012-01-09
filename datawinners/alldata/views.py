@@ -46,17 +46,11 @@ def index(request):
                               context_instance=RequestContext(request))
 
 
-def _get_organization_sms_number_for(request):
-    organization = get_organization(request)
-    organization_settings = OrganizationSetting.objects.get(organization=organization)
-    org_number = organization_settings.get_organisation_sms_number()
-    return org_number
-
 @login_required(login_url='/login')
 def failed_submissions(request):
     logs = DatawinnerLog.objects.all()
-    org_number = _get_organization_sms_number_for(request)
-    org_logs = [log for log in logs if log.to_number == org_number]
+    organization = get_organization(request)
+    org_logs = [log for log in logs if log.organization == organization]
     return render_to_response('alldata/failed_submissions.html', {'logs': org_logs},
                               context_instance=RequestContext(request))
 
