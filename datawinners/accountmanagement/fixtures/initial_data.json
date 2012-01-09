@@ -148,6 +148,7 @@
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "org_id": "SLX364903",
+            "mobile_phone": "123456",
             "user": 1,
             "title": "Mr."
         }
@@ -157,6 +158,7 @@
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "org_id": "COJ409579",
+            "mobile_phone": "1234567",
             "user": 2,
             "title": "Mr."
         }
@@ -165,13 +167,11 @@
         "pk": 3,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
-            "mobile_phone": null,
+            "mobile_phone": "876765654",
             "title": "Mr",
             "org_id": "SLX364903",
-            "office_phone": null,
             "reporter_id": "rep3",
-            "user": 4,
-            "skype": null
+            "user": 4
         }
     },
     {
@@ -180,6 +180,7 @@
         "fields": {
             "title": "Mr",
             "org_id": "COJ00000",
+            "mobile_phone": "12345687",
             "user": 5
         }
     },
@@ -189,6 +190,7 @@
         "fields": {
             "title": "Mr",
             "org_id": "COJ00001",
+            "mobile_phone": "98876765",
             "user": 6
         }
     },
@@ -198,6 +200,7 @@
         "fields": {
             "title": "Mr",
             "org_id": "COJ00002",
+            "mobile_phone": "64454334",
             "user": 7
         }
     },    {
@@ -206,6 +209,7 @@
         "fields": {
             "title": "Mr",
             "org_id": "COJ00003",
+            "mobile_phone": "675454333",
             "user": 8
         }
     },
