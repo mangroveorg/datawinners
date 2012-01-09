@@ -63,8 +63,8 @@ REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
 
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
-                        SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S cid112 . ",
-                        ERROR_MSG: "Entity with Unique Identification Number (ID) = cid112 already exists."}
+                        SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S clijpr . ",
+                        SUCCESS_MESSAGE: "Registration successful. Unique identification number(ID) is: clijpr.We received : t: Clinic m: 123456 l: jaipur g: 26.917,75.817 n: Clinic Jaipur s: clijpr"}
 
 REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
                                         RECEIVER: "919880734937",
