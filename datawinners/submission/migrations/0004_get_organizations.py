@@ -13,7 +13,7 @@ class Migration(DataMigration):
         for datawinner_log in orm.DatawinnerLog.objects.all():
             organization, error = OrganizationFinder().find(datawinner_log.from_number, datawinner_log.to_number)
             if error is None:
-                datawinner_log.organization = organization
+                datawinner_log.organization = orm['accountmanagement.Organization'].objects.get(org_id=organization.org_id)
             datawinner_log.save()
 
 
