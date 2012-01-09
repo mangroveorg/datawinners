@@ -1,8 +1,7 @@
 import unittest
-from django.forms.fields import CharField, MultipleChoiceField
-from django.forms.forms import Form
+from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, SelectField, _get_text_field
+from mangrove.form_model.field import TextField, SelectField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock
@@ -33,16 +32,30 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(is_required,web_text_field.required)
 
 
-    def test_should_create_web_questionnaire_for_select_field(self):
+    def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):
         is_required = False
 
-        expected_choices, text_field = self._get_select_field(is_required)
+        expected_choices, text_field = self._get_select_field(is_required,False)
         self.form_model.add_field(text_field)
 
         questionnaire_form_class = WebQuestionnaireFormCreater().create(self.form_model)
 
         web_text_field = questionnaire_form_class().fields[self.select_field_code]
         self.assertEqual(MultipleChoiceField,type(web_text_field))
+        self.assertEqual(self.field_name,web_text_field.label)
+        self.assertEqual(is_required,web_text_field.required)
+        self.assertEqual(expected_choices,web_text_field.choices)
+
+    def test_should_create_web_questionnaire_for_single_choice_select_field(self):
+        is_required = False
+
+        expected_choices, text_field = self._get_select_field(is_required,single_select_flag=True)
+        self.form_model.add_field(text_field)
+        expected_choices = [('', '--None--'),("a", "Red"), ("b", "Green"), ("c", "Blue")]
+        questionnaire_form_class = WebQuestionnaireFormCreater().create(self.form_model)
+
+        web_text_field = questionnaire_form_class().fields[self.select_field_code]
+        self.assertEqual(ChoiceField,type(web_text_field))
         self.assertEqual(self.field_name,web_text_field.label)
         self.assertEqual(is_required,web_text_field.required)
         self.assertEqual(expected_choices,web_text_field.choices)
@@ -58,7 +71,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
     def test_should_create_web_questionnaire(self):
 
         self.form_model.add_field(self._get_text_field(False))
-        self.form_model.add_field(self._get_select_field(False)[1])
+        self.form_model.add_field(self._get_select_field(False,False)[1])
 
         questionnaire_form_class = WebQuestionnaireFormCreater().create(self.form_model)
 
@@ -69,12 +82,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(MultipleChoiceField,type(web_form.fields[self.select_field_code]))
 
 
-    def _get_select_field(self, is_required):
+    def _get_select_field(self, is_required,single_select_flag):
         choices = [("Red", "a"), ("Green", "b"), ("Blue", "c")]
         expected_choices = [("a", "Red"), ("b", "Green"), ("c", "Blue")]
         text_field = SelectField(name=self.field_name, code=self.select_field_code, label=self.field_name,
                                  ddtype=Mock(spec=DataDictType),
-                                 options=choices, single_select_flag=False, required=is_required)
+                                 options=choices, single_select_flag=single_select_flag, required=is_required)
         return expected_choices, text_field
 
     def _get_text_field(self, is_required):
