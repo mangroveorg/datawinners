@@ -71,7 +71,7 @@ INVALID_LATITUDE_GPS = {ENTITY_TYPE: "clinic",
                         LOCATION: "",
                         GPS: "123 90",
                         DESCRIPTION: "This is a clinic with Invalid Latitude GPS",
-                        ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number Optional Please enter a valid phone number."}
+                        ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number optional Please enter a valid phone number."}
 
 INVALID_LONGITUDE_GPS = {ENTITY_TYPE: "clinic",
                          NAME: "Invalid Longitude GPS",
@@ -81,7 +81,7 @@ INVALID_LONGITUDE_GPS = {ENTITY_TYPE: "clinic",
                          LOCATION: "",
                          GPS: "23 190",
                          DESCRIPTION: "This is a clinic with Invalid Longitude GPS",
-                         ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number Optional Please enter a valid phone number."}
+                         ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number optional Please enter a valid phone number."}
 
 INVALID_GPS = {ENTITY_TYPE: "clinic",
                NAME: "Invalid GPS with Semi-Colon",
@@ -91,7 +91,7 @@ INVALID_GPS = {ENTITY_TYPE: "clinic",
                LOCATION: "",
                GPS: "23; 10",
                DESCRIPTION: "This is a clinic with Invalid GPS with Semi-Colon",
-               ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number Optional Please enter a valid phone number."}
+               ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number optional Please enter a valid phone number."}
 
 INVALID_GPS_WITH_COMMA = {ENTITY_TYPE: "clinic",
                           NAME: "Invalid GPS With Comma",
@@ -101,7 +101,7 @@ INVALID_GPS_WITH_COMMA = {ENTITY_TYPE: "clinic",
                           LOCATION: "",
                           GPS: "23,10",
                           DESCRIPTION: "This is a clinic with Invalid GPS With Comma",
-                          ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number Optional Please enter a valid phone number."}
+                          ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number optional Please enter a valid phone number."}
 
 WITH_UNICODE_IN_GPS = {ENTITY_TYPE: "clinic",
                        NAME: "Unicode in GPS",
@@ -111,4 +111,4 @@ WITH_UNICODE_IN_GPS = {ENTITY_TYPE: "clinic",
                        LOCATION: "",
                        GPS: u"23º 45",
                        DESCRIPTION: "This is a clinic with Unicode in GPS",
-                       ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number Optional Please enter a valid phone number."}
+                       ERROR_MSG: "GPS Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315Mobile Number optional Please enter a valid phone number."}
