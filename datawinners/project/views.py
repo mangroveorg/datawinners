@@ -54,6 +54,7 @@ from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
+from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
 
 logger = logging.getLogger("django")
 
@@ -748,7 +749,7 @@ def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
-    QuestionnaireForm = _create_django_form_from_form_model(form_model)
+    QuestionnaireForm = WebQuestionnaireFormCreater().create(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
