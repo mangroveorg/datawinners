@@ -31,7 +31,12 @@ class WebQuestionnaireFormCreater(object):
 #        return display_field
 
     def _create_char_field(self,field):
-        return forms.CharField(label=field.name, initial=field.value,   required=field.is_required(), help_text=field.instruction)
+        char_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(),
+            help_text=field.instruction)
+        char_field.widget.attrs["watermark"] = field.get_constraint_text()
+        char_field.widget.attrs['style'] = 'padding-top: 7px;'
+
+        return char_field
 
     def _create_select_field(self,field):
         if field.single_select_flag:

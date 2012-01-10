@@ -5,6 +5,7 @@ from mangrove.form_model.field import TextField, SelectField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock
+from mangrove.form_model.validation import TextLengthConstraint
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
 
 class TestWebQuestionnaireFormCreator(unittest.TestCase):
@@ -30,6 +31,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(self.field_name,web_text_field.label)
         self.assertEqual(self.instruction,web_text_field.help_text)
         self.assertEqual(is_required,web_text_field.required)
+        self.assertTrue(web_text_field.widget.attrs['watermark'] is not None)
+        self.assertEqual('padding-top: 7px;',web_text_field.widget.attrs['style'])
 
 
     def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):
@@ -93,5 +96,5 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
     def _get_text_field(self, is_required):
         text_field = TextField(name=self.field_name, code=self.text_field_code, label=self.field_name,
                                ddtype=Mock(spec=DataDictType),
-                               instruction=self.instruction, required=is_required)
+                               instruction=self.instruction, required=is_required,constraints=[TextLengthConstraint(1, 20)])
         return text_field
