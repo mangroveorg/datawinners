@@ -54,7 +54,7 @@ from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
-from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
+from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 
 logger = logging.getLogger("django")
 
@@ -576,12 +576,14 @@ def subjects(request, project_id=None):
              'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
+
+
+
 @login_required(login_url='/login')
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    fields, labels = load_subject_fields_and_names(manager, type=project.entity_type)
-    all_data = load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=project.entity_type)
+    all_data, labels = helper.get_project_subject_sorted(manager, project)
     return render_to_response('project/registered_subjects.html',
             {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels},
                                   context_instance=RequestContext(request))
@@ -749,7 +751,8 @@ def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
-    QuestionnaireForm = WebQuestionnaireFormCreater().create(form_model)
+#    select_choice = get_choices_for_entity_question(project,manager)
+    QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager,project)).create(form_model)
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()

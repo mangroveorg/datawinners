@@ -285,6 +285,8 @@ class Project(DocumentBase):
         self.void = void
         self.save(dbm)
 
+    def is_on_type(self,type):
+        return self.entity_type==type
     def _load_form(self, dbm):
         form_model = dbm.get(self.qid, FormModel)
         return form_model
