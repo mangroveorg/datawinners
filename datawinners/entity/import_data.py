@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
+from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.transport.submissions import Submission
 import os
 from django.conf import settings
@@ -290,3 +291,55 @@ def _get_field_default_value(key, entity):
     else:
         value = "--"
     return value
+
+
+def load_all_subjects_sorted(request):
+    manager = get_database_manager(request.user)
+    entity_types_names = _get_entity_types(manager)
+    subjects = _get_registration_form_models(manager)
+
+    subjects_list = {}
+    for entity in entity_types_names:
+        if entity in subjects.keys():
+            form_model = subjects[entity]
+        else:
+            form_model = subjects['Registration']
+        subjects_list[entity] = _get_entity_type_infos(entity, form_model)
+
+    entities = get_all_entities(dbm=manager)
+    for entity in entities:
+        if exclude_of_type(entity, REPORTER):
+            entity_type = entity.type_string
+            if entity_type in subjects_list.keys():
+                subjects_list[entity_type]['data'].append(_tabulate_data_sorted(entity, subjects_list[entity_type]['names']))
+
+    data = [subjects_list[entity] for entity in entity_types_names]
+    return data
+
+
+def _get_entity_types(manager):
+    entity_types = get_all_entity_types(manager)
+    entity_list = [entity[0] for entity in entity_types if entity[0] != 'reporter']
+    entity_list.sort()
+    return entity_list
+
+
+def _get_registration_form_models(manager):
+    subjects = {}
+    form_models = manager.load_all_rows_in_view('questionnaire')
+    for form_model in form_models:
+        if form_model.value['is_registration_model'] and form_model.value['name'] != 'Reporter':
+            subjects[form_model.value['entity_type'][0]] = form_model
+    return subjects
+
+
+def _get_entity_type_infos(entity, form_model):
+    names, labels = _get_field_infos(form_model.value['json_fields'])
+
+    subject = dict(entity = entity,
+        code = form_model.value["form_code"],
+        names = names,
+        labels = labels,
+        data = [],
+    )
+    return subject

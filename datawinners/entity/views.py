@@ -75,7 +75,7 @@ def _process_form(dbm, form, org_id):
 
 
 def _get_data(form_data):
-    #TODO need to refactor this code. The master dictionary should be maintained by the registration form  model
+    #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
               'location': LOCATION_TYPE_FIELD_CODE}
     data = dict()
@@ -151,20 +151,10 @@ def create_type(request):
             message = _("Entity definition successful")
             success = True
         except EntityTypeAlreadyDefined:
-            message = _("%s already registered as a subject type. Please select %s from the drop down menu.") %  (entity_name[0], entity_name[0])
+            message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (entity_name[0], entity_name[0])
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
-
-@login_required(login_url='/login')
-def create_subject(request):
-    db_manager = get_database_manager(request.user)
-    entity_types = get_all_entity_types(db_manager)
-    project_helper.remove_reporter(entity_types)
-    subjectForm = SubjectForm()
-    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types, "form": subjectForm},
-                              context_instance=RequestContext(request))
-
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -173,13 +163,12 @@ def create_subject(request):
 @is_datasender
 def all_subjects(request):
     manager = get_database_manager(request.user)
+    subjects_data = import_module.load_all_subjects_sorted(request)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        subjects_data = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': subjects_data}))
 
-    subjects_data = import_module.load_all_subjects(request)
     return render_to_response('entity/all_subjects.html', {'all_data': subjects_data, 'current_language': translation.get_language()},
                                   context_instance=RequestContext(request))
 
@@ -211,7 +200,7 @@ def create_web_users(request):
         errors = []
         post_data = json.loads(request.POST['post_data'])
         for data in post_data:
-            users  = User.objects.filter(email=data['email'])
+            users = User.objects.filter(email=data['email'])
             if len(users) > 0:
                 errors.append("User with email %s already exists" % data['email'])
         if len(errors) > 0:
@@ -295,3 +284,12 @@ def import_subjects_from_project_wizard(request):
         _associate_data_senders_to_project(imported_entities, manager, project_id)
     return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
+
+@login_required(login_url='/login')
+def create_subject(request):
+    db_manager = get_database_manager(request.user)
+    entity_types = get_all_entity_types(db_manager)
+    project_helper.remove_reporter(entity_types)
+    subjectForm = SubjectForm()
+    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types, "form": subjectForm},
+                              context_instance=RequestContext(request))

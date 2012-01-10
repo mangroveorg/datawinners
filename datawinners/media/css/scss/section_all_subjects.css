@@ -1,0 +1,37 @@
+#all_subjects {
+  width: 910px !important; }
+  #all_subjects .list_header {
+    border-bottom: 1px solid #CCCCCC !important;
+    padding: 10px; }
+    #all_subjects .list_header .header {
+      font-weight: normal;
+      background: url(/media/images/accordion_arrows.png) no-repeat left -34px;
+      padding-left: 15px; }
+    #all_subjects .list_header .success_error {
+      font-size: 12px;
+      font-weight: normal;
+      color: #666666;
+      float: right; }
+  #all_subjects .list_header.ui-state-active {
+    background-color: #525252 !important;
+    border: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d)) !important;
+    background: -moz-linear-gradient(top, #525252, #262626) !important; }
+    #all_subjects .list_header.ui-state-active .header {
+      color: #FFFFFF;
+      background: url(/media/images/accordion_arrows.png) no-repeat left 5px;
+      padding-left: 15px; }
+    #all_subjects .list_header.ui-state-active .success_error {
+      color: #FFFFFF; }
+  #all_subjects .ui-accordion-content {
+    border: 0;
+    border-bottom: 1px solid #000000;
+    padding: 10px; }
+  #all_subjects .register_subject {
+    float: right;
+    color: #0070ac;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 10px; }
+  #all_subjects .styled_table {
+    margin-bottom: 0; }

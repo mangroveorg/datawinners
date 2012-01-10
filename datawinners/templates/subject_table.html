@@ -1,25 +1,46 @@
 {% load i18n %}
-<table id='subject_table' class="styled_table">
-    <thead>
-    <th>ID</th>
-    <th>{% trans "Name" %}</th>
-    <th>{% trans "Type" %}</th>
-    <th>{% trans "Location" %}</th>
-    <th>{% trans "Geocode" %}</th>
-    <th>{% trans "Description" %}</th>
-    <th>{% trans "Contact info" %}</th>
-    </thead>
-    <tbody id='all_data_senders'>
-    {% for each in all_data %}
-        <tr>
-            <td>{{ each.short_name }}</td>
-            <td>{{ each.name }}</td>
-            <td>{{ each.type }}</td>
-            <td>{{ each.location }}</td>
-            <td>{{ each.geocode }}</td>
-            <td>{{ each.description }}</td>
-            <td>{{ each.mobile_number }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+
+<div id="all_subjects">
+{#    <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">#}
+{#        <input type="hidden" name="entity_type" id="type_to_export"/>#}
+{#        {% csrf_token %}#}
+{#        <div id="checked_subjects">#}
+{##}
+{#        </div>#}
+{#    </form>#}
+{% for subject in all_data %}
+    <div class="list_header">
+        <span class="header">{{ subject.entity|capfirst }}</span>
+        <span class="success_error">{{ subject.data|length }} registered subjects</span>
+    </div>
+    <div>
+        <div align="right">
+            <a href="javascript:void(0);" id="export-{{ subject.entity }}" class="export-entity-link">{% trans "Export" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
+            <a href="javascript:void(0)">Edit {{ subject.entity }} registration form</a>&nbsp;|&nbsp;
+            <a href="javascript:void(0)">{% trans "Add a new" %} {{ subject.entity }}</a>
+        </div>
+        {% if subject.data|length > 0 %}
+            <table class="styled_table" id="{{ subject.entity }}-table">
+                <thead>
+                    <th>&nbsp;</th>
+                    {% for title in subject.labels %}
+                        <th>{{ title }}</th>
+                    {% endfor %}
+                </thead>
+                <tbody id='all_data_senders'>
+                {% for row in subject.data %}
+                    <tr>
+                        <td><input type="checkbox" id="{{ row.id }}" value="{{ row.short_code }}" name="checked"/></td>
+                        {% for col in row.cols %}
+                            <td>{{ col }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <strong>"No subjects registered for this type"</strong><br/>
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
