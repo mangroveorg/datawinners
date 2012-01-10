@@ -232,7 +232,7 @@ def _get_field_infos(fields):
     return fields_names, labels
 
 
-def load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type,type=REPORTER):
+def load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=REPORTER):
     return load_subject_registration_data_sorted(manager, fields, filter_entities, type)
 
 

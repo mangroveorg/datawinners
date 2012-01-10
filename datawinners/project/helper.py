@@ -344,3 +344,7 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
         logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
         message_tracker.increment_outgoing_message_count()
         sms_client.send_sms(organization_tel_number, number, message)
+
+def get_project_data_senders_sorted(manager, project, fields):
+    all_data = load_all_subjects_of_type_sorted(manager, fields)
+    return [data for data in all_data if data['short_code'] in project.data_senders]

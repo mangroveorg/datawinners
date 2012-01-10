@@ -590,9 +590,10 @@ def registered_subjects(request, project_id=None):
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
+    fields, labels = load_subject_fields_and_names(manager)
     return render_to_response('project/registered_datasenders.html',
             {'project': project, 'project_links': project_links, 'all_data': (
-            helper.get_project_data_senders(manager, project))},
+            helper.get_project_data_senders_sorted(manager, project, fields)), "labels": labels},
                               context_instance=RequestContext(request))
 
 
