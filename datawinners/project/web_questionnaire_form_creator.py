@@ -49,20 +49,6 @@ class WebQuestionnaireFormCreater(object):
         choices = tuple(choice_list)
         return choices
 
-def create_select_field(field, choices):
-    if field.single_select_flag:
-        return ChoiceField(choices=choices, required=field.is_required(), label=field.name, initial=field.value, help_text=field.instruction)
-    return MultipleChoiceField(label=field.name, widget=CheckboxSelectMultiple, choices=choices,
-                                  initial=field.value, required=field.is_required(), help_text=field.instruction)
-
-
-def create_choices(field):
-    choice_list = [('', '--None--')] if field.single_select_flag else []
-    choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
-    choices = tuple(choice_list)
-    return choices
-
-
 def create_choices_for_reporter(choices):
     choice_list = [('', '--None--')]
     if choices is not None:
