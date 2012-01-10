@@ -307,3 +307,4 @@ def _get_all_datasenders_sorted(manager, projects, user, fields):
         association = project_association.get(datasender['short_code'])
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
     return all_data_senders
+
