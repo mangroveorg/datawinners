@@ -505,10 +505,10 @@ msgstr ""
 msgid "subscription_details"
 msgstr ""
 "<h5>Subscription Details</h5><p>Learn more about</p>"
-"<p><ul><li>Where DataWinners is available</li>"
+"<p><ul class=\"margin_left_10\"><li>Where DataWinners is available</li>"
 "<li>Key details of Monthly Subscription</li>"
 "<li>Our Consulting Service</li></ul></p>"
-"<p>See our <a href='/en/pricing/'>Pricing page</a></p>"
+"<p>See our <a href='/en/pricing/' target=\"_blank\">Pricing page</a></p>"
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
@@ -2217,7 +2217,7 @@ msgid "All fields are required unless marked optional."
 msgstr ""
 
 msgid "Optional"
-msgstr ""
+msgstr "optional"
 
 msgid "Answer %s for question %s is longer than allowed."
 msgstr ""
@@ -2272,11 +2272,11 @@ msgid "agree-terms"
 msgstr "I agree to the DataWinners <a target=\"_blank\" href=\"/en/terms-and-conditions/\"  id=\"link-terms-and-conditions\">Terms and Conditions</a>"
 
 
-msgid "Agree"
+msgid "I Agree"
 msgstr ""
 
-msgid "You have to agree terms and conditions before using DataWinners"
-msgstr ""
+msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
+msgstr "To sign up for a DataWinners account, you need to agree to our <a href=\"/en/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
 
 msgid "learn-about-partners-clients"
 msgstr "Learn more about our <a href=\"/en/about-us/partners\">partners</a> &amp; "
@@ -2977,8 +2977,17 @@ msgstr ""
 msgid "My Data Senders"
 msgstr ""
 
-msgid "Phone Number"
+msgid "Website"
 msgstr ""
 
-msgid "Website"
+msgid "Example: www.organization.com"
+msgstr ""
+
+msgid "Example: Program Director"
+msgstr ""
+
+msgid "Example: +261 333745269"
+msgstr ""
+
+msgid "Example: Minimum	of 6 characters in length"
 msgstr ""

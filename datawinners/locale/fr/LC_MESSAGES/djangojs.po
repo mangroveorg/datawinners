@@ -578,3 +578,9 @@ msgstr "Terminé"
 
 msgid "Between 1 -- 12 characters"
 msgstr ""
+
+msgid "DataWinners Terms & Conditions"
+msgstr "Termes & Conditions de DataWinners"
+
+msgid "Terms And Conditions"
+msgstr "Termes et Conditions"

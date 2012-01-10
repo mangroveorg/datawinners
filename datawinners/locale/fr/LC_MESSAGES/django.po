@@ -512,10 +512,10 @@ msgstr ""
 msgid "subscription_details"
 msgstr ""
 "<h5>Détails de l’Abonnement</h5><p>En savoir plus</p>"
-"<p><ul><li>Où trouver DataWinners</li>"
+"<p><ul class=\"margin_left_10\"><li>Où trouver DataWinners</li>"
 "<li>Principaux détails sur l’Abonnement Mensuel</li>"
 "<li>Notre Service de Consultance</li></ul></p>"
-"<p>Voir notre <a href='/en/pricing/'>Page des Tarifications</a></p>"
+"<p>Voir notre <a href='/en/pricing/' target=\"_blank\">Page des Tarifications</a></p>"
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
@@ -2224,7 +2224,7 @@ msgid "All fields are required unless marked optional."
 msgstr "Tous les champs sont obligatoires sauf indication \"facultatif\"."
 
 msgid "Optional"
-msgstr "Facultatif"
+msgstr "facultatif"
 
 msgid "Answer %s for question %s is longer than allowed."
 msgstr "La réponse à la question %s %s dépasse la longueur autorisée."
@@ -2280,11 +2280,11 @@ msgid "agree-terms"
 msgstr "J'accepte <a href=\"/fr/terms-and-conditions/\" target=\"_blank\" id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
 
 
-msgid "Agree"
-msgstr "Accepter"
+msgid "I Agree"
+msgstr "J'accepte"
 
-msgid "You have to agree terms and conditions before using DataWinners"
-msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinners"
+msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
+msgstr "Vous devez accepter les <a href=\"/fr/terms-and-conditions/\" target=\"_blank\">termes et conditions</a> avant d'utiliser DataWinners"
 
 msgid "learn-about-partners-clients"
 msgstr "En savoir plus sur nos <a href=\"/fr/about-us/partners\">partenaires</a> &amp; nos "
@@ -3016,8 +3016,17 @@ msgstr "Mes sujets"
 msgid "My Data Senders"
 msgstr "Mes expéditeurs"
 
-msgid "Phone Number"
-msgstr "Numéro de téléphone"
-
 msgid "Website"
 msgstr "Site web"
+
+msgid "Example: www.organization.com"
+msgstr "Exemple: www.organisation.com"
+
+msgid "Example: Program Director"
+msgstr "Exemple: Directeur de programme"
+
+msgid "Example: +261 333745269"
+msgstr "Exemple: +261 333745269"
+
+msgid "Example: Minimum	of 6 characters in length"
+msgstr "Exemple: Au minimum 6 caratères"

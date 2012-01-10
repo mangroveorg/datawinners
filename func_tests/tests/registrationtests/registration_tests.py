@@ -96,6 +96,8 @@ class TestRegistrationPage(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
         price_link = self.driver.find(by_xpath("//div[@class='grid_7 right_hand_section alpha omega subscription_details']//a"))
         price_link.click()
+        new_tab = self.driver.window_handles[1]
+        self.driver.switch_to_window(new_tab)
         self.assertEqual("Pricing", self.driver.get_title())
 
     @attr('functional_test')

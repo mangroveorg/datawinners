@@ -11,6 +11,9 @@
     text-decoration: none; }
     #header .logo a :hover {
       text-decoration: underline; }
+#header a.active {
+  color: #0070AC !important;
+  font-weight: bold; }
 
 #container_header_application #container_header_wizard {
   background: none;

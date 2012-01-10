@@ -553,3 +553,9 @@ msgstr ""
 
 msgid "Done"
 msgstr ""
+
+msgid "DataWinners Terms & Conditions"
+msgstr ""
+
+msgid "Terms And Conditions"
+msgstr ""

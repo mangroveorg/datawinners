@@ -2142,7 +2142,7 @@ msgid "All fields are required unless marked optional."
 msgstr "Tous les champs sont obligatoires sauf indication \"optionnel\"."
 
 msgid "Optional"
-msgstr "Optionnel"
+msgstr "optionnel"
 
 #: forms.py:54
 msgid ""
@@ -2230,10 +2230,10 @@ msgstr "L'utilisateur a été ajouté avec succès"
 msgid "agree-terms"
 msgstr "J'accepte <a href=\"/fr/terms-and-conditions/\" target=\"_blank\"  id=\"link-terms-and-conditions\">les termes et conditions</a> de DataWinners"
 
-msgid "Agree"
-msgstr "Accepter"
+msgid "I Agree"
+msgstr ""
 
-msgid "You have to agree terms and conditions before using DataWinners"
+msgid "To sign up for a DataWinners account, you need to agree to our Terms and Conditions"
 msgstr "Vous devez accepter les termes et conditions avant d'utiliser DataWinners"
 
 msgid "learn-about-partners-clients"
@@ -2424,4 +2424,16 @@ msgid "Phone Number"
 msgstr ""
 
 msgid "Website"
+msgstr ""
+
+msgid "Example: www.organization.com"
+msgstr ""
+
+msgid "Example: Program Director"
+msgstr ""
+
+msgid "Example: +261 333745269"
+msgstr ""
+
+msgid "Example: Minimum	of 6 characters in length"
 msgstr ""

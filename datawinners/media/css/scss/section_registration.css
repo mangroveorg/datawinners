@@ -63,7 +63,8 @@ form ul li input[type=text], form ul li input[type=password] {
 
 .subscription_details {
   float: right;
-  background: #feee96; }
+  background: #feee96;
+  min-height: 155px !important; }
   .subscription_details p {
     margin-top: 10px; }
   .subscription_details li {
@@ -82,7 +83,8 @@ form ul li input[type=text], form ul li input[type=password] {
   margin-left: 3px;
   margin-top: -5px;
   margin-bottom: 10px;
-  color: #666; }
+  color: #666;
+  font-style: italic; }
 
 .choices_description {
   line-height: 14px;
@@ -107,3 +109,12 @@ form ul li input[type=text], form ul li input[type=password] {
   margin-top: 10px;
   margin-left: 20px;
   text-align: center; }
+
+form.registration_form ul li label {
+  width: 160px;
+  margin-right: 10px;
+  text-align: right; }
+form.registration_form ul li ul li label {
+  width: auto;
+  padding-top: 1px;
+  text-align: left; }

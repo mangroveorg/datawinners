@@ -24,7 +24,14 @@
                     <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
                     <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>
                     <span>  <a href="{% url django.contrib.auth.views.login %}">{% trans "Sign In" %}</a> </span>
-                    <span>  <a href="{% url registration.views.register %}">{% trans "Sign Up" %}</a> </span>
+                    <span>  <a href="{% url registration.views.register %}"
+                        {% ifequal messages.request.path "/register/" %}
+                            class="active"
+                        {% else %}
+                            {% ifequal messages.request.path "/register/trial/" %}
+                                class="active"
+                            {%  endifequal %}
+                        {% endifequal %}>{% trans "Sign Up" %}</a> </span>
                 </div>
             {% endif %}
         </div>

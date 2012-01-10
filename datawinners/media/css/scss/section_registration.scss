@@ -93,6 +93,7 @@ form{
 .subscription_details {
     float: right;
     background: #feee96;
+    min-height: 155px !important;
     p{
     margin-top: 10px;
     }
@@ -116,6 +117,7 @@ form{
     margin-top: -5px;
     margin-bottom: 10px;
     color: #666;
+    font-style: italic;
 }
 
 .choices_description{
@@ -144,3 +146,24 @@ form{
                 margin-left:20px;
                 text-align:center;
             }
+
+form.registration_form{
+    ul{
+        li{
+            label{
+                width: 160px;
+                margin-right: 10px;
+                text-align: right;
+            }
+            ul{
+                li{
+                    label{
+                        width: auto;
+                        padding-top: 1px;
+                        text-align: left;
+                    }
+                }
+            }
+        }
+    }
+}

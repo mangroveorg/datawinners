@@ -7,7 +7,7 @@ $(document).ready(function() {
     $("#user_should_agree_terms_block").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext('Agree terms and conditions'),
+        title: gettext("DataWinners Terms & Conditions"),
         zIndex:200,
         width: 500,
         beforeClose: function() {
@@ -17,6 +17,10 @@ $(document).ready(function() {
 
     $("#user_should_agree_terms_block .agree_link").bind("click", function() {
         $("#agree-terms").attr("checked", true);
+        $("#user_should_agree_terms_block").dialog("close");
+    });
+
+    $("#cancel-agree-terms").bind("click", function(){
         $("#user_should_agree_terms_block").dialog("close");
     });
 

@@ -128,7 +128,7 @@ VALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                               MOBILE_NUMBER: "1234567890",
                               COMMUNE: "urbaine",
                               GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep2."}
+                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep3."}
 
 VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
                               MOBILE_NUMBER: "12345678901",
