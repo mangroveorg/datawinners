@@ -25,29 +25,22 @@
 
     <table class="styled_table">
         <thead>
-        <th>{% trans "Unique ID" %}</th>
-        <th>{% trans "Name" %}</th>
-        <th>{% trans "Type" %}</th>
-        <th>{% trans "Contact info" %}</th>
+            <tr>
+            {% for title in labels %}
+                <th>{{ title }}</th>
+            {% endfor %}
+            </tr>
         </thead>
         <tbody>
-        {% for each in all_data %}
+        {% for row in all_data %}
             <tr>
-                <td>{{ each.short_name }}</td>
-                {% if each.name %}
-                    <td>{{ each.name }}</td>
-                {% else %}
-                    <td>--</td>
-                {% endif %}
-                <td>{{ each.type }}</td>
-                {% if each.mobile_number %}
-                    <td>{{ each.mobile_number }}</td>
-                {% else %}
-                    <td>--</td>
-                {% endif %}
+                {% for col in row.cols %}
+                    <td>{{ col }}</td>
+                {% endfor %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
 {% endblock %}
+

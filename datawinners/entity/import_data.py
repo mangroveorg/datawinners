@@ -9,11 +9,11 @@ from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code, get_form_model_by_entity_type
 from mangrove.transport.player.parser import CsvParser, XlsParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
-from mangrove.utils.types import sequence_to_str
+from mangrove.utils.types import sequence_to_str, is_string, is_sequence
 from mangrove.datastore import entity
 from mangrove.transport.facade import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
 from mangrove.transport import reporter
@@ -153,9 +153,8 @@ def load_all_subjects(request):
     manager = get_database_manager(request.user)
     return load_subject_registration_data(manager)
 
-
 def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPORTER):
-    return load_subject_registration_data(manager, filter_entities,type)
+    return load_subject_registration_data(manager, filter_entities, type)
 
 
 def _handle_uploaded_file(file_name, file, manager):
@@ -212,3 +211,82 @@ def _file_and_name(request):
     file_name = request.GET.get('qqfile')
     file = request.raw_post_data
     return file_name, file
+
+
+def load_subject_fields_and_names(manager, type=REPORTER):
+    form_code = "reg"
+    form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
+    if form_model is not None:
+        form_code = form_model.form_code
+    form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
+    fields, labels = _get_field_infos(form_model[0].value['json_fields'])
+    return fields, labels
+
+
+def _get_field_infos(fields):
+    fields_names = []
+    labels = []
+    for field in fields:
+        fields_names.append(field['name'])
+        labels.append(field['label']['en'])
+    return fields_names, labels
+
+
+def load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type,type=REPORTER):
+    return load_subject_registration_data_sorted(manager, fields, filter_entities, type)
+
+
+def load_subject_registration_data_sorted(manager, fields, filter_entities=exclude_of_type, type=REPORTER):
+    entities = get_all_entities(dbm=manager)
+    data = []
+    for entity in entities:
+        if filter_entities(entity,type):
+            data.append(_tabulate_data_sorted(entity, fields))
+    return data
+
+
+def _tabulate_data_sorted(entity, fields):
+    data = {'id': entity.id, 'short_code': entity.short_code, 'cols': []}
+    for i in range(len(fields)):
+        if fields[i] in entity.data.keys():
+            data['cols'].append(_get_field_value(fields[i], entity))
+        else:
+            data['cols'].append(_get_field_default_value(fields[i], entity))
+    return data
+
+def _entity_type_as_sequence(entity_type):
+    if not is_sequence(entity_type):
+        entity_type = [entity_type.lower()]
+    return entity_type
+
+
+def _get_field_value(key, entity):
+    value = entity.value(key)
+    if key == 'geo_code':
+        if value is None:
+            value = entity.geometry.get('coordinates')
+            value = ", ".join([str(i) for i in value]) if value is not None else "--"
+        else:
+            value = ", ".join([str(i) for i in value])
+    elif key == 'location':
+        if value is None:
+            value = entity.location_path
+        value = _format(sequence_to_str(value, u", "))
+    elif key == 'entity_type':
+        value = _format(sequence_to_str(value, u", "))
+    else:
+        value = _format(value)
+    return value
+
+def _get_field_default_value(key, entity):
+    if key == 'geo_code':
+        value = entity.geometry.get('coordinates')
+        value = ", ".join([str(i) for i in value]) if value is not None else "--"
+    elif key == 'location':
+        value = sequence_to_str(entity.location_path, u", ")
+        value = _format(value) if value is not None else "--"
+    elif key == 'short_code':
+        value = entity.short_code
+    else:
+        value = "--"
+    return value

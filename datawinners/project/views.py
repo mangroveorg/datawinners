@@ -40,7 +40,7 @@ from mangrove.transport import Channel
 import datawinners.utils as utils
 
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
-from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.entity.import_data import load_all_subjects_of_type, load_subject_fields_and_names, load_all_subjects_of_type_sorted
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
@@ -579,12 +579,11 @@ def subjects(request, project_id=None):
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=project.entity_type)
+    fields, labels = load_subject_fields_and_names(manager, type=project.entity_type)
+    all_data = load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=project.entity_type)
     return render_to_response('project/registered_subjects.html',
-            {'project': project, 'project_links': project_links, 'all_data': all_data},
-                              context_instance=RequestContext(request))
-
-
+            {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels},
+                                  context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')

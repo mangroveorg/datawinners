@@ -1,7 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 from django.utils.translation import ugettext
-from datawinners.entity.import_data import load_all_subjects_of_type
+from datawinners.entity.import_data import load_all_subjects_of_type, \
+    load_all_subjects_of_type_sorted
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
