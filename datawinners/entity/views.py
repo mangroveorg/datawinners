@@ -15,6 +15,7 @@ from django.utils.translation import ugettext as _
 from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount,Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
 from datawinners.entity import helper
+from datawinners.entity.import_data import load_subject_fields_and_names
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
@@ -230,15 +231,16 @@ def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = models.get_all_projects(manager)
     grant_web_access = False
+    fields, labels = load_subject_fields_and_names(manager)
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        all_data_senders = _get_all_datasenders(manager, projects, request.user)
+        all_data_senders = _get_all_datasenders_sorted(manager, projects, request.user, fields)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
-    all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access,
+    all_data_senders = _get_all_datasenders_sorted(manager, projects, request.user, fields)
+    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access, "labels": labels,
                                                               'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
@@ -293,3 +295,15 @@ def create_subject(request):
     subjectForm = SubjectForm()
     return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types, "form": subjectForm},
                               context_instance=RequestContext(request))
+
+
+def _get_all_datasenders_sorted(manager, projects, user, fields):
+    all_data_senders = import_module.load_all_subjects_of_type_sorted(manager, fields)
+    project_association = _get_project_association(projects)
+    for datasender in all_data_senders:
+        org_id = NGOUserProfile.objects.get(user=user).org_id
+        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id = org_id)
+        datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
+        association = project_association.get(datasender['short_code'])
+        datasender['projects'] = ' ,'.join(association) if association is not None else '--'
+    return all_data_senders

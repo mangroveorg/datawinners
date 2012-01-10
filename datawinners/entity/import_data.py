@@ -228,8 +228,9 @@ def _get_field_infos(fields):
     fields_names = []
     labels = []
     for field in fields:
-        fields_names.append(field['name'])
-        labels.append(field['label']['en'])
+        if field['name'] != 'entity_type':
+            fields_names.append(field['name'])
+            labels.append(field['label']['en'])
     return fields_names, labels
 
 

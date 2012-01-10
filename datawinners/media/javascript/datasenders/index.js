@@ -114,8 +114,8 @@ $(document).ready(function() {
         $('#all_data_senders :checked').each(function() {
             var row = $(this).parent().parent();
             var data_sender = {};
-            data_sender.short_name = $($(row).children()[1]).html();
-            data_sender.name = $($(row).children()[2]).html();
+            data_sender.short_name = $($(row).children()[2]).html();
+            data_sender.name = $($(row).children()[1]).html();
             data_sender.location = $($(row).children()[4]).html();
             data_sender.contactInformation = $($(row).children()[6]).html();
             data_sender.email = $($(row).children()[8]).html();
