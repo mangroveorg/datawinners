@@ -1,22 +1,21 @@
 from framework.utils.data_fetcher import from_, fetch_
 from pages.page import Page
 from pages.websubmissionpage.web_submission_locator import *
-from tests.websubmissiontests.web_submission_data import LABEL, ANSWER
+from tests.websubmissiontests.web_submission_data import *
 
 class WebSubmissionPage(Page):
 
     def __init__(self, driver):
         Page.__init__(self, driver)
+        self.submit_answer_for = {TEXT : self.type_text, SELECT: self.select_option, CHECKBOX: self.select_checkbox}
 
-    def submit_questionnaire_with(self, answers):
-        for i in range(4):
-            self.driver.find_text_box(get_by_css_name("input", fetch_(LABEL, from_(answers[i])))).enter_text(fetch_(ANSWER,from_(answers[i])))
-        self.driver.find_drop_down(get_by_css_name("select", fetch_(LABEL, from_(answers[4])))).set_selected(fetch_(ANSWER,from_(answers[4])))
-        checkboxes = self.driver.find_elements_(get_by_css_name("input", fetch_(LABEL, from_(answers[5]))))
-        checkboxes[0].click()
-        checkboxes[2].click()
-        self.driver.find_text_box(get_by_css_name("input", fetch_(LABEL, from_(answers[6])))).enter_text(fetch_(ANSWER,from_(answers[6])))
+    def fill_questionnaire_with(self, answers):
+        for answer in answers:
+            self.submit_answer_for[answer[TYPE]](answer)
+
+    def submit_answers(self):
         self.driver.find(SUBMIT_BTN).click()
+        return self
 
     def get_errors(self):
         errors =  self.driver.find_elements_(QUESTIONS_WITH_ERRORS)
@@ -30,3 +29,12 @@ class WebSubmissionPage(Page):
     def get_trial_web_limit_alert(self):
         return self.driver.find_elements_(TRIAL_WEB_LIMIT_REACHED_WARNING_BOX)[0].text
 
+    def select_option(self, data):
+        self.driver.find_drop_down(by_css("select#id_%s" % data[QCODE])).set_selected_by_text(data[ANSWER])
+
+    def select_checkbox(self, data):
+        for answer in data[ANSWER]:
+            self.driver.find(by_css("input[id^='id_%s'][value='%s']" % (data[QCODE], answer))).click()
+
+    def type_text(self, data):
+        self.driver.find_text_box(by_css("input#id_%s" % data[QCODE])).enter_text(data[ANSWER])

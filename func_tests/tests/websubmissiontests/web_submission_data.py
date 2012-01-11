@@ -1,18 +1,23 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 PROJECT_NAME = "project_name"
-LABEL = 'label'
+QCODE = 'qcode'
 ANSWER = 'answer'
+TYPE = "type"
+
+SELECT = "select"
+TEXT = "text"
+CHECKBOX = "checkbox"
 
 VALID_ANSWERS = [
-    {LABEL: 'EID', ANSWER: 'cid007'},
-    {LABEL: 'NA', ANSWER: 'Bob'},
-    {LABEL: 'FA', ANSWER: '89'},
-    {LABEL: 'RD', ANSWER: '25.12.2011'},
-    {LABEL: 'BG', ANSWER: 'b'},
-    {LABEL: 'SY', ANSWER: ['1', '3']},
-    {LABEL: 'GPS', ANSWER: '-18.1324 27.6547'},
-    {LABEL: 'RM', ANSWER: ['3']},
+    {QCODE: 'EID', ANSWER: 'Indore Clinic', TYPE: SELECT},
+    {QCODE: 'NA', ANSWER: 'Bob', TYPE: TEXT},
+    {QCODE: 'FA', ANSWER: '89', TYPE: TEXT},
+    {QCODE: 'RD', ANSWER: '25.12.2011', TYPE: TEXT},
+    {QCODE: 'BG', ANSWER: 'O-', TYPE: SELECT},
+    {QCODE: 'SY', ANSWER: ['a', 'c'], TYPE: CHECKBOX},
+    {QCODE: 'GPS', ANSWER: '-18.1324 27.6547', TYPE: TEXT},
+    {QCODE: 'RM', ANSWER: ['c'], TYPE: CHECKBOX},
 ]
 
 DEFAULT_ORG_DATA = {
