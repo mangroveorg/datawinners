@@ -8,24 +8,29 @@
 {% block content %}
     <!-- div for successful message creation-->
     <div class="wizard_success_message">
-        <div class="wizard_heading">{% trans "You successfully created your questionnaire!" %} </div>
+        <div class="wizard_heading">{% trans "You successfully created your project!" %} </div>
         <div class="line"></div>
         <div class="w_content">
-            <div class="gray_text">{% trans "Now you can..." %} </div>
-            <li><a id="datasenders_edit_link"
-                   href="{{project_links.datasenders_link}}">{% trans "Add data senders" %} </a>
-                <span class="italic_grey">{% trans "required"  %}</span>
-                <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
-            </li>
-            <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "Add subjects" %} </a>
+            <div class="gray_text">{% trans "Just one more step..." %} </div>
+            <ul>
+                <li><a id="datasenders_edit_link"
+                       href="{{project_links.datasenders_link}}">{% trans "Add data senders" %} </a>
+                    <span class="italic_grey">{% trans "required"  %}</span>
+                    <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
+                </li>
+            </ul>
+            <div class="gray_text">{% trans "Enhance your project..." %} </div>
+            <ul>
+                <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "Add subjects" %} </a>
 
-                <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
-            </li>
-            <li><a id="reminder_edit_link"
-                   href="{{project_links.setting_reminders_link}}">{% trans "Set reminders" %} </a>
+                    <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
+                </li>
+                <li><a id="reminder_edit_link"
+                       href="{{project_links.setting_reminders_link}}">{% trans "Set reminders" %} </a>
 
-                <p class="black_italic">{% trans "Set up automatic SMS Reminders to be sent your Data Senders (e.g. field staff) to ensure the timely collection of your data." %} </p>
-            </li>
+                    <p class="black_italic">{% trans "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data." %} </p>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}

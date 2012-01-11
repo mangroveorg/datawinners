@@ -290,4 +290,8 @@ $(document).ready(function() {
         return false;
 
     });
+
+    if($("#id_activity_report_1").attr("checked")){
+        $('#add_subject_type').show();
+    }
 });

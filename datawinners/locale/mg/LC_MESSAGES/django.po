@@ -1365,7 +1365,7 @@ msgstr "Quel type de réponse attendez-vous de vos envoyeurs"
 
 #: templates/project/question_detail_panel.html:34
 msgid "Word or Phrase"
-msgstr "Mot ou phrase"
+msgstr "Mot"
 
 #: templates/project/question_detail_panel.html:37
 msgid "Number"
@@ -2436,4 +2436,19 @@ msgid "Example: +261 333745269"
 msgstr ""
 
 msgid "Example: Minimum	of 6 characters in length"
+msgstr ""
+
+msgid "Just one more step..."
+msgstr ""
+
+msgid "Enhance your project..."
+msgstr ""
+
+msgid "Set up automatic SMS Reminders to be sent to your Data Senders (e.g. field staff) to ensure the timely collection of your data."
+msgstr ""
+
+msgid "Example: Monthly Activity Report"
+msgstr ""
+
+msgid "Example: a report per patient, clinic, water pump - choose below"
 msgstr ""

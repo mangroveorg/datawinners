@@ -11,7 +11,7 @@
         </div>
     {% endif %}
     <div class="line"></div>
-<ul>
+<ul style="position: relative;">
     <li class="form-row-10px">
         {{ form.name.label_tag }}
         {{ form.name }}
@@ -40,18 +40,17 @@
         {{ form.language }}
         {{ form.language.error }}
     </li>
-    <li id="report_type_{% trans "en" %}">
+    <li id="report_type_{% trans "en" %}" class="report_type">
         <div class="help">
             {{ form.activity_report.label_tag }}
         </div>
-        <img src="/media/images/help_icon.png" class="help_icon">
-        <div class="tooltip"><p>
-            {% trans "tooltip_questionnaire_about" %}
-        </p></div>
+        <div class="clear-both"></div>
         {{ form.activity_report }}
         {{ form.entity_type }}
         <img src='/media/images/help_icon.png' class='help_icon summary_report' /><div class='tooltip bottom summary_report_tooltip'><p>{% trans 'tooltip_summary_report' %}</p></div>
         <img src='/media/images/help_icon.png' class='help_icon individual_report' /><div class='tooltip bottom individual_report_tooltip'><p>{% trans 'tooltip_individual_report' %}</p></div>
+        <p class="black_italic summary_report_example">{% trans "Example: Monthly Activity Report" %}</p>
+        <p class="black_italic individual_report_example">{% trans "Example: a report per patient, clinic, water pump - choose below" %}</p>
         {%  include 'entity/create_type.html' %}
 
     </li>

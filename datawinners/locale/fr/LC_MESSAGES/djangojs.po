@@ -544,7 +544,7 @@ msgid "subject"
 msgstr "sujet"
 
 msgid "Read More"
-msgstr ""
+msgstr "En lire plus"
 
 msgid " successful | "
 msgstr " succès | "

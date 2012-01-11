@@ -47,10 +47,10 @@ $(document).ready(function() {
         title: gettext("Read More"),
         modal: true,
         autoOpen: false,
-        width: 750
+        width: 800
     });
 
-    $('#help_icon_for_add_subject').click(function(){
+    $('#help_icon_for_add_subject, #add_subject_read_more').click(function(){
         $("#read_more").dialog("open");
         return false;
     });
