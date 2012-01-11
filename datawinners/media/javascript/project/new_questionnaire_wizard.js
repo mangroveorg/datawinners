@@ -67,7 +67,16 @@ $(document).ready(function() {
         }
 
     });
-   $("#questionnaire_code_change").dialog({
+   $("#delete_question").dialog({
+        title: "Warning!!",
+        modal: true,
+        autoOpen: false,
+        height: 200,
+        width: 300,
+        closeText: 'hide'
+      }
+   );
+    $("#questionnaire_code_change").dialog({
         title: "Warning!!",
         modal: true,
         autoOpen: false,
@@ -86,12 +95,16 @@ $(document).ready(function() {
         return false;
     });
 
+
+
     $(".cancel_link").bind("click", function(){
          $("#questionnaire_code_change").dialog("close");
         var old_questionnaire_code = $('#saved-questionnaire-code').val();
         $('#questionnaire-code').val(old_questionnaire_code);
         return false;
     });
+
+
 
     $('input[name=type]:radio').change(
             function() {

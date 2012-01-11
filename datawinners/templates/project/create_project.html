@@ -51,7 +51,7 @@
 
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
                         <a href="#" class="delete_link"
-                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question); DW.smsPreview();} else {viewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
+                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestionCheck(question); DW.smsPreview();} else {viewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
                     </div>
                     <span class="selected_question_arrow"
                           data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
@@ -158,6 +158,11 @@
             <p class="warning_message">{% trans "Warning: Changing the questionnaire code will remove all existing test data." %}</p>
             <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
             <a href="#" class="button" id="ok_button">{% trans "OK" %}</a>
+        </div>
+        <div id="delete_question">
+            <p class="warning_message">{% trans "Warning: If you delete this question, DataWinners will use the date stamp of the SMS as the reporting period." %}</p>
+            <a href="#" class="cancel_link_que">{% trans "Cancel" %}</a>
+            <a href="#" class="button" id="ok_button_que_change">{% trans "OK" %}</a>
         </div>
 
         <div class="create_project">

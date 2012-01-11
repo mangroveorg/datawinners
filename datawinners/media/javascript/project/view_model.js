@@ -2,6 +2,7 @@ var viewModel =
 {
     questions : ko.observableArray([]),
     hasAddedNewQuestions : false,
+    activity_report_question_flag : false,
 
     addQuestion : function() {
         var question = new DW.question();
@@ -43,6 +44,24 @@ var viewModel =
         viewModel.changeSelectedQuestion(viewModel.questions()[next_index]);
         viewModel.hasAddedNewQuestions = true;
         viewModel.reassignQuestionCodes(index);
+    },
+    removeQuestionCheck:function(question){
+        var index = $.inArray(question, viewModel.questions());
+        if (index == 0 && viewModel.activity_report_question_flag == false){
+          $("#delete_question").dialog("open");
+        }
+        else
+            viewModel.removeQuestion(question)
+
+        $("#ok_button_que_change").bind("click", function(){
+            $("#delete_question").dialog("close");
+            viewModel.activity_report_question_flag = true
+            viewModel.removeQuestion(question)
+        });
+        $(".cancel_link_que").bind("click", function(){
+            $("#delete_question").dialog("close");
+            return false;
+        });
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {

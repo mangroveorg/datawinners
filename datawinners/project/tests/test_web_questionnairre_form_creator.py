@@ -1,14 +1,11 @@
 import unittest
-from unittest.case import SkipTest
 from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
-from nose.plugins.skip import Skip
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, SelectField, field_attributes
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
-from mock import Mock, patch
+from mock import Mock
 from mangrove.form_model.validation import TextLengthConstraint
-from project.models import Project
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 
 class TestWebQuestionnaireFormCreator(unittest.TestCase):
@@ -115,6 +112,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(ChoiceField,type(display_subject_field))
         expected_choices = [('a', 'reporter1'), ('b', 'reporter2')]
         self.assertEqual(expected_choices,display_subject_field.choices)
+        self.assertEqual('questionnaire_form_help_text',display_subject_field.widget.attrs['id'])
+        self.assertEqual("/media/images/help_icon.png",display_subject_field.widget.attrs['img src'])
 
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
         subject_field = self._get_text_field(True,True)
