@@ -21,6 +21,10 @@ from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
 from datawinners.utils import get_organization
+from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from mangrove.datastore.entity import create_entity, get_all_entities
+from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug, get_or_create_data_dict
+from mangrove.form_model.form_model import  FormModel, get_form_model_by_code, REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
 
 def is_admin(f):
     def wrapper(*args, **kw):
@@ -139,6 +143,21 @@ def settings(request):
                 {'organization_form': organization_form, 'message': message}, context_instance=RequestContext(request))
 
 
+def _make_user_as_a_datasender(manager, org_id, current_user_name, mobile_number):
+    entities = get_all_entities(dbm=manager)
+    total_entity = len([entity for entity in entities if entity.type_path[0] == REPORTER])
+    REPORTER_SHORT_CODE = 'rep' + str(total_entity+1)
+    organization = Organization.objects.get(org_id=org_id)
+    entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=REPORTER_SHORT_CODE,
+                           location=[organization.country])
+    mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
+                                                 primitive_type='string')
+    name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
+    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
+    entity.add_data(data=data)
+    return entity
+
+
 @login_required(login_url='/login')
 @is_admin
 def new_user(request):
@@ -149,6 +168,7 @@ def new_user(request):
                                   context_instance=RequestContext(request))
 
     if request.method == 'POST':
+        manager = get_database_manager(request.user)
         org_id = request.user.get_profile().org_id
         form = UserProfileForm(request.POST)
 
@@ -161,9 +181,12 @@ def new_user(request):
                 group = Group.objects.filter(name="Project Managers")
                 user.groups.add(group[0])
                 user.save()
+                mobile_number = form.cleaned_data['mobile_phone']
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
-                                                  mobile_phone=form.cleaned_data['mobile_phone'],
+                                                  mobile_phone = mobile_number,
                                                   org_id=org_id)
+                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id,
+                                                    current_user_name=user.first_name, mobile_number=mobile_number).short_code
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
