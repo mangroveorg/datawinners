@@ -6,23 +6,20 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext, ugettext_lazy
 from django.views.decorators.csrf import csrf_exempt
-from datawinners.accountmanagement.models import Organization, NGOUserProfile, DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import Organization, NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
 from django.contrib import messages
 from mangrove.form_model.field import field_to_json
 from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
-from mangrove.form_model.form_model import  FormModel, get_form_model_by_code, REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
-from mangrove.datastore.entity import create_entity, get_by_short_code
-from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
-from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug, get_or_create_data_dict
+from mangrove.form_model.form_model import  FormModel
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -45,30 +42,6 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
     return questionnaire
 
-def _create_current_user_as_datasender(manager, org_id, current_user_name, mobile_number):
-    REPORTER_SHORT_CODE = 'myself'
-
-    organization = Organization.objects.get(org_id=org_id)
-    if organization.in_trial_mode:
-        rows = DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)
-        if not len(rows)>0:
-            data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=mobile_number, organization=organization)
-            data_sender.save()
-
-    try:
-        entity = get_by_short_code(manager, REPORTER_SHORT_CODE, REPORTER_ENTITY_TYPE)
-        entity.delete()
-    except DataObjectNotFound:
-        pass
-
-    entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=REPORTER_SHORT_CODE,
-                           location=[organization.country])
-    mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-                                                 primitive_type='string')
-    name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
-    entity.add_data(data=data)
-    return entity
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -79,8 +52,6 @@ def create_project(request):
     name = ugettext_lazy("Create a New Project")
     project_summary = dict(name=name)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
-    org_id = ngo_admin.org_id
-    organization = Organization.objects.get(org_id=org_id)
 
     if request.method == 'GET':
         form = CreateProject(entity_list=entity_list)
@@ -93,8 +64,6 @@ def create_project(request):
                  'questionnaire_code': helper.generate_questionnaire_code(manager), 'is_edit': 'false', 'post_url': reverse(create_project)},context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        current_user_as_datasender = _create_current_user_as_datasender(manager, org_id = org_id,
-                                        current_user_name = ngo_admin.user.first_name, mobile_number = ngo_admin.mobile_phone)
         project_info = json.loads(request.POST['profile_form'])
         form = CreateProject(entity_list, data=project_info)
         if form.is_valid():
@@ -102,7 +71,10 @@ def create_project(request):
                               project_type='survey', entity_type=form.cleaned_data['entity_type'],
                               activity_report=form.cleaned_data['activity_report'],
                               state = request.POST['project_state'], devices=form.cleaned_data['devices'],language=form.cleaned_data['language'])
-            project.data_senders.append(current_user_as_datasender.short_code)
+
+            if ngo_admin.reporter_id is not None:
+                project.data_senders.append(ngo_admin.reporter_id)
+
             try:
                 questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=form.cleaned_data['entity_type'], name=form.cleaned_data['name'], language=form.cleaned_data['language'])
             except (QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
