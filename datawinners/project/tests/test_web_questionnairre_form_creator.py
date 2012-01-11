@@ -112,8 +112,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(ChoiceField,type(display_subject_field))
         expected_choices = [('a', 'reporter1'), ('b', 'reporter2')]
         self.assertEqual(expected_choices,display_subject_field.choices)
-        self.assertEqual('questionnaire_form_help_text',display_subject_field.widget.attrs['id'])
-        self.assertEqual("/media/images/help_icon.png",display_subject_field.widget.attrs['img src'])
 
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
         subject_field = self._get_text_field(True,True)
