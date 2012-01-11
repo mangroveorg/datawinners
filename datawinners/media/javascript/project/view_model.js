@@ -2,7 +2,6 @@ var viewModel =
 {
     questions : ko.observableArray([]),
     hasAddedNewQuestions : false,
-    activity_report_question_flag : false,
 
     addQuestion : function() {
         var question = new DW.question();
@@ -47,16 +46,15 @@ var viewModel =
     },
     removeQuestionCheck:function(question){
         var index = $.inArray(question, viewModel.questions());
-        if (index == 0 && viewModel.activity_report_question_flag == false){
+        if ( viewModel.questions()[index].title()== "What is the reporting period for the activity?"){
           $("#delete_question").dialog("open");
         }
         else
             viewModel.removeQuestion(question)
 
         $("#ok_button_que_change").bind("click", function(){
-            $("#delete_question").dialog("close");
-            viewModel.activity_report_question_flag = true
             viewModel.removeQuestion(question)
+            $("#delete_question").dialog("close");
         });
         $(".cancel_link_que").bind("click", function(){
             $("#delete_question").dialog("close");
