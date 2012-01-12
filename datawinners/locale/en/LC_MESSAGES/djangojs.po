@@ -222,12 +222,12 @@ msgstr ""
 
 #: media/javascript/project/questionnaire_helper.js:9
 msgid "Answer must be a word or phrase"
-msgstr ""
+msgstr "Answer must be a word"
 
 #: media/javascript/project/questionnaire_helper.js:10
 #, perl-format
 msgid "Answer must be a word or phrase %d characters maximum"
-msgstr ""
+msgstr "Answer must be a word %d characters maximum"
 
 #: media/javascript/project/questionnaire_helper.js:11
 #, perl-format

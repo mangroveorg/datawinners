@@ -229,12 +229,12 @@ msgstr "La réponse doit être entre %d-%d."
 
 #: media/javascript/project/questionnaire_helper.js:9
 msgid "Answer must be a word or phrase"
-msgstr "La réponse doit être un mot ou une phrase"
+msgstr "La réponse doit être un mot"
 
 #: media/javascript/project/questionnaire_helper.js:10
 #, perl-format
 msgid "Answer must be a word or phrase %d characters maximum"
-msgstr "La réponse doit être un mot ou une phrase de %d caractères au maximum"
+msgstr "La réponse doit être un mot de %d caractères au maximum"
 
 #: media/javascript/project/questionnaire_helper.js:11
 #, perl-format
