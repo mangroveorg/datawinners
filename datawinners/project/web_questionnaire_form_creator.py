@@ -73,7 +73,7 @@ class SubjectQuestionFieldCreator(object):
         return self._subjects_choice_fields(subject_field)
 
     def create_code_hidden_field(self,subject_field):
-        return {'entity_question_code':forms.CharField(widget=HiddenInput,label=subject_field.code)}
+        return {'entity_question_code':forms.CharField(required=False,widget=HiddenInput,label=subject_field.code)}
 
     def _get_choice_field(self, data_sender_choices, subject_field):
         return ChoiceField(required=subject_field.is_required(), choices=data_sender_choices, label=subject_field.name,
