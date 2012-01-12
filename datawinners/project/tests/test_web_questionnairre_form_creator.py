@@ -24,7 +24,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         is_required = True
         self.form_model.add_field(self._get_text_field(is_required,False))
 
-        questionnaire_form_class = WebQuestionnaireFormCreater(None).create(self.form_model)
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields[self.text_field_code]
         self.assertEqual(CharField,type(web_text_field))
@@ -41,7 +41,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         expected_choices, text_field = self._get_select_field(is_required,False)
         self.form_model.add_field(text_field)
 
-        questionnaire_form_class = WebQuestionnaireFormCreater(None).create(self.form_model)
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields[self.select_field_code]
         self.assertEqual(MultipleChoiceField,type(web_text_field))
@@ -55,7 +55,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         expected_choices, text_field = self._get_select_field(is_required,single_select_flag=True)
         self.form_model.add_field(text_field)
         expected_choices = [('', '--None--'),("a", "Red"), ("b", "Green"), ("c", "Blue")]
-        questionnaire_form_class = WebQuestionnaireFormCreater(None).create(self.form_model)
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields[self.select_field_code]
         self.assertEqual(ChoiceField,type(web_text_field))
@@ -65,7 +65,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
     def test_should_create_hidden_field_for_form_code(self):
 
-        questionnaire_form_class = WebQuestionnaireFormCreater(None).create(self.form_model)
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields['form_code']
         self.assertEqual(CharField,type(web_text_field))
@@ -73,7 +73,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
     def test_should_create_hidden_field_for_entity_id_question_code(self):
 
-        questionnaire_form_class = WebQuestionnaireFormCreater(None).create(self.form_model)
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields['form_code']
         self.assertEqual(CharField,type(web_text_field))
@@ -90,7 +90,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         subject_question_creator_mock.create.return_value=ChoiceField()
         subject_question_creator_mock.create_code_hidden_field.return_value={subject_question_code:CharField()}
 
-        questionnaire_form_class = WebQuestionnaireFormCreater(subject_question_creator_mock).create(self.form_model)
+        questionnaire_form_class = WebQuestionnaireFormCreater(subject_question_creator=subject_question_creator_mock,form_model=self.form_model).create()
 
         web_form = questionnaire_form_class()
         self.assertEqual(5,len(web_form.fields))
@@ -140,7 +140,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         display_subject_field = SubjectQuestionFieldCreator(self.dbm,project,project_subject_loader=project_subject_loader_mock).create(subject_field)
         self.assertEqual(expected_choices,display_subject_field.choices)
         subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm,project,project_subject_loader=project_subject_loader_mock).create_code_hidden_field(subject_field)
-        self.assertEqual(expected_code,subject_question_code_hidden_field_dict['subject_question_code'].initial)
+        self.assertEqual(expected_code,subject_question_code_hidden_field_dict['entity_question_code'].label)
 
 
 

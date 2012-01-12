@@ -753,8 +753,7 @@ def web_questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
-#    select_choice = get_choices_for_entity_question(project,manager)
-    QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager,project)).create(form_model)
+    QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager,project),form_model=form_model).create()
     disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()

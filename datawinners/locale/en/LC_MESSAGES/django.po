@@ -3003,3 +3003,11 @@ msgstr ""
 
 msgid "Example: a report per patient, clinic, water pump - choose below"
 msgstr ""
+
+msgid "tooltip_questionnaire_form_data_sender_entity_question"
+msgstr "Data Senders on this list have been added to your project. To add additional"
+       "Data Senders to your project go to the All Data Senders page. Check the box "
+       "next to the Data Sender’s name, then click “Add to Project” from the Actions box on the top left."
+
+msgid "tooltip_questionnaire_form_subject_entity_question"
+msgstr ""
