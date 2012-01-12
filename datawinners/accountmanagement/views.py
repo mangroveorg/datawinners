@@ -185,8 +185,8 @@ def new_user(request):
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
                                                   mobile_phone = mobile_number,
                                                   org_id=org_id)
-                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id,
-                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number).short_code
+#                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id,
+#                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number).short_code
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
@@ -232,13 +232,13 @@ def edit_user(request):
             ngo_user_profile.title = form.cleaned_data['title']
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
 
-            #TO-DO: 'If' block can be removed when all users in our production db has phone number & are registered as a datasender
-            if ngo_user_profile.reporter_id is None:
-                manager = get_database_manager(request.user)
-                org_id = request.user.get_profile().org_id
-                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id, current_user_name=user.get_full_name(),
-                                                        mobile_number=form.cleaned_data['mobile_phone']).short_code
-
+#            #TO-DO: 'If' block can be removed when all users in our production db has phone number & are registered as a datasender
+#            if ngo_user_profile.reporter_id is None:
+#                manager = get_database_manager(request.user)
+#                org_id = request.user.get_profile().org_id
+#                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id, current_user_name=user.get_full_name(),
+#                                                        mobile_number=form.cleaned_data['mobile_phone']).short_code
+#
             ngo_user_profile.save()
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
