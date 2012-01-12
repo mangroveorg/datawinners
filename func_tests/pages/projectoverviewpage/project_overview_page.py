@@ -16,10 +16,6 @@ class ProjectOverviewPage(Page):
         self.driver.find(DATA_TAB).click()
         return DataAnalysisPage(self.driver)
 
-    def navigate_to_messages_and_reminders_page(self):
-        self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
-        return BroadcastSmsPage(self.driver)
-
     def navigate_to_reminder_page(self):
         self.driver.find(MESSAGES_AND_REMINDERS_TAB).click()
         return AllReminderPage(self.driver)

@@ -18,4 +18,4 @@ class AllReminderPage(Page):
         return ReminderSettingsPage(self.driver)
 
     def get_warning_message(self):
-        return self.driver.find(REMINDER_NOT_WORK_FOR_TRIAL_MSG).text
+        return self.driver.find(WARNING_MESSAGE_LABEL).text

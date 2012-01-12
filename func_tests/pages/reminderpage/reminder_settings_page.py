@@ -1,4 +1,4 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+
 from pages.page import Page
 from pages.reminderpage.reminder_settings_locator import *
 
@@ -7,11 +7,11 @@ class ReminderSettingsPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
         self.enable_reminder = {"before_deadline": self.enable_before_deadline_reminder,
-                           "on_deadline": self.enable_on_deadline_reminder(),
-                           "after_deadline": self.enable_after_deadline_reminder()}
+                           "on_deadline": self.enable_on_deadline_reminder,
+                           "after_deadline": self.enable_after_deadline_reminder}
         self.disable_reminder = {"before_deadline": self.disable_before_deadline_reminder,
-                           "on_deadline": self.disable_on_deadline_reminder(),
-                           "after_deadline": self.disable_after_deadline_reminder()}
+                           "on_deadline": self.disable_on_deadline_reminder,
+                           "after_deadline": self.disable_after_deadline_reminder}
 
     def set_frequency(self, frequency):
         self.driver.find_drop_down(FREQUENCY_PERIOD_DD).set_selected(frequency)

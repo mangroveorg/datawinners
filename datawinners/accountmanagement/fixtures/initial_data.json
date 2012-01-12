@@ -91,7 +91,8 @@
             "in_trial_mode": true,
             "active_date": "2011-04-17 04:54:47"
         }
-    },    {
+    },
+    {
         "pk": "COJ00001",
         "model": "accountmanagement.organization",
         "fields": {
@@ -108,7 +109,8 @@
             "in_trial_mode": true,
             "active_date": "2020-11-17 04:54:47"
         }
-    },    {
+    },
+    {
         "pk": "COJ00002",
         "model": "accountmanagement.organization",
         "fields": {
@@ -125,7 +127,8 @@
             "in_trial_mode": true,
             "active_date": "2020-10-17 04:54:47"
         }
-    }, {
+    },
+    {
         "pk": "COJ00003",
         "model": "accountmanagement.organization",
         "fields": {
