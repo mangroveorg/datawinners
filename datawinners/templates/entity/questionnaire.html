@@ -1,0 +1,73 @@
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Subject - Questionnaire" %} {% endblock %}
+{% block section_title %}
+    {{ entity_type|capfirst }} subject
+{% endblock %}
+
+{% load dw_tabs %}
+
+{% block navigation %}
+    {% activetab "tab_nav" "subjects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    {% activetab "main_nav" "subjects" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_subjects_registration.scss" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/entity/view_model.js"></script>
+    <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
+    <script type="text/javascript">
+        var question_list = $.parseJSON({{existing_questions|safe}});
+    </script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/html" id="choice-template">
+        <li>
+            <input id="choice_text" name="choice_text" class="required" type="text"
+                   data-bind="value: text, uniqueName:true"/>
+            <a href="questionnaire.html#" class='delete delete_link'
+               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
+        </li>
+    </script>
+    <script type="text/html" id="question-list-template_new">
+        <div class="question_list">
+             <ul>
+             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
+             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
+                 <li>
+                    <a href="questionnaire.html#" data-bind="text: question.display"></a>
+                     <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
+                         <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                    </div>
+                 </li>
+                 <span class="selected_question_arrow"
+                              data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
+             </div>
+             {% templatetag openvariable %}/each{% templatetag closevariable %}
+             </ul>
+        </div>
+    </script>
+    <script type="text/javascript" src="/media/javascript/entity/edit_form.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% block secondary_navigation_subjects %}
+        {% activetab "secondary_tab_nav" "criteria" %}
+        {{ block.super }}
+    {% endblock %}
+    {% include 'entity/questionnaire_form.html' %}
+{% endblock %}

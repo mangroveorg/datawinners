@@ -1,0 +1,72 @@
+{% load i18n %}
+{% block messages %}
+    <div id="message-label" class="message-box none">
+    </div>
+{% endblock %}
+<div id="questionnaire">
+    <form id="question_form">
+        {% csrf_token %}
+        <fieldset>
+            <ul class="questionnaire_code">
+                <li>
+                    <label class="grid_5">{% trans "Questionnaire Code :" %}</label>
+                    <input id="qtype" type="hidden" value="subject" />
+                    <input id="questionnaire-code" class="required" value="{{ questionnaire_code }}" {% ifequal type 'datasenders' %}readonly="readonly"{% endifequal %}/>
+                    <input id="entity-type" type="hidden" value="{{ entity_type }}" name="entity-type"/>
+                    <input id="saved-questionnaire-code" type="hidden" value="{{ questionnaire_code }}"/>
+                    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+                    <div class="tooltip"><p>
+                        <strong>{% trans "What is this?" %}</strong><br />
+                        {% trans "q_tooltip_questionnaire_code" %}
+                        <br /><br />
+                        <strong>{% trans "What do I need to do?" %}</strong><br />
+                        {% trans "r_tooltip_questionnaire_code" %}
+                    </p></div>
+                    <span id="questionnaire-code-error"></span>
+                </li>
+            </ul>
+            <div class="questionnare_content grid_23 alpha omega">
+                <div>
+                    <div id="questions-panel" class="grid_8 alpha">
+                        <h4>{% trans "Questions" %}</h4>
+                        <div data-bind="template: 'question-list-template_new'" ></div>
+                        <div class="add_question">
+                            <a class="add_link" href="questionnaire.html#"
+                               data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion(); DW.smsPreview();}">
+                                {% trans "Add another Question" %}</a>
+                        </div>
+                    </div>
+
+                    <div id="question-detail-panel">
+                        <div>
+                            {% include 'entity/question_detail_panel.html' %}
+                        </div>
+                        <div class="grid_1 alpha text_align_right">
+                            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;">
+                            <div class="tooltip"><p>
+                                <strong>{% trans "What is this?" %}</strong><br />
+                                {% trans "q_tooltip_question_sms" %}
+                                <br /><br />
+                                <strong>{% trans "What do I need to do?" %}</strong><br />
+                                {% trans "r_tooltip_question_sms" %}
+                            </p></div>
+                        </div>
+                        <div class="grid_12 alpha omega">
+                            <div id='char-count'>
+                            </div>
+                        </div>
+                        <div class="margin_top_10 float_left">
+                            <input id="submit-button" type="submit" class="button" value="{% trans 'submit' %}" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="questionnaire-change">
+    {% trans "Warning: are you sure to process?" %}
+    <br/>
+    <a href="javascript:void(0);" class="button" id="confirm_edition">{% trans "Confirm" %}</a>
+</div>

@@ -583,7 +583,9 @@ def subjects(request, project_id=None):
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    all_data, labels = helper.get_project_subject_sorted(manager, project)
+    #all_data, labels = helper.get_project_subject_sorted(manager, project)
+    fields, labels = load_subject_fields_and_names(manager, type=project.entity_type)
+    all_data = load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=project.entity_type)
     return render_to_response('project/registered_subjects.html',
             {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels},
                                   context_instance=RequestContext(request))

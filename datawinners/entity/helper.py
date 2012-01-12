@@ -2,10 +2,12 @@
 
 from mangrove.datastore.datadict import get_datadict_type_by_slug, \
     create_datadict_type
-from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
+from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField, IntegerField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint, \
-    RegexConstraint
+    RegexConstraint, NumericRangeConstraint
+from mangrove.utils.helpers import slugify
+from mangrove.utils.types import is_empty, is_not_empty
 import re
 from mangrove.errors.MangroveException import NumberNotRegisteredException, \
     DataObjectNotFound
@@ -60,7 +62,7 @@ def _create_constraints_for_mobile_number():
     return mobile_constraints
 
 
-def _generate_form_code(manager, prefix, rank=None):
+def _generate_form_code(manager, prefix, rank=''):
     form_code = "%s%s" % (prefix, rank)
     rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
     if len(rows) > 0:
@@ -75,12 +77,12 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     name_type = _get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
     mobile_number_type = _get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
 
-    question1 = TextField(name=FIRSTNAME_FIELD, code=FIRSTNAME_FIELD_CODE, label="What is the %s's firstname?" % (entity_name,),
+    question1 = TextField(name=FIRSTNAME_FIELD, code=FIRSTNAME_FIELD_CODE, label="What is the %s's first name?" % (entity_name,),
                           defaultValue="some default value", language="en", ddtype=name_type,
-                          instruction="Enter a %s firstname" % (entity_name,))
-    question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE, label="What is the %s's lastname?" % (entity_name,),
+                          instruction="Enter a %s first name" % (entity_name,))
+    question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE, label="What is the %s's last name?" % (entity_name,),
                               defaultValue="some default value", language="en", ddtype=name_type,
-                              instruction="Enter a %s lastname" % (entity_name,))
+                              instruction="Enter a %s last name" % (entity_name,))
     question3 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label="What is the %s's Unique ID Number" % (entity_name,),
                           defaultValue="some default value", language="en", ddtype=name_type,
                           instruction="Enter an id, or allow us to generate it",
@@ -94,7 +96,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
                              language="en", ddtype=geo_code_type,
                              instruction="Enter lat and long. Eg 20.6, 47.3", required=False)
     question6 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=MOBILE_NUMBER_FIELD_CODE,
-                                     label="What is the mobile number associated with the %s?" % (entity_name,),
+                                     label="What is the %s's mobile telephone number?" % (entity_name,),
                                      defaultValue="some default value", language="en", ddtype=mobile_number_type,
                                      instruction="Enter the %s's number" % (entity_name,), constraints=(
                                      _create_constraints_for_mobile_number()), required=False)
@@ -109,3 +111,92 @@ def create_registration_form(manager, entity_name):
     form_code = _generate_form_code(manager, prefix)
     form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])
     form_model.save()
+
+
+def create_question(post_dict, dbm):
+    options = post_dict.get('options')
+    datadict_type = options.get('ddtype') if options is not None else None
+    if is_not_empty(datadict_type):
+        datadict_slug = datadict_type.get('slug')
+    else:
+        datadict_slug = str(slugify(unicode(post_dict.get('title'))))
+    ddtype = _get_or_create_data_dict(dbm=dbm, name=post_dict.get('code'), slug=datadict_slug,
+                                     primitive_type=post_dict.get('type'), description=post_dict.get('title'))
+
+    if "name" not in post_dict:
+        post_dict["name"] = post_dict["code"]
+
+    if post_dict["type"] == "text":
+        return _create_text_question(post_dict, ddtype)
+    if post_dict["type"] == "integer":
+        return _create_integer_question(post_dict, ddtype)
+    if post_dict["type"] == "geocode":
+        return _create_geo_code_question(post_dict, ddtype)
+    if post_dict["type"] == "select":
+        return _create_select_question(post_dict, single_select_flag=False, ddtype=ddtype)
+    if post_dict["type"] == "date":
+        return _create_date_question(post_dict, ddtype)
+    if post_dict["type"] == "select1":
+        return _create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
+    if post_dict["type"] == "telephone_number":
+        return _create_telephone_number_question(post_dict, ddtype)
+    if post_dict["type"] == "list":
+        return _create_location_question(post_dict, ddtype)
+
+def update_questionnaire_with_questions(form_model, question_set, dbm):
+    form_model.delete_all_fields()
+    for question in question_set:
+        form_model.add_field(create_question(question, dbm))
+    return form_model
+
+def _create_text_question(post_dict, ddtype):
+    max_length_from_post = post_dict.get("max_length")
+    min_length_from_post = post_dict.get("min_length")
+    max_length = max_length_from_post if not is_empty(max_length_from_post) else None
+    min_length = min_length_from_post if not is_empty(min_length_from_post) else None
+    constraints = []
+    if not (max_length is None and min_length is None):
+        constraints.append(TextLengthConstraint(min=min_length, max=max_length))
+    return TextField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
+                     entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
+                     instruction=post_dict.get("instruction"),required=post_dict.get("required"))
+
+
+def _create_integer_question(post_dict, ddtype):
+    max_range_from_post = post_dict.get("range_max")
+    min_range_from_post = post_dict.get("range_min")
+    max_range = max_range_from_post if not is_empty(max_range_from_post) else None
+    min_range = min_range_from_post if not is_empty(min_range_from_post) else None
+    range = NumericRangeConstraint(min=min_range, max=max_range)
+    return IntegerField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
+                        constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),
+                        required=post_dict.get("required"))
+
+
+def _create_date_question(post_dict, ddtype):
+    return DateField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
+                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False))
+
+
+def _create_geo_code_question(post_dict, ddtype):
+    return GeoCodeField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"], ddtype=ddtype,
+                        instruction=post_dict.get("instruction"),required=post_dict.get("required"))
+
+
+def _create_select_question(post_dict, single_select_flag, ddtype):
+    options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
+    return SelectField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
+                       options=options, single_select_flag=single_select_flag, ddtype=ddtype,
+                       instruction=post_dict.get("instruction"),required=post_dict.get("required"))
+
+def _create_telephone_number_question(post_dict, ddtype):
+    return TelephoneNumberField(name=post_dict["name"], code=post_dict["code"].strip(),
+                                     label=post_dict["title"], ddtype=ddtype,
+                                     instruction=post_dict.get("instruction"), constraints=(
+            _create_constraints_for_mobile_number()),required=post_dict.get("required"))
+
+
+def _create_location_question(post_dict, ddtype):
+    return HierarchyField(name=post_dict["name"], code=post_dict["code"].strip(),
+                               label=post_dict["title"], ddtype=ddtype, instruction=post_dict.get("instruction"),
+                               required=post_dict.get("required"))

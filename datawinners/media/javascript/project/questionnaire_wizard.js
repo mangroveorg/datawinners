@@ -69,7 +69,7 @@ $(document).ready(function() {
         errorPlacement: function(error, element) {
             var offset = element.offset();
             error.insertAfter(element);
-            error.addClass('error_arrow');  // add a class to the wrapper
+            error.addClass('error_arrow'); // add a class to the wrapper
 
         }
 
@@ -96,7 +96,7 @@ $(document).ready(function() {
         $('#message-label').delay(5000).fadeOut();
     }
 
-    $("#submit-button").click(function() {
+    function submit_questionnaire() {
 
         var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
@@ -129,23 +129,57 @@ $(document).ready(function() {
         }
 
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':data,'pid':$('#project-id').val()};
+        var post_url = '/project/questionnaire/save';
+        if($('#qtype').val() == 'subject') {
+            post_data = { 'questionnaire-code':$('#questionnaire-code').val(), 'question-set':data, 'entity-type':$('#entity-type').val(),
+                'saved-questionnaire-code':$('#saved-questionnaire-code').val() };
+            post_url = '/entity/questionnaire/save';
+        }
 
-        $.post('/project/questionnaire/save', post_data,
+        $.post(post_url, post_data,
                 function(response) {
                     $("#message-label").removeClass("none");
                     $("#message-label").removeClass("message-box");
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
+                    if($("#qtype").val() != undefined) {
+                        viewModel.selectedQuestion().loaded(true);
+                        viewModel.selectedQuestion.valueHasMutated();
+                        viewModel.questions.valueHasMutated();
+                    }
                     hide_message();
                     redirect();
                 }).error(function(e) {
+                    $("#global_error").addClass("none");
                     $("#message-label").removeClass("none");
                     $("#message-label").removeClass("success-message-box");
                     $("#message-label").addClass("message-box");
                     $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
                 });
         return false;
+    }
+
+    $("#questionnaire-change").dialog({
+        autoOpen: false,
+        modal: true,
+        title: gettext('Questionnaire processing...'),
+        zIndex:200,
+        width: 1000
     });
+
+    $("#submit-button").click(function() {
+        if($("#qtype").val() != undefined) {
+            $("#questionnaire-change").dialog("open");
+        } else {
+            submit_questionnaire();
+        }
+        return false;
+    });
+
+    $("#confirm_edition").click(function(){
+        $("#questionnaire-change").dialog("close");
+        submit_questionnaire();
+    })
 
     $('input[name=type]:radio').change(
             function() {
