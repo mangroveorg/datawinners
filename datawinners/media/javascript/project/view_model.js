@@ -56,7 +56,7 @@ var viewModel =
             viewModel.removeQuestion(question)
             $("#delete_question").dialog("close");
         });
-        $(".cancel_link_que").bind("click", function(){
+        $("#cancel_link_que").bind("click", function(){
             $("#delete_question").dialog("close");
             return false;
         });
