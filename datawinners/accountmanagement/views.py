@@ -212,6 +212,8 @@ def users(request):
 def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()
+        if profile.mobile_phone == 'Not Assigned':
+            profile.mobile_phone = ''
         form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
                                              last_name=profile.user.last_name,
                                              username=profile.user.username,
