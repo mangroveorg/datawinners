@@ -3,17 +3,6 @@
 {% block page_title %}{% trans "Subjects" %}{% endblock %}
 
 {% block section_title %}{% trans "Subjects" %}
-<span class="title_links">
-     <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.entity.views.create_subject %}">{% trans "Add a Subject" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-    <div class="tooltip">
-        <p>
-            <strong>{% trans "What is this?" %}</strong><br />
-            {% trans "Add subjects one-by-one using the online registration form" %}<br /><br />
-            <strong>{% trans "What do I need to do?" %}</strong><br />
-            {% trans 'Click the blue "Add a subject" link and follow the step-by-step instructions' %}
-        </p>
-    </div>
-</span>
 {% endblock %}
 
 {% load dw_tabs %}
@@ -39,11 +28,31 @@
     <script type="text/javascript" src="/media/javascript/subjects/index.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/all_subjects.js"></script>
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
 {% endblock %}
 
 {% load i18n %}
 {% block content %}
     <div>
+        <div id="help_accordion">
+            <p>View and manage all of the people, places, things or events that you want to collect data about, such as patients,
+                villages, clinics or trainings. <a href="javascript:void(0)" id="show_link">Learn more!</a></p>
+            <div id="help_details">
+                <p><h2>consectetur adipisicing !</h2>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.. !
+                </p>
+                <p><h2>consectetur adipisicing !</h2>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.. !
+                </p>
+                <a href="javascript:void(0)" id="hide_link">Hide help</a>
+            </div>
+        </div>
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -51,7 +60,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <div class="import_subject_form">
+        <div class="import_subject_form none">
             <div id="file-uploader">
                 <noscript>
                     <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
@@ -80,7 +89,6 @@
             </div>
         </div>
         {% if all_data %}
-            <h3>{% trans "All Subjects" %}</h3>
             {% include 'subject_table.html' %}
         {% endif %}
     </div>

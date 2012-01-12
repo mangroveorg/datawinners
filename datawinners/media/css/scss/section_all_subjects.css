@@ -1,5 +1,7 @@
 #all_subjects {
-  width: 910px !important; }
+  width: 910px !important;
+  border-top: 1px solid #CCCCCC !important;
+  margin-top: 20px; }
   #all_subjects .list_header {
     border-bottom: 1px solid #CCCCCC !important;
     padding: 10px; }
@@ -35,3 +37,17 @@
     margin-bottom: 10px; }
   #all_subjects .styled_table {
     margin-bottom: 0; }
+  #all_subjects .subjects_links {
+    margin-bottom: 15px;
+    font-size: 12px !important;
+    color: #0070AC;
+    text-align: right; }
+  #all_subjects .no_registered_subjects {
+    margin: 10px 0;
+    font-size: 12px!important;
+    color: #666666;
+    font-style: italic; }
+    #all_subjects .no_registered_subjects ul {
+      margin: 0 10px;
+      padding: 0 10px;
+      list-style-type: disc !important; }
