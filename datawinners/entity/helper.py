@@ -66,7 +66,7 @@ def _generate_form_code(manager, prefix, rank=''):
     form_code = "%s%s" % (prefix, rank)
     rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
     if len(rows) > 0:
-        rank = 1 if rank is None else rank + 1
+        rank = 1 if rank is '' else rank + 1
         form_code = _generate_form_code(manager, prefix, rank)
     return form_code
 
@@ -111,6 +111,7 @@ def create_registration_form(manager, entity_name):
     form_code = _generate_form_code(manager, prefix)
     form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])
     form_model.save()
+    return form_model
 
 
 def create_question(post_dict, dbm):

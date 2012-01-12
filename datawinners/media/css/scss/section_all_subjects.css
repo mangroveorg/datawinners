@@ -51,3 +51,14 @@
       margin: 0 10px;
       padding: 0 10px;
       list-style-type: disc !important; }
+
+#subjects_create_type .instruction {
+  clear: left;
+  width: 350px;
+  font-size: 11px;
+  color: #666666; }
+#subjects_create_type #type_message {
+  margin: 10px 0 !important; }
+
+#subject_create_type_link {
+  margin: 10px 0; }

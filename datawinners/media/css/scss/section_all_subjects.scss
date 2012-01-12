@@ -64,3 +64,19 @@
         }
     }
 }
+
+#subjects_create_type {
+    .instruction {
+        clear: left;
+        width: 350px;
+        font-size: 11px;
+        color: #666666;
+    }
+    #type_message {
+        margin: 10px 0 !important;
+    }
+}
+
+#subject_create_type_link {
+    margin: 10px 0;
+}

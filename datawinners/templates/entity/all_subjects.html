@@ -25,9 +25,11 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/subjects/index.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/all_subjects.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
 {% endblock %}
 
@@ -91,5 +93,24 @@
         {% if all_data %}
             {% include 'subject_table.html' %}
         {% endif %}
+    
+        <div id="subject_create_type_link">
+            <a id="add_new_subject_type" href="javascript:void(0);">{% trans "Add a new subject type" %}</a>
+        </div>
+
+        <div id="subjects_create_type">
+            Enter the Name of your specific Subject Type !
+            <div class="required form-row-10px" id="add_subject_type_content">
+                <input type="text" maxlength="20" name="entity_type_regex" id="id_entity_type_text">
+                <div id="type_message"></div>
+            </div>
+            <p class="instruction">
+                Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)
+            </p>
+            <div style="text-align: right;">
+                <a id="cancel_add_type" href="javascript:void(0)" style="padding: 0 10px;">Cancel</a>
+                <input id="add_type" type="button" value="{% trans 'Add' %}" class="button"/>
+            </div>
+        </div>
     </div>
 {% endblock %}
