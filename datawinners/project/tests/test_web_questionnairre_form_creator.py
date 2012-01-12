@@ -123,7 +123,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         project = self._get_mock_project()
         display_subject_field = SubjectQuestionFieldCreator(self.dbm,project).create(subject_field)
         self.assertEqual(ChoiceField,type(display_subject_field))
-        expected_choices = [('a', 'reporter1'), ('b', 'reporter2')]
+        expected_choices = [('a', 'reporter1  (a)'), ('b', 'reporter2  (b)')]
         self.assertEqual(expected_choices,display_subject_field.choices)
 
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
@@ -136,7 +136,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         ]
         project.entity_type.return_value=["Clinic"]
         project.is_on_type.return_value=False
-        expected_choices = [('a', 'clinic1'), ('b', 'clinic2')]
+        expected_choices = [('a', 'clinic1  (a)'), ('b', 'clinic2  (b)')]
         display_subject_field = SubjectQuestionFieldCreator(self.dbm,project,project_subject_loader=project_subject_loader_mock).create(subject_field)
         self.assertEqual(expected_choices,display_subject_field.choices)
         subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm,project,project_subject_loader=project_subject_loader_mock).create_code_hidden_field(subject_field)

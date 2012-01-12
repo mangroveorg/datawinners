@@ -89,7 +89,7 @@ class SubjectQuestionFieldCreator(object):
 
 
     def _get_all_choices(self, all_subjects):
-        return [(data_sender['short_name'], data_sender[field_attributes.NAME])for data_sender in
+        return [(data_sender['short_name'], data_sender[field_attributes.NAME]+'  ('+data_sender['short_name']+')')for data_sender in
                                                                                all_subjects]
 
     def _subjects_choice_fields(self, subject_field):
