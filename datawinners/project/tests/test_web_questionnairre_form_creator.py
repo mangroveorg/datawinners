@@ -71,25 +71,38 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(CharField,type(web_text_field))
         self.assertEqual(self.form_code,web_text_field.initial)
 
+    def test_should_create_hidden_field_for_entity_id_question_code(self):
+
+        questionnaire_form_class = WebQuestionnaireFormCreater(None).create(self.form_model)
+
+        web_text_field = questionnaire_form_class().fields['form_code']
+        self.assertEqual(CharField,type(web_text_field))
+        self.assertEqual(self.form_code,web_text_field.initial)
+
     def test_should_create_web_questionnaire(self):
 
         subject_code = "subject_code"
+        subject_question_code='subject_question_code'
         self.form_model.add_field(self._get_text_field(True,True, subject_code))
         self.form_model.add_field(self._get_text_field(False,False))
         self.form_model.add_field(self._get_select_field(False,False)[1])
         subject_question_creator_mock = Mock(spec=SubjectQuestionFieldCreator)
         subject_question_creator_mock.create.return_value=ChoiceField()
+        subject_question_creator_mock.create_code_hidden_field.return_value={subject_question_code:CharField()}
 
         questionnaire_form_class = WebQuestionnaireFormCreater(subject_question_creator_mock).create(self.form_model)
 
         web_form = questionnaire_form_class()
-        self.assertEqual(4,len(web_form.fields))
+        self.assertEqual(5,len(web_form.fields))
 
         form_code_hidden_field = web_form.fields[self.form_code]
         self.assertEqual(CharField,type(form_code_hidden_field))
 
         subject_field = web_form.fields[subject_code]
         self.assertEqual(ChoiceField,type(subject_field))
+
+        subject_field = web_form.fields[subject_question_code]
+        self.assertEqual(CharField,type(subject_field))
 
         simple_text_field = web_form.fields[self.text_field_code]
         self.assertEqual(CharField,type(simple_text_field))
@@ -114,7 +127,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(expected_choices,display_subject_field.choices)
 
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
-        subject_field = self._get_text_field(True,True)
+        expected_code = "expected_code"
+        subject_field = self._get_text_field(True,True, expected_code)
         project = self._get_mock_project()
         project_subject_loader_mock=Mock()
         project_subject_loader_mock.return_value= [{field_attributes.NAME: 'clinic1', 'short_name': 'a'},
@@ -125,6 +139,9 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         expected_choices = [('a', 'clinic1'), ('b', 'clinic2')]
         display_subject_field = SubjectQuestionFieldCreator(self.dbm,project,project_subject_loader=project_subject_loader_mock).create(subject_field)
         self.assertEqual(expected_choices,display_subject_field.choices)
+        subject_question_code_hidden_field_dict = SubjectQuestionFieldCreator(self.dbm,project,project_subject_loader=project_subject_loader_mock).create_code_hidden_field(subject_field)
+        self.assertEqual(expected_code,subject_question_code_hidden_field_dict['subject_question_code'].initial)
+
 
 
     def _get_select_field(self, is_required,single_select_flag):

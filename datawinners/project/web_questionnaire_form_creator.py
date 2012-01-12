@@ -15,6 +15,7 @@ class WebQuestionnaireFormCreater(object):
         subject_question = form_model.entity_question
         if subject_question is not None:
             properties.update(self._get_subject_web_question(subject_question))
+            properties.update(self.subject_question_creator.create_code_hidden_field(subject_question))
         properties.update(
             {field.code: self._get_django_field(field) for field in form_model.fields if not field.is_entity_field})
         properties.update(self._get_form_code_hidden_field(form_model))
@@ -57,6 +58,9 @@ class WebQuestionnaireFormCreater(object):
         choices = tuple(choice_list)
         return choices
 
+    def _get_subject_question_code_hidden_field(self, subject_question):
+        return {'subject_question_code':forms.CharField(widget=HiddenInput,initial=subject_question.code)}
+
 
 class SubjectQuestionFieldCreator(object):
     def __init__(self, dbm, project,project_subject_loader=None):
@@ -70,6 +74,9 @@ class SubjectQuestionFieldCreator(object):
         if self.project.is_on_type(reporter_entity_type):
             return self._data_sender_choice_fields(subject_field)
         return self._subjects_choice_fields(subject_field)
+
+    def create_code_hidden_field(self,subject_field):
+        return {'subject_question_code': forms.CharField(widget=HiddenInput, initial=subject_field.code)}
 
     def _get_choice_field(self, data_sender_choices, subject_field):
         return ChoiceField(required=subject_field.is_required(), choices=data_sender_choices, label=subject_field.name,
