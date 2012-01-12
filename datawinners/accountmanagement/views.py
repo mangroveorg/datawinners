@@ -212,7 +212,7 @@ def users(request):
 def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()
-        form = EditUserProfileForm(initial=dict(title=profile.title, first_name=profile.user.first_name,
+        form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
                                              last_name=profile.user.last_name,
                                              username=profile.user.username,
                                              mobile_phone=profile.mobile_phone))
