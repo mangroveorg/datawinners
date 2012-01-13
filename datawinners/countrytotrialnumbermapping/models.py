@@ -7,7 +7,4 @@ class Country(models.Model):
 class Network(models.Model):
     network_name = models.TextField()
     trial_sms_number = models.TextField()
-
-class Mapping(models.Model):
-    country = models.ForeignKey(Country)
-    network = models.ForeignKey(Network)
+    country=models.ManyToManyField(Country)
