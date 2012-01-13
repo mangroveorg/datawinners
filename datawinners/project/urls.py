@@ -6,7 +6,8 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     subjects, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview,\
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, \
     manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
-    delete_reminder, sent_reminders, broadcast_message, review_and_test
+    delete_reminder, sent_reminders, broadcast_message, review_and_test, \
+    edit_subject
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 
 js_info_dict = {
@@ -47,5 +48,6 @@ urlpatterns = patterns('',
         (r'^project/delete/(?P<project_id>.+?)/$', delete_project),
         (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
         (r'^project/datarecords/filter$', submissions),
-        (r'^project/finish/(?P<project_id>.+?)/$', review_and_test)
+        (r'^project/finish/(?P<project_id>.+?)/$', review_and_test),
+        (r'^project/edit_subjects/(?P<project_id>.+?)/$', edit_subject),
 )

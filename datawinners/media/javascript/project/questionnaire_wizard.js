@@ -164,7 +164,7 @@ $(document).ready(function() {
         modal: true,
         title: gettext('Questionnaire processing...'),
         zIndex:200,
-        width: 1000
+        width: 400
     });
 
     $("#submit-button").click(function() {

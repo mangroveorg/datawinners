@@ -169,3 +169,10 @@
   border: 1px solid #dddddd;
   margin: auto;
   width: 600px; }
+
+.instruction {
+  color: #666666;
+  font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 18px; }

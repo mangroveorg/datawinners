@@ -84,6 +84,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['reminders_link'] = reverse(reminder_settings, args=[project_id])
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
+        project_links['subjects_edit_link'] = reverse(edit_subject, args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
@@ -877,3 +878,25 @@ def _get_organization_telephone_number(request):
     organization_settings = utils.get_organization_settings_from_request(request)
     organization_number = organization_settings.get_organisation_sms_number()
     return ' or '.join(organization_number) if isinstance(organization_number, list) else organization_number
+
+
+@login_required(login_url='/login')
+def edit_subject(request, project_id=None):
+    manager = get_database_manager(request.user)
+    project, project_links = _get_project_and_project_link(manager, project_id)
+
+    if is_string(project.entity_type):
+        entity_type = [project.entity_type]
+    reg_form = get_form_model_by_entity_type(manager, entity_type)
+    if reg_form is None:
+        reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    fields = reg_form.fields
+    existing_questions = json.dumps(fields, default=field_to_json)
+    return render_to_response('project/subject_questionnaire.html',
+            {'project': project,
+             'project_links': project_links,
+             'existing_questions': repr(existing_questions),
+             'questionnaire_code': reg_form.form_code,
+             'entity_type': project.entity_type},
+                              context_instance=RequestContext(request))
+

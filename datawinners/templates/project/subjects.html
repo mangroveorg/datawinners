@@ -35,6 +35,7 @@
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript">
             var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
     </script>
@@ -55,13 +56,13 @@
         {{ block.super }}
     {% endblock %}
     </div>
-    <div>
+    <div class="instruction">
         Define what information you want to collect about each clinic. !
     </div>
 
     <div id="my_subjects_links">
         <ul>
-            <li><a href="">Edit</a></li>
+            <li><a href="{{ project_links.subjects_edit_link }}">Edit</a></li>
             <li><a href="javascript:void(0)" class="disabled_link">Print</a></li>
             <li style="width: 80px; text-align: right; padding-right: 5px;">{% trans "View Style:" %}</li>
             <li style="width: 60px;"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
