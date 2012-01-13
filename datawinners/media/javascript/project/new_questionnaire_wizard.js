@@ -71,7 +71,7 @@ $(document).ready(function() {
         title: "Warning!!",
         modal: true,
         autoOpen: false,
-        height: 200,
+        height: 250,
         width: 300,
         closeText: 'hide'
       }

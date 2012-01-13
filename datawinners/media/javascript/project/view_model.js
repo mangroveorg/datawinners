@@ -46,7 +46,7 @@ var viewModel =
     },
     removeQuestionCheck:function(question){
         var index = $.inArray(question, viewModel.questions());
-        if ( viewModel.questions()[index].title()== "What is the reporting period for the activity?"){
+        if ( viewModel.questions()[index].event_time_field_flag()){
           $("#delete_question").dialog("open");
         }
         else
