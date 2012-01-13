@@ -1,0 +1,32 @@
+{% extends 'public_secondary.html' %}
+{% block page_title %} Your Account Phone Number {% endblock %}
+
+{% load dw_tabs %}
+{% block body %}
+
+    {{ block.super }}
+{% endblock %}
+
+{% block page_breadcrumbs %}
+    <a href="/en/home/">Home</a> &gt; Your Account Phone Number
+{% endblock %}
+
+{% block main_content %}
+
+    <div id="main_content">
+        <div class="margin_left_20" id="content-terms">
+            <p>With DataWinners you can collect data via SMS. See
+                which telephone number you can use to send in your
+                data.
+            </p>
+
+            <p>
+                <select n\ame="country" id="id_country">
+                    <option value="" selected="selected">Select your country</option>
+                </select>
+            </p>
+
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endblock %}

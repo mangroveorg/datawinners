@@ -154,6 +154,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'south',
     'datawinners.home',
+    'datawinners.countrytotrialnumbermapping',
     'django_nose'
 )
 COMPILER_FORMATS = {
