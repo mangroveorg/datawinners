@@ -41,4 +41,17 @@ $(document).ready(function(){
         $(".add_subject_form").dialog("close");
     });
 
+    $("#sms_preview_btn").click(function() {
+        $("#sms_preview").show();
+        $(this).addClass("active");
+        $("#web_preview").hide();
+        $("#web_preview_btn").removeClass("active");
+    });
+
+    $("#web_preview_btn").click(function() {
+        $("#web_preview").show();
+        $(this).addClass("active");
+        $("#sms_preview").hide();
+        $("#sms_preview_btn").removeClass("active");
+    });
 });

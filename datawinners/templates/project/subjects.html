@@ -30,11 +30,9 @@
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>
-    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
     <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/import_section.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript">
@@ -48,45 +46,83 @@
     <p>{% trans "Review the questions by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
+    <h2>My Subjects</h2>
+    {% include 'project/my_subjects_help.html' %}
+
+    <div id="my_subjects">
     {% block secondary_navigation_subjects %}
         {% activetab "secondary_tab_nav" "criteria" %}
         {{ block.super }}
     {% endblock %}
-    <div class='preview_block'><a class="preview_subject_registration_form" href="#"> {% trans "Preview Subject's questionnaire" %}</a></div>
-    {% include 'project/question_table.html' %}
+    </div>
+    <div>
+        Define what information you want to collect about each clinic. !
+    </div>
+
+    <div id="my_subjects_links">
+        <ul>
+            <li><a href="">Edit</a></li>
+            <li><a href="javascript:void(0)" class="disabled_link">Print</a></li>
+            <li style="width: 80px; text-align: right; padding-right: 5px;">{% trans "View Style:" %}</li>
+            <li style="width: 60px;"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
+            <li style="width: 60px;"><a href="javascript:void(0)" id="web_preview_btn">Web</a></li>
+        </ul>
+        <div class="clear-left"></div>
+    </div>
+
+    <div id="sms_preview">
+        <ul class="questionnaire_title">
+            <li>
+                <p>{% trans "SMS your answers to" %}</p>
+                <h5>{{ org_number }}</h5>
+            </li>
+            <li>
+                <p>{% trans "Project Name:" %}</p>
+                <h5>{{ project.name }}</h5>
+            </li>
+            <li>
+                <p>{% trans "Questionnarie Code:" %}</p>
+                <h5>{{ questionnaire_code }}</h5>
+            </li>
+            <li class="margin_top_10">
+                <p>{% trans "Example SMS:" %} </p>
+                <p class="sms_exemple">{{ example_sms }}</p>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div id="web_preview">
+        <ol class="olpreview">
+            {% for question in questions %}
+                <li>
+                    <h6>{% trans question.description %}</h6>
+                    {% if  question.instruction %}
+                        <p class="instructions italic">
+                            {% trans question.instruction %}
+                        </p>
+                        <input class="displayText" disabled="disabled" type="text">
+                    {% endif %}
+                    <div class="answer">
+                        {% if question.type == "select1" %}
+                            <ol class="multiple_select">
+                                {% for option in question.constraints %}
+                                    <li><label>{{ option }}</label></li>
+                                {% endfor %}
+                            </ol>
+                        {% endif %}
+                        {% if question.type == "select" %}
+                            <ol class="multiple_select">
+                                {% for option in question.constraints %}
+                                    <li><label>{{ option }}</label></li>
+                                {% endfor %}
+                            </ol>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
     <div class="subject_registration_preview">
         {% trans "Generating the questionnaire preview." %}
-    </div>
-    <h4 class="inline">{% trans "Add Subjects now" %}</h4>
-    <span>{% trans "(Optional)" %}</span>
-    <div class="add_subjects_section alpha omega">
-        <div class="grid_11 alpha omega">
-            <h6>{% trans "Add Subjects Manually" %}<img src="/media/images/help_icon.png" class="help_icon"
-                                                        style="margin-top:-8px;"></h6>
-
-            <div class="tooltip"><p>
-                {% trans "tooltip_subject_wizard_add_manually" %}
-            </p></div>
-
-            <p>{% trans "Enter your Subjects individually" %}</p>
-            <input id='add_subject' type="button" class="button_blue" value="{% trans 'Add Subjects Manually' %}"/>
-        </div>
-        <div class="grid_11  omega import_list">
-            <h6>{% trans "Import a List of Subjects" %}<img src="/media/images/help_icon.png" class="help_icon"
-                                                            style="margin-top:-8px;"></h6>
-
-            <div class="tooltip"><p>
-                {% trans "tooltip_subject_import" %}
-            </p></div>
-
-            <p>{% trans "Upload an excel (.xls) or csv file (.csv) of your Subjects" %}</p>
-
-            <input id='import_subjects' type="button" class="button_blue" value="{% trans 'Import List' %}"/>
-            <div class="error">{% trans "Use this "%}<a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportSubjects.xls {% else %}DataWinners_ImporterLesSujets.xls{% endif %}">{% trans "Import Template"%}</a></div>
-        </div>
-        <div class="add_subject_form">
-            {% include 'subject_form.html' %}
-        </div>
-        {% include 'project/import_section_in_wizard.html' %}
     </div>
 {% endblock %}

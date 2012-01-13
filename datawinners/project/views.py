@@ -27,14 +27,14 @@ from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
-from mangrove.utils.types import is_empty
+from mangrove.utils.types import is_empty, is_string
 from mangrove.transport import Channel
 
 import datawinners.utils as utils
@@ -562,28 +562,24 @@ def _get_project_and_project_link(manager, project_id):
 def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-    import_subject_form = SubjectUploadForm()
-    create_subject_form = SubjectForm()
-    entity_types = helper.remove_reporter(get_all_entity_types(manager))
+    fields, project_links, questions, reg_form = _get_registration_form(manager, project ,
+                                                                        project_id)
+    example_sms = get_example_sms_message(fields, reg_form)
     return render_to_response('project/subjects.html',
-            {'fields': reg_form.fields, 'project': project,
+            {'project': project,
              'project_links': project_links,
-             'import_subject_form': import_subject_form,
-             'form': create_subject_form,
-             "entity_types": entity_types,
-             'post_url': reverse(import_subjects_from_project_wizard),
+             'questions': questions,
+             'questionnaire_code': reg_form.form_code,
+             'example_sms': example_sms,
+             'org_number': _get_organization_telephone_number(request),
              'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
-
-
 
 
 @login_required(login_url='/login')
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    #all_data, labels = helper.get_project_subject_sorted(manager, project)
     fields, labels = load_subject_fields_and_names(manager, type=project.entity_type)
     all_data = load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=project.entity_type)
     return render_to_response('project/registered_subjects.html',
@@ -817,17 +813,23 @@ def questionnaire_preview(request, project_id=None):
 
 def _get_preview_for_field_in_registration_questionnaire(field):
     return {"description": field.label.get('en'), "code": field.code, "type": field.type,
-            "constraints": field.instruction, "instruction": field.instruction}
+            "constraints": field.get_constraint_text(), "instruction": field.instruction}
 
 
 def _get_registration_form(manager, project, project_id, type_of_subject='subject'):
-    registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    entity_type = project.entity_type
+    if is_string(project.entity_type):
+        entity_type = [project.entity_type]
+    registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
+    if registration_questionnaire is None:
+        registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = registration_questionnaire.fields
     project_links = _make_project_links(project, registration_questionnaire.form_code)
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field)
-        question = {k: v.replace('subject', type_of_subject) for (k, v) in question.items()}
+        question['description'] = question['description'].replace('subject', project.entity_type)
+        question['instruction'] = question['instruction'].replace('subject', project.entity_type)
         questions.append(question)
     return fields, project_links, questions, registration_questionnaire
 

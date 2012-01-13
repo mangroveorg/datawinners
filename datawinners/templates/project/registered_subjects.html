@@ -16,12 +16,27 @@
 {% block page_scss %}
     {{ block.super }}
     {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
+    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
+    <div>
+        <div class="grid_8 alpha">
+            <h2>My Subjects</h2>
+        </div>
+        <div class="grid_8 float_right omega text_align_right">
+            <a href="javascript:void(0)">{% trans "Add a" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
+            <a href="javascript:void(0);">Import a list</a>
+        </div>
+    <div class="clear-both"></div>
+    </div>
+    {% include 'project/my_subjects_help.html' %}
+
+    <div id="my_subjects">
     {% block secondary_navigation_subjects %}
         {% activetab "secondary_tab_nav" "subjects" %}
         {{ block.super }}
     {% endblock %}
+    </div>
 
     <table class="styled_table">
         <thead>

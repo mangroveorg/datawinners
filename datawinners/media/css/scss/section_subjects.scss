@@ -143,3 +143,93 @@
 #message{
     clear:both;
 }
+
+#my_subjects {
+    .secondary_tab {
+        top: 0;
+        left: -20px;
+        float: none;
+        margin: 10px 0;
+        border-bottom: 3px solid #2A2A2A;
+        background: none;
+        li {
+            height: 40px;
+            margin: 0;
+            padding: 0 20px;
+            line-height: 45px;
+        }
+        .active {
+            background-color:#525252;
+            background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#3d3d3d));
+            background: -moz-linear-gradient(top,  #525252,  #262626);
+            a {
+                color: #ffffff !important;
+            }
+        }
+    }
+}
+
+#my_subjects_links {
+    margin: 10px 0 20px 0;
+    padding-left: 620px;
+    ul {
+        margin: 0;
+        padding: 0;
+        li {
+            display: block;
+            float: left;
+            line-height: 26px;
+            a {
+                padding: 0 8px;
+            }
+            .disabled_link {
+                color: #aaaaaa;
+            }
+        }
+    }
+    #sms_preview_btn {
+        background: url('/media/images/ico_sms.png') left -26px no-repeat;
+        width: 60px;
+        height: 26px;
+        overflow: hidden;
+        line-height: 26px;
+        padding: 0 0 0 25px;
+        color: #aaaaaa;
+        display: block;
+    }
+    #web_preview_btn {
+        background: url('/media/images/ico_web.png') left -26px no-repeat;
+        width: 60px;
+        height: 26px;
+        overflow: hidden;
+        line-height: 26px;
+        padding: 0 0 0 25px;
+        color: #aaaaaa;
+        display: block;
+    }
+    .active {
+        background-position: left 0 !important;
+        color: #000000 !important;
+    }
+}
+
+#sms_preview {
+    padding: 20px;
+    border: 1px solid #dddddd;
+    margin: auto;
+    width: 600px;
+    .sms_exemple {
+        font-style: italic;
+        font-size: 14px;
+        color: #cccccc;
+        padding: 0 20px
+    }
+}
+
+#web_preview {
+    display: none;
+    padding: 20px;
+    border: 1px solid #dddddd;
+    margin: auto;
+    width: 600px;
+}
