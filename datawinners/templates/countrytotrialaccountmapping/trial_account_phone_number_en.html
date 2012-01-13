@@ -2,8 +2,12 @@
 {% block page_title %} Your Account Phone Number {% endblock %}
 
 {% load dw_tabs %}
-{% block body %}
 
+{% block page_js %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
     {{ block.super }}
 {% endblock %}
 
@@ -21,8 +25,12 @@
             </p>
 
             <p>
-                <select n\ame="country" id="id_country">
+                <select name="country" id="id_country">
                     <option value="" selected="selected">Select your country</option>
+                    {% for name,text in formatted_countries.items %}
+                        <option value="{{ name }}">{{ text }}</option>
+                    {% endfor %}
+
                 </select>
             </p>
 
