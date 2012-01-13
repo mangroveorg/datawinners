@@ -1,5 +1,5 @@
 DW.get_trial_number_info = function(){
-    $.post(window.location.href,{'country':$('#id_country selected').value},
+    $.post(window.location.href,{country:$('#id_country').val()},
             function(response){
                 console.log(response);
             }

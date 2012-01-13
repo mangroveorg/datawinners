@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt
 from countrytotrialnumbermapping.helper import get_countries_in_display_format
-from datawinners.countrytotrialnumbermapping.models import Country
+from datawinners.countrytotrialnumbermapping.models import Country, Network
 import json
 
 @csrf_view_exempt
@@ -15,4 +15,8 @@ def trial_account_phone_numbers(request, language):
         return render_to_response(template, {'formatted_countries': get_countries_in_display_format(countries)},
             context_instance=RequestContext(request))
     if request.method == 'POST':
-        return HttpResponse(json.dumps({'foo': 'bar'}))
+        country_name = request.POST['country']
+        country = Country.objects.filter(country_name=country_name)
+        networks = Network.objects.filter(country=country)
+        network_display = {network.network_name: network.trial_sms_number for network in networks}
+        return render_to_response(template,{'mappings':network_display}, context_instance=RequestContext(request))

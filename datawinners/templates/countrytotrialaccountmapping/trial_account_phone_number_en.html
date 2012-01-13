@@ -34,8 +34,31 @@
 
                 </select>
             </p>
-            <div id='trial_number_info'>
 
+            <div id='trial_number_info'>
+                <table border=1>
+                    <thead>
+                        <tr>
+                            <td>If you use this network...</td>
+                            <td>Send your trial SMS to this number</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for network,number in mappings.items %}
+                            <tr>
+                                <td>{{ network }}</td>
+                                <td>{{ number }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h2> SMS Fees for Trial Account</h2>
+                <p> For the free trial account, International SMS rates apply. You pay to send your messages to DataWinners.
+                DataWinners will send automatic confirmation and error messages back in response to your SMS. You can submit
+                up to 100 messages during yourtrial period.</p>
             </div>
         </div>
     </div>
