@@ -34,24 +34,25 @@ class TestImportData(MangroveTestCase):
     def test_should_load_all_subjects(self):
         self._register_entities()
 
-        subjects = load_subject_registration_data(self.manager)
+        subjects, fields, label = load_subject_registration_data(self.manager)
 
         self.assertEqual(4, len(subjects))
+        self.assertEqual(fields, ['name', 'short_code', 'location', 'geo_code', 'description', 'mobile_number'])
 
-        self.assertEqual(subjects[0]['name'], 'clinic0')
-        self.assertEqual(subjects[0]['geocode'], '1.0, 1.0')
-        self.assertEqual(subjects[0]['mobile_number'], '--')
+        self.assertEqual(subjects[0]['cols'][0], 'clinic0')
+        self.assertEqual(subjects[0]['cols'][3], '1.0, 1.0')
+        self.assertEqual(subjects[0]['cols'][5], '--')
 
-        self.assertEqual(subjects[1]['name'], 'clinic1')
-        self.assertEqual(subjects[1]['mobile_number'], '--')
+        self.assertEqual(subjects[1]['cols'][0], 'clinic1')
+        self.assertEqual(subjects[1]['cols'][5], '--')
 
-        self.assertEqual(subjects[2]['name'], 'clinic2')
-        self.assertEqual(subjects[2]['mobile_number'], '12332114')
+        self.assertEqual(subjects[2]['cols'][0], 'clinic2')
+        self.assertEqual(subjects[2]['cols'][5], '12332114')
 
-        self.assertEqual(subjects[3]['name'], 'clinic3')
-        self.assertEqual(subjects[3]['geocode'], '--')
-        self.assertEqual(subjects[3]['location'], 'pune')
-        self.assertEqual(subjects[3]['description'], 'this is a clinic')
+        self.assertEqual(subjects[3]['cols'][0], 'clinic3')
+        self.assertEqual(subjects[3]['cols'][3], '--')
+        self.assertEqual(subjects[3]['cols'][2], 'pune')
+        self.assertEqual(subjects[3]['cols'][4], 'this is a clinic')
 
 
     def _create_entities(self):

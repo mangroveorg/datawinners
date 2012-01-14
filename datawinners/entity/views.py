@@ -19,9 +19,9 @@ from datawinners.accountmanagement.views import is_datasender, is_new_user, _get
 from datawinners.entity import helper
 from datawinners.entity.helper import update_questionnaire_with_questions, \
     create_registration_form
-from datawinners.entity.import_data import load_subject_fields_and_names
+from datawinners.entity.import_data import load_subject_fields_and_names, load_all_subjects_of_type
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager
+from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
@@ -33,6 +33,7 @@ from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
+from datawinners.utils import get_excel_sheet
 
 COUNTRY = ',MADAGASCAR'
 
@@ -364,3 +365,21 @@ def save_questionnaire(request):
         else:
             form_model.save()
             return HttpResponse(json.dumps({"response": "ok", 'form_code': form_model.form_code}))
+
+@login_required(login_url='/login')
+def export_subject(request):
+    entity_type = request.POST["entity_type"]
+    entity_list = request.POST.getlist("checked")
+    manager = get_database_manager(request.user)
+    all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=entity_type)
+
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
+
+    raw_data = [labels]
+    for data in all_data:
+        if data['short_code'] in entity_list:
+            raw_data.append(data['cols'])
+    wb = get_excel_sheet(raw_data, entity_type)
+    wb.save(response)
+    return response

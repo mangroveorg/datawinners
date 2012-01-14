@@ -123,17 +123,14 @@ def _format(value):
     return value if value is not None else "--"
 
 
-def _tabulate_data(entity):
-    id = entity.id
-    geocode = entity.geometry.get('coordinates')
-    geocode_string = ", ".join([str(i) for i in geocode]) if geocode is not None else "--"
-    location = _format(sequence_to_str(entity.location_path, u", "))
-    name = _format(entity.value(NAME_FIELD))
-    mobile_number = _format(entity.value(MOBILE_NUMBER_FIELD))
-    description = _format(entity.value(DESCRIPTION_FIELD))
-    return dict(id=id, name=name, short_name=entity.short_code, type=".".join(entity.type_path), geocode=geocode_string,
-                location=location,
-                description=description, mobile_number=mobile_number)
+def _tabulate_data(entity, fields):
+    data = {'id': entity.id, 'short_code': entity.short_code, 'cols': []}
+    for i in range(len(fields)):
+        if fields[i] in entity.data.keys():
+            data['cols'].append(_get_field_value(fields[i], entity))
+        else:
+            data['cols'].append(_get_field_default_value(fields[i], entity))
+    return data
 
 
 def _get_entity_type_from_row(row):
@@ -141,13 +138,21 @@ def _get_entity_type_from_row(row):
     return type
 
 
-def load_subject_registration_data(manager, filter_entities=exclude_of_type,type=REPORTER):
+def load_subject_registration_data(manager,
+                                   filter_entities=exclude_of_type,
+                                   type=REPORTER, tabulate_function=_tabulate_data):
+    form_code = "reg"
+    form_model = get_form_model_by_entity_type(manager, [type.lower()])
+    if form_model is not None:
+        form_code = form_model.form_code
+    form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
+    fields, labels = _get_field_infos(form_model[0].value['json_fields'])
     entities = get_all_entities(dbm=manager)
     data = []
     for entity in entities:
-        if filter_entities(entity,type):
-            data.append(_tabulate_data(entity))
-    return data
+        if filter_entities(entity, type):
+            data.append(tabulate_function(entity, fields))
+    return data, fields, labels
 
 
 def load_all_subjects(request):

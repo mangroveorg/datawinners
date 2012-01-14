@@ -183,9 +183,9 @@ class Project(DocumentBase):
         return self.activity_report == "yes"
     
     def get_data_senders(self, dbm):
-        all_data = load_all_subjects_of_type(dbm)
-        return [data for data in all_data if data['short_name'] in self.data_senders]
-
+        all_data, fields, label = load_all_subjects_of_type(dbm)
+        return [dict(zip(fields,data["cols"])) for data in all_data if data['short_code'] in self.data_senders]
+        
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
         form_code = self._load_form(dbm).form_code
@@ -197,7 +197,7 @@ class Project(DocumentBase):
         data_sender_ids_with_submission = self._get_data_senders_ids_who_made_submission_for(dbm, deadline_date)
         all_data_senders = self.get_data_senders(dbm)
         data_senders_without_submission = [data_sender for data_sender in all_data_senders  if
-                                           data_sender['short_name'] not in data_sender_ids_with_submission]
+                                           data_sender['short_code'] not in data_sender_ids_with_submission]
         return data_senders_without_submission
 
     def deadline(self):

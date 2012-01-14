@@ -103,7 +103,7 @@ class TestProjectModel(MangroveTestCase):
             project_save_mock.assert_called_once_with(dbm)
 
         self.assertEqual(ProjectState.INACTIVE, project.state)
-
+    
     def test_should_set_form_to_test_on_project_set_to_test(self):
         project = Project(state=ProjectState.ACTIVE)
         dbm = Mock(spec=DatabaseManager)
@@ -154,19 +154,18 @@ class TestProjectModel(MangroveTestCase):
         with patch(
             "datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
             with patch("datawinners.project.models.load_all_subjects_of_type") as load_all_subjects_of_type_mock:
-                load_all_subjects_of_type_mock.return_value = [{"short_name": "rep%s" % i, "mobile_number": i}  for i in
-                                                                                                                range(
-                                                                                                                    10)]
+                load_all_subjects_of_type_mock.return_value = ([{"cols": ["rep%s" % i, i],"short_code": "rep%s" % i}  for i in
+                                                                                                                      range(
+                                                                                                                          10)],["short_code", "mobile_number"], ["What is DS Unique ID", "What is DS phone number"])
                 get_reporters_who_submitted_data_for_frequency_period_mock.return_value = [
                     self._create_reporter_entity("rep1"), self._create_reporter_entity("rep3")]
 
                 data_senders = project.get_data_senders_without_submissions_for(date(2011, 11, 5), dbm)
 
         self.assertEqual(3, len(data_senders))
-        self.assertIn("rep2", [ds["short_name"]  for ds in data_senders])
-        self.assertIn("rep4", [ds["short_name"]  for ds in data_senders])
-        self.assertIn("rep5", [ds["short_name"]  for ds in data_senders])
-
+        self.assertIn("rep2", [ds["short_code"]  for ds in data_senders])
+        self.assertIn("rep4", [ds["short_code"]  for ds in data_senders])
+        self.assertIn("rep5", [ds["short_code"]  for ds in data_senders])
 
 
 
