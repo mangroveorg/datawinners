@@ -153,6 +153,7 @@ def create_type(request):
         try:
             manager = get_database_manager(request.user)
             define_type(manager, entity_name)
+            create_registration_form(manager, entity_name)
             message = _("Entity definition successful")
             success = True
         except EntityTypeAlreadyDefined:
@@ -342,20 +343,15 @@ def save_questionnaire(request):
         new_short_code = request.POST['questionnaire-code'].lower()
         saved_short_code = request.POST['saved-questionnaire-code'].lower()
 
-        if saved_short_code == 'reg':
-            form_model = create_registration_form(manager, request.POST["entity-type"])
-        else:
-            if new_short_code == 'reg':
-                return HttpResponseServerError("Questionnaire whith code 'reg' is used by Datawinners")
-            else:
-                form_model = get_form_model_by_code(manager, saved_short_code)
-                if new_short_code != saved_short_code:
-                    try:
-                        form_model.form_code = new_short_code
-                    except DataObjectAlreadyExists as e:
-                        if e.message.find("Form") >= 0:
-                            return HttpResponseServerError("Questionnaire with this code already exists")
-                        return HttpResponseServerError(e.message)
+        form_model = get_form_model_by_code(manager, saved_short_code)
+        if new_short_code != saved_short_code:
+            try:
+                form_model.form_code = new_short_code
+                form_model.save()
+            except DataObjectAlreadyExists as e:
+                if e.message.find("Form") >= 0:
+                    return HttpResponseServerError("Questionnaire with this code already exists")
+                return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']
         question_set = json.loads(json_string)

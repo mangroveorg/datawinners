@@ -68,7 +68,7 @@ $(document).ready(function() {
     });
 
     $("#subjects_create_type").dialog({
-        title: gettext("Read More"),
+        title: gettext("New subject type"),
         modal: true,
         autoOpen: false,
         width: 500,

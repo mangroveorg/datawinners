@@ -7,7 +7,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.form_model.validation import TextLengthConstraint, \
     RegexConstraint, NumericRangeConstraint
 from mangrove.utils.helpers import slugify
-from mangrove.utils.types import is_empty, is_not_empty
+from mangrove.utils.types import is_empty, is_not_empty, is_sequence
 import re
 from mangrove.errors.MangroveException import NumberNotRegisteredException, \
     DataObjectNotFound
@@ -83,23 +83,23 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE, label="What is the %s's last name?" % (entity_name,),
                               defaultValue="some default value", language="en", ddtype=name_type,
                               instruction="Enter a %s last name" % (entity_name,))
-    question3 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label="What is the %s's Unique ID Number" % (entity_name,),
-                          defaultValue="some default value", language="en", ddtype=name_type,
-                          instruction="Enter an id, or allow us to generate it",
-                          entity_question_flag=True,
-                          constraints=[TextLengthConstraint(max=12)], required=False)
-    question4 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
+    question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
                                label="What is the %s's location?" % (entity_name,),
                                language="en", ddtype=location_type, instruction="Enter a region, district, or commune",
                                required=False)
-    question5 = GeoCodeField(name=GEO_CODE_FIELD, code=GEO_CODE, label="What is the %s's GPS co-ordinates?" % (entity_name,),
+    question4 = GeoCodeField(name=GEO_CODE_FIELD, code=GEO_CODE, label="What is the %s's GPS co-ordinates?" % (entity_name,),
                              language="en", ddtype=geo_code_type,
                              instruction="Enter lat and long. Eg 20.6, 47.3", required=False)
-    question6 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=MOBILE_NUMBER_FIELD_CODE,
+    question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=MOBILE_NUMBER_FIELD_CODE,
                                      label="What is the %s's mobile telephone number?" % (entity_name,),
                                      defaultValue="some default value", language="en", ddtype=mobile_number_type,
                                      instruction="Enter the %s's number" % (entity_name,), constraints=(
                                      _create_constraints_for_mobile_number()), required=False)
+    question6 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label="What is the %s's Unique ID Number" % (entity_name,),
+                              defaultValue="some default value", language="en", ddtype=name_type,
+                              instruction="Enter an id, or allow us to generate it",
+                              entity_question_flag=True,
+                              constraints=[TextLengthConstraint(max=12)], required=True)
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions , is_registration_model=True, entity_type=entity_type)
@@ -107,6 +107,8 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
 
 
 def create_registration_form(manager, entity_name):
+    if is_sequence(entity_name):
+        entity_name = entity_name[0]
     prefix = entity_name.lower()[:3]
     form_code = _generate_form_code(manager, prefix)
     form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])

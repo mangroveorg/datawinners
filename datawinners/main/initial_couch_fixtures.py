@@ -4,6 +4,8 @@ from django.contrib.auth.models import User, Group
 from mock import patch
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
+
+from datawinners.entity.helper import create_registration_form
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
@@ -64,6 +66,7 @@ def create_entity_types(manager, entity_types):
     for entity_type in entity_types:
         try:
             define_type(manager, entity_type)
+            create_registration_form(manager, entity_type)
         except EntityTypeAlreadyDefined:
             pass
 
