@@ -19,4 +19,4 @@ def trial_account_phone_numbers(request, language):
         country = Country.objects.filter(country_name=country_name)
         networks = Network.objects.filter(country=country)
         network_display = {network.network_name: network.trial_sms_number for network in networks}
-        return render_to_response(template,{'mappings':network_display}, context_instance=RequestContext(request))
+        return HttpResponse(json.dumps(network_display))

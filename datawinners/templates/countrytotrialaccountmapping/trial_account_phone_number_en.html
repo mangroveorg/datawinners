@@ -35,8 +35,8 @@
                 </select>
             </p>
 
-            <div id='trial_number_info'>
-                <table border=1>
+            <div id='trial_number_info' class="none">
+                <table id="mapping">
                     <thead>
                         <tr>
                             <td>If you use this network...</td>
@@ -44,12 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for network,number in mappings.items %}
-                            <tr>
-                                <td>{{ network }}</td>
-                                <td>{{ number }}</td>
-                            </tr>
-                        {% endfor %}
+
                     </tbody>
                 </table>
             </div>
