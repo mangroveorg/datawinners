@@ -112,8 +112,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
     def _get_mock_project(self):
         project = Mock()
-        data_senders = [{field_attributes.NAME: 'reporter1', 'short_name': 'a'},
-                {field_attributes.NAME: 'reporter2', 'short_name': 'b'},
+        data_senders = [{field_attributes.NAME: 'reporter1', 'short_code': 'a'},
+                {field_attributes.NAME: 'reporter2', 'short_code': 'b'},
         ]
         project.get_data_senders.return_value = data_senders
         return project
@@ -131,9 +131,11 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         subject_field = self._get_text_field(True,True, expected_code)
         project = self._get_mock_project()
         project_subject_loader_mock=Mock()
-        project_subject_loader_mock.return_value= [{field_attributes.NAME: 'clinic1', 'short_name': 'a'},
-                {field_attributes.NAME: 'clinic2', 'short_name': 'b'},
-        ]
+        fields = ['name', 'short_code']
+        label = None
+        project_subject_loader_mock.return_value= [{'cols': ['clinic1','a']},
+                {'cols': ['clinic2','b']},
+        ], fields, label
         project.entity_type.return_value=["Clinic"]
         project.is_on_type.return_value=False
         expected_choices = [('a', 'clinic1  (a)'), ('b', 'clinic2  (b)')]

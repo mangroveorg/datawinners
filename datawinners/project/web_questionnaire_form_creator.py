@@ -86,10 +86,13 @@ class SubjectQuestionFieldCreator(object):
 
 
     def _get_all_choices(self, all_subjects):
-        return [(data_sender['short_name'], data_sender[field_attributes.NAME]+'  ('+data_sender['short_name']+')')for data_sender in
-                                                                               all_subjects]
+        return [(data_sender['short_code'], data_sender['name'] +'  ('+data_sender['short_code']+')')for data_sender in all_subjects]
+
+    def _get_all_subject(self):
+        all_subjects, fields, label = self.project_subject_loader(self.dbm, type=self.project.entity_type)
+        return [dict(zip(fields,data["cols"])) for data in all_subjects]
 
     def _subjects_choice_fields(self, subject_field):
-        all_subjects = self.project_subject_loader(self.dbm, type=self.project.entity_type)
+        all_subjects = self._get_all_subject()
         all_subject_choices = self._get_all_choices(all_subjects)
         return self._get_choice_field(all_subject_choices, subject_field)
