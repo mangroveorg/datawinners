@@ -300,6 +300,9 @@ p{
     display:none;
     .warning_message{
         margin-bottom:30px;
+        .learn_more_link{
+            color:#0070ac;
+        }
     }
     #confirm_delete, #confirm, #ok_button{
         color:#6F451D;
