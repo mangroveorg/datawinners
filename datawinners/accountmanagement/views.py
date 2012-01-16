@@ -52,7 +52,7 @@ def project_has_web_device(f):
 def is_datasender(f):
     def wrapper(*args, **kw):
         user = args[0].user
-        if user.groups.filter(name="Data Senders").count() > 0:
+        if user.get_profile().reporter:
             return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
 
         return f(*args, **kw)
@@ -63,7 +63,10 @@ def is_datasender(f):
 def is_datasender_allowed(f):
     def wrapper(*args, **kw):
         user = args[0].user
-        projects = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+        if user.get_profile().reporter:
+            projects = get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+        else:
+            projects = get_all_projects(get_database_manager(user))
         project_ids = [project.id for project in projects]
         project_id = kw['project_id']
         if not project_id in project_ids:
@@ -157,6 +160,13 @@ def _make_user_as_a_datasender(manager, org_id, current_user_name, mobile_number
     entity.add_data(data=data)
     return entity
 
+def _associate_user_with_existing_project(manager, reporter_id):
+    rows = get_all_projects(manager)
+    for row in rows:
+        project_id = row['value']['_id']
+        project = Project.load(manager.database, project_id)
+        project.data_senders.append(reporter_id)
+        project.save(manager)
 
 @login_required(login_url='/login')
 @is_admin
@@ -185,8 +195,8 @@ def new_user(request):
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
                                                   mobile_phone = mobile_number,
                                                   org_id=org_id)
-#                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id,
-#                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number).short_code
+                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id,
+                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number).short_code
                 ngo_user_profile.save()
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
@@ -232,13 +242,15 @@ def edit_user(request):
             ngo_user_profile.title = form.cleaned_data['title']
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
 
-#            #TO-DO: 'If' block can be removed when all users in our production db has phone number & are registered as a datasender
-#            if ngo_user_profile.reporter_id is None:
-#                manager = get_database_manager(request.user)
-#                org_id = request.user.get_profile().org_id
-#                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id, current_user_name=user.get_full_name(),
-#                                                        mobile_number=form.cleaned_data['mobile_phone']).short_code
-#
+            #TO-DO: next 6lines can be removed when all users in our production db has phone number & they are registered as a datasender
+            manager = get_database_manager(request.user)
+            if ngo_user_profile.reporter_id is None:
+                org_id = request.user.get_profile().org_id
+                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id, current_user_name=user.get_full_name(),
+                                                        mobile_number=form.cleaned_data['mobile_phone']).short_code
+                ngo_user_profile.save()
+                _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
+
             ngo_user_profile.save()
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},

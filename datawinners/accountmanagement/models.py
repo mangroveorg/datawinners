@@ -111,7 +111,8 @@ class NGOUserProfile(models.Model):
 
     @property
     def reporter(self):
-        return self.reporter_id is not None
+        user = User.objects.get(email=self.user)
+        return True if user.groups.filter(name="Data Senders").count() else False
 
 class PaymentDetails(models.Model):
     organization = models.ForeignKey(Organization)
