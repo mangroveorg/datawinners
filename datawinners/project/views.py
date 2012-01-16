@@ -751,7 +751,7 @@ def web_questionnaire(request, project_id=None):
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
     QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager,project),form_model=form_model).create()
-    disable_link_class = "disable_link" if request.user.groups.filter(name="Data Senders").count() > 0 else ""
+    disable_link_class = "disable_link" if request.user.get_profile().reporter else ""
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)

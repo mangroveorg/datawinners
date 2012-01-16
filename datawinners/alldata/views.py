@@ -12,14 +12,22 @@ from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 
+def _get_all_project_for_user(user):
+    if user.get_profile().reporter:
+        disable_link_class = "disable_link"
+        rows = models.get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
+    else:
+        disable_link_class = ""
+        rows = models.get_all_projects(get_database_manager(user))
+    return disable_link_class, rows
+
 @login_required(login_url='/login')
 @is_new_user
 def index(request):
     reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)
-    rows = models.get_all_projects(manager, reporter_id)
     project_list = []
-    disable_link_class = "disable_link" if reporter_id is not None else ""
+    disable_link_class, rows = _get_all_project_for_user(request.user)
     for row in rows:
         analysis = log = "#"
         disabled = "disable_link"
