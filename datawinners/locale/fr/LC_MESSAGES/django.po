@@ -3056,4 +3056,9 @@ msgstr "Sélectionnez votre Sujet dans la liste déroulante. Si votre Sujet n'es
 
 msgid "warning_msg_for_activity_report_question_delete"
 msgstr "Warning: Si vous supprimez cette question, vous serez dans l’incapacité de visualiser vos données relatives  à la période du rapport (exemple : Janvier 2012)."
-        "En savoir plus Voulez-vous supprimer cette question ?"
+        "<a class='learn_more_link'>En savoir plus</a> Voulez-vous supprimer cette question ?"
+
+msgid "learn_more_delete_question"
+msgstr "Affichez vos données qui ont été reçues pendant une période de rapport particulière  (Exemple : tous les rapports envoyés en Janvier) au lieu de la période durant laquelle les rapports  ont été effectivement reçus (Exemple : tous les rapports envoyés entre le 1er et le 31 Janvier)"
+       "Ceci est très utile si  vous donnez à vos expéditeurs de données un délai d’envoi de leur rapport de Janvier jusqu’au 5 Février. Datawinners séparera correctement les rapports  entre les périodes de  rapport y afférentes"
+       "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"

@@ -67,11 +67,17 @@ $(document).ready(function() {
         }
 
     });
+    $("#learn_more").dialog({
+        title: gettext("Learn More"),
+        modal: true,
+        autoOpen: false,
+        width: 800
+    });
    $("#delete_question").dialog({
         title: "Warning!!",
         modal: true,
         autoOpen: false,
-        height: 250,
+        height: 275,
         width: 300,
         closeText: 'hide'
       }
@@ -121,7 +127,9 @@ $(document).ready(function() {
         return false;
     });
 
-
+    $(".learn_more_link").bind("click", function(){
+       $("#learn_more").dialog("open");
+    });
 
     $('input[name=type]:radio').change(
             function() {
