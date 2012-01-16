@@ -574,3 +574,6 @@ msgstr ""
 
 msgid "Terms And Conditions"
 msgstr ""
+
+msgid "Learn More"
+msgstr ""

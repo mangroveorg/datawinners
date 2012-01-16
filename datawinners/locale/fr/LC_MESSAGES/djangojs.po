@@ -584,3 +584,6 @@ msgstr "Termes & Conditions de DataWinners"
 
 msgid "Terms And Conditions"
 msgstr "Termes et Conditions"
+
+msgid "Learn More"
+msgstr "En savoir plus"
