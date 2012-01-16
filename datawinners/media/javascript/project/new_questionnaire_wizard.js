@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-
+    var old_question = viewModel.get_activity_report_question();
     DW.charCount();
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
@@ -101,6 +101,23 @@ $(document).ready(function() {
          $("#questionnaire_code_change").dialog("close");
         var old_questionnaire_code = $('#saved-questionnaire-code').val();
         $('#questionnaire-code').val(old_questionnaire_code);
+        return false;
+    });
+
+    $("#question_title").blur(function(){
+        if (viewModel.selectedQuestion().event_time_field_flag()){
+            $("#delete_question").dialog("open");
+        }
+    });
+    $("#ok_button_que_change").bind("click", function(){
+        old_question = $('#question_title').val()
+        viewModel.selectedQuestion().title = $('#question_title').val();
+        $("#delete_question").dialog("close");
+        return true;
+    });
+    $("#cancel_link_que").bind("click", function(){
+        viewModel.selectedQuestion().title = old_question;
+        $("#delete_question").dialog("close");
         return false;
     });
 
