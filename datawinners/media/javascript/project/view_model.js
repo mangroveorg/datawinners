@@ -148,15 +148,5 @@ var viewModel =
         for ( var i=index;i< viewModel.questions().length;i++){
             viewModel.questions()[i].code(DW.generateQuestionCode());
         }
-    },
-    get_activity_report_question:function(){
-        var i = 0
-        var len = viewModel.questions().length;
-        for ( i=0;i<len;i++ ){
-            if (viewModel.questions()[i].event_time_field_flag()){
-                return viewModel.questions()[i].title;
-            }
-        }
-        return "";
     }
 };

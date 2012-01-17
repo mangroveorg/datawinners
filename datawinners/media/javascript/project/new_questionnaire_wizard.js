@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-    var old_question = viewModel.get_activity_report_question();
+    var activity_report_question = $('#question_title').val();
     DW.charCount();
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
@@ -82,6 +82,15 @@ $(document).ready(function() {
         closeText: 'hide'
       }
    );
+    $("#edit_question").dialog({
+        title: "Warning!!",
+        modal: true,
+        autoOpen: false,
+        height: 275,
+        width: 300,
+        closeText: 'hide'
+      }
+   );
     $("#questionnaire_code_change").dialog({
         title: "Warning!!",
         modal: true,
@@ -112,18 +121,19 @@ $(document).ready(function() {
 
     $("#question_title").blur(function(){
         if (viewModel.selectedQuestion().event_time_field_flag()){
-            $("#delete_question").dialog("open");
+            $("#edit_question").dialog("open");
         }
     });
-    $("#ok_button_que_change").bind("click", function(){
-        old_question = $('#question_title').val()
-        viewModel.selectedQuestion().title = $('#question_title').val();
-        $("#delete_question").dialog("close");
+    $("#yes_button").bind("click", function(){
+        activity_report_question = $('#question_title').val();
+        viewModel.selectedQuestion().title($('#question_title').val());
+        $("#edit_question").dialog("close");
         return true;
     });
-    $("#cancel_link_que").bind("click", function(){
-        viewModel.selectedQuestion().title = old_question;
-        $("#delete_question").dialog("close");
+    $("#no_link").bind("click", function(){
+        viewModel.selectedQuestion().title(activity_report_question);
+        $("#question_title").val(activity_report_question);
+        $("#edit_question").dialog("close");
         return false;
     });
 
