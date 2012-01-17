@@ -17,15 +17,15 @@ DW.smsPreview = function() {
                 break;
 
             case 'select':
-                sms_preview += ' '+gettext('list of choices');
+                sms_preview += ' '+gettext('choice(s)');
                 break;
 
             case 'select1':
-                sms_preview += ' '+gettext('list of choices');
+                sms_preview += ' '+gettext('choice');
                 break;
 
             case 'geocode':
-                sms_preview += ' ' + gettext('geo code');
+                sms_preview += ' ' + gettext('GPS');
                 break;
         }
     }
