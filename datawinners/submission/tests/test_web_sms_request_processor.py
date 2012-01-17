@@ -2,7 +2,7 @@ import unittest
 from django.contrib.auth.models import User
 from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, Organization
 from messageprovider.messages import SMS
-from submission.request_processor import WebSMSDBMRequestProcessor, WebSMSTransportInfoRequestProcessor, SMSMessageRequestProcessor, MangroveWebSMSRequestProcessor, WebSMSOrganizationFinderRequestProcessor
+from submission.request_processor import WebSMSDBMRequestProcessor, WebSMSTransportInfoRequestProcessor, SMSMessageRequestProcessor, MangroveWebSMSRequestProcessor, WebSMSOrganizationFinderRequestProcessor, get_organization_number
 from tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME
 from tests.fake_request import FakeRequest
 from utils import generate_document_store_name, get_organization_settings_from_request
@@ -35,8 +35,7 @@ class TestWebSMSRequestProcessor(unittest.TestCase):
         processor.process(self.http_request, self.mangrove_request)
         self.assertEqual(SMS,self.mangrove_request['transport_info'].transport)
         self.assertEqual(TEST_REPORTER_MOBILE_NUMBER,self.mangrove_request['transport_info'].source)
-        organization_telephone_number = get_organization_settings_from_request(self.http_request).get_organisation_sms_number()
-        organization_telephone_number = organization_telephone_number[0] if(isinstance(organization_telephone_number,list)) else organization_telephone_number
+        organization_telephone_number = get_organization_number(get_organization_settings_from_request(self.http_request).get_organisation_sms_number())
         self.assertEqual(organization_telephone_number,self.mangrove_request['transport_info'].destination)
 
     def test_should_put_organization_in_request_for_web_sms_submission(self):
@@ -50,8 +49,13 @@ class TestWebSMSRequestProcessor(unittest.TestCase):
         self.assertEqual(self.sms_message, self.mangrove_request['incoming_message'])
         self.assertEqual(SMS,self.mangrove_request['transport_info'].transport)
         self.assertEqual(TEST_REPORTER_MOBILE_NUMBER,self.mangrove_request['transport_info'].source)
-        organization_telephone_number = get_organization_settings_from_request(self.http_request).get_organisation_sms_number()
-        organization_telephone_number = organization_telephone_number[0] if(isinstance(organization_telephone_number,list)) else organization_telephone_number
+        organization_telephone_number = get_organization_number(get_organization_settings_from_request(self.http_request).get_organisation_sms_number())
         self.assertEqual(organization_telephone_number,self.mangrove_request['transport_info'].destination)
         self.assertEqual(self.organization,self.mangrove_request['organization'])
+
+    def test_should_return_correct_number(self):
+        organization_telephone_number = u'123456'
+        self.assertEqual(organization_telephone_number,get_organization_number(organization_telephone_number))
+        organization_telephone_number = ['12345','789234']
+        self.assertEqual(organization_telephone_number[0],get_organization_number(organization_telephone_number))
 

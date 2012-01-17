@@ -9,10 +9,10 @@ class WebSMSDBMRequestProcessor(object):
 
 
 class WebSMSTransportInfoRequestProcessor(object):
+
     def process(self, http_request, mangrove_request):
         organization_settings = OrganizationSetting.objects.get(organization=mangrove_request['organization'])
-        organization_number = organization_settings.get_organisation_sms_number()
-        _to = organization_number[0] if(isinstance(organization_number,list)) else organization_number
+        _to = get_organization_number(organization_settings.get_organisation_sms_number())
         _from = TEST_REPORTER_MOBILE_NUMBER
 
         mangrove_request['transport_info']=TransportInfo(SMS, _from, _to)
@@ -36,3 +36,5 @@ class MangroveWebSMSRequestProcessor(object):
         for middleware in self.middlewares:
             middleware.process(http_request,mangrove_request)
 
+def get_organization_number(organization_number):
+    return organization_number[0] if(isinstance(organization_number, list)) else organization_number
