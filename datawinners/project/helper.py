@@ -1,5 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
+from django.forms.forms import Form
+from django import forms
+from django.forms.widgets import HiddenInput
+from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from datawinners.entity.import_data import load_all_subjects_of_type, \
     load_all_subjects_of_type_sorted
@@ -18,6 +22,7 @@ import xlwt
 from datetime import datetime
 from mangrove.transport.submissions import  Submission, get_submissions
 from models import Reminder
+from mangrove.transport import Request, TransportInfo
 
 NUMBER_TYPE_OPTIONS = ["Latest", "Sum", "Count", "Min", "Max", "Average"]
 MULTI_CHOICE_TYPE_OPTIONS = ["Latest"]
@@ -348,3 +353,70 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 def get_project_data_senders_sorted(manager, project, fields):
     all_data = load_all_subjects_of_type_sorted(manager, fields)
     return [data for data in all_data if data['short_code'] in project.data_senders]
+
+
+def _create_select_field(field, choices):
+    if field.single_select_flag:
+        return forms.ChoiceField(choices=choices, required=field.is_required(), label=field.name, initial=field.value, help_text=field.instruction)
+    return forms.MultipleChoiceField(label=field.name, widget=forms.CheckboxSelectMultiple, choices=choices,
+                                  initial=field.value, required=field.is_required(), help_text=field.instruction)
+
+
+def _create_choices(field):
+    choice_list = [('', '--None--')] if field.single_select_flag else []
+    choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
+    choices = tuple(choice_list)
+    return choices
+
+
+def _get_django_field(field):
+    if isinstance(field, SelectField):
+        return  _create_select_field(field, _create_choices(field))
+    display_field = forms.CharField(label=field.label['en'], initial=field.value, required=field.is_required(), help_text=field.instruction)
+    display_field.widget.attrs["watermark"] = field.get_constraint_text()
+    display_field.widget.attrs['style'] = 'padding-top: 7px;'
+    #    display_field.widget.attrs["watermark"] = "18 - 1"
+    return display_field
+
+
+def create_django_form_from_form_model(form_model):
+    properties = {field.code: _get_django_field(field) for field in form_model.fields}
+    properties.update({'form_code': forms.CharField(widget=HiddenInput, initial=form_model.form_code)})
+    return type('QuestionnaireForm', (Form, ), properties)
+
+
+def create_request(questionnaire_form, username):
+    return Request(message=questionnaire_form.cleaned_data,
+                   transportInfo=
+                   TransportInfo(transport="web",
+                                 source=username,
+                                 destination=""
+                   ))
+
+
+def _translate_messages(error_dict, fields):
+    errors = dict()
+
+    for field in fields:
+        if field.code in error_dict:
+            error = error_dict[field.code][0]
+            if type(field) == TextField:
+                text, code = error.split(' ')[1], field.code
+                errors[code] = [_("Answer %s for question %s is longer than allowed.") % (text, code)]
+            if type(field) == IntegerField:
+                number, error_context = error.split(' ')[1], error.split(' ')[6]
+                errors[field.code] = [_("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
+            if type(field) == GeoCodeField:
+                errors[field.code] = [_("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")]
+            if type(field) == DateField:
+                answer, format = error.split(' ')[1], field.date_format
+                errors[field.code] = [_("Answer %s for question %s is invalid. Expected date in %s format") % (answer, field.code, format)]
+
+    return errors
+
+
+def errors_to_list(errors, fields):
+    error_dict = dict()
+    for key, value in errors.items():
+        error_dict.update({key: [value] if not isinstance(value, list) else value})
+    return _translate_messages(error_dict, fields)

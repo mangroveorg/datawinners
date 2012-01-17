@@ -5,9 +5,6 @@ import logging
 from time import mktime
 
 from django.contrib.auth.decorators import login_required
-from django.forms.forms import Form
-from django import forms
-from django.forms.widgets import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -29,7 +26,6 @@ from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport import Request, TransportInfo
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from mangrove.utils.dates import convert_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
@@ -54,7 +50,7 @@ from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
-from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 
 logger = logging.getLogger("django")
 
@@ -671,72 +667,6 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
             }
 
 
-def _create_select_field(field, choices):
-    if field.single_select_flag:
-        return forms.ChoiceField(choices=choices, required=field.is_required(), label=field.name, initial=field.value, help_text=field.instruction)
-    return forms.MultipleChoiceField(label=field.name, widget=forms.CheckboxSelectMultiple, choices=choices,
-                                  initial=field.value, required=field.is_required(), help_text=field.instruction)
-
-
-def _create_choices(field):
-    choice_list = [('', '--None--')] if field.single_select_flag else []
-    choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
-    choices = tuple(choice_list)
-    return choices
-
-
-def _get_django_field(field):
-    if isinstance(field, SelectField):
-        return  _create_select_field(field, _create_choices(field))
-    display_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(), help_text=field.instruction)
-    display_field.widget.attrs["watermark"] = field.get_constraint_text()
-    display_field.widget.attrs['style'] = 'padding-top: 7px;'
-    #    display_field.widget.attrs["watermark"] = "18 - 1"
-    return display_field
-
-
-def _create_django_form_from_form_model(form_model):
-    properties = {field.code: _get_django_field(field) for field in form_model.fields}
-    properties.update({'form_code': forms.CharField(widget=HiddenInput, initial=form_model.form_code)})
-    return type('QuestionnaireForm', (Form, ), properties)
-
-
-def _to_list(errors, fields):
-    error_dict = dict()
-    for key, value in errors.items():
-        error_dict.update({key: [value] if not isinstance(value, list) else value})
-    return translate_messages(error_dict, fields)
-
-def translate_messages(error_dict, fields):
-    errors = dict()
-
-    for field in fields:
-        if field.code in error_dict:
-            error = error_dict[field.code][0]
-            if type(field) == TextField:
-                text, code = error.split(' ')[1], field.code
-                errors[code] = [_("Answer %s for question %s is longer than allowed.") % (text, code)]
-            if type(field) == IntegerField:
-                number, error_context = error.split(' ')[1], error.split(' ')[6]
-                errors[field.code] = [_("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
-            if type(field) == GeoCodeField:
-                errors[field.code] = [_("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")]
-            if type(field) == DateField:
-                answer, format = error.split(' ')[1], field.date_format
-                errors[field.code] = [_("Answer %s for question %s is invalid. Expected date in %s format") % (answer, field.code, format)]
-            
-    return errors
-
-
-def _create_request(questionnaire_form, username):
-    return Request(message=questionnaire_form.cleaned_data,
-                   transportInfo=
-                   TransportInfo(transport="web",
-                                 source=username,
-                                 destination=""
-                   ))
-
-
 def _get_response(form_code, project, questionnaire_form, request, disable_link_class):
     return render_to_response('project/web_questionnaire.html',
                               _make_form_context(questionnaire_form, project, form_code, disable_link_class),
@@ -764,12 +694,12 @@ def web_questionnaire(request, project_id=None):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(_create_request(questionnaire_form, request.user.username))
+            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(helper.create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
             else:
-                questionnaire_form._errors = _to_list(response.errors, form_model.fields)
+                questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
                 return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
         except DataObjectNotFound as exception:
