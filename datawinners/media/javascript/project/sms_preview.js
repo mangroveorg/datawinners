@@ -9,7 +9,7 @@ DW.smsPreview = function() {
                 sms_preview +=  ' '+gettext('number');
                 break;
             case 'text':
-                sms_preview +=  ' '+gettext('text');
+                sms_preview +=  ' '+gettext('word');
                 break;
 
             case 'date':
