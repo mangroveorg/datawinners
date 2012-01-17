@@ -715,6 +715,12 @@ def web_questionnaire(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 
+def get_example_sms(fields):
+    example_sms = ""
+    for field in fields:
+        example_sms = example_sms + " answer" + str(fields.index(field)+1)
+    return example_sms
+
 @login_required(login_url='/login')
 def questionnaire_preview(request, project_id=None):
     manager = get_database_manager(request.user)
@@ -729,12 +735,9 @@ def questionnaire_preview(request, project_id=None):
         for field in fields:
             question = helper.get_preview_for_field(field)
             questions.append(question)
-        if(len(fields)>1):
-            example_sms = "%s  answer1 ..... answer%s" % (
-                form_model.form_code, len(fields))
-        else:
-            example_sms = "%s  answer1" % (
+        example_sms = "%s" % (
                 form_model.form_code)
+        example_sms = example_sms + get_example_sms(fields)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,
