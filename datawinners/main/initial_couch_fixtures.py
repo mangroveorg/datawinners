@@ -810,38 +810,38 @@ def load_sms_data_for_cli001(manager):
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
-    mangrove_request = Request("cli .t clinic .n  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321", transport)
+    mangrove_request = Request("reg .t clinic .n  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321", transport)
     sms_player.accept(mangrove_request)
 
-    mangrove_request = Request("cli .t clinic .n  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322", transport)
+    mangrove_request = Request("reg .t clinic .n  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322", transport)
     sms_player.accept(mangrove_request)
 
-    mangrove_request = Request("cli .t clinic .n  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323", transport)
+    mangrove_request = Request("reg .t clinic .n  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323", transport)
     sms_player.accept(mangrove_request)
     
-    mangrove_request = Request("cli .t clinic .n  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324", transport)
+    mangrove_request = Request("reg .t clinic .n  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324", transport)
     response = sms_player.accept(mangrove_request)
     
     mangrove_request = Request(
-        "cli .t clinic .n  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325", transport)
+        "reg .t clinic .n  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli .t clinic .n  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326", transport)
+        "reg .t clinic .n  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli .t clinic .n  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327", transport)
+        "reg .t clinic .n  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli .t clinic .n  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328", transport)
+        "reg .t clinic .n  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli .t clinic .n  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329", transport)
+        "reg .t clinic .n  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli .t clinic .n  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330", transport)
+        "reg .t clinic .n  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli .t clinic .n  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331", transport)
+        "reg .t clinic .n  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
