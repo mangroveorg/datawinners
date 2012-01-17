@@ -2,6 +2,7 @@
 from collections import OrderedDict
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
+from datawinners.entity.helper import create_registration_form
 from datawinners.entity.import_data import load_subject_registration_data
 from datawinners.entity.import_data import FilePlayer
 from datawinners.location.LocationTree import get_location_tree
@@ -30,7 +31,6 @@ class TestImportData(MangroveTestCase):
     def tearDown(self):
         MangroveTestCase.tearDown(self)
 
-
     def test_should_load_all_subjects(self):
         self._register_entities()
 
@@ -58,6 +58,7 @@ class TestImportData(MangroveTestCase):
     def _create_entities(self):
         self.entity_type = ['clinic']
         define_type(self.manager, self.entity_type)
+        create_registration_form(self.manager, self.entity_type)
         define_type(self.manager, ['reporter'])
         self.name_type = DataDictType(self.manager, name='Name', slug='name', primitive_type='string')
         self.telephone_number_type = DataDictType(self.manager, name='telephone_number', slug='telephone_number',

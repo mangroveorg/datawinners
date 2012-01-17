@@ -16,7 +16,7 @@ class TestEntityLoggedIn(TestCase):
         self.assertEquals(response.status_code,200)
 
     def test_should_render_subject_create_view_if_logged_in(self):
-        response = self.client.get('/entity/subject/create')
+        response = self.client.get('/entity/subject/create/clinic/')
         self.assertEquals(response.status_code,200)
 
     def test_should_render_entity_datasenders_view_if_logged_in(self):
