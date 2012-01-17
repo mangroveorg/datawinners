@@ -16,8 +16,8 @@
     <div>
         <div class="subjects_links">
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" style="margin-right: 20px;">Edit registration form</a>
-            <a href="javascript:void(0)">{% trans "Add a" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
-            <a href="javascript:void(0);">Import list</a>&nbsp;|&nbsp;
+            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
+            <a href="javascript:void(0);">Import a list</a>&nbsp;|&nbsp;
             <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>
         </div>
         {% if subject.data|length > 0 %}
@@ -50,15 +50,15 @@
             </table>
             <div class="no_registered_subjects">
                 <p>
-                    Once you have registered a {{ subject.entity|capfirst }}, it will appear here. !
+                    Once you have registered a {{ subject.entity|capfirst }}, it will appear here.
                 </p>
                 <p>
-                    To get started !
+                    To get started
                     <ul>
                         <li>Register a {{ subject.entity|capfirst }}:
-                            <a href="javascript:void(0)">{% trans "Add a" %} {{ subject.entity|capfirst }}</a>
-                            or <a href="javascript:void(0);" class="export-entity-link" >Import a {{ subject.entity|capfirst }} list</a> !</li>
-                        <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">Customize the {{ subject.entity|capfirst }} registration form !</a></li>
+                            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a" %} {{ subject.entity|capfirst }}</a>
+                            or <a href="javascript:void(0);" class="export-entity-link">Import a {{ subject.entity|capfirst }} list</a></li>
+                        <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">Customize the {{ subject.entity|capfirst }} registration form</a></li>
                     </ul>
                 </p>
             </div>

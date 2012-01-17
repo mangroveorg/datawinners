@@ -1,41 +1,81 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Add a Subject" %}{% endblock %}
+{% block page_title %}{% trans "Add A Subject" %}{% endblock %}
 {% block section_title %}
-    {% trans "Add a Subject" %}
+    Add a {{ entity|capfirst }}
 {% endblock %}
 
+{% load field_tags %}
 {% load dw_tabs %}
+
 {% block body %}
 {% activetab "main_nav" "subjects" %}
 {{ block.super }}
 {% endblock %}
+
 
 {% block page_css %}
     {{ block.super }}
     <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
 {% endblock %}
 
-
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet" />
-
+    <link rel="stylesheet" href="/media/css/scss/section_register_entity.scss" />
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/register_entity_validation.js"></script>
-    <script type="text/javascript" src="/media/javascript/admin/register_entity.js"></script>
-    <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
 
 {% endblock %}
-{% block content%}
-    <div class="add_entity_form">
 
-            {% include 'subject_form.html' %}
-    </div>
-    {% include "star_indication.html" %}
+{% block content %}
+    {% if success_message %}
+        <div class="success-message-box">{{ success_message }}</div>
+    {% endif %}
+    {% if error_message %}
+        <div class="message-box">{{ error_message }}</div>
+    {% endif %}
+
+    {% if questionnaire_form.non_fielderrors %}
+        <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
+    {% endif %}
+    <form id="question_form" method="POST">
+        {% csrf_token %}
+        <ul>
+            {% for field in form %}
+                <li>
+                    {% if not field.is_hidden %}
+                        <h6>{{ field.label }}</h6>
+                        <p class="instructions italic">
+                            {{ field.help_text }}
+                        </p>
+                    {% endif %}
+                    <div class="answer">
+                    {% if field|field_type == 'ChoiceField' %}
+                        <span class="single_select_question" wmwrap="true">
+                            {{ field }}
+                        </span>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+
+                        <ul class="errorlist">
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <li>
+                                        {{ error }}
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="/entity/subjects/" class="cancel_link">{% trans "Cancel" %}</a>
+        <input type="submit" value="{% trans 'Add' %}" class="button"/>
+    </form>
 {% endblock %}
