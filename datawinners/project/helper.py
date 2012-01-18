@@ -6,7 +6,7 @@ from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from datawinners.entity.import_data import load_all_subjects_of_type, \
-    load_all_subjects_of_type_sorted
+    load_all_subjects_of_type
 from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
@@ -303,8 +303,8 @@ def _add_to_dict(dict, post_dict,key):
         dict[key] = post_dict.get(key)
 
 def get_project_data_senders(manager, project):
-    all_data = load_all_subjects_of_type(manager)
-    return [data for data in all_data if data['short_name'] in project.data_senders]
+    all_data, fields, labels = load_all_subjects_of_type(manager)
+    return [data for data in all_data if data['short_code'] in project.data_senders]
 
 def delete_project(manager, project, void = True):
     project_id, qid = project.id, project.qid
@@ -349,10 +349,6 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
         logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
         message_tracker.increment_outgoing_message_count()
         sms_client.send_sms(organization_tel_number, number, message)
-
-def get_project_data_senders_sorted(manager, project, fields):
-    all_data = load_all_subjects_of_type_sorted(manager, fields)
-    return [data for data in all_data if data['short_code'] in project.data_senders]
 
 
 def _create_select_field(field, choices):

@@ -141,7 +141,7 @@ def _get_entity_type_from_row(row):
 def load_subject_registration_data(manager,
                                    filter_entities=exclude_of_type,
                                    type=REPORTER, tabulate_function=_tabulate_data):
-    form_model, fields, labels, codes = get_form_model_and_detail_by_entity_type(manager, type)
+    fields, labels, codes = get_entity_type_fields(manager, type)
     entities = get_all_entities(dbm=manager)
     data = []
     for entity in entities:
@@ -150,11 +150,70 @@ def load_subject_registration_data(manager,
     return data, fields, labels
 
 
+def _get_entity_types(manager):
+    entity_types = get_all_entity_types(manager)
+    entity_list = [entity[0] for entity in entity_types if entity[0] != 'reporter']
+    entity_list.sort()
+    return entity_list
+
+
+def _get_registration_form_models(manager):
+    subjects = {}
+    form_models = manager.load_all_rows_in_view('questionnaire')
+    for form_model in form_models:
+        if form_model.value['is_registration_model'] and form_model.value['name'] != 'Reporter':
+            subjects[form_model.value['entity_type'][0]] = form_model
+    return subjects
+
+
+def get_field_infos(fields):
+    fields_names = []
+    labels = []
+    codes = []
+    for field in fields:
+        if field['name'] != 'entity_type':
+            fields_names.append(field['name'])
+            labels.append(field['label']['en'])
+            codes.append(field['code'])
+    return fields_names, labels, codes
+
+
+def get_entity_type_infos(entity, form_model):
+    names, labels, codes = get_field_infos(form_model.value['json_fields'])
+    subject = dict(entity = entity,
+        code = form_model.value["form_code"],
+        names = names,
+        labels = labels,
+        data = [],
+    )
+    return subject
+
+
 def load_all_subjects(request):
     manager = get_database_manager(request.user)
-    return load_subject_registration_data(manager)
+    entity_types_names = _get_entity_types(manager)
+    subjects = _get_registration_form_models(manager)
 
-def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPORTER):
+    subjects_list = {}
+    for entity in entity_types_names:
+        if entity in subjects.keys():
+            form_model = subjects[entity]
+        else:
+            form_model = subjects['Registration']
+        subjects_list[entity] = get_entity_type_infos(entity, form_model)
+
+    entities = get_all_entities(dbm=manager)
+    for entity in entities:
+        if exclude_of_type(entity, REPORTER):
+            entity_type = entity.type_string
+            if entity_type in subjects_list.keys():
+                subjects_list[entity_type]['data'].append(_tabulate_data(entity, subjects_list[entity_type]['names']))
+
+    data = [subjects_list[entity] for entity in entity_types_names]
+    return data
+
+
+def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REPORTER):
     return load_subject_registration_data(manager, filter_entities, type)
 
 
@@ -215,54 +274,20 @@ def _file_and_name(request):
     return file_name, file
 
 
-def load_subject_fields_and_names(manager, type=REPORTER):
+def _entity_type_as_sequence(entity_type):
+    if not is_sequence(entity_type):
+        entity_type = [entity_type.lower()]
+    return entity_type
+
+
+def get_entity_type_fields(manager, type=REPORTER):
     form_code = "reg"
     form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
     if form_model is not None:
         form_code = form_model.form_code
     form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = _get_field_infos(form_model[0].value['json_fields'])
-    return fields, labels
-
-
-def _get_field_infos(fields):
-    fields_names = []
-    labels = []
-    codes = []
-    for field in fields:
-        if field['name'] != 'entity_type':
-            fields_names.append(field['name'])
-            labels.append(field['label']['en'])
-            codes.append(field['code'])
-    return fields_names, labels, codes
-
-
-def load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=REPORTER):
-    return load_subject_registration_data_sorted(manager, fields, filter_entities, type)
-
-
-def load_subject_registration_data_sorted(manager, fields, filter_entities=exclude_of_type, type=REPORTER):
-    entities = get_all_entities(dbm=manager)
-    data = []
-    for entity in entities:
-        if filter_entities(entity,type):
-            data.append(_tabulate_data_sorted(entity, fields))
-    return data
-
-
-def _tabulate_data_sorted(entity, fields):
-    data = {'id': entity.id, 'short_code': entity.short_code, 'cols': []}
-    for i in range(len(fields)):
-        if fields[i] in entity.data.keys():
-            data['cols'].append(_get_field_value(fields[i], entity))
-        else:
-            data['cols'].append(_get_field_default_value(fields[i], entity))
-    return data
-
-def _entity_type_as_sequence(entity_type):
-    if not is_sequence(entity_type):
-        entity_type = [entity_type.lower()]
-    return entity_type
+    fields, labels, codes = get_field_infos(form_model[0].value['json_fields'])
+    return fields, labels, codes
 
 
 def _get_field_value(key, entity):
@@ -295,64 +320,3 @@ def _get_field_default_value(key, entity):
     else:
         value = "--"
     return value
-
-
-def load_all_subjects_sorted(request):
-    manager = get_database_manager(request.user)
-    entity_types_names = _get_entity_types(manager)
-    subjects = _get_registration_form_models(manager)
-
-    subjects_list = {}
-    for entity in entity_types_names:
-        if entity in subjects.keys():
-            form_model = subjects[entity]
-        else:
-            form_model = subjects['Registration']
-        subjects_list[entity] = _get_entity_type_infos(entity, form_model)
-
-    entities = get_all_entities(dbm=manager)
-    for entity in entities:
-        if exclude_of_type(entity, REPORTER):
-            entity_type = entity.type_string
-            if entity_type in subjects_list.keys():
-                subjects_list[entity_type]['data'].append(_tabulate_data_sorted(entity, subjects_list[entity_type]['names']))
-
-    data = [subjects_list[entity] for entity in entity_types_names]
-    return data
-
-
-def _get_entity_types(manager):
-    entity_types = get_all_entity_types(manager)
-    entity_list = [entity[0] for entity in entity_types if entity[0] != 'reporter']
-    entity_list.sort()
-    return entity_list
-
-
-def _get_registration_form_models(manager):
-    subjects = {}
-    form_models = manager.load_all_rows_in_view('questionnaire')
-    for form_model in form_models:
-        if form_model.value['is_registration_model'] and form_model.value['name'] != 'Reporter':
-            subjects[form_model.value['entity_type'][0]] = form_model
-    return subjects
-
-
-def _get_entity_type_infos(entity, form_model):
-    names, labels, codes = _get_field_infos(form_model.value['json_fields'])
-
-    subject = dict(entity = entity,
-        code = form_model.value["form_code"],
-        names = names,
-        labels = labels,
-        data = [],
-    )
-    return subject
-
-def get_form_model_and_detail_by_entity_type(manager, type):
-    form_code = "reg"
-    form_model = get_form_model_by_entity_type(manager, [type.lower()])
-    if form_model is not None:
-        form_code = form_model.form_code
-    form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = _get_field_infos(form_model[0].value['json_fields'])
-    return form_model, fields, labels, codes

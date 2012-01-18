@@ -20,25 +20,25 @@ from datawinners.accountmanagement.views import is_datasender, is_new_user, _get
 from datawinners.entity import helper
 from datawinners.entity.helper import update_questionnaire_with_questions, \
     create_registration_form
-from datawinners.entity.import_data import load_subject_fields_and_names, load_all_subjects_of_type
+from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.helper import create_django_form_from_form_model, create_request, errors_to_list
+from datawinners.project.helper import create_request, errors_to_list
 from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
-from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm, SubjectForm
+from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import \
-    WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+    WebQuestionnaireFormCreater
 from datawinners.utils import get_excel_sheet, workbook_add_sheet
 
 COUNTRY = ',MADAGASCAR'
@@ -181,10 +181,10 @@ def all_subjects(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        subjects_data = import_module.load_all_subjects_sorted(request)
+        subjects_data = import_module.load_all_subjects(request)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
-    subjects_data = import_module.load_all_subjects_sorted(request)
+    subjects_data = import_module.load_all_subjects(request)
     return render_to_response('entity/all_subjects.html', {'all_data': subjects_data, 'current_language': translation.get_language()},
                                   context_instance=RequestContext(request))
 
@@ -198,7 +198,7 @@ def _get_project_association(projects):
 
 
 def _get_all_datasenders(manager, projects, user):
-    all_data_senders = import_module.load_all_subjects_of_type(manager)
+    all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
         org_id = NGOUserProfile.objects.get(user=user).org_id
@@ -246,15 +246,15 @@ def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = models.get_all_projects(manager)
     grant_web_access = False
-    fields, labels = load_subject_fields_and_names(manager)
+    fields, labels, codes = get_entity_type_fields(manager)
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        all_data_senders = _get_all_datasenders_sorted(manager, projects, request.user, fields)
+        all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': all_data_senders}))
-    all_data_senders = _get_all_datasenders_sorted(manager, projects, request.user, fields)
+    all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access, "labels": labels,
                                                               'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
@@ -350,8 +350,8 @@ def create_subject(request, entity_type=None):
                                                 context_instance=RequestContext(request))
 
 
-def _get_all_datasenders_sorted(manager, projects, user, fields):
-    all_data_senders = import_module.load_all_subjects_of_type_sorted(manager, fields)
+def _get_all_datasenders(manager, projects, user):
+    all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
         org_id = NGOUserProfile.objects.get(user=user).org_id
@@ -417,7 +417,6 @@ def export_subject(request):
     entity_list = request.POST.getlist("checked")
     manager = get_database_manager(request.user)
     all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=entity_type)
-
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
 
@@ -429,19 +428,20 @@ def export_subject(request):
     wb.save(response)
     return response
 
+
 @login_required(login_url='/login')
 def export_template(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:
         return HttpResponseRedirect(reverse(all_subjects))
 
-    form_model, fields, labels, codes = import_module.get_form_model_and_detail_by_entity_type(manager, entity_type)
+    fields, labels, codes = import_module.get_entity_type_fields(manager, entity_type)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
 
     wb = get_excel_sheet([labels], entity_type)
-    codes[0:0] = ["form_code"]
-    ws = workbook_add_sheet(wb, [codes,[form_model[0]["value"]["form_code"]]], "codes")
+    codes.insert(0, "form_code")
+    ws = workbook_add_sheet(wb, [codes, labels], "codes")
     ws.visibility = 1
     wb.save(response)
     return response
