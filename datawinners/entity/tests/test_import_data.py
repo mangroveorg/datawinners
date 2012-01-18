@@ -2,15 +2,14 @@
 from collections import OrderedDict
 from mangrove.form_model.field import TextField
 from mangrove.utils.test_utils.mangrove_test_case import MangroveTestCase
-from datawinners.entity.helper import create_registration_form
-from datawinners.entity.import_data import load_subject_registration_data
+from datawinners.entity.import_data import load_all_subjects
 from datawinners.entity.import_data import FilePlayer
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import define_type
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD, get_form_model_by_code
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport.player.parser import CsvParser
 from mangrove.transport.facade import Channel
@@ -35,32 +34,37 @@ class TestImportData(MangroveTestCase):
     def test_should_load_all_subjects(self):
         self._register_entities()
 
-        subjects, fields, label = load_subject_registration_data(self.manager)
+        subjects = load_all_subjects(self.manager)
 
-        self.assertEqual(4, len(subjects))
-        self.assertEqual(fields, ['name', 'short_code', 'location', 'geo_code', 'description', 'mobile_number'])
+        self.assertEqual(2, len(subjects))
+        self.assertEqual(subjects[0]["entity"], "clinic")
+        self.assertEqual(subjects[1]["entity"], "waterpoint")
+        self.assertEqual(subjects[0]["code"], "cli")
+        self.assertEqual(subjects[1]["code"], "wat")
+        self.assertEqual(6, len(subjects[0]["names"]))
+        self.assertEqual(6, len(subjects[0]["labels"]))
 
-        self.assertEqual(subjects[0]['cols'][0], 'clinic0')
-        self.assertEqual(subjects[0]['cols'][3], '1.0, 1.0')
-        self.assertEqual(subjects[0]['cols'][5], '--')
+        self.assertEqual(subjects[0]['data'][0]['cols'][0], 'Bhopal')
+        self.assertEqual(subjects[0]['data'][0]['cols'][2], 'india')
+        self.assertEqual(subjects[0]['data'][0]['cols'][5], 'clb')
 
-        self.assertEqual(subjects[1]['cols'][0], 'clinic1')
-        self.assertEqual(subjects[1]['cols'][5], '--')
+        self.assertEqual(subjects[0]['data'][1]['cols'][0], 'Satna')
+        self.assertEqual(subjects[0]['data'][1]['cols'][3], '-10.66, 13.1')
+        self.assertEqual(subjects[0]['data'][1]['cols'][5], 'cli2')
 
-        self.assertEqual(subjects[2]['cols'][0], 'clinic2')
-        self.assertEqual(subjects[2]['cols'][5], '12332114')
-
-        self.assertEqual(subjects[3]['cols'][0], 'clinic3')
-        self.assertEqual(subjects[3]['cols'][3], '--')
-        self.assertEqual(subjects[3]['cols'][2], 'pune')
-        self.assertEqual(subjects[3]['cols'][4], 'this is a clinic')
+        self.assertEqual(subjects[1]['data'][0]['cols'][0], 'Ambovombe')
+        self.assertEqual(subjects[1]['data'][0]['cols'][3], '-18.16, 14.1')
+        self.assertEqual(subjects[1]['data'][0]['cols'][4], '123444')
+        self.assertEqual(subjects[1]['data'][0]['cols'][5], 'wat1')
 
     def _create_entities(self):
         self.entity_type = ['clinic']
         define_type(self.manager, self.entity_type)
         create_registration_form(self.manager, self.entity_type)
+        self.entity_type = ['waterpoint']
+        define_type(self.manager, self.entity_type)
+        create_registration_form(self.manager, self.entity_type)
         define_type(self.manager, ['reporter'])
-        create_registration_form(self.manager, "clinic")
         self.name_type = DataDictType(self.manager, name='Name', slug='name', primitive_type='string')
         self.telephone_number_type = DataDictType(self.manager, name='telephone_number', slug='telephone_number',
                                                   primitive_type='string')
@@ -73,10 +77,11 @@ class TestImportData(MangroveTestCase):
         self.player.accept(Request(text, self.transport))
 
     def _register_entities(self):
-        self._register_entity('reg .t clinic .s 1 .g 1 1 .n clinic0')
-        self._register_entity('reg .t clinic .s 2 .g 21 21 .n clinic1')
-        self._register_entity('reg .t clinic .s 3 .g 11 11 .m 12332114 .n clinic2')
-        self._register_entity('reg .t clinic .s 4 .d this is a clinic .l pune .n clinic3')
+        self._register_entity('cli Bhopal Clinic India -12.35,49.3 123444 clb')
+        self._register_entity('cli Satna Clinic India -10.66,13.1 567223')
+        self._register_entity('cli Pune Clinic Yerawada -18.16,14.1 643321')
+        self._register_entity('wat Ambovombe Test Androy -18.16,14.1 123444')
+        self._register_entity('wat Morondava Test Menabe -15.91,12.67 138866')
 
 def dummy_get_location_hierarchy(foo):
     return [u'arantany']

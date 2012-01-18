@@ -189,8 +189,7 @@ def get_entity_type_infos(entity, form_model):
     return subject
 
 
-def load_all_subjects(request):
-    manager = get_database_manager(request.user)
+def load_all_subjects(manager):
     entity_types_names = _get_entity_types(manager)
     subjects = _get_registration_form_models(manager)
 

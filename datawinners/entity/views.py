@@ -181,10 +181,10 @@ def all_subjects(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
-        subjects_data = import_module.load_all_subjects(request)
+        subjects_data = import_module.load_all_subjects(manager)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
-    subjects_data = import_module.load_all_subjects(request)
+    subjects_data = import_module.load_all_subjects(manager)
     return render_to_response('entity/all_subjects.html', {'all_data': subjects_data, 'current_language': translation.get_language()},
                                   context_instance=RequestContext(request))
 
