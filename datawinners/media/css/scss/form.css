@@ -282,16 +282,16 @@ select {
   clear: both; }
 
 /* File up loader */
-#file-uploader {
+#file-uploader, .file-uploader {
   width: 480px;
   margin: 10px 20px 20px 0; }
-  #file-uploader h6 {
+  #file-uploader h6, .file-uploader h6 {
     float: left;
     margin: 10px 20px 0 0; }
-  #file-uploader #file_uploader {
+  #file-uploader #file_uploader, .file-uploader #file_uploader {
     width: 160px;
     float: left; }
-  #file-uploader .qq-upload-button {
+  #file-uploader .qq-upload-button, .file-uploader .qq-upload-button {
     border: 1px solid #D4972D;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;

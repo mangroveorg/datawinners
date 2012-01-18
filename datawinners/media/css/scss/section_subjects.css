@@ -176,3 +176,12 @@
   font-size: 14px;
   font-style: italic;
   line-height: 18px; }
+
+.popup-import .file-uploader {
+  width: 170px !important;
+  margin: 0 !important; }
+.popup-import .error {
+  margin-top: 7px !important; }
+.popup-import ul.bulleted li {
+  list-style-type: disc !important;
+  margin-left: 20px; }

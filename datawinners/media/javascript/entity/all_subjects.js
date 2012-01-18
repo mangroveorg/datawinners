@@ -23,18 +23,15 @@ $(document).ready(function() {
         $('#subject-export-form').trigger('submit');
     });
     
-    $(".import-subject").each(function(){
+    $(".file-uploader").each(function(){
         var form_code = $(this).attr("id").substr(7);
         
         var uploader = new qq.FileUploader({
             // pass the dom node (ex. $(selector)[0] for jQuery users)
             element: $(this)[0],
             // path to server-side upload script
-            action: "/entity/subjects/",
+            action: window.location.pathname,
             params: {form_code: form_code},
-            template:'<div  style="display:none;" class="qq-upload-drop-area"><span>' + gettext("Drop files here to upload") + '</span></div>' +
-                '<a href="javascript:void(0);" class="qq-upload-button" style="width: 50px;display: inline-block;background: none;padding: 0;border: none; orverflow: none;">' + gettext("Import") + '<br/></a>' +
-                '<ul class="qq-upload-list" style="display: none;"></ul>' ,
             onComplete: function(id, fileName, responseJSON) {
                 $('#message').remove();
                 $('#error_tbody').html('');
@@ -43,18 +40,43 @@ $(document).ready(function() {
                 $.each(responseJSON.all_data, function(index, entity_data) {
                     if (entity_data.code == form_code){
                         $.each(entity_data.data, function(key, element){
-                            var datas = element.cols.join("</td><td>");
-                            datas = '<input type="checkbox" value="'+element.short_code+'" name="checked"/></td><td>'+datas;
-                            $("#"+form_code+"_table").append("<tr><td>"+datas+"</td></tr>");
+                            if ($.inArray(element.short_code, responseJSON.imported) != -1){
+                                var datas = element.cols.join("</td><td>");
+                            
+                                $("#"+form_code+"_table").append("<tr><td>"+datas+"</td></tr>");
+                            }
                         });
                     }
                 });
+
+                if (responseJSON.success == true) {
+                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+
+                }
+                else {
+                    $('#error_tbody').html('');
+    //                $("#error_table").show();
+                    if (responseJSON.error_message) {
+                        $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
+                    }
+                    else {
+                        $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+                    }
+                    if (responseJSON.failure_imports > 0) {
+                        $("#error_table").show();
+                    }
+                    $.each(responseJSON.failure_imports, function(index, element) {
+                        $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
+                                + element.error + "</td></tr>");
+                    });
+                    $("#error_table").show();
+                }
             }
         });
     })
+    
 
-
-    /* leave commented for next change
+    
     $(".popup-import").dialog({
         autoOpen: false,
         modal: true,
@@ -70,5 +92,14 @@ $(document).ready(function() {
         var entity_type = $(this).attr("id").substr(7);
         $("#popup-"+entity_type).dialog("open");
     });
-    */
+
+    $(".close_import_dialog").bind("click", function(){
+        var entity_type = $(this).attr("id").substr(13);
+        $("#popup-"+entity_type).dialog("close");
+    })
+
+    $(".edit-form-code-link").bind("click", function(){
+        var entity_type = $(this).attr("id").substr(8);
+        location.href = $("#link-to-edit-form-"+entity_type).attr("href");
+    })
 });

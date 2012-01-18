@@ -14,22 +14,47 @@
         <span class="success_error">{{ subject.data|length }} registered subjects</span>
     </div>
     <div>
-        <div class="export_template_links">
-            <a href="{% url datawinners.entity.views.export_template subject.entity %}" class="export-template"  id="export-{{ subject.entity }}">{% trans "Download Import Template" %}</a>
-        </div>
         <div class="subjects_links">
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" style="margin-right: 20px;">Edit registration form</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" style="margin-right: 20px;" id="link-to-edit-form-{{ subject.entity }}">Edit registration form</a>
             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
-            <!--<a  class="import-subject" id="import-{{ subject.entity }}">Import list</a>&nbsp;|&nbsp; -->
-            <span  class="qq-uploader import-subject" id="import-{{ subject.entity }}">Import list</span>&nbsp;|&nbsp;
+            <a  class="import-subject" id="import-{{ subject.entity }}">Import list</a>&nbsp;|&nbsp;
             <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>
         </div>
-        <!--
+        
         <div class="popup-import" id="popup-{{ subject.entity }}">
-            {% blocktrans %}Upload an Excel file (.xls) with Your {{ subject.entity }} list{% endblocktrans %}
+            {% blocktrans with subject.entity as entity_type %}Upload an Excel file (.xls) with Your {{ entity_type }} list{% endblocktrans %}
             <br/><br/>
+            <div class="file-uploader float_left" id="import-{{ subject.code }}">
+                <noscript>
+                    <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+                    <!-- or put a simple form for upload here -->
+                </noscript>
+                <div class="clear"></div>
+            </div>
+            <div class="error">{% trans "Download the template:"%} <a href="{% url datawinners.entity.views.export_template subject.entity %}">{{ subject.entity }}.xls</a></div>
+            <table>
+                <thead>
+                    {% for title in subject.labels %}
+                        <th>{{ title }}</th>
+                    {% endfor %}
+                </thead>
+                <tbody id="{{ subject.code }}_table">
+                </tbody>
+            </table>
+            <div>
+                Note:
+                <ul class="bulleted">
+                    <li>{% trans "The order of the columns in your Excel file needs to match the existing order of your questions." %}</li>
+                    <li>{% blocktrans with subject.entity as entity_type and subject.entity as form_code %}You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link' >Edit the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
+                    <li>{% trans "The 1<sup>st</sup> row of your Excel file will not be imported. You can use this header row for your questions (titles of the columns)." %}</li>
+                </ul>
+            </div>
+            <br/>
+            <div style="display: inline;float:right;">
+                <a href="javascript:void(0);" id="close-import-{{ subject.entity }}" class="button close_import_dialog">{% trans "Close" %}</a>
+            </div>
         </div>
-        -->
+        
         {% if subject.data|length > 0 %}
             <table class="styled_table" id="{{ subject.entity }}-table">
                 <thead>
@@ -38,7 +63,7 @@
                         <th>{{ title }}</th>
                     {% endfor %}
                 </thead>
-                <tbody id="{{ subject.code }}_table">
+                <tbody id="{{ subject.code }}-table">
                 {% for row in subject.data %}
                     <tr>
                         <td><input type="checkbox" id="{{ row.id }}" value="{{ row.short_code }}" name="checked"/></td>
@@ -57,7 +82,7 @@
                         <th>{{ title }}</th>
                     {% endfor %}
                 </thead>
-                <tbody id="{{ subject.code }}_table">
+                <tbody id="{{ subject.code }}-table">
 
                 </tbody>
             </table>

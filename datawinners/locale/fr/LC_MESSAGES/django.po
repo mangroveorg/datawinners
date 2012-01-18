@@ -3064,5 +3064,21 @@ msgstr "Affichez vos données qui ont été reçues pendant une période de rapp
        "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"
 
 #, python-format
-msgid "Upload an Excel file (.xls) with Your %s list"
-msgstr "Télécharger un fichier excel (.xls) avec votre liste de %s"
+msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"
+msgstr "Télécharger un fichier excel (.xls) avec votre liste de %(entity_type)s"
+
+msgid "Download the template:"
+msgstr "Télécharger le modèle:"
+
+msgid "The order of the columns in your Excel file needs to match the existing order of your questions."
+msgstr "L'ordre des colonnes dans votre fichier Excel doit correspondre à l'ordre existant de vos questions."
+
+msgid "The 1<sup>st</sup> row of your Excel file will not be imported. You can use this header row for your questions (titles of the columns)."
+msgstr "La 1<sup>ère</sup> ligne de votre fichier Excel ne sera pas importé. Vous pouvez utiliser cette ligne entête pour vos questions (titres des colonnes)"
+
+msgid "You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-%(form_code)s' class='edit-form-code-link' >Edit the %(entity_type)s Registration Form</a> to make these changes."
+msgstr "Vous ne pouvez pas ajouter ue nouvelle colonne dans votre fichier Excel pour créer une question. <a href='javascript:void(0);'"
+"id='to-edit-%(form_code)s' class='edit-form-code-link' >Editer le formulaire d'enregistrement de %(entity_type)s</a> pour faire cette modification."
+
+msgid "Close"
+msgstr "Fermer"

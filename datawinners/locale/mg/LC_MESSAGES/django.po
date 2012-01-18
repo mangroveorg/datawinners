@@ -2454,5 +2454,20 @@ msgid "Example: a report per patient, clinic, water pump - choose below"
 msgstr ""
 
 #, python-format
-msgid "Upload an Excel file (.xls) with Your %s list"
+msgid "Upload an Excel file (.xls) with Your %(entity_type)s list"
+msgstr ""
+
+msgid "Download the template:"
+msgstr ""
+
+msgid "The order of the columns in your Excel file needs to match the existing order of your questions."
+msgstr ""
+
+msgid "The 1<sup>st</sup> row of your Excel file will not be imported. You can use this header row for your questions (titles of the columns)."
+msgstr ""
+
+msgid "You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-%(form_code)s' class='edit-form-code-link' >Edit the %(entity_type)s Registration Form</a> to make these changes."
+msgstr ""
+
+msgid "Close"
 msgstr ""
