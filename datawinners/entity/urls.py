@@ -13,7 +13,7 @@ from datawinners.entity.views import export_subject
 urlpatterns = patterns('',
     (r'^entity/datasender/create', create_datasender),
     (r'^entity/webuser/create', create_web_users),
-    (r'^entity/subject/create', create_subject),
+    (r'^entity/subject/create/(?P<entity_type>.+?)/$', create_subject),
     (r'^entity/type/create', create_type),
     (r'^entity/subjects/$', all_subjects),
     (r'^entity/datasenders/$', all_datasenders),

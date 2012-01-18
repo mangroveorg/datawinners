@@ -41,7 +41,7 @@ class WebQuestionnaireFormCreater(object):
 
 
     def _create_char_field(self, field):
-        char_field = forms.CharField(label=field.name, initial=field.value, required=field.is_required(),
+        char_field = forms.CharField(label=field.label["en"], initial=field.value, required=field.is_required(),
             help_text=field.instruction)
         char_field.widget.attrs["watermark"] = field.get_constraint_text()
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -50,9 +50,9 @@ class WebQuestionnaireFormCreater(object):
 
     def _create_select_field(self, field):
         if field.single_select_flag:
-            return ChoiceField(choices=self._create_choices(field), required=field.is_required(), label=field.name,
+            return ChoiceField(choices=self._create_choices(field), required=field.is_required(), label=field.label["en"],
                 initial=field.value, help_text=field.instruction)
-        return forms.MultipleChoiceField(label=field.name, widget=forms.CheckboxSelectMultiple,
+        return forms.MultipleChoiceField(label=field.label["en"], widget=forms.CheckboxSelectMultiple,
             choices=self._create_choices(field),
             initial=field.value, required=field.is_required(), help_text=field.instruction)
 

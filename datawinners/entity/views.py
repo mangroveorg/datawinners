@@ -14,19 +14,23 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
+from mangrove.transport import Channel
 from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount,Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
 from datawinners.entity import helper
 from datawinners.entity.helper import update_questionnaire_with_questions, \
     create_registration_form
 from datawinners.entity.import_data import load_subject_fields_and_names, load_all_subjects_of_type
-from datawinners.location.LocationTree import get_location_tree
+from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
+
+from datawinners.messageprovider.messages import exception_messages, WEB
+from datawinners.project.helper import create_django_form_from_form_model, create_request, errors_to_list
 from datawinners.project.models import Project
 from mangrove.datastore.entity_type import get_all_entity_types, define_type
 from datawinners.project import helper as project_helper, models
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm, SubjectForm
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code
 from mangrove.transport.player.player import WebPlayer
@@ -34,6 +38,8 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.utils import get_excel_sheet
+from datawinners.project.web_questionnaire_form_creator import \
+    WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 
 COUNTRY = ',MADAGASCAR'
 
@@ -296,14 +302,52 @@ def import_subjects_from_project_wizard(request):
     return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                     'failure_imports': failure_imports}))
 
-@login_required(login_url='/login')
-def create_subject(request):
-    db_manager = get_database_manager(request.user)
-    entity_types = get_all_entity_types(db_manager)
-    project_helper.remove_reporter(entity_types)
-    subjectForm = SubjectForm()
-    return render_to_response("entity/create_subject.html", {"post_url": reverse(submit), "entity_types": entity_types, "form": subjectForm},
+
+def _make_form_context(questionnaire_form, entity_type):
+    return {'questionnaire_form': questionnaire_form, 'entity': entity_type,}
+
+
+def _get_response(request, questionnaire_form, entity_type):
+    return render_to_response('entity/web_questionnaire.html',
+                              _make_form_context(questionnaire_form, entity_type),
                               context_instance=RequestContext(request))
+
+
+@login_required(login_url='/login')
+def create_subject(request, entity_type=None):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    QuestionnaireForm = WebQuestionnaireFormCreater(None,form_model=form_model).create()
+    if request.method == 'GET':
+        questionnaire_form = QuestionnaireForm()
+        return _get_response(request, questionnaire_form, entity_type)
+
+    if request.method == 'POST':
+        questionnaire_form = QuestionnaireForm(request.POST)
+        if not questionnaire_form.is_valid():
+            return _get_response(request, questionnaire_form, entity_type)
+
+        success_message = None
+        error_message = None
+        try:
+            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(create_request(questionnaire_form, request.user.username))
+            if response.success:
+                success_message = _("Successfully submitted")
+                questionnaire_form = QuestionnaireForm()
+            else:
+                questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
+                return _get_response(request, questionnaire_form, entity_type)
+
+        except DataObjectNotFound as exception:
+            message = exception_messages.get(DataObjectNotFound).get(WEB)
+            error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
+        except Exception as exception:
+            error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
+
+        subject_context = _make_form_context(questionnaire_form, entity_type)
+        subject_context.update({'success_message': success_message, 'error_message': error_message})
+        return render_to_response('entity/web_questionnaire.html', subject_context,
+                                                context_instance=RequestContext(request))
 
 
 def _get_all_datasenders_sorted(manager, projects, user, fields):
@@ -365,6 +409,7 @@ def save_questionnaire(request):
         else:
             form_model.save()
             return HttpResponse(json.dumps({"response": "ok", 'form_code': form_model.form_code}))
+
 
 @login_required(login_url='/login')
 def export_subject(request):

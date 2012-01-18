@@ -3,7 +3,10 @@
 from mangrove.datastore.datadict import get_datadict_type_by_slug, \
     create_datadict_type
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField, IntegerField, DateField, SelectField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, \
+    NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, \
+    GEO_CODE_FIELD, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
+    SHORT_CODE_FIELD, SHORT_CODE
 from mangrove.form_model.validation import TextLengthConstraint, \
     RegexConstraint, NumericRangeConstraint
 from mangrove.utils.helpers import slugify
@@ -14,25 +17,8 @@ from mangrove.errors.MangroveException import NumberNotRegisteredException, \
 from mangrove.transport.reporter import find_reporter_entity
 from django.utils.encoding import smart_unicode
 
-REGISTRATION_FORM_CODE = "reg"
-ENTITY_TYPE_FIELD_CODE = "t"
-ENTITY_TYPE_FIELD_NAME = "entity_type"
-LOCATION_TYPE_FIELD_NAME = "location"
-LOCATION_TYPE_FIELD_CODE = "l"
-GEO_CODE = "g"
-GEO_CODE_FIELD = "geo_code"
-NAME_FIELD = "name"
-NAME_FIELD_CODE = "n"
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
-SHORT_CODE_FIELD = "short_code"
-SHORT_CODE = "s"
-DESCRIPTION_FIELD = "description"
-DESCRIPTION_FIELD_CODE = "d"
-MOBILE_NUMBER_FIELD = "mobile_number"
-MOBILE_NUMBER_FIELD_CODE = "m"
-REPORTER = "reporter"
-REPORTER_FORM_CODE = "rep"
 
 def remove_hyphens(telephone_number):
     return re.sub('[- \(\)+]', '', smart_unicode(telephone_number))
@@ -99,7 +85,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
                               defaultValue="some default value", language="en", ddtype=name_type,
                               instruction="Enter an id, or allow us to generate it",
                               entity_question_flag=True,
-                              constraints=[TextLengthConstraint(max=12)], required=True)
+                              constraints=[TextLengthConstraint(max=12)])
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions , is_registration_model=True, entity_type=entity_type)
