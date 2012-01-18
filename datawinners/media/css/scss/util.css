@@ -321,18 +321,18 @@ span.tooltip {
 .clear-right {
   clear: right; }
 
-#help_accordion {
+.help_accordion {
   font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
   font-size: 14px;
   line-height: 18px;
   font-style: italic;
   color: #666666; }
-  #help_accordion h2 {
+  .help_accordion h2 {
     margin: 10px 0 0 0;
     font-size: 14px; }
-  #help_accordion #show_link {
+  .help_accordion .show_link {
     color: #2E6E9E; }
-  #help_accordion #help_details {
+  .help_accordion .details {
     display: none; }
-    #help_accordion #help_details #hide_link {
+    .help_accordion .details #hide_link {
       color: #2E6E9E; }

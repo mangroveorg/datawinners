@@ -373,7 +373,7 @@ font-size: 15px;
     clear:right;
 }
 
-#help_accordion {
+.help_accordion {
     font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
     font-size: 14px;
     line-height: 18px;
@@ -383,10 +383,10 @@ font-size: 15px;
         margin: 10px 0 0 0;
         font-size: 14px;
     }
-    #show_link {
+    .show_link {
         color: #2E6E9E;
     }
-    #help_details {
+    .details {
         display: none;
         #hide_link {
             color: #2E6E9E;
