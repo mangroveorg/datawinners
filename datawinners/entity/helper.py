@@ -85,7 +85,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
                               defaultValue="some default value", language="en", ddtype=name_type,
                               instruction="Enter an id, or allow us to generate it",
                               entity_question_flag=True,
-                              constraints=[TextLengthConstraint(max=12)])
+                              constraints=[TextLengthConstraint(max=12)], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions , is_registration_model=True, entity_type=entity_type)

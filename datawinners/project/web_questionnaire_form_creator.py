@@ -14,13 +14,15 @@ class WebQuestionnaireFormCreater(object):
         properties = dict()
         if self.form_model.is_registration_form():
             properties.update({u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])})
+            properties.update(
+                {field.code: self._get_django_field(field) for field in self.form_model.fields})
         else:
             subject_question = self.form_model.entity_question
             if subject_question is not None:
                 properties.update(self._get_subject_web_question(subject_question))
                 properties.update(self.subject_question_creator.create_code_hidden_field(subject_question))
-        properties.update(
-            {field.code: self._get_django_field(field) for field in self.form_model.fields if not field.is_entity_field})
+            properties.update(
+                {field.code: self._get_django_field(field) for field in self.form_model.fields if not field.is_entity_field})
         properties.update(self._get_form_code_hidden_field())
 
 
