@@ -18,11 +18,13 @@ from pytz import UTC
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code, FIRST_NAME_FIELD
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+
+FIRST_NAME_FIELD = "firstname"
 
 class DateTimeMocker(object):
     def __init__(self):
