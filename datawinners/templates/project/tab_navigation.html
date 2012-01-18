@@ -120,7 +120,7 @@
 {% block secondary_navigation_subjects %}
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.registered_subjects_link }}">{% trans "My" %} {{ project.entity_type|capfirst }}</a>
+        <a href="{{ project_links.registered_subjects_link }}">{% blocktrans %}My {{ project.entity_type|capfirst }} list{% endblocktrans %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
         <a href="{{ project_links.subjects_link }}">{{ project.entity_type|capfirst }} {% trans "Registration Form" %}</a>

@@ -1,0 +1,63 @@
+{% load i18n %}
+{% load field_tags %}
+{% if success_message %}
+    <div class="success-message-box">{{ success_message }}</div>
+{% endif %}
+{% if error_message %}
+    <div class="message-box">{{ error_message }}</div>
+{% endif %}
+
+{% if 0 %}
+    <div class="warning-message-box">
+        <p> {% trans "You have used up your 10 Web submissions for the trial account. Sign up for a monthly subscription to continue sending in data to your projects." %} </p>
+        <a href="/en/pricing/" class="trial_web_learn_more">Learn
+            More</a><a
+            href="{% url datawinners.accountmanagement.views.upgrade %}"
+            class="trial_web_limit_button">Subscribe Now</a>
+    </div>
+{% endif %}
+
+{% if questionnaire_form.non_fielderrors %}
+    <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
+{% endif %}
+{% for field in questionnaire_form %}
+    {% if field.is_hidden and field.name == 'entity_question_code' %}
+        <input id='code' type="hidden" value="{{ field.label }}"/>
+    {% endif %}
+{% endfor %}
+<form method="POST">
+    {% csrf_token %}
+    <ul class="que_width">
+        {% for field in questionnaire_form %}
+            <li>
+                {% if not field.is_hidden %}
+                    <h6>{{ field.label }}</h6>
+                    <input id='code1' type="hidden"
+                           value="{{ field.name }}"/>
+                    <p class="instructions italic">
+                        {{ field.help_text }}
+                    </p>
+                {% endif %}
+                <div class="answer">
+                    {% if field|field_type == 'ChoiceField' %}
+                        <span class="single_select_question" wmwrap="true">
+                            {{ field }}
+                        </span>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>
+                                    {{ error }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <input type="submit" class="button" value="{% trans 'Submit' %}"/>
+</form>

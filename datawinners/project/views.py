@@ -81,6 +81,7 @@ def _make_project_links(project,questionnaire_code):
 
         project_links['subjects_link'] = reverse(subjects, args=[project_id])
         project_links['subjects_edit_link'] = reverse(edit_subject, args=[project_id])
+        project_links['register_subjects_link'] = reverse('subject_questionnaire', args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
@@ -667,8 +668,8 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
             }
 
 
-def _get_response(form_code, project, questionnaire_form, request, disable_link_class):
-    return render_to_response('project/web_questionnaire.html',
+def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
+    return render_to_response(template,
                               _make_form_context(questionnaire_form, project, form_code, disable_link_class),
                               context_instance=RequestContext(request))
 
@@ -676,20 +677,25 @@ def _get_response(form_code, project, questionnaire_form, request, disable_link_
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
-def web_questionnaire(request, project_id=None):
+def web_questionnaire(request, project_id=None, subject=False):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    form_model = FormModel.get(manager, project.qid)
+    if subject:
+        template = 'project/register_subject.html'
+        form_model = _get_subject_form_model(manager, project.entity_type)
+    else:
+        template = 'project/web_questionnaire.html'
+        form_model = FormModel.get(manager, project.qid)
     QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager,project),form_model=form_model).create()
     disable_link_class = "disable_link" if request.user.get_profile().reporter else ""
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
+        return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
+            return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
         success_message = None
         error_message = None
@@ -700,7 +706,7 @@ def web_questionnaire(request, project_id=None):
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
-                return _get_response(form_model.form_code, project, questionnaire_form, request, disable_link_class)
+                return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
         except DataObjectNotFound as exception:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
@@ -711,7 +717,7 @@ def web_questionnaire(request, project_id=None):
 
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update({'success_message': success_message, 'error_message': error_message})
-        return render_to_response('project/web_questionnaire.html', _project_context,
+        return render_to_response(template, _project_context,
                                   context_instance=RequestContext(request))
 
 
@@ -769,7 +775,7 @@ def _get_registration_form(manager, project, project_id, type_of_subject='subjec
 
 
 def get_example_sms_message(fields, registration_questionnaire):
-    example_sms = "%s <answer> .... <answer>" % (registration_questionnaire.form_code)
+    example_sms = "%s %s" % (registration_questionnaire.form_code, get_example_sms(fields))
     return example_sms
 
 
@@ -813,14 +819,17 @@ def _get_organization_telephone_number(request):
     return ' or '.join(organization_number) if isinstance(organization_number, list) else organization_number
 
 
+def _get_subject_form_model(manager, entity_type):
+    if is_string(entity_type):
+        entity_type = [entity_type]
+    return get_form_model_by_entity_type(manager, entity_type)
+
 @login_required(login_url='/login')
 def edit_subject(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
 
-    if is_string(project.entity_type):
-        entity_type = [project.entity_type]
-    reg_form = get_form_model_by_entity_type(manager, entity_type)
+    reg_form = _get_subject_form_model(manager, project.entity_type)
     if reg_form is None:
         reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = reg_form.fields
@@ -832,4 +841,3 @@ def edit_subject(request, project_id=None):
              'questionnaire_code': reg_form.form_code,
              'entity_type': project.entity_type},
                               context_instance=RequestContext(request))
-

@@ -65,62 +65,12 @@
             <li><a href="{{ project_links.subjects_edit_link }}">Edit</a></li>
             <li><a href="javascript:void(0)" class="disabled_link">Print</a></li>
             <li style="width: 80px; text-align: right; padding-right: 5px;">{% trans "View Style:" %}</li>
-            <li style="width: 60px;"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
-            <li style="width: 60px;"><a href="{{ project_links.register_subjects_link }}" id="web_preview_btn">Web</a></li>
+            <li style="width: 60px;"><a href="{{ project_links.subjects_link }}" id="sms_preview_btn">SMS</a></li>
+            <li style="width: 60px;"><a href="javascript:void(0)" id="web_preview_btn" class="active">Web</a></li>
         </ul>
         <div class="clear-left"></div>
     </div>
-
-    <div id="sms_preview">
-        <ul class="questionnaire_title">
-            <li>
-                <p>{% trans "SMS your answers to" %}</p>
-                <h5>{{ org_number }}</h5>
-            </li>
-            <li>
-                <p>{% trans "Project Name:" %}</p>
-                <h5>{{ project.name }}</h5>
-            </li>
-            <li>
-                <p>{% trans "Questionnarie Code:" %}</p>
-                <h5>{{ questionnaire_code }}</h5>
-            </li>
-            <li class="margin_top_10">
-                <p>{% trans "Example SMS:" %} </p>
-                <p class="sms_exemple">{{ example_sms }}</p>
-            </li>
-        </ul>
-        <div class="clear"></div>
-        <ol class="olpreview">
-            {% for question in questions %}
-                <li>
-                    <h6>{% trans question.description %}</h6>
-                    {% if  question.instruction %}
-                        <p class="instructions italic">
-                            {% trans question.instruction %}
-                        </p>
-                        <input class="displayText" disabled="disabled" type="text">
-                    {% endif %}
-                    <div class="answer">
-                        {% if question.type == "select1" %}
-                            <ol class="multiple_select">
-                                {% for option in question.constraints %}
-                                    <li><label>{{ option }}</label></li>
-                                {% endfor %}
-                            </ol>
-                        {% endif %}
-                        {% if question.type == "select" %}
-                            <ol class="multiple_select">
-                                {% for option in question.constraints %}
-                                    <li><label>{{ option }}</label></li>
-                                {% endfor %}
-                            </ol>
-                        {% endif %}
-                    </div>
-                </li>
-            {% endfor %}
-        </ol>
-    </div>
+    {% include 'entity/web_questionnaire_questions.html' %}
     <div class="subject_registration_preview">
         {% trans "Generating the questionnaire preview." %}
     </div>
