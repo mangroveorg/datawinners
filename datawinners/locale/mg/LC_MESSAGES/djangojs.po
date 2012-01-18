@@ -559,3 +559,6 @@ msgstr ""
 
 msgid "Terms And Conditions"
 msgstr ""
+
+msgid "Import a list of %(entity)s"
+msgstr ""

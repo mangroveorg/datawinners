@@ -3062,3 +3062,7 @@ msgid "learn_more_delete_question"
 msgstr "Affichez vos données qui ont été reçues pendant une période de rapport particulière  (Exemple : tous les rapports envoyés en Janvier) au lieu de la période durant laquelle les rapports  ont été effectivement reçus (Exemple : tous les rapports envoyés entre le 1er et le 31 Janvier)"
        "Ceci est très utile si  vous donnez à vos expéditeurs de données un délai d’envoi de leur rapport de Janvier jusqu’au 5 Février. Datawinners séparera correctement les rapports  entre les périodes de  rapport y afférentes"
        "Vous pouvez traduire ou modifier cette question, mais essayez de garder le même sens (Exemple : « Pour quel mois et quelle année établissez-vous le rapport ?)"
+
+#, python-format
+msgid "Upload an Excel file (.xls) with Your %s list"
+msgstr "Télécharger un fichier excel (.xls) avec votre liste de %s"

@@ -2452,3 +2452,7 @@ msgstr ""
 
 msgid "Example: a report per patient, clinic, water pump - choose below"
 msgstr ""
+
+#, python-format
+msgid "Upload an Excel file (.xls) with Your %s list"
+msgstr ""

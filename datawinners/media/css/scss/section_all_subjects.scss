@@ -51,6 +51,13 @@
         font-size: 12px !important;
         color: #0070AC;
         text-align: right;
+        .qq-upload-button{
+            overflow: visible !important;
+            input{
+                font-size: 1px !important;
+                left: 0px;
+            }
+        }
     }
     .no_registered_subjects {
         margin: 10px 0;
@@ -62,6 +69,10 @@
             padding: 0 10px;
             list-style-type: disc !important;
         }
+    }
+    .export_template_links{
+        width: 400px;
+        float: left;
     }
 }
 

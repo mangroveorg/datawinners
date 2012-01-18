@@ -56,3 +56,4 @@ class TestImport(MangroveTestCase):
         self.assertEqual('reporter', imported_entities["rep2"])
         self.assertEqual('reporter', imported_entities["rep3"])
         self.assertEqual('reporter', imported_entities["rep4"])
+        

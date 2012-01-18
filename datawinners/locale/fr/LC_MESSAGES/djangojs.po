@@ -587,3 +587,7 @@ msgstr "Termes et Conditions"
 
 msgid "Learn More"
 msgstr "En savoir plus"
+
+#, python-format
+msgid "Import a list of %(entity)s"
+msgstr "Importer une liste de %(entity)s"

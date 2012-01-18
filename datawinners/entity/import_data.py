@@ -11,7 +11,7 @@ from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code, get_form_model_by_entity_type
-from mangrove.transport.player.parser import CsvParser, XlsParser
+from mangrove.transport.player.parser import CsvParser, XlsOrderedParser, XlsParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
 from mangrove.utils.types import sequence_to_str, is_string, is_sequence
@@ -30,12 +30,12 @@ class FilePlayer(Player):
         self.channel_name = channel_name
 
     @classmethod
-    def build(cls, manager, extension, location_tree):
+    def build(cls, manager, extension, location_tree, form_code=None):
         if extension == '.csv':
             parser = CsvParser()
             channel = Channel.CSV
         elif extension == '.xls':
-            parser = XlsParser()
+            parser = XlsParser() if form_code is None else XlsOrderedParser(form_code)
             channel = Channel.XLS
         else:
             raise InvalidFileFormatException()
@@ -141,12 +141,7 @@ def _get_entity_type_from_row(row):
 def load_subject_registration_data(manager,
                                    filter_entities=exclude_of_type,
                                    type=REPORTER, tabulate_function=_tabulate_data):
-    form_code = "reg"
-    form_model = get_form_model_by_entity_type(manager, [type.lower()])
-    if form_model is not None:
-        form_code = form_model.form_code
-    form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels = _get_field_infos(form_model[0].value['json_fields'])
+    form_model, fields, labels, codes = get_form_model_and_detail_by_entity_type(manager, type)
     entities = get_all_entities(dbm=manager)
     data = []
     for entity in entities:
@@ -163,9 +158,9 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type,type=REPO
     return load_subject_registration_data(manager, filter_entities, type)
 
 
-def _handle_uploaded_file(file_name, file, manager):
+def _handle_uploaded_file(file_name, file, manager, form_code=None):
     base_name, extension = os.path.splitext(file_name)
-    player = FilePlayer.build(manager, extension, get_location_tree())
+    player = FilePlayer.build(manager, extension, get_location_tree(), form_code)
     response = player.accept(file)
     return response
 
@@ -191,7 +186,8 @@ def import_data(request, manager):
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
-        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager)
+        form_code = request.GET.get("form_code", None)
+        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
         successful_imports = len(imported_entities)
         total = len(responses)
@@ -225,18 +221,20 @@ def load_subject_fields_and_names(manager, type=REPORTER):
     if form_model is not None:
         form_code = form_model.form_code
     form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels = _get_field_infos(form_model[0].value['json_fields'])
+    fields, labels, codes = _get_field_infos(form_model[0].value['json_fields'])
     return fields, labels
 
 
 def _get_field_infos(fields):
     fields_names = []
     labels = []
+    codes = []
     for field in fields:
         if field['name'] != 'entity_type':
             fields_names.append(field['name'])
             labels.append(field['label']['en'])
-    return fields_names, labels
+            codes.append(field['code'])
+    return fields_names, labels, codes
 
 
 def load_all_subjects_of_type_sorted(manager, fields, filter_entities=include_of_type, type=REPORTER):
@@ -340,7 +338,7 @@ def _get_registration_form_models(manager):
 
 
 def _get_entity_type_infos(entity, form_model):
-    names, labels = _get_field_infos(form_model.value['json_fields'])
+    names, labels, codes = _get_field_infos(form_model.value['json_fields'])
 
     subject = dict(entity = entity,
         code = form_model.value["form_code"],
@@ -349,3 +347,12 @@ def _get_entity_type_infos(entity, form_model):
         data = [],
     )
     return subject
+
+def get_form_model_and_detail_by_entity_type(manager, type):
+    form_code = "reg"
+    form_model = get_form_model_by_entity_type(manager, [type.lower()])
+    if form_model is not None:
+        form_code = form_model.form_code
+    form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
+    fields, labels, codes = _get_field_infos(form_model[0].value['json_fields'])
+    return form_model, fields, labels, codes

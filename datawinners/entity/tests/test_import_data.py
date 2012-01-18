@@ -10,7 +10,7 @@ from mangrove.bootstrap import initializer
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import define_type
-from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD, get_form_model_by_code
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport.player.parser import CsvParser
 from mangrove.transport.facade import Channel
@@ -19,6 +19,7 @@ from mangrove.transport.submissions import Submission
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.form_model.form_model import FormModel
 from datawinners.location.LocationTree import get_location_hierarchy
+from datawinners.entity.helper import create_registration_form
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
@@ -54,12 +55,12 @@ class TestImportData(MangroveTestCase):
         self.assertEqual(subjects[3]['cols'][2], 'pune')
         self.assertEqual(subjects[3]['cols'][4], 'this is a clinic')
 
-
     def _create_entities(self):
         self.entity_type = ['clinic']
         define_type(self.manager, self.entity_type)
         create_registration_form(self.manager, self.entity_type)
         define_type(self.manager, ['reporter'])
+        create_registration_form(self.manager, "clinic")
         self.name_type = DataDictType(self.manager, name='Name', slug='name', primitive_type='string')
         self.telephone_number_type = DataDictType(self.manager, name='telephone_number', slug='telephone_number',
                                                   primitive_type='string')

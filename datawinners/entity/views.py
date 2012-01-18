@@ -37,9 +37,9 @@ from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
-from datawinners.utils import get_excel_sheet
 from datawinners.project.web_questionnaire_form_creator import \
     WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+from datawinners.utils import get_excel_sheet, workbook_add_sheet
 
 COUNTRY = ',MADAGASCAR'
 
@@ -179,12 +179,12 @@ def create_type(request):
 @is_datasender
 def all_subjects(request):
     manager = get_database_manager(request.user)
-    subjects_data = import_module.load_all_subjects_sorted(request)
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
+        subjects_data = import_module.load_all_subjects_sorted(request)
         return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
                                         'failure_imports': failure_imports, 'all_data': subjects_data}))
-
+    subjects_data = import_module.load_all_subjects_sorted(request)
     return render_to_response('entity/all_subjects.html', {'all_data': subjects_data, 'current_language': translation.get_language()},
                                   context_instance=RequestContext(request))
 
@@ -426,5 +426,22 @@ def export_subject(request):
         if data['short_code'] in entity_list:
             raw_data.append(data['cols'])
     wb = get_excel_sheet(raw_data, entity_type)
+    wb.save(response)
+    return response
+
+@login_required(login_url='/login')
+def export_template(request, entity_type=None):
+    manager = get_database_manager(request.user)
+    if entity_type is None:
+        return HttpResponseRedirect(reverse(all_subjects))
+
+    form_model, fields, labels, codes = import_module.get_form_model_and_detail_by_entity_type(manager, entity_type)
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
+
+    wb = get_excel_sheet([labels], entity_type)
+    codes[0:0] = ["form_code"]
+    ws = workbook_add_sheet(wb, [codes,[form_model[0]["value"]["form_code"]]], "codes")
+    ws.visibility = 1
     wb.save(response)
     return response

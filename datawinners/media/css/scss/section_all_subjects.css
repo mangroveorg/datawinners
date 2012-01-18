@@ -42,6 +42,11 @@
     font-size: 12px !important;
     color: #0070AC;
     text-align: right; }
+    #all_subjects .subjects_links .qq-upload-button {
+      overflow: visible !important; }
+      #all_subjects .subjects_links .qq-upload-button input {
+        font-size: 1px !important;
+        left: 0px; }
   #all_subjects .no_registered_subjects {
     margin: 10px 0;
     font-size: 12px!important;
@@ -51,6 +56,9 @@
       margin: 0 10px;
       padding: 0 10px;
       list-style-type: disc !important; }
+  #all_subjects .export_template_links {
+    width: 400px;
+    float: left; }
 
 #subjects_create_type .instruction {
   clear: left;

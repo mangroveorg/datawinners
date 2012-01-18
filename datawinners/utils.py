@@ -7,14 +7,7 @@ from mangrove.datastore.database import get_db_manager
 VAR = "HNI"
 def get_excel_sheet(raw_data, sheet_name):
     wb = xlwt.Workbook()
-    ws = wb.add_sheet(sheet_name)
-    for row_number, row  in enumerate(raw_data):
-        row = _clean(row)
-        for col_number, val in enumerate(row):
-            cell_style=xlwt.Style.default_style
-            if isinstance(val, datetime):
-                cell_style = xlwt.easyxf(num_format_str='dd-mm-yyyy hh:mm:ss')
-            ws.write(row_number, col_number, val, style=cell_style)
+    workbook_add_sheet(wb, raw_data, sheet_name)
     return wb
 
 
@@ -59,3 +52,13 @@ def _clean(row):
         new_row.append(each)
     return new_row
 
+def workbook_add_sheet(wb, raw_data, sheet_name):
+    ws = wb.add_sheet(sheet_name)
+    for row_number, row  in enumerate(raw_data):
+        row = _clean(row)
+        for col_number, val in enumerate(row):
+            cell_style=xlwt.Style.default_style
+            if isinstance(val, datetime):
+                cell_style = xlwt.easyxf(num_format_str='dd-mm-yyyy hh:mm:ss')
+            ws.write(row_number, col_number, val, style=cell_style)
+    return ws

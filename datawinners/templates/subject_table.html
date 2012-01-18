@@ -14,12 +14,22 @@
         <span class="success_error">{{ subject.data|length }} registered subjects</span>
     </div>
     <div>
+        <div class="export_template_links">
+            <a href="{% url datawinners.entity.views.export_template subject.entity %}" class="export-template"  id="export-{{ subject.entity }}">{% trans "Download Import Template" %}</a>
+        </div>
         <div class="subjects_links">
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" style="margin-right: 20px;">Edit registration form</a>
-            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
-            <a href="javascript:void(0);">Import a list</a>&nbsp;|&nbsp;
+            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
+            <!--<a  class="import-subject" id="import-{{ subject.entity }}">Import list</a>&nbsp;|&nbsp; -->
+            <span  class="qq-uploader import-subject" id="import-{{ subject.entity }}">Import list</span>&nbsp;|&nbsp;
             <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>
         </div>
+        <!--
+        <div class="popup-import" id="popup-{{ subject.entity }}">
+            {% blocktrans %}Upload an Excel file (.xls) with Your {{ subject.entity }} list{% endblocktrans %}
+            <br/><br/>
+        </div>
+        -->
         {% if subject.data|length > 0 %}
             <table class="styled_table" id="{{ subject.entity }}-table">
                 <thead>
@@ -28,7 +38,7 @@
                         <th>{{ title }}</th>
                     {% endfor %}
                 </thead>
-                <tbody id='all_data_senders'>
+                <tbody id="{{ subject.code }}_table">
                 {% for row in subject.data %}
                     <tr>
                         <td><input type="checkbox" id="{{ row.id }}" value="{{ row.short_code }}" name="checked"/></td>
@@ -40,15 +50,18 @@
                 </tbody>
             </table>
         {% else %}
-            <table class="styled_table" id="{{ subject.entity }}-table">
+            <table class="styled_table" >
                 <thead>
                     <th>&nbsp;</th>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}
                 </thead>
+                <tbody id="{{ subject.code }}_table">
+
+                </tbody>
             </table>
-            <div class="no_registered_subjects">
+            <div class="no_registered_subjects" id="{{ subject.code }}-no-data">
                 <p>
                     Once you have registered a {{ subject.entity|capfirst }}, it will appear here.
                 </p>
