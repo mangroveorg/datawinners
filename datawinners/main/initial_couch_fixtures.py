@@ -18,7 +18,7 @@ from pytz import UTC
 from mangrove.datastore.entity_type import define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code, FIRST_NAME_FIELD
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
@@ -50,13 +50,15 @@ def create_or_update_entity(manager, entity_type, location, aggregation_paths, s
 
 
 def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None,
-                           description=None):
+                           description=None, firstname=None):
     e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
                                 short_code=short_code, geometry=geometry)
-    name_type = create_data_dict(manager, name='Name Type', slug='Name', primitive_type='string')
+    name_type = create_data_dict(manager, name='Name Type', slug='name', primitive_type='string')
+    first_name_type = create_data_dict(manager, name='Name Type', slug='firstname', primitive_type='string')
     mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
     description_type = create_data_dict(manager, name='Description', slug='description', primitive_type='string')
     e.add_data(data=[(NAME_FIELD, name, name_type)])
+    e.add_data([(FIRST_NAME_FIELD, firstname, first_name_type)])
     e.add_data([(MOBILE_NUMBER_FIELD, mobile_number, mobile_type)])
     e.add_data([(DESCRIPTION_FIELD, description, description_type)])
     return e
@@ -109,7 +111,7 @@ def load_datadict_types(manager):
 def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Bhopal'], short_code="cid001",
                                geometry={"type": "Point", "coordinates": [23.2833, 77.35]},
-                               name="Bhopal Clinic", description="This a clinic in Bhopal.", mobile_number="123456")
+        name="Test", firstname="Bhopal Clinic", description="This a clinic in Bhopal.", mobile_number="123456")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Surgeon"])
     try:
         e.save()
@@ -117,7 +119,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Satna'], short_code="cid002",
                                geometry={"type": "Point", "coordinates": [24.5667, 80.8333]},
-                               name="Satna Clinic", description="This a clinic in Satna.", mobile_number="123457")
+                               name="Test", firstname="Satna Clinic", description="This a clinic in Satna.", mobile_number="123457")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Surgeon"])
     try:
         e.save()
@@ -125,7 +127,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Jabalpur'], short_code="cid003",
                                geometry={"type": "Point", "coordinates": [23.2, 79.95]},
-                               name="Jabalpur Clinic", description="This a clinic in Jabalpur.", mobile_number="123458")
+                               name="Test", firstname="Jabalpur Clinic", description="This a clinic in Jabalpur.", mobile_number="123458")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Doctor"])
     try:
         e.save()
@@ -133,7 +135,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'MP', 'Khandwa'], short_code="cid004",
                                geometry={"type": "Point", "coordinates": [21.8333, 76.3667]},
-                               name="Khandwa Clinic", description="This a clinic in Khandwa.", mobile_number="123459")
+                               name="Test", firstname="Khandwa Clinic", description="This a clinic in Khandwa.", mobile_number="123459")
     e.set_aggregation_path("governance", ["Director", "Med_Supervisor", "Nurse"])
     try:
         e.save()
@@ -141,7 +143,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Kerala', 'Kochi'], short_code="cid005",
                                geometry={"type": "Point", "coordinates": [9.939248, 76.259625]},
-                               name="Kochi Clinic", description="This a clinic in Kochi.", mobile_number="123460")
+                               name="Test", firstname="Kochi Clinic", description="This a clinic in Kochi.", mobile_number="123460")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -149,7 +151,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'New Gwalior'],
                                short_code="cid006", geometry={"type": "Point", "coordinates": [26.227112, 78.18708]},
-                               name="New Gwalior Clinic", description="This a clinic in New Gwalior.",
+                               name="Test", firstname="New Gwalior Clinic", description="This a clinic in New Gwalior.",
                                mobile_number="1234561")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
@@ -158,7 +160,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, CLINIC_ENTITY_TYPE, ['India', 'Madhya Pradesh', 'Indore'], short_code="cid007",
                                geometry={"type": "Point", "coordinates": [22.7167, 75.8]},
-                               name="Indore Clinic", description="This a clinic in Indore.", mobile_number="1234562")
+                               name="Test", firstname="Indore Clinic", description="This a clinic in Indore.", mobile_number="1234562")
     e.set_aggregation_path("governance", ["Director", "Med_Officer", "Nurse"])
     try:
         e.save()
@@ -169,7 +171,7 @@ def load_clinic_entities(CLINIC_ENTITY_TYPE, manager):
 def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Ahmedabad'], short_code="wp01",
                                geometry={"type": "Point", "coordinates": [23.0395677, 72.566005]},
-                               name="Ahmedabad waterpoint", description="This a waterpoint in Ahmedabad.",
+                               name="Test", firstname="Ahmedabad waterpoint", description="This a waterpoint in Ahmedabad.",
                                mobile_number="1234563")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -178,7 +180,7 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Gujrat', 'Bhuj'], short_code="wp02",
                                geometry={"type": "Point", "coordinates": [23.251671, 69.66256]},
-                               name="Bhuj waterpoint", description="This a waterpoint in Bhuj.",
+                               name="Test", firstname="Bhuj waterpoint", description="This a waterpoint in Bhuj.",
                                mobile_number="1234564")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -187,7 +189,7 @@ def load_waterpoint_entities(WATER_POINT_ENTITY_TYPE, manager):
         pass
     e = define_entity_instance(manager, WATER_POINT_ENTITY_TYPE, ['India', 'Haryana', 'Gurgaon'], short_code="wp03",
                                geometry={"type": "Point", "coordinates": [28.46385, 77.017838]},
-                               name="Gurgaon waterpoint", description="This a waterpoint in Gurgaon.",
+                               name="Test", firstname="Gurgaon waterpoint", description="This a waterpoint in Gurgaon.",
                                mobile_number="1234564")
     e.set_aggregation_path("governance", ["Commune Head", "Commune Lead", "Commune People"])
     try:
@@ -810,38 +812,38 @@ def load_sms_data_for_cli001(manager):
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)
 
-    mangrove_request = Request("reg .t clinic .n  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321", transport)
+    mangrove_request = Request("cli .t clinic .n Test .f  Clinic in Analalava  .l  Analalava  .g  -14.6333  47.7667  .d This is a Clinic in Analalava .m 987654321", transport)
     sms_player.accept(mangrove_request)
 
-    mangrove_request = Request("reg .t clinic .n  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322", transport)
+    mangrove_request = Request("cli .t clinic .n Test .f  Clinic in Andapa  .l  Andapa  .g  -14.65  49.6167  .d This is a Clinic in Andapa  .m 87654322", transport)
     sms_player.accept(mangrove_request)
 
-    mangrove_request = Request("reg .t clinic .n  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323", transport)
+    mangrove_request = Request("cli .t clinic .n Test .f  Clinic in Antalaha  .l  Antalaha  .g  -14.8833  50.25  .d This is a Clinic in Antalaha  .m 87654323", transport)
     sms_player.accept(mangrove_request)
     
-    mangrove_request = Request("reg .t clinic .n  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324", transport)
+    mangrove_request = Request("cli .t clinic .n Test .f  Clinic in ANALAMANGA  .l  ANALAMANGA  .g  -18.8  47.4833  .d This is a Clinic in Antananarivo  .m 87654324", transport)
     response = sms_player.accept(mangrove_request)
     
     mangrove_request = Request(
-        "reg .t clinic .n  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325", transport)
+        "cli .t clinic .n Test .f  Clinic in TSIMANARIRAZANA .l  TSIMANARIRAZANA .g  -12.35  49.3  .d This is a Clinic in Diégo–Suarez .m 87654325", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "reg .t clinic .n  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326", transport)
+        "cli .t clinic .n Test .f  Clinic in Antsirabe  .l  Antsirabe  .g  -19.8167  47.0667  .d This is a Clinic in Antsirabe  .m 87654326", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "reg .t clinic .n  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327", transport)
+        "cli .t clinic .n Test .f  Clinic in Besalampy  .l  Besalampy  .g  -16.75  44.5  .d This is a Clinic in Besalampy  .m 87654327", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "reg .t clinic .n  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328", transport)
+        "cli .t clinic .n Test .f  clinique à Farafangana  .l  Farafangana  .g  -22.8  47.8333  .d This is a Clinic in Farafangana  .m 87654328", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "reg .t clinic .n  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329", transport)
+        "cli .t clinic .n Test .f  Clinic in Fianarantsoa I .l  Fianarantsoa I .g  -21.45  47.1 .d  C'est une clinique à Fianarantsoa .m 87654329", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "reg .t clinic .n  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330", transport)
+        "cli .t clinic .n Test .f  Clinic in Sainte Marie  .l  Sainte Marie  .g  -17.0833  49.8167  .d This is a Clinic in Île Sainte–Marie  .m 87654330", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "reg .t clinic .n  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331", transport)
+        "cli .t clinic .n Test .f  Clinic in Mahajanga .l  Mahajanga .g  -15.6667  46.35  .d This is a Clinic in Mahajanga .m 87654331", transport)
     response = sms_player.accept(mangrove_request)
 
     datetime_mocker = DateTimeMocker()
