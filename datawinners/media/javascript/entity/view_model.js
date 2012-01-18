@@ -11,9 +11,11 @@ var viewModel =
         question.loaded(false);
         var test_code = DW.generateQuestionCode();
         question.code(viewModel.check_unique_code(test_code));
+        var id_question = viewModel.questions.pop();
         viewModel.questions.push(question);
         viewModel.selectedQuestion(question);
         viewModel.selectedQuestion.valueHasMutated();
+        viewModel.questions.push(id_question);
         viewModel.questions.valueHasMutated();
         DW.charCount();
         viewModel.hasAddedNewQuestions = true;

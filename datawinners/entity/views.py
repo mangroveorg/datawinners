@@ -370,7 +370,7 @@ def edit_subject_questionnaire(request, entity_type=None):
 
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     if form_model is None:
-        form_model = get_form_model_by_code(manager, 'reg')
+        form_model = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = form_model.fields
 
     existing_questions = json.dumps(fields, default=field_to_json)
