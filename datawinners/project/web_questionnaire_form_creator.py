@@ -101,4 +101,5 @@ class SubjectQuestionFieldCreator(object):
     def _subjects_choice_fields(self, subject_field):
         all_subjects = self._get_all_subject()
         all_subject_choices = self._get_all_choices(all_subjects)
-        return self._get_choice_field(all_subject_choices, subject_field,help_text=ugettext("Choose Subject from this list."))
+        instruction_for_subject_field = ugettext("Choose Subject from this list.")
+        return self._get_choice_field(all_subject_choices, subject_field,help_text=instruction_for_subject_field)
