@@ -447,7 +447,7 @@ class TestHelper(unittest.TestCase):
         entity_id_question = questionnaire.entity_question
         self.assertEqual('eid', entity_id_question.code)
         self.assertEqual('I am submitting this data on behalf of',entity_id_question.name)
-        self.assertEqual("Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10", entity_id_question.instruction)
+        self.assertEqual("Choose Data Sender from this list.", entity_id_question.instruction)
 
 
 class TestPreviewCreator(unittest.TestCase):
