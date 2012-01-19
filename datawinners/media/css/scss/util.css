@@ -336,3 +336,6 @@ span.tooltip {
     display: none; }
     .help_accordion .details #hide_link {
       color: #2E6E9E; }
+
+.terms_and_condition {
+  color: #0070ac !important; }
