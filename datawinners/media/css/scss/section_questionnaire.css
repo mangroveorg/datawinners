@@ -92,7 +92,7 @@
       .wizard_content .content_wrapper .questionnare_content #question-detail-panel .alpha_list .error_arrow {
         float: none !important;
         background-position: 0px 3px !important; }
-    .wizard_content .content_wrapper .questionnare_content #question-detail-panel #char-count {
+    .wizard_content .content_wrapper .questionnare_content #question-detail-panel #char-count-span {
       border-top: 1px solid #ccc;
       paddin-top: 40px; }
   .wizard_content .content_wrapper .questionnare_content #questions-panel {
