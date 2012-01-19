@@ -1,5 +1,7 @@
 from nose.plugins.attrib import attr
 import time
+import os
+import sys
 from framework.base_test import BaseTest
 from pages.createprojectpage import create_project_page
 from pages.loginpage.login_page import LoginPage
@@ -55,7 +57,7 @@ class TestReminderSend(BaseTest):
     def test_trial_account_should_see_reminder_not_work_message_at_sent_tab_in_active_project(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
         all_reminder_pages.click_sent_reminder_tab()
-        self.assertEqual(from_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())
+        self.assertEqual(from_(WARNING_MESSAGE, fetch_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())
 
     @attr("functional_test")
     def test_verify_change_in_deadline_example_for_week(self):
@@ -90,7 +92,7 @@ class TestReminderSend(BaseTest):
         reminder_settings = self.set_deadline_by_month(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH)))
         self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH[DEADLINE])))
 
-    @attr("functional_test")
+    @attr("functional_test", "datawinners")
     def test_verify_set_one_reminder(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(REMINDER_DATA_WEEKLY)), VALID_CREDENTIALS)
         reminder_settings = all_reminder_pages.click_reminder_settings_tab()

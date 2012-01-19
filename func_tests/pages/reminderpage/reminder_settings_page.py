@@ -1,8 +1,7 @@
-from accountmanagement.models import Organization
 from framework.utils.data_fetcher import from_, fetch_
 from pages.page import Page
 from pages.reminderpage.reminder_settings_locator import *
-from project.models import Reminder
+from datawinners.project.models import Reminder
 from tests.remindertests.reminder_data import *
 
 
