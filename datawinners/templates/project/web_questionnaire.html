@@ -66,6 +66,9 @@
                             var check_entity_que_code = document.getElementById('code1').value
                             if (entity_que_code==check_entity_que_code){
                                 document.getElementById('tooltip1').style.visibility='visible';
+                                if (document.getElementById('id_eid').length ==0){
+                                    document.getElementById('add_data_sender_link').style.visibility = 'visible'
+                                }
                             }
                             else{
                                 document.getElementById('tooltip1').style.visibility='hidden';
@@ -108,7 +111,17 @@
                     </ul>
                     </div>
                 </li>
-
+                <div id="add_data_sender_link" style="visibility: hidden;">
+                    <a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">
+                        {% trans "My Data Senders" %}
+                    </a>|
+                    <a id="add_data_sender" href="{% url datawinners.entity.views.create_datasender %}">
+                        {% trans "Add a data sender" %}
+                    </a>|
+                    <a id="all_datasenders_link" href="{% url datawinners.entity.views.all_datasenders %}">
+                        {% trans "All Data Senders" %}
+                    </a>
+                </div>
             {% endfor %}
         </ul>
         <input type="submit" class="button" value="{% trans 'Submit' %}"/>
