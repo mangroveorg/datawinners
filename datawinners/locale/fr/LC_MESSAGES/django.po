@@ -3085,3 +3085,6 @@ msgstr "Fermer"
 
 msgid "Choose Data Sender from this list."
 msgstr "Choisir l'Expéditeur de Données dans cette liste."
+
+msgid "Choose Subject from this list."
+msgstr "Choisir Sujet dans cette liste."

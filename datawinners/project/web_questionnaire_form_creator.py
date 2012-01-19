@@ -2,6 +2,7 @@ from django import forms
 from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
+from django.utils.translation import ugettext
 from entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, field_attributes
 
@@ -80,14 +81,14 @@ class SubjectQuestionFieldCreator(object):
     def create_code_hidden_field(self,subject_field):
         return {'entity_question_code':forms.CharField(required=False,widget=HiddenInput,label=subject_field.code)}
 
-    def _get_choice_field(self, data_sender_choices, subject_field):
+    def _get_choice_field(self, data_sender_choices, subject_field, help_text):
         return ChoiceField(required=subject_field.is_required(), choices=data_sender_choices, label=subject_field.name,
-            initial=subject_field.value, help_text=subject_field.instruction)
+            initial=subject_field.value, help_text=help_text)
 
     def _data_sender_choice_fields(self, subject_field):
         data_senders = self.project.get_data_senders(self.dbm)
         data_sender_choices = self._get_all_choices(data_senders)
-        return self._get_choice_field(data_sender_choices, subject_field)
+        return self._get_choice_field(data_sender_choices, subject_field,help_text=subject_field.instruction)
 
 
     def _get_all_choices(self, all_subjects):
@@ -100,4 +101,4 @@ class SubjectQuestionFieldCreator(object):
     def _subjects_choice_fields(self, subject_field):
         all_subjects = self._get_all_subject()
         all_subject_choices = self._get_all_choices(all_subjects)
-        return self._get_choice_field(all_subject_choices, subject_field)
+        return self._get_choice_field(all_subject_choices, subject_field,help_text=ugettext("Choose Subject from this list."))
