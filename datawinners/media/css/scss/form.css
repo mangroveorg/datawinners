@@ -225,7 +225,8 @@ select {
   font-weight: bold;
   padding: 6px 23px 5px 22px;
   cursor: pointer;
-  cursor: hand; }
+  cursor: hand;
+  height: 29px; }
 
 .button_wizard_back {
   border: none !important;
