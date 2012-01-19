@@ -3082,3 +3082,6 @@ msgstr "Vous ne pouvez pas ajouter ue nouvelle colonne dans votre fichier Excel 
 
 msgid "Close"
 msgstr "Fermer"
+
+msgid "Choose Data Sender from this list."
+msgstr "Choisir l'Expéditeur de Données dans cette liste."

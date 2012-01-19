@@ -118,7 +118,7 @@ def _create_entity_id_question_for_activity_report(dbm):
                                    label="Entity being reported on",
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    constraints=[TextLengthConstraint(min=1, max=12)],
-                                   instruction= ugettext("Enter the ID number of the Data Sender. Click on 'Data Senders' at the top of this page to find these ID numbers. Example: rep10"))
+                                   instruction= ugettext("Choose Data Sender from this list."))
     return entity_id_question
 
 

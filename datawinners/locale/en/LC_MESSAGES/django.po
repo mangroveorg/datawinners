@@ -3041,3 +3041,6 @@ msgstr ""
 
 msgid "Close"
 msgstr ""
+
+msgid "Choose Data Sender from this list."
+msgstr ""
