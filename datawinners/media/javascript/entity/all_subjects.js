@@ -33,9 +33,9 @@ $(document).ready(function() {
             action: window.location.pathname,
             params: {form_code: form_code},
             onComplete: function(id, fileName, responseJSON) {
-                $('#message').remove();
-                $('#error_tbody').html('');
-                $("#error_table").hide();
+                $('.message').remove();
+                $('.error_tbody').html('');
+                $(".error_table").hide();
                 $("#"+form_code+"_table").html('');
                 $.each(responseJSON.all_data, function(index, entity_data) {
                     if (entity_data.code == form_code){
@@ -50,26 +50,25 @@ $(document).ready(function() {
                 });
 
                 if (responseJSON.success == true) {
-                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+                    $('<div id="message" class="success_message success-message-box">' + responseJSON.message + '</div>').insertAfter($('#import-'+form_code));
 
                 }
                 else {
-                    $('#error_tbody').html('');
-    //                $("#error_table").show();
+                    $("#"+form_code+"_error_table table tbody").html('');
                     if (responseJSON.error_message) {
-                        $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
+                        $('<div id="message" class="error_message message-box">' + responseJSON.error_message + '</div>').insertAfter($('#import-'+form_code));
                     }
                     else {
-                        $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+                        $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter($('#import-'+form_code));
                     }
                     if (responseJSON.failure_imports > 0) {
-                        $("#error_table").show();
+                        $("#"+form_code+"_error_table").show();
                     }
                     $.each(responseJSON.failure_imports, function(index, element) {
-                        $("#error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
+                        $("#"+form_code+"_error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
                                 + element.error + "</td></tr>");
                     });
-                    $("#error_table").show();
+                    $("#"+form_code+"_error_table").show();
                 }
             }
         });

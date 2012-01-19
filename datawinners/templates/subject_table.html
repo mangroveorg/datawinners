@@ -49,6 +49,19 @@
                     <li>{% trans "The 1<sup>st</sup> row of your Excel file will not be imported. You can use this header row for your questions (titles of the columns)." %}</li>
                 </ul>
             </div>
+            <div class='error_table' style="display: none;" id="{{ subject.code }}_error_table">
+                <br/>
+                <table class="styled_table">
+                    <thead>
+                    <th>{% trans "Row Number" %}</th>
+                    <th>{% trans "Row" %}</th>
+                    <th>{% trans "Error" %}</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
             <br/>
             <div style="display: inline;float:right;">
                 <a href="javascript:void(0);" id="close-import-{{ subject.entity }}" class="button close_import_dialog">{% trans "Close" %}</a>
