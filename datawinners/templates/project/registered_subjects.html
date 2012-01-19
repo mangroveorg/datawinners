@@ -24,7 +24,7 @@
             <h2>My Subjects</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a href="javascript:void(0)">{% trans "Add a" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
+            <a href="{{ project_links.register_subjects_link }}">{% trans "Add a" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);">Import a list</a>
         </div>
     <div class="clear-both"></div>

@@ -133,5 +133,15 @@ var viewModel =
         for ( var i=index;i< viewModel.questions().length;i++){
             viewModel.questions()[i].code(DW.generateQuestionCode());
         }
+    },
+    showWarning: function(action) {
+        if(action == 'add') {
+            $("#warning-message").html( $("#warning-add").html());
+        } else if(action == 'delete') {
+            $("#warning-message").html( $("#warning-delete").html());
+        } else {
+            $("#warning-message").html( $("#warning-submit").html());
+        }
+        $("#questionnaire-change").dialog("open");
     }
 };

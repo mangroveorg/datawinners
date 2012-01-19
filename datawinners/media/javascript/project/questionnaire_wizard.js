@@ -162,9 +162,9 @@ $(document).ready(function() {
     $("#questionnaire-change").dialog({
         autoOpen: false,
         modal: true,
-        title: gettext('Questionnaire processing...'),
+        title: gettext('Your Collected Data Will be Lost'),
         zIndex:200,
-        width: 400
+        width: 500
     });
 
     $("#submit-button").click(function() {
