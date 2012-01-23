@@ -332,7 +332,7 @@ def create_subject(request, entity_type=None):
         try:
             response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(create_request(questionnaire_form, request.user.username))
             if response.success:
-                success_message = _("Successfully submitted")
+                success_message = "Successfully submitted. Unique identification number(ID) is: %s" % (response.short_code,)
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
