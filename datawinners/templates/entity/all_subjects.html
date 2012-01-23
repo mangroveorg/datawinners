@@ -37,8 +37,8 @@
 {% block content %}
     <div>
         <div class="help_accordion">
-            View and manage all of the people, places, things or events that you want to collect data about, such as patients,
-                villages, clinics or trainings. <a href="javascript:void(0)" class="show_link">Learn more</a>
+            {% trans "View and manage all of the people, places, things or events that you want to collect data about, such as patients, villages, clinics or trainings." %}
+                 <a href="javascript:void(0)" class="show_link">{% trans "Learn more" %}</a>
             <div class="details">
                 <p><h2>consectetur adipisicing !</h2>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -52,7 +52,7 @@
                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum..
                 </p>
-                <a href="javascript:void(0)" class="hide_link">Hide help</a>
+                <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
             </div>
         </div>
         {% if messages %}
@@ -101,16 +101,16 @@
         </div>
 
         <div id="subjects_create_type">
-            Enter the Name of your specific Subject Type
+            {% trans "Enter the Name of your specific Subject Type" %}
             <div class="required form-row-10px" id="add_subject_type_content">
                 <input type="text" maxlength="20" name="entity_type_regex" id="id_entity_type_text">
                 <div id="type_message"></div>
             </div>
             <p class="instruction">
-                Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)
+                {% trans "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)" %}
             </p>
             <div style="text-align: right;">
-                <a id="cancel_add_type" href="javascript:void(0)" style="padding: 0 10px;">Cancel</a>
+                <a id="cancel_add_type" href="javascript:void(0)" style="padding: 0 10px;">{% trans "Cancel" %}</a>
                 <input id="add_type" type="button" value="{% trans 'Add' %}" class="button"/>
             </div>
         </div>

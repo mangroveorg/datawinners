@@ -11,7 +11,7 @@
 {% for subject in all_data %}
     <div class="list_header">
         <span class="header">{{ subject.entity|capfirst }}</span>
-        <span class="success_error">{{ subject.data|length }} registered subjects</span>
+        <span class="success_error">{{ subject.data|length }} {% trans "Registered Subjects" %}</span>
     </div>
     <div>
         <div class="subjects_links">
@@ -101,15 +101,15 @@
             </table>
             <div class="no_registered_subjects" id="{{ subject.code }}-no-data">
                 <p>
-                    Once you have registered a {{ subject.entity|capfirst }}, it will appear here.
+                    {% blocktrans with subject.entity|capfirst as entity_type %}Once you have registered a {{ entity_type }}, it will appear here.{% endblocktrans %}
                 </p>
                 <p>
-                    To get started
+                    {% trans "To get started" %}
                     <ul>
-                        <li>Register a {{ subject.entity|capfirst }}:
-                            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a" %} {{ subject.entity|capfirst }}</a>
-                            or <a href="javascript:void(0);" class="export-entity-link">Import a {{ subject.entity|capfirst }} list</a></li>
-                        <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">Customize the {{ subject.entity|capfirst }} registration form</a></li>
+                        <li>{% trans "Register a" %} {{ subject.entity|capfirst }}:
+                            <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity|capfirst }}</a>
+                            {% trans "or" %} <a href="javascript:void(0);" class="export-entity-link">{% blocktrans with subject.entity|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
+                        <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">{% blocktrans with subject.entity|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %}</a></li>
                     </ul>
                 </p>
             </div>

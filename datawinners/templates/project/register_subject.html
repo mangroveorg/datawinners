@@ -47,7 +47,7 @@
     <p>{% trans "Review the questions by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
-    <h2>My Subjects</h2>
+    <h2>{% trans "My Subjects" %}</h2>
     {% include 'project/my_subjects_help.html' %}
 
     <div id="my_subjects">
@@ -57,19 +57,27 @@
     {% endblock %}
     </div>
     <div class="instruction">
-        Define what information you want to collect about each clinic. !
+        {% blocktrans with project.entity_type as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 
     <div id="my_subjects_links">
         <ul>
             <li><a href="{{ project_links.subjects_edit_link }}">Edit</a></li>
-            <li><a href="javascript:void(0)" class="disabled_link">Print</a></li>
+            <li><a href="javascript:void(0)" class="disabled_link">{% trans "Print" %}</a></li>
             <li style="width: 80px; text-align: right; padding-right: 5px;">{% trans "View Style:" %}</li>
             <li style="width: 60px;"><a href="{{ project_links.subjects_link }}" id="sms_preview_btn">SMS</a></li>
             <li style="width: 60px;"><a href="javascript:void(0)" id="web_preview_btn" class="active">Web</a></li>
         </ul>
         <div class="clear-left"></div>
     </div>
+
+    <div>
+        <h2 style="font-size:18px;">{% blocktrans with project.entity_type as entity_type %}Web {{ entity_type }} Registration Form{% endblocktrans %}</h2>
+        <div class="instruction">{% blocktrans with project.entity_type as entity_type and project_links.registered_subjects_link as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">Registered Data Senders</a> page.{% endblocktrans %}</div>
+        <br/>
+        <br/>
+    </div>
+
     {% include 'entity/web_questionnaire_questions.html' %}
     <div class="subject_registration_preview">
         {% trans "Generating the questionnaire preview." %}

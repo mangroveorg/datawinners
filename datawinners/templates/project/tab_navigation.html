@@ -67,16 +67,16 @@
                class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
         </li>
         {% endif %}
+        <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
+            <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link }}"
+               class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
+        </li>
         {% if project.state != 'Inactive'%}
             {% if 'no' in project.activity_report%}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "My Subjects" %}</a>
             </li>
-            {% endif %}
-        <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link }}"
-               class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
-        </li>
+        {% endif %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
@@ -120,10 +120,10 @@
 {% block secondary_navigation_subjects %}
 <ul class="secondary_tab">
     <li class="{% ifactivetab 'secondary_tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.registered_subjects_link }}">My {{ project.entity_type|capfirst }} list</a>
+        <a href="{{ project_links.registered_subjects_link }}">{% blocktrans with project.entity_type|capfirst as entity_type %}My {{ entity_type }} list{% endblocktrans %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.subjects_link }}">{{ project.entity_type|capfirst }} {% trans "Registration Form" %}</a>
+        <a href="{{ project_links.subjects_link }}">{% blocktrans with project.entity_type|capfirst as entity_type %}{{ entity_type }} Registration Form{% endblocktrans %}</a>
     </li>
 </ul>
 {% endblock %}

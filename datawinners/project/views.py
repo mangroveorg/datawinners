@@ -722,7 +722,7 @@ def web_questionnaire(request, project_id=None, subject=False):
 def get_example_sms(fields):
     example_sms = ""
     for field in fields:
-        example_sms = example_sms + " answer" + str(fields.index(field)+1)
+        example_sms = example_sms +" " +unicode(_('answer')) + str(fields.index(field)+1)
     return example_sms
 
 @login_required(login_url='/login')

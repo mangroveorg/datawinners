@@ -1,20 +1,10 @@
 {% load i18n %}
 <div class="help_accordion">
-    View and manage all of the people, places, things or events that you want to collect data about, such as patients,
-        villages, clinics or trainings. <a href="javascript:void(0)" class="show_link">Learn more!</a>
+    {% trans "View and manage all of the people, places, things or events that you want to collect data about, such as patients, villages, clinics or trainings." %}
+    <a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
     <div class="details">
-        <p><h2>consectetur adipisicing !</h2>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.. !
-        </p>
-        <p><h2>consectetur adipisicing !</h2>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.. !
-        </p>
-        <a href="javascript:void(0)" class="hide_link">Hide help</a>
+        <br/>
+        {% blocktrans with project.entity_type as entity_type %}Register and manage every {{ entity_type }} you want to keep track of or collect data about. See them displayed on the map on your project’s overview page.{% endblocktrans %}
+        <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
     </div>
 </div>

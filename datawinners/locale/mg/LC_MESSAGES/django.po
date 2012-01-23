@@ -2471,3 +2471,90 @@ msgstr ""
 
 msgid "Close"
 msgstr ""
+
+msgid "Enter phone number without the country code. Example: +261 333745269"
+msgstr ""
+
+msgid "Define what information you want to collect about each %(entity_type)s."
+msgstr ""
+
+msgid "View and manage all of the people, places, things or events that you want to collect data about, such as patients, villages, clinics or trainings."
+msgstr ""
+
+msgid "Hide help"
+msgstr ""
+
+msgid "%(entity_type)s Registration Form"
+msgstr ""
+
+msgid "What is the %(entity_type)s's first name?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's last name?"
+msgstr ""
+
+msgid "Enter a %(entity_type)s last name"
+msgstr ""
+
+msgid "What is the %(entity_type)s's location?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's GPS co-ordinates?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's mobile telephone number?"
+msgstr ""
+
+msgid "What is the %(entity_type)s's Unique ID Number"
+msgstr ""
+
+msgid "Enter the %(entity_type)'s number"
+msgstr ""
+
+msgid "some default value"
+msgstr ""
+
+msgid "Enter a region, district, or commune"
+msgstr ""
+
+msgid "Add a new"
+msgstr ""
+
+msgid "Import a list"
+msgstr ""
+
+msgid "Enter the Name of your specific Subject Type"
+msgstr ""
+
+msgid "Example: Person (Patient, Farmer), Place (Region, Village), Thing (Health center, School, Water pump, Retail shop), Event (Training, Public gathering)"
+msgstr ""
+
+msgid "register a"
+msgstr ""
+
+msgid "Customize the {{ entity_type }} registration form"
+msgstr ""
+
+msgid "Import a list of %(entity_type)s"
+msgstr ""
+
+msgid "Register and manage every %(entity_type)s you want to keep track of or collect data about. See them displayed on the map on your project’s overview page."
+msgstr ""
+
+msgid "View each of your registered %(entity_type)s in detail."
+msgstr ""
+
+msgid "With this form you can register a new %(entity_type)s.  To change this form, click Edit."
+msgstr ""
+
+msgid "SMS %(entity_type)s Registration Form"
+msgstr ""
+
+msgid "Your Data Senders can register a new {{ entity_type }} via SMS. Print out this form and give it to your Data Senders."
+msgstr ""
+
+msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">Registered Data Senders</a> page."
+msgstr ""
+
+msgid "Web %(entity_type)s Registration Form"
+msgstr ""

@@ -198,7 +198,7 @@ def load_all_subjects(manager):
         if entity in subjects.keys():
             form_model = subjects[entity]
         else:
-            form_model = subjects['Registration']
+            form_model = subjects['registration']
         subjects_list[entity] = get_entity_type_infos(entity, form_model)
 
     entities = get_all_entities(dbm=manager)

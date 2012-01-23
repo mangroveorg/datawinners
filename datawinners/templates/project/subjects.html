@@ -47,7 +47,7 @@
     <p>{% trans "Review the questions by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
-    <h2>My Subjects</h2>
+    <h2>{% trans "My Subjects" %}</h2>
     {% include 'project/my_subjects_help.html' %}
 
     <div id="my_subjects">
@@ -57,20 +57,25 @@
     {% endblock %}
     </div>
     <div class="instruction">
-        Define what information you want to collect about each clinic. !
+        {% blocktrans with project.entity_type as entity_type %}With this form you can register a new {{ entity_type }}.  To change this form, click Edit.{% endblocktrans %}
     </div>
 
     <div id="my_subjects_links">
         <ul>
-            <li><a href="{{ project_links.subjects_edit_link }}">Edit</a></li>
-            <li><a href="javascript:void(0)" class="preview_subject_registration_form">Print</a></li>
+            <li><a href="{{ project_links.subjects_edit_link }}">{% trans "Edit" %}</a></li>
+            <li><a href="javascript:void(0)"  class="preview_subject_registration_form">{% trans "Print" %}</a></li>
             <li style="width: 80px; text-align: right; padding-right: 5px;">{% trans "View Style:" %}</li>
             <li style="width: 60px;"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
             <li style="width: 60px;"><a href="{{ project_links.register_subjects_link }}" id="web_preview_btn">Web</a></li>
         </ul>
         <div class="clear-left"></div>
     </div>
-
+    <div>
+        <h2 style="font-size:18px;">{% blocktrans with project.entity_type as entity_type %}SMS {{ entity_type }} Registration Form{% endblocktrans %}</h2>
+        <div class="instruction">{% blocktrans with project.entity_type as entity_type %}Your Data Senders can register a new {{ entity_type }} via SMS. Print out this form and give it to your Data Senders.{% endblocktrans %}</div>
+        <br/>
+        <br/>
+    </div>
     <div id="sms_preview">
         <ul class="questionnaire_title">
             <li>

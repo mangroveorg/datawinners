@@ -18,14 +18,20 @@
     {#    <link href="/media/css/scss/section_project_overview.scss" rel="stylesheet" />#}
     <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
 {% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
+{% endblock %}
+
 {% block content %}
     <div>
         <div class="grid_8 alpha">
-            <h2>My Subjects</h2>
+            <h2>{% trans "My Subjects" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a href="{{ project_links.register_subjects_link }}">{% trans "Add a" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
-            <a href="javascript:void(0);">Import a list</a>
+            <a href="javascript:void(0)">{% trans "Add a new" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
+            <a href="javascript:void(0);">{% trans "Import a list" %}</a>
         </div>
     <div class="clear-both"></div>
     </div>
@@ -38,6 +44,7 @@
     {% endblock %}
     </div>
 
+    <div class="help_accordion">{% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}<br/><br/></div>
     <table class="styled_table">
         <thead>
             <tr>

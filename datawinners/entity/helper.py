@@ -16,6 +16,7 @@ from mangrove.errors.MangroveException import NumberNotRegisteredException, \
     DataObjectNotFound
 from mangrove.transport.reporter import find_reporter_entity
 from django.utils.encoding import smart_unicode
+from django.utils.translation import ugettext_lazy as _
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
@@ -63,24 +64,25 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     name_type = _get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
     mobile_number_type = _get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
 
-    question1 = TextField(name=FIRSTNAME_FIELD, code=FIRSTNAME_FIELD_CODE, label="What is the %s's first name?" % (entity_name,),
+    question1 = TextField(name=FIRSTNAME_FIELD, code=FIRSTNAME_FIELD_CODE, label=_("What is the %(entity_type)s's first name?") % {'entity_type':entity_name},
                           defaultValue="some default value", language="en", ddtype=name_type,
-                          instruction="Enter a %s first name" % (entity_name,))
-    question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE, label="What is the %s's last name?" % (entity_name,),
+                          instruction=_("Enter a %(entity_type)s first name") % {'entity_type':entity_name})
+    question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE, label=_("What is the %(entity_type)s's last name?") % {'entity_type':entity_name},
                               defaultValue="some default value", language="en", ddtype=name_type,
-                              instruction="Enter a %s last name" % (entity_name,))
+                              instruction=_("Enter a %(entity_type)s last name") % {'entity_type':entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
-                               label="What is the %s's location?" % (entity_name,),
-                               language="en", ddtype=location_type, instruction="Enter a region, district, or commune")
-    question4 = GeoCodeField(name=GEO_CODE_FIELD, code=GEO_CODE, label="What is the %s's GPS co-ordinates?" % (entity_name,),
+                               label=_("What is the %(entity_type)s's location?") % {'entity_type':entity_name},
+                               language="en", ddtype=location_type, instruction="Enter a region, district, or commune",
+                               required=False)
+    question4 = GeoCodeField(name=GEO_CODE_FIELD, code=GEO_CODE, label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type':entity_name},
                              language="en", ddtype=geo_code_type,
                              instruction="Enter lat and long. Eg 20.6, 47.3")
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=MOBILE_NUMBER_FIELD_CODE,
-                                     label="What is the %s's mobile telephone number?" % (entity_name,),
+                                     label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type':entity_name},
                                      defaultValue="some default value", language="en", ddtype=mobile_number_type,
-                                     instruction="Enter the %s's number" % (entity_name,), constraints=(
-                                     _create_constraints_for_mobile_number()))
-    question6 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label="What is the %s's Unique ID Number" % (entity_name,),
+                                     instruction=_("Enter the %(entity_type)s's number") % {'entity_type':entity_name}, constraints=(
+                                     _create_constraints_for_mobile_number()), required=False)
+    question6 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label=_("What is the %(entity_type)s's Unique ID Number") % {'entity_type':entity_name},
                               defaultValue="some default value", language="en", ddtype=name_type,
                               instruction="Enter an id, or allow us to generate it",
                               entity_question_flag=True,
