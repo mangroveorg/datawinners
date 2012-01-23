@@ -178,11 +178,11 @@ msgstr "Entrez la localité"
 
 #: entity/forms.py:31
 msgid "Enter Data Sender's name"
-msgstr "Entrez le nom de l'envoyeur"
+msgstr "Entrez le nom de l'expéditeur"
 
 #: entity/forms.py:32
 msgid "Enter Data Sender's number"
-msgstr "Entrez le nom de l'envoyeur"
+msgstr "Entrez le nom de l'expéditeur"
 
 #: entity/forms.py:33
 msgid "Enter region, district or commune"
@@ -235,7 +235,7 @@ msgstr "Information publique : Je veux communiquer des informations"
 
 #: project/forms.py:41
 msgid "Work performed by the data sender (eg. monthly activity report)"
-msgstr "Activité de l'envoyeur (ex : rapport d'activité mensuelle)"
+msgstr "Activité de l'expéditeur (ex : rapport d'activité mensuelle)"
 
 #: project/forms.py:41 project/forms.py:50
 msgid "Other Subject"
@@ -251,7 +251,7 @@ msgstr "Restreint. Seuls les personnes enregistrées peuvent envoyer des donnée
 
 #: project/forms.py:43
 msgid "Whenever a data sender has data for us"
-msgstr "A chaque fois que l'envoyeur a des données à communiquer"
+msgstr "A chaque fois que l'expéditeur a des données à communiquer"
 
 #: project/forms.py:43
 msgid "Every"
@@ -1037,7 +1037,7 @@ msgstr "Projet - Expéditeurs"
 
 #: templates/project/datasenders.html:34
 msgid "Preview Data sender's questionnaire"
-msgstr "Faites un aperçu du questionnaire de l'Expéditeur de Données"
+msgstr "Aperçu du questionnaire de l'Expéditeur de Données"
 
 #: templates/project/datasenders.html:37
 #: templates/project/finish_and_test.html:179
@@ -1103,9 +1103,9 @@ msgstr "Importer une liste d'expéditeurs"
 
 msgid "tooltip_datasenders_import"
 msgstr ""
-"Ajoutez une liste de sujets en suivant ces instructions:"
+"Ajoutez une liste d'expéditeurs en suivant ces instructions:"
 "<br />1) Téléchargez le modèle en cliquant sur le lien ‘Importer un Modèle’"
-"<br />2) Suivez les instructions relatives au modèle pour créer une liste de vos des Expéditeurs"
+"<br />2) Suivez les instructions relatives au modèle pour créer une liste de vos Expéditeurs"
 "<br />3) Sauvegardez dans votre ordinateur le modèle dûment rempli"
 "<br />4) Cliquez sur le bouton ‘Importer la Liste’"
 "<br />5) Cliquez sur le bouton ‘Télécharger un Fichier’"
@@ -1113,7 +1113,7 @@ msgstr ""
 "<br />7) Attendez que le téléchargement du fichier soit terminé"
 
 msgid "tooltip_datasenders_add_manually"
-msgstr "Cliquez sur le bouton bleu 'Ajouter des expéditeurs Manuellement' et inscrivez chaque sujet individuellement en remplissant le formulaire Web."
+msgstr "Cliquez sur le bouton bleu 'Ajouter des expéditeurs Manuellement' et inscrivez chaque expéditeur individuellement en remplissant le formulaire Web."
 
 #: templates/project/datasenders_wizard.html:84
 msgid "Upload an excel (.xls) or csv file (.csv) of your Data Senders"
@@ -1133,7 +1133,7 @@ msgstr "Vérifier"
 
 #: templates/project/finish_and_test.html:48
 msgid "Review and verify the summary of your project on this page."
-msgstr "Vérifier et voir le récapitulatif de votre projet sur cette page"
+msgstr "Vérifiez et voyez le récapitulatif de votre projet sur cette page"
 
 #: templates/project/finish_and_test.html:49
 msgid "Verify the specifications of your project"
@@ -2164,7 +2164,7 @@ msgid "The selected records have been deleted"
 msgstr "Les dossiers sélectionnés ont été supprimés"
 
 msgid "Enter each data sender's email address below. Each can submit data via the internet"
-msgstr "Entrez l'adresse e-mail chaque expéditeur de données ci-dessous. Chacun peut soumettre des données via Internet"
+msgstr "Entrez l'adresse e-mail de chaque expéditeur de données ci-dessous. Chacun peut soumettre des données via Internet"
 
 msgid "Reporter ID"
 msgstr "ID "
@@ -2380,7 +2380,7 @@ msgid "Create your project in a few easy steps."
 msgstr "Créez votre projet en quelques étapes faciles."
 
 msgid "Name your project and provide basic information about it."
-msgstr "Nommez votre projet et en fournir des informations élémentaires."
+msgstr "Nommez votre projet et fournissez des informations élémentaires."
 
 msgid "Write and edit your questions."
 msgstr "Saisissez et éditez vos questions."
@@ -2791,7 +2791,7 @@ msgstr "Choisissez l'option Rapport sommaire si vous voulez que vos Expéditeurs
 "<br/>1) Un agent de santé communautaire soumet un rapport d'activité mensuel"
 " (exemple de question: Combien de bébés aviez-vous pesé le mois dernier?)"
 "<br/>2) Une jeune femme répond à des questions de choix "
-" (Exemple de question: Avez-vous accès à l'eau potable"
+" (Exemple de question: Avez-vous accès à l'eau potable?)"
 
 msgid "tooltip_individual_report"
 msgstr "Les Rapports Individuels portent sur des sujets spécifiques"
@@ -3182,3 +3182,6 @@ msgstr "Tous les expéditeurs qui ont accès à ce formulaire peuvent enregistre
 
 msgid "Web %(entity_type)s Registration Form"
 msgstr "Formulaire d'enregistrement de %(entity_type)s par internet"
+
+msgid "%(entity_type)s Code"
+msgstr "Code %(entity_type)s"

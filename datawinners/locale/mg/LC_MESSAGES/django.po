@@ -1612,7 +1612,7 @@ msgstr "Envoyez vos réponses de test"
 
 #: templates/project/sms_tester_form.html:17
 msgid "Refer to the Web Questionnaire Preview for a sample SMS"
-msgstr "Référez-vous à l'aperçu du questionnaire Web pour un example de SMS"
+msgstr "Référez-vous à l'aperçu du questionnaire Web pour un exemple de SMS"
 
 #: templates/project/sms_tester_form.html:20
 msgid "sms_tester_form"
@@ -2557,4 +2557,7 @@ msgid "All Data Senders who have access to this form can register a new %(entity
 msgstr ""
 
 msgid "Web %(entity_type)s Registration Form"
+msgstr ""
+
+msgid "%(entity_type)s Code"
 msgstr ""

@@ -61,7 +61,7 @@ $(document).ready(function() {
     $("#all_project_block").dialog({
         autoOpen: false,
         modal: true,
-        title: 'Select Projects',
+        title: gettext('Select Projects'),
         zIndex:1100,
         beforeClose: function() {
             $('#action').val('');

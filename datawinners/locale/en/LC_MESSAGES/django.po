@@ -3140,3 +3140,6 @@ msgstr ""
 
 msgid "Web %(entity_type)s Registration Form"
 msgstr ""
+
+msgid "%(entity_type)s Code"
+msgstr ""

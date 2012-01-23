@@ -580,3 +580,6 @@ msgstr ""
 
 msgid "Import a list of %(entity)s"
 msgstr ""
+
+msgid "Select Projects"
+msgstr ""
