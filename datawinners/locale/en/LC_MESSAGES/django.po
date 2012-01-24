@@ -3143,3 +3143,6 @@ msgstr ""
 
 msgid "%(entity_type)s Code"
 msgstr ""
+
+msgid "Data Senders Registration Form"
+msgstr ""

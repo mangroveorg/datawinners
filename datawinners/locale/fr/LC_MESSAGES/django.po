@@ -3185,3 +3185,6 @@ msgstr "Formulaire d'enregistrement de %(entity_type)s par internet"
 
 msgid "%(entity_type)s Code"
 msgstr "Code %(entity_type)s"
+
+msgid "Data Senders Registration Form"
+msgstr "Formulaire d'enregistrement d'expéditeurs"

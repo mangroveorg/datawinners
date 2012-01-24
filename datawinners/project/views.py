@@ -561,7 +561,7 @@ def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     fields, project_links, questions, reg_form = _get_registration_form(manager, project ,
-                                                                        project_id)
+                                                                        type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
     return render_to_response('project/subjects.html',
             {'project': project,
@@ -620,13 +620,17 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 def datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    reg_form = get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
-    _format_field_description_for_data_senders(reg_form.fields)
-    cleaned_up_fields = _get_questions_for_datasenders_registration_for_print_preview(reg_form.fields)
-    import_reporter_form = ReporterRegistrationForm(initial={'project_id': project_id})
+    fields, project_links, questions, reg_form = _get_registration_form(manager, project)
+    example_sms = "%s .%s <%s> .... .%s <%s>" % (
+        reg_form.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
+    questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
     return render_to_response('project/datasenders.html',
-            {'fields': cleaned_up_fields, 'project': project, 'project_links': project_links,
-             'form': import_reporter_form, 'post_url': _get_imports_subjects_post_url(project_id),
+            {'project': project,
+             'project_links': project_links,
+             'questions': questions,
+             'questionnaire_code': reg_form.form_code,
+             'example_sms': example_sms,
+             'org_number': _get_organization_telephone_number(request),
              'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
@@ -754,20 +758,23 @@ def _get_preview_for_field_in_registration_questionnaire(field):
             "constraints": field.get_constraint_text(), "instruction": field.instruction}
 
 
-def _get_registration_form(manager, project, project_id, type_of_subject='subject'):
-    entity_type = project.entity_type
-    if is_string(project.entity_type):
-        entity_type = [project.entity_type]
-    registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
-    if registration_questionnaire is None:
+def _get_registration_form(manager, project, type_of_subject='reporter'):
+    if type_of_subject == 'reporter':
+        type_of_subject = 'Data sender'
         registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
+    else:
+        type_of_subject = project.entity_type
+        entity_type = [project.entity_type]
+        registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
+        if registration_questionnaire is None:
+            registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = registration_questionnaire.fields
     project_links = _make_project_links(project, registration_questionnaire.form_code)
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field)
-        question['description'] = question['description'].replace('subject', project.entity_type)
-        question['instruction'] = question['instruction'].replace('subject', project.entity_type)
+        question['description'] = question['description'].replace('subject', type_of_subject)
+        question['instruction'] = question['instruction'].replace('subject', type_of_subject)
         questions.append(question)
     return fields, project_links, questions, registration_questionnaire
 
@@ -783,8 +790,7 @@ def subject_registration_form_preview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
-                                                                                              project,
-                                                                                              project_id)
+                                                                                              project)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
@@ -799,9 +805,8 @@ def sender_registration_form_preview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
-                                                                                                             project,
-                                                                                                             project_id,
-                                                                                                             type_of_subject='Data sender')
+                                                                                             project,
+                                                                                             type_of_subject='reporter')
         example_sms = "%s .%s <%s> .... .%s <%s>" % (
             registration_questionnaire.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)

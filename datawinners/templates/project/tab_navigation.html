@@ -67,16 +67,16 @@
                class="{{ disable_link_class }}">{% trans "Questionnaire" %}</a>
         </li>
         {% endif %}
+        {% if project.state != 'Inactive'%}
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link }}"
                class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
         </li>
-        {% if project.state != 'Inactive'%}
             {% if 'no' in project.activity_report%}
             <li class="{% ifactivetab 'tab_nav' 'subjects' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "My Subjects" %}</a>
             </li>
-        {% endif %}
+            {% endif %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
@@ -134,7 +134,7 @@
         <a href="{{ project_links.registered_datasenders_link }}">{% trans "Registered Data Senders" %}</a>
     </li>
     <li class="{% ifactivetab 'secondary_tab_nav' 'criteria' %}active{% else %}inactive{% endifactivetab %}">
-        <a href="{{ project_links.datasenders_link }}">{% trans "Registration Questionnaire" %}</a>
+        <a href="{{ project_links.datasenders_link }}">{% trans "Data Senders Registration Form" %}</a>
     </li>
 </ul>
 {% endblock %}
