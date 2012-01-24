@@ -68,29 +68,32 @@
             </ul>
         </div>
         </div>
-        <div id='subjects'>
-            <div class="header">
-            <h5 class="inline">{% trans "Subjects" %} </h5>
+        {% if 'no' in project.activity_report %}
+            <div id='subjects'>
+                <div class="header">
+                    <h5 class="inline">{% trans "Subjects" %} </h5>
 
+                </div>
+                <div>
+                    <ul>
+                        <li><label>
+                            {% trans "Type:" %}</label>
+
+                            <p id="subject_type">{{ project.entity_type }}</p>
+                        </li>
+                        <li><label>
+                            {% trans "Number of subjects:" %}</label>
+
+                            <p id="no_of_subjects">{{ number_of_subjects }}</p>
+                        </li>
+
+                    </ul>
+                    <a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+                    <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
+                </div>
             </div>
-            <div>
-            <ul>
-                <li><label>
-                    {% trans "Type:" %}</label>
 
-                    <p id="subject_type">{{ project.entity_type }}</p>
-                </li>
-                <li><label>
-                    {% trans "Number of subjects:" %}</label>
-
-                    <p id="no_of_subjects">{{ number_of_subjects }}</p>
-                </li>
-
-            </ul>
-             <a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "edit" %}</a><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-            <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
-            </div>
-        </div>
+        {% endif %}
         <div id="questionnaire">
             <div class='header'>
                  <h5 class="inline">{% trans "Questionnaire" %}</h5>
