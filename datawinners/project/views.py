@@ -623,9 +623,8 @@ def datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     fields, project_links, questions, reg_form = _get_registration_form(manager, project)
-    example_sms = "%s .%s <%s> .... .%s <%s>" % (
-        reg_form.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
     questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
+    example_sms = get_example_sms_message(questions, reg_form)
     return render_to_response('project/datasenders.html',
             {'project': project,
              'project_links': project_links,
@@ -809,9 +808,8 @@ def sender_registration_form_preview(request, project_id=None):
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
                                                                                              project,
                                                                                              type_of_subject='reporter')
-        example_sms = "%s .%s <%s> .... .%s <%s>" % (
-            registration_questionnaire.form_code, fields[0].code, _('answer'), fields[len(fields) - 1].code, _('answer'))
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
+        example_sms = get_example_sms_message(datasender_questions, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
                 'project': project, 'project_links': project_links,
