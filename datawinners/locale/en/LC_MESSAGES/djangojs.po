@@ -583,3 +583,6 @@ msgstr ""
 
 msgid "Select Projects"
 msgstr ""
+
+msgid "Answer must be a word"
+msgstr ""

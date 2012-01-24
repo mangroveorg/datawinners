@@ -594,3 +594,6 @@ msgstr "Importer une liste de %(entity)s"
 
 msgid "Select Projects"
 msgstr "Sélectionnez les projets"
+
+msgid "Answer must be a word"
+msgstr "La réponse doit être un mot"
