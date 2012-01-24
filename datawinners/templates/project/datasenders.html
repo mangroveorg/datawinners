@@ -15,7 +15,6 @@
 
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/media/css/plugins/jquery_autocomplete/jquery.autocomplete.css" media="screen">
 {% endblock %}
 
@@ -23,7 +22,7 @@
     {{ block.super }}
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
-        <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_register_entity.scss" rel="stylesheet" />
     <link href="/media/css/scss/section_datasenders_common.scss" rel="stylesheet" />
 {% endblock %}
@@ -59,7 +58,7 @@
             <li style="width: 60px;"><a href="javascript:void(0)" id="sms_preview_btn" class="active">SMS</a></li>
             <li style="width: 60px;"><a href="{{ project_links.register_datasenders_link }}" id="web_preview_btn">Web</a></li>
         </ul>
-        <div class="clear-left"></div>
+        <div class="clear-right"></div>
     </div>
 
     <div id="sms_preview">

@@ -7,7 +7,7 @@ $(document).ready(function() {
         });
         $.ajax({
             type: 'POST',
-            url: '/entity/datasender/create',
+            url: sender_registration_link,
             data: $("#registration_form").serialize(),
             success:function(response) {
                 $("#add_data_sender_form").html(response);

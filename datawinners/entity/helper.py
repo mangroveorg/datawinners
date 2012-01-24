@@ -2,13 +2,16 @@
 
 from mangrove.datastore.datadict import get_datadict_type_by_slug, \
     create_datadict_type
+from mangrove.errors import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField, IntegerField, DateField, SelectField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD, \
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, \
     GEO_CODE_FIELD, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
-    SHORT_CODE_FIELD, SHORT_CODE
+    SHORT_CODE_FIELD, SHORT_CODE, REGISTRATION_FORM_CODE, \
+    ENTITY_TYPE_FIELD_CODE
 from mangrove.form_model.validation import TextLengthConstraint, \
     RegexConstraint, NumericRangeConstraint
+from mangrove.transport.player.player import WebPlayer
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_empty, is_not_empty, is_sequence
 import re
@@ -17,9 +20,16 @@ from mangrove.errors.MangroveException import NumberNotRegisteredException, \
 from mangrove.transport.reporter import find_reporter_entity
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
+from datawinners.accountmanagement.models import Organization, \
+    DataSenderOnTrialAccount
+from datawinners.location.LocationTree import get_location_tree
+from mangrove.transport import Request, TransportInfo
+from datawinners.messageprovider.message_handler import \
+    get_success_msg_for_registration_using
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
+COUNTRY = ',MADAGASCAR'
 
 def remove_hyphens(telephone_number):
     return re.sub('[- \(\)+]', '', smart_unicode(telephone_number))
@@ -189,3 +199,60 @@ def _create_location_question(post_dict, ddtype):
     return HierarchyField(name=post_dict["name"], code=post_dict["code"].strip(),
                                label=post_dict["title"], ddtype=ddtype, instruction=post_dict.get("instruction"),
                                required=post_dict.get("required"))
+
+
+def _associate_data_sender_to_project(dbm, project, project_id, response):
+    project = project.load(dbm.database, project_id)
+    project.data_senders.append(response.short_code)
+    project.save(dbm)
+
+
+def _get_data(form_data):
+    #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
+    mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
+              'location': LOCATION_TYPE_FIELD_CODE}
+    data = dict()
+    data[mapper['telephone_number']] = form_data.get('telephone_number')
+    data[mapper['location']] = form_data.get('location') + COUNTRY if form_data.get('location') is not None else None
+    data[mapper['geo_code']] = form_data.get('geo_code')
+    data[mapper['Name']] = form_data.get('first_name')
+    data['form_code'] = REGISTRATION_FORM_CODE
+    data[ENTITY_TYPE_FIELD_CODE] = 'Reporter'
+    return data
+
+
+def _add_data_sender_to_trial_organization(telephone_number, org_id):
+    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
+                                                         organization=Organization.objects.get(org_id=org_id))
+    data_sender.save()
+
+
+def process_create_datasender_form(dbm, form, org_id, project):
+    message = None
+    if form.is_valid():
+        telephone_number = form.cleaned_data["telephone_number"]
+        if not unique(dbm, telephone_number):
+            form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
+            return message
+
+        organization = Organization.objects.get(org_id=org_id)
+        if organization.in_trial_mode:
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
+                form._errors['telephone_number'] = form.error_class([(u"Sorry, this number has already been used for a different DataWinners trial account.")])
+                return message
+            else:
+                _add_data_sender_to_trial_organization(telephone_number,org_id)
+
+
+        try:
+            web_player = WebPlayer(dbm, get_location_tree())
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data),
+                                                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
+            message = get_success_msg_for_registration_using(response, "web")
+            project_id = form.cleaned_data["project_id"]
+            if not is_empty(project_id):
+                _associate_data_sender_to_project(dbm, project, project_id, response)
+        except MangroveException as exception:
+            message = exception.message
+
+    return message

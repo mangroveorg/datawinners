@@ -15,6 +15,7 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from datawinners.entity.helper import process_create_datasender_form
 
 import helper
 
@@ -84,6 +85,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['register_subjects_link'] = reverse('subject_questionnaire', args=[project_id])
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
         project_links['datasenders_link'] = reverse(datasenders, args=[project_id])
+        project_links['register_datasenders_link'] = reverse(create_datasender, args=[project_id])
         project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
@@ -843,3 +845,27 @@ def edit_subject(request, project_id=None):
              'questionnaire_code': reg_form.form_code,
              'entity_type': project.entity_type},
                               context_instance=RequestContext(request))
+
+
+@login_required(login_url='/login')
+@is_datasender_allowed
+@project_has_web_device
+def create_datasender(request, project_id=None):
+    manager = get_database_manager(request.user)
+    project, project_links = _get_project_and_project_link(manager, project_id)
+
+    if request.method == 'GET':
+        form = ReporterRegistrationForm(initial={'project_id': project_id})
+        return render_to_response('project/register_datasender.html',
+                    {'project': project, 'project_links': project_links, 'form': form},
+                                      context_instance=RequestContext(request))
+
+    if request.method == 'POST':
+        form = ReporterRegistrationForm(request.POST)
+        org_id = request.user.get_profile().org_id
+        message= process_create_datasender_form(manager, form, org_id, Project)
+        if message is not None:
+            form = ReporterRegistrationForm(initial={'project_id':form.cleaned_data['project_id']})
+        return render_to_response('datasender_form.html',
+                {'form': form, 'message': message},
+                                      context_instance=RequestContext(request))

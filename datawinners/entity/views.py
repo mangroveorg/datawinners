@@ -19,7 +19,7 @@ from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTri
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
 from datawinners.entity import helper
 from datawinners.entity.helper import update_questionnaire_with_questions, \
-    create_registration_form
+    create_registration_form, process_create_datasender_form
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -42,62 +42,6 @@ from datawinners.project.web_questionnaire_form_creator import \
 from datawinners.utils import get_excel_sheet, workbook_add_sheet
 
 COUNTRY = ',MADAGASCAR'
-
-def _associate_data_sender_to_project(dbm, project_id, response):
-    project = Project.load(dbm.database, project_id)
-    project.data_senders.append(response.short_code)
-    project.save(dbm)
-
-
-def _add_data_sender_to_trial_organization(telephone_number, org_id):
-    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
-                                                         organization=Organization.objects.get(org_id=org_id))
-    data_sender.save()
-
-
-def _process_form(dbm, form, org_id):
-    message = None
-    if form.is_valid():
-        telephone_number = form.cleaned_data["telephone_number"]
-        if not helper.unique(dbm, telephone_number):
-            form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
-            return message
-
-        organization = Organization.objects.get(org_id=org_id)
-        if organization.in_trial_mode:
-            if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
-                form._errors['telephone_number'] = form.error_class([(u"Sorry, this number has already been used for a different DataWinners trial account.")])
-                return message
-            else:
-                _add_data_sender_to_trial_organization(telephone_number,org_id)
-
-
-        try:
-            web_player = WebPlayer(dbm, get_location_tree())
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data),
-                                                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
-            message = get_success_msg_for_registration_using(response, "web")
-            project_id = form.cleaned_data["project_id"]
-            if not is_empty(project_id):
-                _associate_data_sender_to_project(dbm, project_id, response)
-        except MangroveException as exception:
-            message = exception.message
-
-    return message
-
-
-def _get_data(form_data):
-    #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
-    mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
-              'location': LOCATION_TYPE_FIELD_CODE}
-    data = dict()
-    data[mapper['telephone_number']] = form_data.get('telephone_number')
-    data[mapper['location']] = form_data.get('location') + COUNTRY if form_data.get('location') is not None else None
-    data[mapper['geo_code']] = form_data.get('geo_code')
-    data[mapper['Name']] = form_data.get('first_name')
-    data['form_code'] = REGISTRATION_FORM_CODE
-    data[ENTITY_TYPE_FIELD_CODE] = 'Reporter'
-    return data
 
 #TODO This method has to be moved into a proper place since this is used for registering entities.
 @csrf_view_exempt
@@ -142,7 +86,7 @@ def create_datasender(request):
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
-        message= _process_form(dbm, form, org_id)
+        message = process_create_datasender_form(dbm, form, org_id, Project)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id':form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',

@@ -117,11 +117,11 @@
       color: #ffffff !important; }
 
 #my_subjects_links {
-  margin: 10px 0 20px 0;
-  padding-left: 598px; }
+  margin: 10px 0 20px 0; }
   #my_subjects_links ul {
     margin: 0;
-    padding: 0; }
+    padding: 0;
+    float: right; }
     #my_subjects_links ul li {
       display: block;
       float: left;
@@ -185,3 +185,9 @@
 .popup-import ul.bulleted li {
   list-style-type: disc !important;
   margin-left: 20px; }
+
+#my_datasenders .button_block {
+  margin: 0 !important;
+  padding: 0 !important; }
+#my_datasenders .cancel_link {
+  display: none !important; }
