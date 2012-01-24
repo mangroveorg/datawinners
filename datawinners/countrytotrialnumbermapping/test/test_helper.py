@@ -11,8 +11,8 @@ class TestHelper(unittest.TestCase):
         country3 = Country(country_name='Country3', country_code='3')
         actual_display_map = helper.get_countries_in_display_format([country1,country2,country3])
         expected_display_map = {
-            'Country1':'Country1(1)',
-            'Country2':'Country2(2)',
-            'Country3':'Country3(3)',
+            'Country1':'Country1 (1)',
+            'Country2':'Country2 (2)',
+            'Country3':'Country3 (3)',
         }
         self.assertEqual(expected_display_map, actual_display_map)
