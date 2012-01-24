@@ -16,7 +16,7 @@ from datawinners.utils import get_organization
 from messageprovider.handlers import create_failure_log
 from submission.organization_finder import OrganizationFinder
 from submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor
-from submission.submission_utils import PostSMSProcessorLanguageActivator
+from submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from utils import  get_database_manager_for_org
 from mangrove.transport.facade import Request
 from messageprovider.exception_handler import handle
@@ -94,9 +94,11 @@ def process_sms_counter(incoming_request):
 
 def submit_to_player(incoming_request):
     try:
+        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(incoming_request['dbm'], incoming_request),
+                    PostSMSProcessorNumberOfAnswersValidators(incoming_request['dbm'], incoming_request)]
         sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(),
             get_location_hierarchy=get_location_hierarchy,
-            post_sms_parser_processors=[PostSMSProcessorLanguageActivator(incoming_request['dbm'], incoming_request)])
+            post_sms_parser_processors=post_sms_parser_processors)
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)

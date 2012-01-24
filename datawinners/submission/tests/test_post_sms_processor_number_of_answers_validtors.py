@@ -1,0 +1,76 @@
+import unittest
+from mangrove.form_model.form_model import FormModel
+from mock import patch, Mock
+from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
+from datawinners.submission.submission_utils import PostSMSProcessorNumberOfAnswersValidators
+
+class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
+    def setUp(self):
+        self.language = 'fr'
+        self.patcher = patch('datawinners.submission.submission_utils.get_form_model_by_code')
+        self.form_model_patch = self.patcher.start()
+        self.form_model_patch = self.patcher.start()
+
+    def tearDown(self):
+        self.patcher.stop()
+
+    def test_for_activity_report_question_should_not_send_error_for_data_submission_if_number_of_answers_are_not_equal_to_number_of_questions(self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=False, fields=[1, 2, 3])
+
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(None, response)
+
+    def test_for_activity_report_question_should_send_error_for_data_submission_if_number_of_answers_are_not_equal_to_number_of_questions(self):
+        # there won't be any answers for entity question
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=False, fields=[1, 2, 3])
+
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', })
+        self.assertEqual(False, response.success)
+        self.assertEqual(get_wrong_number_of_answer_error_message(), response.errors)
+
+    def test_should_not_send_error_for_data_submission_if_number_of_answers_are_correct(self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=False, fields=[1, 2])
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(None, response)
+
+    def test_for_registration_should_not_send_error_if_number_of_answers_incorrect_when_subject_question_is_present(
+            self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2, 3],
+            entity_question=object())
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(None, response)
+
+    def test_for_registration_should_send_error_if_number_of_answers_incorrect_when_subject_question_is_present(self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2, 3, 4],
+            entity_question=object())
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(False, response.success)
+        self.assertEqual(get_wrong_number_of_answer_error_message(), response.errors)
+
+    def test_for_registration_should_send_error_if_number_of_answers_incorrect_when_subject_question_is_not_present(
+            self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2, 3])
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(False, response.success)
+        self.assertEqual(get_wrong_number_of_answer_error_message(), response.errors)
+
+    def test_for_registration_should_not_send_error_if_number_of_answers_correct_when_subject_question_is_not_present(
+            self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2])
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(None, response)
+
+
+    def _get_form_model_mock(self, is_registration_form, fields, entity_question=None):
+        form_model_mock = Mock(spec=FormModel)
+        form_model_mock.is_registration_form.return_value = is_registration_form
+        form_model_mock.fields = fields
+        form_model_mock.entity_question = entity_question
+        return form_model_mock

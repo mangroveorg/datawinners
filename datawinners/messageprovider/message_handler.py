@@ -29,7 +29,12 @@ def get_exception_message_for(exception, channel=None,formatter=default_formatte
 
 
 def get_submission_error_message_for(errors):
-    return get_validation_failure_error_message() % ", ".join(errors.keys())
+# :-( :-( :-(
+    if isinstance(errors,dict):
+        error_message = get_validation_failure_error_message() % ", ".join(errors.keys())
+    else:
+        error_message=errors
+    return error_message
 
 
 def get_expanded_response(response_dict):

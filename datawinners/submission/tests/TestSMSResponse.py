@@ -23,3 +23,13 @@ class TestSMSResponse(unittest.TestCase):
         response = Response(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
         self.assertEqual(u'Registration successful. Unique identification number(ID) is: CLI001.We received : name: Clinic X',
                          SMSResponse(response).text())
+
+    def test_should_return_expected_error_response(self):
+        self.form_submission_mock.saved= False
+        error_response = "horrible hack. feeling bad about it. But need to change mangrove error handling and error response"
+        self.form_submission_mock.errors= error_response
+
+
+        response = Response(reporters=[], submission_id=123,form_submission=self.form_submission_mock)
+        self.assertEqual(error_response,
+                         SMSResponse(response).text())

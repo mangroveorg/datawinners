@@ -91,3 +91,6 @@ def get_submission_success_message():
 
 def get_registration_success_message():
     return _("Registration successful.") + " %s."
+
+def get_wrong_number_of_answer_error_message():
+    return _("Could not parse, Wrong number of answers submitted.")

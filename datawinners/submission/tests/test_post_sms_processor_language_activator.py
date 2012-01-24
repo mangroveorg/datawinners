@@ -4,7 +4,7 @@ from mock import patch, Mock
 from mangrove.form_model.form_model import FormModel
 from submission.submission_utils import PostSMSProcessorLanguageActivator
 
-class TestSubmissionUtils(unittest.TestCase):
+class TestPostSMSProcessorLanguageActivator(unittest.TestCase):
     def setUp(self):
         self.language = 'fr'
         self.patcher = patch('submission.submission_utils.get_form_model_by_code')
