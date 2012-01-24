@@ -706,7 +706,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         try:
             response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(helper.create_request(questionnaire_form, request.user.username))
             if response.success:
-                success_message = _("Successfully submitted")
+                success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response.short_code,)
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)

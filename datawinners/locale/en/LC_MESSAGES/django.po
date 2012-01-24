@@ -3152,3 +3152,6 @@ msgstr ""
 
 msgid "Your Trial Account Phone Number"
 msgstr ""
+
+msgid "Successfully submitted. Unique identification number(ID) is:"
+msgstr "Envoyé avec succès. Le numéro d'identification unique (ID) est :"

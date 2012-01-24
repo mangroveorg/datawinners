@@ -1,5 +1,8 @@
 {% load i18n %}
 {% load field_tags %}
+
+<script type="text/javascript" src="/media/javascript/entity/web_questionnaire.js"></script>
+
 {% if success_message %}
     <div class="success-message-box">{{ success_message }}</div>
 {% endif %}
@@ -19,43 +22,80 @@
 {% if questionnaire_form.non_fielderrors %}
     <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
 {% endif %}
-{% for field in questionnaire_form %}
-    {% if field.is_hidden and field.name == 'entity_question_code' %}
-        <input id='code' type="hidden" value="{{ field.label }}"/>
-    {% endif %}
-{% endfor %}
 <form method="POST">
     {% csrf_token %}
+    {% for field in questionnaire_form %}
+        {% if field.is_hidden %}
+            <div class="answer">
+                {% if field|field_type == 'ChoiceField' %}
+                    <span class="single_select_question" wmwrap="true">
+                        {{ field }}
+                    </span>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+                {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>
+                                {{ error }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
     <ul class="que_width">
         {% for field in questionnaire_form %}
-            <li>
-                {% if not field.is_hidden %}
+            {% if not field.is_hidden %}
+                <li>
                     <h6>{{ field.label }}</h6>
-                    <input id='code1' type="hidden"
-                           value="{{ field.name }}"/>
-                    <p class="instructions italic">
-                        {{ field.help_text }}
-                    </p>
-                {% endif %}
-                <div class="answer">
-                    {% if field|field_type == 'ChoiceField' %}
-                        <span class="single_select_question" wmwrap="true">
+                    {% if field.name == "s" %}
+                        <div class="answer">
                             {{ field }}
-                        </span>
+                            <div style="float: left; padding: 10px 0 0 5px;">
+                                <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
+                                {% trans "Let us generate an ID for you" %}
+                            </div>
+                            {% if field.errors %}
+                                <ul class="errorlist">
+                                    {% for error in field.errors %}
+                                        <li>
+                                            {{ error }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
                     {% else %}
-                        {{ field }}
+                        <input id='code1' type="hidden"
+                               value="{{ field.name }}"/>
+                        <p class="instructions italic">
+                            {{ field.help_text }}
+                        </p>
+                        <div class="answer">
+                            {% if field|field_type == 'ChoiceField' %}
+                                <span class="single_select_question" wmwrap="true">
+                                    {{ field }}
+                                </span>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                            {% if field.errors %}
+                                <ul class="errorlist">
+                                    {% for error in field.errors %}
+                                        <li>
+                                            {{ error }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
                     {% endif %}
-                    {% if field.errors %}
-                        <ul class="errorlist">
-                            {% for error in field.errors %}
-                                <li>
-                                    {{ error }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            </li>
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
     <input type="submit" class="button" value="{% trans 'Submit' %}"/>

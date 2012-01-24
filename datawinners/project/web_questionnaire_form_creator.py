@@ -14,7 +14,7 @@ class WebQuestionnaireFormCreater(object):
     def create(self):
         properties = dict()
         if self.form_model.is_registration_form():
-            properties.update({u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])})
+            properties.update(self._get_entity_type_hidden_field())
             properties.update(
                 {field.code: self._get_django_field(field) for field in self.form_model.fields})
         else:
@@ -64,6 +64,10 @@ class WebQuestionnaireFormCreater(object):
         choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
         choices = tuple(choice_list)
         return choices
+
+
+    def _get_entity_type_hidden_field(self):
+        return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
 
 class SubjectQuestionFieldCreator(object):
     def __init__(self, dbm, project,project_subject_loader=None):
