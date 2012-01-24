@@ -10,4 +10,4 @@ register = template.Library()
 @register.filter(name='format_organization_number')
 def format_organization_number(value):
     link = '/' + get_language() + '/your-account-phone-number/'
-    return mark_safe('<a class="org_number_link" href="%s">%s</a>' % (link,_('Your Trial Account Phone Number'))) if isinstance(value, list) else value
+    return mark_safe('<a class="org_number_link" href="%s" target="_blank">%s</a>' % (link,_('Your Trial Account Phone Number'))) if isinstance(value, list) else value
