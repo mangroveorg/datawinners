@@ -16,4 +16,4 @@ class TestQuestionnairePreviewTags(unittest.TestCase):
         t = Template("{% load questionnaire_preview_tags %}{{ org_number|format_organization_number }}")
         c = Context({'org_number':[1234,4312]})
         rendered_template = t.render(c)
-        self.assertEqual('<a class="org_number_link" href="/en/your-account-phone-number/">Your Trial Account Phone Number</a>', rendered_template)
+        self.assertEqual('<a class="org_number_link" href="/en/your-account-phone-number/" target="_blank">Your Trial Account Phone Number</a>', rendered_template)
