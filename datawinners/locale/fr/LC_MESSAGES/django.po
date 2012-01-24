@@ -3111,22 +3111,22 @@ msgid "Enter a %(entity_type)s last name"
 msgstr "Entrez le nom du/de la %(entity_type)s"
 
 msgid "What is the %(entity_type)s's first name?"
-msgstr "Quel est le prénom du/de la %(entity_type)s"
+msgstr "Quel est le prénom du/de la %(entity_type)s ?"
 
 msgid "What is the %(entity_type)s's last name?"
-msgstr "Quel est le nom du/de la %(entity_type)s"
+msgstr "Quel est le nom du/de la %(entity_type)s ?"
 
 msgid "What is the %(entity_type)s's location?"
-msgstr "Quel est la localisation du/de la %(entity_type)s"
+msgstr "Quel est la localisation du/de la %(entity_type)s ?"
 
 msgid "What is the %(entity_type)s's GPS co-ordinates?"
-msgstr "Quelle sont les coordonnées GPS du/de la %(entity_type)s"
+msgstr "Quelle sont les coordonnées GPS du/de la %(entity_type)s ?"
 
 msgid "What is the %(entity_type)s's mobile telephone number?"
-msgstr "Quel est le numéro de téléphone mobile du/de la %(entity_type)s"
+msgstr "Quel est le numéro de téléphone mobile du/de la %(entity_type)s ?"
 
-msgid "What is the %(entity_type)s's Unique ID Number"
-msgstr "Quel est le numéro d'identification unique du/de la %(entity_type)s"
+msgid "What is the %(entity_type)s's Unique ID Number?"
+msgstr "Quel est le numéro d'identification unique du/de la %(entity_type)s ?"
 
 msgid "Enter the %(entity_type)'s number"
 msgstr "Entrez le numéro du/de la %(entity_type)s"

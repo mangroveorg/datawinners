@@ -3087,7 +3087,7 @@ msgstr ""
 msgid "What is the %(entity_type)s's mobile telephone number?"
 msgstr ""
 
-msgid "What is the %(entity_type)s's Unique ID Number"
+msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr ""
 
 msgid "Enter the %(entity_type)'s number"

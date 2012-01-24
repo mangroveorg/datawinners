@@ -69,7 +69,7 @@
         {% endif %}
         {% if project.state != 'Inactive'%}
         <li class="{% ifactivetab 'tab_nav' 'data_senders' %}active{% else %}inactive{% endifactivetab %}">
-            <a id="data_senders_tab" href="{{ project_links.registered_datasenders_link }}"
+            <a id="data_senders_tab" href="{{ project_links.datasenders_link }}"
                class="{{ disable_link_class }}">{% trans "My Data Senders" %}</a>
         </li>
             {% if 'no' in project.activity_report%}
