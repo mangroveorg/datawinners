@@ -1,0 +1,47 @@
+{% load i18n %}
+        <div class="popup-import" id="popup-{{ subject.entity }}">
+            {% blocktrans with subject.entity as entity_type %}Upload an Excel file (.xls) with Your {{ entity_type }} list{% endblocktrans %}
+            <br/><br/>
+            <div class="file-uploader float_left" id="import-{{ subject.code }}">
+                <noscript>
+                    <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+                    <!-- or put a simple form for upload here -->
+                </noscript>
+                <div class="clear"></div>
+            </div>
+            <div class="error">{% trans "Download the template:"%} <a href="{% url datawinners.entity.views.export_template subject.entity %}">{{ subject.entity }}.xls</a></div>
+            <table>
+                <thead>
+                    {% for title in subject.labels %}
+                        <th>{{ title }}</th>
+                    {% endfor %}
+                </thead>
+                <tbody id="{{ subject.code }}_table">
+                </tbody>
+            </table>
+            <div>
+                Note:
+                <ul class="bulleted">
+                    <li>{% trans "The order of the columns in your Excel file needs to match the existing order of your questions." %}</li>
+                    <li>{% blocktrans with subject.entity as entity_type and subject.entity as form_code %}You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link' >Edit the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
+                    <li>{% trans "The 1<sup>st</sup> row of your Excel file will not be imported. You can use this header row for your questions (titles of the columns)." %}</li>
+                </ul>
+            </div>
+            <div class='error_table' style="display: none;" id="{{ subject.code }}_error_table">
+                <br/>
+                <table class="styled_table">
+                    <thead>
+                    <th>{% trans "Row Number" %}</th>
+                    <th>{% trans "Row" %}</th>
+                    <th>{% trans "Error" %}</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div style="display: inline;float:right;">
+                <a href="javascript:void(0);" id="close-import-{{ subject.entity }}" class="button close_import_dialog">{% trans "Close" %}</a>
+            </div>
+        </div>

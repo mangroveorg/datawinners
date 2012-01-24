@@ -178,7 +178,10 @@ def get_field_infos(fields):
     return fields_names, labels, codes
 
 
-def get_entity_type_infos(entity, form_model):
+def get_entity_type_infos(entity, form_model=None, manager=None):
+    if form_model is None:
+        form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity))
+        form_model = manager.load_all_rows_in_view("questionnaire", key=form_model.form_code)[0]
     names, labels, codes = get_field_infos(form_model.value['json_fields'])
     subject = dict(entity = entity,
         code = form_model.value["form_code"],

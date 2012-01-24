@@ -385,7 +385,7 @@ def export_template(request, entity_type=None):
 
     wb = get_excel_sheet([labels], entity_type)
     codes.insert(0, "form_code")
-    ws = workbook_add_sheet(wb, [codes, labels], "codes")
+    ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
     wb.save(response)
     return response

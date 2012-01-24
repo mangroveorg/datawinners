@@ -37,7 +37,7 @@ from mangrove.transport import Channel
 import datawinners.utils as utils
 
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
-from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
+from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_infos
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_exception_message_for
@@ -581,8 +581,9 @@ def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=project.entity_type)
+    subject = get_entity_type_infos(project.entity_type, manager=manager)
     return render_to_response('project/registered_subjects.html',
-            {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels},
+            {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels, "subject": subject},
                                   context_instance=RequestContext(request))
 
 
