@@ -1,7 +1,11 @@
 {% extends 'layout_print.html' %}
 {% load i18n %}
+{% load questionnaire_preview_tags %}
 {% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
-
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet" />
+{% endblock %}
 
 {% block body %}
     <div id="questionnaire_preview">
@@ -9,7 +13,7 @@
         <ul class="questionnaire_title">
             <li>
                 <p>{% trans "SMS your answers to" %}</p>
-                <h5>{{ org_number }}</h5>
+                <h5>{{ org_number|format_organization_number }}</h5>
             </li>
             <li>
                 <p>{% trans "Project Name:" %}</p>

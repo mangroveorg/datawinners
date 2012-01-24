@@ -62,3 +62,8 @@ p.instructions {
       .olpreview li .answer ol {
         margin-left: 20px;
         list-style: lower-alpha; }
+
+.org_number_link {
+  margin-top: 5px;
+  font-size: 12px !important;
+  position: absolute; }

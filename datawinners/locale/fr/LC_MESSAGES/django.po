@@ -3191,3 +3191,6 @@ msgstr "Formulaire d'enregistrement d'expéditeurs"
 
 msgid "Add a new Data Sender"
 msgstr "Ajouter un nouvel expéditeur"
+
+msgid "Your Trial Account Phone Number"
+msgstr "Votre Numéro de Téléphone pour Compte d’Essai"

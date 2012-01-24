@@ -818,8 +818,7 @@ def sender_registration_form_preview(request, project_id=None):
 
 def _get_organization_telephone_number(request):
     organization_settings = utils.get_organization_settings_from_request(request)
-    organization_number = organization_settings.get_organisation_sms_number()
-    return ' or '.join(organization_number) if isinstance(organization_number, list) else organization_number
+    return organization_settings.get_organisation_sms_number()
 
 
 def _get_subject_form_model(manager, entity_type):

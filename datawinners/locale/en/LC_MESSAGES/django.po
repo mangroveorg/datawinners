@@ -3149,3 +3149,6 @@ msgstr ""
 
 msgid "Add a new Data Sender"
 msgstr ""
+
+msgid "Your Trial Account Phone Number"
+msgstr ""

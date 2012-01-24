@@ -1,8 +1,8 @@
- .preview_block{
+.preview_block{
     text-align:right;
- }
+}
 
- #questionnaire_preview{
+#questionnaire_preview{
   margin-left:20px;
  .questionnaire_preview{
     > li{
@@ -30,16 +30,16 @@
         float:left;
     }
  }
- }
- #que_code{
+}
+#que_code{
     li{
         list-style-type:decimal;
         float:left;
         clear:both;
     }
- }
+}
 
- #print_page{
+#print_page{
     a{
         color:#0070ac;
         outline:none;
@@ -64,12 +64,12 @@
 
     }
 }
- p.instructions{
+p.instructions{
     font-style:italic;
     font-size:12px;
- }
+}
 
- .olpreview {
+.olpreview {
     padding-left:20px;
     li{
         float:none !important;
@@ -88,4 +88,9 @@
             }
         }
     }
- }
+}
+.org_number_link{
+    margin-top: 5px;
+    font-size : 12px !important;
+    position: absolute;
+}
