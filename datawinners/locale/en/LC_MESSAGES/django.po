@@ -3146,3 +3146,6 @@ msgstr ""
 
 msgid "Data Senders Registration Form"
 msgstr ""
+
+msgid "Add a new Data Sender"
+msgstr ""

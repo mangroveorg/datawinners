@@ -3188,3 +3188,6 @@ msgstr "Code %(entity_type)s"
 
 msgid "Data Senders Registration Form"
 msgstr "Formulaire d'enregistrement d'expéditeurs"
+
+msgid "Add a new Data Sender"
+msgstr "Ajouter un nouvel expéditeur"

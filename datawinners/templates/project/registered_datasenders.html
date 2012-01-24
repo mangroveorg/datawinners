@@ -13,16 +13,35 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+{% endblock %}
+
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
 {% endblock %}
 
 {% block content %}
+    <div>
+        <div class="grid_8 alpha">
+            <h2>{% trans "My Data Senders" %}</h2>
+        </div>
+        <div class="grid_8 float_right omega text_align_right">
+            <a href="javascript:void(0)">{% trans "Add a new Data Sender" %}</a> &nbsp;|&nbsp;
+            <a href="javascript:void(0);">{% trans "Import a list" %}</a>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+
+    <div id="my_subjects">
     {% block secondary_navigation_datasenders %}
         {% activetab "secondary_tab_nav" "datasenders" %}
         {{ block.super }}
     {% endblock %}
+    </div>
+
     <label class="float_left">{% trans "Actions:" %} </label>
     <select id='action' class="margin_bottom_20">
         <option value="">--</option>
