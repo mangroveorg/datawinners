@@ -26,7 +26,6 @@
         {% if subject.data|length > 0 %}
             <table class="styled_table" id="{{ subject.entity }}-table">
                 <thead>
-                    <th>&nbsp;</th>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}
@@ -34,7 +33,6 @@
                 <tbody id="{{ subject.code }}-table">
                 {% for row in subject.data %}
                     <tr>
-                        <td><input type="checkbox" id="{{ row.id }}" value="{{ row.short_code }}" name="checked"/></td>
                         {% for col in row.cols %}
                             <td>{{ col }}</td>
                         {% endfor %}
@@ -45,7 +43,6 @@
         {% else %}
             <table class="styled_table" >
                 <thead>
-                    <th>&nbsp;</th>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}

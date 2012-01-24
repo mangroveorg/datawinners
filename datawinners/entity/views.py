@@ -363,12 +363,16 @@ def export_subject(request):
     all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=entity_type)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
-
+    fields, labels, codes = import_module.get_entity_type_fields(manager, entity_type)
+    
     raw_data = [labels]
     for data in all_data:
-        if data['short_code'] in entity_list:
+        if data['short_code'] in entity_list or len(entity_list) == 0:
             raw_data.append(data['cols'])
     wb = get_excel_sheet(raw_data, entity_type)
+    codes.insert(0, "form_code")
+    ws = workbook_add_sheet(wb, [codes], "codes")
+    ws.visibility = 1
     wb.save(response)
     return response
 
