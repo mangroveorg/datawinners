@@ -9,7 +9,6 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
         self.language = 'fr'
         self.patcher = patch('datawinners.submission.submission_utils.get_form_model_by_code')
         self.form_model_patch = self.patcher.start()
-        self.form_model_patch = self.patcher.start()
 
     def tearDown(self):
         self.patcher.stop()
