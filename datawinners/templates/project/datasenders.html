@@ -1,5 +1,7 @@
     {% extends 'project/tab_navigation.html' %}
 {% load i18n %}
+{% load questionnaire_preview_tags %}
+
 {% block page_title %} {% trans "Projects - Data Senders" %} {% endblock %}
 
 {% load dw_tabs %}
@@ -66,7 +68,7 @@
         <ul class="questionnaire_title">
             <li>
                 <p>{% trans "SMS your answers to" %}</p>
-                <h5>{{ org_number }}</h5>
+                <h5>{{ org_number|format_organization_number }}</h5>
             </li>
             <li>
                 <p>{% trans "Project Name:" %}</p>
