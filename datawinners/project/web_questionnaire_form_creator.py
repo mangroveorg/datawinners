@@ -3,6 +3,7 @@ from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, field_attributes
 
@@ -48,6 +49,8 @@ class WebQuestionnaireFormCreater(object):
             help_text=field.instruction)
         char_field.widget.attrs["watermark"] = field.get_constraint_text()
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
+        if field.name == LOCATION_TYPE_FIELD_NAME:
+            char_field.widget.attrs['class'] = 'location_field'
 
         return char_field
 

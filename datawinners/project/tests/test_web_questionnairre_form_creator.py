@@ -1,9 +1,9 @@
 import unittest
 from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, SelectField, field_attributes
+from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
 from mock import Mock
 from mangrove.form_model.validation import TextLengthConstraint
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
@@ -33,6 +33,17 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(is_required,web_text_field.required)
         self.assertTrue(web_text_field.widget.attrs['watermark'] is not None)
         self.assertEqual('padding-top: 7px;',web_text_field.widget.attrs['style'])
+
+    def test_should_create_web_questionnaire_for_location_field(self):
+        self.form_model.add_field(self._get_location_field())
+
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
+
+        web_location_field = questionnaire_form_class().fields[LOCATION_TYPE_FIELD_CODE]
+        self.assertEqual(CharField,type(web_location_field))
+        self.assertTrue(web_location_field.widget.attrs['watermark'] is not None)
+        self.assertEqual('padding-top: 7px;',web_location_field.widget.attrs['style'])
+        self.assertEqual('location_field',web_location_field.widget.attrs['class'])
 
 
     def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):
@@ -160,3 +171,10 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
                                ddtype=Mock(spec=DataDictType),
                                instruction=self.instruction, required=is_required,constraints=[TextLengthConstraint(1, 20)],entity_question_flag=entity_question_flag)
         return text_field
+
+    def _get_location_field(self):
+        location_field = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
+                    label=self.field_name,
+                    language="en", ddtype=Mock(spec=DataDictType))
+
+        return location_field
