@@ -1,4 +1,5 @@
 import unittest
+from unittest.case import SkipTest
 from django.utils import translation
 from mock import patch, Mock
 from mangrove.form_model.form_model import FormModel
@@ -13,12 +14,13 @@ class TestPostSMSProcessorLanguageActivator(unittest.TestCase):
 
     def tearDown(self):
         self.patcher.stop()
+        translation.activate('en')
 
     def test_should_activate_the_language(self):
         mangrove_request = dict()
         form_code = '123'
         PostSMSProcessorLanguageActivator(dbm=None,request=mangrove_request).process(form_code, {})
-        self.assertEqual(translation.get_language(), self.language)
+        self.assertEqual(self.language,translation.get_language())
         self.assertEqual(form_code,mangrove_request['form_code'] )
 
     def mocked_form_model_active_language(self, language):
