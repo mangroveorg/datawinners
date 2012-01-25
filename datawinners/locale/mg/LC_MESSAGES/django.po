@@ -2432,7 +2432,7 @@ msgstr ""
 msgid "Example: Program Director"
 msgstr ""
 
-msgid "Example: +261 333745269"
+msgid "phone_number_example"
 msgstr ""
 
 msgid "Example: Minimum	of 6 characters in length"
@@ -2470,9 +2470,6 @@ msgid "You cannot add new columns in your Excel file to create new question. <a 
 msgstr ""
 
 msgid "Close"
-msgstr ""
-
-msgid "Enter phone number without the country code. Example: +261 333745269"
 msgstr ""
 
 msgid "Define what information you want to collect about each %(entity_type)s."

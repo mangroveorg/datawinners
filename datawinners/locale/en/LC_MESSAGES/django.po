@@ -2986,8 +2986,8 @@ msgstr ""
 msgid "Example: Program Director"
 msgstr ""
 
-msgid "Example: +261 333745269"
-msgstr ""
+msgid "phone_number_example"
+msgstr "Enter phone number without the country code. Example: 033 37 452 69, 079-255-10-61, 07857604656"
 
 msgid "Example: Minimum	of 6 characters in length"
 msgstr ""
@@ -3046,9 +3046,6 @@ msgid "Choose Data Sender from this list."
 msgstr ""
 
 msgid "Choose Subject from this list."
-msgstr ""
-
-msgid "Enter phone number without the country code. Example: +261 333745269"
 msgstr ""
 
 msgid "Define what information you want to collect about each %(entity_type)s."

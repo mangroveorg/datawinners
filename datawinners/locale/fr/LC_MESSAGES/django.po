@@ -3024,8 +3024,8 @@ msgstr "Exemple: www.organisation.com"
 msgid "Example: Program Director"
 msgstr "Exemple: Directeur de programme"
 
-msgid "Example: +261 333745269"
-msgstr "Exemple: +261 333745269"
+msgid "phone_number_example"
+msgstr "Entrez le numéro de téléphone sans le code pays. Exemple: 033 37 452 69, 079-255-10-61, 07857604656"
 
 msgid "Example: Minimum	of 6 characters in length"
 msgstr "Exemple: Au minimum 6 caratères"
