@@ -196,7 +196,7 @@ def _create_telephone_number_question(post_dict, ddtype):
 
 
 def _create_location_question(post_dict, ddtype):
-    return HierarchyField(name=post_dict["name"], code=post_dict["code"].strip(),
+    return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=post_dict["code"].strip(),
                                label=post_dict["title"], ddtype=ddtype, instruction=post_dict.get("instruction"),
                                required=post_dict.get("required"))
 
