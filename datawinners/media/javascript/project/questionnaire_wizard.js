@@ -167,6 +167,14 @@ $(document).ready(function() {
         width: 500
     });
 
+    $("#delete_warning").dialog({
+        autoOpen: false,
+        modal: true,
+        title: gettext('Your Collected Data Will be Lost'),
+        zIndex:200,
+        width: 500
+    });
+
     $("#submit-button").click(function() {
         if($("#qtype").val() != undefined) {
             $("#questionnaire-change").dialog("open");

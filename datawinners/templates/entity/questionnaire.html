@@ -52,7 +52,7 @@
                  <li>
                     <a href="questionnaire.html#" data-bind="text: question.display"></a>
                      <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                         <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                         <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestionCheck(question); } else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
                     </div>
                  </li>
                  <span class="selected_question_arrow"

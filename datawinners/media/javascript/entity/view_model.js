@@ -46,6 +46,17 @@ var viewModel =
         viewModel.hasAddedNewQuestions = true;
         viewModel.reassignQuestionCodes(index);
     },
+    removeQuestionCheck:function(question){
+        $("#delete_warning").dialog("open");
+        $("#delete_ok").unbind('click').click(function(){
+            viewModel.removeQuestion(question);
+            $("#delete_warning").dialog("close");
+        });
+        $("#delete_cancel").unbind('click').click(function(){
+            $("#delete_warning").dialog("close");
+            return false;
+        });
+    },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {
             viewModel.removeQuestion(question);
@@ -133,15 +144,5 @@ var viewModel =
         for ( var i=index;i< viewModel.questions().length;i++){
             viewModel.questions()[i].code(DW.generateQuestionCode());
         }
-    },
-    showWarning: function(action) {
-        if(action == 'add') {
-            $("#warning-message").html( $("#warning-add").html());
-        } else if(action == 'delete') {
-            $("#warning-message").html( $("#warning-delete").html());
-        } else {
-            $("#warning-message").html( $("#warning-submit").html());
-        }
-        $("#questionnaire-change").dialog("open");
     }
 };

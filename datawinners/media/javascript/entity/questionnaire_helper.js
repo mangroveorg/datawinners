@@ -121,21 +121,21 @@ DW.question.prototype = {
             },
             owner:this
     });
-        this.canBeDeleted = function() {
-            return (!this.is_entity_question() && !this.options.defaultQuestion);
-        };
-        this.isenabled = function(){
-          return !this.loaded();
-        };
-        this.isAChoiceTypeQuestion = ko.dependentObservable({
-                    read:function() {
-                        return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
-                    },
-                    write:function(value) {
-                        this.type(this.type() == "" ? "select" : "select1");
-                    },
-                    owner: this
-                });
+    this.canBeDeleted = function() {
+        return (!this.is_entity_question() && this.name() != 'name');
+    };
+    this.isenabled = function(){
+      return !this.loaded();
+    };
+    this.isAChoiceTypeQuestion = ko.dependentObservable({
+                read:function() {
+                    return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
+                },
+                write:function(value) {
+                    this.type(this.type() == "" ? "select" : "select1");
+                },
+                owner: this
+            });
     }
 };
 

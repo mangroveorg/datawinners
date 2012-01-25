@@ -66,21 +66,15 @@
     </form>
 </div>
 <div id="questionnaire-change">
-    <div id="warning-message"></div>
-    <div id="warning-add" class="none">
-        <p>Do you want to add this question?</p>
-    </div>
-    <div id="warning-delete" class="none">
-        <p>You have already collected data for this question. If you delete the question,
-        the corresponding data will be lost.<br/>
-        Note, if you donʼt want to lose your data you can export it before you delete the question.</p>
-        <p>Do you want to delete this question?</p>
-    </div>
-    <div id="warning-submit" class="none">
-        <p>Do you want to add edit question?</p>
-    </div>
     <br/>
     <div class="text_align_right">
         <a href="javascript:void(0);" class="button" id="confirm_edition">{% trans "Confirm" %}</a>
+    </div>
+</div>
+<div id="delete_warning">
+    <br/>
+    <div class="text_align_right">
+        <a href="#" class="cancel_link" id="delete_cancel">{% trans "Cancel" %}</a>
+        <a href="javascript:void(0);" class="button" id="delete_ok">{% trans "Confirm" %}</a>
     </div>
 </div>
