@@ -616,7 +616,7 @@ def _get_questions_for_datasenders_registration_for_print_preview(questions):
 
 
 def _get_questions_for_datasenders_registration_for_wizard(questions):
-    return [questions[0], questions[2], questions[3], questions[4], questions[5]]
+    return [questions[1], questions[2], questions[3], questions[4], questions[5]]
 
 
 @login_required(login_url='/login')
