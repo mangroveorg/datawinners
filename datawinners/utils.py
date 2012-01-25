@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 import xlwt
 from datetime import datetime
 from mangrove.datastore.database import get_db_manager
+from django.utils.translation import ugettext_lazy as _
 
 VAR = "HNI"
 def get_excel_sheet(raw_data, sheet_name):
@@ -27,11 +28,11 @@ def get_organization(request):
     return Organization.objects.get(org_id=profile.org_id)
 
 def convert_to_ordinal(number):
-    if 10 < number < 14: return u'%sth' % number
-    if number % 10 == 1: return u'%sst' % number
-    if number % 10 == 2: return u'%snd' % number
+    if 10 < number < 14: return _('%sth') % number
+    if number % 10 == 1: return _('%sst') % number
+    if number % 10 == 2: return _('%snd') % number
     if number % 10 == 3: return u'%srd' % number
-    return u'%sth' % number
+    return _('%sth') % number
 
 def generate_document_store_name(organization_name,organization_id):
     return slugify("%s_%s_%s" % (VAR, organization_name, organization_id))

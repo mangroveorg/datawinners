@@ -14,7 +14,7 @@ $(document).ready(function() {
         modal: true,
         autoOpen: true,
         width: 600,
-        height: 300,
+        height: 150,
         position: ['center', 120]
     });
 

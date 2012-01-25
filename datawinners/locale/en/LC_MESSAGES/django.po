@@ -3152,3 +3152,33 @@ msgstr ""
 
 msgid "Successfully submitted. Unique identification number(ID) is:"
 msgstr ""
+
+msgid "Define what information you want to collect about each datasender."
+msgstr ""
+
+msgid "To import a list of %(entity_type)s follow these steps"
+msgstr ""
+
+msgid "Download the template %(entity_type)s.xls"
+msgstr ""
+
+msgid "Fill out the template with your %(entity_type)s' information"
+msgstr ""
+
+msgid "The last question is optional.  If you already have ID numbers for your %(entity_type)s, fill them in.  If not, DataWinners will generate them for you"
+msgstr ""
+
+msgid "Save the template on your computer"
+msgstr ""
+
+msgid "Click the gold Upload a file button and select the saved template"
+msgstr ""
+
+msgid "Edit registration form"
+msgstr ""
+
+msgid "You are sharing this %(entity_type)s Registration Form with other projects."
+msgstr ""
+
+msgid "Your changes will affect the Registration Form for these projects as well."
+msgstr ""

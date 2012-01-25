@@ -3197,3 +3197,33 @@ msgstr "Votre Numéro de Téléphone pour Compte d’Essai"
 
 msgid "Successfully submitted. Unique identification number(ID) is:"
 msgstr "Envoyé avec succès. Le numéro d'identification unique (ID) est :"
+
+msgid "Define what information you want to collect about each datasender."
+msgstr "Définissez quelle information voulez vous collecter concernant chaque expéditeur."
+
+msgid "To import a list of %(entity_type)s follow these steps"
+msgstr "Pour importer une liste de %(entity_type)s suivez ces étapes"
+
+msgid "Download the template %(entity_type)s.xls"
+msgstr "Télécharger le modèle %(entity_type)s.xls"
+
+msgid "Fill out the template with your %(entity_type)s' information"
+msgstr "Remplissez le modèle avec les informations sur vos %(entity_type)s"
+
+msgid "The last question is optional.  If you already have ID numbers for your %(entity_type)s, fill them in.  If not, DataWinners will generate them for you"
+msgstr "La dernière question est facultative. Si vous avez déjà votre numéro ID pour vos %(entity_type)ss, remplissez les. Sinon, DataWinners va les générer pour vous"
+
+msgid "Save the template on your computer"
+msgstr "Enregistrez le modèle sur votre ordinateur"
+
+msgid "Click the gold Upload a file button and select the saved template"
+msgstr "Cliquez sur le bouton Télécharger un fichier et sélectionnez le modèle enregistré"
+
+msgid "Edit registration form"
+msgstr "Editer le formulaire d'enregistrement"
+
+msgid "You are sharing this %(entity_type)s Registration Form with other projects."
+msgstr "Vous partagez ce formulaire d'enregistrement %(entity_type)s avec d'autre projets."
+
+msgid "Your changes will affect the Registration Form for these projects as well."
+msgstr "Vos changements vont ainsi affecté le formulaire d'enregistrement pour ces projets."

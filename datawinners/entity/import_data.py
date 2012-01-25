@@ -111,6 +111,8 @@ def tabulate_failures(rows):
                         errors = errors + _("Answer %s for question %s is longer than allowed.") % (text, key)
                     else:
                         errors = errors + _(value)
+                if key not in ["n","t","s", "g","m"]:
+                    errors = errors + "\n" +_(value)
         else:
             errors = _(row[1].errors['error'])
 

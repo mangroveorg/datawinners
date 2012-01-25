@@ -73,7 +73,7 @@
 
     <div id="edit-disclaimer">
         <div class="help_accordion">
-            You are sharing this Clinic Registration Form with other projects. <a href="javascript:void(0)" class="show_link">Learn more</a>
+            {% blocktrans with entity_type as entity_type %}You are sharing this {{ entity_type }} Registration Form with other projects.{% endblocktrans %} <!--<a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
             <div class="details">
                 <p><h2>consectetur adipisicing</h2>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -81,10 +81,11 @@
                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum..
                 </p>
-                <a href="javascript:void(0)" class="hide_link">Hide help</a>
+                <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
             </div>
+            -->
         </div>
-        <p>Your changes will affect the Registration Form for these projects as well.</p>
+        <p>{% trans "Your changes will affect the Registration Form for these projects as well." %}</p>
         <div style="text-align: right; margin-top: 10px;">
             <a id="close-disclaimer" href="javascript:void(0)" class="button">{% trans "Close" %}</a>
         </div>
