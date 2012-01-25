@@ -8,4 +8,9 @@ $(document).ready(function() {
             $("#id_s").removeAttr("disabled");
         }
     });
+
+    $(".location_field").catcomplete({
+        source: "/places"
+    });
+
 });

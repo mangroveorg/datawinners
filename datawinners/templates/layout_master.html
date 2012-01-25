@@ -38,6 +38,9 @@
     {% load compress %}
     {% compress js %}
          {% include 'javascript.html' %}
+        <!--[if IE 7]>
+            {% block ie7_js %} {% endblock %}
+        <![endif]-->
     {% endcompress %}
     
     <script type="text/javascript" src="/media/javascript/messages_{% trans "en" %}.js"></script>
