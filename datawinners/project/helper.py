@@ -11,7 +11,7 @@ from datawinners.scheduler.smsclient import SMSClient
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.datastore.documents import attributes
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
-from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, DateField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, get_form_model_by_code, REPORTER
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
 from mangrove.utils.helpers import slugify
@@ -73,7 +73,7 @@ def _create_entity_id_question(dbm, entity_id_question_code):
                                                     description="Entity ID")
     name = ugettext("Which subject are you reporting on?")
     entity_id_question = TextField(name=name, code=entity_id_question_code,
-                                   label="Entity being reported on",
+                                   label=name,
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    constraints=[TextLengthConstraint(min=1, max=12)],
                                    instruction=(ugettext('Answer must be a word %d characters maximum') % 12))
@@ -86,8 +86,9 @@ def _create_questionnaire(dbm, post,entity_type,entity_id_question_code, activit
     reporting_period_dict_type = get_or_create_data_dict(dbm=dbm, name="rpd", slug="reporting_period",
                                                          primitive_type="date",
                                                          description="activity reporting period")
-    activity_report_question = DateField(name=ugettext("What is the reporting period for the activity?"), code=activity_report_question_code,
-                                         label="Period being reported on", ddtype=reporting_period_dict_type,
+    name = ugettext("What is the reporting period for the activity?")
+    activity_report_question = DateField(name=name, code=activity_report_question_code,
+                                         label=name, ddtype=reporting_period_dict_type,
                                          date_format="dd.mm.yyyy", event_time_field_flag=True)
 
     fields = [entity_id_question, activity_report_question]
@@ -115,7 +116,7 @@ def _create_entity_id_question_for_activity_report(dbm):
                                                     description="Entity ID")
     name = ugettext("I am submitting this data on behalf of")
     entity_id_question = TextField(name=name, code='eid',
-                                   label="Entity being reported on",
+                                   label=name,
                                    entity_question_flag=True, ddtype=entity_data_dict_type,
                                    constraints=[TextLengthConstraint(min=1, max=12)],
                                    instruction= ugettext("Choose Data Sender from this list."))
@@ -145,7 +146,7 @@ def _create_text_question(post_dict, ddtype):
     constraints = []
     if not (max_length is None and min_length is None):
         constraints.append(TextLengthConstraint(min=min_length, max=max_length))
-    return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
+    return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
                      entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
                      instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
@@ -156,23 +157,23 @@ def _create_integer_question(post_dict, ddtype):
     max_range = max_range_from_post if not is_empty(max_range_from_post) else None
     min_range = min_range_from_post if not is_empty(min_range_from_post) else None
     range = NumericRangeConstraint(min=min_range, max=max_range)
-    return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
+    return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
                         constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def _create_date_question(post_dict, ddtype):
-    return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
+    return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
                      date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False))
 
 
 def _create_geo_code_question(post_dict, ddtype):
-    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label="default", ddtype=ddtype,
+    return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"], ddtype=ddtype,
                         instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 
 
 def _create_select_question(post_dict, single_select_flag, ddtype):
     options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
-    return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label="default",
+    return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
                        options=options, single_select_flag=single_select_flag, ddtype=ddtype,
                        instruction=post_dict.get("instruction"),required=post_dict.get("required"))
 

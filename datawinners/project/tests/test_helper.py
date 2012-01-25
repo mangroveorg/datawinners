@@ -107,6 +107,7 @@ class TestHelper(unittest.TestCase):
         ]
         q1 = helper.create_question(post[0], self.dbm)
         self.assertEqual(q1.constraints, [])
+        self.assertEqual(q1.label['en'], 'q1')
 
 
     def test_should_create_text_question_with_implicit_ddtype(self):
