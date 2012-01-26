@@ -13,22 +13,22 @@ SUCCESS_MESSAGE_TEXT = "Thank you Shweta for your data record. We successfully r
 
 VALID_DATA = {SENDER: "1234567890",
               RECEIVER: "919880734937",
-              SMS: "cli009 .EID cid003 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
-              SUCCESS_MESSAGE: "Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789"}
+              SMS: "cli009 .EID cid003 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
+              SUCCESS_MESSAGE: u"Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789 RM: Hivid,Vidéx EC"}
 
 VALID_DATA2 = {SENDER: "1234567890",
                RECEIVER: "919880734937",
-               SMS: "cli002 .EID cid005 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
-               SUCCESS_MESSAGE: "Thank you Shweta. We received : EID: cid005 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789"}
+               SMS: "cli002 .EID cid005 .NA Mr. Tessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
+               SUCCESS_MESSAGE: u"Thank you Shweta. We received : EID: cid005 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789 RM: Hivid,Vidéx EC"}
 
 EXCEED_NAME_LENGTH = {SENDER: "1234567890",
                       RECEIVER: "919880734937",
-                      SMS: "cli009 .EID CID003 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
+                      SMS: "cli009 .EID CID003 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM bc",
                       ERROR_MSG: "Error. Incorrect answer for na. Please resend entire message."}
 
 EXCEED_NAME_LENGTH2 = {SENDER: "1234567890",
                        RECEIVER: "919880734937",
-                       SMS: "cli002 .EID CID005 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
+                       SMS: "cli002 .EID CID005 .NA Mr. O'brain .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM b",
                        ERROR_MSG: "Error. Incorrect answer for na. Please resend entire message."}
 
 BLANK_FIELDS = {SENDER: "",
@@ -38,17 +38,17 @@ BLANK_FIELDS = {SENDER: "",
 
 EXTRA_PLUS_IN_BTW = {SENDER: "1234567890",
                      RECEIVER: "919880734937",
-                     SMS: "cli002 .EID cid002 . .NA Mr. Dessy .FA 58 .. .RD 17.05.2011 .BG b .SY ade .  .GPS 27.178057  -78.007789",
-                     ERROR_MSG: "Thank you Shweta. We received : EID: cid002 NA: Mr. Dessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789"}
+                     SMS: "cli002 .EID cid002 . .NA Mr. Dessy .FA 58 .. .RD 17.05.2011 .BG b .SY ade .  .GPS 27.178057  -78.007789 .RM ac",
+                     ERROR_MSG: u"Thank you Shweta. We received : EID: cid002 NA: Mr. Dessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789 RM: Hivid,Vidéx EC"}
 
 PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
                          RECEIVER: "919880734937",
-                         SMS: ". .cli002 .EID CID005 .NA Mr. Fessy .FA 58 .RD 17.05.2011 .BG b .SY ade",
+                         SMS: ". .cli002 .EID CID005 .NA Mr. Fessy .FA 58 .RD 17.05.2011 .BG b .SY ade .RM ac",
                          ERROR_MSG: "Error: SMS Incorrect. Review printed questionnaire and re-send SMS."}
 
 UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
                             RECEIVER: "919880734937",
-                            SMS: "cli002 .EID CID005 . .NA Mr. Kessy .FA 58 .RD 17.05.2011 .BG b .SY ade",
+                            SMS: "cli002 .EID CID005 . .NA Mr. Kessy .FA 58 .RD 17.05.2011 .BG b .SY ade .RM ac",
                             ERROR_MSG: "Your telephone number is not yet registered in our system. Please contact your supervisor."}
 
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
@@ -58,7 +58,7 @@ REGISTER_DATA_SENDER = {SENDER: "1234567890",
 
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
                                             RECEIVER: "919880734937",
-                                            SMS: "REG .t Reporter .m 0123456789 .L   Jaipur .g 26.917 75.817 .N Mr. McDuck",
+                                            SMS: "REG .t Reporter .m 0123456789 .L   Jaipur .g 26.917 75.817 .N Mr. McDuck .s rep100000",
                                             ERROR_MSG: "Your telephone number is not yet registered in our system. Please contact your supervisor."}
 
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
@@ -88,13 +88,13 @@ ONLY_QUESTIONNAIRE_CODE = {SENDER: "1234567890",
 
 WRONG_NUMBER_OF_ARGS = {SENDER: "1234567890",
               RECEIVER: "919880734937",
-              SMS: "cli009 cid003  Mr.Tessy  58  17.05.2011  b  ade . 27.178057,-78.007789 a",
+              SMS: "cli009 cid003  Mr.Tessy  58  17.05.2011  b  ade ",
               ERROR_MSG: "Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS."}
 
 VALID_DATA_FOR_ORDERED_SMS = {SENDER: "1234567890",
               RECEIVER: "919880734937",
-              SMS: "cli011  cid003  Mr.Tessy  58  17.05.2011  b  ade  27.178057,-78.007789 b",
-              SUCCESS_MESSAGE: "Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789"}
+              SMS: "cli011  cid003  Mr.Tessy  58  17.05.2011  b  ade  27.178057,-78.007789 b ac",
+              SUCCESS_MESSAGE: u"Thank you Shweta. We received : EID: cid003 NA: Mr. Tessy FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders GPS: 27.178057,-78.007789 RM: Rétrovir"}
 
 EXCEED_NAME_LENGTH_FOR_ORDERED_SMS = {SENDER: "1234567890",
                       RECEIVER: "919880734937",

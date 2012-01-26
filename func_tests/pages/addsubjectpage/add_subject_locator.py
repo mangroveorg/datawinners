@@ -22,7 +22,7 @@ ENTITY_TYPE_DD = by_css("select#id_entity_type")
 DROP_DOWN_OPTION_CSS = "select#id_entity_type>option[value='%s']"
 SHORT_NAME_ENABLED_TB = by_css("input#short_name:enabled")
 SHORT_NAME_DISABLED_TB = by_css("input#short_name:disabled")
-AUTO_GENERATE_CB = by_css("input#autogen")
+AUTO_GENERATE_CB = by_css("input#generate_id")
 NAME_TB = by_css("input#entity_name")
 LOCATION_TB = by_css("input#id_l")
 GEO_CODE_TB = by_css("input#id_g")

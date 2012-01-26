@@ -48,8 +48,8 @@ ONLY_ONE_ANSWER_RB = by_css("input[value='select1']")
 MULTIPLE_ANSWER_RB = by_css("input[value='select']")
 
 GEO_RB = by_css("input[value='geocode']")
-CHARACTER_COUNT = by_css("div#char-count")
-BACK_BTN = by_css("input#back_to_project")
+CHARACTER_COUNT = by_css("span#char-count")
+BACK_LINK = by_css("a#back_to_project")
 
 PREVIOUS_STEP_LINK = by_xpath("//a[@id='subjects_link' and text()='Subjects']")
 

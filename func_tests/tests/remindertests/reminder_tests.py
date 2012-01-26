@@ -92,7 +92,7 @@ class TestReminderSend(BaseTest):
         reminder_settings = self.set_deadline_by_month(reminder_settings, fetch_(DEADLINE, from_(DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH)))
         self.assertEqual(reminder_settings.get_example_text(), fetch_(EXAMPLE_TEXT, from_(DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH[DEADLINE])))
 
-    @attr("functional_test", "datawinners")
+    @attr("functional_test")
     def test_verify_set_one_reminder(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(REMINDER_DATA_WEEKLY)), VALID_CREDENTIALS)
         reminder_settings = all_reminder_pages.click_reminder_settings_tab()

@@ -21,14 +21,11 @@ class AddSubjectPage(Page):
 
         Return flash message
         """
-        entity_type = fetch_(ENTITY_TYPE, from_(addition_data))
-        #self.driver.find_drop_down(ENTITY_TYPE_DD).set_selected(entity_type)
-        #self.driver.find_text_box(NAME_TB).enter_text(fetch_(NAME, from_(addition_data)))
-        #short_name = fetch_(SHORT_NAME, from_(addition_data))
-        #        if not fetch_(AUTO_GENERATE, from_(addition_data)):
-        #            self.driver.find(AUTO_GENERATE_CB).click()
-        #            short_name = short_name + generateId()
-        #            self.driver.find_text_box(SHORT_NAME_ENABLED_TB).enter_text(short_name)
+        short_name = fetch_(SUB_UNIQUE_ID, from_(addition_data))
+        if short_name is not None:
+            self.driver.find(AUTO_GENERATE_CB).click()
+            short_name = short_name + generateId()
+            self.driver.find_text_box(UNIQUE_ID_TB).enter_text(short_name)
         self.driver.find_text_box(FNAME_TB).enter_text(
             fetch_(SUB_FIRST_NAME, from_(addition_data)))
         self.driver.find_text_box(LNAME_TB).enter_text(
@@ -37,15 +34,8 @@ class AddSubjectPage(Page):
             fetch_(LOCATION, from_(addition_data)))
         self.driver.find_text_box(GEO_CODE_TB).enter_text(
             fetch_(GPS, from_(addition_data)))
-        #        self.driver.find_text_box(DESCRIPTION_TB).enter_text(
-        #            fetch_(DESCRIPTION, from_(addition_data)))
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
             fetch_(MOBILE_NUMBER, from_(addition_data)))
-        self.driver.find_text_box(UNIQUE_ID_TB).enter_text(
-            fetch_(SUB_UNIQUE_ID, from_(addition_data)))
-        #self.driver.find(ADD_BTN).click()
-
-        #return fetch_(SUCCESS_MSG, from_(addition_data)) + SUB_UNIQUE_ID
 
 #    def add_subject_with(self, addition_data):
 #        """

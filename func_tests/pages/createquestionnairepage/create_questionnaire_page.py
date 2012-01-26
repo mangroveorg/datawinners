@@ -388,4 +388,4 @@ class CreateQuestionnairePage(CreateProjectPage):
         return question
 
     def go_back(self):
-        self.driver.find(BACK_BTN).click()
+        self.driver.find(BACK_LINK).click()
