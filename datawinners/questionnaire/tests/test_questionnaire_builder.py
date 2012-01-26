@@ -80,11 +80,12 @@ class TestQuestionBuilder(unittest.TestCase):
                  "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
                 {"title": "q5", "code": "qc5", "description": "desc4", "type": "text"}
         ]
-        q1 = self.question_builder.create_question(post[0])
-        q2 = self.question_builder.create_question(post[1])
-        q3 = self.question_builder.create_question(post[2])
-        q4 = self.question_builder.create_question(post[3])
-        q5 = self.question_builder.create_question(post[4])
+        language = 'en'
+        q1 = self.question_builder.create_question(post[0], language)
+        q2 = self.question_builder.create_question(post[1], language)
+        q3 = self.question_builder.create_question(post[2], language)
+        q4 = self.question_builder.create_question(post[3], language)
+        q5 = self.question_builder.create_question(post[4], language)
         self.assertIsInstance(q1, TextField)
         self.assertIsInstance(q2, IntegerField)
         self.assertIsInstance(q3, SelectField)
@@ -99,7 +100,7 @@ class TestQuestionBuilder(unittest.TestCase):
     def test_should_create_integer_question_with_no_max_constraint(self):
         post = [{"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": ""}]
-        q1 = self.question_builder.create_question(post[0])
+        q1 = self.question_builder.create_question(post[0],'en')
         self.assertEqual(None,q1.constraints[0].max)
         self.assertEqual(0,q1.constraints[0].min)
 
@@ -109,7 +110,7 @@ class TestQuestionBuilder(unittest.TestCase):
         TYPE = "geocode"
         post = {"title": LABEL, "code": CODE, "type": TYPE}
 
-        geo_code_field = self.question_builder.create_question(post)
+        geo_code_field = self.question_builder.create_question(post,'en')
 
         self.assertIsInstance(geo_code_field, GeoCodeField)
         self.assertEqual(CODE, geo_code_field.code)
@@ -122,7 +123,7 @@ class TestQuestionBuilder(unittest.TestCase):
 
         post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": choices}
 
-        select1_question = self.question_builder.create_question(post)
+        select1_question = self.question_builder.create_question(post, 'en')
 
         self.assertEqual(LABEL, select1_question.label['en'])
         self.assertEqual(2, len(select1_question.options))
@@ -137,7 +138,7 @@ class TestQuestionBuilder(unittest.TestCase):
 
         post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": choices}
 
-        select_question = self.question_builder.create_question(post)
+        select_question = self.question_builder.create_question(post, 'en')
 
         self.assertEqual(LABEL, select_question.label['en'])
         self.assertEqual(2, len(select_question.options))
@@ -152,7 +153,7 @@ class TestQuestionBuilder(unittest.TestCase):
         date_format = "dd.mm.yyyy"
         post = {"title": LABEL, "code": CODE, "type": TYPE, "date_format": date_format}
 
-        date_question = self.question_builder.create_question(post)
+        date_question = self.question_builder.create_question(post, 'en')
 
         self.assertEqual(LABEL, date_question.label['en'])
         self.assertEqual(date_format, date_question.date_format)
@@ -165,7 +166,7 @@ class TestQuestionBuilder(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        q1 = self.question_builder.create_question(post[0])
+        q1 = self.question_builder.create_question(post[0], 'en')
         self.assertEqual(q1.constraints, [])
         self.assertEqual(q1.label['en'], 'q1')
 
