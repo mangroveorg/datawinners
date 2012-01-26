@@ -48,7 +48,7 @@
         {% endif %}
     {% endfor %}
 
-    <ul class="que_width">
+    <ol class="que_width">
         {% for field in questionnaire_form %}
             {% if not field.is_hidden %}
                 <li>
@@ -56,10 +56,8 @@
                     {% if field.name == "s" %}
                         <div class="answer">
                             {{ field }}
-                            <div style="float: left; padding: 10px 0 0 5px;">
-                                <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
+                            <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
                                 {% trans "Let us generate an ID for you" %}
-                            </div>
                             {% if field.errors %}
                                 <ul class="errorlist">
                                     {% for error in field.errors %}
@@ -70,6 +68,7 @@
                                 </ul>
                             {% endif %}
                         </div>
+                        <div class="clear-left"></div>
                     {% else %}
                         <input id='code1' type="hidden"
                                value="{{ field.name }}"/>
@@ -98,6 +97,6 @@
                 </li>
             {% endif %}
         {% endfor %}
-    </ul>
+    </ol>
     <input type="submit" class="button" value="{% trans 'Submit' %}"/>
 </form>

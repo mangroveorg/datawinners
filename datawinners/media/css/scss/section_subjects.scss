@@ -264,3 +264,22 @@
         display: none !important;
     }
 }
+#my_subjects_questions {
+    .que_width {
+        margin: 0 0 20px 25px;
+        display: list-item;
+        li {
+            padding-bottom: 15px;
+            list-style-type: decimal !important;
+            overflow:visible;
+            clear: left !important;
+            vertical-align: top;
+            h6 {
+                margin: 0 !important;
+            }
+            input {
+                padding: 0 !important;
+            }
+        }
+    }
+}
