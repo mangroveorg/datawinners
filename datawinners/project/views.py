@@ -21,10 +21,9 @@ import helper
 
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.queries import get_entity_count_for_type
-from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
-from mangrove.form_model.field import field_to_json, SelectField, TextField, IntegerField, GeoCodeField, DateField
+from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
@@ -45,13 +44,13 @@ from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
-from datawinners.entity.forms import ReporterRegistrationForm, SubjectForm
-from datawinners.entity.forms import SubjectUploadForm
+from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import import_subjects_from_project_wizard
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 logger = logging.getLogger("django")
 
@@ -114,7 +113,7 @@ def save_questionnaire(request):
         project = Project.load(manager.database, pid)
         form_model = FormModel.get(manager, project.qid)
         try:
-            form_model = helper.update_questionnaire_with_questions(form_model, question_set, manager)
+            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except EntityQuestionAlreadyExistsException as e:
@@ -748,7 +747,7 @@ def questionnaire_preview(request, project_id=None):
             questions.append(question)
         example_sms = "%s" % (
                 form_model.form_code)
-        example_sms = example_sms + get_example_sms(fields)
+        example_sms += get_example_sms(fields)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,

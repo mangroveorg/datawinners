@@ -20,6 +20,7 @@ from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import  FormModel
+from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -28,7 +29,8 @@ def create_questionnaire(post, manager, entity_type, name, language):
     question_set = json.loads(json_string)
     form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
     form_model.activeLanguages = [language]
-    return helper.update_questionnaire_with_questions(form_model, question_set, manager)
+    QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
+    return form_model
 
 
 def update_questionnaire(questionnaire, post, entity_type, name, manager, language):
@@ -38,7 +40,7 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     questionnaire.form_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    questionnaire = helper.update_questionnaire_with_questions(questionnaire, question_set, manager)
+    QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
     questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
     return questionnaire
 
