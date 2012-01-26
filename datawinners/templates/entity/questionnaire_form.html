@@ -71,10 +71,22 @@
         <a href="javascript:void(0);" class="button" id="confirm_edition">{% trans "Confirm" %}</a>
     </div>
 </div>
+<div class="none">
+    <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">
+        <input type="hidden" name="entity_type" id="type_to_export"/>
+        {% csrf_token %}
+        <div id="checked_subjects">
+
+        </div>
+    </form>
+</div>
 <div id="delete_warning">
+    {% trans "You have already collected data for this question. If you delete the question, the corresponding data wille be lost." %}<br/>
+    {% blocktrans %}Note, if you don't want to lose your data you can <a href="javascript:void(0);" class="export-entity-link" id="export-{{ entity_type }}">export</a> it before you delete the question.{% endblocktrans %}<br/>
+    {% trans "Do you want to delete this question?" %}
     <br/>
     <div class="text_align_right">
-        <a href="#" class="cancel_link" id="delete_cancel">{% trans "Cancel" %}</a>
-        <a href="javascript:void(0);" class="button" id="delete_ok">{% trans "Confirm" %}</a>
+        <a href="#" class="button" id="delete_cancel">{% trans "No" %}</a>
+        <a href="javascript:void(0);" class="button" id="delete_ok">{% trans "Yes" %}</a>
     </div>
 </div>

@@ -217,6 +217,11 @@ a{
     cursor:pointer;
     cursor:hand;
 }
+
+#delete_warning a.export-entity-link{
+    color:$link_color !important;
+}
+
 a:hover{
     color:$link_color;
     text-decoration:underline;

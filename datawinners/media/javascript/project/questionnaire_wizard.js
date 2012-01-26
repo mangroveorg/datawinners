@@ -172,7 +172,7 @@ $(document).ready(function() {
         modal: true,
         title: gettext('Your Collected Data Will be Lost'),
         zIndex:200,
-        width: 500
+        width: 600
     });
 
     $("#submit-button").click(function() {

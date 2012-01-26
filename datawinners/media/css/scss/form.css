@@ -169,6 +169,9 @@ a {
   cursor: pointer;
   cursor: hand; }
 
+#delete_warning a.export-entity-link {
+  color: #0070ac !important; }
+
 a:hover {
   color: #0070ac;
   text-decoration: underline;
