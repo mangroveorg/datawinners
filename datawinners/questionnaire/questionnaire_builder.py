@@ -14,19 +14,20 @@ class QuestionnaireBuilder(object):
 
     def update_questionnaire_with_questions(self, question_set):
         self.form_model.delete_all_fields()
+        language = self.form_model.activeLanguages[0]
 
         if self.form_model.entity_defaults_to_reporter():
-            self.form_model.add_field(self.question_builder.create_entity_id_question_for_activity_report())
+            self.form_model.add_field(self.question_builder.create_entity_id_question_for_activity_report(language))
 
         for question in question_set:
-            self.form_model.add_field(self.question_builder.create_question(question))
+            self.form_model.add_field(self.question_builder.create_question(question, language))
 
 class QuestionBuilder(object):
 
     def __init__(self, dbm):
         self.dbm = dbm
 
-    def create_question(self, post_dict):
+    def create_question(self, post_dict,language):
         options = post_dict.get('options')
         datadict_type = options.get('ddtype') if options is not None else None
         if is_not_empty(datadict_type):
@@ -38,17 +39,17 @@ class QuestionBuilder(object):
             primitive_type=post_dict.get('type'), description=post_dict.get('title'))
 
         if post_dict["type"] == "text":
-            return self._create_text_question(post_dict, ddtype)
+            return self._create_text_question(post_dict, ddtype,language)
         if post_dict["type"] == "integer":
-            return self._create_integer_question(post_dict, ddtype)
+            return self._create_integer_question(post_dict, ddtype,language)
         if post_dict["type"] == "geocode":
-            return self._create_geo_code_question(post_dict, ddtype)
+            return self._create_geo_code_question(post_dict, ddtype,language)
         if post_dict["type"] == "select":
-            return self._create_select_question(post_dict, single_select_flag=False, ddtype=ddtype)
+            return self._create_select_question(post_dict, False, ddtype,language)
         if post_dict["type"] == "date":
-            return self._create_date_question(post_dict, ddtype)
+            return self._create_date_question(post_dict, ddtype,language)
         if post_dict["type"] == "select1":
-            return self._create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
+            return self._create_select_question(post_dict, True, ddtype,language)
 
     def _get_or_create_data_dict(self, name, slug, primitive_type, description=None):
         try:
@@ -60,7 +61,7 @@ class QuestionBuilder(object):
                 primitive_type=primitive_type, description=description)
         return ddtype
 
-    def create_entity_id_question_for_activity_report(self):
+    def create_entity_id_question_for_activity_report(self,language):
         entity_data_dict_type = self._get_or_create_data_dict(name="eid", slug="entity_id", primitive_type="string",
             description="Entity ID")
         name = ugettext("I am submitting this data on behalf of")
@@ -68,11 +69,11 @@ class QuestionBuilder(object):
             label=name,
             entity_question_flag=True, ddtype=entity_data_dict_type,
             constraints=[TextLengthConstraint(min=1, max=12)],
-            instruction=ugettext("Choose Data Sender from this list."))
+            instruction=ugettext("Choose Data Sender from this list."),language=language)
         return entity_id_question
 
 
-    def _create_text_question(self, post_dict, ddtype):
+    def _create_text_question(self, post_dict, ddtype,language):
         max_length_from_post = post_dict.get("max_length")
         min_length_from_post = post_dict.get("min_length")
         max_length = max_length_from_post if not is_empty(max_length_from_post) else None
@@ -82,10 +83,10 @@ class QuestionBuilder(object):
             constraints.append(TextLengthConstraint(min=min_length, max=max_length))
         return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
             entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
-            instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+            instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
 
-    def _create_integer_question(self, post_dict, ddtype):
+    def _create_integer_question(self, post_dict, ddtype,language):
         max_range_from_post = post_dict.get("range_max")
         min_range_from_post = post_dict.get("range_min")
         max_range = max_range_from_post if not is_empty(max_range_from_post) else None
@@ -93,25 +94,25 @@ class QuestionBuilder(object):
         range = NumericRangeConstraint(min=min_range, max=max_range)
         return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
             constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),
-            required=post_dict.get("required"))
+            required=post_dict.get("required"),language=language)
 
 
-    def _create_date_question(self, post_dict, ddtype):
+    def _create_date_question(self, post_dict, ddtype,language):
         return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
             date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),
-            required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False))
+            required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False),language=language)
 
 
-    def _create_geo_code_question(self, post_dict, ddtype):
+    def _create_geo_code_question(self, post_dict, ddtype,language):
         return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
             ddtype=ddtype,
-            instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+            instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
 
-    def _create_select_question(self, post_dict, single_select_flag, ddtype):
+    def _create_select_question(self, post_dict, single_select_flag, ddtype,language):
         options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
         return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
             options=options, single_select_flag=single_select_flag, ddtype=ddtype,
-            instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+            instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
 

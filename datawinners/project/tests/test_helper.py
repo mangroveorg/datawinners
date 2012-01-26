@@ -163,14 +163,15 @@ class TestHelper(unittest.TestCase):
 
     def test_should_create_header_list(self):
         ddtype = Mock(spec=DataDictType)
-        question1 = TextField(label="entity_question", code="ID", name="What is associated entity",
+        question1 = TextField(label="What is associated entity", code="ID", name="What is associated entity",
                               language="en", entity_question_flag=True, ddtype=ddtype)
-        question2 = TextField(label="question1_Name", code="Q1", name="What is your name",
-                              defaultValue="some default value", language="eng", ddtype=ddtype)
+        question2 = TextField(label="What is your name", code="Q1", name="What is your name",
+                              defaultValue="some default value", language="en", ddtype=ddtype)
 
         form_model = Mock()
         form_model.fields = [question1, question2]
         form_model.entity_type = ["Clinic"]
+        form_model.activeLanguages = ['en']
 
         actual_list = helper.get_headers(form_model)
         self.assertListEqual(["Clinic Code", "What is your name"], actual_list)

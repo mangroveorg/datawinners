@@ -226,7 +226,7 @@ def get_aggregation_options_for_all_fields(fields):
 
 
 def get_headers(form_model):
-    return [_("%(entity_type)s Code") % {'entity_type': form_model.entity_type[0]}] + [field.name for field in form_model.fields[1:]]
+    return [_("%(entity_type)s Code") % {'entity_type': form_model.entity_type[0]}] + [field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:]]
 
 
 def _to_str(value):
