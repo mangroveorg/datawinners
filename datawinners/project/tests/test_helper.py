@@ -31,51 +31,6 @@ class TestHelper(unittest.TestCase):
         self.patcher1.stop()
         self.patcher2.stop()
 
-    def test_creates_questions_from_dict(self):
-        post = [{"title": "q1", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
-                 "is_entity_question": True, "min_length": 1, "max_length": 15},
-                {"title": "q2", "code": "qc2", "description": "desc2", "type": "integer", "choices": [],
-                 "is_entity_question": False, "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
-                {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
-                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
-                {"title": "q5", "code": "qc5", "description": "desc4", "type": "text"}
-        ]
-        q1 = helper.create_question(post[0], self.dbm)
-        q2 = helper.create_question(post[1], self.dbm)
-        q3 = helper.create_question(post[2], self.dbm)
-        q4 = helper.create_question(post[3], self.dbm)
-        q5 = helper.create_question(post[4], self.dbm)
-        self.assertIsInstance(q1, TextField)
-        self.assertIsInstance(q2, IntegerField)
-        self.assertIsInstance(q3, SelectField)
-        self.assertIsInstance(q4, SelectField)
-        self.assertIsInstance(q5, TextField)
-        self.assertEquals(q1._to_json_view()["length"], {"min": 1, "max": 15})
-        self.assertEquals(q2._to_json_view()["range"], {"min": 0, "max": 100})
-        self.assertEquals(q3._to_json_view()["type"], "select")
-        self.assertEquals(q4._to_json_view()["type"], "select1")
-        self.assertEquals(q5._to_json_view()["type"], "text")
-
-    def test_should_save_questionnaire_from_post(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
-                 "min_length": 1, "max_length": ""},
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
-                 "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
-                 "is_entity_question": False}
-        ]
-        q1 = helper.create_question(post[0], self.dbm)
-        form_model = FormModel(self.dbm, "test", "test", "test", [q1], ["test"], "test")
-        questionnaire = helper.update_questionnaire_with_questions(form_model, post, self.dbm)
-        self.assertEqual(3, len(questionnaire.fields))
-
-    def test_should_create_integer_question_with_no_max_constraint(self):
-        post = [{"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
-                 "range_min": 0, "range_max": ""}]
-        q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraints[0].max, None)
 
     def test_should_return_code_title_tuple_list(self):
         ddtype = Mock(spec=DataDictType)
@@ -85,135 +40,6 @@ class TestHelper(unittest.TestCase):
                               defaultValue="some default value", language="eng", ddtype=ddtype)
         code_and_title = [(each_field.code, each_field.name)for each_field in [question1, question2]]
         self.assertEquals([("ID", "What is associated entity"), ("Q1", "What is your name")], code_and_title)
-
-    def test_should_create_text_question_with_no_max_length(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
-                 "min_length": 1},
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
-                 "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
-                 "is_entity_question": False}
-        ]
-        q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraints[0].max, None)
-
-    def test_should_create_text_question_with_no_max_lengt_and_min_length(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
-                 },
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
-                 "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
-                 "is_entity_question": False}
-        ]
-        q1 = helper.create_question(post[0], self.dbm)
-        self.assertEqual(q1.constraints, [])
-        self.assertEqual(q1.label['en'], 'q1')
-
-
-    def test_should_create_text_question_with_implicit_ddtype(self):
-        post = {"title": "what is your name", "code": "qc1", "description": "desc1", "type": "text",
-                "choices": [],
-                "is_entity_question": True, "min_length": 1, "max_length": 15}
-
-        dbm = Mock(spec=DatabaseManager)
-
-        self.create_ddtype_mock.return_value = DataDictType(dbm, "qc1", "what_is_your_name", "text",
-                                                            "what is your name")
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            text_question = helper.create_question(post, dbm)
-
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name="qc1", slug="what_is_your_name",
-                                                        primitive_type="text", description="what is your name")
-        self.assertEqual('qc1', text_question.ddtype.name)
-        self.assertEqual("what is your name", text_question.ddtype.description)
-        self.assertEqual("what_is_your_name", text_question.ddtype.slug)
-        self.assertEqual("text", text_question.ddtype.primitive_type)
-
-    def test_should_create_integer_question_with_implicit_ddtype(self):
-        post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [],
-                "is_entity_question": False,
-                "range_min": 0, "range_max": 100}
-
-        dbm = Mock(spec=DatabaseManager)
-
-        self.create_ddtype_mock.return_value = DataDictType(dbm, "age", "what_is_your_age", "integer",
-                                                            "what is your age")
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            integer_question = helper.create_question(post, dbm)
-
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name="age", slug="what_is_your_age",
-                                                        primitive_type="integer", description="What is your age")
-        self.assertEqual('age', integer_question.ddtype.name)
-        self.assertEqual("what is your age", integer_question.ddtype.description)
-        self.assertEqual("what_is_your_age", integer_question.ddtype.slug)
-        self.assertEqual("integer", integer_question.ddtype.primitive_type)
-
-    def test_should_create_select_question_with_implicit_ddtype(self):
-        CODE = "qc3"
-        LABEL = "q3"
-        SLUG = "q3"
-        TYPE = "select"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": [{"value": "c1"}, {"value": "c2"}],
-                "is_entity_question": False}
-
-        dbm = Mock(spec=DatabaseManager)
-
-        expected_data_dict = DataDictType(dbm, CODE, SLUG, TYPE, LABEL)
-        self.create_ddtype_mock.return_value = expected_data_dict
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            integer_question = helper.create_question(post, dbm)
-
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=CODE, slug=SLUG,
-                                                        primitive_type=TYPE, description=LABEL)
-        self.assertEqual(expected_data_dict, integer_question.ddtype)
-
-    def test_should_create_select1_question_with_implicit_ddtype(self):
-        CODE = "qc3"
-        LABEL = "q3"
-        SLUG = "q3"
-        TYPE = "select1"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": [{"value": "c1"}, {"value": "c2"}],
-                "is_entity_question": False}
-
-        dbm = Mock(spec=DatabaseManager)
-
-        expected_data_dict = DataDictType(dbm, CODE, SLUG, TYPE, LABEL)
-        self.create_ddtype_mock.return_value = expected_data_dict
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            integer_question = helper.create_question(post, dbm)
-
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=CODE, slug=SLUG,
-                                                        primitive_type=TYPE, description=LABEL)
-        self.assertEqual(expected_data_dict, integer_question.ddtype)
-
-    def test_should_create_date_question_with_implicit_ddtype(self):
-        CODE = "qc3"
-        LABEL = "q3"
-        SLUG = "q3"
-        TYPE = "date"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "date_format": "%m.%Y",
-                "is_entity_question": False}
-
-        dbm = Mock(spec=DatabaseManager)
-
-        expected_data_dict = DataDictType(dbm, CODE, SLUG, TYPE, LABEL)
-        self.create_ddtype_mock.return_value = expected_data_dict
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            integer_question = helper.create_question(post, dbm)
-
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=CODE, slug=SLUG,
-                                                        primitive_type=TYPE, description=LABEL)
-        self.assertEqual(expected_data_dict, integer_question.ddtype)
 
     def test_should_create_questionnaire_with_entity_question_for_subjects(self):
         NAME = "eid"
@@ -290,21 +116,6 @@ class TestHelper(unittest.TestCase):
         patcher.stop()
 
 
-    def test_should_update_questionnaire(self):
-        dbm = Mock(spec=DatabaseManager)
-        ddtype = Mock(spec=DataDictType)
-        question1 = TextField(label="name", code="na", name="What is your name",
-                              language="en", ddtype=ddtype)
-        question2 = TextField(label="address", code="add", name="What is your address",
-                              defaultValue="some default value", language="eng", ddtype=ddtype)
-        post = {"title": "What is your age", "code": "age", "type": "integer", "choices": [],
-                "is_entity_question": False,
-                "range_min": 0, "range_max": 100}
-        form_model = FormModel(dbm, name="test", label="test", form_code="fc", fields=[question1, question2],
-                               entity_type=["reporter"], type="survey")
-        form_model2 = helper.update_questionnaire_with_questions(form_model, [post], dbm)
-        self.assertEquals(2, len(form_model2.fields))
-
     def test_should_generate_unique_questionnaire_code(self):
         patcher = patch("datawinners.project.helper.models")
         models_mock = patcher.start()
@@ -349,25 +160,6 @@ class TestHelper(unittest.TestCase):
         patcher.stop()
         patcher1.stop()
 
-    def test_should_create_location_question_with_implicit_ddtype(self):
-        CODE = "lc3"
-        LABEL = "what is your location"
-        SLUG = "what_is_your_location"
-        TYPE = "geocode"
-        post = {"title": LABEL, "code": CODE, "type": TYPE, "is_entity_question": False}
-
-        dbm = Mock(spec=DatabaseManager)
-
-        expected_data_dict = DataDictType(dbm, CODE, SLUG, TYPE, LABEL)
-        self.create_ddtype_mock.return_value = expected_data_dict
-
-        with patch("datawinners.project.helper.get_datadict_type_by_slug") as get_datadict_type_by_slug_mock:
-            get_datadict_type_by_slug_mock.side_effect = DataObjectNotFound("", "", "")
-            location_question = helper.create_question(post, dbm)
-
-        self.create_ddtype_mock.assert_called_once_with(dbm=dbm, name=CODE, slug=SLUG,
-                                                        primitive_type=TYPE, description=LABEL)
-        self.assertEqual(expected_data_dict, location_question.ddtype)
 
     def test_should_create_header_list(self):
         ddtype = Mock(spec=DataDictType)
@@ -433,22 +225,6 @@ class TestHelper(unittest.TestCase):
     def test_should_return_formatted_time_string(self):
         expected_val = "01-01-2011 00:00:00"
         self.assertEquals(expected_val, helper.get_formatted_time_string("01-01-2011 00:00:00"))
-
-    def test_should_update_questionnaire_with_question_for_activity_report(self):
-        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": False,
-                 "min_length": 1, "max_length": ""},
-                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
-                 "range_min": 0, "range_max": 100},
-                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
-                 "is_entity_question": False}
-        ]
-        form_model = FormModel(self.dbm, "act_rep", "act_rep", "test", [], ["reporter"], "test")
-        questionnaire = helper.update_questionnaire_with_questions(form_model, post, self.dbm)
-        self.assertEqual(4, len(questionnaire.fields))
-        entity_id_question = questionnaire.entity_question
-        self.assertEqual('eid', entity_id_question.code)
-        self.assertEqual('I am submitting this data on behalf of',entity_id_question.name)
-        self.assertEqual("Choose Data Sender from this list.", entity_id_question.instruction)
 
 
 class TestPreviewCreator(unittest.TestCase):

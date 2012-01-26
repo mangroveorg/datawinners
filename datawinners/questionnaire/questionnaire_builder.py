@@ -7,21 +7,26 @@ from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_not_empty, is_empty
 
 class QuestionnaireBuilder(object):
-    def __init__(self, form_model, dbm):
+    def __init__(self, form_model, dbm, question_builder=None):
+        if question_builder is None: question_builder=QuestionBuilder(dbm)
         self.form_model = form_model
-        self.dbm = dbm
+        self.question_builder = question_builder
 
     def update_questionnaire_with_questions(self, question_set):
         self.form_model.delete_all_fields()
 
         if self.form_model.entity_defaults_to_reporter():
-            self.form_model.add_field(self._create_entity_id_question_for_activity_report())
+            self.form_model.add_field(self.question_builder.create_entity_id_question_for_activity_report())
 
         for question in question_set:
-            self.form_model.add_field(self._create_question(question))
+            self.form_model.add_field(self.question_builder.create_question(question))
 
+class QuestionBuilder(object):
 
-    def _create_question(self, post_dict):
+    def __init__(self, dbm):
+        self.dbm = dbm
+
+    def create_question(self, post_dict):
         options = post_dict.get('options')
         datadict_type = options.get('ddtype') if options is not None else None
         if is_not_empty(datadict_type):
@@ -55,7 +60,7 @@ class QuestionnaireBuilder(object):
                 primitive_type=primitive_type, description=description)
         return ddtype
 
-    def _create_entity_id_question_for_activity_report(self):
+    def create_entity_id_question_for_activity_report(self):
         entity_data_dict_type = self._get_or_create_data_dict(name="eid", slug="entity_id", primitive_type="string",
             description="Entity ID")
         name = ugettext("I am submitting this data on behalf of")
@@ -108,4 +113,5 @@ class QuestionnaireBuilder(object):
         return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
             options=options, single_select_flag=single_select_flag, ddtype=ddtype,
             instruction=post_dict.get("instruction"), required=post_dict.get("required"))
+
 

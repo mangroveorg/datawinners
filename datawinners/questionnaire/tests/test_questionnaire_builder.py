@@ -1,19 +1,16 @@
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, HierarchyField, GeoCodeField
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
-from questionnaire.questionnaire_builder import QuestionnaireBuilder
+from questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 
 class TestQuestionnaireBuilder(unittest.TestCase):
+
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
-        self.ddtype = Mock(spec=DataDictType)
-
-        self.patcher = patch("questionnaire.questionnaire_builder.get_datadict_type_by_slug")
-        self.get_datadict_type_by_slug_mock = self.patcher.start()
-        self.get_datadict_type_by_slug_mock.return_value = self.ddtype
+        self.patcher = _patch_get_ddtype_by_slug()
 
 
     def tearDown(self):
@@ -60,3 +57,122 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         form_model = FormModel(self.dbm, "test", "test", "test", [Mock(spec=TextField)], ["test"], "test")
         QuestionnaireBuilder(form_model,self.dbm).update_questionnaire_with_questions(post)
         self.assertEqual(3, len(form_model.fields))
+
+
+class TestQuestionBuilder(unittest.TestCase):
+
+    def setUp(self):
+        self.dbm = Mock(spec=DatabaseManager)
+        self.patcher = _patch_get_ddtype_by_slug()
+        self.question_builder = QuestionBuilder(self.dbm)
+
+    def tearDown(self):
+        self.patcher.stop()
+
+    def test_creates_questions_from_dict(self):
+        post = [{"title": "q1", "code": "qc1", "description": "desc1", "type": "text", "choices": [],
+                 "is_entity_question": True, "min_length": 1, "max_length": 15},
+                {"title": "q2", "code": "qc2", "description": "desc2", "type": "integer", "choices": [],
+                 "is_entity_question": False, "range_min": 0, "range_max": 100},
+                {"title": "q3", "code": "qc3", "description": "desc3", "type": "select",
+                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
+                {"title": "q4", "code": "qc4", "description": "desc4", "type": "select1",
+                 "choices": [{"value": "c1"}, {"value": "c2"}], "is_entity_question": False},
+                {"title": "q5", "code": "qc5", "description": "desc4", "type": "text"}
+        ]
+        q1 = self.question_builder.create_question(post[0])
+        q2 = self.question_builder.create_question(post[1])
+        q3 = self.question_builder.create_question(post[2])
+        q4 = self.question_builder.create_question(post[3])
+        q5 = self.question_builder.create_question(post[4])
+        self.assertIsInstance(q1, TextField)
+        self.assertIsInstance(q2, IntegerField)
+        self.assertIsInstance(q3, SelectField)
+        self.assertIsInstance(q4, SelectField)
+        self.assertIsInstance(q5, TextField)
+        self.assertEquals(q1._to_json_view()["length"], {"min": 1, "max": 15})
+        self.assertEquals(q2._to_json_view()["range"], {"min": 0, "max": 100})
+        self.assertEquals(q3._to_json_view()["type"], "select")
+        self.assertEquals(q4._to_json_view()["type"], "select1")
+        self.assertEquals(q5._to_json_view()["type"], "text")
+
+    def test_should_create_integer_question_with_no_max_constraint(self):
+        post = [{"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                 "range_min": 0, "range_max": ""}]
+        q1 = self.question_builder.create_question(post[0])
+        self.assertEqual(None,q1.constraints[0].max)
+        self.assertEqual(0,q1.constraints[0].min)
+
+    def test_should_create_geo_code_question(self):
+        CODE = "lc3"
+        LABEL = "what is your location"
+        TYPE = "geocode"
+        post = {"title": LABEL, "code": CODE, "type": TYPE}
+
+        geo_code_field = self.question_builder.create_question(post)
+
+        self.assertIsInstance(geo_code_field, GeoCodeField)
+        self.assertEqual(CODE, geo_code_field.code)
+
+    def test_should_create_select1_question(self):
+        CODE = "qc3"
+        LABEL = "q3"
+        TYPE = "select1"
+        choices = [{"text":"first","val": "c1"}, {"text":"second","val": "c2"}]
+
+        post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": choices}
+
+        select1_question = self.question_builder.create_question(post)
+
+        self.assertEqual(LABEL, select1_question.label['en'])
+        self.assertEqual(2, len(select1_question.options))
+        self.assertEqual("c1", select1_question.options[0]['val'])
+        self.assertEqual("c2", select1_question.options[1]['val'])
+
+    def test_should_create_select_question(self):
+        CODE = "qc3"
+        LABEL = "q3"
+        TYPE = "select"
+        choices = [{"text":"first","val": "c1"}, {"text":"second","val": "c2"}]
+
+        post = {"title": LABEL, "code": CODE, "type": TYPE, "choices": choices}
+
+        select_question = self.question_builder.create_question(post)
+
+        self.assertEqual(LABEL, select_question.label['en'])
+        self.assertEqual(2, len(select_question.options))
+        self.assertEqual("c1", select_question.options[0]['val'])
+        self.assertEqual("c2", select_question.options[1]['val'])
+
+    def test_should_create_date_question(self):
+        CODE = "qc3"
+        LABEL = "q3"
+        TYPE = "date"
+
+        date_format = "dd.mm.yyyy"
+        post = {"title": LABEL, "code": CODE, "type": TYPE, "date_format": date_format}
+
+        date_question = self.question_builder.create_question(post)
+
+        self.assertEqual(LABEL, date_question.label['en'])
+        self.assertEqual(date_format, date_question.date_format)
+
+    def test_should_create_text_question_with_no_max_length_and_min_length(self):
+        post = [{"title": "q1", "code": "qc1", "type": "text", "choices": [], "is_entity_question": True,
+                 },
+                {"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
+                 "range_min": 0, "range_max": 100},
+                {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
+                 "is_entity_question": False}
+        ]
+        q1 = self.question_builder.create_question(post[0])
+        self.assertEqual(q1.constraints, [])
+        self.assertEqual(q1.label['en'], 'q1')
+
+
+
+def _patch_get_ddtype_by_slug():
+    patcher = patch("questionnaire.questionnaire_builder.get_datadict_type_by_slug")
+    get_datadict_type_by_slug_mock = patcher.start()
+    get_datadict_type_by_slug_mock.return_value = Mock(spec=DataDictType)
+    return patcher
