@@ -1,4 +1,5 @@
 import unittest
+from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
 from mangrove.form_model.form_model import FormModel
 from mock import patch, Mock
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
@@ -64,6 +65,12 @@ class TestPostSMSProcessorNumberOfAnswersValidators(unittest.TestCase):
         self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2])
         processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
         response = processor.process("form_code", {'q1': 'ans', 'q2': 'ans2'})
+        self.assertEqual(None, response)
+
+    def test_for_registration_should_not_send_error_for_global_registration_form(self):
+        self.form_model_patch.return_value = self._get_form_model_mock(is_registration_form=True, fields=[1, 2])
+        processor = PostSMSProcessorNumberOfAnswersValidators(dbm=None, request={})
+        response = processor.process(GLOBAL_REGISTRATION_FORM_CODE, {'q1': 'ans', 'q2': 'ans2'})
         self.assertEqual(None, response)
 
 

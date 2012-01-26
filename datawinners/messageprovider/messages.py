@@ -93,4 +93,4 @@ def get_registration_success_message():
     return _("Registration successful.") + " %s."
 
 def get_wrong_number_of_answer_error_message():
-    return _("Could not parse, Wrong number of answers submitted.")
+    return _("Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS.")

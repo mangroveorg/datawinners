@@ -1,5 +1,6 @@
 from django.utils import translation
-from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
+from mangrove.contrib.registration import GLOBAL_REGISTRATION_FORM_CODE
+from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE, REPORTER
 from mangrove.transport.facade import Response
 from datawinners.messageprovider.messages import get_wrong_number_of_answer_error_message
 
@@ -56,6 +57,9 @@ class PostSMSProcessorNumberOfAnswersValidators(object):
             return self._get_wrong_number_of_question_response()
 
     def _process_registration_request(self, form_model, submission_values):
+        if form_model.form_code == GLOBAL_REGISTRATION_FORM_CODE:
+            return None
+
         if form_model.entity_question is not None:
             return self._process_registration_when_entity_question_is_present(form_model, submission_values)
         else:
