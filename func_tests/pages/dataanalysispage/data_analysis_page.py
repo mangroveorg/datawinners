@@ -109,7 +109,7 @@ class DataAnalysisPage(Page):
         question_labels = self.get_all_question_labels()
         questions = []
         for question_label in question_labels[1:]:
-            questions.append(question_label.text)
+            questions.append(unicode(question_label.text))
         return questions
 
     def select_current_month(self):

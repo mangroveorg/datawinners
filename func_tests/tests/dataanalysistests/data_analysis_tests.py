@@ -23,8 +23,8 @@ class TestDataAnalysis(BaseTest):
         Function to test the questions shown in the data analysis table
         """
         data_analysis_page = self.prerequisites_of_data_analysis()
-        self.assertEquals(fetch_(QUESTIONS, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE)),
-                          data_analysis_page.get_all_questions())
+        questions = fetch_(QUESTIONS, from_(DEFAULT_DATA_FOR_QUESTIONNAIRE))
+        self.assertEquals(questions, data_analysis_page.get_all_questions())
 
     @attr('functional_test', 'smoke')
     def test_data_records_in_table(self):
