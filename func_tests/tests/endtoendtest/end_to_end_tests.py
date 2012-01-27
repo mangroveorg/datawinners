@@ -7,6 +7,7 @@ from framework.utils.couch_http_wrapper import CouchHttpWrapper
 from framework.utils.data_fetcher import from_, fetch_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.activateaccountpage.activate_account_page import ActivateAccountPage
+from pages.addsubjectpage.add_subject_page import AddSubjectPage
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.lightbox.light_box_page import LightBox
@@ -86,8 +87,9 @@ class TestApplicationEndToEnd(BaseTest):
         self.assertEqual(create_project_page.get_selected_subject(), entity_type.lower())
 
     def add_a_subject(self, add_subject_page):
-        message = add_subject_page.successfully_add_subject_with(VALID_DATA_FOR_SUBJECT)
-        self.assertEqual(add_subject_page.get_flash_message(), message)
+        add_subject_page.add_subject_with(VALID_DATA_FOR_SUBJECT)
+        add_subject_page.submit_subject()
+        self.assertEqual(add_subject_page.get_flash_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)))
 
     def add_a_data_sender(self, add_data_sender_page):
         add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_DATA_SENDER)
@@ -188,6 +190,7 @@ class TestApplicationEndToEnd(BaseTest):
         edit_questionnaire_page.select_question_link(9)
         self.assertEqual(questions[6], edit_questionnaire_page.get_list_of_choices_type_question())
         edit_questionnaire_page.select_question_link(10)
+        edit_questionnaire_page.select_question_link(10)
         self.assertEqual(questions[7], edit_questionnaire_page.get_geo_type_question())
 
     def edit_questionnaire(self, edit_questionnaire_page):
@@ -220,7 +223,9 @@ class TestApplicationEndToEnd(BaseTest):
         project_overview_page = self.create_questionnaire(create_questionnaire_page)
 
         all_subjects_page = global_navigation.navigate_to_all_subject_page()
-        add_subject_page = all_subjects_page.navigate_to_add_a_subject_page()
+        #add_subject_page = all_subjects_page.navigate_to_add_a_subject_page()
+        add_subject_page = AddSubjectPage(self.driver)
+        self.driver.go_to("http://localhost:8000/entity/subject/create/waterpoint/")
         self.add_a_subject(add_subject_page)
 
         all_data_senders_page = global_navigation.navigate_to_all_data_sender_page()

@@ -68,6 +68,7 @@ class AddSubjectPage(Page):
 
     def submit_subject(self):
         self.driver.find(SUBMIT_BTN).click()
+        time.sleep(2)
 
     def get_error_message(self):
         """

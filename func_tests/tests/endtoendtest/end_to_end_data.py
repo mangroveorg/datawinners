@@ -93,12 +93,15 @@ MESSAGE = "message"
 
 RESPONSE_MESSAGE = "message"
 
-SUCCESS_MESSAGE_TEXT = "Thank you Donald Mouse. We received : q1: wat1 q2: 11.10.2011 q3: 98.0 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"
+SUCCESS_MESSAGE_TEXT = "Thank you Donald Mouse. We received : q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"
 
 SMS_SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"
 
 REGISTRATION_PASSWORD = "ngo001"
+SUB_UNIQUE_ID = "sub_unique_id"
+SUB_FIRST_NAME = "sub_first_name"
+SUB_LAST_NAME = "sub_last_name"
 
 #Registration Page Data for Successful Registration Page
 REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: "Automation NGO",
@@ -128,27 +131,26 @@ VALID_DATA_FOR_DATA_SENDER = {DATA_SENDER_NAME: "Donald Mouse",
                               MOBILE_NUMBER: "1234567890",
                               COMMUNE: "urbaine",
                               GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep3."}
+                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep2."}
 
 VALID_DATA_FOR_DATA_SENDER1 = {DATA_SENDER_NAME: "Donald Mouse",
                               MOBILE_NUMBER: "12345678901",
                               COMMUNE: "urbaine",
                               GPS: "48.955267  1.816013",
-                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep2."}
+                              SUCCESS_MESSAGE: u"Registration successful. Unique identification number(ID) is: rep3."}
 
 # valid entity data
 VALID_SUBJECT_TYPE1 = {ENTITY_TYPE: "Waterpoint", SUCCESS_MESSAGE: "Entity definition successful"}
 VALID_SUBJECT_TYPE2 = {ENTITY_TYPE: "Well", SUCCESS_MESSAGE: "Entity definition successful"}
 
 VALID_DATA_FOR_SUBJECT = {ENTITY_TYPE: "waterpoint",
-                          AUTO_GENERATE: True,
-                          SHORT_NAME: "",
-                          NAME: "Waterpoint Monodova",
+                          SUB_UNIQUE_ID: None,
+                          SUB_FIRST_NAME: "Waterpoint Monodova",
+                          SUB_LAST_NAME: "wat",
                           LOCATION: "Monodova",
                           GEO_CODE: "47.411631 28.369885",
-                          DESCRIPTION: "This is a waterpoint in monodova",
                           MOBILE_NUMBER: "3456789012",
-                          SUCCESS_MESSAGE: "Registration successful. Unique identification number(ID) is: wat1."}
+                          SUCCESS_MESSAGE: "Successfully submitted. Unique identification number(ID) is: wat1"}
 
 VALID_DATA_FOR_PROJECT = {PROJECT_NAME: "Waterpoint morondava", GEN_RANDOM: False,
                           PROJECT_BACKGROUND: "This project is created by functional automation suite.",
@@ -166,21 +168,21 @@ VALID_DATA_FOR_REMINDER = {PAGE_TITLE: "Review & Test"}
 
 QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                       DEFAULT_QUESTION: {QUESTION: "What are you reporting on?", CODE: "q1"},
-                      QUESTIONS: [{QUESTION: "Water Level", CODE: "q3", TYPE: NUMBER, MIN: "1", MAX: "1000"},
-                              {QUESTION: "Date of report in DD.MM.YYY format", CODE: "q4", TYPE: DATE,
+                      QUESTIONS: [{QUESTION: u"Water Level", CODE: u"q3", TYPE: NUMBER, MIN: u"1", MAX: u"1000"},
+                              {QUESTION: u"Date of report in DD.MM.YYY format", CODE: u"q4", TYPE: DATE,
                                DATE_FORMAT: DD_MM_YYYY},
-                              {QUESTION: "Date of report in MM.YYY format", CODE: "q5", TYPE: DATE,
+                              {QUESTION: u"Date of report in MM.YYY format", CODE: u"q5", TYPE: DATE,
                                DATE_FORMAT: MM_YYYY},
-                              {QUESTION: "Date of report in MM.DD.YYY format", CODE: "q6", TYPE: DATE,
+                              {QUESTION: u"Date of report in MM.DD.YYY format", CODE: u"q6", TYPE: DATE,
                                DATE_FORMAT: MM_DD_YYYY},
-                              {QUESTION: "Color of Water", CODE: "q7", TYPE: LIST_OF_CHOICES,
+                              {QUESTION: u"Color of Water", CODE: u"q7", TYPE: LIST_OF_CHOICES,
                                CHOICE: ["LIGHT RED", "LIGHT YELLOW", "DARK YELLOW"],
                                ALLOWED_CHOICE: ONLY_ONE_ANSWER},
-                              {QUESTION: "Water point admin name", CODE: "q8", TYPE: WORD, LIMIT: LIMITED, MAX: "10"},
-                              {QUESTION: "Bacterias in water", CODE: "q9", TYPE: LIST_OF_CHOICES,
+                              {QUESTION: u"Water point admin name", CODE: u"q8", TYPE: WORD, LIMIT: LIMITED, MAX: u"10"},
+                              {QUESTION: u"Bacterias in water", CODE: u"q9", TYPE: LIST_OF_CHOICES,
                                CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
                                ALLOWED_CHOICE: MULTIPLE_ANSWERS},
-                              {QUESTION: "Geo points of Well", CODE: "q10", TYPE: GEO}],
+                              {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
                       CHARACTER_REMAINING: "82 / 160 characters used",
                       PAGE_TITLE: "Data Senders"}
 
@@ -205,7 +207,7 @@ VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morond
 
 VALID_DATA_FOR_SMS_LIGHT_BOX = {
     SMS: "WPS01  wat1  11.10.2011  98  12.04.2011  04.2011  04.12.2011   c  Mr.Tessy  ab  27.178057,-78.007789",
-    RESPONSE_MESSAGE: "Thank you TEST. We received : q1: wat1 q2: 11.10.2011 q3: 98.0 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
+    RESPONSE_MESSAGE: "Thank you TEST. We received : q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"}
 
 VALID_DATA_FOR_SMS = {SENDER: "1234567890",
                       RECEIVER: "",
