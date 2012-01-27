@@ -1,8 +1,9 @@
 from django.utils.translation import ugettext
 from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
 from mangrove.errors.MangroveException import DataObjectNotFound
-from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField
-from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint
+from mangrove.form_model.field import IntegerField, TextField, DateField, SelectField, GeoCodeField, TelephoneNumberField, HierarchyField
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_not_empty, is_empty
 
@@ -27,7 +28,7 @@ class QuestionBuilder(object):
     def __init__(self, dbm):
         self.dbm = dbm
 
-    def create_question(self, post_dict,language):
+    def _get_ddtype(self, post_dict):
         options = post_dict.get('options')
         datadict_type = options.get('ddtype') if options is not None else None
         if is_not_empty(datadict_type):
@@ -37,6 +38,10 @@ class QuestionBuilder(object):
             datadict_slug = str(slugify(unicode(post_dict.get('title'))))
         ddtype = self._get_or_create_data_dict(name=post_dict.get('code'), slug=datadict_slug,
             primitive_type=post_dict.get('type'), description=post_dict.get('title'))
+        return ddtype
+
+    def create_question(self, post_dict,language):
+        ddtype = self._get_ddtype(post_dict)
 
         if post_dict["type"] == "text":
             return self._create_text_question(post_dict, ddtype,language)
@@ -50,6 +55,10 @@ class QuestionBuilder(object):
             return self._create_date_question(post_dict, ddtype,language)
         if post_dict["type"] == "select1":
             return self._create_select_question(post_dict, True, ddtype,language)
+        if post_dict["type"] == "telephone_number":
+            return self._create_telephone_number_question(post_dict, ddtype,language)
+        if post_dict["type"] == "list":
+            return self._create_location_question(post_dict, ddtype,language)
 
     def _get_or_create_data_dict(self, name, slug, primitive_type, description=None):
         try:
@@ -116,3 +125,19 @@ class QuestionBuilder(object):
             instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
 
+    def _create_telephone_number_question(self,post_dict, ddtype,language):
+        return TelephoneNumberField(name=post_dict["title"], code=post_dict["code"].strip(),
+            label=post_dict["title"], ddtype=ddtype,
+            instruction=post_dict.get("instruction"), constraints=(
+                self._create_constraints_for_mobile_number()),required=post_dict.get("required"),language=language)
+
+    def _create_constraints_for_mobile_number(self):
+        mobile_number_length = TextLengthConstraint(max=15)
+        mobile_number_pattern = RegexConstraint(reg='^[0-9]+$')
+        mobile_constraints = [mobile_number_length, mobile_number_pattern]
+        return mobile_constraints
+
+    def _create_location_question(self,post_dict, ddtype,language):
+        return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=post_dict["code"].strip(),
+            label=post_dict["title"], ddtype=ddtype, instruction=post_dict.get("instruction"),
+            required=post_dict.get("required"),language=language)

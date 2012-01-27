@@ -1,8 +1,8 @@
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, IntegerField, SelectField, HierarchyField, GeoCodeField
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.field import TextField, IntegerField, SelectField, HierarchyField, GeoCodeField, TelephoneNumberField
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME
 from mock import Mock, patch
 from questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 
@@ -182,6 +182,28 @@ class TestQuestionBuilder(unittest.TestCase):
         q1 = self.question_builder.create_question(post[0],language=language)
         self.assertEqual(q1.constraints, [])
         self.assertEqual(q1.label[language], 'q1')
+
+
+    def test_should_create_telephone_number_question(self):
+        CODE = "qc3"
+        LABEL = "q3"
+        TYPE = "telephone_number"
+
+        post = {"title": LABEL, "code": CODE, "type": TYPE}
+
+        select_question = self.question_builder.create_question(post, 'en')
+
+        self.assertIsInstance(select_question,TelephoneNumberField)
+
+    def test_should_create_location_question(self):
+        CODE = "qc3"
+        LABEL = "q3"
+        TYPE = "list"
+
+        post = {"title": LABEL, "code": CODE, "type": TYPE }
+
+        select_question = self.question_builder.create_question(post, 'en')
+        self.assertEqual(LOCATION_TYPE_FIELD_NAME,select_question.name)
 
 
 
