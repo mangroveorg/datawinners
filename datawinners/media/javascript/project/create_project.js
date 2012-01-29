@@ -277,6 +277,7 @@ $(document).ready(function() {
             DW.post_project_data('Test', function(response){
                 return '/project/overview/' + response.project_id;
             });
+            $.unblockUI();
         }
         return false;
     });

@@ -126,13 +126,13 @@ def edit_project(request, project_id=None):
             project.update(form.cleaned_data)
             try:
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
+                project.state = request.POST['project_state']
+                project.qid = questionnaire.save()
             except (QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': ex.message}))
             except DataObjectAlreadyExists:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': 'Questionnaire with this code already exists'}))
 
-            project.state = request.POST['project_state']
-            project.qid = questionnaire.save()
 
             try:
                 project.save(manager)
