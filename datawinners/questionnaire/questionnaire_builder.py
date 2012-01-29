@@ -28,17 +28,6 @@ class QuestionBuilder(object):
     def __init__(self, dbm):
         self.dbm = dbm
 
-    def _get_ddtype(self, post_dict):
-        options = post_dict.get('options')
-        datadict_type = options.get('ddtype') if options is not None else None
-        if is_not_empty(datadict_type):
-            #  question already has a data dict type
-            datadict_slug = datadict_type.get('slug')
-        else:
-            datadict_slug = str(slugify(unicode(post_dict.get('title'))))
-        ddtype = self._get_or_create_data_dict(name=post_dict.get('code'), slug=datadict_slug,
-            primitive_type=post_dict.get('type'), description=post_dict.get('title'))
-        return ddtype
 
     def create_question(self, post_dict,language):
         ddtype = self._get_ddtype(post_dict)
@@ -141,3 +130,16 @@ class QuestionBuilder(object):
         return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=post_dict["code"].strip(),
             label=post_dict["title"], ddtype=ddtype, instruction=post_dict.get("instruction"),
             required=post_dict.get("required"),language=language)
+
+    def _get_ddtype(self, post_dict):
+        options = post_dict.get('options')
+        datadict_type = options.get('ddtype') if options is not None else None
+        if is_not_empty(datadict_type):
+            #  question already has a data dict type
+            datadict_slug = datadict_type.get('slug')
+        else:
+            datadict_slug = str(slugify(unicode(post_dict.get('title'))))
+        ddtype = self._get_or_create_data_dict(name=post_dict.get('code'), slug=datadict_slug,
+            primitive_type=post_dict.get('type'), description=post_dict.get('title'))
+        return ddtype
+

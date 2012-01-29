@@ -491,7 +491,7 @@ def broadcast_message(request, project_id):
         if form.is_valid():
             data_senders = []
             if form.cleaned_data['to'] == "All":
-                data_senders = load_all_subjects_of_type(dbm)
+                data_senders,fields, labels = load_all_subjects_of_type(dbm)
             elif form.cleaned_data['to'] == "Associated":
                 data_senders = project.get_data_senders(dbm)
             profile = NGOUserProfile.objects.get(user = request.user)
