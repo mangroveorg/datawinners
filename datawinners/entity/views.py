@@ -38,7 +38,9 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.utils import get_excel_sheet, workbook_add_sheet
+from entity.helper import get_country_appended_location
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
+from utils import get_organization
 
 COUNTRY = ',MADAGASCAR'
 
@@ -54,8 +56,8 @@ def submit(request):
     try:
         web_player = WebPlayer(dbm, get_location_tree())
         message = post['message']
-        if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
-            message[LOCATION_TYPE_FIELD_CODE] += COUNTRY
+        message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
+            get_organization(request).country)
         request = Request(message=message,
             transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
                 destination=post.get('destination')))
@@ -110,7 +112,7 @@ def create_type(request):
         except EntityTypeAlreadyDefined:
             if request.POST["referer"] == 'project':
                 message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (
-                entity_name[0], entity_name[0])
+                    entity_name[0], entity_name[0])
             else:
                 message = _("%s already registered as a subject type.") % (entity_name[0],)
     else:
@@ -293,7 +295,7 @@ def create_subject(request, entity_type=None):
                 create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
-                response.short_code,)
+                    response.short_code,)
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)

@@ -25,10 +25,10 @@ from datawinners.location.LocationTree import get_location_tree
 from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
+from location.LocationTree import get_location_hierarchy
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
-COUNTRY = ',MADAGASCAR'
 
 def remove_hyphens(telephone_number):
     return re.sub('[- \(\)+]', '', smart_unicode(telephone_number))
@@ -122,13 +122,17 @@ def _associate_data_sender_to_project(dbm, project, project_id, response):
     project.save(dbm)
 
 
-def _get_data(form_data):
+def get_country_appended_location(location_hierarchy,country):
+    return location_hierarchy + ","+country if location_hierarchy is not None else None
+
+
+def _get_data(form_data,country):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
               'location': LOCATION_TYPE_FIELD_CODE}
     data = dict()
     data[mapper['telephone_number']] = form_data.get('telephone_number')
-    data[mapper['location']] = form_data.get('location') + COUNTRY if form_data.get('location') is not None else None
+    data[mapper['location']] = get_country_appended_location(form_data.get('location'),country)
     data[mapper['geo_code']] = form_data.get('geo_code')
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
@@ -161,8 +165,8 @@ def process_create_datasender_form(dbm, form, org_id, project):
                 _add_data_sender_to_trial_organization(telephone_number, org_id)
 
         try:
-            web_player = WebPlayer(dbm, get_location_tree())
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data),
+            web_player = WebPlayer(dbm, get_location_tree(),get_location_hierarchy)
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data,organization.country),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
             project_id = form.cleaned_data["project_id"]
