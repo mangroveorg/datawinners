@@ -169,6 +169,7 @@ def undelete_project(request, project_id):
     return HttpResponseRedirect(reverse(index))
 
 @login_required(login_url='/login')
+@is_datasender
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
