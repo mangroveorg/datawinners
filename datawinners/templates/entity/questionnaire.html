@@ -20,6 +20,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_subjects_registration.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -29,25 +30,25 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
     <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
-    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript">
         var question_list = $.parseJSON({{existing_questions|safe}});
     </script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
+    <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/html" id="choice-template">
         <li>
             <input id="choice_text" name="choice_text" class="required" type="text"
                    data-bind="value: text, uniqueName:true"/>
             <a href="questionnaire.html#" class='delete delete_link'
-               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){showWarning('delete'); viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
+               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete" %}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template_new">
         <div class="question_list">
-             <ul>
+             <ol>
              {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
              <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
                  <li>
@@ -60,7 +61,7 @@
                               data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
              </div>
              {% templatetag openvariable %}/each{% templatetag closevariable %}
-             </ul>
+             </ol>
         </div>
     </script>
 {% endblock %}
@@ -71,24 +72,4 @@
         {{ block.super }}
     {% endblock %}
     {% include 'entity/questionnaire_form.html' %}
-
-    <div id="edit-disclaimer">
-        <div class="help_accordion">
-            {% blocktrans with entity_type as entity_type %}You are sharing this {{ entity_type }} Registration Form with other projects.{% endblocktrans %} <!--<a href="javascript:void(0)" class="show_link">{% trans "Learn More" %}</a>
-            <div class="details">
-                <p><h2>consectetur adipisicing</h2>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum..
-                </p>
-                <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>
-            </div>
-            -->
-        </div>
-        <p>{% trans "Your changes will affect the Registration Form for these projects as well." %}</p>
-        <div style="text-align: right; margin-top: 10px;">
-            <a id="close-disclaimer" href="javascript:void(0)" class="button">{% trans "Close" %}</a>
-        </div>
-    </div>
 {% endblock %}

@@ -100,10 +100,10 @@
         <ol class="olpreview">
             {% for question in questions %}
                 <li>
-                    <h6>{% trans question.description %}</h6>
+                    <h6>{{ question.description }}</h6>
                     {% if  question.instruction %}
                         <p class="instructions italic">
-                            {% trans question.instruction %}
+                            {{ question.instruction }}
                         </p>
                         <input class="displayText" disabled="disabled" type="text">
                     {% endif %}

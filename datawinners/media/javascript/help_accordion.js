@@ -8,17 +8,4 @@ $(document).ready(function() {
         $(this).parent().hide();
         $(this).parent().parent().find(".show_link").show();
     });
-
-    $("#edit-disclaimer").dialog({
-        title: gettext("Shared Registration Form"),
-        modal: true,
-        autoOpen: true,
-        width: 600,
-        height: 150,
-        position: ['center', 120]
-    });
-
-    $("#close-disclaimer").click(function() {
-        $("#edit-disclaimer").dialog("close");
-    });
 })

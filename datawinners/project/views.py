@@ -775,8 +775,8 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field)
-        question['description'] = question['description'].replace('subject', type_of_subject)
-        question['instruction'] = question['instruction'].replace('subject', type_of_subject)
+        #question['description'] = question['description'].replace('subject', type_of_subject)
+        #question['instruction'] = question['instruction'].replace('subject', type_of_subject)
         questions.append(question)
     return fields, project_links, questions, registration_questionnaire
 

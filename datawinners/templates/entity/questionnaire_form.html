@@ -80,6 +80,15 @@
         </div>
     </form>
 </div>
+<div id="edit_warning">
+    <div class="help_accordion">
+        {% blocktrans with entity_type as entity_type %}You are sharing this {{ entity_type }} Registration Form with other projects.{% endblocktrans %}
+    </div>
+    <p>{% trans "Your changes will affect the Registration Form for these projects as well." %}</p>
+    <div class="text_align_right" style="margin-top: 10px;">
+        <a id="edit_ok" href="javascript:void(0)" class="button">{% trans "Close" %}</a>
+    </div>
+</div>
 <div id="delete_warning">
     {% trans "You have already collected data for this question. If you delete the question, the corresponding data wille be lost." %}<br/>
     {% blocktrans %}Note, if you don't want to lose your data you can <a href="javascript:void(0);" class="export-entity-link" id="export-{{ entity_type }}">export</a> it before you delete the question.{% endblocktrans %}<br/>

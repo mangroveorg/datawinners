@@ -206,4 +206,16 @@ $(document).ready(function() {
                 viewModel.selectedQuestion().max_length("");
             }
     );
+    $("#edit_warning").dialog({
+        title: gettext("Shared Registration Form"),
+        modal: true,
+        autoOpen: true,
+        width: 600,
+        height: 150,
+        position: ['center', 120]
+    });
+
+    $("#edit_ok").click(function() {
+        $("#edit_warning").dialog("close");
+    });
 });
