@@ -1,30 +1,29 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from mangrove.datastore.datadict import get_datadict_type_by_slug, \
+from mangrove.datastore.datadict import get_datadict_type_by_slug,\
     create_datadict_type
 from mangrove.errors import MangroveException
-from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField, IntegerField, DateField, SelectField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, \
-    NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, \
+from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
+from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
+    NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE_FIELD, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
-    SHORT_CODE_FIELD, SHORT_CODE, REGISTRATION_FORM_CODE, \
+    SHORT_CODE_FIELD, SHORT_CODE, REGISTRATION_FORM_CODE,\
     ENTITY_TYPE_FIELD_CODE
-from mangrove.form_model.validation import TextLengthConstraint, \
-    RegexConstraint, NumericRangeConstraint
+from mangrove.form_model.validation import TextLengthConstraint,\
+    RegexConstraint
 from mangrove.transport.player.player import WebPlayer
-from mangrove.utils.helpers import slugify
-from mangrove.utils.types import is_empty, is_not_empty, is_sequence
+from mangrove.utils.types import is_empty, is_sequence
 import re
-from mangrove.errors.MangroveException import NumberNotRegisteredException, \
+from mangrove.errors.MangroveException import NumberNotRegisteredException,\
     DataObjectNotFound
 from mangrove.transport.reporter import find_reporter_entity
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
-from datawinners.accountmanagement.models import Organization, \
+from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.transport import Request, TransportInfo
-from datawinners.messageprovider.message_handler import \
+from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 
 FIRSTNAME_FIELD = "firstname"
@@ -33,6 +32,7 @@ COUNTRY = ',MADAGASCAR'
 
 def remove_hyphens(telephone_number):
     return re.sub('[- \(\)+]', '', smart_unicode(telephone_number))
+
 
 def unique(dbm, telephone_number):
     telephone_number = remove_hyphens(telephone_number)
@@ -48,7 +48,7 @@ def _get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
         ddtype = get_datadict_type_by_slug(dbm, slug)
     except DataObjectNotFound:
         ddtype = create_datadict_type(dbm=dbm, name=name, slug=slug,
-                                      primitive_type=primitive_type, description=description)
+            primitive_type=primitive_type, description=description)
     return ddtype
 
 
@@ -72,14 +72,17 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     location_type = _get_or_create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
     geo_code_type = _get_or_create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
     name_type = _get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    mobile_number_type = _get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
+    mobile_number_type = _get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
+        primitive_type='string')
 
-    question1 = TextField(name=FIRSTNAME_FIELD, code=FIRSTNAME_FIELD_CODE, label=_("What is the %(entity_type)s's first name?") % {'entity_type':entity_name},
-                          defaultValue="some default value", language="en", ddtype=name_type,
-                          instruction=_("Enter a %(entity_type)s first name") % {'entity_type':entity_name})
-    question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE, label=_("What is the %(entity_type)s's last name?") % {'entity_type':entity_name},
-                              defaultValue="some default value", language="en", ddtype=name_type,
-                              instruction=_("Enter a %(entity_type)s last name") % {'entity_type':entity_name})
+    question1 = TextField(name=FIRSTNAME_FIELD, code=FIRSTNAME_FIELD_CODE,
+        label=_("What is the %(entity_type)s's first name?") % {'entity_type': entity_name},
+        defaultValue="some default value", language="en", ddtype=name_type,
+        instruction=_("Enter a %(entity_type)s first name") % {'entity_type': entity_name})
+    question2 = TextField(name=NAME_FIELD, code=NAME_FIELD_CODE,
+        label=_("What is the %(entity_type)s's last name?") % {'entity_type': entity_name},
+        defaultValue="some default value", language="en", ddtype=name_type,
+        instruction=_("Enter a %(entity_type)s last name") % {'entity_type': entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
                                label=_("What is the %(entity_type)s's location?") % {'entity_type':entity_name},
                                language="en", ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
@@ -98,7 +101,8 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
                               constraints=[TextLengthConstraint(max=12)], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
-    form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions , is_registration_model=True, entity_type=entity_type)
+    form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,
+        entity_type=entity_type)
     return form_model
 
 
@@ -110,95 +114,6 @@ def create_registration_form(manager, entity_name):
     form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])
     form_model.save()
     return form_model
-
-
-def create_question(post_dict, dbm):
-    options = post_dict.get('options')
-    datadict_type = options.get('ddtype') if options is not None else None
-    if is_not_empty(datadict_type):
-        datadict_slug = datadict_type.get('slug')
-    else:
-        datadict_slug = str(slugify(unicode(post_dict.get('title'))))
-    ddtype = _get_or_create_data_dict(dbm=dbm, name=post_dict.get('code'), slug=datadict_slug,
-                                     primitive_type=post_dict.get('type'), description=post_dict.get('title'))
-
-    if "name" not in post_dict:
-        post_dict["name"] = post_dict["code"]
-
-    if post_dict["type"] == "text":
-        return _create_text_question(post_dict, ddtype)
-    if post_dict["type"] == "integer":
-        return _create_integer_question(post_dict, ddtype)
-    if post_dict["type"] == "geocode":
-        return _create_geo_code_question(post_dict, ddtype)
-    if post_dict["type"] == "select":
-        return _create_select_question(post_dict, single_select_flag=False, ddtype=ddtype)
-    if post_dict["type"] == "date":
-        return _create_date_question(post_dict, ddtype)
-    if post_dict["type"] == "select1":
-        return _create_select_question(post_dict, single_select_flag=True, ddtype=ddtype)
-    if post_dict["type"] == "telephone_number":
-        return _create_telephone_number_question(post_dict, ddtype)
-    if post_dict["type"] == "list":
-        return _create_location_question(post_dict, ddtype)
-
-def update_questionnaire_with_questions(form_model, question_set, dbm):
-    form_model.delete_all_fields()
-    for question in question_set:
-        form_model.add_field(create_question(question, dbm))
-    return form_model
-
-def _create_text_question(post_dict, ddtype):
-    max_length_from_post = post_dict.get("max_length")
-    min_length_from_post = post_dict.get("min_length")
-    max_length = max_length_from_post if not is_empty(max_length_from_post) else None
-    min_length = min_length_from_post if not is_empty(min_length_from_post) else None
-    constraints = []
-    if not (max_length is None and min_length is None):
-        constraints.append(TextLengthConstraint(min=min_length, max=max_length))
-    return TextField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
-                     entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
-                     instruction=post_dict.get("instruction"),required=post_dict.get("required"))
-
-
-def _create_integer_question(post_dict, ddtype):
-    max_range_from_post = post_dict.get("range_max")
-    min_range_from_post = post_dict.get("range_min")
-    max_range = max_range_from_post if not is_empty(max_range_from_post) else None
-    min_range = min_range_from_post if not is_empty(min_range_from_post) else None
-    range = NumericRangeConstraint(min=min_range, max=max_range)
-    return IntegerField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
-                        constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),
-                        required=post_dict.get("required"))
-
-
-def _create_date_question(post_dict, ddtype):
-    return DateField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
-                     date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False))
-
-
-def _create_geo_code_question(post_dict, ddtype):
-    return GeoCodeField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"], ddtype=ddtype,
-                        instruction=post_dict.get("instruction"),required=post_dict.get("required"))
-
-
-def _create_select_question(post_dict, single_select_flag, ddtype):
-    options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
-    return SelectField(name=post_dict["name"], code=post_dict["code"].strip(), label=post_dict["title"],
-                       options=options, single_select_flag=single_select_flag, ddtype=ddtype,
-                       instruction=post_dict.get("instruction"),required=post_dict.get("required"))
-
-def _create_telephone_number_question(post_dict, ddtype):
-    return TelephoneNumberField(name=post_dict["name"], code=post_dict["code"].strip(),
-                                     label=post_dict["title"], ddtype=ddtype,
-                                     instruction=post_dict.get("instruction"), constraints=(
-            _create_constraints_for_mobile_number()),required=post_dict.get("required"))
-
-
-def _create_location_question(post_dict, ddtype):
-    return HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=post_dict["code"].strip(),
-                               label=post_dict["title"], ddtype=ddtype, instruction=post_dict.get("instruction"),
-                               required=post_dict.get("required"))
 
 
 def _associate_data_sender_to_project(dbm, project, project_id, response):
@@ -223,7 +138,7 @@ def _get_data(form_data):
 
 def _add_data_sender_to_trial_organization(telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
-                                                         organization=Organization.objects.get(org_id=org_id))
+        organization=Organization.objects.get(org_id=org_id))
     data_sender.save()
 
 
@@ -232,22 +147,23 @@ def process_create_datasender_form(dbm, form, org_id, project):
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
         if not unique(dbm, telephone_number):
-            form._errors['telephone_number'] = form.error_class([(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
+            form._errors['telephone_number'] = form.error_class(
+                [(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
             return message
 
         organization = Organization.objects.get(org_id=org_id)
         if organization.in_trial_mode:
             if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
-                form._errors['telephone_number'] = form.error_class([(u"Sorry, this number has already been used for a different DataWinners trial account.")])
+                form._errors['telephone_number'] = form.error_class(
+                    [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
                 return message
             else:
-                _add_data_sender_to_trial_organization(telephone_number,org_id)
-
+                _add_data_sender_to_trial_organization(telephone_number, org_id)
 
         try:
             web_player = WebPlayer(dbm, get_location_tree())
             response = web_player.accept(Request(message=_get_data(form.cleaned_data),
-                                                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
+                transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
             project_id = form.cleaned_data["project_id"]
             if not is_empty(project_id):
