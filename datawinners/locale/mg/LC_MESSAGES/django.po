@@ -2616,3 +2616,6 @@ msgstr ""
 
 msgid "Upto %s"
 msgstr ""
+
+msgid "%(entity_type)s registration form edition"
+msgstr ""

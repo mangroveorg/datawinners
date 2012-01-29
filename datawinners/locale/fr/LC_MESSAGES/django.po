@@ -3257,3 +3257,6 @@ msgstr "Au minimum %s"
 
 msgid "Upto %s"
 msgstr "Jusqu'à %s"
+
+msgid "%(entity_type)s registration form edition"
+msgstr "Edition formulaire d'enregistrement de %(entity_type)s"
