@@ -6,7 +6,7 @@ from django.utils import translation
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect, \
+from django.http import HttpResponse, HttpResponseRedirect,\
     HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -15,11 +15,9 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount,Organization
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
-from datawinners.entity import helper
-from datawinners.entity.helper import update_questionnaire_with_questions, \
-    create_registration_form, process_create_datasender_form
+from datawinners.entity.helper import create_registration_form, process_create_datasender_form
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -28,16 +26,16 @@ from datawinners.messageprovider.message_handler import get_success_msg_for_regi
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.helper import create_request, errors_to_list
 from datawinners.project.models import Project
-from mangrove.datastore.entity_type import get_all_entity_types, define_type
-from datawinners.project import helper as project_helper, models
+from mangrove.datastore.entity_type import  define_type
+from datawinners.project import  models
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, MOBILE_NUMBER_FIELD_CODE, GEO_CODE, NAME_FIELD_CODE, LOCATION_TYPE_FIELD_CODE, ENTITY_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
-from datawinners.project.web_questionnaire_form_creator import \
+from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.utils import get_excel_sheet, workbook_add_sheet
 from questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -59,8 +57,8 @@ def submit(request):
         if message.get(LOCATION_TYPE_FIELD_CODE) is not None:
             message[LOCATION_TYPE_FIELD_CODE] += COUNTRY
         request = Request(message=message,
-                          transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
-                                                      destination=post.get('destination')))
+            transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
+                destination=post.get('destination')))
         response = web_player.accept(request)
         if response.success:
             message = get_success_msg_for_registration_using(response, "web")
@@ -77,22 +75,23 @@ def submit(request):
         entity_id = None
     return HttpResponse(json.dumps({'success': success, 'message': message, 'entity_id': entity_id}))
 
+
 @login_required(login_url='/login')
 def create_datasender(request):
     if request.method == 'GET':
         form = ReporterRegistrationForm()
         return render_to_response('entity/create_datasender.html', {'form': form},
-                                  context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
         message = process_create_datasender_form(dbm, form, org_id, Project)
         if message is not None:
-            form = ReporterRegistrationForm(initial={'project_id':form.cleaned_data['project_id']})
+            form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message},
-                                      context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -110,12 +109,14 @@ def create_type(request):
             success = True
         except EntityTypeAlreadyDefined:
             if request.POST["referer"] == 'project':
-                message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (entity_name[0], entity_name[0])
+                message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (
+                entity_name[0], entity_name[0])
             else:
                 message = _("%s already registered as a subject type.") % (entity_name[0],)
     else:
         message = form.fields['entity_type_regex'].error_messages['invalid']
     return HttpResponse(json.dumps({'success': success, 'message': _(message)}))
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -127,11 +128,14 @@ def all_subjects(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         subjects_data = import_module.load_all_subjects(manager)
-        return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                        'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
+        return HttpResponse(json.dumps(
+                {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+                 'error_message': error_message,
+                 'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
     subjects_data = import_module.load_all_subjects(manager)
-    return render_to_response('entity/all_subjects.html', {'all_data': subjects_data, 'current_language': translation.get_language()},
-                                  context_instance=RequestContext(request))
+    return render_to_response('entity/all_subjects.html',
+            {'all_data': subjects_data, 'current_language': translation.get_language()},
+        context_instance=RequestContext(request))
 
 
 def _get_project_association(projects):
@@ -147,11 +151,12 @@ def _get_all_datasenders(manager, projects, user):
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
         org_id = NGOUserProfile.objects.get(user=user).org_id
-        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_name'], org_id = org_id)
+        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_name'], org_id=org_id)
         datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
         association = project_association.get(datasender['short_name'])
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
     return all_data_senders
+
 
 @login_required(login_url='/login')
 @csrf_view_exempt
@@ -165,7 +170,7 @@ def create_web_users(request):
             if len(users) > 0:
                 errors.append("User with email %s already exists" % data['email'])
         if len(errors) > 0:
-            return HttpResponse(json.dumps({'success':False, 'errors': errors}))
+            return HttpResponse(json.dumps({'success': False, 'errors': errors}))
 
         for data in post_data:
             user = User.objects.create_user(data['email'], data['email'], 'test123')
@@ -179,7 +184,7 @@ def create_web_users(request):
             reset_form.is_valid()
             reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
 
-        return HttpResponse(json.dumps({'success':True, 'message':"Users has been created"}))
+        return HttpResponse(json.dumps({'success': True, 'message': "Users has been created"}))
 
 
 @csrf_view_exempt
@@ -198,12 +203,16 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
-        return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                        'failure_imports': failure_imports, 'all_data': all_data_senders}))
+        return HttpResponse(json.dumps(
+                {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+                 'error_message': error_message,
+                 'failure_imports': failure_imports, 'all_data': all_data_senders}))
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
-    return render_to_response('entity/all_datasenders.html', {'all_data': all_data_senders, 'projects':projects, 'grant_web_access':grant_web_access, "labels": labels,
-                                                              'current_language': translation.get_language()},
-                              context_instance=RequestContext(request))
+    return render_to_response('entity/all_datasenders.html',
+            {'all_data': all_data_senders, 'projects': projects, 'grant_web_access': grant_web_access, "labels": labels,
+             'current_language': translation.get_language()},
+        context_instance=RequestContext(request))
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -217,6 +226,7 @@ def disassociate_datasenders(request):
         project.save(manager)
     return HttpResponse(reverse(all_datasenders))
 
+
 @csrf_view_exempt
 @csrf_response_exempt
 @login_required(login_url='/login')
@@ -228,6 +238,7 @@ def associate_datasenders(request):
         project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
         project.save(manager)
     return HttpResponse(reverse(all_datasenders))
+
 
 def _associate_data_senders_to_project(imported_entities, manager, project_id):
     project = Project.load(manager.database, project_id)
@@ -245,25 +256,27 @@ def import_subjects_from_project_wizard(request):
     error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
     if project_id is not None:
         _associate_data_senders_to_project(imported_entities, manager, project_id)
-    return HttpResponse(json.dumps({'success': error_message is None and is_empty(failure_imports), 'message': success_message, 'error_message': error_message,
-                                    'failure_imports': failure_imports}))
+    return HttpResponse(json.dumps(
+            {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+             'error_message': error_message,
+             'failure_imports': failure_imports}))
 
 
 def _make_form_context(questionnaire_form, entity_type):
-    return {'questionnaire_form': questionnaire_form, 'entity': entity_type,}
+    return {'questionnaire_form': questionnaire_form, 'entity': entity_type, }
 
 
 def _get_response(request, questionnaire_form, entity_type):
     return render_to_response('entity/web_questionnaire.html',
-                              _make_form_context(questionnaire_form, entity_type),
-                              context_instance=RequestContext(request))
+        _make_form_context(questionnaire_form, entity_type),
+        context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    QuestionnaireForm = WebQuestionnaireFormCreater(None,form_model=form_model).create()
+    QuestionnaireForm = WebQuestionnaireFormCreater(None, form_model=form_model).create()
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         return _get_response(request, questionnaire_form, entity_type)
@@ -276,9 +289,11 @@ def create_subject(request, entity_type=None):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(create_request(questionnaire_form, request.user.username))
+            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(
+                create_request(questionnaire_form, request.user.username))
             if response.success:
-                success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (response.short_code,)
+                success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
+                response.short_code,)
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
@@ -293,7 +308,7 @@ def create_subject(request, entity_type=None):
         subject_context = _make_form_context(questionnaire_form, entity_type)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
         return render_to_response('entity/web_questionnaire.html', subject_context,
-                                                context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
 
 
 def _get_all_datasenders(manager, projects, user):
@@ -301,7 +316,7 @@ def _get_all_datasenders(manager, projects, user):
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
         org_id = NGOUserProfile.objects.get(user=user).org_id
-        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id = org_id)
+        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
         datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
         association = project_association.get(datasender['short_code'])
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
@@ -324,7 +339,7 @@ def edit_subject_questionnaire(request, entity_type=None):
             {'existing_questions': repr(existing_questions),
              'questionnaire_code': form_model.form_code,
              'entity_type': entity_type},
-             context_instance=RequestContext(request))
+        context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -347,7 +362,7 @@ def save_questionnaire(request):
         json_string = request.POST['question-set']
         question_set = json.loads(json_string)
         try:
-            QuestionnaireBuilder(form_model,manager).update_questionnaire_with_questions(question_set)
+            QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
             form_model.save()
             return HttpResponse(json.dumps({"response": "ok", 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
@@ -365,7 +380,7 @@ def export_subject(request):
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
     fields, labels, codes = import_module.get_entity_type_fields(manager, entity_type)
-    
+
     raw_data = [labels]
     for data in all_data:
         if data['short_code'] in entity_list or len(entity_list) == 0:
