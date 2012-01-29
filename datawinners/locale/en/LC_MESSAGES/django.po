@@ -3069,6 +3069,9 @@ msgstr ""
 msgid "Enter a %(entity_type)s last name"
 msgstr ""
 
+msgid "Enter a %(entity_type)s first name"
+msgstr ""
+
 msgid "What is the %(entity_type)s's first name?"
 msgstr ""
 
@@ -3087,7 +3090,7 @@ msgstr ""
 msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr ""
 
-msgid "Enter the %(entity_type)'s number"
+msgid "Enter the %(entity_type)s's number"
 msgstr ""
 
 msgid "some default value"
@@ -3194,4 +3197,19 @@ msgid "Note, if you don't want to lose your data you can <a href=\"javascript:vo
 msgstr ""
 
 msgid "Do you want to delete this question?"
+msgstr ""
+
+msgid "Upto %s characters"
+msgstr ""
+
+msgid "Minimum %s characters"
+msgstr ""
+
+msgid "Between %s -- %s characters"
+msgstr ""
+
+msgid "Minimum %s"
+msgstr ""
+
+msgid "Upto %s"
 msgstr ""

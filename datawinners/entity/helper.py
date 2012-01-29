@@ -82,10 +82,10 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
                               instruction=_("Enter a %(entity_type)s last name") % {'entity_type':entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
                                label=_("What is the %(entity_type)s's location?") % {'entity_type':entity_name},
-                               language="en", ddtype=location_type, instruction="Enter a region, district, or commune")
+                               language="en", ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
     question4 = GeoCodeField(name=GEO_CODE_FIELD, code=GEO_CODE, label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type':entity_name},
                              language="en", ddtype=geo_code_type,
-                             instruction="Enter lat and long. Eg 20.6, 47.3")
+                             instruction=unicode(_("Enter lat and long. Eg 20.6, 47.3")))
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=MOBILE_NUMBER_FIELD_CODE,
                                      label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type':entity_name},
                                      defaultValue="some default value", language="en", ddtype=mobile_number_type,
@@ -93,7 +93,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
                                      _create_constraints_for_mobile_number()))
     question6 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type':entity_name},
                               defaultValue="some default value", language="en", ddtype=name_type,
-                              instruction="Enter an id, or allow us to generate it",
+                              instruction=unicode(_("Enter an id, or allow us to generate it")),
                               entity_question_flag=True,
                               constraints=[TextLengthConstraint(max=12)], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
