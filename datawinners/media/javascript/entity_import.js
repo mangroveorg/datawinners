@@ -30,7 +30,7 @@ $(document).ready(function(){
             },
             onComplete: function(id, fileName, responseJSON) {
                 $.unblockUI();
-                $('.message').remove();
+                $('#message').remove();
                 $('.error_tbody').html('');
                 $(".error_table").hide();
                 $("#"+form_code+"_table").html('');

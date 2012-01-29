@@ -89,6 +89,7 @@ def tabulate_failures(rows):
         if isinstance(row[1].errors['error'], dict):
             errors = ''
             for key,value in row[1].errors['error'].items():
+                error = errors
                 if key == 'n' or key == 't':
                     code = value.split(' ')[3]
                     errors = errors + _('Answer for question %s is required')% (code, )
@@ -111,7 +112,7 @@ def tabulate_failures(rows):
                         errors = errors + _("Answer %s for question %s is longer than allowed.") % (text, key)
                     else:
                         errors = errors + _(value)
-                if key not in ["n","t","s", "g","m"]:
+                if error == errors :
                     errors = errors + "\n" +_(value)
         else:
             errors = _(row[1].errors['error'])
