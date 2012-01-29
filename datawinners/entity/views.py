@@ -40,6 +40,7 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import \
     WebQuestionnaireFormCreater
 from datawinners.utils import get_excel_sheet, workbook_add_sheet
+from questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 COUNTRY = ',MADAGASCAR'
 
@@ -346,14 +347,13 @@ def save_questionnaire(request):
         json_string = request.POST['question-set']
         question_set = json.loads(json_string)
         try:
-            form_model = update_questionnaire_with_questions(form_model, question_set, manager)
+            QuestionnaireBuilder(form_model,manager).update_questionnaire_with_questions(question_set)
+            form_model.save()
+            return HttpResponse(json.dumps({"response": "ok", 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponseServerError(e.message)
-        else:
-            form_model.save()
-            return HttpResponse(json.dumps({"response": "ok", 'form_code': form_model.form_code}))
 
 
 @login_required(login_url='/login')
