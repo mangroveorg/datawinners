@@ -86,9 +86,7 @@ DW.question.prototype = {
                       return DW.instruction_template.text;
                   }
                   if(this.type()=="telephone_number"){
-                      if (this.max_length()!="" && this.max_length()>0 )
-                          return $.sprintf(DW.instruction_template.max_text, this.max_length());
-                      return DW.instruction_template.text;
+                      return $.sprintf(DW.instruction_template.max_text, "15");
                   }
                   if(this.type()=="list"){
                       return DW.instruction_template.text;
