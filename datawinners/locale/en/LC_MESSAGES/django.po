@@ -3216,3 +3216,13 @@ msgstr ""
 
 msgid "%(entity_type)s registration form edition"
 msgstr ""
+
+msgid "To import a list of Data Senders follow these steps"
+msgstr ""
+
+msgid "Download the template"
+msgstr ""
+
+msgid "Fill out the template with your Data Senders information"
+msgstr ""
+
