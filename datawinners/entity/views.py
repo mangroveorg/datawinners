@@ -205,10 +205,15 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
+        if request.GET["project_id"]:
+            project = Project.load(manager.database, request.GET["project_id"])
+            project.data_senders.extend([id for id in imported_entities.keys()])
+            project.save(manager)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
                  'error_message': error_message,
                  'failure_imports': failure_imports, 'all_data': all_data_senders}))
+
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html',
             {'all_data': all_data_senders, 'projects': projects, 'grant_web_access': grant_web_access, "labels": labels,

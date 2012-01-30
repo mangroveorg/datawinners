@@ -37,8 +37,8 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
-
 {% endblock %}
 
 {% load i18n %}
@@ -56,33 +56,9 @@
                 {% trans "Access to Web Submission has been given to your DataSenders" %}
             </div>
         {% endif %}
-        <div class="import_subject_form">
-            <div id="file-uploader">
-                <noscript>
-                    <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
-                    <!-- or put a simple form for upload here -->
-                </noscript>
-                <h6>{% trans "Upload a CSV or a XL file" %}</h6>
-                <div id="file_uploader" class="float_left"></div><img src="/media/images/help_icon.png" class="help_icon" style="margin-top:6px;">
-                <div class="tooltip"><p>
-                    {% trans "tooltip_datasenders_import" %}
-                </p></div>
-                <div class="clear"></div>
-            </div>
-            <div class="error">{% trans "Use this "%}<a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
-            <div id='error_table'>
-                <table class="styled_table">
-                    <thead>
-                    <th>{% trans "Row Number" %}</th>
-                    <th>{% trans "Row" %}</th>
-                    <th>{% trans "Error" %}</th>
-                    </thead>
-                    <tbody id='error_tbody'>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {% with project=None %}
+            {% include "import-datasenders.html" %}
+        {% endwith %}
         <div id='all_project_block'>
             <ul class="margin_bottom_20" id="all_projects">
             {% for project in projects %}
@@ -120,7 +96,6 @@
         {% if all_data %}
             <h3 class="margin_top_20">{% trans "All Data Senders" %}</h3>
             {% include 'entity/datasenders_table.html' %}
-
         {% endif %}
     </div>
 {% endblock %}

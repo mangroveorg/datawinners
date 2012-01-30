@@ -609,3 +609,6 @@ msgstr "La réponse doit être un mot à %d caractères au maximum"
 
 msgid "New subject type"
 msgstr "Nouveau type de sujet"
+
+msgid "Import a Data Senders list"
+msgstr "Importer une liste d'expéditeurs"

@@ -571,3 +571,6 @@ msgstr ""
 
 msgid "New subject type"
 msgstr ""
+
+msgid "Import a Data Senders list"
+msgstr ""

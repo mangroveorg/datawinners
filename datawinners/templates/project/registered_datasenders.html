@@ -16,11 +16,14 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,9 +31,9 @@
         <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
-        <div class="grid_8 float_right omega text_align_right none">
-            <a href="javascript:void(0)">{% trans "Add a new Data Sender" %}</a> &nbsp;|&nbsp;
-            <a href="javascript:void(0);">{% trans "Import a list" %}</a>
+        <div class="grid_8 float_right omega text_align_right">
+            <a href="{{ project_links.register_datasenders_link }}">{% trans "Add a new Data Sender" %}</a> &nbsp;|&nbsp;
+            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a list" %}</a>
         </div>
         <div class="clear-both"></div>
     </div>
@@ -68,4 +71,7 @@
         </tbody>
     </table>
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
+    <div id="popup-import">
+    {% include "import-datasenders.html" %}
+    </div>
 {% endblock %}

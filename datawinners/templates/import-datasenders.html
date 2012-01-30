@@ -1,0 +1,52 @@
+{% load i18n %}
+        <div class="import_subject_form">
+            {% trans "To import a list of Data Senders follow these steps" %}
+            <ul class="bulleted">
+                <li>{% trans "Download the template" %}</li>
+                <li>{% trans "Fill out the template with your Data Senders information" %}</li>
+                <li>{% trans "Save the template on your computer" %}</li>
+                <li>{% trans "Click the gold Upload a file button and select the saved template" %}</li>
+            </ul>
+            <div id="file-uploader" style="float: left;width: 159px;">
+                <noscript>
+                    <p>{% trans "Please enable JavaScript to use file uploader." %}</p>
+                    <!-- or put a simple form for upload here -->
+                </noscript>
+                <div id="file_uploader" class="float_left"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="error" style="margin-top: 18px;">{% trans "Use this "%}<a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
+            <div class="clear"></div>
+            {% if project %}
+             <br/>
+             <table class="styled_table">
+                <thead>
+                    <tr>
+                    {% for title in labels %}
+                        <th>{{ title }}</th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody id="imported_table">
+                </tbody>
+            </table>
+            {% endif %}
+
+            <div id='error_table'>
+                <table class="styled_table">
+                    <thead>
+                    <th>{% trans "Row Number" %}</th>
+                    <th>{% trans "Row" %}</th>
+                    <th>{% trans "Error" %}</th>
+                    </thead>
+                    <tbody id='error_tbody'>
+
+                    </tbody>
+                </table>
+            </div>
+            {% if project %}
+            <div style="display: inline;float:right;">
+                <a href="javascript:void(0);" class="button close_import_dialog">{% trans "Close" %}</a>
+            </div>
+            {% endif %}
+        </div>
