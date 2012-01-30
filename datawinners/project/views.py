@@ -789,7 +789,7 @@ def subject_registration_form_preview(request, project_id=None):
     project = Project.load(manager.database, project_id)
     if request.method == "GET":
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
-                                                                                              project)
+                                                                                              project,project.entity_type)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
