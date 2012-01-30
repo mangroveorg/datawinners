@@ -145,45 +145,57 @@ fieldset {
 .help label {
   float: left !important; }
 
+#project_profile ul ul {
+  margin: 0; }
+
+.report_type {
+  position: relative;
+  margin: 0 !important;
+  overflow: visible; }
+  .report_type ul {
+    padding: 0 !important; }
+    .report_type ul li {
+      margin-bottom: 18px !important; }
+  .report_type .black_italic {
+    font-size: 11px; }
+
 .individual_report {
   position: absolute;
-  top: 500px;
-  left: 280px; }
+  top: 75px;
+  left: 288px;
+  margin: 0 !important; }
 
 .summary_report {
   position: absolute;
-  top: 457px;
-  left: 155px; }
+  top: 32px;
+  left: 160px;
+  margin: 0 !important; }
 
 .subject_tooltip_img {
   position: absolute;
-  left: 230px;
-  top: 545px; }
+  left: 228px;
+  top: 120px;
+  margin: 0 !important; }
 
 .summary_report_example {
   position: absolute;
-  top: 473px;
+  top: 50px;
   left: 20px; }
 
 .individual_report_example {
   position: absolute;
-  top: 515px;
+  top: 92px;
   left: 20px; }
 
 #report_type_fr .summary_report {
-  left: 203px !important;
-  top: 476px; }
+  left: 209px !important;
+  top: 32px; }
 #report_type_fr .individual_report {
-  left: 320px !important;
-  top: 521px !important; }
+  left: 330px !important;
+  top: 75px !important; }
 #report_type_fr .subject_tooltip_img {
-  top: 566px !important; }
+  top: 120px !important; }
 #report_type_fr .summary_report_example {
-  top: 493px !important; }
+  top: 48px !important; }
 #report_type_fr .individual_report_example {
-  top: 535px !important; }
-
-.report_type ul li {
-  margin-bottom: 18px !important; }
-.report_type .black_italic {
-  font-size: 11px; }
+  top: 92px !important; }

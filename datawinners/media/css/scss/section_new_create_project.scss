@@ -191,65 +191,78 @@ padding-left: 20px;
     }
 }
 
-.individual_report{
-    position: absolute;
-    top:500px;
-    left:280px;
-}
-
-.summary_report{
-    position: absolute;
-    top:457px;
-    left:155px;
-}
-
-.subject_tooltip_img{
-    position: absolute;
-    left:230px;
-    top: 545px;
-}
-
-
-.summary_report_example{
-    position: absolute;
-    top: 473px;
-    left: 20px;
-}
-
-.individual_report_example{
-    position: absolute;
-    top: 515px;
-    left: 20px;
-}
-
-
-#report_type_fr{
-    .summary_report{
-        left: 203px !important;
-        top:476px;
-    }
-    .individual_report{
-        left: 320px !important;
-        top:521px !important;
-    }
-    .subject_tooltip_img{
-        top: 566px !important;
-    }
-    .summary_report_example{
-        top: 493px !important;
-    }
-    .individual_report_example{
-        top: 535px !important;
+#project_profile {
+    ul {
+        ul {
+            margin: 0;
+        }
     }
 }
 
 .report_type{
+    position: relative;
+    margin: 0 !important;
+    overflow: visible;
     ul{
+        padding: 0 !important;
         li{
             margin-bottom: 18px !important;
         }
     }
     .black_italic{
         font-size: 11px;
+    }
+}
+
+.individual_report{
+    position: absolute;
+    top: 75px;
+    left: 288px;
+    margin: 0 !important;
+}
+
+.summary_report{
+    position: absolute;
+    top: 32px;
+    left:160px;
+    margin: 0 !important;
+}
+
+.subject_tooltip_img{
+    position: absolute;
+    left:228px;
+    top: 120px;
+    margin: 0 !important;
+}
+
+.summary_report_example{
+    position: absolute;
+    top: 50px;
+    left: 20px;
+}
+
+.individual_report_example{
+    position: absolute;
+    top: 92px;
+    left: 20px;
+}
+
+#report_type_fr{
+    .summary_report{
+        left: 209px !important;
+        top: 32px;
+    }
+    .individual_report{
+        left: 330px !important;
+        top: 75px !important;
+    }
+    .subject_tooltip_img{
+        top: 120px !important;
+    }
+    .summary_report_example{
+        top: 48px !important;
+    }
+    .individual_report_example{
+        top: 92px !important;
     }
 }

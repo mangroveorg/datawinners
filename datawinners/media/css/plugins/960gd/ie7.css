@@ -125,49 +125,6 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
     margin-left: 0px !important;
 }
 
-#project_profile > ul > li > .summary_report{
-    margin-top:-10em;
-}
-
-#project_profile > ul > li > .individual_report{
-    margin-top:-7.3em;
-    margin-left:115px;
-}
-
-.summary_report{
-    margin-top:-85px !important;
-    margin-left:-70px;
-}
-
-.summary_report_tooltip{
-    left:310px !important;
-    top:930px !important;
-}
-
-.individual_report{
-    margin-top:-50px !important;
-    margin-left:60px !important;
-}
-
-.individual_report_tooltip{
-    left:440px !important;
-    top:967px !important;
-}
-
-.subject_tooltip_img{
-    margin-left:-75px;
-    margin-top: -10px;
-}
-
-.subject_tooltip_img_main{
-    margin-left:0px !important;
-    margin-top: -10px;
-}
-
-.subject_tooltip{
-    margin-left: -0px;
-    margin-top: -50px;
-}
 #questionnaire_preview li{
     width:500px;
 }
@@ -183,4 +140,8 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 
 #choice_text{
     width:250px !important;
+}
+
+.report_type #id_entity_type {
+    margin-left: 20px;
 }

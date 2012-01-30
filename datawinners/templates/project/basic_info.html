@@ -43,8 +43,9 @@
     <li id="report_type_{% trans "en" %}" class="report_type">
         <div class="help">
             {{ form.activity_report.label_tag }}
+            <div class="clear-both"></div>
         </div>
-        <div class="clear-both"></div>
+
         {{ form.activity_report }}
         {{ form.entity_type }}
         <img src='/media/images/help_icon.png' class='help_icon summary_report' /><div class='tooltip bottom summary_report_tooltip'><p>{% trans 'tooltip_summary_report' %}</p></div>
