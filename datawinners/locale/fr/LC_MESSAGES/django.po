@@ -3025,7 +3025,7 @@ msgid "Example: Program Director"
 msgstr "Exemple: Directeur de programme"
 
 msgid "phone_number_example"
-msgstr "Entrez le numéro avec le code pays et numéro de téléphone. Exemple:261333745269"
+msgstr "Entrez le code pays et le  numéro de téléphone. Exemple:261333745269"
 
 msgid "Example: Minimum	of 6 characters in length"
 msgstr "Exemple: Au minimum 6 caratères"
@@ -3132,7 +3132,7 @@ msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr "Quel est le numéro d'identification unique du/de la %(entity_type)s ?"
 
 msgid "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269"
-msgstr "Entrez %(entity_type)s's le numéro avec le code pays et numéro de téléphone. Exemple: 261333745269"
+msgstr "Entrez le numéro du %(entity_type) avec le code pays et numéro de téléphone. Exemple: 261333745269"
 
 msgid "some default value"
 msgstr ""
