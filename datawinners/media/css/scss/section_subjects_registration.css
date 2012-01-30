@@ -1,27 +1,30 @@
 #questionnaire {
   clear: left; }
-  #questionnaire .questionnaire_code label {
-    font-weight: normal; }
-  #questionnaire .questionnaire_code input {
-    width: 90px;
-    height: 25px;
-    border-color: #CCCCCC; }
-  #questionnaire .questionnaire_code h5 {
-    margin-bottom: 10px; }
-  #questionnaire .questionnaire_code li > label {
-    display: inline;
-    margin-left: 30px;
-    margin-right: -30px; }
+  #questionnaire fieldset {
+    border: none !important; }
+  #questionnaire .questionnaire_code {
+    padding: 0 !important; }
+    #questionnaire .questionnaire_code label {
+      font-weight: normal; }
+    #questionnaire .questionnaire_code input {
+      width: 90px;
+      height: 25px;
+      border-color: #CCCCCC; }
+    #questionnaire .questionnaire_code h5 {
+      margin-bottom: 10px; }
+    #questionnaire .questionnaire_code li > label {
+      display: inline;
+      margin-left: 30px;
+      margin-right: -30px; }
   #questionnaire .questionnare_content {
     min-height: 500px;
     margin: 20px 0;
-    padding-right: 17px;
     border: 1px solid #CCBF97 !important;
     width: 860px !important;
     background: #F0F0F0; }
     #questionnaire .questionnare_content #question-detail-panel {
       padding-left: 20px;
-      margin: 20px 0;
+      margin: 20px 0 !important;
       width: 525px;
       float: left;
       min-height: 720px;
@@ -34,88 +37,33 @@
         width: 500px; }
       #questionnaire .questionnare_content #question-detail-panel #code {
         width: 100px; }
-      #questionnaire .questionnare_content #question-detail-panel ul li label {
-        font-size: 16px;
-        float: none; }
-      #questionnaire .questionnare_content #question-detail-panel ul li label.error {
-        font-size: 14px;
-        font-weight: normal;
-        width: auto;
-        margin-left: 10px; }
-      #questionnaire .questionnare_content #question-detail-panel .question {
-        width: 1200px; }
-      #questionnaire .questionnare_content #question-detail-panel .add_link {
-        display: block; }
-      #questionnaire .questionnare_content #question-detail-panel .question_type {
-        padding-top: 14px;
-        border-top: 1px solid #ccc; }
-      #questionnaire .questionnare_content #question-detail-panel .alpha_list {
-        margin-left: 30px; }
-        #questionnaire .questionnare_content #question-detail-panel .alpha_list input {
-          width: 300px;
+      #questionnaire .questionnare_content #question-detail-panel ul {
+        padding: 0 !important; }
+        #questionnaire .questionnare_content #question-detail-panel ul li label {
+          font-size: 16px;
           float: none; }
-        #questionnaire .questionnare_content #question-detail-panel .alpha_list .error_arrow {
-          float: none !important;
-          background-position: 0px 3px !important; }
-      #questionnaire .questionnare_content #question-detail-panel #char-count {
-        border-top: 1px solid #ccc;
-        paddin-top: 40px; }
+        #questionnaire .questionnare_content #question-detail-panel ul li label.error {
+          font-size: 14px;
+          font-weight: normal;
+          width: auto;
+          margin-left: 10px; }
+      #questionnaire .questionnare_content #question-detail-panel .question {
+        width: 525px !important; }
+      #questionnaire .questionnare_content #question-detail-panel .alpha_list input {
+        width: 300px; }
     #questionnaire .questionnare_content #questions-panel {
       background: none repeat scroll 0 0 #F0F0F0 !important;
       padding: 20px 0 0 0px;
       min-height: 760px;
       margin-right: 0px !important;
-      width: auto; }
+      width: 300px; }
       #questionnaire .questionnare_content #questions-panel h4 {
         padding-left: 30px;
         border-bottom: 1px solid #B5B5B5;
         width: 270px; }
-      #questionnaire .questionnare_content #questions-panel a {
-        color: #0070ac; }
       #questionnaire .questionnare_content #questions-panel .add_question {
         font-size: 14px;
         margin: 30px 0 0 40px;
         font-weight: normal; }
-      #questionnaire .questionnare_content #questions-panel .question_list ul li {
-        margin: 15px 0; }
-      #questionnaire .questionnare_content #questions-panel .question_list ul > div {
-        padding: 2px 50px 0 50px;
-        border-bottom: 1px solid #B5B5B5;
-        width: 200px;
-        cursor: pointer; }
-        #questionnaire .questionnare_content #questions-panel .question_list ul > div.question_selected {
-          background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
-          position: relative; }
-        #questionnaire .questionnare_content #questions-panel .question_list ul > div span.selected_question_arrow {
-          display: none;
-          position: absolute;
-          top: 32%;
-          left: 269px;
-          padding: 16px;
-          background: url("/media/images/questions_hover_arrow.png") no-repeat top right; }
-        #questionnaire .questionnare_content #questions-panel .question_list ul > div a {
-          color: #000000;
-          font-size: 16px; }
-      #questionnaire .questionnare_content #questions-panel .question_list ol li {
-        margin-bottom: 10px; }
-      #questionnaire .questionnare_content #questions-panel .question_list ol > div {
-        padding: 10px 30px 0 30px;
-        border-bottom: 1px solid #B5B5B5;
-        width: 240px;
-        cursor: pointer; }
-        #questionnaire .questionnare_content #questions-panel .question_list ol > div.question_selected {
-          background: #d8e4ec url("/media/images/question_hover_bg.gif") repeat-x bottom left;
-          position: relative; }
-        #questionnaire .questionnare_content #questions-panel .question_list ol > div span.selected_question_arrow {
-          display: none;
-          position: absolute;
-          top: 32%;
-          left: 269px;
-          padding: 16px;
-          background: url("/media/images/questions_hover_arrow.png") no-repeat top right; }
-        #questionnaire .questionnare_content #questions-panel .question_list ol > div a {
-          color: #000000;
-          font-size: 16px; }
-      #questionnaire .questionnare_content #questions-panel .question_list .delete a {
-        color: #0070AC;
-        font-size: 12px; }
+        #questionnaire .questionnare_content #questions-panel .add_question .add-link {
+          background: #f0f0f0 url("/media/images/icons.png") no-repeat scroll left top !important; }

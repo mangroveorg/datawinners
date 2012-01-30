@@ -23,8 +23,8 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
-    <link href="/media/css/scss/section_subjects_registration.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
+    <link href="/media/css/scss/section_subjects_registration.scss" rel="stylesheet"/>
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
@@ -56,16 +56,14 @@
         <div class="question_list">
              <ol>
              {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <div data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
-                 <li>
-                    <a href="questionnaire.html#" data-bind="text: question.display"></a>
-                     <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                         <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestionCheck(question); } else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
-                    </div>
-                 </li>
+             <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
+                 <a href="questionnaire.html#" data-bind="text: question.display"></a>
+                 <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
+                     <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestionCheck(question); } else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                 </div>
                  <span class="selected_question_arrow"
                               data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
-             </div>
+             </li>
              {% templatetag openvariable %}/each{% templatetag closevariable %}
              </ol>
         </div>
