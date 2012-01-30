@@ -92,7 +92,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=MOBILE_NUMBER_FIELD_CODE,
                                      label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type':entity_name},
                                      defaultValue="some default value", language="en", ddtype=mobile_number_type,
-                                     instruction=_("Enter the %(entity_type)s's number") % {'entity_type':entity_name}, constraints=(
+                                     instruction=_("Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269") % {'entity_type':entity_name}, constraints=(
                                      _create_constraints_for_mobile_number()))
     question6 = TextField(name=SHORT_CODE_FIELD, code=SHORT_CODE, label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type':entity_name},
                               defaultValue="some default value", language="en", ddtype=name_type,
