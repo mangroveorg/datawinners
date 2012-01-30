@@ -2076,13 +2076,13 @@ msgid "%s already registered as a subject type. Please select %s from the drop d
 msgstr "%s existe déja type de sujet. Veuillez choiir %s dans la liste déroulante."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
-msgstr "L'ntité avec le numéro d'identification unique (ID) =% s existe déjà."
+msgstr "L'entité avec le numéro d'identification unique (ID) =% s existe déjà."
 
 msgid "answer"
 msgstr "réponse"
 
 msgid "Answer for question %s is required"
-msgstr "Réponse pour %s la question est obligatoire"
+msgstr "Réponse pour la question %s est obligatoire"
 
 msgid "The answer %s must be between %s and %s"
 msgstr "La réponse %s doit être comprise entre %s et %s"
@@ -2227,7 +2227,7 @@ msgid "Optional"
 msgstr "facultatif"
 
 msgid "Answer %s for question %s is longer than allowed."
-msgstr "La réponse à la question %s %s dépasse la longueur autorisée."
+msgstr "La réponse %s à la question %s dépasse la longueur autorisée."
 
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."

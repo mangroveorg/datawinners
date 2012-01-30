@@ -205,7 +205,7 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
-        if request.GET["project_id"]:
+        if request.GET["project_id"] != '0':
             project = Project.load(manager.database, request.GET["project_id"])
             project.data_senders.extend([id for id in imported_entities.keys()])
             project.save(manager)
