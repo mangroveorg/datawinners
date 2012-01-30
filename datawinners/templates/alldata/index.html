@@ -38,7 +38,9 @@
                         <a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
                             |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
                             |<a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Web Submissions" %}</a>
-                            |<a href="{{ project.create_subjects_link}}">{% trans "Create Subjects" %}</a></span></td>
+                            |{%if project.create_subjects_link%}
+                                <a href="{{ project.create_subjects_link}}">{{ project.create_subjects_link_name }}</a>
+                             {% endif %} </span></td>
                 </tr>
             {% endfor %}
         </table>

@@ -45,11 +45,15 @@ def index(request):
         web_submission_link_disabled = 'disable_link'
         if 'web' in row['value']['devices']:
             web_submission_link_disabled = ""
-        create_subjects_link = reverse('subject_questionnaire',args=[project_id])
+        create_subjects_link = ''
+        create_subjects_link_name = ''
+        if 'no' in row['value']['activity_report']:
+            create_subjects_link = reverse('subject_questionnaire',args=[project_id])
+            create_subjects_link_name = 'Create ' + project.entity_type
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link,
                        web_submission_link_disabled=web_submission_link_disabled, create_subjects_link=create_subjects_link,
-                       create_subjects_link_disabled=web_submission_link_disabled)
+                       create_subjects_link_name=create_subjects_link_name)
         project_list.append(project)
     return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class},
                               context_instance=RequestContext(request))
