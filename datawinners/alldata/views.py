@@ -45,10 +45,11 @@ def index(request):
         web_submission_link_disabled = 'disable_link'
         if 'web' in row['value']['devices']:
             web_submission_link_disabled = ""
-
+        create_subjects_link = reverse('subject_questionnaire',args=[project_id])
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link,
-                       web_submission_link_disabled=web_submission_link_disabled)
+                       web_submission_link_disabled=web_submission_link_disabled, create_subjects_link=create_subjects_link,
+                       create_subjects_link_disabled=web_submission_link_disabled)
         project_list.append(project)
     return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class},
                               context_instance=RequestContext(request))
@@ -61,4 +62,3 @@ def failed_submissions(request):
     org_logs = [log for log in logs if log.organization == organization]
     return render_to_response('alldata/failed_submissions.html', {'logs': org_logs},
                               context_instance=RequestContext(request))
-
