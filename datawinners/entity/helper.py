@@ -25,7 +25,7 @@ from datawinners.location.LocationTree import get_location_tree
 from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
-from location.LocationTree import get_location_hierarchy
+from datawinners.location.LocationTree import get_location_hierarchy
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"

@@ -16,9 +16,9 @@ SAME_MONTH = "Same month"
 FOLLOWING_MONTH = "Following month"
 EXAMPLE_TEXT = "example_text"
 MESSAGE = "message"
-ON_DEADLINE = "on_deadline"
-BEFORE_DEADLINE = "before_deadline"
-AFTER_DEADLINE = "after_deadline"
+ON_DEADLINE = u"on_deadline"
+BEFORE_DEADLINE = u"before_deadline"
+AFTER_DEADLINE = u"after_deadline"
 REMINDER_DEADLINE = "reminder_mode"
 REMINDERS = "reminders"
 WHOM_TO_SEND = "whom_to_send"
@@ -56,17 +56,17 @@ DEADLINE_ELEVENTH_DAY_OF_FOLLOWING_MONTH = {DEADLINE: {FREQUENCY: MONTH, DAY: MO
 REMINDER_DATA_WEEKLY = {PROJECT_NAME: "clinic13 test project",
                         DEADLINE: {FREQUENCY: WEEK, DAY: WEEK_DAY[7], TYPE: SAME_WEEK,
                                     EXAMPLE_TEXT: "Example: Sunday of the reporting week"},
-                         REMINDERS: {DAY:"1", MESSAGE: u"One day remaining, please submit the data", REMINDER_DEADLINE: BEFORE_DEADLINE},
+                         REMINDERS: {DAY:1, MESSAGE: u"One day remaining, please submit the data", REMINDER_DEADLINE: BEFORE_DEADLINE},
                          WHOM_TO_SEND: ALL}
 
 REMINDER_DATA_MONTHLY = {PROJECT_NAME: "clinic13 test project",
                          DEADLINE: {FREQUENCY: MONTH, DAY: MONTH_DAY[31], TYPE: FOLLOWING_MONTH,
                                     EXAMPLE_TEXT: "Example: Last Day of October for September report"},
-                         REMINDERS: [{DAY: "10", MESSAGE:u"10 days remaining, please submit the data",
+                         REMINDERS: [{DAY: 10, MESSAGE:u"10 days remaining, please submit the data",
                                       REMINDER_DEADLINE: BEFORE_DEADLINE},
-                                 {DAY: "0", MESSAGE: u"Today is the deadline, please submit the data",
+                                 {DAY: 0, MESSAGE: u"Today is the deadline, please submit the data",
                                   REMINDER_DEADLINE: ON_DEADLINE},
-                                 {DAY: "5", MESSAGE: u"5 days overdue, please submit the data",
+                                 {DAY: 5, MESSAGE: u"5 days overdue, please submit the data",
                                   REMINDER_DEADLINE: AFTER_DEADLINE}],
                          WHOM_TO_SEND: DEFAULTERS}
 
