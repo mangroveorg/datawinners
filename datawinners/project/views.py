@@ -763,10 +763,8 @@ def _get_preview_for_field_in_registration_questionnaire(field):
 
 def _get_registration_form(manager, project, type_of_subject='reporter'):
     if type_of_subject == 'reporter':
-        type_of_subject = 'Data sender'
         registration_questionnaire = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     else:
-        type_of_subject = project.entity_type
         entity_type = [project.entity_type]
         registration_questionnaire = get_form_model_by_entity_type(manager, entity_type)
         if registration_questionnaire is None:
@@ -776,8 +774,6 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     questions = []
     for field in fields:
         question = _get_preview_for_field_in_registration_questionnaire(field)
-        #question['description'] = question['description'].replace('subject', type_of_subject)
-        #question['instruction'] = question['instruction'].replace('subject', type_of_subject)
         questions.append(question)
     return fields, project_links, questions, registration_questionnaire
 
