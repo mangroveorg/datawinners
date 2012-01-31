@@ -11,6 +11,7 @@ from datawinners.project.views import project_overview, project_data, project_re
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
+from datawinners.entity.views import create_subject
 
 def _get_all_project_for_user(user):
     if user.get_profile().reporter:
@@ -48,7 +49,7 @@ def index(request):
         create_subjects_link = ''
         create_subjects_link_name = ''
         if 'no' in row['value']['activity_report']:
-            create_subjects_link = reverse('subject_questionnaire',args=[project_id])
+            create_subjects_link = reverse(create_subject,args=[project.entity_type])
             create_subjects_link_name = 'Create ' + project.entity_type
         project = dict(name=row['value']['name'], created=row['value']['created'], type=row['value']['project_type'],
                        link=link, log=log, analysis=analysis, disabled=disabled, web_submission_link=web_submission_link,
