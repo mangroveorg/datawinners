@@ -602,7 +602,7 @@ def registered_datasenders(request, project_id=None):
     labels = [label.replace('subject', 'Data Sender') for label in labels]
     return render_to_response('project/registered_datasenders.html',
             {'project': project, 'project_links': project_links, 'all_data': (
-            helper.get_project_data_senders(manager, project)), "labels": labels},
+            helper.get_project_data_senders(manager, project)), "labels": labels, 'current_language': translation.get_language()},
                               context_instance=RequestContext(request))
 
 
