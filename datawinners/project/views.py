@@ -472,14 +472,23 @@ def sent_reminders(request, project_id):
                  'create_reminder_link' : reverse(create_reminder, args=[project_id])},
                                   context_instance=RequestContext(request))
 
+
+def _get_data_senders(dbm, form, project):
+    data_senders=[]
+    if form.cleaned_data['to'] == "All":
+        data_senders = _get_all_data_senders(dbm)
+    elif form.cleaned_data['to'] == "Associated":
+        data_senders = project.get_data_senders(dbm)
+    return data_senders
+
+
 @login_required(login_url='/login')
 @is_datasender
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
-    profile = NGOUserProfile.objects.get(user = request.user)
-    organization = Organization.objects.get(org_id = profile.org_id)
+    organization = utils.get_organization(request)
     if request.method == 'GET':
         form = BroadcastMessageForm()
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
@@ -490,18 +499,12 @@ def broadcast_message(request, project_id):
     if request.method == 'POST':
         form = BroadcastMessageForm(request.POST)
         if form.is_valid():
-            data_senders = []
-            if form.cleaned_data['to'] == "All":
-                data_senders,fields, labels = load_all_subjects_of_type(dbm)
-            elif form.cleaned_data['to'] == "Associated":
-                data_senders = project.get_data_senders(dbm)
-            profile = NGOUserProfile.objects.get(user = request.user)
-            organization = Organization.objects.get(org_id = profile.org_id)
+            data_senders = _get_data_senders(dbm, form, project)
             organization_setting = OrganizationSetting.objects.get(organization = organization)
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.sms_tel_number, other_numbers, message_tracker)
+            helper.broadcast_message(data_senders, form.cleaned_data['text'], organization_setting.get_organisation_sms_number(), other_numbers, message_tracker)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
@@ -514,6 +517,10 @@ def broadcast_message(request, project_id):
                      "project_links": _make_project_links(project, questionnaire.form_code), "form": form,
                      'success': False},
                                       context_instance=RequestContext(request))
+
+def _get_all_data_senders(dbm):
+    data_senders,fields, labels = load_all_subjects_of_type(dbm)
+    return [dict(zip(fields,data["cols"])) for data in data_senders]
 
 @login_required(login_url='/login')
 @is_datasender
