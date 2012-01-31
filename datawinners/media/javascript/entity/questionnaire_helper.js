@@ -24,6 +24,7 @@ DW.date_template = {
 };
 DW.question = function(question) {
     var defaults = {
+        name : "Question",
         code : "code",
         required:true,
         type : "text",
@@ -59,7 +60,6 @@ DW.question = function(question) {
 DW.question.prototype = {
     _init : function() {
         var q = this.options;
-        this.name = ko.observable(q.name);
         this.loaded = ko.observable(q.loaded);
         this.range_min = ko.observable(q.range.min);
         this.event_time_field_flag = ko.observable(q.event_time_field_flag);
@@ -69,7 +69,12 @@ DW.question.prototype = {
 
         this.min_length = ko.observable(q.length.min);
         this.max_length = ko.observable(q.length.max);
-        this.title = ko.observable(q.label.en);
+        if($('#qtype') != undefined) {
+            this.name = ko.observable(q.name);
+            this.title = ko.observable(q.label.en);
+        } else {
+            this.title = ko.observable(q.name);
+        }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.required = ko.observable(q.required);
@@ -120,7 +125,11 @@ DW.question.prototype = {
             owner:this
     });
     this.canBeDeleted = function() {
-        return (!this.is_entity_question() && this.name() != 'name');
+        if($('#qtype') != undefined) {
+            return (!this.is_entity_question() && this.name() != 'name');
+        } else {
+            return (!this.is_entity_question());
+        }
     };
     this.isenabled = function(){
       return !this.loaded();
@@ -145,3 +154,12 @@ DW.generateQuestionCode = function() {
     return code;
 };
 
+DW.change_question_title_for_reporting_period = function(replaceto,replacewith){
+    $(viewModel.questions()).each(function (question) {
+        if (viewModel.selectedQuestion().event_time_field_flag()) {
+            var question_title = viewModel.selectedQuestion().title();
+            viewModel.selectedQuestion().title(question_title.replace(replaceto,replacewith));
+        }
+      });
+    viewModel.questions.valueHasMutated();
+};
