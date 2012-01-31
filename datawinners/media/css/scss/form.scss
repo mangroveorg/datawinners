@@ -271,10 +271,13 @@ select{
     color: #0070AC !important;
     font-family: "Arial";
     font-weight: bold;
-    padding: 6px 23px 5px 22px;
+    font-size: 11px !important;
+    padding: 5px;
     cursor:pointer;
     cursor:hand;
     height: 29px;
+    width: 180px;
+    vertical-align: middle;
 }
 
 .button_wizard_back{
@@ -282,7 +285,7 @@ select{
     background: #ffffff !important;
     color: #0070AC !important;
     font-family: 'Helvetica',Arial,'Liberation Sans',FreeSans,sans-serif;
-    font-size: 13px;
+    font-size: 11px !important;
     padding: 6px 0;
     text-align: left;
     cursor:pointer;
@@ -296,9 +299,11 @@ select{
     background: url("/media/images/button_wizard_next.png") no-repeat top left;
     color: #6F451D !important;
     font-family: "Arial";
+    font-size: 11px !important;
     font-weight: bold;
     cursor:pointer;
     cursor:hand;
+    vertical-align: middle;
 }
 
 .button_wizard_next_small{
@@ -308,6 +313,7 @@ select{
     background: url("/media/images/button_wizard_next_small.png") no-repeat top left;
     color: #6F451D !important;
     font-family: "Arial";
+    font-size: 11px !important;
     font-weight: bold;
     cursor:pointer;
     cursor:hand;
@@ -326,6 +332,12 @@ select{
     padding: 4px 15px 4px 15px;
     cursor:pointer;
     cursor:hand;
+}
+
+.cancel_project {
+    line-height: 29px;
+    text-decoration: none !important;
+    margin: 0 10px;
 }
 
 #type_message{
