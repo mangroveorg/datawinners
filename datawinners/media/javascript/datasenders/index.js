@@ -146,6 +146,9 @@ $(document).ready(function() {
                             var error_message = gettext('User with email ') + email_in_error + gettext(' already exists');
                             html += "<tr><td>" + error_message + "</td></tr>";
                         }
+                        if (html != "") {
+                            html = '<table cellpadding="0" cellspacing="0" border="0">' + html + '</table>';
+                        }
                         $('#web_user_error').html(html);
                         $('#web_user_error').show();
                     }
