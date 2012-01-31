@@ -75,7 +75,7 @@
                             <span class="bold">{% trans "upgrade project note" %}</span>
                         </li>
                         <li>
-                            <input type="checkbox" id="agree-terms" value="1"/>{% trans "agree-terms" %}
+                            <input type="checkbox" id="agree-terms" value="1" {% ifequal messages.request.method 'POST' %}checked="checked"{% endifequal %}/>{% trans "agree-terms" %}
                         </li>
 
                         <li class="margin_top_20">
@@ -91,10 +91,12 @@
     </div>
 
     <div id='user_should_agree_terms_block'>
-        {% trans "You have to agree terms and conditions before using DataWinners" %}
+        {% trans "To sign up for a DataWinners account, you need to agree to our Terms and Conditions" %}
         <br/>
-        <br/>
-        <a href="#" class="button agree_link">{% trans "Agree" %}</a>
+        <div style="display: inline;float:right;">
+            <a href="javascript:void(0);" id="cancel-agree-terms" class="cancel_link">{% trans "Cancel" %}</a>
+            <a href="#" class="button agree_link">{% trans "I Agree" %}</a>
+        </div>
     </div>
     <div id="content_of_terms_and_conditions">
 
