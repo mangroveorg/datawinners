@@ -1,15 +1,14 @@
 DW.change_description = function(){
-    $(viewModel.questions()).each(function (question) {
+    $(questionnaireViewModel.questions()).each(function (question) {
         var question_title = this.title();
         if (this.is_entity_question()) {
             var subject_name = gettext("subject");
             this.title(question_title.replace(subject_name, $('#id_entity_type').val()));
         }
       });
-    viewModel.questions.valueHasMutated();
+    questionnaireViewModel.questions.valueHasMutated();
 }
 
-//TODO For heaven's sake this needs to be named properly and we need to see if we can push logic from this to objects.
 DW.continue_flip = function(){
     DW.subject_warning_dialog_module.enable_or_disable_entity_type_control();
     if (DW.subject_warning_dialog_module.is_subject_selected()) {

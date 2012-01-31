@@ -39,9 +39,9 @@
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/html" id="choice-template">
         <li>
-                <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName: true, enable: viewModel.isEnabled()"/>
+                <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName: true, enable: questionnaireViewModel.isEnabled()"/>
                 <a href="questionnaire.html#" class='delete delete_link'
-                   data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
+                   data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template_new">
@@ -49,10 +49,10 @@
             <ol>
 
             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                 <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); } ">
+                 <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); } ">
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
                      <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
-                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestion(question);} else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
+                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion(question);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
                     </div>
                  </li>
             {% templatetag openvariable %}/each{% templatetag closevariable %}
@@ -97,7 +97,7 @@
                         <div data-bind="template: 'question-list-template_new'" ></div>
                         <div class="add_question">
                             <a class="add_link" href="questionnaire.html#"
-                               data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion();}">
+                               data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion();}">
                                 {% trans "Add another Question" %}</a>
                         </div>
                     </div>
