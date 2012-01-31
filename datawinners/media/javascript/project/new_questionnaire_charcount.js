@@ -6,8 +6,8 @@ DW.charCount = function() {
     var sms_number = 1;
     var sms_number_text = "";
     var i = 0;
-    for (i; i < viewModel.questions().length; i=i+1) {
-        var current_question = viewModel.questions()[i];
+    for (i; i < questionnaireViewModel.questions().length; i=i+1) {
+        var current_question = questionnaireViewModel.questions()[i];
         var question_type = current_question.type();
         switch (question_type) {
             case 'integer':

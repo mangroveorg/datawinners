@@ -56,13 +56,13 @@
         <div class="question_list">
              <ol>
              {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
+             <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
                  <a href="questionnaire.html#" data-bind="text: question.display"></a>
                  <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                     <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestionCheck(question); } else {viewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                     <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestionCheck(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
                  </div>
                  <span class="selected_question_arrow"
-                              data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
+                              data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
              </li>
              {% templatetag openvariable %}/each{% templatetag closevariable %}
              </ol>

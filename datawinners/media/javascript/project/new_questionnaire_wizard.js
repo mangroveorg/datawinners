@@ -120,18 +120,18 @@ $(document).ready(function() {
     });
 
     $("#question_title").blur(function(){
-        if (viewModel.selectedQuestion().event_time_field_flag()){
+        if (questionnaireViewModel.selectedQuestion().event_time_field_flag()){
             $("#edit_question").dialog("open");
         }
     });
     $("#yes_button").bind("click", function(){
         activity_report_question = $('#question_title').val();
-        viewModel.selectedQuestion().title($('#question_title').val());
+        questionnaireViewModel.selectedQuestion().title($('#question_title').val());
         $("#edit_question").dialog("close");
         return true;
     });
     $("#no_link").bind("click", function(){
-        viewModel.selectedQuestion().title(activity_report_question);
+        questionnaireViewModel.selectedQuestion().title(activity_report_question);
         $("#question_title").val(activity_report_question);
         $("#edit_question").dialog("close");
         return false;
@@ -143,12 +143,12 @@ $(document).ready(function() {
 
     $('input[name=type]:radio').change(
             function() {
-                viewModel.selectedQuestion().range_min("");
-                viewModel.selectedQuestion().range_max("");
-                viewModel.selectedQuestion().min_length(1);
-                viewModel.selectedQuestion().max_length("");
-                viewModel.selectedQuestion().length_limiter("length_unlimited");
-                viewModel.selectedQuestion().choices([
+                questionnaireViewModel.selectedQuestion().range_min("");
+                questionnaireViewModel.selectedQuestion().range_max("");
+                questionnaireViewModel.selectedQuestion().min_length(1);
+                questionnaireViewModel.selectedQuestion().max_length("");
+                questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
+                questionnaireViewModel.selectedQuestion().choices([
                     {text:gettext("default"), val:'a'}
                 ]);
                 $('.error_arrow').remove();
@@ -157,7 +157,7 @@ $(document).ready(function() {
     );
     $('input[name=text_length]:radio').change(
             function() {
-                viewModel.selectedQuestion().max_length("");
+                questionnaireViewModel.selectedQuestion().max_length("");
             }
     );
 });

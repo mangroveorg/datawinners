@@ -39,22 +39,22 @@
             <input id="choice_text" name="choice_text" class="required" type="text"
                    data-bind="value: text, uniqueName:true"/>
             <a href="questionnaire_wizard.html#" class='delete delete_link'
-               data-bind="visible: viewModel.choiceCanBeDeleted(), click:function(){viewModel.removeOptionFromQuestion($data);}">{% trans "Delete" %}</a>
+               data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data);}">{% trans "Delete" %}</a>
         </li>
     </script>
     <script type="text/html" id="question-list-template">
         <div class="question_list" id="que_code">
             <ol>
                 {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                <li data-bind="click: function() { if($('#question_form').valid()) viewModel.changeSelectedQuestion(question); }, css:{question_selected:question == viewModel.selectedQuestion()} ">
+                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
                     <a href="#" data-bind="text: question.display"></a>
 
                     <div data-bind="visible: question.canBeDeleted()" class="delete">
                         <a href="#" class="delete_link"
-                           data-bind="click: function() {if($('#question_form').valid()){ viewModel.removeQuestionCheck(question); DW.smsPreview();} else {viewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
+                           data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestionCheck(question); DW.smsPreview();} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
                     </div>
                     <span class="selected_question_arrow"
-                          data-bind="css:{inline:question == viewModel.selectedQuestion()}"></span>
+                          data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
                 </li>
                 {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
@@ -129,7 +129,7 @@
                             </div>
                             <div class="add_question">
                                 <a class="add_link" href="#"
-                                   data-bind="click: function() { if($('#question_form').valid()) viewModel.addQuestion(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
+                                   data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.smsPreview();}">{% trans "Add another Question" %}</a>
                             </div>
                         </div>
 

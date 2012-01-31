@@ -155,11 +155,11 @@ DW.generateQuestionCode = function() {
 };
 
 DW.change_question_title_for_reporting_period = function(replaceto,replacewith){
-    $(viewModel.questions()).each(function (question) {
-        if (viewModel.selectedQuestion().event_time_field_flag()) {
-            var question_title = viewModel.selectedQuestion().title();
-            viewModel.selectedQuestion().title(question_title.replace(replaceto,replacewith));
+    $(questionnaireViewModel.questions()).each(function (question) {
+        if (questionnaireViewModel.selectedQuestion().event_time_field_flag()) {
+            var question_title = questionnaireViewModel.selectedQuestion().title();
+            questionnaireViewModel.selectedQuestion().title(question_title.replace(replaceto,replacewith));
         }
       });
-    viewModel.questions.valueHasMutated();
+    questionnaireViewModel.questions.valueHasMutated();
 };

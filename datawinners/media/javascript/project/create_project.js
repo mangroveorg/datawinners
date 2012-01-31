@@ -1,17 +1,17 @@
 DW.init_view_model = function (question_list) {
 
-    viewModel.questions([]);
-    viewModel.questions.valueHasMutated();
+    questionnaireViewModel.questions([]);
+    questionnaireViewModel.questions.valueHasMutated();
     var index = 0;
     for (index in question_list) {
         var questions = new DW.question(question_list[index]);
-        viewModel.loadQuestion(questions);
+        questionnaireViewModel.loadQuestion(questions);
     }
 
-    viewModel.selectedQuestion(viewModel.questions()[0]);
-    viewModel.selectedQuestion.valueHasMutated();
-    DW.current_code = viewModel.questions().length + 1; //This variable holds the next question code to be generated.
-    viewModel.hasAddedNewQuestions = false;
+    questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
+    questionnaireViewModel.selectedQuestion.valueHasMutated();
+    DW.current_code = questionnaireViewModel.questions().length + 1; //This variable holds the next question code to be generated.
+    questionnaireViewModel.hasAddedNewQuestions = false;
     DW.smsPreview();
 };
 
@@ -204,7 +204,7 @@ var questionnaire_section = new DW.questionnaire_section("#questionnaire");
 var devices=new DW.devices("#id_devices_0");
 
 DW.post_project_data = function(state, function_to_construct_redirect_url_on_success){
-    var questionnaire_data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+    var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
     var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'profile_form': basic_project_info.values(),
         'project_state': state, 'csrfmiddlewaretoken':$('#create_project_form input[name=csrfmiddlewaretoken]').val()};
     $.post($('#post_url').val(), post_data, function(response){
@@ -226,14 +226,14 @@ DW.post_project_data = function(state, function_to_construct_redirect_url_on_suc
 };
 $(document).ready(function() {
     DW.init_view_model(existing_questions);
-    ko.applyBindings(viewModel);
+    ko.applyBindings(questionnaireViewModel);
     DW.subject_warning_dialog_module.init();
 
     basic_project_info.hide_subject_link();
     devices.disableSMSElement();
 
     $('#id_entity_type').change(function() {
-        if(is_edit || viewModel.hasAddedNewQuestions){
+        if(is_edit || questionnaireViewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");
         }else{
             DW.continue_flip();
@@ -241,7 +241,7 @@ $(document).ready(function() {
     });
 
     $('input[name="activity_report"]').change(function() {
-        if(is_edit || viewModel.hasAddedNewQuestions){
+        if(is_edit || questionnaireViewModel.hasAddedNewQuestions){
             $("#subject_warning_message").dialog("open");
         }else{
             DW.continue_flip();

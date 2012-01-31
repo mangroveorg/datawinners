@@ -32,7 +32,7 @@
                         <div data-bind="template: 'question-list-template_new'" ></div>
                         <div class="add_question">
                             <a class="add_link" href="questionnaire.html#"
-                               data-bind="click: function() {if($('#question_form').valid()) viewModel.addQuestion(); DW.smsPreview();}">
+                               data-bind="click: function() {if($('#question_form').valid()) questionnaireViewModel.addQuestion(); DW.smsPreview();}">
                                 {% trans "Add another Question" %}</a>
                         </div>
                     </div>

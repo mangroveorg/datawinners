@@ -3,12 +3,12 @@ $(document).ready(function() {
     var index;
     for(index in question_list){
         var questions = new DW.question(question_list[index]);
-        viewModel.loadQuestion(questions);
+        questionnaireViewModel.loadQuestion(questions);
     }
-    viewModel.selectedQuestion(viewModel.questions()[0]);
-    viewModel.selectedQuestion.valueHasMutated();
+    questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
+    questionnaireViewModel.selectedQuestion.valueHasMutated();
 
-    ko.applyBindings(viewModel);
+    ko.applyBindings(questionnaireViewModel);
     DW.charCount();
     $('#question_form').live("keyup", DW.charCount);
     $('#question_form').live("click", DW.charCount);
@@ -98,7 +98,7 @@ $(document).ready(function() {
 
     function submit_questionnaire() {
 
-        var data = JSON.stringify(ko.toJS(viewModel.questions()), null, 2);
+        var data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
         if ($.trim($("#questionnaire-code").val()) == "") {
             $("#questionnaire-code-error").html("<label class='error_message'> "+gettext("The Questionnaire code is required")+".</label>");
             return;
@@ -145,9 +145,9 @@ $(document).ready(function() {
                     if($("#qtype").val() != undefined) {
                         var json_data = JSON.parse(response);
                         $("#saved-questionnaire-code").val(json_data.form_code);
-                        viewModel.selectedQuestion().loaded(true);
-                        viewModel.selectedQuestion.valueHasMutated();
-                        viewModel.questions.valueHasMutated();
+                        questionnaireViewModel.selectedQuestion().loaded(true);
+                        questionnaireViewModel.selectedQuestion.valueHasMutated();
+                        questionnaireViewModel.questions.valueHasMutated();
                     }
                     hide_message();
                     redirect();
@@ -193,19 +193,19 @@ $(document).ready(function() {
 
     $('input[name=type]:radio').change(
             function() {
-                viewModel.selectedQuestion().range_min("");
-                viewModel.selectedQuestion().range_max("");
-                viewModel.selectedQuestion().min_length(1);
-                viewModel.selectedQuestion().max_length("");
-                viewModel.selectedQuestion().length_limiter("length_unlimited");
-                viewModel.selectedQuestion().choices([
+                questionnaireViewModel.selectedQuestion().range_min("");
+                questionnaireViewModel.selectedQuestion().range_max("");
+                questionnaireViewModel.selectedQuestion().min_length(1);
+                questionnaireViewModel.selectedQuestion().max_length("");
+                questionnaireViewModel.selectedQuestion().length_limiter("length_unlimited");
+                questionnaireViewModel.selectedQuestion().choices([
                     {text:gettext("default"), val:'a'}
                 ]);
             }
     );
     $('input[name=text_length]:radio').change(
             function() {
-                viewModel.selectedQuestion().max_length("");
+                questionnaireViewModel.selectedQuestion().max_length("");
             }
     );
     $("#edit_warning").dialog({
