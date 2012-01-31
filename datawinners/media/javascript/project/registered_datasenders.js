@@ -44,7 +44,7 @@ $(document).ready(function() {
 
     $(".close_import_dialog").bind("click", function(){
         $("#popup-import").dialog("close");
-    })
+    });
 
 });
 

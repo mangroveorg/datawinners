@@ -8,7 +8,7 @@ $(document).ready(function(){
         action: "/entity/datasenders/",
         params: {project_id: project_id},
         onSubmit: function(){
-                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}})
+                $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px'}});
         },
         onComplete: function(id, fileName, responseJSON) {
             $.unblockUI();
@@ -54,4 +54,4 @@ $(document).ready(function(){
 
         }
     });
-})
+});
