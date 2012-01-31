@@ -80,7 +80,7 @@ class FilePlayer(Player):
                 responses.append(response)
         return responses
 
-#TODO This method is a proof that Exceptions needs to be handled by the client application
+#TODO This is a hack. To be fixed after release. Introduce handlers and get error objects from mangrove
 def tabulate_failures(rows):
     tabulated_data = []
     for row in rows:
@@ -89,30 +89,20 @@ def tabulate_failures(rows):
         if isinstance(row[1].errors['error'], dict):
             errors = ''
             for key,value in row[1].errors['error'].items():
-                error = errors
-                if key == 'n' or key == 't':
+                if 'is required' in value:
                     code = value.split(' ')[3]
-                    errors = errors + _('Answer for question %s is required')% (code, )
-                if key == 's':
-                    errors = errors + value
-                if key == 'g':
-                    if 'xx.xxxx yy.yyyy' in value:
-                        errors = errors + _('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315')
-                    else:
-                        text = value.split(' ')[2]
-                        low = value.split(' ')[6]
-                        high = value.split(' ')[8]
-                        errors = errors + _("The answer %s must be between %s and %s") % (text, low, high)
-                if key == 'm':
-                    if 'is required' in value:
-                        code = value.split(' ')[3]
-                        errors = errors + _('Answer for question %s is required')% (code, )
-                    if 'longer' in value:
-                        text = value.split(' ')[1]
-                        errors = errors + _("Answer %s for question %s is longer than allowed.") % (text, key)
-                    else:
-                        errors = errors + _(value)
-                if error == errors :
+                    errors = errors + "\n" + _('Answer for question %s is required')% (code, )
+                elif 'xx.xxxx yy.yyyy' in value:
+                    errors = errors + "\n" + _('Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315')
+                elif 'longer' in value:
+                    text = value.split(' ')[1]
+                    errors = errors + "\n" + _("Answer %s for question %s is longer than allowed.") % (text, key)
+                elif 'must be between' in value:
+                    text = value.split(' ')[2]
+                    low = value.split(' ')[6]
+                    high = value.split(' ')[8]
+                    errors = errors + "\n" + _("The answer %s must be between %s and %s") % (text, low, high)
+                else:
                     errors = errors + "\n" +_(value)
         else:
             errors = _(row[1].errors['error'])
