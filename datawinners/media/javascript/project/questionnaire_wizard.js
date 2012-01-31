@@ -143,6 +143,8 @@ $(document).ready(function() {
                     $("#message-label").addClass("success-message-box");
                     $("#message-label").show().html("<label class='success'>" + gettext("The question has been saved.") + "</label");
                     if($("#qtype").val() != undefined) {
+                        var json_data = JSON.parse(response);
+                        $("#saved-questionnaire-code").val(json_data.form_code);
                         viewModel.selectedQuestion().loaded(true);
                         viewModel.selectedQuestion.valueHasMutated();
                         viewModel.questions.valueHasMutated();
