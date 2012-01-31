@@ -76,8 +76,10 @@ form ul li input[type=text], form ul li input[type=password] {
     list-style-type: disc;
     margin-left: 15px; }
 
-.about_datawinners p {
-  margin-top: 10px; }
+.about_datawinners {
+  min-height: 184px; }
+  .about_datawinners p {
+    margin-top: 10px; }
 
 .subtitle_for_radio_button {
   display: block;

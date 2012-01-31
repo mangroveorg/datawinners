@@ -37,10 +37,10 @@ $(document).ready(function(){
             else {
                 $('#error_tbody').html('');
                 if (responseJSON.error_message) {
-                    $('<div id="message" class="error_message message-box" style="clear: left;">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
+                    $('<div id="message" class="error_message message-box clear-left">' + responseJSON.error_message + '</div>').insertAfter($('#file-uploader'));
                 }
                 else {
-                    $('<div id="message" class="error_message message-box" style="clear: left;">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
+                    $('<div id="message" class="error_message message-box clear-left">' + responseJSON.message + '</div>').insertAfter($('#file-uploader'));
                 }
                 if (responseJSON.failure_imports > 0) {
                     $("#error_table").show();

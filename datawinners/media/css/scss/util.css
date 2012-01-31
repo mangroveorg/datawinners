@@ -13,6 +13,9 @@
 .padding_20 {
   padding: 20px; }
 
+.padding_left_right_10 {
+  padding: 0 10px; }
+
 /* Margin Null */
 .margin_right_null {
   margin-right: 0; }
@@ -61,6 +64,9 @@
 
 .margin_left_20 {
   margin-left: 20px; }
+
+.margin_right_20 {
+  margin-right: 20px; }
 
 /* Float styling */
 .float_left {
@@ -339,3 +345,6 @@ span.tooltip {
 
 .terms_and_condition {
   color: #0070ac !important; }
+
+.relative {
+  position: relative !important; }

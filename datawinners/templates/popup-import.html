@@ -32,7 +32,7 @@
                     <li>{% blocktrans with subject.entity as entity_type and subject.entity as form_code %}You cannot add new columns in your Excel file to create new question. <a href='javascript:void(0);' id='to-edit-{{ form_code }}' class='edit-form-code-link' >Edit the {{ entity_type }} Registration Form</a> to make these changes.{% endblocktrans %}</li>
                 </ul>
             </div>
-            <div class='error_table' style="display: none;" id="{{ subject.code }}_error_table">
+            <div class='error_table none' id="{{ subject.code }}_error_table">
                 <br/>
                 <table class="styled_table">
                     <thead>

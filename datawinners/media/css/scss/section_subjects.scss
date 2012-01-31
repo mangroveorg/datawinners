@@ -179,6 +179,14 @@
             display: block;
             float: left;
             line-height: 26px;
+            &.view_link {
+                width: 80px;
+                text-align: right;
+                padding-right: 5px;
+            }
+            &.sms_link {
+                width: 60px;
+            }
             a {
                 padding: 0 8px;
             }

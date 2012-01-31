@@ -126,6 +126,12 @@
       display: block;
       float: left;
       line-height: 26px; }
+      #my_subjects_links ul li.view_link {
+        width: 80px;
+        text-align: right;
+        padding-right: 5px; }
+      #my_subjects_links ul li.sms_link {
+        width: 60px; }
       #my_subjects_links ul li a {
         padding: 0 8px; }
       #my_subjects_links ul li .disabled_link {

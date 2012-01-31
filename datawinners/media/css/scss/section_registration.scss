@@ -113,8 +113,11 @@ form{
     }
 }
 
-.about_datawinners p {
-    margin-top: 10px;
+.about_datawinners {
+    min-height: 184px;
+    p {
+        margin-top: 10px;
+    }
 }
 
 .subtitle_for_radio_button{
