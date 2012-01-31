@@ -21,10 +21,12 @@
             </ul>
             <div class="gray_text">{% trans "Enhance your project..." %} </div>
             <ul>
-                <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "Add subjects" %} </a>
+                {% if not project.is_activity_report %}
+                <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "Add " %}{{ project.entity_type }} </a>
 
                     <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
                 </li>
+                {% endif %}
                 <li><a id="reminder_edit_link"
                        href="{{project_links.setting_reminders_link}}">{% trans "Set reminders" %} </a>
 
