@@ -46,6 +46,16 @@
     }
 }
 
+
+#registration_form{
+    .black_italic{
+        display: inline-block;
+    }
+    .black_italic.optional{
+        display: block;
+    }
+}
+
 .signin_form{
         margin:50px 0 0px 70px;
 }

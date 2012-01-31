@@ -24,7 +24,7 @@
                 {% trans "User has been added successfully" %}
             </div>
         {% endif %}
-      <form method="post" action="/account/user/new/" name="form">
+      <form method="post" action="/account/user/new/" name="form" id="registration_form">
         {% csrf_token %}
         <ul class="administrative">
           <li>
@@ -35,7 +35,7 @@
             {{ profile_form.title }}
             
             {{ profile_form.title.errors }}
-            <p class="black_italic">{% trans "Example: Program Director" %}</p>
+            <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
           </li>
           <li class="{{ form.first_name.css_classes  }} form-row-10px">
             {{ profile_form.first_name|field_label }}

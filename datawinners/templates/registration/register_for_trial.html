@@ -59,7 +59,7 @@
                                 {{ form.title }}
 
                                  {{ form.title.errors }}
-                                <p class="black_italic">{% trans "Example: Program Director" %}</p>
+                                <p class="black_italic optional">{% trans "Example: Program Director" %}</p>
                              </li>
                             <li class="{{ form.first_name.css_classes  }} form-row-10px">
                                 {{ form.first_name|field_label }}
@@ -105,7 +105,7 @@
 
                             </li>
                             <li>
-                                <input type="checkbox" id="agree-terms" value="1" /> {% trans "agree-terms" %}
+                                <input type="checkbox" id="agree-terms" value="1" {% ifequal messages.request.method 'POST' %}checked="checked"{% endifequal %}/> {% trans "agree-terms" %}
                             </li>
                             <li class="margin_top_20">
                                 <input type="button" id="submit_registration_form" value="{% trans "Sign Up" %}" class="button" />

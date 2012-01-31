@@ -34,6 +34,11 @@
   clear: left;
   margin-left: 170px; }
 
+#registration_form .black_italic {
+  display: inline-block; }
+#registration_form .black_italic.optional {
+  display: block; }
+
 .signin_form {
   margin: 50px 0 0px 70px; }
 
