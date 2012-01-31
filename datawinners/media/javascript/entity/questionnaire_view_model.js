@@ -2,7 +2,6 @@ var questionnaireViewModel =
 {
     questions : ko.observableArray([]),
     hasAddedNewQuestions : false,
-    qtype : "project",
 
     addQuestion : function() {
         var question = new DW.question();
@@ -12,15 +11,9 @@ var questionnaireViewModel =
         question.loaded(false);
         var test_code = DW.generateQuestionCode();
         question.code(questionnaireViewModel.check_unique_code(test_code));
-        if ($('#qtype') != undefined) {
-            var id_question = questionnaireViewModel.questions.pop();
-        }
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
-        if ($('#qtype') != undefined) {
-            questionnaireViewModel.questions.push(id_question);
-        }
         questionnaireViewModel.questions.valueHasMutated();
         DW.charCount();
         questionnaireViewModel.hasAddedNewQuestions = true;
@@ -40,7 +33,7 @@ var questionnaireViewModel =
         questionnaireViewModel.questions.remove(question);
         if(questionnaireViewModel.questions().length == 0){
             DW.current_code = 1;
-            questionnaireViewModel.addQuestion();qtype
+            questionnaireViewModel.addQuestion();
             return;
         }
         var next_index = (index) % questionnaireViewModel.questions().length;
