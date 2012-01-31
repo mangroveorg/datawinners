@@ -77,9 +77,11 @@
                 <a id="subjects_tab" href="{{ project_links.subjects_link }}" class="{{ disable_link_class }}">{% trans "My Subjects" %}</a>
             </li>
             {% endif %}
+        {% if not in_trial_mode %}
         <li class="{% ifactivetab 'tab_nav' 'reminders' %}active{% else %}inactive{% endifactivetab %}">
             <a id="reminders_tab" href="{{ project_links.reminders_link }}" class="{{ disable_link_class }}">{% trans "Reminders" %}</a>
         </li>
+        {% endif %}
         <li class="{% ifactivetab 'tab_nav' 'review_and_test' %}active{% else %}inactive{% endifactivetab %}">
             <a id="review_tab" href="{{ project_links.finish_link }}" class="{{ disable_link_class }}">{% trans "Review and Test" %}</a>
         </li>

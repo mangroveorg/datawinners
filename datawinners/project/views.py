@@ -186,6 +186,7 @@ def project_overview(request, project_id=None):
     add_subjects_to_see_on_map_msg = _(
         "Register %s to see them on this map") % project.entity_type if get_entity_count_for_type(manager,
                                                                                                   project.entity_type) == 0 else ""
+    in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/overview.html', RequestContext(request, {
         'project': project,
         'entity_type': project['entity_type'],
@@ -197,7 +198,8 @@ def project_overview(request, project_id=None):
         'number_reminders': number_reminders,
         'links': links,
         'add_data_senders_to_see_on_map_msg': add_data_senders_to_see_on_map_msg,
-        'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg
+        'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
+        'in_trial_mode': in_trial_mode
     }))
 
 
@@ -211,9 +213,10 @@ def project_results(request, project_id=None, questionnaire_code=None):
     if request.method == 'GET':
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
         submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
+        in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/results.html',
                 {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields, 'submissions': submission_display, 'pages': count,
-                 'error_message': error_message, 'project_links': project_links, 'project': project},
+                 'error_message': error_message, 'project_links': project_links, 'project': project, 'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request)
         )
     if request.method == "POST":
@@ -308,10 +311,11 @@ def project_data(request, project_id=None, questionnaire_code=None):
                                                                               request)
 
     if request.method == "GET":
+        in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/data_analysis.html',
                 {"entity_type": form_model.entity_type[0], "data_list": repr(encode_json(field_values)),
                  "header_list": header_list, "type_list": type_list, 'grand_totals': grand_totals, 'project_links': (
-                _make_project_links(project, questionnaire_code)), 'project': project}
+                _make_project_links(project, questionnaire_code)), 'project': project, 'in_trial_mode': in_trial_mode}
                                   ,
                                   context_instance=RequestContext(request))
     if request.method == "POST":
@@ -550,11 +554,13 @@ def review_and_test(request, project_id=None):
             fields = helper.hide_entity_question(form_model.fields)
         is_reminder = "enabled" if project['reminder_and_deadline']['has_deadline'] else "disabled"
         devices = ",".join(project.devices)
+        in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': _make_project_links(project, form_model.form_code),
                                                                    'number_of_datasenders': number_of_registered_datasenders,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "is_reminder": is_reminder,
+                                                                   "in_trial_mode": in_trial_mode,
                                                                    "devices": devices},
                                   context_instance=RequestContext(request))
 
@@ -572,6 +578,7 @@ def subjects(request, project_id=None):
     fields, project_links, questions, reg_form = _get_registration_form(manager, project ,
                                                                         type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
+    in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subjects.html',
             {'project': project,
              'project_links': project_links,
@@ -579,7 +586,8 @@ def subjects(request, project_id=None):
              'questionnaire_code': reg_form.form_code,
              'example_sms': example_sms,
              'org_number': _get_organization_telephone_number(request),
-             'current_language': translation.get_language()},
+             'current_language': translation.get_language(),
+             'in_trial_mode': in_trial_mode},
                               context_instance=RequestContext(request))
 
 
@@ -589,8 +597,10 @@ def registered_subjects(request, project_id=None):
     project, project_links = _get_project_and_project_link(manager, project_id)
     all_data, fields, labels = load_all_subjects_of_type(manager, filter_entities=include_of_type, type=project.entity_type)
     subject = get_entity_type_infos(project.entity_type, manager=manager)
+    in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_subjects.html',
-            {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels, "subject": subject},
+            {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels,
+             "subject": subject, 'in_trial_mode': in_trial_mode },
                                   context_instance=RequestContext(request))
 
 
@@ -600,9 +610,11 @@ def registered_datasenders(request, project_id=None):
     project, project_links = _get_project_and_project_link(manager, project_id)
     fields, labels, codes = get_entity_type_fields(manager)
     labels = [label.replace('subject', 'Data Sender') for label in labels]
+    in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_datasenders.html',
             {'project': project, 'project_links': project_links, 'all_data': (
-            helper.get_project_data_senders(manager, project)), "labels": labels, 'current_language': translation.get_language()},
+            helper.get_project_data_senders(manager, project)), "labels": labels,
+            'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
                               context_instance=RequestContext(request))
 
 
@@ -656,9 +668,10 @@ def questionnaire(request, project_id=None):
             fields = helper.hide_entity_question(form_model.fields)
         existing_questions = json.dumps(fields, default=field_to_json)
         project_links = _make_project_links(project, form_model.form_code)
+        in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
                 {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 'project': project, 'project_links': project_links},
+                 'project': project, 'project_links': project_links, 'in_trial_mode': in_trial_mode},
                                   context_instance=RequestContext(request))
 
 
@@ -680,9 +693,11 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
             'disable_link_class': disable_link_class,
             }
 
-
 def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
-    return render_to_response(template, _make_form_context(questionnaire_form, project, form_code, disable_link_class),
+    form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
+    in_trial_mode = _in_trial_mode(request)
+    form_context.update({'in_trial_mode': in_trial_mode})
+    return render_to_response(template, form_context,
                               context_instance=RequestContext(request))
 
 
@@ -841,12 +856,14 @@ def edit_subject(request, project_id=None):
         reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = reg_form.fields
     existing_questions = json.dumps(fields, default=field_to_json)
+    in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/subject_questionnaire.html',
             {'project': project,
              'project_links': project_links,
              'existing_questions': repr(existing_questions),
              'questionnaire_code': reg_form.form_code,
-             'entity_type': project.entity_type},
+             'entity_type': project.entity_type,
+             'in_trial_mode': in_trial_mode},
                               context_instance=RequestContext(request))
 
 
@@ -856,11 +873,13 @@ def edit_subject(request, project_id=None):
 def create_datasender(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
+    in_trial_mode = _in_trial_mode(request)
 
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id})
-        return render_to_response('project/register_datasender.html',
-                    {'project': project, 'project_links': project_links, 'form': form},
+        return render_to_response('project/register_datasender.html',{
+                    'project': project, 'project_links': project_links, 'form': form,
+                    'in_trial_mode': in_trial_mode},
                                       context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -870,5 +889,8 @@ def create_datasender(request, project_id=None):
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id':form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                {'form': form, 'message': message},
+                {'form': form, 'message': message,'in_trial_mode': in_trial_mode},
                                       context_instance=RequestContext(request))
+
+def _in_trial_mode(request):
+    return utils.get_organization(request).in_trial_mode
