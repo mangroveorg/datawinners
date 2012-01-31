@@ -601,3 +601,7 @@ msgstr ""
 
 msgid "Import a Data Senders list"
 msgstr ""
+
+msgid "Questionnaire with this code already exists"
+msgstr ""
+

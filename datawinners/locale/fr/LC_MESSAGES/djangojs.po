@@ -612,3 +612,6 @@ msgstr "Nouveau type de sujet"
 
 msgid "Import a Data Senders list"
 msgstr "Importer une liste d'expéditeurs"
+
+msgid "Questionnaire with this code already exists"
+msgstr "Un questionnaire avec ce code existe déjà"
