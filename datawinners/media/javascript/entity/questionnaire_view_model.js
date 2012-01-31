@@ -44,34 +44,6 @@ var questionnaireViewModel =
         questionnaireViewModel.hasAddedNewQuestions = true;
         questionnaireViewModel.reassignQuestionCodes(index);
     },
-    removeQuestionCheck:function(question){
-        if($('#qtype') != undefined) {
-            $("#delete_warning").dialog("open");
-            $("#delete_ok").unbind('click').click(function(){
-                questionnaireViewModel.removeQuestion(question);
-                $("#delete_warning").dialog("close");
-            });
-            $("#delete_cancel").unbind('click').click(function(){
-                $("#delete_warning").dialog("close");
-                return false;
-            });
-        } else {
-            var index = $.inArray(question, questionnaireViewModel.questions());
-            if ( questionnaireViewModel.questions()[index].event_time_field_flag()){
-              $("#delete_question").dialog("open");
-            } else {
-                questionnaireViewModel.removeQuestion(question)
-            }
-            $("#ok_button_que_change").bind("click", function(){
-                questionnaireViewModel.removeQuestion(question)
-                $("#delete_question").dialog("close");
-            });
-            $("#cancel_link_que").bind("click", function(){
-                $("#delete_question").dialog("close");
-                return false;
-            });
-        }
-    },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (questionnaireViewModel.selectedQuestion() == question) {
             questionnaireViewModel.removeQuestion(question);
@@ -151,7 +123,7 @@ var questionnaireViewModel =
         }
     },
     isTypeEnabled: function(){
-        if ($('#qtype') != undefined) {
+        if (DW.isRegistrationQuestionnaire()) {
             return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag() && !questionnaireViewModel.selectedQuestion().loaded();
         } else {
             return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
@@ -163,8 +135,5 @@ var questionnaireViewModel =
         for ( var i=index;i< questionnaireViewModel.questions().length;i++){
             questionnaireViewModel.questions()[i].code(DW.generateQuestionCode());
         }
-    },
-    setAsRegistration: function() {
-        questionnaireViewModel.isRegistration = true;
     }
 };
