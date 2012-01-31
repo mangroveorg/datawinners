@@ -2,6 +2,7 @@ var viewModel =
 {
     questions : ko.observableArray([]),
     hasAddedNewQuestions : false,
+    qtype : "project",
 
     addQuestion : function() {
         var question = new DW.question();
@@ -11,11 +12,15 @@ var viewModel =
         question.loaded(false);
         var test_code = DW.generateQuestionCode();
         question.code(viewModel.check_unique_code(test_code));
-        var id_question = viewModel.questions.pop();
+        if ($('#qtype') != undefined) {
+            var id_question = viewModel.questions.pop();
+        }
         viewModel.questions.push(question);
         viewModel.selectedQuestion(question);
         viewModel.selectedQuestion.valueHasMutated();
-        viewModel.questions.push(id_question);
+        if ($('#qtype') != undefined) {
+            viewModel.questions.push(id_question);
+        }
         viewModel.questions.valueHasMutated();
         DW.charCount();
         viewModel.hasAddedNewQuestions = true;
@@ -47,15 +52,32 @@ var viewModel =
         viewModel.reassignQuestionCodes(index);
     },
     removeQuestionCheck:function(question){
-        $("#delete_warning").dialog("open");
-        $("#delete_ok").unbind('click').click(function(){
-            viewModel.removeQuestion(question);
-            $("#delete_warning").dialog("close");
-        });
-        $("#delete_cancel").unbind('click').click(function(){
-            $("#delete_warning").dialog("close");
-            return false;
-        });
+        if($('#qtype') != undefined) {
+            $("#delete_warning").dialog("open");
+            $("#delete_ok").unbind('click').click(function(){
+                viewModel.removeQuestion(question);
+                $("#delete_warning").dialog("close");
+            });
+            $("#delete_cancel").unbind('click').click(function(){
+                $("#delete_warning").dialog("close");
+                return false;
+            });
+        } else {
+            var index = $.inArray(question, viewModel.questions());
+            if ( viewModel.questions()[index].event_time_field_flag()){
+              $("#delete_question").dialog("open");
+            } else {
+                viewModel.removeQuestion(question)
+            }
+            $("#ok_button_que_change").bind("click", function(){
+                viewModel.removeQuestion(question)
+                $("#delete_question").dialog("close");
+            });
+            $("#cancel_link_que").bind("click", function(){
+                $("#delete_question").dialog("close");
+                return false;
+            });
+        }
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (viewModel.selectedQuestion() == question) {
@@ -136,7 +158,11 @@ var viewModel =
         }
     },
     isTypeEnabled: function(){
-        return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag() && !viewModel.selectedQuestion().loaded();
+        if ($('#qtype') != undefined) {
+            return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag() && !viewModel.selectedQuestion().loaded();
+        } else {
+            return viewModel.isEnabled() && !viewModel.selectedQuestion().event_time_field_flag();
+        }
     },
     reassignQuestionCodes:function(index){
         DW.current_code = index+1;
@@ -144,5 +170,8 @@ var viewModel =
         for ( var i=index;i< viewModel.questions().length;i++){
             viewModel.questions()[i].code(DW.generateQuestionCode());
         }
+    },
+    setAsRegistration: function() {
+        viewModel.isRegistration = true;
     }
 };
