@@ -18,3 +18,4 @@ LOCATOR = "locator"
 BY = "by"
 
 ADD_A_SUBJECT_LINK = by_css("a[class~='add_subject_link']")
+SUBJECT_ACCORDION_LINK = '//div[@id="all_subjects"]/div/span[@class="header" and text()="%s"]'

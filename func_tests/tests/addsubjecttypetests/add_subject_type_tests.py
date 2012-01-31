@@ -7,7 +7,7 @@ from framework.utils.common_utils import generateId
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
 from pages.loginpage.login_page import LoginPage
 from pages.addsubjectpage.add_subject_page import AddSubjectPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ADD_SUBJECT
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT
 from tests.addsubjecttypetests.add_subject_type_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
@@ -19,11 +19,11 @@ class TestAddSubjectType(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.driver.go_to(DATA_WINNER_ADD_SUBJECT)
+        cls.driver.go_to(DATA_WINNER_ALL_SUBJECT)
         cls.page = AddSubjectTypePage(cls.driver)
 
     def setUp(self):
-        TestAddSubjectType.driver.refresh()
+        self.driver.refresh()
 
     @classmethod
     def tearDownClass(cls):
@@ -34,9 +34,8 @@ class TestAddSubjectType(unittest.TestCase):
         add_subject_type_page = self.page
         add_subject_type_page.click_on_accordian_link()
         entity_type = VALID_ENTITY[ENTITY_TYPE] + generateId()
-        add_subject_type_page.add_entity_type_with(entity_type)
-        add_subject_page = AddSubjectPage(self.driver)
-        self.assertEqual(add_subject_page.get_selected_subject(), entity_type.lower())
+        all_subject_page = add_subject_type_page.successfully_add_entity_type_with(entity_type)
+        self.assertTrue(all_subject_page.check_subject_type_on_page(entity_type))
 
     @attr('functional_test')
     def test_add_existing_subject_type(self):

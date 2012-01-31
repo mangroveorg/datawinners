@@ -8,7 +8,7 @@ SUCCESS_MESSAGE = 'message'
 # valid entity data
 VALID_ENTITY = {ENTITY_TYPE: "Hospital", SUCCESS_MESSAGE: "hospital"}
 # already exist entity
-ALREADY_EXIST_ENTITY = {ENTITY_TYPE: "clinic", ERROR_MESSAGE: "clinic already registered as a subject type. Please select clinic from the drop down menu."}
+ALREADY_EXIST_ENTITY = {ENTITY_TYPE: "Clinic", ERROR_MESSAGE: "clinic already registered as a subject type."}
 # Blank entity
 BLANK = {ENTITY_TYPE: "", ERROR_MESSAGE: "Only letters and numbers are valid"}
-INVALID_ENTITY = {ENTITY_TYPE: "w@terpo!nt", ERROR_MESSAGE: "Only letters and numbers are valid"}
+INVALID_ENTITY = {ENTITY_TYPE: "W@terpo!nt", ERROR_MESSAGE: "Only letters and numbers are valid"}
