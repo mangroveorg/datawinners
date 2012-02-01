@@ -34,13 +34,20 @@
                     <td><a href="{{ project.link }}" class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
                     <td>{{ project.created }}</td>
                     <td>{% trans project.type %}</td>
-                    <td><span class="report_links"><span class="disable_link"> {% trans "Summary" %} </span> |
-                        <a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
+                    <td>
+                        <span class="report_links">
+                        {% if not hide_link_class%}
+                            <span class="disable_link"> {% trans "Summary" %} </span>
+                            |<a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
                             |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
-                            |<a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
-                            |{%if project.create_subjects_link%}
-                                <a href="{{ project.create_subjects_link}}">{% trans "Register a " %}{{ project.entity_type}}</a>
-                             {% endif %} </span></td>
+                            |
+                        {% endif %}
+                            <a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
+                        {%if project.create_subjects_link%}
+                            |<a href="{{ project.create_subjects_link}}">{% trans "Register a " %}{{ project.entity_type}}</a>
+                        {% endif %}
+                        </span>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

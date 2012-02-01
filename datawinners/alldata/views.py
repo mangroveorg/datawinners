@@ -15,12 +15,14 @@ from datawinners.entity.views import create_subject
 
 def _get_all_project_for_user(user):
     if user.get_profile().reporter:
-        disable_link_class = "disable_link"
+        disable_link_class = "disable_link_for_reporter"
+        hide_links = True
         rows = models.get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
     else:
         disable_link_class = ""
+        hide_links = False
         rows = models.get_all_projects(get_database_manager(user))
-    return disable_link_class, rows
+    return hide_links, disable_link_class, rows
 
 @login_required(login_url='/login')
 @is_new_user
@@ -28,7 +30,7 @@ def index(request):
     reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)
     project_list = []
-    disable_link_class, rows = _get_all_project_for_user(request.user)
+    hide_link_class, disable_link_class, rows = _get_all_project_for_user(request.user)
     for row in rows:
         analysis = log = "#"
         disabled = "disable_link"
@@ -54,7 +56,7 @@ def index(request):
                        web_submission_link_disabled=web_submission_link_disabled, create_subjects_link=create_subjects_link,
                        entity_type=project.entity_type)
         project_list.append(project_info)
-    return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class},
+    return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class, 'hide_link_class':hide_link_class},
                               context_instance=RequestContext(request))
 
 
