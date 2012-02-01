@@ -212,7 +212,7 @@ def all_datasenders(request):
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
                  'error_message': error_message,
-                 'failure_imports': failure_imports, 'all_data': all_data_senders}))
+                 'failure_imports': failure_imports, 'all_data': all_data_senders, 'imported_entities':imported_entities}))
 
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html',
