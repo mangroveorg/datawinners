@@ -16,6 +16,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from datawinners.entity.helper import process_create_datasender_form
+from datawinners.entity import import_data as import_module
 
 import helper
 
@@ -605,18 +606,29 @@ def registered_subjects(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@csrf_exempt
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    fields, labels, codes = get_entity_type_fields(manager)
-    labels = [label.replace('subject', 'Data Sender') for label in labels]
-    in_trial_mode = _in_trial_mode(request)
-    return render_to_response('project/registered_datasenders.html',
-            {'project': project, 'project_links': project_links, 'all_data': (
-            helper.get_project_data_senders(manager, project)), "labels": labels,
-            'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
-                              context_instance=RequestContext(request))
-
+    if request.method == 'GET':
+        fields, labels, codes = get_entity_type_fields(manager)
+        labels = [label.replace('subject', 'Data Sender') for label in labels]
+        in_trial_mode = _in_trial_mode(request)
+        return render_to_response('project/registered_datasenders.html',
+                {'project': project, 'project_links': project_links, 'all_data': (
+                helper.get_project_data_senders(manager, project)), "labels": labels,
+                'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
+                                  context_instance=RequestContext(request))
+    if request.method == 'POST':
+        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
+        all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
+        project.data_senders.extend([id for id in imported_entities.keys()])
+        project.save(manager)
+        return HttpResponse(json.dumps(
+                {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
+                 'error_message': error_message,
+                 'failure_imports': failure_imports, 'all_data_senders': all_data_senders, 'imported_entities':imported_entities,
+                 'associated_datasenders':project.data_senders}))
 
 @login_required(login_url='/login')
 @csrf_exempt
