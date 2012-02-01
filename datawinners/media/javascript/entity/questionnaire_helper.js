@@ -164,34 +164,38 @@ DW.change_question_title_for_reporting_period = function(replaceto,replacewith){
     questionnaireViewModel.questions.valueHasMutated();
 };
 
-DW.removeQuestionCheck = function(question){
-    if(DW.isRegistrationQuestionnaire()) {
-        $("#delete_warning").dialog("open");
-        $("#delete_ok").unbind('click').click(function(){
-            questionnaireViewModel.removeQuestion(question);
-            $("#delete_warning").dialog("close");
-        });
-        $("#delete_cancel").unbind('click').click(function(){
-            $("#delete_warning").dialog("close");
-            return false;
-        });
-    } else {
-        var index = $.inArray(question, questionnaireViewModel.questions());
-        if ( questionnaireViewModel.questions()[index].event_time_field_flag()){
-          $("#delete_question").dialog("open");
-        } else {
-            questionnaireViewModel.removeQuestion(question)
-        }
-        $("#ok_button_que_change").bind("click", function(){
-            questionnaireViewModel.removeQuestion(question)
-            $("#delete_question").dialog("close");
-        });
-        $("#cancel_link_que").bind("click", function(){
-            $("#delete_question").dialog("close");
-            return false;
-        });
-    }
+
+
+
+DW.removeQuestionCheckForRegistration = function(question){
+    $("#delete_warning").dialog("open");
+    $("#delete_ok").unbind('click').click(function(){
+        questionnaireViewModel.removeQuestion(question);
+        $("#delete_warning").dialog("close");
+    });
+    $("#delete_cancel").unbind('click').click(function(){
+        $("#delete_warning").dialog("close");
+        return false;
+    });
 };
+
+DW.removeQuestionCheckForSubmission = function(question){
+    var index = $.inArray(question, questionnaireViewModel.questions());
+    if ( questionnaireViewModel.questions()[index].event_time_field_flag()){
+        $("#delete_question").dialog("open");
+    } else {
+        questionnaireViewModel.removeQuestion(question)
+    }
+    $("#ok_button_que_change").bind("click", function(){
+        questionnaireViewModel.removeQuestion(question)
+        $("#delete_question").dialog("close");
+    });
+    $("#cancel_link_que").bind("click", function(){
+        $("#delete_question").dialog("close");
+        return false;
+    });
+
+}
 
 DW.isRegistrationQuestionnaire = function() {
     if($('#qtype').val() == 'subject') {

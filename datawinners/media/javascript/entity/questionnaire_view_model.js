@@ -112,7 +112,7 @@ var questionnaireViewModel =
         return test_code;
     },
     set_all_questions_as_old_questions:function(){
-        for (question_index in questionnaireViewModel.questions()){
+        for (var question_index in questionnaireViewModel.questions()){
             questionnaireViewModel.questions()[question_index].newly_added_question(false)
         }
     },
