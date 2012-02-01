@@ -128,13 +128,6 @@ DW.question.prototype = {
     }
 };
 
-DW.current_code = 2;
-
-DW.generateQuestionCode = function() {
-    var code = "q" + DW.current_code;
-    DW.current_code = DW.current_code + 1;
-    return code;
-};
 
 DW.change_question_title_for_reporting_period = function(replaceto,replacewith){
     $(questionnaireViewModel.questions()).each(function (question) {

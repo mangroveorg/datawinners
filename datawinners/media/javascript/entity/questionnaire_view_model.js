@@ -9,8 +9,6 @@ var questionnaireViewModel =
             return this.title();
         }, question);
         question.newly_added_question(true);
-        var test_code = DW.generateQuestionCode();
-        question.code(questionnaireViewModel.check_unique_code(test_code));
         questionnaireViewModel.questions.push(question);
         questionnaireViewModel.selectedQuestion(question);
         questionnaireViewModel.selectedQuestion.valueHasMutated();
@@ -32,17 +30,12 @@ var questionnaireViewModel =
         var index = $.inArray(question, questionnaireViewModel.questions());
         questionnaireViewModel.questions.remove(question);
         if(questionnaireViewModel.questions().length == 0){
-            DW.current_code = 1;
             questionnaireViewModel.addQuestion();
             return;
         }
         var next_index = (index) % questionnaireViewModel.questions().length;
-        if(index == questionnaireViewModel.questions().length){
-            DW.current_code -= 1;
-        }
         questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
         questionnaireViewModel.hasAddedNewQuestions = true;
-        questionnaireViewModel.reassignQuestionCodes(index);
     },
     removeIfQuestionIsSelectedQuestion: function(question) {
         if (questionnaireViewModel.selectedQuestion() == question) {
@@ -100,17 +93,6 @@ var questionnaireViewModel =
     showLengthLimiter: function() {
         return questionnaireViewModel.selectedQuestion().length_limiter() == 'length_limited';
     },
-    check_unique_code: function(test_code) {
-        var q;
-        for (q in questionnaireViewModel.questions()) {
-            if (test_code == questionnaireViewModel.questions()[q].code()) {
-                test_code = DW.generateQuestionCode();
-                test_code = questionnaireViewModel.check_unique_code(test_code);
-                return test_code;
-            }
-        }
-        return test_code;
-    },
     set_all_questions_as_old_questions:function(){
         for (var question_index in questionnaireViewModel.questions()){
             questionnaireViewModel.questions()[question_index].newly_added_question(false)
@@ -129,12 +111,5 @@ var questionnaireViewModel =
     },
     isTypeEnabled: function(){
         return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
-    },
-    reassignQuestionCodes:function(index){
-        DW.current_code = index+1;
-        var new_code = DW.current_code;
-        for ( var i=index;i< questionnaireViewModel.questions().length;i++){
-            questionnaireViewModel.questions()[i].code(DW.generateQuestionCode());
-        }
     }
 };
