@@ -4,7 +4,7 @@
 
 {% block section_title %}{% trans "Data Submission" %}
     <span class="title_links">
- <a href="/allfailedsubmissions" class="{{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
+ <a href="/allfailedsubmissions" class="{{ hide_link_class }} {{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
     </span>
 {% endblock %}
 
@@ -36,12 +36,12 @@
                     <td>{% trans project.type %}</td>
                     <td>
                         <span class="report_links">
-                        {% if not hide_link_class%}
+                        <span class="{{ hide_link_class }}">
                             <span class="disable_link"> {% trans "Summary" %} </span>
-                            |<a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
+                            |<a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}{{ hide_link_class }}">{% trans "Analysis" %}</a>
                             |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
                             |
-                        {% endif %}
+                        </span>
                             <a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
                         {%if project.create_subjects_link%}
                             |<a href="{{ project.create_subjects_link}}">{% trans "Register a " %}{{ project.entity_type}}</a>

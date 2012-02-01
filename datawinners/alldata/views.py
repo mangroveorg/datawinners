@@ -16,11 +16,11 @@ from datawinners.entity.views import create_subject
 def _get_all_project_for_user(user):
     if user.get_profile().reporter:
         disable_link_class = "disable_link_for_reporter"
-        hide_links = True
+        hide_links = "none"
         rows = models.get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
     else:
         disable_link_class = ""
-        hide_links = False
+        hide_links = ""
         rows = models.get_all_projects(get_database_manager(user))
     return hide_links, disable_link_class, rows
 
