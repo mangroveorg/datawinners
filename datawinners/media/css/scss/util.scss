@@ -267,6 +267,16 @@ span.tooltip{
         cursor:text;
     }
 }
+.disable_link_for_reporter{
+    color: #000000;
+    pointer-events: none;
+    cursor:default;
+    &:hover{
+        text-decoration:none;
+        color:#CCCCCC;
+        cursor:text;
+    }
+}
 
 .title_links{
     margin-left:20px;
