@@ -5,7 +5,7 @@
         <div class="grid_6 alpha logo">
                 <img src="/media/images/datawinners_logo.png"/>
         </div>
-        <ul>
+        <ul class="{{ hide_link_class }}">
             <li class ="{% ifactivetab 'main_nav' 'dashboard' %}active{% else %}inactive{% endifactivetab %}">
                 <a id="global_dashboard_link" href="{% url datawinners.dashboard.views.dashboard %}" class="{{ disable_link_class }}">{% trans "Dashboard" %}</a>
             </li>
