@@ -58,8 +58,8 @@ $(document).ready(function(){
                     else {
                         $('<div id="message" class="error_message message-box">' + responseJSON.message + '</div>').insertAfter($('#import-'+form_code));
                     }
-                    if (responseJSON.failure_imports > 0) {
-                        $("#"+form_code+"_error_table").show();
+                    if (responseJSON.failure_imports.length > 0) {
+                        $("#"+form_code+"_error_table").removeClass('none');
                     }
                     $.each(responseJSON.failure_imports, function(index, element) {
                         $("#"+form_code+"_error_table table tbody").append("<tr><td>" + element.row_num + "</td><td>" + JSON.stringify(element.row) + "</td><td>"
