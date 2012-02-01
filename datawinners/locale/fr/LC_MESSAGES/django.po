@@ -2073,7 +2073,10 @@ msgid "Entity definition successful"
 msgstr "Entité ajoutée avec succès"
 
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
-msgstr "%s existe déja type de sujet. Veuillez choiir %s dans la liste déroulante."
+msgstr "Le type de sujet %s existe déja. Veuillez choisir %s dans la liste déroulante."
+
+msgid "%s already registered as a subject type."
+msgstr "Le type de sujet %s existe déja."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
 msgstr "L'entité avec le numéro d'identification unique (ID) =% s existe déjà."

@@ -967,6 +967,9 @@ msgstr "Entité ajoutée avec succès"
 msgid "%s already registered as a subject type. Please select %s from the drop down menu."
 msgstr "%s existe déja type de sujet. Veuillez choiir %s dans la liste déroulante."
 
+msgid "%s already registered as a subject type."
+msgstr ""
+
 #: templates/project/data_analysis.html:3
 msgid "Data Analysis"
 msgstr "Analyse des données"
