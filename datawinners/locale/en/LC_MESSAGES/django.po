@@ -3229,3 +3229,17 @@ msgstr ""
 msgid "Fill out the template with your Data Senders information"
 msgstr ""
 
+msgid "Send in data"
+msgstr ""
+
+msgid "Data Submission"
+msgstr ""
+
+msgid "Register a "
+msgstr ""
+
+msgid "Project"
+msgstr ""
+
+msgid "Type"
+msgstr ""

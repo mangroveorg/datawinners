@@ -3272,3 +3272,18 @@ msgstr "Téléchargez le modèle"
 
 msgid "Fill out the template with your Data Senders information"
 msgstr "Remplissez le modèle avec les informations sur ovs expéditeurs"
+
+msgid "Send in data"
+msgstr "Envoyer des données"
+
+msgid "Data Submission"
+msgstr "Présentation des données"
+
+msgid "Register a "
+msgstr "Enregistrez un "
+
+msgid "Project"
+msgstr "Projet"
+
+msgid "Type"
+msgstr "Tapez"
