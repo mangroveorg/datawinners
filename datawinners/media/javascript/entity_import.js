@@ -81,7 +81,12 @@ $(document).ready(function(){
             return interpolate(gettext('Import a list of %(entity)s'), {entity:entity_type}, true);
         },
         zIndex:200,
-        width: 1000
+        width: 1000,
+        close: function(){
+            if($('#message').length){
+                window.location.replace(document.location.href);
+            }
+        }
     });
 
     $(".import-subject").unbind().bind("click", function(){
