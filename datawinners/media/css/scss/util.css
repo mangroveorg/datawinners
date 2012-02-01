@@ -241,6 +241,15 @@ span.tooltip {
     color: #CCCCCC;
     cursor: text; }
 
+.disable_link_for_reporter {
+  color: #000000;
+  pointer-events: none;
+  cursor: default; }
+  .disable_link_for_reporter:hover {
+    text-decoration: none;
+    color: #CCCCCC;
+    cursor: text; }
+
 .title_links {
   margin-left: 20px;
   font-size: 12px;
