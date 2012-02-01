@@ -387,7 +387,8 @@ select {
       margin: 0 !important; }
 
 .que_width ul.errorlist {
-  margin-top: 5px; }
+  margin-top: 5px;
+  list-style-type: none !important; }
 
 #frequency_values select {
   vertical-align: middle; }
