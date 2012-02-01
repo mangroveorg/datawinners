@@ -46,7 +46,7 @@ DW.question = function(question) {
         },
         date_format: "mm.yyyy",
         instruction: gettext("Answer must be a text"),
-        loaded: true,
+        newly_added_question: false,
         event_time_field_flag: false
     };
 
@@ -60,7 +60,7 @@ DW.question = function(question) {
 DW.question.prototype = {
     _init : function() {
         var q = this.options;
-        this.loaded = ko.observable(q.loaded);
+        this.newly_added_question = ko.observable(q.newly_added_question);
         this.range_min = ko.observable(q.range.min);
         this.event_time_field_flag = ko.observable(q.event_time_field_flag);
 
@@ -132,7 +132,7 @@ DW.question.prototype = {
         }
     };
     this.isenabled = function(){
-      return !this.loaded();
+      return !this.newly_added_question();
     };
     this.isAChoiceTypeQuestion = ko.dependentObservable({
                 read:function() {

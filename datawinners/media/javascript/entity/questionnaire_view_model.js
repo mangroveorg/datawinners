@@ -8,7 +8,7 @@ var questionnaireViewModel =
         question.display = ko.dependentObservable(function() {
             return this.title();
         }, question);
-        question.loaded(false);
+        question.newly_added_question(true);
         var test_code = DW.generateQuestionCode();
         question.code(questionnaireViewModel.check_unique_code(test_code));
         questionnaireViewModel.questions.push(question);
@@ -111,6 +111,11 @@ var questionnaireViewModel =
         }
         return test_code;
     },
+    set_all_questions_as_old_questions:function(){
+        for (question_index in questionnaireViewModel.questions()){
+            questionnaireViewModel.questions()[question_index].newly_added_question(false)
+        }
+    },
     choiceCanBeDeleted: function() {
         return questionnaireViewModel.selectedQuestion().choices().length > 1 && questionnaireViewModel.isEnabled();
     },
@@ -123,11 +128,7 @@ var questionnaireViewModel =
         }
     },
     isTypeEnabled: function(){
-        if (DW.isRegistrationQuestionnaire()) {
-            return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag() && !questionnaireViewModel.selectedQuestion().loaded();
-        } else {
-            return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
-        }
+        return questionnaireViewModel.isEnabled() && !questionnaireViewModel.selectedQuestion().event_time_field_flag();
     },
     reassignQuestionCodes:function(index){
         DW.current_code = index+1;

@@ -145,7 +145,7 @@ $(document).ready(function() {
                     if($("#qtype").val() != undefined) {
                         var json_data = JSON.parse(response);
                         $("#saved-questionnaire-code").val(json_data.form_code);
-                        questionnaireViewModel.selectedQuestion().loaded(true);
+                        questionnaireViewModel.set_all_questions_as_old_questions();
                         questionnaireViewModel.selectedQuestion.valueHasMutated();
                         questionnaireViewModel.questions.valueHasMutated();
                     }
