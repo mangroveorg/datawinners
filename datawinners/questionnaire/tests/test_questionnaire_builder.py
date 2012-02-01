@@ -97,6 +97,16 @@ class TestQuestionBuilder(unittest.TestCase):
         self.assertEquals(q4._to_json_view()["type"], "select1")
         self.assertEquals(q5._to_json_view()["type"], "text")
 
+    def test_should_populate_name_as_title_if_name_is_not_present(self):
+        post = {"title": "q2", "code": "qc2", "type": "text"}
+        q1 = self.question_builder.create_question(post,'en')
+        self.assertEqual('q2',q1.name)
+
+    def test_should_honour_name(self):
+        post = {"name": "name", "title":'q2',"code": "qc2", "type": "text"}
+        q1 = self.question_builder.create_question(post,'en')
+        self.assertEqual('name',q1.name)
+
     def test_should_create_integer_question_with_no_max_constraint(self):
         post = [{"title": "q2", "code": "qc2", "type": "integer", "choices": [], "is_entity_question": False,
                  "range_min": 0, "range_max": ""}]

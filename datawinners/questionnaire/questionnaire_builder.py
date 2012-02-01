@@ -71,6 +71,10 @@ class QuestionBuilder(object):
         return entity_id_question
 
 
+    def _get_name(self, post_dict):
+        name=post_dict.get("name")
+        return name if name is not None else post_dict["title"]
+
     def _create_text_question(self, post_dict, ddtype,language):
         max_length_from_post = post_dict.get("max_length")
         min_length_from_post = post_dict.get("min_length")
@@ -79,7 +83,7 @@ class QuestionBuilder(object):
         constraints = []
         if not (max_length is None and min_length is None):
             constraints.append(TextLengthConstraint(min=min_length, max=max_length))
-        return TextField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
+        return TextField(name=self._get_name(post_dict), code=post_dict["code"].strip(), label=post_dict["title"],
             entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
             instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
@@ -90,32 +94,32 @@ class QuestionBuilder(object):
         max_range = max_range_from_post if not is_empty(max_range_from_post) else None
         min_range = min_range_from_post if not is_empty(min_range_from_post) else None
         range = NumericRangeConstraint(min=min_range, max=max_range)
-        return IntegerField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
+        return IntegerField(name=self._get_name(post_dict), code=post_dict["code"].strip(), label=post_dict["title"],
             constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),
             required=post_dict.get("required"),language=language)
 
 
     def _create_date_question(self, post_dict, ddtype,language):
-        return DateField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
+        return DateField(name=self._get_name(post_dict), code=post_dict["code"].strip(), label=post_dict["title"],
             date_format=post_dict.get('date_format'), ddtype=ddtype, instruction=post_dict.get("instruction"),
             required=post_dict.get("required"), event_time_field_flag=post_dict.get('event_time_field_flag', False),language=language)
 
 
     def _create_geo_code_question(self, post_dict, ddtype,language):
-        return GeoCodeField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
+        return GeoCodeField(name=self._get_name(post_dict), code=post_dict["code"].strip(), label=post_dict["title"],
             ddtype=ddtype,
             instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
 
     def _create_select_question(self, post_dict, single_select_flag, ddtype,language):
         options = [(choice.get("text"), choice.get("val")) for choice in post_dict["choices"]]
-        return SelectField(name=post_dict["title"], code=post_dict["code"].strip(), label=post_dict["title"],
+        return SelectField(name=self._get_name(post_dict), code=post_dict["code"].strip(), label=post_dict["title"],
             options=options, single_select_flag=single_select_flag, ddtype=ddtype,
             instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
 
 
     def _create_telephone_number_question(self,post_dict, ddtype,language):
-        return TelephoneNumberField(name=post_dict["title"], code=post_dict["code"].strip(),
+        return TelephoneNumberField(name=self._get_name(post_dict), code=post_dict["code"].strip(),
             label=post_dict["title"], ddtype=ddtype,
             instruction=post_dict.get("instruction"), constraints=(
                 self._create_constraints_for_mobile_number()),required=post_dict.get("required"),language=language)

@@ -132,7 +132,7 @@ DW.question.prototype = {
         }
     };
     this.isenabled = function(){
-      return !this.newly_added_question();
+      return this.newly_added_question();
     };
     this.isAChoiceTypeQuestion = ko.dependentObservable({
                 read:function() {
