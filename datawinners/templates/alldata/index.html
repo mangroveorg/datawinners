@@ -1,8 +1,8 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "All Data" %}{% endblock %}
+{% block page_title %}{% trans "Data Submission" %}{% endblock %}
 
-{% block section_title %}{% trans "All Data" %}
+{% block section_title %}{% trans "Data Submission" %}
     <span class="title_links">
  <a href="/allfailedsubmissions" class="{{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
     </span>
@@ -24,10 +24,10 @@
     <div>
         <table class="styled_table">
             <thead>
-            <th> {% trans "Name" %}</th>
+            <th> {% trans "Project" %}</th>
             <th> {% trans "Created On" %}</th>
             <th> {% trans "Type" %}</th>
-            <th> {% trans "View Report" %}</th>
+            <th> {% trans "What do you want to do?" %}</th>
             </thead>
             {% for project in projects %}
                 <tr>
@@ -37,9 +37,9 @@
                     <td><span class="report_links"><span class="disable_link"> {% trans "Summary" %} </span> |
                         <a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}">{% trans "Analysis" %}</a>
                             |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
-                            |<a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Web Submissions" %}</a>
+                            |<a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
                             |{%if project.create_subjects_link%}
-                                <a href="{{ project.create_subjects_link}}">{{ project.create_subjects_link_name }}</a>
+                                <a href="{{ project.create_subjects_link}}">{% trans "Register a " %}{{ project.entity_type}}</a>
                              {% endif %} </span></td>
                 </tr>
             {% endfor %}
