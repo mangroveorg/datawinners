@@ -45,7 +45,7 @@ class TestImportData(MangroveTestCase):
         self.assertEqual(6, len(subjects[0]["labels"]))
 
         self.assertEqual(subjects[0]['data'][0]['cols'][0], 'Bhopal')
-        self.assertEqual(subjects[0]['data'][0]['cols'][2], 'india')
+        self.assertEqual(subjects[0]['data'][0]['cols'][2], 'India')
         self.assertEqual(subjects[0]['data'][0]['cols'][5], 'clb')
 
         self.assertEqual(subjects[0]['data'][1]['cols'][0], 'Satna')
