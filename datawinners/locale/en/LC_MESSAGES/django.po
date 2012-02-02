@@ -3272,20 +3272,20 @@ msgstr "A Subject is what your Questionnaire is about; a speciﬁc person, place
 "<li>An engineer measures the ﬂow rate of a water pump. The Subject is the water pump.</li>"
 "<li>A sales person sells products to a retailer. The Subject is the retailer.</li>"
 
-msgid "register_subject_question"
+msgid "register_subject_for_projects_question"
 msgstr "Why should I register Subjects for my projects?"
 
-msgid "register_subject_answer"
+msgid "register_subject_for_projects_answer"
 msgstr "<li>Register your Subjects to see them displayed on a map on your Project’s Overview tab.</li>"
 "<li>Register a unique identiﬁcation number for each subject to:</li>"
 "<div class='margin_left_20'><li>Improve the quality of your data.</li>"
 "<li>Make data collection easier by reducing the number of questions.</li>"
 "<li>Collect a variety of data about each subject.</li></div>"
 
-msgid "register_my_subject_question"
+msgid "register_subject_question"
 msgstr "How do I register my Subjects?"
 
-msgid "register_my_subject_answer"
+msgid "register_subject_answer"
 msgstr "<ol><li>Add a new Subject Type</li>"
 "<li>Decide what information you want to collect about your Subjects: Click on your new Subject type"
 "(Example: Baby) and then on 'Edit registration form'.</li>"
@@ -3296,3 +3296,10 @@ msgstr "<ol><li>Add a new Subject Type</li>"
 
 msgid "Once you have registered Subjects for your projects, they will appear here."
 msgstr ""
+
+msgid "register_subject_for_project_question"
+msgstr "Why should I register Subjects for my project?"
+
+msgid "register_my_subject_answer"
+msgstr "<ol><li>Decide what information you want to use to identify and register each Subject: Customize your Registration Form</li>"
+"<li>Register a Subject: Add a <SubjectType> or Import a <SubjectType> List</li>"

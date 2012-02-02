@@ -3318,20 +3318,20 @@ msgstr "Un Sujet est ce que votre questionnaire concerne; une personne précise,
 "<li>Un ingénieur mesure le débit d'une pompe à eau. Le sujet est la pompe à eau.</li>"
 "<li>Un commercial vend des produits à un détaillant: Le sujet est le détaillant.</li>"
 
-msgid "register_subject_question"
+msgid "register_subject_for_projects_question"
 msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projets?"
 
-msgid "register_subject_answer"
+msgid "register_subject_for_projects_answer"
 msgstr "<li>Enregistrez vos sujets pour pouvoir les voir afﬁchés sur la carte de lʼonglet Aperçu du Projet.</li>"
 "<li>Enregistrez un numéro dʼidentiﬁcation unique pour chaque sujet pour:</li>"
 "<div class='margin_left_20'><li>Améliorer la qualité de votre donnée.</li>"
 "<li>Rendre la collecte de données plus facile en réduisant le nombre de questions.</li>"
 "<li>Collecter une variété de données concernant chaque sujet.</li></div>"
 
-msgid "register_my_subject_question"
+msgid "register_subject_question"
 msgstr "Comment enregistrer mes Sujets?"
 
-msgid "register_my_subject_answer"
+msgid "register_subject_answer"
 msgstr "<ol><li>Ajoutez un nouveau Type de Sujet</li>"
 "<li>Décidez quelle information vous voulez collecter concernant vos Sujets : Cliquez sur votre nouveau type de Sujet "
 "(Exemple : Bébé) et ensuite cliquez sur “Editer le formulaire dʼenregistrement”.</li>"
@@ -3342,3 +3342,11 @@ msgstr "<ol><li>Ajoutez un nouveau Type de Sujet</li>"
 
 msgid "Once you have registered Subjects for your projects, they will appear here."
 msgstr "Une fois que vous aurez enregistré des Sujets pour vos projets, ils sʼafﬁcheront ici."
+
+msgid "register_subject_for_project_question"
+msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projet?"
+
+msgid "register_my_subject_answer"
+msgstr "<ol><li>Décidez quelle information vous voulez utiliser pour identiﬁer et enregistrer chaque Sujet: "
+"personnalisez votre Formulaire dʼEnregistrement</li>"
+"<li>Enregistrez un Sujet: Ajoutez un <Type de Sujet> ou Importez une Liste de <Type de Sujet></li>"
