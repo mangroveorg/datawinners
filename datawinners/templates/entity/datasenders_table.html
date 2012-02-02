@@ -6,8 +6,8 @@
             {% for title in labels %}
                 <th>{{ title }}</th>
             {% endfor %}
-            <th>Projects</th>
-            <th>Emails</th>
+            <th>{% trans "Projects" %}</th>
+            <th>{% trans "Email" %}</th>
         </thead>
         <tbody id='all_data_senders'>
         {% for row in all_data %}

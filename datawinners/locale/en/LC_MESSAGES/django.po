@@ -3249,3 +3249,20 @@ msgstr ""
 
 msgid "If you delete this question, any previously collected data will be lost."
 msgstr ""
+
+msgid "What is the Data Sender's name?"
+msgstr ""
+msgid "What is the Data Sender's Unique ID Number"
+msgstr ""
+
+msgid "What is the Data Sender's location?"
+msgstr ""
+
+msgid "What is the Data Sender's GPS co-ordinates?"
+msgstr ""
+
+msgid "Describe the Data Sender"
+msgstr ""
+
+msgid "What is the mobile number associated with the Data Sender?"
+msgstr ""

@@ -3123,7 +3123,7 @@ msgid "What is the %(entity_type)s's last name?"
 msgstr "Quel est le nom du/de la %(entity_type)s ?"
 
 msgid "What is the %(entity_type)s's location?"
-msgstr "Quel est la localisation du/de la %(entity_type)s ?"
+msgstr "Quelle est la localisation du/de la %(entity_type)s ?"
 
 msgid "What is the %(entity_type)s's GPS co-ordinates?"
 msgstr "Quelle sont les coordonnées GPS du/de la %(entity_type)s ?"
@@ -3293,3 +3293,21 @@ msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s
 
 msgid "If you delete this question, any previously collected data will be lost."
 msgstr "Si vous supprimez cette question, toutes les données collectées auparavant seront perdues."
+
+msgid "What is the Data Sender's name?"
+msgstr "Quel est le nom de l'expéditeur de données ?"
+
+msgid "What is the Data Sender's Unique ID Number"
+msgstr "Quel est le numéro d'identification unique de l'expéditeur ?"
+
+msgid "What is the Data Sender's location?"
+msgstr "Quelle est la localisation de l'expéditeur de données ?"
+
+msgid "What is the Data Sender's GPS co-ordinates?"
+msgstr "Quelle sont les coordonnées GPS de l'expéditeur de données"
+
+msgid "Describe the Data Sender"
+msgstr "Decrivez l'expediteur de données"
+
+msgid "What is the mobile number associated with the Data Sender?"
+msgstr "Quel est le numéro de téléphone mobile associé à l'expéditeur ?"

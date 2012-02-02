@@ -199,7 +199,7 @@ def all_datasenders(request):
     projects = models.get_all_projects(manager)
     grant_web_access = False
     fields, labels, codes = get_entity_type_fields(manager)
-    labels = [label.replace('subject', 'Data Sender') for label in labels]
+    labels = [_(label.replace('subject', 'Data Sender')) for label in labels]
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':
