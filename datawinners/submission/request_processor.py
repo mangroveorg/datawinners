@@ -1,7 +1,7 @@
 from mangrove.transport import TransportInfo
-from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, OrganizationSetting
-from messageprovider.messages import SMS
-from utils import get_organization, get_database_manager_for_org
+from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, OrganizationSetting
+from datawinners.messageprovider.messages import SMS
+from datawinners.utils import get_organization, get_database_manager_for_org
 
 class WebSMSDBMRequestProcessor(object):
     def process(self, http_request, mangrove_request):

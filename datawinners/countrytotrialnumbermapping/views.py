@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt
-from countrytotrialnumbermapping.helper import get_countries_in_display_format
+from datawinners.countrytotrialnumbermapping.helper import get_countries_in_display_format
 from datawinners.countrytotrialnumbermapping.models import Country, Network
 import json
 

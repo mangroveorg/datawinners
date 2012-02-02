@@ -51,7 +51,7 @@ from datawinners.project.wizard_view import edit_project, reminder_settings, rem
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
-from questionnaire.questionnaire_builder import QuestionnaireBuilder
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 logger = logging.getLogger("django")
 

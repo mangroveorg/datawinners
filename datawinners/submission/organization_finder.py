@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
+from datawinners import settings
 from datawinners.accountmanagement.models import OrganizationSetting, DataSenderOnTrialAccount
-import settings
 
 class OrganizationFinder(object):
     def find(self, from_number, to_number):

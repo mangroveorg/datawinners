@@ -38,9 +38,9 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.utils import get_excel_sheet, workbook_add_sheet
-from entity.helper import get_country_appended_location
-from questionnaire.questionnaire_builder import QuestionnaireBuilder
-from utils import get_organization
+from datawinners.entity.helper import get_country_appended_location
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from datawinners.utils import get_organization
 
 COUNTRY = ',MADAGASCAR'
 

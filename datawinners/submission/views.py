@@ -11,15 +11,15 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.submission.models import  SMSResponse
 
 import logging
-from location.LocationTree import get_location_hierarchy
+from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
-from messageprovider.handlers import create_failure_log
-from submission.organization_finder import OrganizationFinder
-from submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor
-from submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
-from utils import  get_database_manager_for_org
+from datawinners.messageprovider.handlers import create_failure_log
+from datawinners.submission.organization_finder import OrganizationFinder
+from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor
+from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
+from datawinners.utils import  get_database_manager_for_org
 from mangrove.transport.facade import Request
-from messageprovider.exception_handler import handle
+from datawinners.messageprovider.exception_handler import handle
 
 logger = logging.getLogger("django")
 

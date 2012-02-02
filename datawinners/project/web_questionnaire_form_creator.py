@@ -4,7 +4,7 @@ from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
-from entity.import_data import load_all_subjects_of_type
+from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField
 from mangrove.form_model.validation import RegexConstraint
 

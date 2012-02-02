@@ -20,7 +20,7 @@ from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import  FormModel
-from questionnaire.questionnaire_builder import QuestionnaireBuilder
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type

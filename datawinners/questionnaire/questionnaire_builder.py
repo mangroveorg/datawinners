@@ -6,7 +6,7 @@ from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import NumericRangeConstraint, TextLengthConstraint, RegexConstraint
 from mangrove.utils.helpers import slugify
 from mangrove.utils.types import is_not_empty, is_empty
-from entity.helper import question_code_generator
+from datawinners.entity.helper import question_code_generator
 
 class QuestionnaireBuilder(object):
     def __init__(self, form_model, dbm, question_builder=None):

@@ -2,9 +2,9 @@
 from django.utils import translation
 from mangrove.form_model.form_model import get_form_model_by_code, FORM_CODE
 import mangrove.errors.MangroveException as ex
-from messageprovider.message_handler import get_exception_message_for
-from messageprovider.messages import SMS
-from submission.models import DatawinnerLog
+from datawinners.messageprovider.message_handler import get_exception_message_for
+from datawinners.messageprovider.messages import SMS
+from datawinners.submission.models import DatawinnerLog
 
 def default_exception_handler(exception, request):
     return  get_exception_message_for(exception=exception, channel=SMS)
