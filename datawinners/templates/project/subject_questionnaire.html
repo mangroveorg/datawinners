@@ -61,7 +61,7 @@
              <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
                  <a href="questionnaire.html#" data-bind="text: question.display"></a>
                  <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                     <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">Delete</a>
+                     <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
                  </div>
                  <span class="selected_question_arrow"
                               data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
@@ -78,7 +78,7 @@
     <p>{% trans "Review the questions by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
-    <h2>My Subjects</h2>
+    <h2>{% trans "My Subjects" %}</h2>
     {% include 'project/my_subjects_help.html' %}
 
     <div id="my_subjects">
@@ -88,11 +88,11 @@
     {% endblock %}
     </div>
     <div class="instruction">
-        Define what information you want to collect about each clinic. !
+        {% blocktrans with entity_type as entity_type %}Define what information you want to collect about each {{ entity_type }}.{% endblocktrans %}
     </div>
 
     <div id="my_subjects_links" class="text_align_right">
-        <a href="{{ project_links.subjects_link }}">Cancel</a>
+        <a href="{{ project_links.subjects_link }}">{% trans "Cancel" %}</a>
     </div>
 
     {% include 'entity/questionnaire_form.html' %}
