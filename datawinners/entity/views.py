@@ -341,6 +341,7 @@ def edit_subject_questionnaire(request, entity_type=None):
     return render_to_response('entity/questionnaire.html',
             {'existing_questions': repr(existing_questions),
              'questionnaire_code': form_model.form_code,
+             'langauge': form_model.activeLanguages[0],
              'entity_type': entity_type},
         context_instance=RequestContext(request))
 

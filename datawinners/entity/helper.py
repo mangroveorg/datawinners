@@ -7,7 +7,7 @@ from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, T
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE_FIELD, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
-    SHORT_CODE_FIELD, SHORT_CODE, REGISTRATION_FORM_CODE,\
+    SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
     ENTITY_TYPE_FIELD_CODE
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
@@ -18,7 +18,7 @@ from mangrove.errors.MangroveException import NumberNotRegisteredException,\
     DataObjectNotFound
 from mangrove.transport.reporter import find_reporter_entity
 from django.utils.encoding import smart_unicode
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from datawinners.accountmanagement.models import Organization,\
     DataSenderOnTrialAccount
 from datawinners.location.LocationTree import get_location_tree
@@ -68,7 +68,7 @@ def _generate_form_code(manager, prefix, rank=''):
     return form_code
 
 
-def _create_registration_form(manager, entity_name=None, form_code=None, entity_type=None):
+def _create_registration_form(manager, entity_name=None, form_code=None, entity_type=None, language='en'):
     code_generator = question_code_generator()
     location_type = _get_or_create_data_dict(manager, name='Location Type', slug='location', primitive_type='string')
     geo_code_type = _get_or_create_data_dict(manager, name='GeoCode Type', slug='geo_code', primitive_type='geocode')
@@ -78,32 +78,37 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
 
     question1 = TextField(name=FIRSTNAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's first name?") % {'entity_type': entity_name},
-        defaultValue="some default value", language="en", ddtype=name_type,
+        defaultValue="some default value", language=get_language(), ddtype=name_type,
         instruction=_("Enter a %(entity_type)s first name") % {'entity_type': entity_name})
+
     question2 = TextField(name=NAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's last name?") % {'entity_type': entity_name},
-        defaultValue="some default value", language="en", ddtype=name_type,
+        defaultValue="some default value", language=get_language(), ddtype=name_type,
         instruction=_("Enter a %(entity_type)s last name") % {'entity_type': entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code_generator.next(),
-                               label=_("What is the %(entity_type)s's location?") % {'entity_type':entity_name},
-                               language="en", ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
-    question4 = GeoCodeField(name=GEO_CODE_FIELD, code=code_generator.next(), label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type':entity_name},
-                             language="en", ddtype=geo_code_type,
-                             instruction=unicode(_("Enter lat and long. Eg 20.6, 47.3")))
+        label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name},
+        language=get_language(), ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
+    question4 = GeoCodeField(name=GEO_CODE_FIELD, code=code_generator.next(),
+        label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type': entity_name},
+        language=get_language(), ddtype=geo_code_type,
+        instruction=unicode(_("Enter lat and long. Eg 20.6, 47.3")))
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=code_generator.next(),
-                                     label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type':entity_name},
-                                     defaultValue="some default value", language="en", ddtype=mobile_number_type,
-                                     instruction=_("Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269") % {'entity_type':entity_name}, constraints=(
-                                     _create_constraints_for_mobile_number()))
-    question6 = TextField(name=SHORT_CODE_FIELD, code=code_generator.next(), label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type':entity_name},
-                              defaultValue="some default value", language="en", ddtype=name_type,
-                              instruction=unicode(_("Enter an id, or allow us to generate it")),
-                              entity_question_flag=True,
-                              constraints=[TextLengthConstraint(max=12)], required=False)
+        label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type': entity_name},
+        defaultValue="some default value", language=get_language(), ddtype=mobile_number_type,
+        instruction=_(
+            "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269") % {
+            'entity_type': entity_name}, constraints=(
+            _create_constraints_for_mobile_number()))
+    question6 = TextField(name=SHORT_CODE_FIELD, code=code_generator.next(),
+        label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type': entity_name},
+        defaultValue="some default value", language=get_language(), ddtype=name_type,
+        instruction=unicode(_("Enter an id, or allow us to generate it")),
+        entity_question_flag=True,
+        constraints=[TextLengthConstraint(max=12)], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,
-        entity_type=entity_type)
+        entity_type=entity_type, language=language)
     return form_model
 
 
@@ -112,7 +117,7 @@ def create_registration_form(manager, entity_name):
         entity_name = entity_name[0]
     prefix = entity_name.lower()[:3]
     form_code = _generate_form_code(manager, prefix)
-    form_model = _create_registration_form(manager, entity_name, form_code, [entity_name])
+    form_model = _create_registration_form(manager, entity_name, form_code, [entity_name], language=get_language())
     form_model.save()
     return form_model
 
@@ -123,17 +128,17 @@ def _associate_data_sender_to_project(dbm, project, project_id, response):
     project.save(dbm)
 
 
-def get_country_appended_location(location_hierarchy,country):
-    return location_hierarchy + ","+country if location_hierarchy is not None else None
+def get_country_appended_location(location_hierarchy, country):
+    return location_hierarchy + "," + country if location_hierarchy is not None else None
 
 
-def _get_data(form_data,country):
+def _get_data(form_data, country):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
               'location': LOCATION_TYPE_FIELD_CODE}
     data = dict()
     data[mapper['telephone_number']] = form_data.get('telephone_number')
-    data[mapper['location']] = get_country_appended_location(form_data.get('location'),country)
+    data[mapper['location']] = get_country_appended_location(form_data.get('location'), country)
     data[mapper['geo_code']] = form_data.get('geo_code')
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
@@ -166,8 +171,8 @@ def process_create_datasender_form(dbm, form, org_id, project):
                 _add_data_sender_to_trial_organization(telephone_number, org_id)
 
         try:
-            web_player = WebPlayer(dbm, get_location_tree(),get_location_hierarchy)
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data,organization.country),
+            web_player = WebPlayer(dbm, get_location_tree(), get_location_hierarchy)
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
             project_id = form.cleaned_data["project_id"]
@@ -178,9 +183,10 @@ def process_create_datasender_form(dbm, form, org_id, project):
 
     return message
 
+
 def question_code_generator():
-    i=1
+    i = 1
     while 1:
-        code='q'+str(i)
+        code = 'q' + str(i)
         yield code
-        i+=1
+        i += 1

@@ -23,14 +23,14 @@ DW.date_template = {
 
 };
 DW.question = function(question) {
+    var question_name = "Question" + questionnaireViewModel.questions().length;
     var defaults = {
-        name : "Question",
+        name : question_name,
         code : "code",
         required:true,
         type : "text",
-        choices :[
-            {text:"default", val:""}
-        ],
+        language:'en',
+        choices :[],
         entity_question_flag : false,
         length_limiter : "length_unlimited",
         length : {
@@ -42,7 +42,8 @@ DW.question = function(question) {
             max : ""
         },
         label : {
-            en : "Question"
+            en : "Question",
+            fr : "Question"
         },
         date_format: "mm.yyyy",
         instruction: gettext("Answer must be a text"),
@@ -56,6 +57,16 @@ DW.question = function(question) {
     this._init();
 };
 
+DW.initChoices=function(choices){
+    var final_choices=[];
+    $.each(choices,function(index,choice){
+        var display_choice = {};
+        display_choice['text'] = choice.text[questionnaireViewModel.language];
+        display_choice['val'] = choice.val;
+        final_choices.push(display_choice);
+    });
+    return final_choices;
+};
 
 DW.question.prototype = {
     _init : function() {
@@ -71,14 +82,16 @@ DW.question.prototype = {
         this.max_length = ko.observable(q.length.max);
         if(DW.isRegistrationQuestionnaire()) {
             this.name = ko.observable(q.name);
-            this.title = ko.observable(q.label.en);
+            this.title = ko.observable(q.label[questionnaireViewModel.language]);
         } else {
             this.title = ko.observable(q.name);
         }
         this.code = ko.observable(q.code);
         this.type = ko.observable(q.type);
         this.required = ko.observable(q.required);
-        this.choices = ko.observableArray(q.choices);
+
+        var initialValues = DW.initChoices(q.choices);
+        this.choices = ko.observableArray(initialValues);
         this.is_entity_question = ko.observable(q.entity_question_flag);
         this.date_format = ko.observable(q.date_format);
         this.length_limiter = ko.observable(q.length.max ? "length_limited" : "length_unlimited");
@@ -134,6 +147,8 @@ DW.question.prototype = {
     this.isenabled = function(){
       return this.newly_added_question();
     };
+
+
     this.isAChoiceTypeQuestion = ko.dependentObservable({
                 read:function() {
                     return this.type() == "select" || this.type() == "select1" ? "choice" : "none";
@@ -144,6 +159,7 @@ DW.question.prototype = {
                 owner: this
             });
     }
+
 };
 
 

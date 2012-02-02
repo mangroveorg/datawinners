@@ -15,17 +15,18 @@ class WebQuestionnaireFormCreater(object):
 
     def create(self):
         properties = dict()
+        language = self.form_model.activeLanguages[0]
         if self.form_model.is_registration_form():
             properties.update(self._get_entity_type_hidden_field())
             properties.update(
-                {field.code: self._get_django_field(field) for field in self.form_model.fields})
+                {field.code: self._get_django_field(field, language) for field in self.form_model.fields})
         else:
             subject_question = self.form_model.entity_question
             if subject_question is not None:
                 properties.update(self._get_subject_web_question(subject_question))
                 properties.update(self.subject_question_creator.create_code_hidden_field(subject_question))
             properties.update(
-                {field.code: self._get_django_field(field) for field in self.form_model.fields if
+                {field.code: self._get_django_field(field,language) for field in self.form_model.fields if
                  not field.is_entity_field})
         properties.update(self._get_form_code_hidden_field())
 
@@ -37,19 +38,19 @@ class WebQuestionnaireFormCreater(object):
     def _get_form_code_hidden_field(self):
         return {'form_code': forms.CharField(widget=HiddenInput, initial=self.form_model.form_code)}
 
-    def _get_django_field(self, field):
+    def _get_django_field(self, field,language):
         try:
             field_creation_map = {SelectField: self._create_select_field}
-            return field_creation_map[type(field)](field)
+            return field_creation_map[type(field)](field,language)
         except KeyError:
             if field.type == "telephone_number":
-                return self._create_phone_number_field(field)
+                return self._create_phone_number_field(field,language)
             else:
-                return self._create_char_field(field)
+                return self._create_char_field(field,language)
 
 
-    def _create_char_field(self, field):
-        char_field = forms.CharField(label=field.label["en"], initial=field.value, required=field.is_required(),
+    def _create_char_field(self, field,language):
+        char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
             help_text=field.instruction)
         char_field.widget.attrs["watermark"] = field.get_constraint_text()
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -58,18 +59,18 @@ class WebQuestionnaireFormCreater(object):
 
         return char_field
 
-    def _create_select_field(self, field):
+    def _create_select_field(self, field,language):
         if field.single_select_flag:
-            return ChoiceField(choices=self._create_choices(field), required=field.is_required(),
-                label=field.label["en"],
+            return ChoiceField(choices=self._create_choices(field,language), required=field.is_required(),
+                label=field.label[language],
                 initial=field.value, help_text=field.instruction)
-        return forms.MultipleChoiceField(label=field.label["en"], widget=forms.CheckboxSelectMultiple,
-            choices=self._create_choices(field),
+        return forms.MultipleChoiceField(label=field.label[language], widget=forms.CheckboxSelectMultiple,
+            choices=self._create_choices(field,language),
             initial=field.value, required=field.is_required(), help_text=field.instruction)
 
-    def _create_choices(self, field):
+    def _create_choices(self, field,language):
         choice_list = [('', '--None--')] if field.single_select_flag else []
-        choice_list.extend([(option['val'], option['text']['en']) for option in field.options])
+        choice_list.extend([(option['val'], option['text'][language]) for option in field.options])
         choices = tuple(choice_list)
         return choices
 
@@ -77,8 +78,8 @@ class WebQuestionnaireFormCreater(object):
     def _get_entity_type_hidden_field(self):
         return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
 
-    def _create_phone_number_field(self, field):
-        telephone_number_field = PhoneNumberField(label=field.label["en"],
+    def _create_phone_number_field(self, field,language):
+        telephone_number_field = PhoneNumberField(label=field.label[language],
                                             required=field.is_required(),help_text=field.instruction)
         telephone_number_field.widget.attrs["watermark"] = field.get_constraint_text()
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'

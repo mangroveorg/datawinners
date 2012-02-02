@@ -2,6 +2,7 @@ var questionnaireViewModel =
 {
     questions : ko.observableArray([]),
     hasAddedNewQuestions : false,
+    language:'en',
 
     addQuestion : function() {
         var question = new DW.question();

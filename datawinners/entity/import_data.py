@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from copy import copy
+from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.transport.submissions import Submission
 import os
@@ -159,14 +160,14 @@ def _get_registration_form_models(manager):
     return subjects
 
 
-def get_field_infos(fields):
+def get_field_infos(fields,langauge='en'):
     fields_names = []
     labels = []
     codes = []
     for field in fields:
         if field['name'] != 'entity_type':
             fields_names.append(field['name'])
-            labels.append(field['label']['en'])
+            labels.append(field['label'][langauge])
             codes.append(field['code'])
     return fields_names, labels, codes
 
@@ -175,7 +176,7 @@ def get_entity_type_infos(entity, form_model=None, manager=None):
     if form_model is None:
         form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(entity))
         form_model = manager.load_all_rows_in_view("questionnaire", key=form_model.form_code)[0]
-    names, labels, codes = get_field_infos(form_model.value['json_fields'])
+    names, labels, codes = get_field_infos(form_model.value['json_fields'],form_model.value['metadata'][attributes.ACTIVE_LANGUAGES][0])
     subject = dict(entity = entity,
         code = form_model.value["form_code"],
         names = names,
