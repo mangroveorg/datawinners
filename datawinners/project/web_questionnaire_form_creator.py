@@ -5,7 +5,7 @@ from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from datawinners.entity.import_data import load_all_subjects_of_type
-from mangrove.form_model.field import SelectField, HierarchyField
+from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField
 from datawinners.entity.fields import PhoneNumberField
 
 class WebQuestionnaireFormCreater(object):
@@ -40,12 +40,9 @@ class WebQuestionnaireFormCreater(object):
 
     def _get_django_field(self, field,language):
         try:
-            field_creation_map = {SelectField: self._create_select_field}
+            field_creation_map = {SelectField: self._create_select_field,TelephoneNumberField:self._create_phone_number_field}
             return field_creation_map[type(field)](field,language)
         except KeyError:
-            if field.type == "telephone_number":
-                return self._create_phone_number_field(field,language)
-            else:
                 return self._create_char_field(field,language)
 
 
