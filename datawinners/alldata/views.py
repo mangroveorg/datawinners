@@ -2,10 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.accountmanagement.views import is_new_user
+from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for
 from datawinners.main.utils import get_database_manager
-from datawinners.project import models
 from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
 from mangrove.form_model.form_model import FormModel
@@ -13,24 +12,14 @@ from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
 
-def _get_all_project_for_user(user):
-    if user.get_profile().reporter:
-        disable_link_class = "disable_link_for_reporter"
-        hide_links = "none"
-        rows = models.get_all_projects(get_database_manager(user), user.get_profile().reporter_id)
-    else:
-        disable_link_class = ""
-        hide_links = ""
-        rows = models.get_all_projects(get_database_manager(user))
-    return hide_links, disable_link_class, rows
-
 @login_required(login_url='/login')
 @is_new_user
 def index(request):
     reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)
     project_list = []
-    hide_link_class, disable_link_class, rows = _get_all_project_for_user(request.user)
+    rows = get_all_project_for_user(request.user)
+    disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     for row in rows:
         analysis = log = "#"
         disabled = "disable_link"
