@@ -14,6 +14,7 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
 from mangrove.utils.types import  is_string, is_empty
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 def get_all_reminder_logs_for_project(project_id, dbm):
@@ -160,7 +161,7 @@ class Project(DocumentBase):
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
                  state=ProjectState.INACTIVE, activity_report=None, sender_group=None,language='en'):
-        
+
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -181,11 +182,11 @@ class Project(DocumentBase):
 
     def is_activity_report(self):
         return self.activity_report == "yes"
-    
+
     def get_data_senders(self, dbm):
         all_data, fields, label = load_all_subjects_of_type(dbm)
         return [dict(zip(fields,data["cols"])) for data in all_data if data['short_code'] in self.data_senders]
-        
+
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
         form_code = self._load_form(dbm).form_code
@@ -233,7 +234,8 @@ class Project(DocumentBase):
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('project_names', key=self.name)
         if len(rows) and rows[0]['value'] != self.id:
-            raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
+            message  = _("%s with %s = %s already exists.") % (_('Project'), _("Name"), "'%s'" % self.name)
+            raise Exception(message)
 
     def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)

@@ -47,18 +47,24 @@ class TestProjectModel(MangroveTestCase):
 
     def test_project_name_should_be_unique(self):
         project = Project(name="Test2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
-        with self.assertRaises(DataObjectAlreadyExists):
+        with self.assertRaises(Exception) as cm:
             project.save(self.manager)
+        the_exception = cm.exception
+        self.assertEqual(the_exception.message, "Project with Name = 'test2' already exists.")
 
     def test_project_name_should_be_case_insensitively_unique(self):
         project = Project(name="tEsT2", goals="Testing", project_type="Survey", entity_type="Clinic", devices=['web'])
-        with self.assertRaises(DataObjectAlreadyExists):
+        with self.assertRaises(Exception) as cm:
             project.save(self.manager)
-
+        the_exception = cm.exception
+        self.assertEqual(the_exception.message, "Project with Name = 'test2' already exists.")
+        
     def test_should_check_for_unique_name_while_update_project(self):
         self.project1.update(dict(name='Test2', devices=['web', 'sms'], goals="New goals"))
-        with self.assertRaises(DataObjectAlreadyExists):
+        with self.assertRaises(Exception) as cm:
             self.project1.save(self.manager)
+        the_exception = cm.exception
+        self.assertEqual(the_exception.message, "Project with Name = 'test2' already exists.")
 
     def _create_form_model_for_project(self, project):
         ddtype = DataDictType(self.manager, name='Default String Datadict Type', slug='string_default',
