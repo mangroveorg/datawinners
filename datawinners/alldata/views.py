@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
 from datawinners.accountmanagement.views import is_new_user
-from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for
+from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
@@ -20,6 +20,7 @@ def index(request):
     project_list = []
     rows = get_all_project_for_user(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
+    page_heading = get_page_heading(request.user)
     for row in rows:
         analysis = log = "#"
         disabled = "disable_link"
@@ -45,8 +46,10 @@ def index(request):
                        web_submission_link_disabled=web_submission_link_disabled, create_subjects_link=create_subjects_link,
                        entity_type=project.entity_type)
         project_list.append(project_info)
-    return render_to_response('alldata/index.html', {'projects': project_list, 'disable_link_class': disable_link_class, 'hide_link_class':hide_link_class},
-                              context_instance=RequestContext(request))
+    return render_to_response('alldata/index.html',
+            {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
+             'hide_link_class': hide_link_class},
+        context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')

@@ -37,6 +37,14 @@ class TestHelper(unittest.TestCase):
         assert hide  == ""
         assert disabled == ""
 
+    def test_should_return_DataSubmission_for_reporter(self):
+        user = StubUser(ReporterProfile())
+        assert helper.get_page_heading(user) == 'Data Submission'
+
+    def test_should_return_AllData_for_reporter(self):
+        user = StubUser(NormalGuy())
+        assert helper.get_page_heading(user) == 'All Data'
+
     def tearDown(self):
         helper.models.get_all_projects = self.all_projects
         helper.get_database_manager = self.database_manager

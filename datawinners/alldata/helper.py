@@ -12,3 +12,8 @@ def get_visibility_settings_for(user):
     if user.get_profile().reporter:
         return "disable_link_for_reporter", "none"
     return "",""
+
+def get_page_heading(user):
+    if user.get_profile().reporter:
+        return "Data Submission"
+    return "All Data"

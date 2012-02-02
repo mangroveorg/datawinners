@@ -1,8 +1,8 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %}{% trans "Data Submission" %}{% endblock %}
+{% block page_title %}{% trans page_heading %}{% endblock %}
 s
-{% block section_title %}{% trans "Data Submission" %}
+{% block section_title %}{% trans page_heading %}
     <span class="title_links">
         <a href="/allfailedsubmissions" class="{{ hide_link_class }} {{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
     </span>
@@ -25,15 +25,13 @@ s
         <table class="styled_table">
             <thead>
             <th> {% trans "Project" %}</th>
-            <th> {% trans "Created On" %}</th>
-            <th> {% trans "Type" %}</th>
+            <th class="{{ hide_link_class }}"> {% trans "Created On" %}</th>
             <th> {% trans "What do you want to do?" %}</th>
             </thead>
             {% for project in projects %}
                 <tr>
                     <td><a href="{{ project.link }}" class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
-                    <td>{{ project.created }}</td>
-                    <td>{% trans project.type %}</td>
+                    <td class="{{ hide_link_class }}">{{ project.created }}</td>
                     <td>
                         <span class="report_links">
                         <span class="{{ hide_link_class }}">
