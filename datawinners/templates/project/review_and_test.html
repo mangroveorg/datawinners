@@ -127,22 +127,23 @@
             <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
         </div>
         </div>
+        {% if not in_trial_mode %}
         <div id="reminders">
             <div class="header">
                 <h5 class="inline">{% trans "Reminders" %}</h5>
             </div>
             <div>
                 <ul>
-                <li>
-                    {% trans "Reminders are" %} <strong>{% trans is_reminder %}</strong> {%trans "for this project" %}
-                </li>
-            </ul>
-            <a id="remider_edit_link" href="{{project_links.reminders_link}}">{% trans "edit" %}</a>
-            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-            <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
+                    <li>
+                        {% trans "Reminders are" %} <strong>{% trans is_reminder %}</strong> {%trans "for this project" %}
+                    </li>
+                </ul>
+                <a id="remider_edit_link" href="{{project_links.reminders_link}}">{% trans "edit" %}</a>
+                <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+                <div class="tooltip"><p>{% trans 'Click "edit" to make any required changes.' %} </p></div>
+            </div>
         </div>
-
-        </div>
+        {% endif %}
     </div>
         <h4 class="inline">{% trans "Test This Questionnaire" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-4px;"></h4>
         <div class="tooltip"><p>
@@ -152,23 +153,23 @@
             <strong>{% trans "What do I need to do?" %}</strong><br />
             {% trans "r_tooltip_finish_test" %}
         </p></div>
-       <div class="SMS_tester_section alpha omega">
-        <div class="grid_11 alpha omega">
-            <h6>{% trans "SMS Questionnaire" %}</h6>
-            <p>{% trans "Test your Questionnaire by this SMS tester" %}</p>
-            <a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a>
-        </div>
-        <div class="grid_11 omega import_list">
-            <h6>{% trans "Web Questionnaire" %}</h6>
+        <div class="SMS_tester_section alpha omega">
+            <div class="grid_11 alpha omega">
+                <h6>{% trans "SMS Questionnaire" %}</h6>
+                <p>{% trans "Test your Questionnaire by this SMS tester" %}</p>
+                <a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a>
+            </div>
+            <div class="grid_11 omega import_list">
+                <h6>{% trans "Web Questionnaire" %}</h6>
 
-            <p>{% trans "Preview and print your questionnaire" %} </p>
-            <div class='preview_links'>
-                <a class="preview_sender_registration_form" href="#">{% trans "Data Sender" %}</a>
-                <a class="preview_subject_registration_form" href="#">{% trans "Subject" %} |</a>
-                <a href="#" class="preview_questionnaire preview" >{% trans "Web" %} |</a>
+                <p>{% trans "Preview and print your questionnaire" %} </p>
+                <div class='preview_links'>
+                    <a class="preview_sender_registration_form" href="#">{% trans "Data Sender" %}</a>
+                    <a class="preview_subject_registration_form" href="#">{% trans "Subject" %} |</a>
+                    <a href="#" class="preview_questionnaire preview" >{% trans "Web" %} |</a>
+                </div>
             </div>
         </div>
-    </div>
         {% if project.state == 'Active' %}
             {% include 'project/sms_tester_form.html' %}
         {% endif %}

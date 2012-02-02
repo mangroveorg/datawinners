@@ -3305,7 +3305,7 @@ msgid "What is the Data Sender's GPS co-ordinates?"
 msgstr "Quelle sont les coordonnées GPS de l'expéditeur de données"
 
 msgid "Describe the Data Sender"
-msgstr "Decrivez l'expediteur de données"
+msgstr "Décrivez l'expediteur de données"
 
 msgid "What is the mobile number associated with the Data Sender?"
 msgstr "Quel est le numéro de téléphone mobile associé à l'expéditeur ?"
