@@ -88,7 +88,7 @@ def create_project(request):
 
             try:
                 project.save(manager)
-            except DataObjectAlreadyExists as ex:
+            except (DataObjectAlreadyExists, Exception) as ex:
                 questionnaire.delete()
                 return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': True}))
 
