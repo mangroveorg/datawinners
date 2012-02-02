@@ -220,4 +220,8 @@ $(document).ready(function() {
     $("#edit_ok").click(function() {
         $("#edit_warning").dialog("close");
     });
+
+    $("#edit_cancel").click(function(){
+        history.go(-1);
+    })
 });

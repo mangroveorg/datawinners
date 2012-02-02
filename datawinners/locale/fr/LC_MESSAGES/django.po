@@ -3285,5 +3285,11 @@ msgstr "Enregistrez un "
 msgid "Project"
 msgstr "Projet"
 
-msgid "Type"
-msgstr "Tapez"
+#msgid "Type" this duplicates 580
+#msgstr "Tapez"
+
+msgid "You may be sharing this %(entity_type)s registration form with other projects.  If you make changes, the other projects will have to use your new %(entity_type)s registration form as well."
+msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s avec d'autres projets. Si vous effectuez des modifications, les autres projets devront également utiliser votre nouveau formulaire d'enregistrement de %(entity_type)s."
+
+msgid "If you delete this question, any previously collected data will be lost."
+msgstr "Si vous supprimez cette question, toutes les données collectées auparavant seront perdues."
