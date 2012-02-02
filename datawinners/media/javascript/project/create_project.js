@@ -262,6 +262,7 @@ $(document).ready(function() {
             $('html,body').animate({scrollTop:0}, 'slow');
             return false;
         }
+        $("#project-message-label").addClass('none');
         basic_project_info.hide();
         questionnaire_section.show();
     });
