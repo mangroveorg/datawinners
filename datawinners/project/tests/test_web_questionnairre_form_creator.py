@@ -1,11 +1,11 @@
 import unittest
-from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
+from django.forms.fields import CharField, MultipleChoiceField, ChoiceField, RegexField
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField
+from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
 from mock import Mock
-from mangrove.form_model.validation import TextLengthConstraint
+from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 
 class TestWebQuestionnaireFormCreator(unittest.TestCase):
@@ -178,3 +178,16 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
                     language="en", ddtype=Mock(spec=DataDictType))
 
         return location_field
+
+    def test_should_create_django_regex_field(self):
+        self.form_model.add_field(self._get_telephone_number_field())
+        questionnaire_form_class = WebQuestionnaireFormCreater(None,form_model=self.form_model).create()
+        django_phone_number_field = questionnaire_form_class().fields['m']
+
+        self.assertEqual(RegexField,type(django_phone_number_field))
+
+    def _get_telephone_number_field(self):
+        phone_number_field = TelephoneNumberField(name=self.field_name, code='m', label=self.field_name,
+                               ddtype=Mock(spec=DataDictType),
+                               constraints=[TextLengthConstraint(max=15), RegexConstraint(reg='^[0-9]+$')])
+        return phone_number_field

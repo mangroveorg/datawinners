@@ -6,6 +6,7 @@ from django.utils.translation import ugettext
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField
+from mangrove.form_model.validation import RegexConstraint
 
 class WebQuestionnaireFormCreater(object):
     def __init__(self, subject_question_creator, form_model):
@@ -41,7 +42,11 @@ class WebQuestionnaireFormCreater(object):
             field_creation_map = {SelectField: self._create_select_field}
             return field_creation_map[type(field)](field)
         except KeyError:
-            return self._create_char_field(field)
+            regex_constraint = [constraint for constraint in field.constraints if type(constraint) == RegexConstraint]
+            if len(regex_constraint):
+                return self._create_regex_field(field, pattern=regex_constraint[0].pattern)
+            else:
+                return self._create_char_field(field)
 
 
     def _create_char_field(self, field):
@@ -72,6 +77,16 @@ class WebQuestionnaireFormCreater(object):
 
     def _get_entity_type_hidden_field(self):
         return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
+
+    def _create_regex_field(self, field, pattern):
+        char_field = forms.RegexField(regex=pattern, label=field.label["en"], initial=field.value, required=field.is_required(),
+            help_text=field.instruction)
+        char_field.widget.attrs["watermark"] = field.get_constraint_text()
+        char_field.widget.attrs['style'] = 'padding-top: 7px;'
+        if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
+            char_field.widget.attrs['class'] = 'location_field'
+
+        return char_field
 
 
 class SubjectQuestionFieldCreator(object):
