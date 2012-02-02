@@ -197,26 +197,3 @@
   padding: 0 !important; }
 #my_datasenders .cancel_link {
   display: none !important; }
-
-#my_subjects_questions ol {
-  margin: 0 0 20px 25px; }
-  #my_subjects_questions ol li {
-    padding-bottom: 15px;
-    list-style-type: decimal !important;
-    overflow: visible;
-    clear: left !important;
-    vertical-align: top; }
-    #my_subjects_questions ol li h6 {
-      margin: 0 !important; }
-    #my_subjects_questions ol li input {
-      padding: 0 !important; }
-    #my_subjects_questions ol li .errorlist {
-      margin: 0 !important; }
-      #my_subjects_questions ol li .errorlist li {
-        list-style-type: none !important;
-        display: inline; }
-    #my_subjects_questions ol li .answer span {
-      padding: 0 !important;
-      margin: 0 !important;
-      display: block;
-      line-height: 29px; }

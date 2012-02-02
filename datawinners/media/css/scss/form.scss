@@ -459,6 +459,71 @@ select{
         list-style-type: none !important;
     }
 }
+ol {
+    &.que_width {
+        margin: 0 0 20px 25px;
+        li {
+            padding-bottom: 15px;
+            list-style-type: decimal !important;
+            overflow:visible;
+            clear: left !important;
+            vertical-align: top;
+            h6 {
+                margin: 0 !important;
+            }
+            input {
+                padding: 0 !important;
+            }
+            .answer {
+                position: relative;
+                padding: 0 !important;
+                label {
+                    width: auto;
+                    font-weight: normal;
+                    font-size: 12px;
+                    margin-top: 5px;
+                }
+                input {
+                    float: left;
+                }
+                span {
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    float: left;
+                }
+            }
+            ul {
+                margin: 0;
+                float:left;
+                &.errorlist {
+                    float:left;
+                    color:#FFFFFF;
+                    display:inline;
+                    background:url(/media/images/arrow_error.png) no-repeat left 10px;
+                    margin-top: 0;
+                    padding:3px 10px 3px 10px;
+                    border:1px solid #00000;
+                    -moz-border-radius:5px;
+                    -webkit-moz-border-radius:5px;
+                    -webkit-border-radius:5px;
+                    li {
+                        background:#c20303;
+                        padding:3px 10px 3px 10px;
+                        border:1px solid #00000;
+                        -moz-border-radius:5px;
+                        -webkit-moz-border-radius:5px;
+                        -webkit-border-radius:5px;
+                    }
+                }
+                li {
+                    list-style-type: none !important;
+                    padding: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
 #frequency_values {
     select{
         vertical-align:middle;

@@ -12,3 +12,11 @@ a.button{
 #submit_button_right{
     height:59px !important;
 }
+
+ol.que_width li .answer ul li label {
+    margin-top: 0px;
+}
+
+ol.que_width li .answer ul li input {
+    margin-right: 3px;
+}

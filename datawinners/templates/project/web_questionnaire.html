@@ -56,10 +56,33 @@
     {% endfor %}
     <form method="POST" >
         {% csrf_token %}
-        <ul class="que_width">
+        {% for field in questionnaire_form%}
+            {% if field.is_hidden %}
+                <div class="answer">
+                    {% if field|field_type == 'ChoiceField' %}
+                        <span class="single_select_question" wmwrap="true">
+                            {{ field }}
+                        </span>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+
+                    <ul class="errorlist">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <li>
+                                    {{ error }}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <ol class="que_width">
             {% for field in questionnaire_form%}
-                <li >
-                    {% if not field.is_hidden %}
+                {% if not field.is_hidden %}
+                    <li >
                         <h6>{{ field.label }}
                         <script type="text/javascript">
                             var entity_que_code = document.getElementById('code').value
@@ -90,40 +113,41 @@
                             {{ field.help_text }}
                         </p>
 
-                    {% endif %}
-                    <div class="answer">
-                        {% if field|field_type == 'ChoiceField' %}
-                            <span class="single_select_question" wmwrap="true">
+                        <div class="answer">
+                            {% if field|field_type == 'ChoiceField' %}
+                                <span class="single_select_question" wmwrap="true">
+                                    {{ field }}
+                                </span>
+                            {% else %}
                                 {{ field }}
-                            </span>
-                        {% else %}
-                            {{ field }}
-                        {% endif %}
+                            {% endif %}
 
-                    <ul class="errorlist">
-                        {% if field.errors %}
-                            {% for error in field.errors %}
-                                <li>
-                                    {{ error }}
-                                </li>
-                            {% endfor %}
-                        {% endif %}
-                    </ul>
-                    </div>
-                    <div id="add_data_sender_link" class="none clear-left padding_top_20">
-                        <a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">
-                            {% trans "My Data Senders" %}
-                        </a>|
-                        <a id="add_data_sender" href="{% url datawinners.entity.views.create_datasender %}">
-                            {% trans "Add a data sender" %}
-                        </a>|
-                        <a id="all_datasenders_link" href="{% url datawinners.entity.views.all_datasenders %}">
-                            {% trans "All Data Senders" %}
-                        </a>
-                    </div>
-                </li>
+                            <ul class="errorlist">
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <li>
+                                            {{ error }}
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                            <div class="clear-left"></div>
+                        </div>
+                        <div id="add_data_sender_link" class="none clear-left padding_top_20">
+                            <a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">
+                                {% trans "My Data Senders" %}
+                            </a>|
+                            <a id="add_data_sender" href="{% url datawinners.entity.views.create_datasender %}">
+                                {% trans "Add a data sender" %}
+                            </a>|
+                            <a id="all_datasenders_link" href="{% url datawinners.entity.views.all_datasenders %}">
+                                {% trans "All Data Senders" %}
+                            </a>
+                        </div>
+                    </li>
+                {% endif %}
             {% endfor %}
-        </ul>
+        </ol>
         <input type="submit" class="button" value="{% trans 'Submit' %}"/>
     </form>
     </div>
