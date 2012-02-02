@@ -1,3 +1,4 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -3135,7 +3136,7 @@ msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr "Quel est le numéro d'identification unique du/de la %(entity_type)s ?"
 
 msgid "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269"
-msgstr "Entrez le numéro du %(entity_type) avec le code pays et numéro de téléphone. Exemple: 261333745269"
+msgstr "Entrez le numéro du %(entity_type)s avec le code pays et numéro de téléphone. Exemple: 261333745269"
 
 msgid "some default value"
 msgstr ""
@@ -3284,9 +3285,6 @@ msgstr "Enregistrez un "
 
 msgid "Project"
 msgstr "Projet"
-
-#msgid "Type" this duplicates 580
-#msgstr "Tapez"
 
 msgid "You may be sharing this %(entity_type)s registration form with other projects.  If you make changes, the other projects will have to use your new %(entity_type)s registration form as well."
 msgstr "Vous pouvez partager ce formulaire d’enregistrement de %(entity_type)s avec d'autres projets. Si vous effectuez des modifications, les autres projets devront également utiliser votre nouveau formulaire d'enregistrement de %(entity_type)s."

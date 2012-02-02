@@ -3241,9 +3241,6 @@ msgstr ""
 msgid "Project"
 msgstr ""
 
-#msgid "Type"  this duplicates 570
-#msgstr ""
-
 msgid "You may be sharing this %(entity_type)s registration form with other projects.  If you make changes, the other projects will have to use your new %(entity_type)s registration form as well."
 msgstr ""
 
