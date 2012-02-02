@@ -6,13 +6,13 @@ from mangrove.form_model.form_model import FormModel, FORM_CODE
 from mangrove.errors.MangroveException import NumberNotRegisteredException, DataObjectNotFound, SMSParserWrongNumberOfAnswersException
 from mock import Mock, patch
 from mangrove.transport import TransportInfo
-from accountmanagement.models import Organization
-from messageprovider.exception_handler import handle
-from messageprovider.handlers import create_failure_log
-from messageprovider.message_handler import get_exception_message_for
-from messageprovider.messages import SMS, exception_messages
-from submission.models import DatawinnerLog
-from tests.data import DEFAULT_TEST_ORG_ID
+from datawinners.accountmanagement.models import Organization
+from datawinners.messageprovider.exception_handler import handle
+from datawinners.messageprovider.handlers import create_failure_log
+from datawinners.messageprovider.message_handler import get_exception_message_for
+from datawinners.messageprovider.messages import SMS, exception_messages
+from datawinners.submission.models import DatawinnerLog
+from datawinners.tests.data import DEFAULT_TEST_ORG_ID
 
 class TestExceptionHandler(unittest.TestCase):
 
@@ -21,7 +21,7 @@ class TestExceptionHandler(unittest.TestCase):
             transport_info=TransportInfo(transport='SMS',source='123',destination='456'))
 
     def test_should_handle_NumberNotRegisteredException(self):
-        patcher = patch('messageprovider.handlers.create_failure_log')
+        patcher = patch('datawinners.messageprovider.handlers.create_failure_log')
         create_failure_log_mock = patcher.start()
 
         exception = NumberNotRegisteredException('1234312')
@@ -44,7 +44,7 @@ class TestExceptionHandler(unittest.TestCase):
         exception = SMSParserWrongNumberOfAnswersException('test_code')
 
         form_model_mock = Mock(spec=FormModel)
-        patcher = patch('messageprovider.handlers.get_form_model_by_code')
+        patcher = patch('datawinners.messageprovider.handlers.get_form_model_by_code')
         get_form_model_mock = patcher.start()
         get_form_model_mock.return_value = form_model_mock
         form_model_mock.activeLanguages = ['en']
