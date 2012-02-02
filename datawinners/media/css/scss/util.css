@@ -341,7 +341,7 @@ span.tooltip {
   font-size: 14px;
   line-height: 18px;
   font-style: italic;
-  color: #666666; }
+  color: #888888; }
   .help_accordion h2 {
     margin: 10px 0 0 0;
     font-size: 14px; }
@@ -351,6 +351,13 @@ span.tooltip {
     display: none; }
     .help_accordion .details #hide_link {
       color: #2E6E9E; }
+    .help_accordion .details div {
+      margin-top: 10px; }
+      .help_accordion .details div li {
+        margin-left: 20px; }
+    .help_accordion .details .dark_grey_text {
+      font-size: 16px;
+      color: #555555; }
 
 .terms_and_condition {
   color: #0070ac !important; }

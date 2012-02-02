@@ -393,7 +393,7 @@ font-size: 15px;
     font-size: 14px;
     line-height: 18px;
     font-style: italic;
-    color: #666666;
+    color: #888888;
     h2 {
         margin: 10px 0 0 0;
         font-size: 14px;
@@ -405,6 +405,16 @@ font-size: 15px;
         display: none;
         #hide_link {
             color: #2E6E9E;
+        }
+        div{
+            margin-top:10px;
+            li{
+                margin-left:20px;
+            }
+        }
+        .dark_grey_text{
+            font-size:16px;
+            color:#555555;
         }
     }
 }

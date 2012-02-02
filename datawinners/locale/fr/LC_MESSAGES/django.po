@@ -3168,10 +3168,6 @@ msgstr "Personnalisez le fomulaire d'enregistrement de %(entity_type)s"
 msgid "Import a list of %(entity_type)s"
 msgstr "Importer une liste de %(entity_type)s"
 
-msgid "Register and manage every %(entity_type)s you want to keep track of or collect data about. See them displayed on the map on your project’s overview page."
-msgstr "Enregistrez et Gerez chaque %(entity_type)s dont vous voulez garder la trace ou dont vous voulez collecter des données à leur propos. "
-"Les voir affichés dans la carte dans la page aperçu de projet."
-
 msgid "View each of your registered %(entity_type)s in detail."
 msgstr "Voir en detail chacun(e) de vos %(entity_type)s enregistré(e)s"
 
@@ -3309,3 +3305,40 @@ msgstr "Décrivez l'expediteur de données"
 
 msgid "What is the mobile number associated with the Data Sender?"
 msgstr "Quel est le numéro de téléphone mobile associé à l'expéditeur ?"
+
+msgid "subject_question"
+msgstr "Quʼest-ce quʼun Sujet?"
+
+msgid "subject_answer"
+msgstr "Un Sujet est ce que votre questionnaire concerne; une personne précise, un lieu, une chose ou un"
+"événement à propos duquel les Expéditeurs de Données soumettent un rapport."
+"<br>Dans de nombreux cas, l'Expéditeur de Données interagit avec un Sujet, puis envoie un rapport individuel portant sur l'interaction:"
+"<li>Un médecin examine un bébé. Dans ce cas, le sujet est le bébé.</li>"
+"<li>Un superviseur évalue la qualité des soins fournis au niveau d'une clinique. Le sujet est la clinique.</li>"
+"<li>Un ingénieur mesure le débit d'une pompe à eau. Le sujet est la pompe à eau.</li>"
+"<li>Un commercial vend des produits à un détaillant: Le sujet est le détaillant.</li>"
+
+msgid "register_subject_question"
+msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projets?"
+
+msgid "register_subject_answer"
+msgstr "<li>Enregistrez vos sujets pour pouvoir les voir afﬁchés sur la carte de lʼonglet Aperçu du Projet.</li>"
+"<li>Enregistrez un numéro dʼidentiﬁcation unique pour chaque sujet pour:</li>"
+"<div class='margin_left_20'><li>Améliorer la qualité de votre donnée.</li>"
+"<li>Rendre la collecte de données plus facile en réduisant le nombre de questions.</li>"
+"<li>Collecter une variété de données concernant chaque sujet.</li></div>"
+
+msgid "register_my_subject_question"
+msgstr "Comment enregistrer mes Sujets?"
+
+msgid "register_my_subject_answer"
+msgstr "<ol><li>Ajoutez un nouveau Type de Sujet</li>"
+"<li>Décidez quelle information vous voulez collecter concernant vos Sujets : Cliquez sur votre nouveau type de Sujet "
+"(Exemple : Bébé) et ensuite cliquez sur “Editer le formulaire dʼenregistrement”.</li>"
+"<li>Enregistrez vos Sujets : Ajoutez-les un à un en cliquant sur “Ajouter un Bébé” ou cliquez sur “Importer une Liste” "
+"si vous avez déjà une liste de sujets à télécharger.</li>"
+"<li>Utilisez vos nouveaux Sujets dans vos projets: Créez un nouveau projet et choisissez “Je veux des Rapports "
+"Individuels concernant un sujet spéciﬁque.”</li></ol>"
+
+msgid "Once you have registered Subjects for your projects, they will appear here."
+msgstr "Une fois que vous aurez enregistré des Sujets pour vos projets, ils sʼafﬁcheront ici."
