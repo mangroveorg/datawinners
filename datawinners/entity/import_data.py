@@ -114,7 +114,11 @@ def tabulate_failures(rows):
 
 
 def _format(value):
-    return value if value is not None else "--"
+    if value is None:
+        return u"--"
+    if is_sequence(value):
+        return sequence_to_str(value, u", ")
+    return value
 
 
 def _tabulate_data(entity, fields):
@@ -297,9 +301,7 @@ def _get_field_value(key, entity):
     elif key == 'location':
         if value is None:
             value = entity.location_path
-        value = _format(sequence_to_str(value, u", "))
-    elif key == 'entity_type':
-        value = _format(sequence_to_str(value, u", "))
+        value = _format(value)
     else:
         value = _format(value)
     return value
@@ -310,7 +312,7 @@ def _get_field_default_value(key, entity):
         value = ", ".join([str(i) for i in value]) if value is not None else "--"
     elif key == 'location':
         value = sequence_to_str(entity.location_path, u", ")
-        value = _format(value) if value is not None else "--"
+        value = _format(value)
     elif key == 'short_code':
         value = entity.short_code
     else:
