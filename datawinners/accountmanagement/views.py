@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
+from accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 
 from mangrove.errors.MangroveException import AccountExpiredException
@@ -146,20 +147,6 @@ def settings(request):
                 {'organization_form': organization_form, 'message': message}, context_instance=RequestContext(request))
 
 
-def _make_user_as_a_datasender(manager, org_id, current_user_name, mobile_number):
-    entities = get_all_entities(dbm=manager)
-    total_entity = len([entity for entity in entities if entity.type_path[0] == REPORTER])
-    REPORTER_SHORT_CODE = 'rep' + str(total_entity+1)
-    organization = Organization.objects.get(org_id=org_id)
-    entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=REPORTER_SHORT_CODE,
-                           location=[organization.country])
-    mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
-                                                 primitive_type='string')
-    name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')
-    data = [(MOBILE_NUMBER_FIELD, mobile_number, mobile_number_type), (NAME_FIELD, current_user_name, name_type)]
-    entity.add_data(data=data)
-    return entity
-
 def _associate_user_with_existing_project(manager, reporter_id):
     rows = get_all_projects(manager)
     for row in rows:
@@ -179,7 +166,7 @@ def new_user(request):
 
     if request.method == 'POST':
         manager = get_database_manager(request.user)
-        org_id = request.user.get_profile().org_id
+        org = get_organization(request)
         form = UserProfileForm(request.POST)
 
         if form.is_valid():
@@ -194,10 +181,11 @@ def new_user(request):
                 mobile_number = form.cleaned_data['mobile_phone']
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
                                                   mobile_phone = mobile_number,
-                                                  org_id=org_id)
-                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id,
-                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number).short_code
+                                                  org_id=org.org_id)
+                ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
+                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number)
                 ngo_user_profile.save()
+                _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
                 reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
@@ -241,15 +229,6 @@ def edit_user(request):
             ngo_user_profile = NGOUserProfile.objects.get(user=user)
             ngo_user_profile.title = form.cleaned_data['title']
             ngo_user_profile.mobile_phone = form.cleaned_data['mobile_phone']
-
-            #TO-DO: next 6lines can be removed when all users in our production db has phone number & they are registered as a datasender
-            manager = get_database_manager(request.user)
-            if ngo_user_profile.reporter_id is None:
-                org_id = request.user.get_profile().org_id
-                ngo_user_profile.reporter_id = _make_user_as_a_datasender(manager=manager, org_id=org_id, current_user_name=user.get_full_name(),
-                                                        mobile_number=form.cleaned_data['mobile_phone']).short_code
-                ngo_user_profile.save()
-                _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
 
             ngo_user_profile.save()
             message = _('Profile has been updated successfully')
