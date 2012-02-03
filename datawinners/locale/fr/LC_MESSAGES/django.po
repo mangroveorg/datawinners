@@ -3340,9 +3340,6 @@ msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Ajoutez 
 "<li>Utilisez vos nouveaux Sujets dans vos projets: Créez un nouveau projet et choisissez “Je veux des Rapports "
 "Individuels concernant un sujet spéciﬁque.”</li></ol>"
 
-msgid "Once you have registered Subjects for your projects, they will appear here."
-msgstr "Une fois que vous aurez enregistré des Sujets pour vos projets, ils sʼafﬁcheront ici."
-
 msgid "register_subject_for_project_question"
 msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projet?"
 

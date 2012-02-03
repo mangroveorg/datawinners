@@ -3294,9 +3294,6 @@ msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Add a ne
 "<li>Use your new Subjects in your projects: Create a new project and choose “I want Individual"
 "Reports about a speciﬁc subject”.</li></ol>"
 
-msgid "Once you have registered Subjects for your projects, they will appear here."
-msgstr ""
-
 msgid "register_subject_for_project_question"
 msgstr "Why should I register Subjects for my project?"
 
