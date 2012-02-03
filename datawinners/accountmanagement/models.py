@@ -97,6 +97,9 @@ class Organization(models.Model):
         return self._get_total_message_count() > LIMIT_TRIAL_ORG_MESSAGE_COUNT
 
 
+def get_data_senders_on_trial_account_with_mobile_number(mobile_number):
+    return DataSenderOnTrialAccount.objects.filter(mobile_number=mobile_number)
+
 class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)
     organization = models.ForeignKey(Organization)

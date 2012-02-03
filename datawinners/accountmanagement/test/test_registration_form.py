@@ -1,8 +1,10 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
+from django.core.exceptions import ValidationError
 
 from mock import patch
+from accountmanagement.forms import MinimalRegistrationForm
 from datawinners.accountmanagement.forms import FullRegistrationForm
 
 
@@ -48,3 +50,27 @@ class TestFullRegistrationForm(unittest.TestCase):
                 get_clean_username.return_value = None
                 self.assertFalse(form.is_valid())
                 self.assertTrue(form.errors['password1'])
+
+class TestMinimalRegistrationForm(unittest.TestCase):
+
+    def test_should_raise_error_if_phone_number_already_registered(self):
+        base_form = {'first_name': 'a',
+                     'last_name': 'b',
+                     'email': 'A@b.com',
+                     'password1': 'a',
+                     'password2': 'b',
+                     'mobile_phone':'1234567',
+                     'organization_name': 'ad',
+                     'organization_city': 'aaa',
+                     'organization_country': 'aa',
+                     'organization_sector': 'Other',
+                     'invoice_period':'pay_monthly'
+        }
+        form = MinimalRegistrationForm(base_form)
+        with patch.object(MinimalRegistrationForm, 'clean_mobile_phone') as get_mobile_phone:
+            with patch.object(MinimalRegistrationForm, 'clean_username') as get_clean_username:
+                error_message = 'Test message'
+                get_clean_username.return_value = None
+                get_mobile_phone.side_effect = ValidationError(error_message)
+                self.assertFalse(form.is_valid())
+                self.assertEqual([error_message], form.errors['mobile_phone'])

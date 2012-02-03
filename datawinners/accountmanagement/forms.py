@@ -8,6 +8,8 @@ from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
+from accountmanagement.helper import get_trial_account_user_phone_numbers
+from datawinners.accountmanagement.models import get_data_senders_on_trial_account_with_mobile_number
 from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import  Organization
@@ -99,6 +101,13 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     organization_country = forms.CharField(max_length=30, required=True, label=_('Country'))
     username = forms.CharField(max_length=30, required=False)
 
+    def clean_mobile_phone(self):
+        mobile_number = self.cleaned_data.get('mobile_phone')
+        if get_data_senders_on_trial_account_with_mobile_number(mobile_number).count() > 0 or \
+           mobile_number in get_trial_account_user_phone_numbers():
+            raise ValidationError(_("This phone number is already in use. Please supply a different phone number"))
+        return self.cleaned_data.get('mobile_phone')
+
     def clean(self):
         self.convert_email_to_lowercase()
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
@@ -146,6 +155,8 @@ class FullRegistrationForm(MinimalRegistrationForm):
 
     invoice_period, preferred_payment = payment_details_form()
 
+    def clean_mobile_phone(self):
+        return self.cleaned_data['mobile_phone']
 
 class LoginForm(AuthenticationForm):
     required_css_class = 'required'
