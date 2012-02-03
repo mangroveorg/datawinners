@@ -3343,10 +3343,14 @@ msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Ajoutez 
 msgid "register_subject_for_project_question"
 msgstr "Pourquoi devrais-je enregistrer des Sujets pour mes projet?"
 
-msgid "register_my_subject_answer"
-msgstr "<ol><li>Décidez quelle information vous voulez utiliser pour identiﬁer et enregistrer chaque Sujet: "
-"personnalisez votre Formulaire dʼEnregistrement</li>"
-"<li>Enregistrez un Sujet: Ajoutez un <Type de Sujet> ou Importez une Liste de <Type de Sujet></li>"
-
 msgid "Enter a valid integer"
 msgstr "Entrez un entier valide"
+
+msgid "Decide what information you want to use to identify and register each Subject:"
+msgstr "Décidez quelle information vous voulez utiliser pour identiﬁer et enregistrer chaque Sujet:"
+
+msgid "Customize your Registration Form"
+msgstr "Personnalisez votre Formulaire dʼEnregistrement"
+
+msgid "Register a Subject:"
+msgstr "Enregistrez un Sujet:"

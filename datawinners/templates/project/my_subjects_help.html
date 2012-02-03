@@ -19,7 +19,13 @@
             {% trans "register_subject_question" %}
         </div>
         <div>
-            {% trans "register_my_subject_answer" %}
+            <ol>
+                <li>{% trans "Decide what information you want to use to identify and register each Subject:" %}
+                    <a href='{{ project_links.subjects_edit_link }}'>{% trans "Customize your Registration Form" %}</a></li>
+                <li>{% trans "Register a Subject:" %}<a href='{{ project_links.register_subjects_link }}'> {% trans "Add a new" %} {{ project.entity_type }}</a>
+                    {% trans "or" %}
+                    <a href='javascript:void(0);' class='import-subject' id='import-{{ project.entity_type }}'>{% trans "Import a List" %}</a></li>
+            </ol>
         </div>
         <br/>
         <a href="javascript:void(0)" class="hide_link">{% trans "Hide help" %}</a>

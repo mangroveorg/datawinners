@@ -3297,9 +3297,14 @@ msgstr "<ol><li><a id='add_new_subject_type' href='javascript:void(0);'>Add a ne
 msgid "register_subject_for_project_question"
 msgstr "Why should I register Subjects for my project?"
 
-msgid "register_my_subject_answer"
-msgstr "<ol><li>Decide what information you want to use to identify and register each Subject: Customize your Registration Form</li>"
-"<li>Register a Subject: Add a <SubjectType> or Import a <SubjectType> List</li>"
-
 msgid "Enter a valid integer"
+msgstr ""
+
+msgid "Decide what information you want to use to identify and register each Subject:"
+msgstr ""
+
+msgid "Customize your Registration Form"
+msgstr ""
+
+msgid "Register a Subject:"
 msgstr ""
