@@ -46,7 +46,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard
+from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -86,7 +86,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
         project_links['datasenders_link'] = reverse(create_datasender, args=[project_id])
         project_links['register_datasenders_link'] = reverse(create_datasender, args=[project_id])
-        project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
+        project_links['registered_datasenders_link'] = reverse(all_datasenders)
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
