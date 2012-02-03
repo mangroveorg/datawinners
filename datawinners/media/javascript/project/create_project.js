@@ -1,37 +1,5 @@
-DW.init_view_model = function (question_list) {
-
-    questionnaireViewModel.questions([]);
-    questionnaireViewModel.questions.valueHasMutated();
-    var index = 0;
-    for (index in question_list) {
-        var questions = new DW.question(question_list[index]);
-        questionnaireViewModel.loadQuestion(questions);
-    }
-
-    questionnaireViewModel.selectedQuestion(questionnaireViewModel.questions()[0]);
-    questionnaireViewModel.selectedQuestion.valueHasMutated();
-    DW.current_code = questionnaireViewModel.questions().length + 1; //This variable holds the next question code to be generated.
-    questionnaireViewModel.hasAddedNewQuestions = false;
-    DW.smsPreview();
-};
-
 DW.devices=function(smsElement){
   this.smsElement=smsElement;
-};
-
-DW.error_appender=function(element){
-    this.element=element;
-
-};
-
-DW.error_appender.prototype={
-   appendError:function(errorText){
-       $(this.element).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
-
-   },
-   hide_message:function () {
-       $(this.element).delay(5000).fadeOut();
-   }
 };
 
 DW.devices.prototype={
@@ -43,73 +11,10 @@ DW.devices.prototype={
     }
 };
 
-DW.questionnaire_code=function(questionnaireCode,questionnaireErrorCode){
-    this.questionnaireCode=questionnaireCode;
-    this.questionnaireErrorCode=questionnaireErrorCode;
-
-};
-
-
-DW.questionnaire_code.prototype={
-    processMandatory:function(){
-        if (!this.isPresent()){
-            this.appendError("The Questionnaire code is required");
-            return false;
-        }
-        return true;
-    },
-    processSpaces:function(){
-        var trimmed_value = $.trim($(this.questionnaireCode).val());
-        var list = trimmed_value.split(" ");
-        if(list.length>1){
-            this.appendError("Space is not allowed in questionnaire code");
-            return false;
-        }
-
-        $(this.questionnaireCode).val(trimmed_value);
-        return true;
-    },
-
-    processLetterAndDigitValidation:function(){
-        var code = $(this.questionnaireCode).val();
-        var re = new RegExp('^[A-Za-z0-9 ]+$');
-        if (!re.test(code)) {
-            this.appendError("Only letters and digits are valid");
-            return false;
-        }
-        return true;
-    },
-
-    isPresent:function(){
-        return !($.trim($(this.questionnaireCode).val())=="");
-    },
-
-    appendError:function(errorText){
-      $(this.questionnaireErrorCode).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
-    },
-
-    processValidation:function(){
-        if(!this.processMandatory()){
-            return false;
-        }
-
-        if(!this.processSpaces()){
-            return false;
-        }
-
-        //TODO The below expression needs to be simplified, I am not touching it because I am not sure if there is a Gotcha here!
-        if(!this.processLetterAndDigitValidation()){
-            return false;
-        }
-        return true;
-
-    }
-
-};
-
 DW.questionnaire_section = function(questionnaire_form_element){
     this.questionnaire_form_element = questionnaire_form_element;
 };
+
 DW.questionnaire_section.prototype = {
     show:function(){
         $(this.questionnaire_form_element).removeClass('none');
@@ -119,12 +24,12 @@ DW.questionnaire_section.prototype = {
     }
 
 };
+
 DW.basic_project_info=function(project_info_form_element){
     this.project_info_form_element=project_info_form_element;
 };
 
 DW.basic_project_info.prototype={
-
     createValidationRules:function(){
         $(this.project_info_form_element).validate({
             rules: {
@@ -142,7 +47,6 @@ DW.basic_project_info.prototype={
                 error.addClass('error_arrow');  // add a class to the wrapper
             }
         });
-
     },
     isValid:function(){
         return $(this.project_info_form_element).valid();
@@ -175,28 +79,6 @@ DW.basic_project_info.prototype={
     }
 };
 
-DW.questionnaire_form=function(formElement){
-    this.formElement=formElement;
-    this.errorAppender=new DW.error_appender("#message-label");
-
-};
-
-DW.questionnaire_form.prototype={
-    isValid:function(){
-        return $(this.formElement).valid();
-    },
-    processValidation:function(){
-        if (!this.isValid()){
-            this.errorAppender.appendError("This questionnaire has an error");
-            this.errorAppender.hide_message();
-            return false;
-        }
-        return true;
-    }
-
-};
-
-
 var basic_project_info=new DW.basic_project_info('#create_project_form');
 var questionnnaire_code= new DW.questionnaire_code("#questionnaire-code","#questionnaire-code-error");
 var questionnaire_form =new DW.questionnaire_form('#question_form');
@@ -224,10 +106,11 @@ DW.post_project_data = function(state, function_to_construct_redirect_url_on_suc
         }
     });
 };
+
 $(document).ready(function() {
-    DW.init_view_model(existing_questions);
-    ko.applyBindings(questionnaireViewModel);
     DW.subject_warning_dialog_module.init();
+
+    var activity_report_question = $('#question_title').val();
 
     basic_project_info.hide_subject_link();
     devices.disableSMSElement();
@@ -256,6 +139,10 @@ $(document).ready(function() {
     });
 
     basic_project_info.createValidationRules();
+
+    if($("#id_activity_report_1").attr("checked")){
+        $('#add_subject_type').show();
+    }
 
     $('#continue_project').click(function(){
         if (!basic_project_info.isValid()){
@@ -290,10 +177,84 @@ $(document).ready(function() {
             });
         }
         return false;
-
     });
 
-    if($("#id_activity_report_1").attr("checked")){
-        $('#add_subject_type').show();
-    }
+    $("#learn_more").dialog({
+        title: gettext("Learn More"),
+        modal: true,
+        autoOpen: false,
+        width: 800
+    });
+
+    $("#delete_question").dialog({
+            title: "Warning!!",
+            modal: true,
+            autoOpen: false,
+            height: 275,
+            width: 300,
+            closeText: 'hide'
+        }
+    );
+
+    $("#edit_question").dialog({
+            title: "Warning!!",
+            modal: true,
+            autoOpen: false,
+            height: 275,
+            width: 300,
+            closeText: 'hide'
+        }
+    );
+
+    $("#questionnaire_code_change").dialog({
+            title: "Warning!!",
+            modal: true,
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            closeText: 'hide'
+        }
+    );
+
+    $('#questionnaire-code').blur(function(){
+        if ($('#project-state').val() == "Test" && $('#saved-questionnaire-code').val() != $('#questionnaire-code').val()){
+            $("#questionnaire_code_change").dialog("open");
+        }
+    });
+
+    $("#ok_button").bind("click", function(){
+         $("#questionnaire_code_change").dialog("close");
+        return false;
+    });
+
+    $(".cancel_link").bind("click", function(){
+         $("#questionnaire_code_change").dialog("close");
+        var old_questionnaire_code = $('#saved-questionnaire-code').val();
+        $('#questionnaire-code').val(old_questionnaire_code);
+        return false;
+    });
+
+    $("#question_title").blur(function(){
+        if (questionnaireViewModel.selectedQuestion().event_time_field_flag()){
+            $("#edit_question").dialog("open");
+        }
+    });
+
+    $("#yes_button").bind("click", function(){
+        activity_report_question = $('#question_title').val();
+        questionnaireViewModel.selectedQuestion().title($('#question_title').val());
+        $("#edit_question").dialog("close");
+        return true;
+    });
+
+    $("#no_link").bind("click", function(){
+        questionnaireViewModel.selectedQuestion().title(activity_report_question);
+        $("#question_title").val(activity_report_question);
+        $("#edit_question").dialog("close");
+        return false;
+    });
+
+    $(".learn_more_link").bind("click", function(){
+        $("#learn_more").dialog("open");
+    });
 });
