@@ -877,6 +877,7 @@ def edit_subject(request, project_id=None):
              'project_links': project_links,
              'existing_questions': repr(existing_questions),
              'questionnaire_code': reg_form.form_code,
+             'language': reg_form.activeLanguages[0],
              'entity_type': project.entity_type,
              'in_trial_mode': in_trial_mode},
                               context_instance=RequestContext(request))
