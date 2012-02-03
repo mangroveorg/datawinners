@@ -6,9 +6,9 @@ from mangrove.errors import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
-    GEO_CODE_FIELD_NAME, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
+    GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
