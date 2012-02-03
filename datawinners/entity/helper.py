@@ -6,7 +6,7 @@ from mangrove.errors import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
-    GEO_CODE_FIELD, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
+    GEO_CODE_FIELD_NAME, GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
     ENTITY_TYPE_FIELD_CODE
 from mangrove.form_model.validation import TextLengthConstraint,\
@@ -88,7 +88,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name},
         language=get_language(), ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
-    question4 = GeoCodeField(name=GEO_CODE_FIELD, code=code_generator.next(),
+    question4 = GeoCodeField(name=GEO_CODE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type': entity_name},
         language=get_language(), ddtype=geo_code_type,
         instruction=unicode(_("Enter lat and long. Eg 20.6, 47.3")))
