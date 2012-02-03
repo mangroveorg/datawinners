@@ -285,8 +285,8 @@ def get_entity_type_fields(manager, type=REPORTER):
     form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
     if form_model is not None:
         form_code = form_model.form_code
-    form_model = manager.load_all_rows_in_view("questionnaire", key=form_code)
-    fields, labels, codes = get_field_infos(form_model[0].value['json_fields'])
+    form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
+    fields, labels, codes = get_field_infos(form_model_rows[0].value['json_fields'],form_model_rows[0].value['metadata'][attributes.ACTIVE_LANGUAGES][0])
     return fields, labels, codes
 
 

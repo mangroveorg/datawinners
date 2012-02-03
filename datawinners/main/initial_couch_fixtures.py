@@ -1,7 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User, Group
+from django.utils.translation import activate
 from mock import patch
+from datawinners.common.constant import DEFAULT_LANGUAGE
 from datawinners import initializer, settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
 
@@ -70,6 +72,7 @@ def create_entity_types(manager, entity_types):
     for entity_type in entity_types:
         try:
             define_type(manager, entity_type)
+            activate(DEFAULT_LANGUAGE)
             create_registration_form(manager, entity_type)
         except EntityTypeAlreadyDefined:
             pass

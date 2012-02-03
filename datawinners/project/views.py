@@ -793,8 +793,8 @@ def questionnaire_preview(request, project_id=None):
                                   context_instance=RequestContext(request))
 
 
-def _get_preview_for_field_in_registration_questionnaire(field):
-    return {"description": field.label.get('en'), "code": field.code, "type": field.type,
+def _get_preview_for_field_in_registration_questionnaire(field,language):
+    return {"description": field.label.get(language), "code": field.code, "type": field.type,
             "constraints": field.get_constraint_text(), "instruction": field.instruction}
 
 
@@ -810,7 +810,7 @@ def _get_registration_form(manager, project, type_of_subject='reporter'):
     project_links = _make_project_links(project, registration_questionnaire.form_code)
     questions = []
     for field in fields:
-        question = _get_preview_for_field_in_registration_questionnaire(field)
+        question = _get_preview_for_field_in_registration_questionnaire(field,registration_questionnaire.activeLanguages[0])
         questions.append(question)
     return fields, project_links, questions, registration_questionnaire
 
