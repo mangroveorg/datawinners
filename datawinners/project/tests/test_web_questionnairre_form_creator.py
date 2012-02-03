@@ -1,13 +1,14 @@
 import unittest
+import django
 from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField
+from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
 from mock import Mock
-from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint
-from common.constant import DEFAULT_LANGUAGE, FRENCH_LANGUAGE
-from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
+from datawinners.common.constant import DEFAULT_LANGUAGE, FRENCH_LANGUAGE
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 from datawinners.entity.fields import PhoneNumberField
 
 class TestWebQuestionnaireFormCreator(unittest.TestCase):
@@ -199,8 +200,21 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
         self.assertEqual(PhoneNumberField, type(django_phone_number_field))
 
+    def test_should_create_django_integer_number_field(self):
+        self.form_model.add_field(self._get_integer_field())
+        questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
+        django_integer_field = questionnaire_form_class().fields['ag']
+
+        self.assertEqual(django.forms.fields.IntegerField, type(django_integer_field))
+
     def _get_telephone_number_field(self):
         phone_number_field = TelephoneNumberField(name=self.field_name, code='m', label=self.field_name,
             ddtype=Mock(spec=DataDictType),
             constraints=[TextLengthConstraint(max=15), RegexConstraint(reg='^[0-9]+$')])
         return phone_number_field
+
+    def _get_integer_field(self):
+        integer_field = IntegerField(name=self.field_name, code='ag', label=self.field_name,
+            ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(min=18, max=100)])
+        return integer_field
+
