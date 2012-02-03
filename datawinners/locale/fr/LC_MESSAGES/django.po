@@ -3350,3 +3350,6 @@ msgid "register_my_subject_answer"
 msgstr "<ol><li>Décidez quelle information vous voulez utiliser pour identiﬁer et enregistrer chaque Sujet: "
 "personnalisez votre Formulaire dʼEnregistrement</li>"
 "<li>Enregistrez un Sujet: Ajoutez un <Type de Sujet> ou Importez une Liste de <Type de Sujet></li>"
+
+msgid "Enter a valid integer"
+msgstr "Entrez un entier valide"

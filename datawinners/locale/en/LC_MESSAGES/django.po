@@ -3303,3 +3303,6 @@ msgstr "Why should I register Subjects for my project?"
 msgid "register_my_subject_answer"
 msgstr "<ol><li>Decide what information you want to use to identify and register each Subject: Customize your Registration Form</li>"
 "<li>Register a Subject: Add a <SubjectType> or Import a <SubjectType> List</li>"
+
+msgid "Enter a valid integer"
+msgstr ""

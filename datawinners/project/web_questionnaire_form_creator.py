@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 import django
 from django.forms.fields import ChoiceField
 from django.forms.forms import Form
@@ -89,7 +90,8 @@ class WebQuestionnaireFormCreater(object):
         return telephone_number_field
 
     def _create_integer_field(self, field, language):
-        integer_field = django.forms.fields.IntegerField(label=field.label[language],required=field.is_required())
+        integer_field = django.forms.fields.IntegerField(label=field.label[language], required=field.is_required(),
+            error_messages={'invalid': _('Enter a valid integer')})
         integer_field.widget.attrs["watermark"] = field.get_constraint_text()
         integer_field.widget.attrs['style'] = 'padding-top: 7px;'
         return integer_field
