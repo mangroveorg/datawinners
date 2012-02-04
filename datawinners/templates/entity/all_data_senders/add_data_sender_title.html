@@ -1,0 +1,17 @@
+{% load i18n %}
+{% trans "Data Senders" %}
+<span class="title_links">
+     <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.entity.views.create_datasender %}">
+         {% trans "Add a data sender" %}
+     </a>
+    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+    <div class="tooltip">
+        <p>
+            <strong>{% trans "What is this?" %}</strong><br />
+            {% trans "q_all_datasenders_add_manually" %}
+            <br /><br />
+            <strong>{% trans "What do I need to do?" %}</strong><br />
+            {% trans "r_all_datasenders_add_manually" %}
+        </p>
+    </div>
+</span>

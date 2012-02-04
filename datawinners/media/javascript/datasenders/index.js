@@ -68,7 +68,7 @@ $(document).ready(function() {
             data_sender.name = $($(row).children()[1]).html();
             data_sender.location = $($(row).children()[4]).html();
             data_sender.contactInformation = $($(row).children()[6]).html();
-            data_sender.email = $($(row).children()[8]).html();
+            data_sender.email = $($(row).children()[7]).html();
             data_sender.input_field_disabled = "disabled";
             if($.trim(data_sender.email) == "--"){
                 data_sender.input_field_disabled = "";
@@ -110,13 +110,15 @@ $(document).ready(function() {
             var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
             if (email == "") {
                 $('#web_user_error').html(gettext('Emails are mandatory'));
+                $('#web_user_error').removeClass('none');
                 $('#web_user_error').show();
                 should_post = false;
                 return false;
             }
             if($.trim(email).search(emailRegEx) == -1){
-                $('#web_user_error').show();
+                $('#web_user_error').removeClass('none');
                 $('#web_user_error').html(email + gettext(": is not a valid email"));
+                $('#web_user_error').show();
                 should_post = false;
                 return false;
             }
@@ -129,6 +131,7 @@ $(document).ready(function() {
         $.blockUI({ message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>' ,css: { width:'275px', zIndex:1000000}});
         $.post('/entity/webuser/create', {post_data: JSON.stringify(post_data)},
                 function(response) {
+                    $.unblockUI();
                     var json_data = JSON.parse(response);
                     if (json_data.success) {
                         $("#web_user_block").dialog("close");
@@ -138,7 +141,6 @@ $(document).ready(function() {
                         }
                         window.location.href = redirect_url;
                     } else {
-                        $.unblockUI();
                         var html = "";
                         var i = 0;
                         for (i; i < json_data.errors.length; i=i+1) {
@@ -149,6 +151,7 @@ $(document).ready(function() {
                         if (html != "") {
                             html = '<table cellpadding="0" cellspacing="0" border="0">' + html + '</table>';
                         }
+                        $('#web_user_error').removeClass('none');
                         $('#web_user_error').html(html);
                         $('#web_user_error').show();
                     }

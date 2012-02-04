@@ -1,0 +1,8 @@
+{% load i18n %}
+<label class="inline margin_left_20">{% trans "Actions:" %} </label>
+<select id='action'>
+    <option value="">--</option>
+    <option value="associate">{% trans "Add to project" %}</option>
+    <option value="disassociate">{% trans "Remove from project" %}</option>
+    <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
+</select>

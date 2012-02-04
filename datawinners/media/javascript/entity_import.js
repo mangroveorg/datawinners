@@ -30,6 +30,7 @@ $(document).ready(function(){
             },
             onComplete: function(id, fileName, responseJSON) {
                 $.unblockUI();
+                $(".blockUI").fadeOut("slow");
                 $('#message').remove();
                 $('.error_tbody').html('');
                 $(".error_table").hide();

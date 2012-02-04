@@ -3,23 +3,7 @@
 {% block page_title %}{% trans "Data Senders" %}{% endblock %}
 
 {% block section_title %}
-{% trans "Data Senders" %}
-
-<span class="title_links">
-     <a id="register_link" class="float_right add_subject_link" href="{% url datawinners.entity.views.create_datasender %}">
-        {% trans "Add a data sender" %}
-     </a>
-    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-    <div class="tooltip">
-        <p>
-        <strong>{% trans "What is this?" %}</strong><br />
-        {% trans "q_all_datasenders_add_manually" %}
-        <br /><br />
-        <strong>{% trans "What do I need to do?" %}</strong><br />
-        {% trans "r_all_datasenders_add_manually" %}
-        </p>
-    </div>
-</span>
+{% include "entity/all_data_senders/add_data_sender_title.html" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -60,40 +44,9 @@
         {% with project=None %}
             {% include "import-datasenders.html" %}
         {% endwith %}
-        <div id='all_project_block'>
-            <ul class="margin_bottom_20" id="all_projects">
-            {% for project in projects %}
-               <li><input value="{{ project.id }}" type="checkbox" />{{ project.value.name }}</li>
-            {% endfor %}
-            </ul>
-            <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
-            <a href="#" class="button">{% trans "Confirm" %}</a>
-        </div>
-        <div id="web_user_block">
-            <div class="italic">{% trans "Enter each data sender's email address below. Each can submit data via the internet" %}</div>
-            <div class="message-box none" id="web_user_error"></div>
-            <table id="web_user_table">
-                <thead>
-                <th>{% trans "Reporter ID" %} </th>
-                <th>{% trans "Name" %} </th>
-                <th>{% trans "Location" %} </th>
-                <th>{% trans "Contact" %} </th>
-                <th>{% trans "Email" %} *</th>
-                </thead>
-                <tbody id="web_user_table_body">
-
-                </tbody>
-               </table>
-            <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
-            <a href="#" class="button" id="web_user_button">{% trans "Give Access" %}</a>
-        </div>
-        <label class="inline margin_left_20">{% trans "Actions:" %} </label>
-        <select id='action'>
-            <option value="">--</option>
-            <option value="associate">{% trans "Add to project" %}</option>
-            <option value="disassociate">{% trans "Remove from project" %}</option>
-            <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
-        </select>
+        {% include 'entity/all_data_senders/all_project_blocks.html' %}
+        {% include 'entity/all_data_senders/web_submission_access_block.html' %}
+        {% include 'entity/all_data_senders/actions.html' %}
         {% if all_data %}
             <h3 class="margin_top_20">{% trans "All Data Senders" %}</h3>
             {% include 'entity/datasenders_table.html' %}
