@@ -1,11 +1,11 @@
 $(document).ready(function() {
-    $("#id_s").attr("disabled", "disabled");
+    $(".subject_field").attr("disabled", "disabled");
     $("#generate_id").click(function() {
         if($(this).is(":checked")) {
-            $("#id_s").attr("disabled", "disabled");
-            $("#id_s").val('');
+            $(".subject_field").attr("disabled", "disabled");
+            $(".subject_field").val('');
         } else {
-            $("#id_s").removeAttr("disabled");
+            $(".subject_field").removeAttr("disabled");
         }
     });
 

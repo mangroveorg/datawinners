@@ -53,7 +53,7 @@
             {% if not field.is_hidden %}
                 <li>
                     <h6>{{ field.label }}</h6>
-                    {% if field.name == "s" %}
+                    {% if field.name == questionnaire_form.short_code_question_code %}
                         <div class="answer">
                             {{ field }}
                             <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
