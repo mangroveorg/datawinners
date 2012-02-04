@@ -17,7 +17,7 @@
         <div class="subjects_links">
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit registration form" %}</a>
             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
-            <a  class="import-subject" id="import-{{ subject.entity }}">{% trans "Import list" %}</a>&nbsp;|&nbsp;
+            <a class="import-subject" id="import-{{ subject.entity }}">{% trans "Import list" %}</a>&nbsp;|&nbsp;
             <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>
         </div>
         
@@ -60,7 +60,7 @@
                     <ul>
                         <li>{% trans "Register a" %} {{ subject.entity|capfirst }}:
                             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity|capfirst }}</a>
-                            {% trans "or" %} <a href="javascript:void(0);" class="export-entity-link">{% blocktrans with subject.entity|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
+                            {% trans "or" %} <a href="javascript:void(0);" id="import-{{ subject.entity }}" class="import-subject">{% blocktrans with subject.entity|capfirst as entity_type %}Import a list of {{ entity_type }}{% endblocktrans %}</a></li>
                         <li><a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}">{% blocktrans with subject.entity|capfirst as entity_type %}Customize the {{ entity_type }} registration form{% endblocktrans %}</a></li>
                     </ul>
                 </p>
