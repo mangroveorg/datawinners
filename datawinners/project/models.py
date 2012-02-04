@@ -14,7 +14,6 @@ from mangrove.form_model.form_model import FormModel
 from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
 from mangrove.utils.types import  is_string, is_empty
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
 
 def get_all_reminder_logs_for_project(project_id, dbm):
@@ -234,8 +233,7 @@ class Project(DocumentBase):
     def _check_if_project_name_unique(self, dbm):
         rows = dbm.load_all_rows_in_view('project_names', key=self.name)
         if len(rows) and rows[0]['value'] != self.id:
-            message  = _("%s with %s = %s already exists.") % (_('Project'), _("Name"), "'%s'" % self.name)
-            raise Exception(message)
+            raise DataObjectAlreadyExists('Project', "Name", "'%s'" % self.name)
 
     def save(self, dbm):
         assert isinstance(dbm, DatabaseManager)

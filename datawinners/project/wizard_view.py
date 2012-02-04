@@ -88,9 +88,10 @@ def create_project(request):
 
             try:
                 project.save(manager)
-            except (DataObjectAlreadyExists, Exception) as ex:
+            except DataObjectAlreadyExists as ex:
                 questionnaire.delete()
-                return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': True}))
+                message  = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
+                return HttpResponse(json.dumps({'success': False ,'error_message': message, 'error_in_project_section': True}))
 
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
@@ -136,8 +137,9 @@ def edit_project(request, project_id=None):
 
             try:
                 project.save(manager)
-            except (DataObjectAlreadyExists, Exception) as ex:
-                return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': True}))
+            except DataObjectAlreadyExists as ex:
+                message  = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
+                return HttpResponse(json.dumps({'success': False ,'error_message': message, 'error_in_project_section': True}))
 
             return HttpResponse(json.dumps({'success': True, 'project_id': project.id}))
 
