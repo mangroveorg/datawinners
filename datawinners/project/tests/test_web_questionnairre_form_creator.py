@@ -4,7 +4,7 @@ from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField
 from mangrove.datastore.database import DatabaseManager
-from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME
+from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
 from mock import Mock
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
 from datawinners.common.constant import DEFAULT_LANGUAGE, FRENCH_LANGUAGE
@@ -15,6 +15,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
         self.form_code = "form_code"
+        self.form_model = FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[])
         self.field_name = "test"
         self.field_code = "code"
         self.instruction = "some instruction"
@@ -23,7 +24,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
 
     def test_should_create_web_questionnaire_for_char_field(self):
-        self._create_form_model()
         is_required = True
         self.form_model.add_field(self._get_text_field(is_required, False))
 
@@ -38,7 +38,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual('padding-top: 7px;', web_text_field.widget.attrs['style'])
 
     def test_should_create_web_questionnaire_for_char_field_for_french_language(self):
-        self._create_form_model()
         is_required = True
         self.form_model.activeLanguages = [FRENCH_LANGUAGE]
         self.form_model.add_field(self._get_text_field(is_required, False, language=FRENCH_LANGUAGE))
@@ -50,7 +49,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(self.field_name, web_text_field.label)
 
     def test_should_create_web_questionnaire_for_location_field(self):
-        self._create_form_model()
         self.form_model.add_field(self._get_location_field())
 
         questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
@@ -63,7 +61,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
 
     def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):
-        self._create_form_model()
         is_required = False
 
         expected_choices, text_field = self._get_select_field(is_required, False)
@@ -78,7 +75,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(expected_choices, web_text_field.choices)
 
     def test_should_create_web_questionnaire_for_single_choice_select_field(self):
-        self._create_form_model()
         is_required = False
 
         expected_choices, text_field = self._get_select_field(is_required, single_select_flag=True)
@@ -93,7 +89,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(expected_choices, web_text_field.choices)
 
     def test_should_create_hidden_field_for_form_code(self):
-        self._create_form_model()
         questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields['form_code']
@@ -101,7 +96,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(self.form_code, web_text_field.initial)
 
     def test_should_create_hidden_field_for_entity_id_question_code(self):
-        self._create_form_model()
         questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
 
         web_text_field = questionnaire_form_class().fields['form_code']
@@ -109,7 +103,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(self.form_code, web_text_field.initial)
 
     def test_should_create_web_questionnaire(self):
-        self._create_form_model()
         subject_code = "subject_code"
         subject_question_code = 'subject_question_code'
         self.form_model.add_field(self._get_text_field(True, True, subject_code))
@@ -149,7 +142,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         return project
 
     def test_should_pre_populate_datasenders_for_subject_question(self):
-        self._create_form_model()
         subject_field = self._get_text_field(True, True)
         project = self._get_mock_project()
         display_subject_field = SubjectQuestionFieldCreator(self.dbm, project).create(subject_field)
@@ -158,7 +150,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(expected_choices, display_subject_field.choices)
 
     def test_should_pre_populate_choices_for_subject_question_on_basis_of_entity_type(self):
-        self._create_form_model()
         expected_code = "expected_code"
         subject_field = self._get_text_field(True, True, expected_code)
         project = self._get_mock_project()
@@ -203,7 +194,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         return location_field
 
     def test_should_create_django_phone_number_field(self):
-        self._create_form_model()
         self.form_model.add_field(self._get_telephone_number_field())
         questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
         django_phone_number_field = questionnaire_form_class().fields['m']
@@ -211,7 +201,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(PhoneNumberField, type(django_phone_number_field))
 
     def test_should_create_django_integer_number_field(self):
-        self._create_form_model()
         self.form_model.add_field(self._get_integer_field())
         questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
         django_integer_field = questionnaire_form_class().fields['ag']
@@ -229,24 +218,3 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
             ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(min=18, max=100)])
         return integer_field
 
-    def test_should_create_geocode_in_location_fields_dict(self):
-        self._create_form_model()
-        self._create_form_model(is_registration=True)
-        self.form_model.add_field(self._get_geocode_field())
-        questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=self.form_model).create()
-
-        self.assertEqual(questionnaire_form_class.location_fields[GEO_CODE_FIELD_NAME], "g")
-
-    def _get_geocode_field(self):
-        geocode_field = TextField(name=GEO_CODE_FIELD_NAME, code="g", label=self.field_name,
-            ddtype=Mock(spec=DataDictType),
-            instruction=self.instruction, required=False, constraints=[TextLengthConstraint(1, 20)],
-            entity_question_flag=True)
-        return geocode_field
-
-    def _create_form_model(self, is_registration=False):
-        if is_registration:
-            self.form_model = FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[],
-                is_registration_model=True, entity_type=["clinic"])
-        else:
-            self.form_model = FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[])
