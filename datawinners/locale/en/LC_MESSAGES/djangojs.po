@@ -605,3 +605,8 @@ msgstr ""
 msgid "Questionnaire with this code already exists"
 msgstr ""
 
+msgid "word"
+msgstr ""
+
+msgid "choice"
+msgstr ""

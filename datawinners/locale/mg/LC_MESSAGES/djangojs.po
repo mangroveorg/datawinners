@@ -574,3 +574,9 @@ msgstr ""
 
 msgid "Import a Data Senders list"
 msgstr ""
+
+msgid "word"
+msgstr ""
+
+msgid "choice"
+msgstr ""

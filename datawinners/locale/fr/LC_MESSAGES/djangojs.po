@@ -615,3 +615,9 @@ msgstr "Importer une liste d'expéditeurs"
 
 msgid "Questionnaire with this code already exists"
 msgstr "Un questionnaire avec ce code existe déjà"
+
+msgid "word"
+msgstr "mot"
+
+msgid "choice"
+msgstr "choix"
