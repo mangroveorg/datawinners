@@ -342,7 +342,8 @@ def edit_subject_questionnaire(request, entity_type=None):
             {'existing_questions': repr(existing_questions),
              'questionnaire_code': form_model.form_code,
              'langauge': form_model.activeLanguages[0],
-             'entity_type': entity_type},
+             'entity_type': entity_type,
+             'post_url': reverse(save_questionnaire)},
         context_instance=RequestContext(request))
 
 
@@ -368,7 +369,7 @@ def save_questionnaire(request):
         try:
             QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
             form_model.save()
-            return HttpResponse(json.dumps({"response": "ok", 'form_code': form_model.form_code}))
+            return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except EntityQuestionAlreadyExistsException as e:

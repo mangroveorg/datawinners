@@ -68,7 +68,7 @@ DW.questionnaire_code.prototype={
     },
 
     appendError:function(errorText){
-      $(this.questionnaireErrorCode).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
+        $(this.questionnaireErrorCode).html("<label class='error_message'> " + gettext(errorText) + ".</label>");
     },
 
     processValidation:function(){
@@ -196,35 +196,4 @@ $(document).ready(function() {
             questionnaireViewModel.selectedQuestion().max_length("");
         }
     );
-
-
-    $("#questionnaire-change").dialog({
-        autoOpen: false,
-        modal: true,
-        title: gettext('Your Collected Data Will be Lost'),
-        zIndex:200,
-        width: 500
-    });
-
-    $("#delete_warning").dialog({
-        autoOpen: false,
-        modal: true,
-        title: gettext('Your Collected Data Will be Lost'),
-        zIndex:200,
-        width: 600
-    });
-
-    $("#submit-button").click(function() {
-        if($("#qtype").val() != undefined) {
-            $("#questionnaire-change").dialog("open");
-        } else {
-            submit_questionnaire();
-        }
-        return false;
-    });
-
-    $("#confirm_edition").click(function(){
-        $("#questionnaire-change").dialog("close");
-        submit_questionnaire();
-    })
 });

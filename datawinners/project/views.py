@@ -46,7 +46,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders
+from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders, save_questionnaire as subject_save_questionnaire
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -879,7 +879,8 @@ def edit_subject(request, project_id=None):
              'questionnaire_code': reg_form.form_code,
              'language': reg_form.activeLanguages[0],
              'entity_type': project.entity_type,
-             'in_trial_mode': in_trial_mode},
+             'in_trial_mode': in_trial_mode,
+             'post_url': reverse(subject_save_questionnaire)},
                               context_instance=RequestContext(request))
 
 

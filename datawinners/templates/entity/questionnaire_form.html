@@ -4,16 +4,18 @@
     </div>
 {% endblock %}
 <div id="questionnaire">
+    <input id='post_url' value="{{ post_url }}" type='hidden'/>
     <form id="question_form">
         {% csrf_token %}
         <fieldset>
             <ul class="questionnaire_code">
                 <li>
-                    <label class="grid_5">{% trans "Questionnaire Code :" %}</label>
+                    <label>{% trans "Questionnaire Code :" %}</label>
                     <input id="qtype" type="hidden" value="subject" />
                     <input id="questionnaire-code" class="required" value="{{ questionnaire_code }}" {% ifequal type 'datasenders' %}readonly="readonly"{% endifequal %}/>
                     <input id="entity-type" type="hidden" value="{{ entity_type }}" name="entity-type"/>
                     <input id="saved-questionnaire-code" type="hidden" value="{{ questionnaire_code }}"/>
+                    <span id="questionnaire-code-error"></span>
                     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
                     <div class="tooltip"><p>
                         <strong>{% trans "What is this?" %}</strong><br />
@@ -22,7 +24,6 @@
                         <strong>{% trans "What do I need to do?" %}</strong><br />
                         {% trans "r_tooltip_questionnaire_code" %}
                     </p></div>
-                    <span id="questionnaire-code-error"></span>
                 </li>
             </ul>
             <div class="questionnare_content grid_23 alpha omega">
@@ -41,18 +42,20 @@
                         <div>
                             {% include 'entity/question_detail_panel.html' %}
                         </div>
-                        <div class="grid_1 alpha text_align_right">
-                            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;">
-                            <div class="tooltip"><p>
-                                {% trans "tooltip_question_sms" %}
-                            </p></div>
-                        </div>
-                        <div class="grid_12 alpha omega">
-                            <div id='char-count'>
+
+                        <div class="grid_13 alpha omega">
+                            <div id='char-count-span'>
+                                <span id='char-count'>
+                                </span>
+                                <img src="/media/images/help_icon.png" class="help_icon">
+                                <div class="tooltip"><p>
+                                    {% trans "tooltip_question_sms" %}
+                                </p></div>
                             </div>
                         </div>
-                        <div class="margin_top_10 float_left">
-                            <input id="submit-button" type="submit" class="button" value="{% trans 'Submit' %}" />
+
+                        <div class="mobile">
+                            <textarea name="message" cols="30" rows="4" id="sms_preview" readonly="true"></textarea>
                         </div>
                     </div>
 
@@ -61,12 +64,16 @@
         </fieldset>
     </form>
 </div>
-<div id="questionnaire-change">
-    <br/>
-    <div class="text_align_right">
-        <a href="javascript:void(0);" class="button" id="confirm_edition">{% trans "Confirm" %}</a>
+
+<div class="create_project">
+    <div class="grid_15 float_right">
+        <div class="right_aligned_button">
+            <input id="submit-button" type="submit" class="button" value="{% trans 'Submit' %}" />
+        </div>
     </div>
+    <div class="clear-both"></div>
 </div>
+
 <div class="none">
     <form method="post" action="{% url datawinners.entity.views.export_subject %}" id="subject-export-form">
         <input type="hidden" name="entity_type" id="type_to_export"/>
