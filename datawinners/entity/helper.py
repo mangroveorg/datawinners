@@ -26,6 +26,7 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
+from mangrove.utils.types import is_empty
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
@@ -190,3 +191,33 @@ def question_code_generator():
         code = 'q' + str(i)
         yield code
         i += 1
+
+def clean(self):
+    a = self.cleaned_data.get(self.location_fields.get(LOCATION_TYPE_FIELD_NAME), None)
+    b = self.cleaned_data.get(self.location_fields.get(GEO_CODE_FIELD_NAME), None)
+    if not (bool(a) or bool(b)):
+        msg = _("Please fill out at least one location field correctly.")
+        self._errors[self.location_fields.get(LOCATION_TYPE_FIELD_NAME)] = self.error_class([msg])
+    if bool(b):
+        self.geo_code_validations(b)
+    return self.cleaned_data
+
+def geo_code_format_validations(self, lat_long, msg):
+    key = self.location_fields.get(GEO_CODE_FIELD_NAME, None)
+    if len(lat_long) != 2:
+        self._errors[key] = self.error_class([msg])
+    else:
+        try:
+            if not (-90 < float(lat_long[0]) < 90 and -180 < float(lat_long[1]) < 180):
+                self._errors[key] = self.error_class([msg])
+        except Exception:
+            self._errors[key] = self.error_class([msg])
+
+def geo_code_validations(self, b):
+    msg = _("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
+    geo_code_string = b.strip()
+    geo_code_string = (' ').join(geo_code_string.split())
+    if not is_empty(geo_code_string):
+        lat_long = geo_code_string.split(' ')
+        self.geo_code_format_validations(lat_long, msg)
+        self.cleaned_data = geo_code_string

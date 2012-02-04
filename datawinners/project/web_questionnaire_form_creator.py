@@ -5,10 +5,12 @@ from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME
 from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField
 from datawinners.entity.fields import PhoneNumberField
+from mangrove.form_model.field import GeoCodeField
+from datawinners.entity.helper import clean, geo_code_format_validations, geo_code_validations
 
 class WebQuestionnaireFormCreater(object):
     def __init__(self, subject_question_creator, form_model):
@@ -17,18 +19,24 @@ class WebQuestionnaireFormCreater(object):
 
     def create(self):
         properties = dict()
-        language = self.form_model.activeLanguages[0]
+        properties.update({'geo_code_format_validations':geo_code_format_validations,
+                           'geo_code_validations':geo_code_validations,
+                           'clean':clean,
+                           'location_fields': dict()})
+        
+        self.language = self.form_model.activeLanguages[0]
         if self.form_model.is_registration_form():
             properties.update(self._get_entity_type_hidden_field())
-            properties.update(
-                {field.code: self._get_django_field(field, language) for field in self.form_model.fields})
+            fields, location_fields = self.get_all_fields()
+            properties.update(fields)
+            properties.update({'location_fields':location_fields})
         else:
             subject_question = self.form_model.entity_question
             if subject_question is not None:
                 properties.update(self._get_subject_web_question(subject_question))
                 properties.update(self.subject_question_creator.create_code_hidden_field(subject_question))
             properties.update(
-                {field.code: self._get_django_field(field,language) for field in self.form_model.fields if
+                {field.code: self._get_django_field(field,self.language) for field in self.form_model.fields if
                  not field.is_entity_field})
         properties.update(self._get_form_code_hidden_field())
 
@@ -49,9 +57,18 @@ class WebQuestionnaireFormCreater(object):
         except KeyError:
                 return self._create_char_field(field,language)
 
+    def get_all_fields(self):
+        fields = dict()
+        location_fields = dict()
+        for field in self.form_model.fields:
+            fields.update({field.code: self._get_django_field(field, self.language) })
+            if field.name in [LOCATION_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME]:
+                location_fields.update({field.name: field.code})
+        return fields, location_fields
 
     def _create_char_field(self, field,language):
-        char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
+        is_required = field.is_required() if field.name not in [LOCATION_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME] else False
+        char_field = forms.CharField(label=field.label[language], initial=field.value, required=is_required,
             help_text=field.instruction)
         char_field.widget.attrs["watermark"] = field.get_constraint_text()
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -80,13 +97,12 @@ class WebQuestionnaireFormCreater(object):
         return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
 
     def _create_phone_number_field(self, field,language):
-        telephone_number_field = PhoneNumberField(label=field.label[language], required=field.is_required(),
-            help_text=field.instruction)
+        telephone_number_field = PhoneNumberField(label=field.label[language],
+                                                  required=field.is_required(),
+                                                  help_text=field.instruction,
+                                                  initial=field.value)
         telephone_number_field.widget.attrs["watermark"] = field.get_constraint_text()
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
-        if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
-            telephone_number_field.widget.attrs['class'] = 'location_field'
-
         return telephone_number_field
 
     def _create_integer_field(self, field, language):
@@ -95,7 +111,6 @@ class WebQuestionnaireFormCreater(object):
         integer_field.widget.attrs["watermark"] = field.get_constraint_text()
         integer_field.widget.attrs['style'] = 'padding-top: 7px;'
         return integer_field
-
 
 class SubjectQuestionFieldCreator(object):
     def __init__(self, dbm, project, project_subject_loader=None):
