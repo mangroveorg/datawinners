@@ -2631,3 +2631,6 @@ msgstr ""
 
 msgid "Fill out the template with your Data Senders information"
 msgstr ""
+
+msgid "This phone number is already in use. Please supply a different phone number"
+msgstr ""

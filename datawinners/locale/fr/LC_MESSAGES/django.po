@@ -3354,3 +3354,6 @@ msgstr "Personnalisez votre Formulaire dʼEnregistrement"
 
 msgid "Register a Subject:"
 msgstr "Enregistrez un Sujet:"
+
+msgid "This phone number is already in use. Please supply a different phone number"
+msgstr "Ce numéro est déja utilisé. Veuillez fournir un autre numéro de téléphone"
