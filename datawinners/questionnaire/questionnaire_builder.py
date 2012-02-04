@@ -20,8 +20,7 @@ class QuestionnaireBuilder(object):
         language = self.form_model.activeLanguages[0]
 
         if self.form_model.entity_defaults_to_reporter():
-            self.form_model.add_field(self.question_builder.create_entity_id_question_for_activity_report(language,self.question_code_generator.next()
-            ))
+            self.form_model.add_field(self.question_builder.create_entity_id_question_for_activity_report(language))
 
         for question in question_set:
             self.form_model.add_field(self.question_builder.create_question(question, language,self.question_code_generator.next()))
@@ -62,11 +61,12 @@ class QuestionBuilder(object):
                 primitive_type=primitive_type, description=description)
         return ddtype
 
-    def create_entity_id_question_for_activity_report(self,language,code):
-        entity_data_dict_type = self._get_or_create_data_dict(name="eid", slug="entity_id", primitive_type="string",
+    def create_entity_id_question_for_activity_report(self,language):
+        entity_id_code = "eid"
+        entity_data_dict_type = self._get_or_create_data_dict(name=entity_id_code, slug="entity_id", primitive_type="string",
             description="Entity ID")
         name = ugettext("I am submitting this data on behalf of")
-        entity_id_question = TextField(name=name, code=code,
+        entity_id_question = TextField(name=name, code=entity_id_code,
             label=name,
             entity_question_flag=True, ddtype=entity_data_dict_type,
             constraints=[TextLengthConstraint(min=1, max=12)],

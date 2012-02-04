@@ -42,12 +42,12 @@ class TestQuestionnaireBuilder(unittest.TestCase):
         form_model = FormModel(self.dbm, "act_rep", "act_rep", "test", [], ["reporter"], "test")
         QuestionnaireBuilder(form_model,self.dbm).update_questionnaire_with_questions(post)
         self.assertEqual(4, len(form_model.fields))
-        self.assertEqual('q1', form_model.fields[0].code)
-        self.assertEqual('q2', form_model.fields[1].code)
-        self.assertEqual('q3', form_model.fields[2].code)
-        self.assertEqual('q4', form_model.fields[3].code)
+        self.assertEqual('eid', form_model.fields[0].code)
+        self.assertEqual('q1', form_model.fields[1].code)
+        self.assertEqual('q2', form_model.fields[2].code)
+        self.assertEqual('q3', form_model.fields[3].code)
         entity_id_question = form_model.entity_question
-        self.assertEqual('q1', entity_id_question.code)
+        self.assertEqual('eid', entity_id_question.code)
         self.assertEqual('I am submitting this data on behalf of', entity_id_question.name)
         self.assertEqual("Choose Data Sender from this list.", entity_id_question.instruction)
 
