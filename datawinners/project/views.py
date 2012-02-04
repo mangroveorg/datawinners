@@ -86,7 +86,7 @@ def _make_project_links(project,questionnaire_code):
         project_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
         project_links['datasenders_link'] = reverse(create_datasender, args=[project_id])
         project_links['register_datasenders_link'] = reverse(create_datasender, args=[project_id])
-        project_links['registered_datasenders_link'] = reverse(all_datasenders)
+        project_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
         project_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
                                                                      args=[project_id])
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
