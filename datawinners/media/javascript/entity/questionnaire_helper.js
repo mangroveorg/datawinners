@@ -193,13 +193,13 @@ DW.removeQuestionCheckForSubmission = function(question){
     if ( questionnaireViewModel.questions()[index].event_time_field_flag()){
         $("#delete_question").dialog("open");
     } else {
-        questionnaireViewModel.removeQuestion(question)
+        questionnaireViewModel.removeQuestion(question);
     }
-    $("#ok_button_que_change").bind("click", function(){
-        questionnaireViewModel.removeQuestion(question)
+    $("#ok_button_que_change").unbind('click').click(function(){
+        questionnaireViewModel.removeQuestion(question);
         $("#delete_question").dialog("close");
     });
-    $("#cancel_link_que").bind("click", function(){
+    $("#cancel_link_que").unbind('click').click(function(){
         $("#delete_question").dialog("close");
         return false;
     });
