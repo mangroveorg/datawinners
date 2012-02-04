@@ -3357,3 +3357,6 @@ msgstr "Enregistrez un Sujet:"
 
 msgid "This phone number is already in use. Please supply a different phone number"
 msgstr "Ce numéro est déja utilisé. Veuillez fournir un autre numéro de téléphone"
+
+msgid "Ensure this value has at least %(limit_value)d digits (it has %(show_value)d)."
+msgstr "Assurez-vous que cette valeur comporte au moins %(limit_value)d caractères (il en a %(show_value)d)."

@@ -2634,3 +2634,6 @@ msgstr ""
 
 msgid "This phone number is already in use. Please supply a different phone number"
 msgstr ""
+
+msgid "Ensure this value has at least %(limit_value)d digits (it has %(show_value)d)."
+msgstr ""
