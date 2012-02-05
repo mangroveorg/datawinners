@@ -732,7 +732,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
     if request.method == 'POST':
-        questionnaire_form = QuestionnaireForm(request.POST)
+        questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request),data=request.POST)
         if not questionnaire_form.is_valid():
             return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
