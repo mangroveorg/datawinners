@@ -19,15 +19,20 @@
 .mobile{
     background:url("/media/images/mobile1.jpg") no-repeat left top;
     height:400px;
-    width:349px;
-    margin:30px;
-    margin-top:60px;
+    width:295px;
+    margin: 60px 30px 30px 30px;
+    position: relative;
+    overflow: hidden;
     textarea{
-            height: 127px;
-            margin-left: 56px;
-            margin-top: 146px;
-            width: 180px;
-            font-size:12px;
+        position: absolute;
+        height: 135px !important;
+        left: 54px;
+        top: 142px;
+        width: 187px !important;
+        font-size:12px;
+        padding: 0 !important;
+        border: 1px solid #cccccc  !important;
+        overflow: hidden;
     }
 }
 

@@ -4,12 +4,6 @@
 #submit-button{
     padding:0px !important;
 }
-
-.mobile #sms_preview{
-    margin-left:25px;
-    margin-top:145px;
-    overflow:hidden;
-}
 .mobile #id_message{
     width:84px;
     height:64px;
