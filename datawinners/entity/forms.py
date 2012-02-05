@@ -1,4 +1,4 @@
-from django.forms import HiddenInput
+from django.forms import HiddenInput, forms
 from django.forms.fields import RegexField, CharField, FileField
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
@@ -8,8 +8,9 @@ class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-    entity_type_regex = RegexField(regex="^[A-Za-z\d\s]+$", max_length=20,
-                                   error_message=_("Only letters and numbers are valid"), required=True,
+    entity_type_regex = RegexField(regex="^\s*([A-Za-z\d\s]+[A-Za-z\d]+)\s*$", max_length=20,
+                                   error_message= _("Only letters and numbers are valid and you must provide more than just whitespaces."),
+                                   required=True,
                                    label=_("New Subject(eg clinic, waterpoint etc)"))
 
 class SubjectForm(Form):

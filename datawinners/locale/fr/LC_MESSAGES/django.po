@@ -3360,3 +3360,6 @@ msgstr "Ce numéro est déja utilisé. Veuillez fournir un autre numéro de tél
 
 msgid "Ensure this value has at least %(limit_value)d digits (it has %(show_value)d)."
 msgstr "Assurez-vous que cette valeur comporte au moins %(limit_value)d caractères (il en a %(show_value)d)."
+
+msgid "Only letters and numbers are valid and you must provide more than just whitespaces."
+msgstr "Seuls les lettres et les chiffres sont valides et vous ne pouvez saisir un nom composé uniquement d'espaces."

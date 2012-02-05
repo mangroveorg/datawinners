@@ -72,7 +72,7 @@ $(document).ready(function() {
         modal: true,
         autoOpen: false,
         width: 500,
-        height: 250
+        height: 300
     });
 
     $("#cancel_add_type").click(function() {

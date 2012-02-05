@@ -3314,3 +3314,6 @@ msgstr ""
 
 msgid "Ensure this value has at least %(limit_value)d digits (it has %(show_value)d)."
 msgstr ""
+
+msgid "Only letters and numbers are valid and you must provide more than just whitespaces."
+msgstr ""
