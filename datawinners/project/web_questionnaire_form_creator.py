@@ -50,9 +50,12 @@ class WebQuestionnaireFormCreater(object):
             if subject_question is not None:
                 properties.update(self._get_subject_web_question(subject_question))
                 properties.update(self.subject_question_creator.create_code_hidden_field(subject_question))
+                properties.update(self._get_short_code_question_code())
+
             properties.update(
                 {field.code: self._get_django_field(field, language) for field in self.form_model.fields if
                  not field.is_entity_field})
+
         properties.update(self._get_form_code_hidden_field())
 
         return type('QuestionnaireForm', (Form, ), properties)
@@ -150,8 +153,10 @@ class SubjectQuestionFieldCreator(object):
         return {'entity_question_code': forms.CharField(required=False, widget=HiddenInput, label=subject_field.code)}
 
     def _get_choice_field(self, data_sender_choices, subject_field, help_text):
-        return ChoiceField(required=subject_field.is_required(), choices=data_sender_choices, label=subject_field.name,
+        subject_choice_field = ChoiceField(required=subject_field.is_required(), choices=data_sender_choices, label=subject_field.name,
             initial=subject_field.value, help_text=help_text)
+        subject_choice_field.widget.attrs['class'] = 'subject_field'
+        return subject_choice_field
 
     def _data_sender_choice_fields(self, subject_field):
         data_senders = self.project.get_data_senders(self.dbm)
