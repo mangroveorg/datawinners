@@ -39,6 +39,14 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertTrue(web_text_field.widget.attrs['watermark'] is not None)
         self.assertEqual('padding-top: 7px;', web_text_field.widget.attrs['style'])
 
+    def test_should_create_web_questionnaire_form_model_field(self):
+        form_model = self._get_form_model()
+
+        questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=form_model).create()
+
+        web_questionnaire = questionnaire_form_class()
+        self.assertEqual(form_model, web_questionnaire.form_model)
+
     def test_should_create_web_questionnaire_for_char_field_for_french_language(self):
         form_model = self._get_form_model()
         is_required = True
@@ -62,6 +70,18 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertTrue(web_location_field.widget.attrs['watermark'] is not None)
         self.assertEqual('padding-top: 7px;', web_location_field.widget.attrs['style'])
         self.assertEqual('location_field', web_location_field.widget.attrs['class'])
+
+    def test_should_append_country_in_location_field(self):
+        form_model = self._get_form_model()
+        form_model.add_field(self._get_location_field())
+
+        questionnaire_form_class = WebQuestionnaireFormCreater(subject_question_creator=None, form_model=form_model).create()
+        post_data={LOCATION_TYPE_FIELD_CODE:'pune','form_code':'something'}
+
+        web_form = questionnaire_form_class(country="India",data=post_data)
+        web_form.is_valid()
+
+        self.assertEqual("pune,India", web_form.cleaned_data[LOCATION_TYPE_FIELD_CODE])
 
 
     def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):

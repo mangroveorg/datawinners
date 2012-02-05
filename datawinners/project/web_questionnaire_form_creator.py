@@ -9,6 +9,24 @@ from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField
 from datawinners.entity.fields import PhoneNumberField
+from questionnaire.helper import get_location_field_code
+
+def question_form_init__(self,country=None,*args, **kwargs):
+    self.country=country
+    super(Form, self).__init__(*args, **kwargs)
+
+def questionnaire_form_clean(self):
+    location_field_code = get_location_field_code(self.form_model)
+    if location_field_code is None:
+        return self.cleaned_data
+
+    for question_code,values in self.cleaned_data.items():
+        if question_code == location_field_code:
+            self.cleaned_data[question_code]=get_country_appended_location(values,self.country)
+
+    return self.cleaned_data
+def get_country_appended_location(location_hierarchy,country):
+        return location_hierarchy + ","+country if location_hierarchy is not None else None
 
 class WebQuestionnaireFormCreater(object):
     def __init__(self, subject_question_creator, form_model):
@@ -18,7 +36,11 @@ class WebQuestionnaireFormCreater(object):
     def create(self):
         properties = dict()
         language = self.form_model.activeLanguages[0]
+        properties.update({'__init__':question_form_init__})
+        properties.update({'form_model':self.form_model})
+        properties.update({'clean':questionnaire_form_clean})
         if self.form_model.is_registration_form():
+            properties.update({'__init__':question_form_init__})
             properties.update(self._get_entity_type_hidden_field())
             properties.update(self._get_short_code_question_code())
             properties.update(

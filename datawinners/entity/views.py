@@ -41,6 +41,7 @@ from datawinners.utils import get_excel_sheet, workbook_add_sheet
 from datawinners.entity.helper import get_country_appended_location
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.utils import get_organization
+from utils import get_organization_country
 
 COUNTRY = ',MADAGASCAR'
 
@@ -54,10 +55,10 @@ def submit(request):
     post = json.loads(request.POST['data'])
     success = True
     try:
-        web_player = WebPlayer(dbm, get_location_tree())
+        web_player = WebPlayer(dbm, get_location_tree(),get_location_hierarchy)
         message = post['message']
         message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
-            get_organization(request).country)
+            get_organization_country(request))
         request = Request(message=message,
             transportInfo=TransportInfo(transport=post.get('transport'), source=post.get('source'),
                 destination=post.get('destination')))
@@ -285,7 +286,7 @@ def create_subject(request, entity_type=None):
         return _get_response(request, questionnaire_form, entity_type)
 
     if request.method == 'POST':
-        questionnaire_form = QuestionnaireForm(request.POST)
+        questionnaire_form = QuestionnaireForm(country=get_organization_country(request),data=request.POST)
         if not questionnaire_form.is_valid():
             return _get_response(request, questionnaire_form, entity_type)
 
