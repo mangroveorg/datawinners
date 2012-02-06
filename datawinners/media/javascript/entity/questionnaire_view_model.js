@@ -63,8 +63,11 @@ var questionnaireViewModel =
         return questionnaireViewModel.selectedQuestion().type() == 'text';
     },
     addOptionToQuestion: function() {
-        var lastChoice = questionnaireViewModel.selectedQuestion().choices()[questionnaireViewModel.selectedQuestion().choices().length - 1];
-        questionnaireViewModel.selectedQuestion().choices.push({text:"", val:String.fromCharCode(lastChoice.val.charCodeAt(0) + 1)});
+        var selectedQuestionCode = "a";
+        if (questionnaireViewModel.selectedQuestion().choices().length > 0) {
+            var lastChoice = questionnaireViewModel.selectedQuestion().choices()[questionnaireViewModel.selectedQuestion().choices().length - 1];
+            selectedQuestionCode = String.fromCharCode(lastChoice.val.charCodeAt(0) + 1);
+        }questionnaireViewModel.selectedQuestion().choices.push({text:"", val:selectedQuestionCode});
         questionnaireViewModel.selectedQuestion().choices.valueHasMutated();
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
