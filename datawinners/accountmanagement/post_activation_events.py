@@ -22,7 +22,7 @@ def create_org_database(sender, user, request, **kwargs):
     assert manager, "Could not create database manager for %s " % (db_name,)
     run(manager)
 
-    profile.reporter_id = make_user_as_a_datasender(manager, org, user.username, profile.mobile_phone)
+    profile.reporter_id = make_user_as_a_datasender(manager, org, user.get_full_name(), profile.mobile_phone)
     profile.save()
 
     
