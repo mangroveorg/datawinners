@@ -30,7 +30,7 @@ from mangrove.datastore.entity_type import  define_type
 from datawinners.project import  models
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -42,6 +42,7 @@ from datawinners.entity.helper import get_country_appended_location
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.utils import get_organization
 from utils import get_organization_country
+import xlwt
 
 COUNTRY = ',MADAGASCAR'
 
@@ -415,5 +416,17 @@ def export_template(request, entity_type=None):
     codes.insert(0, "form_code")
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
+    try:
+        index_geocode = fields.index(GEO_CODE_FIELD_NAME)
+    except ValueError:
+        index_geocode = 0
+
+    ws = wb.get_sheet(0)
+
+    style = xlwt.XFStyle()
+    style.num_format_str = '@'
+    gps_col = ws.col(index_geocode)
+    gps_col.set_style(style)
+
     wb.save(response)
     return response
