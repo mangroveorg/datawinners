@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from accountmanagement.post_activation_events import make_user_as_a_datasender
+from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 
 from mangrove.errors.MangroveException import AccountExpiredException
@@ -22,10 +22,6 @@ from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
 from datawinners.utils import get_organization
-from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
-from mangrove.datastore.entity import create_entity, get_all_entities
-from mangrove.datastore.datadict import   get_or_create_data_dict
-from mangrove.form_model.form_model import    REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
 
 def is_admin(f):
     def wrapper(*args, **kw):
@@ -36,6 +32,7 @@ def is_admin(f):
         return f(*args, **kw)
 
     return wrapper
+
 
 def project_has_web_device(f):
     def wrapper(*args, **kw):
@@ -48,7 +45,9 @@ def project_has_web_device(f):
             referer = django_settings.HOME_PAGE
             return HttpResponseRedirect(referer)
         return f(*args, **kw)
+
     return wrapper
+
 
 def is_datasender(f):
     def wrapper(*args, **kw):
@@ -74,7 +73,9 @@ def is_datasender_allowed(f):
             return HttpResponseRedirect(django_settings.DATASENDER_DASHBOARD)
 
         return f(*args, **kw)
+
     return wrapper
+
 
 def is_new_user(f):
     def wrapper(*args, **kw):
@@ -87,6 +88,7 @@ def is_new_user(f):
 
     return wrapper
 
+
 def is_expired(f):
     def wrapper(*args, **kw):
         request = args[0]
@@ -96,18 +98,21 @@ def is_expired(f):
             request.session.clear()
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
         return f(*args, **kw)
+
     return wrapper
+
 
 def is_trial(f):
     def wrapper(*args, **kw):
         user = args[0].user
         profile = user.get_profile()
-        organization = Organization.objects.get(org_id = profile.org_id)
+        organization = Organization.objects.get(org_id=profile.org_id)
         if not organization.in_trial_mode:
             return HttpResponseRedirect(django_settings.HOME_PAGE)
         return f(*args, **kw)
 
     return wrapper
+
 
 def registration_complete(request, user=None):
     return render_to_response('registration/registration_complete.html')
@@ -128,7 +133,10 @@ def _get_email_template_name_for_reset_password(language):
 
 
 def custom_reset_password(request):
-    return password_reset(request, email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE),password_reset_form=ResetPasswordForm)
+    return password_reset(request,
+        email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE),
+        password_reset_form=ResetPasswordForm)
+
 
 @login_required(login_url='/login')
 @is_admin
@@ -155,6 +163,7 @@ def _associate_user_with_existing_project(manager, reporter_id):
         project.data_senders.append(reporter_id)
         project.save(manager)
 
+
 @login_required(login_url='/login')
 @is_admin
 def new_user(request):
@@ -162,7 +171,7 @@ def new_user(request):
     if request.method == 'GET':
         profile_form = UserProfileForm()
         return render_to_response("accountmanagement/account/add_user.html", {'profile_form': profile_form},
-                                  context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
 
     if request.method == 'POST':
         manager = get_database_manager(request.user)
@@ -180,10 +189,10 @@ def new_user(request):
                 user.save()
                 mobile_number = form.cleaned_data['mobile_phone']
                 ngo_user_profile = NGOUserProfile(user=user, title=form.cleaned_data['title'],
-                                                  mobile_phone = mobile_number,
-                                                  org_id=org.org_id)
+                    mobile_phone=mobile_number,
+                    org_id=org.org_id)
                 ngo_user_profile.reporter_id = make_user_as_a_datasender(manager=manager, organization=org,
-                                                    current_user_name=user.get_full_name(), mobile_number=mobile_number)
+                    current_user_name=user.get_full_name(), mobile_number=mobile_number)
                 ngo_user_profile.save()
                 _associate_user_with_existing_project(manager, ngo_user_profile.reporter_id)
                 reset_form = PasswordResetForm({"email": username})
@@ -192,8 +201,9 @@ def new_user(request):
                 form = UserProfileForm()
                 add_user_success = True
 
-        return render_to_response("accountmanagement/account/add_user.html", {'profile_form': form, 'add_user_success': add_user_success},
-                                  context_instance=RequestContext(request))
+        return render_to_response("accountmanagement/account/add_user.html",
+                {'profile_form': form, 'add_user_success': add_user_success},
+            context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -203,7 +213,7 @@ def users(request):
         org_id = request.user.get_profile().org_id
         users = NGOUserProfile.objects.filter(org_id=org_id)
         return render_to_response("accountmanagement/account/users_list.html", {'users': users},
-                                  context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login')
@@ -213,11 +223,11 @@ def edit_user(request):
         if profile.mobile_phone == 'Not Assigned':
             profile.mobile_phone = ''
         form = EditUserProfileForm(data=dict(title=profile.title, first_name=profile.user.first_name,
-                                             last_name=profile.user.last_name,
-                                             username=profile.user.username,
-                                             mobile_phone=profile.mobile_phone))
+            last_name=profile.user.last_name,
+            username=profile.user.username,
+            mobile_phone=profile.mobile_phone))
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form},
-                                  context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
     if request.method == 'POST':
         form = EditUserProfileForm(request.POST)
         message = ""
@@ -233,10 +243,12 @@ def edit_user(request):
             ngo_user_profile.save()
             message = _('Profile has been updated successfully')
         return render_to_response("accountmanagement/profile/edit_profile.html", {'form': form, 'message': message},
-                                  context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
+
 
 def trial_expired(request):
     return render_to_response("registration/trial_account_expired_message.html")
+
 
 @is_admin
 @is_trial
@@ -245,8 +257,8 @@ def upgrade(request):
     organization = get_organization(request)
     if request.method == 'GET':
         form = UpgradeForm()
-        return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
-                                                               'form':form}, context_instance=RequestContext(request))
+        return render_to_response("registration/upgrade.html", {'organization': organization, 'profile': profile,
+                                                                'form': form}, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = UpgradeForm(request.POST)
         if form.is_valid():
@@ -255,8 +267,8 @@ def upgrade(request):
 
             invoice_period = form.cleaned_data['invoice_period']
             preferred_payment = form.cleaned_data['preferred_payment']
-            payment_details = PaymentDetails.objects.model(organization= organization,invoice_period= invoice_period,
-                                                           preferred_payment= preferred_payment)
+            payment_details = PaymentDetails.objects.model(organization=organization, invoice_period=invoice_period,
+                preferred_payment=preferred_payment)
             payment_details.save()
             message_tracker = MessageTracker.objects.filter(organization=organization)
             if message_tracker.count() > 0:
@@ -264,16 +276,17 @@ def upgrade(request):
                 tracker.reset()
             DataSenderOnTrialAccount.objects.filter(organization=organization).delete()
             _send_upgrade_email(request.user, request.LANGUAGE_CODE)
-            messages.success(request,_("upgrade success message") )
+            messages.success(request, _("upgrade success message"))
             return HttpResponseRedirect(django_settings.LOGIN_REDIRECT_URL)
-            
-        return render_to_response("registration/upgrade.html",{'organization' : organization, 'profile' : profile,
-                                                                   'form':form}, context_instance=RequestContext(request))
+
+        return render_to_response("registration/upgrade.html", {'organization': organization, 'profile': profile,
+                                                                'form': form}, context_instance=RequestContext(request))
+
 
 def _send_upgrade_email(user, language):
-    subject = render_to_string('accountmanagement/upgrade_email_subject_'+language+'.txt')
+    subject = render_to_string('accountmanagement/upgrade_email_subject_' + language + '.txt')
     subject = ''.join(subject.splitlines()) # Email subject *must not* contain newlines
-    body = render_to_string('accountmanagement/upgrade_email_'+language+'.html', {'name':user.first_name})
+    body = render_to_string('accountmanagement/upgrade_email_' + language + '.html', {'name': user.first_name})
     email = EmailMessage(subject, body, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()

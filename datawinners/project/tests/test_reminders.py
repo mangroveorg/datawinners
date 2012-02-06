@@ -6,7 +6,7 @@ from nose.plugins.skip import Skip, SkipTest
 from datawinners.project.models import Reminder, ReminderMode, Project, RemindTo, ReminderLog
 from datawinners.scheduler.deadline import Deadline, Week
 from mangrove.datastore.database import DatabaseManager
-from project.forms import ReminderForm
+from datawinners.project.forms import ReminderForm
 from decimal import Decimal
 
 class TestReminders(unittest.TestCase):

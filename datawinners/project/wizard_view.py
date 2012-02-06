@@ -151,8 +151,8 @@ def reminders(request, project_id):
         dbm = get_database_manager(request.user)
         project = Project.load(dbm.database, project_id)
         questionnaire = FormModel.get(dbm, project.qid)
-        from datawinners.project.views import _make_project_links
-        project_links = _make_project_links(project, questionnaire.form_code)
+        from datawinners.project.views import make_project_links
+        project_links = make_project_links(project, questionnaire.form_code)
         reminders = Reminder.objects.filter(voided=False, project_id=project_id).order_by('id')
         organization = get_organization(request)
         from datawinners.project.views import  _format_reminders, create_reminder
@@ -171,8 +171,8 @@ def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
     questionnaire = FormModel.get(dbm, project.qid)
-    from datawinners.project.views import _make_project_links
-    project_links = _make_project_links(project, questionnaire.form_code)
+    from datawinners.project.views import make_project_links
+    project_links = make_project_links(project, questionnaire.form_code)
     org_id = (NGOUserProfile.objects.get(user=request.user)).org_id
     organization = Organization.objects.get(org_id=org_id)
     html = 'project/reminders_trial.html' if organization.in_trial_mode else 'project/reminder_settings.html'

@@ -8,7 +8,7 @@ from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationFormUniqueEmail
-from accountmanagement.helper import get_trial_account_user_phone_numbers
+from datawinners.accountmanagement.helper import get_trial_account_user_phone_numbers
 from datawinners.accountmanagement.models import get_data_senders_on_trial_account_with_mobile_number
 from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException

@@ -9,7 +9,7 @@ from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField
 from datawinners.entity.fields import PhoneNumberField
-from questionnaire.helper import get_location_field_code
+from datawinners.questionnaire.helper import get_location_field_code
 
 def question_form_init__(self,country=None,*args, **kwargs):
     self.country=country

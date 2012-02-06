@@ -128,22 +128,17 @@
                                 </ul>
                                 <div class="clear-left"></div>
                             </div>
-                            <div id="add_data_sender_link" class="clear-left padding_top_20" style="display:none">
-                                <a id="datasenders_edit_link" href="{{project_links.datasenders_link}}">
-                                    {% trans "My Data Senders" %}
-                                </a>|
-                                <a id="add_data_sender" href="{% url datawinners.entity.views.create_datasender %}">
-                                    {% trans "Add a data sender" %}
-                                </a>|
-                                <a id="all_datasenders_link" href="{% url datawinners.entity.views.all_datasenders %}">
-                                    {% trans "All Data Senders" %}
+                            <div id="add_link" class="clear-left padding_top_20" style="display:none">
+                                <a id="datasenders_edit_link" href="{{add_link.url}}">
+                                    {{ add_link.text }}
                                 </a>
                             </div>
                             {% if field.name == questionnaire_form.short_code_question_code %}
                                 <script type="text/javascript">
                                     if ($(".subject_field option").size() == 0) {
-                                        $("#add_data_sender_link").show();
-                                    }
+                                                $("#add_link").show();
+                                        }
+
                                 </script>
 
                             {% endif %}
