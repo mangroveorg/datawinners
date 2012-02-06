@@ -49,8 +49,18 @@
           margin-left: 10px; }
       #questionnaire .questionnare_content #question-detail-panel .question {
         width: 525px !important; }
+      #questionnaire .questionnare_content #question-detail-panel .alpha_list li {
+        margin: 0 30px;
+        padding: 0 0 4px 0 !important;
+        line-height: 25px;
+        display: list-item; }
       #questionnaire .questionnare_content #question-detail-panel .alpha_list input {
-        width: 300px; }
+        width: 300px;
+        margin: 0 !important;
+        float: none;
+        vertical-align: middle; }
+      #questionnaire .questionnare_content #question-detail-panel .add_link {
+        display: block; }
     #questionnaire .questionnare_content #questions-panel {
       background: none repeat scroll 0 0 #F0F0F0 !important;
       padding: 20px 0 0 0px;
