@@ -152,7 +152,7 @@ $(document).ready(function() {
                 spacerule: true,
                 regexrule: true
             },
-            type:{
+            'type[]':{
                 required: true
             },
             max_length:{
