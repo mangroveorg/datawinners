@@ -78,30 +78,30 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
 
     question1 = TextField(name=FIRSTNAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's first name?") % {'entity_type': entity_name},
-        defaultValue="some default value", language=get_language(), ddtype=name_type,
+        defaultValue="some default value", language=language, ddtype=name_type,
         instruction=_("Enter a %(entity_type)s first name") % {'entity_type': entity_name})
 
     question2 = TextField(name=NAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's last name?") % {'entity_type': entity_name},
-        defaultValue="some default value", language=get_language(), ddtype=name_type,
+        defaultValue="some default value", language=language(), ddtype=name_type,
         instruction=_("Enter a %(entity_type)s last name") % {'entity_type': entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name},
-        language=get_language(), ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
+        language=language, ddtype=location_type, instruction=unicode(_("Enter a region, district, or commune")))
     question4 = GeoCodeField(name=GEO_CODE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type': entity_name},
-        language=get_language(), ddtype=geo_code_type,
+        language=language, ddtype=geo_code_type,
         instruction=unicode(_("Enter lat and long. Eg 20.6, 47.3")))
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type': entity_name},
-        defaultValue="some default value", language=get_language(), ddtype=mobile_number_type,
+        defaultValue="some default value", language=language, ddtype=mobile_number_type,
         instruction=_(
             "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269") % {
             'entity_type': entity_name}, constraints=(
             _create_constraints_for_mobile_number()))
     question6 = TextField(name=SHORT_CODE_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type': entity_name},
-        defaultValue="some default value", language=get_language(), ddtype=name_type,
+        defaultValue="some default value", language=language, ddtype=name_type,
         instruction=unicode(_("Enter an id, or allow us to generate it")),
         entity_question_flag=True,
         constraints=[TextLengthConstraint(max=12)], required=False)
