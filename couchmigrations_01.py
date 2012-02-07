@@ -1,5 +1,5 @@
 from datawinners import initializer
-from main.initial_couch_fixtures import load_all_managers
+from datawinners.main.initial_couch_fixtures import load_all_managers
 
 managers = load_all_managers()
 
