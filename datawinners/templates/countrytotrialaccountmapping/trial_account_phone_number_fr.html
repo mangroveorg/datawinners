@@ -32,7 +32,7 @@
             <p>
                 <select name="country" id="id_country">
                     <option value="" selected="selected">Sélectionnez votre pays</option>
-                    {% for name,text in formatted_countries.items %}
+                    {% for name,text in formatted_countries %}
                         <option value="{{ name }}">{{ text }}</option>
                     {% endfor %}
 

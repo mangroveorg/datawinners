@@ -9,10 +9,10 @@ class TestHelper(unittest.TestCase):
         country1 = Country(country_name='Country1', country_code='1')
         country2 = Country(country_name='Country2', country_code='2')
         country3 = Country(country_name='Country3', country_code='3')
-        actual_display_map = helper.get_countries_in_display_format([country1,country2,country3])
-        expected_display_map = {
-            'Country1':'Country1 (1)',
-            'Country2':'Country2 (2)',
-            'Country3':'Country3 (3)',
-        }
-        self.assertEqual(expected_display_map, actual_display_map)
+        actual_display_list = helper.get_countries_in_display_format([country1,country2,country3])
+        expected_display_list = [
+            ('Country1','Country1 (1)'),
+            ('Country2','Country2 (2)'),
+            ('Country3','Country3 (3)'),
+        ]
+        self.assertEqual(expected_display_list, actual_display_list)
