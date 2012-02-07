@@ -1,6 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datastore.entity_type import get_all_entity_types
 from datawinners import initializer
 from datawinners.main.initial_couch_fixtures import load_all_managers
+from datawinners.entity.helper import create_registration_form
 
 managers = load_all_managers()
 
@@ -35,5 +37,10 @@ def migrate_01(managers, map_fun_raw_form_model_docs):
                     document['json_fields'][index] = json_field
                 document["validators"] = [{"cls": "mandatory"}]
             manager.database.save(document)
+        
+        entity_types = get_all_entity_types(manager)
+        for entity_type in entity_types:
+            if entity_type != ['reporter']:
+                create_registration_form(manager, entity_type)
 
 migrate_01(managers, map_fun_raw_form_model_docs)
