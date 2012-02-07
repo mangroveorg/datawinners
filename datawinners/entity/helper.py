@@ -83,7 +83,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
 
     question2 = TextField(name=NAME_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's last name?") % {'entity_type': entity_name},
-        defaultValue="some default value", language=language(), ddtype=name_type,
+        defaultValue="some default value", language=language, ddtype=name_type,
         instruction=_("Enter a %(entity_type)s last name") % {'entity_type': entity_name})
     question3 = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's location?") % {'entity_type': entity_name},
