@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from datastore.entity_type import get_all_entity_types
+from mangrove.datastore.entity_type import get_all_entity_types
 from django.utils import translation
 from datawinners import initializer
 from datawinners.main.initial_couch_fixtures import load_all_managers
@@ -50,12 +50,14 @@ def migrate_01(managers, map_fun_raw_form_model_docs):
             for entity_type in entity_types:
                 if entity_type != ['reporter']:
                     create_registration_form(manager, entity_type)
+            print "done for %s"%(manager,)
         except Exception as e:
             failed_managers.append((manager,e.message))
 
+
     print 'failed managers if any'
     for manager,exception_mesage in failed_managers:
-        print manager + 'failed. the reason --> ' + exception_mesage
+        print " %s failed. the reason :  %s" %(manager,exception_mesage)
 
 migrate_01(managers, map_fun_raw_form_model_docs)
 
