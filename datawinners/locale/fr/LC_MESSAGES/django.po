@@ -3135,7 +3135,7 @@ msgstr "Quel est le numéro de téléphone mobile du/de la %(entity_type)s ?"
 msgid "What is the %(entity_type)s's Unique ID Number?"
 msgstr "Quel est le numéro d'identification unique du/de la %(entity_type)s ?"
 
-msgid "Enter the %(entity_type)s's number with the country code and telephone number. Example: 261333745269"
+msgid "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269"
 msgstr "Entrez le numéro du %(entity_type)s avec le code pays et numéro de téléphone. Exemple: 261333745269"
 
 msgid "some default value"
