@@ -71,7 +71,7 @@ class CreateProject(Form):
                       ('Child', _('Child')), ('Employee', _('Employee')), )
     LANGUAGES = (('en', 'English'), ('fr', 'Français'),('mg', 'Malagasy'))
 
-    DEVICE_CHOICES = (('sms', 'SMS'), ('web', 'WEB'))
+    DEVICE_CHOICES = (('sms', 'SMS'), ('web', _('WEB')))
 
     name = CharField(max_length=50,required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)

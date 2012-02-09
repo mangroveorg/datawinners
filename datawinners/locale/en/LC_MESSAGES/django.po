@@ -3317,3 +3317,6 @@ msgstr ""
 
 msgid "Only letters and numbers are valid and you must provide more than just whitespaces."
 msgstr ""
+
+msgid "WEB"
+msgstr ""

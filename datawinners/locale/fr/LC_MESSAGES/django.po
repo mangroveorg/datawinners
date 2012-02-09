@@ -2801,9 +2801,9 @@ msgid "tooltip_individual_report"
 msgstr "Les Rapports Individuels portent sur des sujets spécifiques"
 "<br/>Exemples: <br/> 1) Un médecin examine un bébé. Dans ce cas, le sujet est le bébé."
 "<br/>2) Un superviseur évalue la qualité des soins au niveau d’une clinique. Le sujet est la clinique"
-"<br/>3) Un ingénieur mesure le débit d'une pompe à eau. Le sujet est la pompe à eau."
+"<br/>3) Un ingénieur mesure le débit d'une pompe publique. Le sujet est la pompe publique."
 "<br/>Dans chaque cas, les Expéditeurs de Données (en d'autres termes, les gens sur le terrain) doivent d'abord "
-"identifier le 'sujet' spécifique (bébé/clinique/pompe à eau)"
+"identifier le 'sujet' spécifique (bébé/clinique/pompe publique)"
 "<br/>Par exemple, l'Expéditeur de Données devrait tout d'abord répondre à la question: 'A propos de quel bébé votre rapport concerne-t-il?'"
 "<br/>Toutes les questions suivantes seraient au sujet du bébé. (Exemple: 'Combien pesait le bébé?')"
 
@@ -3044,7 +3044,7 @@ msgid "Example: Monthly Activity Report"
 msgstr "Exemple: Rapport d'activité mensuel"
 
 msgid "Example: a report per patient, clinic, water pump - choose below"
-msgstr "Exemple: un rapport par patient, clinique, pompe à eau - Choisissez ci-dessous"
+msgstr "Exemple: un rapport par patient, clinique, pompe publique - Choisissez ci-dessous"
 
 msgid "tooltip_questionnaire_form_data_sender_entity_question"
 msgstr "Sélectionnez votre Expéditeur de Données dans la liste déroulante. Les Expéditeurs"
@@ -3315,7 +3315,7 @@ msgstr "Un Sujet est ce que votre questionnaire concerne; une personne précise,
 "<br/>Dans de nombreux cas, l'Expéditeur de Données interagit avec un Sujet, puis envoie un rapport individuel portant sur l'interaction:"
 "<ul><li>Un médecin examine un bébé. Dans ce cas, le sujet est le bébé.</li>"
 "<li>Un superviseur évalue la qualité des soins fournis au niveau d'une clinique. Le sujet est la clinique.</li>"
-"<li>Un ingénieur mesure le débit d'une pompe à eau. Le sujet est la pompe à eau.</li>"
+"<li>Un ingénieur mesure le débit d'une pompe publique. Le sujet est la pompe publique.</li>"
 "<li>Un commercial vend des produits à un détaillant: Le sujet est le détaillant.</li></ul>"
 
 msgid "register_subject_for_projects_question"
@@ -3363,3 +3363,6 @@ msgstr "Assurez-vous que cette valeur comporte au moins %(limit_value)d caractè
 
 msgid "Only letters and numbers are valid and you must provide more than just whitespaces."
 msgstr "Seuls les lettres et les chiffres sont valides et vous ne pouvez saisir un nom composé uniquement d'espaces."
+
+msgid "WEB"
+msgstr "Internet"
