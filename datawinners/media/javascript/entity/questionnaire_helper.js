@@ -57,11 +57,14 @@ DW.question = function(question) {
     this._init();
 };
 
-DW.initChoices=function(choices){
+DW.initChoices=function(choices, language){
     var final_choices=[];
+    if (!language) {
+        language = questionnaireViewModel.language;
+    }
     $.each(choices,function(index,choice){
         var display_choice = {};
-        display_choice['text'] = choice.text[questionnaireViewModel.language];
+        display_choice['text'] = choice.text[language];
         display_choice['val'] = choice.val;
         final_choices.push(display_choice);
     });
@@ -90,7 +93,7 @@ DW.question.prototype = {
         this.type = ko.observable(q.type);
         this.required = ko.observable(q.required);
 
-        var initialValues = DW.initChoices(q.choices);
+        var initialValues = DW.initChoices(q.choices, q.language);
         this.choices = ko.observableArray(initialValues);
         this.is_entity_question = ko.observable(q.entity_question_flag);
         this.date_format = ko.observable(q.date_format);

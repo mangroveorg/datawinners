@@ -67,7 +67,8 @@ var questionnaireViewModel =
         if (questionnaireViewModel.selectedQuestion().choices().length > 0) {
             var lastChoice = questionnaireViewModel.selectedQuestion().choices()[questionnaireViewModel.selectedQuestion().choices().length - 1];
             selectedQuestionCode = String.fromCharCode(lastChoice.val.charCodeAt(0) + 1);
-        }questionnaireViewModel.selectedQuestion().choices.push({text:"", val:selectedQuestionCode});
+        }
+        questionnaireViewModel.selectedQuestion().choices.push({text:"", val:selectedQuestionCode});
         questionnaireViewModel.selectedQuestion().choices.valueHasMutated();
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
