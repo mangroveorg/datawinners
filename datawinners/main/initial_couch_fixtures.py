@@ -238,7 +238,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     question7 = GeoCodeField(name="What is the GPS code for clinic?", code="GPS",
                              label="What is the GPS code for clinic?",
                              language="en", ddtype=geo_code_type,
-                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547")
+                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="What are the required medicines?", code="RM", name="What are the required medicines?",
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
                             single_select_flag=False,
@@ -1194,7 +1194,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
     question7 = GeoCodeField(name="What is the GPS codé for clinic", code="GPS",
                              label="What is the GPS code for clinic?",
                              language="en", ddtype=geo_code_type,
-                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy Example: -18.1324 27.6547")
+                             instruction="Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547")
     question8 = SelectField(label="Required Medicines", code="RM", name="What are the required medicines?",
                             options=[("Hivid", "a"), ("Rétrovir", "b"), ("Vidéx EC", "c"), ("Epzicom", "d")],
                             single_select_flag=False,

@@ -2236,8 +2236,8 @@ msgstr "La réponse %s à la question %s dépasse la longueur autorisée."
 msgid "Answer %s for question %s is %s than allowed."
 msgstr "La réponse %s pour la question %s est %s la valeur autorisée."
 
-msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
-msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx yy.yyyy Exemple -18.8665 47.5315"
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
+msgstr "Format de GPS incorrect. Les coordonnées GPS doivent être dans le format suivant:. Xx.xxxx,yy.yyyy Exemple -18.8665,47.5315"
 
 msgid "greater"
 msgstr "supérieur à"
@@ -3366,3 +3366,6 @@ msgstr "Seuls les lettres et les chiffres sont valides et vous ne pouvez saisir 
 
 msgid "WEB"
 msgstr "Internet"
+
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy Exemple: -18.1324,27.6547"

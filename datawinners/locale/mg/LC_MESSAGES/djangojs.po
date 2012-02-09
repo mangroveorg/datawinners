@@ -247,11 +247,11 @@ msgstr ""
 
 #: media/javascript/project/questionnaire_helper.js:14
 msgid ""
-"Answer must be GPS co-ordinates in the following format: xx.xxxx yy.yyyy "
-"Example: -18.1324 27.6547 "
+"Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy "
+"Example: -18.1324,27.6547 "
 msgstr ""
 "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : xx."
-"xxxx yy.yyyy. Exemple -18.8665 27.6547"
+"xxxx,yy.yyyy. Exemple -18.8665,27.6547"
 
 #: media/javascript/project/questionnaire_helper.js:21
 msgid "day.month.year"
@@ -356,10 +356,10 @@ msgstr ""
 #: media/javascript/project/register_entity_validation.js:31
 msgid ""
 "Incorrect GPS format. The GPS coordinates must be in the following format: "
-"xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+"xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
 msgstr ""
 "Format de GPS incorrect. Les coordonnées GPS doivent être de la forme : xx."
-"xxxx yy.yyyy. Exemple -18.8665 47.5315"
+"xxxx,yy.yyyy. Exemple -18.8665,47.5315"
 
 #: media/javascript/project/register_entity_validation.js:36
 #: media/javascript/project/register_entity_validation.js:39

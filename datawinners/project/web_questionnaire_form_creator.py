@@ -7,7 +7,7 @@ from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from datawinners.entity.import_data import load_all_subjects_of_type
-from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField
+from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField
 from datawinners.entity.fields import PhoneNumberField
 from datawinners.questionnaire.helper import get_location_field_code
 
@@ -95,8 +95,9 @@ class WebQuestionnaireFormCreater(object):
 
     def _create_char_field(self, field, language):
         char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
-            help_text=field.instruction)
-        char_field.widget.attrs["watermark"] = field.get_constraint_text()
+            help_text=_(field.instruction))
+        watermark = "xx.xxxx,yy.yyyy" if type(field) == GeoCodeField else field.get_constraint_text()
+        char_field.widget.attrs["watermark"] = watermark
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
         self._create_field_type_class(char_field, field)
         return char_field

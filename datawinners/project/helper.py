@@ -306,7 +306,7 @@ def _translate_messages(error_dict, fields):
                     _("Answer %s for question %s is %s than allowed.") % (number, field.code, _(error_context),)]
             if type(field) == GeoCodeField:
                 errors[field.code] = [_(
-                    "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")]
+                    "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx.yy.yyyy. Example -18.8665,47.5315")]
             if type(field) == DateField:
                 answer, format = error.split(' ')[1], field.date_format
                 errors[field.code] = [_("Answer %s for question %s is invalid. Expected date in %s format") % (

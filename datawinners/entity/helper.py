@@ -91,7 +91,7 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
     question4 = GeoCodeField(name=GEO_CODE_FIELD_NAME, code=code_generator.next(),
         label=_("What is the %(entity_type)s's GPS co-ordinates?") % {'entity_type': entity_name},
         language=language, ddtype=geo_code_type,
-        instruction=unicode(_("Enter lat and long. Eg 20.6, 47.3")))
+        instruction=unicode(_("Enter lat and long. Eg 20.6,47.3")))
     question5 = TelephoneNumberField(name=MOBILE_NUMBER_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's mobile telephone number?") % {'entity_type': entity_name},
         defaultValue="some default value", language=language, ddtype=mobile_number_type,

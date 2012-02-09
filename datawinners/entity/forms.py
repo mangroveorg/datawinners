@@ -61,7 +61,7 @@ class ReporterRegistrationForm(Form):
                 self._errors['geo_code'] = self.error_class([msg])
 
     def _geo_code_validations(self, b):
-        msg = _("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315")
+        msg = _("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
         geo_code_string = b.strip()
         geo_code_string = (' ').join(geo_code_string.split())
         if not is_empty(geo_code_string):

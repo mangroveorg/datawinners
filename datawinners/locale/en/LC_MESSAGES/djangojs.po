@@ -318,7 +318,7 @@ msgstr ""
 #: media/javascript/project/register_entity_validation.js:31
 msgid ""
 "Incorrect GPS format. The GPS coordinates must be in the following format: "
-"xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+"xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
 msgstr ""
 
 #: media/javascript/project/register_entity_validation.js:36

@@ -2228,7 +2228,7 @@ msgstr ""
 msgid "Answer %s for question %s is %s than allowed."
 msgstr ""
 
-msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315"
+msgid "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"
 msgstr ""
 
 msgid "greater"
@@ -3319,4 +3319,7 @@ msgid "Only letters and numbers are valid and you must provide more than just wh
 msgstr ""
 
 msgid "WEB"
+msgstr ""
+
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
 msgstr ""
