@@ -198,8 +198,13 @@ def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = models.get_all_projects(manager)
     grant_web_access = False
-    fields, labels, codes = get_entity_type_fields(manager)
-    labels = [_(label.replace('subject', 'Data Sender')) for label in labels]
+    fields, old_labels, codes = get_entity_type_fields(manager)
+    labels = []
+    for label in old_labels:
+        if label != "What is the mobile number associated with the subject?":
+            labels.append(_(label.replace('subject', 'Data Sender')))
+        else:
+            labels.append(_("What is the Data Sender's mobile number?"))
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':

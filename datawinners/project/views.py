@@ -658,8 +658,13 @@ def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     if request.method == 'GET':
-        fields, labels, codes = get_entity_type_fields(manager)
-        labels = [label.replace('subject', 'Data Sender') for label in labels]
+        fields, old_labels, codes = get_entity_type_fields(manager)
+        labels = []
+        for label in old_labels:
+            if label != "What is the mobile number associated with the subject?":
+                labels.append(_(label.replace('subject', 'Data Sender')))
+            else:
+                labels.append(_("What is the Data Sender's mobile number?"))
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/registered_datasenders.html',
                 {'project': project, 'project_links': project_links, 'all_data': (
