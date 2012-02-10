@@ -296,7 +296,7 @@ msgstr "A quelle fréquence voulez-vous collecter les données ?"
 
 #: project/forms.py:58
 msgid "Week"
-msgstr "Semaines"
+msgstr "semaine"
 
 #: project/forms.py:58
 msgid "Month"
