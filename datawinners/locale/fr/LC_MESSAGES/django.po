@@ -190,8 +190,8 @@ msgid "Enter region, district or commune"
 msgstr "Entrez la région, le district ou la commune"
 
 #: entity/forms.py:34
-msgid "Enter lat and long eg: 19.3 42.37"
-msgstr "Entrez la lat. et la long. Ex : 20.6 47.3"
+msgid "Enter lat and long eg: 19.3,42.37"
+msgstr "Entrez la lat. et la long. Ex : 20.6,47.3"
 
 #: entity/forms.py:67
 msgid "Please fill out at least one location field correctly."
