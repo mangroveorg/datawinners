@@ -309,7 +309,7 @@ msgstr "Le questionnaire comporte une erreur"
 
 #: media/javascript/project/questionnaire_wizard.js:134
 msgid "The question has been saved."
-msgstr "Vous devez enregistrer le questionnaire."
+msgstr "Le questionnaire a été enregistré."
 
 #: media/javascript/project/questionnaire_wizard.js:158
 msgid "default"
@@ -508,7 +508,7 @@ msgstr "Annuler ce projet?"
 
 #: media/javascript/project/reminders.js:78
 msgid "The reminders has been saved"
-msgstr "Vous devez enregistrer le questionnaire."
+msgstr "Le message de rappèl a été enregistré"
 
 msgid "Give Web Submission Access"
 msgstr "Envoi Web"
@@ -621,3 +621,6 @@ msgstr "mot"
 
 msgid "choice"
 msgstr "choix"
+
+msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
+msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.xxxx,yy.yyyy Exemple: -18.1324,27.6547"
