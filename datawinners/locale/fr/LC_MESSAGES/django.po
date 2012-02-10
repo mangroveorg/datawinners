@@ -3180,8 +3180,8 @@ msgstr "Formulaire d'enregistrement de %(entity_type)s par SMS"
 msgid "Your Data Senders can register a new %(entity_type)s via SMS. Print out this form and give it to your Data Senders."
 msgstr "Vos expéditeurs peuvent enregistrer un(e) %(entity_type)s via SMS. Imprimez ce formulaire et donnez le à vos expéditeurs."
 
-msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">Registered Data Senders</a> page."
-msgstr "Tous les expéditeurs qui ont accès à ce formulaire peuvent enregistrer un(e) %(entity_type)s en ligne. Vous pouvez les donner l'accès pour envoi web dans la page <a href=\"%(url)s\">Expéditeurs enregistrés</a>."
+msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">all Data Senders</a> page."
+msgstr "Tous les expéditeurs qui ont accès à ce formulaire peuvent enregistrer un(e) %(entity_type)s en ligne. Vous pouvez les donner l'accès pour envoi web dans la page <a href=\"%(url)s\">tous les Expéditeurs</a>."
 
 msgid "Web %(entity_type)s Registration Form"
 msgstr "Formulaire d'enregistrement de %(entity_type)s par internet"
