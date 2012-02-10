@@ -622,7 +622,7 @@ def _get_project_and_project_link(manager, project_id):
 def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
-    fields, project_links, questions, reg_form = _get_registration_form(manager, project,
+    fields, project_links_with_subject_questionare, questions, reg_form = _get_registration_form(manager, project,
         type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
     in_trial_mode = _in_trial_mode(request)
