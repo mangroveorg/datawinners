@@ -16,7 +16,7 @@ class RegistrationPage(Page):
         registration_data = dict(registration_data) # create a copy so we don't modify in place
         email = registration_data[EMAIL] + generateId() + "@ngo.com"
         registration_data[EMAIL] = email
-        registration_data[ADMIN_MOBILE_NUMBER] = get_epoch_last_ten_digit()
+        registration_data[ADMIN_MOBILE_NUMBER] = str(get_epoch_last_ten_digit())
         self.register_with(registration_data)
         return RegistrationConfirmationPage(self.driver), email
 
