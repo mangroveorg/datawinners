@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from framework.utils.common_utils import generateId
+from framework.utils.common_utils import generateId, get_epoch_last_ten_digit
 
 from pages.page import Page
 from pages.registerconfirmationpage.registration_confirmation_page import RegistrationConfirmationPage
@@ -16,6 +16,7 @@ class RegistrationPage(Page):
         registration_data = dict(registration_data) # create a copy so we don't modify in place
         email = registration_data[EMAIL] + generateId() + "@ngo.com"
         registration_data[EMAIL] = email
+        registration_data[ADMIN_MOBILE_NUMBER] = get_epoch_last_ten_digit()
         self.register_with(registration_data)
         return RegistrationConfirmationPage(self.driver), email
 
