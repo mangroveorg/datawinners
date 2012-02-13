@@ -4,6 +4,7 @@ import xlwt
 from datetime import datetime
 from mangrove.datastore.database import get_db_manager
 from django.utils.translation import ugettext_lazy as _
+from datawinners import settings
 
 VAR = "HNI"
 def get_excel_sheet(raw_data, sheet_name):
@@ -19,7 +20,7 @@ def get_database_manager_for_org(organization):
 
     organization_settings = OrganizationSetting.objects.get(organization=organization)
     db = organization_settings.document_store
-    return get_db_manager(database=db)
+    return get_db_manager(server=settings.COUCH_DB_SERVER,database=db)
 
 def get_organization(request):
     from datawinners.accountmanagement.models import Organization
