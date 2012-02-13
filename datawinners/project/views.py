@@ -625,7 +625,7 @@ def subjects(request, project_id=None):
     fields, project_links_with_subject_questionare, questions, reg_form = _get_registration_form(manager, project,
         type_of_subject='subject')
     example_sms = get_example_sms_message(fields, reg_form)
-    in_trial_mode = _in_trial_mode(request)
+    subject = get_entity_type_infos(project.entity_type, manager=manager)
     return render_to_response('project/subjects.html',
             {'project': project,
              'project_links': project_links,
@@ -634,7 +634,7 @@ def subjects(request, project_id=None):
              'example_sms': example_sms,
              'org_number': _get_organization_telephone_number(request),
              'current_language': translation.get_language(),
-             'in_trial_mode': in_trial_mode},
+             'subject': subject},
         context_instance=RequestContext(request))
 
 
@@ -762,8 +762,8 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
 
 def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
     form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
-    in_trial_mode = _in_trial_mode(request)
-    form_context.update({'in_trial_mode': in_trial_mode,'add_link': add_link(project)})
+    subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
+    form_context.update({'subject': subject,'add_link': add_link(project)})
     return render_to_response(template, form_context,
         context_instance=RequestContext(request))
 
@@ -935,7 +935,7 @@ def edit_subject(request, project_id=None):
         reg_form = form_model.get_form_model_by_code(manager, REGISTRATION_FORM_CODE)
     fields = reg_form.fields
     existing_questions = json.dumps(fields, default=field_to_json)
-    in_trial_mode = _in_trial_mode(request)
+    subject = get_entity_type_infos(project.entity_type, manager=manager)
     return render_to_response('project/subject_questionnaire.html',
             {'project': project,
              'project_links': project_links,
@@ -943,7 +943,7 @@ def edit_subject(request, project_id=None):
              'questionnaire_code': reg_form.form_code,
              'language': reg_form.activeLanguages[0],
              'entity_type': project.entity_type,
-             'in_trial_mode': in_trial_mode,
+             'subject': subject,
              'post_url': reverse(subject_save_questionnaire)},
         context_instance=RequestContext(request))
 

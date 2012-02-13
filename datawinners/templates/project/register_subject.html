@@ -24,6 +24,7 @@
     <link href="/media/css/scss/section_questionnaire.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.scss" rel="stylesheet"/>
     <link href="/media/css/scss/section_subjects.scss" rel="stylesheet"/>
+    <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
@@ -36,15 +37,18 @@
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
+    <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript">
             var subject_registration_form_preview_link = "{{ project_links.subject_registration_preview_link }}";
+            var upload_url = "{% url datawinners.entity.views.all_subjects %}";
     </script>
 {% endblock %}
 
 {% block content %}
     <h2>{% trans "My Subjects" %}</h2>
     {% include 'project/my_subjects_help.html' %}
-
+    {% include "popup-import.html" %}
     <div id="my_subjects">
     {% block secondary_navigation_subjects %}
         {% activetab "secondary_tab_nav" "criteria" %}
