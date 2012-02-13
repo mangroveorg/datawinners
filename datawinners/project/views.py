@@ -762,8 +762,8 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
 
 def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
     form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
-    form_context.update({'url_all_datasenders':reverse(all_datasenders),
-        'add_link': add_link(project)})
+    in_trial_mode = _in_trial_mode(request)
+    form_context.update({'in_trial_mode': in_trial_mode,'add_link': add_link(project)})
     return render_to_response(template, form_context,
         context_instance=RequestContext(request))
 

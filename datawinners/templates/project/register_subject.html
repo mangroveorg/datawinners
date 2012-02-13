@@ -68,7 +68,7 @@
 
     <div>
         <h2 class="font_size_14">{% blocktrans with project.entity_type as entity_type %}Web {{ entity_type }} Registration Form{% endblocktrans %}</h2>
-        <div class="instruction">{% blocktrans with project.entity_type as entity_type and url_all_datasenders as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">all Data Senders</a> page.{% endblocktrans %}</div>
+        <div class="instruction">{% blocktrans with project.entity_type as entity_type and project_links.registered_datasenders_link as url %}All Data Senders who have access to this form can register a new {{ entity_type }} online. You can give them web submission access on the <a href="{{ url }}">Registered Data Senders</a> page.{% endblocktrans %}</div>
         <br/>
         <br/>
     </div>
