@@ -3135,7 +3135,7 @@ msgstr ""
 msgid "Your Data Senders can register a new {{ entity_type }} via SMS. Print out this form and give it to your Data Senders."
 msgstr ""
 
-msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">Registered Data Senders</a> page."
+msgid "All Data Senders who have access to this form can register a new %(entity_type)s online. You can give them web submission access on the <a href=\"%(url)s\">All Data Senders</a> page."
 msgstr ""
 
 msgid "Web %(entity_type)s Registration Form"
