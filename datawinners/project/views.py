@@ -113,7 +113,7 @@ def make_subject_links(project):
 def make_data_sender_links(project):
     project_id = project.id
     datasender_links = {};
-    datasender_links['datasenders_link'] = reverse(create_datasender, args=[project_id])
+    datasender_links['datasenders_link'] = reverse(all_datasenders)
     datasender_links['register_datasenders_link'] = reverse(create_datasender, args=[project_id])
     datasender_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
     return datasender_links
