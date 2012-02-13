@@ -4,7 +4,7 @@ import unittest
 from django.core.urlresolvers import reverse
 from mock import Mock
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender, registered_datasenders, make_data_sender_links, add_link
+from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 
 class TestProjectViews(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestProjectViews(unittest.TestCase):
         project_id = "1"
         project.id = project_id
         datasender_links = make_data_sender_links(project)
-        self.assertEqual(reverse(create_datasender, args=[project_id]), datasender_links['datasenders_link'])
+        self.assertEqual(reverse(all_datasenders), datasender_links['datasenders_link'])
         self.assertEqual(reverse(create_datasender, args=[project_id]), datasender_links['register_datasenders_link'])
         self.assertEqual(reverse(registered_datasenders, args=[project_id]),
             datasender_links['registered_datasenders_link'])
