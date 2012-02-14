@@ -3,7 +3,7 @@
 {% block page_title %}{% trans "Data Senders" %}{% endblock %}
 
 {% block section_title %}
-{% include "entity/all_data_senders/add_data_sender_title.html" %}
+    {% include "entity/all_data_senders/add_data_sender_title.html" %}
 {% endblock %}
 
 {% load dw_tabs %}
@@ -12,6 +12,11 @@
     {{ block.super }}
 {% endblock %}
 
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_all_datasenders.scss" rel="stylesheet"/>
+
+{% endblock %}
 
 {% block page_css %}
     {{ block.super }}
@@ -41,9 +46,18 @@
                 {% trans "Access to Web Submission has been given to your DataSenders" %}
             </div>
         {% endif %}
-        {% with project=None %}
-            {% include "import-datasenders.html" %}
-        {% endwith %}
+        <div class="grid_8 float_right omega text_align_right">
+            <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a list" %}</a> |
+            <a id="register_link" class="add_subject_link" href="{% url datawinners.entity.views.create_datasender %}">
+                {% trans "Add a data sender" %}
+            </a>
+        </div>
+        <div id="popup-import">
+            {% with project=None %}
+                {% include "import-datasenders.html" %}
+            {% endwith %}
+        </div>
+        <div class="clear-both"></div>
         {% include 'entity/all_data_senders/all_project_blocks.html' %}
         {% include 'entity/all_data_senders/web_submission_access_block.html' %}
         {% include 'entity/all_data_senders/actions.html' %}

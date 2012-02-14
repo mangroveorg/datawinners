@@ -15,7 +15,7 @@
                 <div id="file_uploader" class="float_left grid_5"></div>
                 <div class="clear"></div>
             </div>
-            <div class="error" class="margin_top_15">{% trans "Use this "%}<a href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
+            <div class="error" class="margin_top_15">{% trans "Use this "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
             <div class="clear"></div>
             {% if project %}
              <br/>
