@@ -19,7 +19,7 @@ LOCATOR = "locator"
 BY = "by"
 
 # List of all the locators related to login page
-ADD_NEW_SUBJECT_TYPE_LINK = by_css("div#subject_create_type_link>a#add_new_subject_type")
+ADD_NEW_SUBJECT_TYPE_LINK = by_xpath("//div[@id='subject_create_type_link']/a[@id='add_new_subject_type']|//a[@id='add_new_subject_type']")
 NEW_SUBJECT_TB = by_css("input#id_entity_type_text")
 ADD_BTN = by_css("input#add_type")
 
