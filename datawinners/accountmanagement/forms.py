@@ -90,7 +90,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
 
     first_name = forms.CharField(max_length=30, required=True, label=_('First name'))
     last_name = forms.CharField(max_length=30, required=True, label=_('Last name'))
-    mobile_phone = PhoneNumberField(required=True, label=_("Phone Number"))
+    mobile_phone = PhoneNumberField(required=True, label=_("Mobile Phone Number"))
     organization_name = forms.CharField(required=True, max_length=30, label=_('Organization Name'))
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),

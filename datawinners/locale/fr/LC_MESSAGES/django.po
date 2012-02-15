@@ -3372,3 +3372,6 @@ msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.x
 
 msgid "What is the Data Sender's mobile number?"
 msgstr "Quel est le numéro de téléphone mobile de l'éxpediteur de données?"
+
+msgid "Mobile Phone Number"
+msgstr "Numéro de téléphone mobile"

@@ -54,6 +54,11 @@
     .black_italic.optional{
         display: block;
     }
+    ul{
+        li#mobile-phone-number-fr p{
+            margin-top: -12px;
+        }
+    }
 }
 
 .signin_form{

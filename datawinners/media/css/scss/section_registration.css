@@ -38,6 +38,8 @@
   display: inline-block; }
 #registration_form .black_italic.optional {
   display: block; }
+#registration_form ul li#mobile-phone-number-fr p {
+  margin-top: -12px; }
 
 .signin_form {
   margin: 50px 0 0px 70px; }
