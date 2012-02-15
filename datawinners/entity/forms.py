@@ -4,14 +4,17 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
 from datawinners.entity.fields import PhoneNumberField
+import re
+
 class EntityTypeForm(Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
     entity_type_regex = RegexField(regex="^\s*([A-Za-z\d\s]+[A-Za-z\d]+)\s*$", max_length=20,
-                                   error_message= _("Only letters and numbers are valid and you must provide more than just whitespaces."),
-                                   required=True,
-                                   label=_("New Subject(eg clinic, waterpoint etc)"))
+        error_message=_("Only letters and numbers are valid and you must provide more than just whitespaces."),
+        required=True,
+        label=_("New Subject(eg clinic, waterpoint etc)"))
+
 
 class SubjectForm(Form):
     required_css_class = 'required'
@@ -24,12 +27,13 @@ class SubjectForm(Form):
     description = CharField(max_length=30, required=False, label=_("Description"))
     mobileNumber = CharField(max_length=30, required=False, label=_("Mobile Number"))
 
+
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
     first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
-                            error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
-                            label=_("Name"))
+        error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
+        label=_("Name"))
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
     location = CharField(max_length=100, required=False, label=_("Enter location"))
@@ -49,7 +53,7 @@ class ReporterRegistrationForm(Form):
         except ValueError:
             return False
 
-        
+
     def _geo_code_format_validations(self, lat_long, msg):
         if len(lat_long) != 2:
             self._errors['geo_code'] = self.error_class([msg])
@@ -61,11 +65,12 @@ class ReporterRegistrationForm(Form):
                 self._errors['geo_code'] = self.error_class([msg])
 
     def _geo_code_validations(self, b):
-        msg = _("Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
+        msg = _(
+            "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315")
         geo_code_string = b.strip()
         geo_code_string = (' ').join(geo_code_string.split())
         if not is_empty(geo_code_string):
-            lat_long = geo_code_string.split(' ')
+            lat_long = re.split("[ ,]", geo_code_string)
             self._geo_code_format_validations(lat_long, msg)
             self.cleaned_data['geo_code'] = geo_code_string
 
