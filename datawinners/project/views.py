@@ -763,7 +763,7 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
 def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
     form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
     subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
-    form_context.update({'subject': subject,'add_link': add_link(project)})
+    form_context.update({'subject': subject, 'add_link': add_link(project)})
     return render_to_response(template, form_context,
         context_instance=RequestContext(request))
 
@@ -801,7 +801,7 @@ def web_questionnaire(request, project_id=None, subject=False):
             if response.success:
                 if subject:
                     success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
-                    response.short_code,)
+                        response.short_code,)
                 else:
                     success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
@@ -817,8 +817,10 @@ def web_questionnaire(request, project_id=None, subject=False):
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
+        subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
-        _project_context.update({'success_message': success_message, 'error_message': error_message,'add_link': add_link(project)})
+        _project_context.update(
+                {'success_message': success_message, 'error_message': error_message, 'add_link': add_link(project), "subject": subject})
         return render_to_response(template, _project_context,
             context_instance=RequestContext(request))
 
