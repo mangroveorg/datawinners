@@ -17,7 +17,6 @@
             </div>
             <div class="error" class="margin_top_15">{% trans "Use this "%}<a class="import_link" href="/media/files/{% if current_language == 'en' %}DataWinners_ImportDataSenders.xls{% else %}DataWinners_ImporterLesEnvoyeursDeDonnees.xls{% endif %}">{% trans "Import Template"%}</a></div>
             <div class="clear"></div>
-            {% if project %}
              <br/>
              <table class="styled_table">
                 <thead>
@@ -30,7 +29,6 @@
                 <tbody id="imported_table">
                 </tbody>
             </table>
-            {% endif %}
 
             <div id='error_table'>
                 <table class="styled_table">

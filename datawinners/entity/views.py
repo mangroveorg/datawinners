@@ -208,12 +208,12 @@ def all_datasenders(request):
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
+        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request, manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
                  'error_message': error_message,
-                 'failure_imports': failure_imports, 'all_data': all_data_senders}))
+                 'failure_imports': failure_imports, 'all_data': all_data_senders, 'imported_datasenders': imported_datasenders}))
 
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html',
