@@ -13,7 +13,7 @@
         <span class="header">{{ subject.entity|capfirst }}</span>
         <span class="success_error">{{ subject.data|length }} {% trans "Registered Subjects" %}</span>
     </div>
-    <div>
+    <div class="subject-container">
         <div class="subjects_links">
             <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit registration form" %}</a>
             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity }}</a>&nbsp;|&nbsp;

@@ -91,13 +91,21 @@ $(document).ready(function(){
     });
 
     $(".import-subject").unbind().bind("click", function(){
-        var entity_type = $(this).attr("id").substr(7);
-        $("#popup-"+entity_type).dialog("open");
+        if ($(this).parent().hasClass("subjects_links")){
+            var index = $(".subjects_links .import-subject").index(this);
+        } else{
+            var subject_container = $(this).parent().parent().parent().parent();
+            var index = $(".subject-container").index(subject_container);
+        }
+
+        if (index == -1)
+            index = 0;
+
+        $(".popup-import").eq(index).dialog("open");
     });
 
     $(".close_import_dialog").bind("click", function(){
-        var entity_type = $(this).attr("id").substr(13);
-        $("#popup-"+entity_type).dialog("close");
+        $(this).parent().parent().dialog("close");
     })
 
     $(".edit-form-code-link").bind("click", function(){
