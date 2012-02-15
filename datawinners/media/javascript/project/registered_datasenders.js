@@ -28,23 +28,5 @@ $(document).ready(function() {
             $(this).val("");
         }
     });
-
-    $("#popup-import").dialog({
-        autoOpen: false,
-        modal: true,
-        title: gettext("Import a Data Senders list"),
-        zIndex:200,
-        width: 1000
-    });
-
-
-    $("#import-datasenders").bind("click", function(){
-        $("#popup-import").dialog("open");
-    });
-
-    $(".close_import_dialog").bind("click", function(){
-        $("#popup-import").dialog("close");
-    });
-
 });
 

@@ -1,4 +1,25 @@
 $(document).ready(function () {
+    $("#popup-import").dialog({
+        autoOpen: false,
+        modal: true,
+        title: gettext("Import a Data Senders list"),
+        zIndex:200,
+        width: 1000
+    });
+
+
+    $("#import-datasenders").bind("click", function(){
+        $("#popup-import").dialog("open");
+        $('#message').remove();
+        $('#error_tbody').html('');
+        $("#error_table").hide();
+        $('#imported_table').html("");
+    });
+
+    $(".close_import_dialog").bind("click", function(){
+        $("#popup-import").dialog("close");
+    });
+
     $("#error_table").hide();
     var uploader = new qq.FileUploader({
         // pass the dom node (ex. $(selector)[0] for jQuery users)
