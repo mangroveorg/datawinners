@@ -3827,7 +3827,7 @@ msgid "Palestine (+970)"
 msgstr "Palestine (+970)"
 
 msgid "Palestine (+9725)"
-msgstr "Turkménistan"
+msgstr "Palestine (+9725)"
 
 msgid "Panama"
 msgstr "Panama"

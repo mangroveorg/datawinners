@@ -12,7 +12,10 @@ def trial_account_phone_numbers(request, language):
     template = 'countrytotrialaccountmapping/trial_account_phone_number_%s.html' % (language, )
     if request.method == 'GET':
         countries = Country.objects.order_by('country_name')
-        return render_to_response(template, {'formatted_countries': get_countries_in_display_format(countries)},
+        countries = get_countries_in_display_format(countries)
+        if language != 'en':
+            countries.sort(key=lambda x: x[1])
+        return render_to_response(template, {'formatted_countries': countries},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         country_name = request.POST['country']
