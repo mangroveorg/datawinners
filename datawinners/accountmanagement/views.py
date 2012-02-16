@@ -176,7 +176,7 @@ def new_user(request):
     if request.method == 'POST':
         manager = get_database_manager(request.user)
         org = get_organization(request)
-        form = UserProfileForm(request.POST)
+        form = UserProfileForm(organization=org,data=request.POST)
 
         if form.is_valid():
             username = form.cleaned_data.get('username')
