@@ -100,22 +100,20 @@ def make_project_links(project, questionnaire_code):
 
 def make_subject_links(project):
     project_id = project.id
-    subject_links = {};
-    subject_links['subjects_link'] = reverse(subjects, args=[project_id])
-    subject_links['subjects_edit_link'] = reverse(edit_subject, args=[project_id])
-    subject_links['register_subjects_link'] = reverse('subject_questionnaire', args=[project_id])
-    subject_links['registered_subjects_link'] = reverse(registered_subjects, args=[project_id])
-    subject_links['subject_registration_preview_link'] = reverse(subject_registration_form_preview,
-        args=[project_id])
+    subject_links = {'subjects_link': reverse(subjects, args=[project_id]),
+                     'subjects_edit_link': reverse(edit_subject, args=[project_id]),
+                     'register_subjects_link': reverse('subject_questionnaire', args=[project_id]),
+                     'registered_subjects_link': reverse(registered_subjects, args=[project_id]),
+                     'subject_registration_preview_link': reverse(subject_registration_form_preview,
+                         args=[project_id])}
     return subject_links
 
 
 def make_data_sender_links(project):
     project_id = project.id
-    datasender_links = {};
-    datasender_links['datasenders_link'] = reverse(all_datasenders)
-    datasender_links['register_datasenders_link'] = reverse(create_datasender, args=[project_id])
-    datasender_links['registered_datasenders_link'] = reverse(registered_datasenders, args=[project_id])
+    datasender_links = {'datasenders_link': reverse(all_datasenders),
+                        'register_datasenders_link': reverse(create_datasender, args=[project_id]),
+                        'registered_datasenders_link': reverse(registered_datasenders, args=[project_id])}
     return datasender_links
 
 
