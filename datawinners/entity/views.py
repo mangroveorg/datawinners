@@ -370,7 +370,8 @@ def save_questionnaire(request):
                 form_model.save()
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
-                    return HttpResponseServerError("Questionnaire with this code already exists")
+                    return HttpResponse(json.dumps({'success':False,
+                        'error_message':"Questionnaire with this code already exists"}))
                 return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']
