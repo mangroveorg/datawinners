@@ -987,6 +987,6 @@ def add_link(project):
         url = make_data_sender_links(project)['register_datasenders_link']
         return add_link_named_tuple(url=url, text=text)
     else:
-        text = _("Register a %s") % (project.entity_type)
+        text = _("Register a %(subject)s") % {'subject': project.entity_type}
         url = make_subject_links(project)['register_subjects_link']
         return add_link_named_tuple(url=url, text=text)

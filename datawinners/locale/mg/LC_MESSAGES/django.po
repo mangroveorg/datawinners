@@ -3283,3 +3283,6 @@ msgstr ""
 
 msgid "You have not registered a %(subject)s yet."
 msgstr ""
+
+msgid "Register a %(subject)s"
+msgstr ""

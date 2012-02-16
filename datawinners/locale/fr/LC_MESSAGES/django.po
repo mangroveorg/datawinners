@@ -4014,3 +4014,6 @@ msgstr "Zimbabwe"
 
 msgid "You have not registered a %(subject)s yet."
 msgstr "Vous n’avez pas encore enregistré un(e) %(subject)s."
+
+msgid "Register a %(subject)s"
+msgstr "Enregistrez un(e) %(subject)s"
