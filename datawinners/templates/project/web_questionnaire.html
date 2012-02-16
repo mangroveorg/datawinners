@@ -104,7 +104,7 @@
                             </h6>
                             <input id='code1' type="hidden" value="{{ field.name }}"/>
 
-                            <p class="instructions italic">
+                            <p id="ins_{{ field.name }}" class="instructions italic">
                                 {{ field.help_text }}
                             </p>
 
@@ -129,6 +129,9 @@
                                 <div class="clear-left"></div>
                             </div>
                             <div id="add_link" class="clear-left padding_top_20" style="display:none">
+                                <p class="instructions italic">
+                                    {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }} yet.{% endblocktrans %}
+                                </p>
                                 <a id="datasenders_edit_link" href="{{add_link.url}}">
                                     {{ add_link.text }}
                                 </a>
@@ -136,9 +139,10 @@
                             {% if field.name == questionnaire_form.short_code_question_code %}
                                 <script type="text/javascript">
                                     if ($(".subject_field option").size() == 0) {
-                                                $("#add_link").show();
-                                        }
-
+                                        $("#add_link").show();
+                                        $("#id_{{ field.name }}").hide();
+                                        $("#ins_{{ field.name }}").hide();
+                                    }
                                 </script>
 
                             {% endif %}
