@@ -39,7 +39,7 @@
         <div class="grid_8 float_right omega text_align_right">
             <a href="{{ project_links.register_subjects_link }}">{% trans "Add a new" %} {{ project.entity_type|capfirst }}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);" class="import-subject" id="import-{{ project.entity_type }}">{% trans "Import a list" %}</a>
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="none" id="link-to-edit-form-{{ subject.entity }}">Edit registration form</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="none edit-form-link" id="link-to-edit-form-{{ subject.entity }}">Edit registration form</a>
         </div>
         {% csrf_token %}
         {% include "popup-import.html" %}

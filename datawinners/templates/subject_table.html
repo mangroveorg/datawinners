@@ -15,7 +15,7 @@
     </div>
     <div class="subject-container">
         <div class="subjects_links">
-            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit registration form" %}</a>
+            <a href="{% url datawinners.entity.views.edit_subject_questionnaire subject.entity %}" class="edit-form-link margin_right_20" id="link-to-edit-form-{{ subject.entity }}">{% trans "Edit registration form" %}</a>
             <a href="{% url datawinners.entity.views.create_subject subject.entity %}">{% trans "Add a new" %} {{ subject.entity }}</a>&nbsp;|&nbsp;
             <a class="import-subject" id="import-{{ subject.entity }}">{% trans "Import list" %}</a>&nbsp;|&nbsp;
             <a href="javascript:void(0);" class="export-entity-link"  id="export-{{ subject.entity }}">Export</a>

@@ -92,7 +92,7 @@ $(document).ready(function(){
 
     $(".import-subject").unbind().bind("click", function(){
         if ($(this).parent().hasClass("subjects_links")){
-            var index = $(".subjects_links .import-subject").index(this);
+            var index = $(".subjects_links .import-subject").index($(this));
         } else{
             var subject_container = $(this).parent().parent().parent().parent();
             var index = $(".subject-container").index(subject_container);
@@ -109,7 +109,7 @@ $(document).ready(function(){
     })
 
     $(".edit-form-code-link").bind("click", function(){
-        var entity_type = $(this).attr("id").substr(8);
-        location.href = $("#link-to-edit-form-"+entity_type).attr("href");
+        var index = $(".edit-form-code-link").index($(this));
+        location.href = $(".edit-form-link").eq(index).attr("href");
     })
 })
