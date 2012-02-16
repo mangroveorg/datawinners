@@ -82,6 +82,13 @@ class UserProfileForm(forms.Form):
 
 
 class EditUserProfileForm(UserProfileForm):
+
+    def __init__(self,*args, **kwargs):
+        forms.Form.__init__(self, *args, **kwargs)
+
+    def clean_mobile_phone(self):
+        return self.cleaned_data.get('mobile_phone')
+
     def clean_username(self):
         return self.cleaned_data.get('username')
 
