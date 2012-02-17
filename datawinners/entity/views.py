@@ -176,7 +176,6 @@ def create_web_users(request):
 
         for data in post_data:
             user = User.objects.create_user(data['email'], data['email'], 'test123')
-            user.first_name = user.email
             group = Group.objects.filter(name="Data Senders")[0]
             user.groups.add(group)
             user.save()
