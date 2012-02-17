@@ -28,8 +28,8 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
             'datawinners.project.web_questionnaire_form_creator.get_geo_code_field_question_code')
 
         self.get_geo_code_field_question_code_mock = self.get_geo_code_field_question_code_patch.start()
-        geo_code = 'g'
-        self.get_geo_code_field_question_code_mock.return_value = geo_code
+        self.geo_code = 'g'
+        self.get_geo_code_field_question_code_mock.return_value = self.geo_code
 
     def tearDown(self):
         self.get_geo_code_field_question_code_patch.stop()
@@ -238,27 +238,24 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
     def test_should_validate_gps_code_and_return_error_if_only_longitude_is_passed(self):
         mock = Mock()
-        geo_code = 'g'
-        mock.cleaned_data = {geo_code: '1'}
+        mock.cleaned_data = {self.geo_code: '1'}
         with self.assertRaises(ValidationError):
             clean_geocode(mock)
 
     def test_should_validate_gps_code_and_return_error_if_gps_code_is_incorrect(self):
         mock = Mock()
-        geo_code = 'g'
-        mock.cleaned_data = {geo_code: 'a,b'}
+        mock.cleaned_data = {self.geo_code: 'a,b'}
         with self.assertRaises(ValidationError):
             clean_geocode(mock)
-        mock.cleaned_data = {geo_code: '200,300'}
+        mock.cleaned_data = {self.geo_code: '200,300'}
         with self.assertRaises(ValidationError):
             clean_geocode(mock)
 
 
     def test_should_validate_gps_code_and_should_not_return_error_if_correct_gps_code(self):
         mock = Mock()
-        geo_code = 'g'
-        mock.cleaned_data = {geo_code: '10,20'}
-        self.assertEqual(mock.cleaned_data[geo_code], clean_geocode(mock))
+        mock.cleaned_data = {self.geo_code: '10,20'}
+        self.assertEqual(mock.cleaned_data[self.geo_code], clean_geocode(mock))
 
 
     def _get_select_field(self, is_required, single_select_flag):
