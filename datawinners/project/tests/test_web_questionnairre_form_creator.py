@@ -1,14 +1,16 @@
 import unittest
 import django
+from django.core.exceptions import ValidationError
 from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField
+from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
-from mock import Mock
+from mock import Mock, patch, self
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
+import mock
 from datawinners.common.constant import DEFAULT_LANGUAGE, FRENCH_LANGUAGE
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator, clean_geocode
 from datawinners.entity.fields import PhoneNumberField
 
 class TestWebQuestionnaireFormCreator(unittest.TestCase):
@@ -22,7 +24,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.instruction = "some instruction"
         self.text_field_code = "text"
         self.select_field_code = "select"
+        self.get_geo_code_field_question_code_patch = patch(
+            'datawinners.project.web_questionnaire_form_creator.get_geo_code_field_question_code')
+        self.get_geo_code_field_question_code_mock = self.get_geo_code_field_question_code_patch.start()
 
+    def tearDown(self):
+        self.get_geo_code_field_question_code_patch.stop()
 
     def test_should_create_web_questionnaire_for_char_field(self):
         form_model = self._get_form_model()
@@ -75,10 +82,11 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         form_model = self._get_form_model()
         form_model.add_field(self._get_location_field())
 
-        questionnaire_form_class = WebQuestionnaireFormCreater(subject_question_creator=None, form_model=form_model).create()
-        post_data={LOCATION_TYPE_FIELD_CODE:'pune','form_code':'something'}
+        questionnaire_form_class = WebQuestionnaireFormCreater(subject_question_creator=None,
+            form_model=form_model).create()
+        post_data = {LOCATION_TYPE_FIELD_CODE: 'pune', 'form_code': 'something'}
 
-        web_form = questionnaire_form_class(country="India",data=post_data)
+        web_form = questionnaire_form_class(country="India", data=post_data)
         web_form.is_valid()
 
         self.assertEqual("pune,India", web_form.cleaned_data[LOCATION_TYPE_FIELD_CODE])
@@ -225,6 +233,35 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
 
         self.assertEqual(django.forms.fields.IntegerField, type(django_integer_field))
 
+    def test_should_validate_gps_code_and_return_error_if_only_longitude_is_passed(self):
+        mock = Mock()
+        geo_code = 'g'
+        mock.cleaned_data = {geo_code: '1'}
+        self.get_geo_code_field_question_code_mock.return_value = geo_code
+        with self.assertRaises(ValidationError):
+            clean_geocode(mock)
+
+    def test_should_validate_gps_code_and_return_error_if_gps_code_is_incorrect(self):
+        mock = Mock()
+        geo_code = 'g'
+        mock.cleaned_data = {geo_code: 'a,b'}
+        self.get_geo_code_field_question_code_mock.return_value = geo_code
+        with self.assertRaises(ValidationError):
+            clean_geocode(mock)
+        mock.cleaned_data = {geo_code: '200,300'}
+        self.get_geo_code_field_question_code_mock.return_value = geo_code
+        with self.assertRaises(ValidationError):
+            clean_geocode(mock)
+
+
+    def test_should_validate_gps_code_and_should_not_return_error_if_correct_gps_code(self):
+        mock = Mock()
+        geo_code = 'g'
+        mock.cleaned_data = {geo_code: '10,20'}
+        self.get_geo_code_field_question_code_mock.return_value = geo_code
+        self.assertEqual(mock.cleaned_data[geo_code], clean_geocode(mock))
+
+
     def _get_select_field(self, is_required, single_select_flag):
         choices = [("Red", "a"), ("Green", "b"), ("Blue", "c")]
         expected_choices = [("a", "Red"), ("b", "Green"), ("c", "Blue")]
@@ -232,6 +269,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
             ddtype=Mock(spec=DataDictType),
             options=choices, single_select_flag=single_select_flag, required=is_required)
         return expected_choices, text_field
+
 
     def _get_text_field(self, is_required, entity_question_flag, code=None, language=DEFAULT_LANGUAGE):
         code = self.text_field_code if code is None else code
@@ -241,6 +279,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
             instruction=self.instruction, required=is_required, constraints=[TextLengthConstraint(1, 20)],
             entity_question_flag=entity_question_flag, language=language)
         return text_field
+
 
     def _get_location_field(self):
         location_field = HierarchyField(name=LOCATION_TYPE_FIELD_NAME, code=LOCATION_TYPE_FIELD_CODE,
@@ -257,10 +296,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
             constraints=[TextLengthConstraint(max=15), RegexConstraint(reg='^[0-9]+$')])
         return phone_number_field
 
+
     def _get_integer_field(self):
         integer_field = IntegerField(name=self.field_name, code='ag', label=self.field_name,
             ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(min=18, max=100)])
         return integer_field
+
 
     def _get_mock_project(self):
         project = Mock()
@@ -269,6 +310,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         ]
         project.get_data_senders.return_value = data_senders
         return project
+
 
     def _get_form_model(self, is_registration_form=False):
         return FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[],

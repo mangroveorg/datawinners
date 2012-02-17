@@ -1,15 +1,18 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import django
-from django.forms.fields import ChoiceField
+from django.forms.fields import ChoiceField, Field
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
+from mangrove.errors.MangroveException import GeoCodeFormatException
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
+from mangrove.form_model.validation import GeoCodeConstraint
 from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField
 from datawinners.entity.fields import PhoneNumberField
-from datawinners.questionnaire.helper import get_location_field_code
+from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
 
 def question_form_init__(self, country=None, *args, **kwargs):
     self.country = country
@@ -26,7 +29,22 @@ def questionnaire_form_clean(self):
     for question_code, values in self.cleaned_data.items():
         if question_code == location_field_code:
             self.cleaned_data[question_code] = get_country_appended_location(values, self.country)
+
     return self.cleaned_data
+
+
+def clean_geocode(self):
+    geo_code_field_code = get_geo_code_field_question_code(self.form_model)
+    lat_long_string = self.cleaned_data[geo_code_field_code]
+    lat_long = lat_long_string.replace(",", " ").strip().split()
+    try:
+        if len(lat_long) < 2:
+            raise Exception
+        GeoCodeConstraint().validate(latitude=lat_long[0], longitude=lat_long[1])
+    except Exception:
+            raise ValidationError(_(
+                "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
+    return self.cleaned_data[geo_code_field_code]
 
 
 def get_country_appended_location(location_hierarchy, country):
@@ -44,6 +62,9 @@ class WebQuestionnaireFormCreater(object):
         properties.update({'__init__': question_form_init__})
         properties.update({'form_model': self.form_model})
         properties.update({'clean': questionnaire_form_clean})
+        geo_code_field_code = get_geo_code_field_question_code(self.form_model)
+        if geo_code_field_code is not None:
+            properties.update({'clean_' + geo_code_field_code: clean_geocode})
         if self.form_model.is_registration_form():
             properties.update({'__init__': question_form_init__})
             properties.update(self._get_entity_type_hidden_field())
