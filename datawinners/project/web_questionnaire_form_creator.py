@@ -116,7 +116,7 @@ class WebQuestionnaireFormCreater(object):
 
     def _create_char_field(self, field, language):
         char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
-            help_text=_(field.instruction))
+            help_text=field.instruction)
         watermark = "xx.xxxx,yy.yyyy" if type(field) == GeoCodeField else field.get_constraint_text()
         char_field.widget.attrs["watermark"] = watermark
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
