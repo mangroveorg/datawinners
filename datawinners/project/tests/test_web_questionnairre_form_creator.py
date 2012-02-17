@@ -26,7 +26,10 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.select_field_code = "select"
         self.get_geo_code_field_question_code_patch = patch(
             'datawinners.project.web_questionnaire_form_creator.get_geo_code_field_question_code')
+
         self.get_geo_code_field_question_code_mock = self.get_geo_code_field_question_code_patch.start()
+        geo_code = 'g'
+        self.get_geo_code_field_question_code_mock.return_value = geo_code
 
     def tearDown(self):
         self.get_geo_code_field_question_code_patch.stop()
@@ -237,7 +240,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         mock = Mock()
         geo_code = 'g'
         mock.cleaned_data = {geo_code: '1'}
-        self.get_geo_code_field_question_code_mock.return_value = geo_code
         with self.assertRaises(ValidationError):
             clean_geocode(mock)
 
@@ -245,11 +247,9 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         mock = Mock()
         geo_code = 'g'
         mock.cleaned_data = {geo_code: 'a,b'}
-        self.get_geo_code_field_question_code_mock.return_value = geo_code
         with self.assertRaises(ValidationError):
             clean_geocode(mock)
         mock.cleaned_data = {geo_code: '200,300'}
-        self.get_geo_code_field_question_code_mock.return_value = geo_code
         with self.assertRaises(ValidationError):
             clean_geocode(mock)
 
@@ -258,7 +258,6 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         mock = Mock()
         geo_code = 'g'
         mock.cleaned_data = {geo_code: '10,20'}
-        self.get_geo_code_field_question_code_mock.return_value = geo_code
         self.assertEqual(mock.cleaned_data[geo_code], clean_geocode(mock))
 
 
