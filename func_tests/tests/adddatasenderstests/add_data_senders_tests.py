@@ -2,7 +2,7 @@
 import time
 import unittest
 from nose.plugins.attrib import attr
-
+from nose.plugins.skip import SkipTest
 from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import LoginPage
@@ -123,7 +123,7 @@ class TestAddDataSender(unittest.TestCase):
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS)))
 
-    @attr('functional_test')
+    @SkipTest
     def test_addition_of_data_sender_with_invalid_gps_with_comma(self):
         """
         Function to test the Addition of DataSender with invalid GPS
