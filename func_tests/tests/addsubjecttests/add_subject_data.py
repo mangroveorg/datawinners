@@ -106,6 +106,6 @@ WITH_UNICODE_IN_GPS = {ENTITY_TYPE: "clinic",
                        SUB_LAST_NAME: "cli",
                        MOBILE_NUMBER: "567ABCD834",
                        LOCATION: "DIANA",
-                       GPS: u"23º 45",
+                       GPS: u"23º aa",
                        SUB_UNIQUE_ID: None,
                        ERROR_MSG: "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315Please enter a valid phone number."}
