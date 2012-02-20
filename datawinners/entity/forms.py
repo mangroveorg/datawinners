@@ -22,7 +22,7 @@ class SubjectForm(Form):
 
     type = CharField(max_length=30, required=True, label=_("Type"))
     name = CharField(max_length=30, required=True, label=_("Name"))
-    uniqueID = CharField(max_length=100, required=True, label=_("Unique Identification Number(ID)"))
+    uniqueID = CharField(max_length=100, required=True, label=_("Unique Identification Number (ID)"))
     location = CharField(max_length=30, required=True, label=_("Location"))
     description = CharField(max_length=30, required=False, label=_("Description"))
     mobileNumber = CharField(max_length=30, required=False, label=_("Mobile Number"))

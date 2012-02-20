@@ -583,7 +583,7 @@ msgid "Enter a subject name"
 msgstr ""
 
 #: templates/subject_form.html:26
-msgid "Unique Identification Number(ID)"
+msgid "Unique Identification Number (ID)"
 msgstr ""
 
 #: templates/subject_form.html:30

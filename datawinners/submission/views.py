@@ -20,6 +20,7 @@ from datawinners.submission.submission_utils import PostSMSProcessorLanguageActi
 from datawinners.utils import  get_database_manager_for_org
 from mangrove.transport.facade import Request
 from datawinners.messageprovider.exception_handler import handle
+from mangrove.errors.MangroveException import DataObjectAlreadyExists
 
 logger = logging.getLogger("django")
 
@@ -103,6 +104,8 @@ def submit_to_player(incoming_request):
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
         message = SMSResponse(response).text()
+    except DataObjectAlreadyExists as e:
+        message = ugettext("%s with %s = %s already exists.") % (ugettext(e.data[2]), ugettext(e.data[0]), e.data[1])
     except Exception as exception:
         message = handle(exception, incoming_request)
 
