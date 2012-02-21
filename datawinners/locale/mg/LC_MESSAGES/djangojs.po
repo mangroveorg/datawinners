@@ -580,3 +580,6 @@ msgstr ""
 
 msgid "choice"
 msgstr ""
+
+msgid "answer"
+msgstr ""
