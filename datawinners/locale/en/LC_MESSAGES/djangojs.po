@@ -613,3 +613,6 @@ msgstr ""
 
 msgid "Answer must be GPS co-ordinates in the following format: xx.xxxx,yy.yyyy Example: -18.1324,27.6547 "
 msgstr ""
+
+msgid "answer"
+msgstr ""
