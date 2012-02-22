@@ -1,31 +1,25 @@
-# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+    # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 # Django settings for web project.
-from django.conf.project_template.settings import STATIC_URL
 import os
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-#COMPRESS_ENABLED = True
 PROJECT_DIR = os.path.dirname(__file__)
 
 EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
 
 ADMINS = (
-# ('Your Name', 'your_email@example.com'),
+    # ('Your Name', 'your_email@example.com'),
 )
 
-if DEBUG:
-    COMPRESS_DEBUG_TOGGLE = "foo"
-
 MANAGERS = ADMINS
+
 
 COUCH_DB_SERVER = "http://localhost:5984"
 VUMI_API_URL = "http://178.79.161.90:7000"
 VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
-
-
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -46,9 +40,9 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 LANGUAGES = (
-    ('en', 'English'),
-    ('fr', 'French'),
-    )
+                ('en', 'English'),
+                ('fr', 'French'),
+            )
 
 
 # If you set this to False, Django will not format dates, numbers and
@@ -63,12 +57,6 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
-COMPRESS_URL = '/media/'
-COMPRESS_PRECOMPILERS = (
-    ('text/x-sass', 'sass {infile} {outfile}'),
-    ('text/x-scss', 'sass --scss {infile} {outfile}'),
-    )
-
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -87,9 +75,9 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-# Put strings here, like "/home/html/static" or "C:/www/django/static".
-# Always use forward slashes, even on Windows.
-# Don't forget to use absolute paths, not relative paths.
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
 )
 
 # List of finder classes that know how to find static files in
@@ -97,9 +85,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    'compressor.finders.CompressorFinder',
-    )
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')(qag8n#2$8dl8krz20+xe9khly2_g$k&29m&-$)bcmd-l-5m)'
@@ -108,8 +95,8 @@ SECRET_KEY = ')(qag8n#2$8dl8krz20+xe9khly2_g$k&29m&-$)bcmd-l-5m)'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
-    )
+#     'django.template.loaders.eggs.Loader',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -119,30 +106,31 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    )
+)
 
 ROOT_URLCONF = 'datawinners.urls'
 AUTH_PROFILE_MODULE = "accountmanagement.NGOUserProfile"
 
 TEMPLATE_DIRS = (
-    #    os.path.join(PROJECT_DIR, 'registration'),
+#    os.path.join(PROJECT_DIR, 'registration'),
     os.path.join(PROJECT_DIR, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/registration".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    )
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'datawinners.accountmanagement.context_processors.add_feature_flags',
-    )
+)
 
 HOME_PAGE = '/dashboard'
 DATASENDER_DASHBOARD = '/alldata/'
 LOGIN_REDIRECT_URL = (HOME_PAGE)
 TRIAL_EXPIRED_URL = '/trial/expired/'
 ACCOUNT_ACTIVATION_DAYS = 7
-TRIAL_ACCOUNT_PHONE_NUMBER = ['17752374679', '31658899798', '41798070082']
+TRIAL_ACCOUNT_PHONE_NUMBER = ['17752374679','31658899798', '41798070082']
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,9 +155,8 @@ INSTALLED_APPS = (
     'south',
     'datawinners.home',
     'datawinners.countrytotrialnumbermapping',
-    'django_nose',
-    )
-
+    'django_nose'
+)
 COMPILER_FORMATS = {
     '.sass': {
         'binary_path': 'sass',
@@ -180,6 +167,8 @@ COMPILER_FORMATS = {
         'arguments': '*.scss *.css'
     }
 }
+COMPRESS = False
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
@@ -199,17 +188,16 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-            },
-        }
+        },
+    }
 }
 
-SCHEDULER_HOUR = 21
-SCHEDULER_MINUTES = 30
+SCHEDULER_HOUR=21
+SCHEDULER_MINUTES=30
 API_KEYS = {
     '178.79.163.33:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxT_fiQdjwro1eYvjMeDJdedrin3mBQTAv46jB6-4OUJw7ElbW9r5VyzdA',
     '178.79.161.90:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxTR2RUVwe-S02pZ76sdA7VcVHTvQRTv5NLP3k1Sw_fi4D6iIeholKIHKg',
-    'localhost:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',
-    #We don't really need it
+    'localhost:8000': 'ABQIAAAA_DnpC2hsxgPobhTMZQ1NFxRKHMeFb4p-80hFe4LzzFBo1qJpFxQDEP2BqoZSGz3N6EDjkPlXEH_kZQ',#We don't really need it
     'www.datawinners.com': 'ABQIAAAAbx2AIcJvKRHLcqmBWwtWdxTjvHtTITV0tzqHG1m2R2AKLO2mQxS0MJ8sZ4h-Ihcm6M7VNjodlrQfTg'}
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -218,6 +206,7 @@ SHOW_GOOGLE_MAPS = True
 TRIAL_REGISTRATION_ENABLED = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 try:
     from local_settings import *

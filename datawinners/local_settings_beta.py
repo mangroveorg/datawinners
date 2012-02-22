@@ -3,7 +3,7 @@ import os
 SITE_ID = 5
 DEBUG=False
 TEMPLATE_DEBUG=False
-COMPRESS = True
+COMPRESS = False
 
 ADMINS = (
     ('TW', 'hni-support@thoughtworks.com'),
