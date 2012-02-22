@@ -364,3 +364,6 @@ span.tooltip {
 
 .relative {
   position: relative !important; }
+
+ul.bulleted li {
+  list-style-type: disc; }

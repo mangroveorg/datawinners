@@ -3971,3 +3971,18 @@ msgstr ""
 
 msgid "Register a %(subject)s"
 msgstr ""
+
+msgid "Once your Data Senders have sent in data, their data records will appear here."
+msgstr ""
+
+msgid "To collect data"
+msgstr ""
+
+msgid "SMS: Give your <a href=\"%(url)s\">Questionnaire</a> to your Data Senders and have them send in data"
+msgstr ""
+
+msgid "Web: Grant your Data Senders Web submission access on the <a href=\"%(url)s\">all Data Senders</a> page"
+msgstr ""
+
+msgid "<a href=\"%(url)s\">Submit data</a> yourself"
+msgstr ""
