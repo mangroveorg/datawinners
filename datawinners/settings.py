@@ -17,7 +17,6 @@ ADMINS = (
 
 if DEBUG:
     COMPRESS_DEBUG_TOGGLE = "foo"
-COMPRESS_JS_FILTERS =  ('compressor.filters.jsmin.SlimItFilter',)
 
 MANAGERS = ADMINS
 
