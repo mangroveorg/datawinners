@@ -15,6 +15,11 @@
     {% compress css %}
         {% include 'master_css.html' %}
         {% include 'master_scss.html' %}
+    {% endcompress %}
+
+{#     This block compiles and compress the SCSS to CSS on the fly. #}
+    {% load compress %}
+    {% compress css %}
         {% block layout_css %}{% endblock %}
         {% block layout_scss %}{% endblock %}
         {% block page_css %}{% endblock %}
@@ -30,16 +35,20 @@
 
     <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
 
+    {% load compress %}
     {% compress js %}
          {% include 'javascript.html' %}
         <!--[if IE 7]>
             {% block ie7_js %} {% endblock %}
         <![endif]-->
-
+    {% endcompress %}
+    
     <script type="text/javascript" src="/media/javascript/messages_{% trans "en" %}.js"></script>
 
     {% block uncompress %}{% endblock %}
 
+    {% load compress %}
+    {% compress js %}
          {% block page_js %} {% endblock %}
     {% endcompress %}
 
