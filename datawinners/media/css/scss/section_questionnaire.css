@@ -14,14 +14,14 @@
   float: none;
   margin-bottom: 10px; }
 
-.mobile {
+#question-detail-panel .mobile {
   background: url("/media/images/mobile1.jpg") no-repeat left top;
   height: 400px;
   width: 295px;
   margin: 60px 30px 30px 30px;
   position: relative;
   overflow: hidden; }
-  .mobile textarea {
+  #question-detail-panel .mobile textarea {
     position: absolute;
     height: 135px !important;
     left: 54px;
