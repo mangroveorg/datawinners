@@ -6,7 +6,7 @@ import os
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-#COMPRESS_ENABLED = True
+COMPRESS_ENABLED = True
 PROJECT_DIR = os.path.dirname(__file__)
 
 EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
@@ -17,7 +17,7 @@ ADMINS = (
 
 if DEBUG:
     COMPRESS_DEBUG_TOGGLE = "foo"
-
+COMPRESS_JS_FILTERS = ['compressor.filters.closure.ClosureCompilerFilter']
 MANAGERS = ADMINS
 
 COUCH_DB_SERVER = "http://localhost:5984"
