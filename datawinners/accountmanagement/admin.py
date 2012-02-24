@@ -114,7 +114,12 @@ class CountryAdmin(admin.ModelAdmin):
 
 class NetworkAdmin(admin.ModelAdmin):
     ordering = ('network_name',)
-    list_display = ('network_name','trial_sms_number')
+    list_display = ('network_name','trial_sms_number', 'country_name')
+    filter_horizontal = ['country']
+
+    def country_name(self,obj):
+        return ' ,'.join([country.country_name for country in obj.country.all()])
+
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
