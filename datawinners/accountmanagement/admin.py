@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile
 from mangrove.utils.types import is_empty, is_not_empty
+from datawinners.countrytotrialnumbermapping.models import Country, Network
 
 admin.site.disable_action('delete_selected')
 
@@ -107,6 +108,13 @@ class NullAdmin:
     def get_profile(self):
         return self
 
+class CountryAdmin(admin.ModelAdmin):
+    ordering = ('country_name',)
+    list_display = ('country_name','country_code')
+
+class NetworkAdmin(admin.ModelAdmin):
+    ordering = ('network_name',)
+    list_display = ('network_name','trial_sms_number')
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
@@ -115,3 +123,5 @@ admin.site.register(OrganizationSetting, OrganizationSettingAdmin)
 admin.site.register(SMSC,DatawinnerAdmin)
 admin.site.register(MessageTracker, MessageTrackerAdmin)
 admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(Country, CountryAdmin)
+admin.site.register(Network, NetworkAdmin)
