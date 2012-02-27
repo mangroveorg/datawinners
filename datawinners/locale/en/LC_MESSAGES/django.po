@@ -3986,3 +3986,15 @@ msgstr ""
 
 msgid "<a href=\"%(url)s\">Submit data</a> yourself"
 msgstr ""
+
+msgid "%dst"
+msgstr ""
+
+msgid "%dnd"
+msgstr ""
+
+msgid "%drd"
+msgstr ""
+
+msgid "%dth"
+msgstr ""

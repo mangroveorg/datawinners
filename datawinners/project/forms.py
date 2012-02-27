@@ -138,6 +138,13 @@ class ReminderForm(Form):
     whom_to_send_message = BooleanField(label=ugettext_lazy("Only send reminders to senders who have not already submitted data for the current deadline."),
                                        required=False, initial=True)
 
+    def __init__(self, *args, **kwargs):
+        super(ReminderForm, self).__init__(*args, **kwargs)
+        deadline_month = ChoiceField(
+            choices=(tuple([(n, convert_to_ordinal(n)) for n in range(1, 31)] + [(31, ugettext_lazy('Last Day'))])), widget=forms.Select,
+            required=False)
+        self.fields["deadline_month"] = deadline_month
+
     def clean(self):
 
         msg = _("This field is required")

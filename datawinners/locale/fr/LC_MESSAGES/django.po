@@ -4032,3 +4032,15 @@ msgstr "Internet: Donnez un accès à l'envoi web dans la page de <a href=\"%(ur
 
 msgid "<a href=\"%(url)s\">Submit data</a> yourself"
 msgstr "<a href=\"%(url)s\">Envoyez des données</a> vous-même"
+
+msgid "%dst"
+msgstr "%d"
+
+msgid "%dnd"
+msgstr "%d"
+
+msgid "%drd"
+msgstr "%d"
+
+msgid "%dth"
+msgstr "%d"

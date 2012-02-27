@@ -32,11 +32,11 @@ def get_organization_country(request):
     return get_organization(request).country
 
 def convert_to_ordinal(number):
-    if 10 < number < 14: return _('%sth') % number
-    if number % 10 == 1: return _('%sst') % number
-    if number % 10 == 2: return _('%snd') % number
-    if number % 10 == 3: return u'%srd' % number
-    return _('%sth') % number
+    if 10 < number < 14: return _('%dth') % number
+    if number % 10 == 1: return _('%dst') % number
+    if number % 10 == 2: return _('%dnd') % number
+    if number % 10 == 3: return _('%drd') % number
+    return _('%dth') % number
 
 def generate_document_store_name(organization_name,organization_id):
     return slugify("%s_%s_%s" % (VAR, organization_name, organization_id))
