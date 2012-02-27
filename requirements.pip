@@ -25,3 +25,4 @@ python-dateutil
 http://github.com/jbalogh/django-nose/tarball/master#egg=django-nose
 feedparser
 nose-exclude
+http://github.com/jezdez/django_compressor/tarball/develop#egg=django_compressor-dev
