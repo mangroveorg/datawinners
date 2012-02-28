@@ -57,8 +57,7 @@ class FilePlayer(Player):
         submissions = self.parser.parse(file_contents)
         for (form_code, values) in submissions:
             transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
-            submission = Submission(self.dbm, transport_info, form_code, copy(values))
-            submission.save()
+            submission = self._create_submission(transport_info, form_code, values)
             try:
                 form_model, values = self._process(form_code, values)
                 form_submission = self.submit(form_model, values, submission)
