@@ -61,9 +61,7 @@ class FilePlayer(Player):
             submission.save()
             try:
                 form_model, values = self._process(form_code, values)
-                form_submission = self.submit(form_model, values)
-                submission.update(form_submission.saved, form_submission.errors, form_submission.data_record_id,
-                                  form_submission.form_model.is_in_test_mode())
+                form_submission = self.submit(form_model, values, submission)
                 response = Response(reporters=[], submission_id=submission.uuid, form_submission=form_submission)
                 if not form_submission.saved:
                     response.errors = dict(error=form_submission.errors, row=values)
