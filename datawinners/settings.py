@@ -14,7 +14,7 @@ ADMINS = (
 # ('Your Name', 'your_email@example.com'),
 )
 
-if DEBUG:
+if not DEBUG:
     COMPRESS_DEBUG_TOGGLE = "foo"
 MANAGERS = ADMINS
 
