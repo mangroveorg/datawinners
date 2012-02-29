@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
 import unittest
+from mangrove.transport.player.tests.test_web_player import mock_form_submission
 from mock import Mock, patch
 from datawinners.entity.import_data import FilePlayer
 from mangrove.datastore.database import DatabaseManager
@@ -22,14 +23,7 @@ class TestCsvPlayer(unittest.TestCase):
         self.form_model_mock.is_inactive.return_value = False
         self.form_model_mock.is_valid.return_value = OrderedDict(), OrderedDict()
 
-        self.form_submission_mock = Mock(spec=FormSubmission)
-        self.form_submission_mock.is_valid = True
-        self.form_submission_mock.errors = OrderedDict()
-        self.form_submission_mock.data_record_id = ''
-        self.form_submission_mock.form_model = self.form_model_mock
-        self.form_submission_mock.short_code = ''
-        self.form_submission_mock.entity_type = ['']
-
+        self.form_submission_mock = mock_form_submission(self.form_model_mock)
 
     def setUp(self):
         self.dbm = Mock(spec=DatabaseManager)
