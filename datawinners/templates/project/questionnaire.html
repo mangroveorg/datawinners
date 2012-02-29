@@ -37,28 +37,6 @@
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
-    <script type="text/html" id="choice-template">
-        <li>
-                <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName: true, enable: questionnaireViewModel.isEnabled()"/>
-                <a href="questionnaire.html#" class='delete delete_link'
-                   data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
-        </li>
-    </script>
-    <script type="text/html" id="question-list-template_new">
-        <div class="question_list que_num">
-            <ol>
-
-            {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                 <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); } ">
-                    <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
-                     <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
-                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion(question);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
-                    </div>
-                 </li>
-            {% templatetag openvariable %}/each{% templatetag closevariable %}
-            </ol>
-        </div>
-    </script>
 {% endblock %}
 
 
@@ -67,6 +45,29 @@
     <p>{% trans "Review the question by clicking on each" %}</p>
 {% endblock %}
 {% block content %}
+    <script type="text/html" id="choice-template">
+        <li>
+            <input id="choice_text" name="choice_text" class="required" type="text" data-bind="value: text, uniqueName: true, enable: questionnaireViewModel.isEnabled()"/>
+            <a href="questionnaire.html#" class='delete delete_link'
+               data-bind="visible: questionnaireViewModel.choiceCanBeDeleted(), click:function(){questionnaireViewModel.removeOptionFromQuestion($data)}">{% trans "Delete"%}</a>
+        </li>
+    </script>
+    <script type="text/html" id="question-list-template_new">
+        <div class="question_list que_num">
+            <ol>
+
+                {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
+                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); } ">
+                    <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
+                    <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
+                        <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion(question);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
+                    </div>
+                </li>
+                {% templatetag openvariable %}/each{% templatetag closevariable %}
+            </ol>
+        </div>
+    </script>
+
     <div class="preview_block"><a class="preview" href="#"> {% trans "Preview Questionnaire" %} </a></div>
     <form id="question_form">
     {% csrf_token %}
