@@ -1,11 +1,12 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from collections import OrderedDict
 import os
 import unittest
 from mock import Mock, patch
 from datawinners.entity.import_data import FilePlayer
 from mangrove.datastore.database import DatabaseManager
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, FormSubmission, FormSubmissionFactory
 from mangrove.transport.player.parser import XlsParser
 from mangrove.transport import Channel
 import xlwt
@@ -18,6 +19,17 @@ class TestXlsPlayer(unittest.TestCase):
         get_form_model_mock.return_value = self.form_model_mock
         self.form_model_mock.is_registration_form = Mock(return_value=False)
         self.form_model_mock.entity_defaults_to_reporter = Mock(return_value=False)
+        self.form_model_mock.is_inactive.return_value = False
+        self.form_model_mock.is_valid.return_value = OrderedDict(), OrderedDict()
+
+        self.form_submission_mock = Mock(spec=FormSubmission)
+        self.form_submission_mock.is_valid = True
+        self.form_submission_mock.errors = OrderedDict()
+        self.form_submission_mock.data_record_id = ''
+        self.form_submission_mock.form_model = self.form_model_mock
+        self.form_submission_mock.short_code = ''
+        self.form_submission_mock.entity_type = ['']
+
 
     def setUp(self):
         loc_tree = Mock()
@@ -49,29 +61,30 @@ class TestXlsPlayer(unittest.TestCase):
         self.get_form_model_mock_patcher.stop()
 
     def test_should_import_xls_string(self):
-        self.player.accept(file_contents=open(self.file_name).read())
-        self.assertEqual(5, self.form_model_mock.submit.call_count)
+        with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
+            get_form_submission_mock.return_value = self.form_submission_mock
+
+            self.player.accept(file_contents=open(self.file_name).read())
+            self.assertEqual(5, self.form_model_mock.is_valid.call_count)
 
     def test_should_process_next_submission_if_exception_with_prev(self):
         def expected_side_effect(*args, **kwargs):
             values = kwargs.get('values') or args[1]
             if values.get('id') == 'CL003':
                 raise FormModelDoesNotExistsException('')
-            form_submission_mock = Mock()
-            form_submission_mock.saved.return_value = True
-            form_submission_mock.errors = {}
-            return form_submission_mock
+            return values, OrderedDict()
 
-        self.form_model_mock.submit.side_effect = expected_side_effect
+        self.form_model_mock.is_valid.side_effect = expected_side_effect
+        with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
+            get_form_submission_mock.return_value = self.form_submission_mock
+            response = self.player.accept(file_contents=open(self.file_name).read())
+            self.assertEqual(5, len(response))
+            self.assertEqual(False, response[2].success)
 
-        response = self.player.accept(file_contents=open(self.file_name).read())
-        self.assertEqual(5, len(response))
-        self.assertEqual(False, response[2].success)
-
-        success = len([index for index in response if index.success])
-        total = len(response)
-        self.assertEqual(4, success)
-        self.assertEqual(5, total)
+            success = len([index for index in response if index.success])
+            total = len(response)
+            self.assertEqual(4, success)
+            self.assertEqual(5, total)
 
     def tearDown(self):
         os.remove(self.file_name)
