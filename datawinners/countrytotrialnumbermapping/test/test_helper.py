@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import unittest
 from countrytotrialnumbermapping import helper
-from countrytotrialnumbermapping.models import Country
+from countrytotrialnumbermapping.models import Network, Country
 
 class TestHelper(unittest.TestCase):
 
@@ -16,3 +16,10 @@ class TestHelper(unittest.TestCase):
             ('Country3','Country3 (3)'),
         ]
         self.assertEqual(expected_display_list, actual_display_list)
+
+    def test_should_create_new_trial_sms_number(self):
+        current_numbers = helper.get_trial_numbers()
+        new_number = "00000"
+        self.assertFalse(new_number in current_numbers)
+        Network(trial_sms_number=new_number, network_name="Airtel").save()
+        self.assertTrue(new_number in helper.get_trial_numbers())
