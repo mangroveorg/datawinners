@@ -21,7 +21,7 @@ class TestXlsPlayer(unittest.TestCase):
         self.form_model_mock.is_registration_form = Mock(return_value=False)
         self.form_model_mock.entity_defaults_to_reporter = Mock(return_value=False)
         self.form_model_mock.is_inactive.return_value = False
-        self.form_model_mock.is_valid.return_value = OrderedDict(), OrderedDict()
+        self.form_model_mock.validate_submission.return_value = OrderedDict(), OrderedDict()
 
         self.form_submission_mock = mock_form_submission(self.form_model_mock)
 
@@ -60,7 +60,7 @@ class TestXlsPlayer(unittest.TestCase):
             get_form_submission_mock.return_value = self.form_submission_mock
 
             self.player.accept(file_contents=open(self.file_name).read())
-            self.assertEqual(5, self.form_model_mock.is_valid.call_count)
+            self.assertEqual(5, self.form_model_mock.validate_submission.call_count)
 
     def test_should_process_next_submission_if_exception_with_prev(self):
         def expected_side_effect(*args, **kwargs):
@@ -69,7 +69,7 @@ class TestXlsPlayer(unittest.TestCase):
                 raise FormModelDoesNotExistsException('')
             return values, OrderedDict()
 
-        self.form_model_mock.is_valid.side_effect = expected_side_effect
+        self.form_model_mock.validate_submission.side_effect = expected_side_effect
         with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
             get_form_submission_mock.return_value = self.form_submission_mock
             response = self.player.accept(file_contents=open(self.file_name).read())
