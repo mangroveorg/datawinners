@@ -54,7 +54,7 @@ def submit(request):
     post = json.loads(request.POST['data'])
     success = True
     try:
-        web_player = WebPlayer(dbm, get_location_tree(), get_location_hierarchy)
+        web_player = WebPlayer(dbm, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy)
         message = post['message']
         message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
             get_organization_country(request))
@@ -297,7 +297,7 @@ def create_subject(request, entity_type=None):
         error_message = None
         try:
             from datawinners.project.helper import create_request
-            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(
+            response = WebPlayer(manager, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy).accept(
                 create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
