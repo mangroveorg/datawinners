@@ -10,7 +10,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.smstestertests.sms_tester_data import *
 from tests.submissionlogtests.submission_log_data import *
 
-
+@attr('suit_3')
 class TestSubmissionLog(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

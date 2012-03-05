@@ -9,7 +9,7 @@ from framework.utils.database_manager_postgres import DatabaseManager
 from tests.registrationtests.registration_data import REGISTRATION_SUCCESS_MESSAGE
 from tests.registrationtests.registration_tests import register_and_get_email
 
-
+@attr('suit_1')
 class TestActivateAccount(BaseTest):
 
     def setUp(self):

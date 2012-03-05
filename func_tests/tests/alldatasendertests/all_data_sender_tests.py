@@ -9,7 +9,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.alldatasendertests.all_data_sender_data import *
 
-
+@attr('suit_1')
 class TestAllDataSender(unittest.TestCase):
 
     @classmethod

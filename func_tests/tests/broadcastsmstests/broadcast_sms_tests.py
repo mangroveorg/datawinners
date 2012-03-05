@@ -7,6 +7,7 @@ from tests.broadcastsmstests.broadcast_sms_data import SMS_VALID_DATA, SMS_EXACT
 from tests.editprojecttests.edit_project_data import PROJECT_NAME, ACTIVATED_PROJECT_DATA
 from tests.logintests.login_data import VALID_CREDENTIALS
 
+@attr('suit_1')
 class TestBroadcastSMS(BaseTest):
 
     @attr('functional_test')

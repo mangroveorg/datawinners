@@ -13,6 +13,7 @@ def register_and_get_email_for_trial(driver):
     REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION)
     return registration_confirmation_page, email
 
+@attr('suit_2')
 class TestTrialRegistrationPage(BaseTest):
     @attr('functional_test', 'smoke')
     def test_register_trial_organization(self):

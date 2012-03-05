@@ -12,7 +12,7 @@ from tests.endtoendtest.trial_end_to_end_data import REGISTRATION_DATA_FOR_SUCCE
 #Check that activation page has the success message
 
 
-
+@attr('suit_2')
 class TestTrialApplicationEndToEnd(BaseTest):
     def tearDown(self):
         pass

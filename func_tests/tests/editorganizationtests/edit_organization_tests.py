@@ -3,6 +3,7 @@ from framework.base_test import BaseTest
 from tests.endtoendtest.end_to_end_tests import do_login
 from tests.editorganizationtests.edit_organization_data import VALID_CREDENTIALS, USERNAME, DATA_WINNERS_ACCOUNT_PAGE, ORGANIZATION_SECTOR_DROP_DOWN_LIST, PASSWORD
 
+@attr('suit_2')
 class TestEditOrganization(BaseTest):
 
     @attr('functional_test')

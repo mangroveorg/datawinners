@@ -6,7 +6,7 @@ from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from testdata.test_data import DATA_WINNER_SMS_TESTER_PAGE
 from tests.smstestertests.sms_tester_data import *
 
-
+@attr('suit_3')
 class TestSMSTester(BaseTest):
 
     @attr('functional_test', 'smoke')

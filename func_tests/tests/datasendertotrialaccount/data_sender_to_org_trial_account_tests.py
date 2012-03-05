@@ -20,7 +20,7 @@ from nose.plugins.skip import SkipTest
 # send sms to paid account
     #check sms submission paid paid display, not paid display
 
-
+@attr('suit_2')
 class TestDataSenderAssociationWithTrialAccount(BaseTest):
 
     @SkipTest

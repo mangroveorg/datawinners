@@ -26,6 +26,7 @@ class BasePrepare(BaseTest):
             fetch_(PROJECT_NAME, from_(project_to_open)))
         return project_overview_page.open_sms_tester_light_box()
 
+@attr('suit_3')
 class TestSMSTesterLightBox(BasePrepare):
 
     @attr('functional_test', 'smoke')
@@ -59,6 +60,7 @@ class TestSMSTesterLightBox(BasePrepare):
         sms_tester_page.send_sms_with(SMS_WITH_UNICODE)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(RESPONSE_MESSAGE, from_(SMS_WITH_UNICODE)))
 
+@attr('suit_3')
 class TestOrderedSMSTesterLightBox(BasePrepare):
 
     @attr('functional_test')

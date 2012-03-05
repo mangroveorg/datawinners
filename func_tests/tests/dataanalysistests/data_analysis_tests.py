@@ -7,7 +7,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.dataanalysistests.data_analysis_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
-
+@attr('suit_1')
 class TestDataAnalysis(BaseTest):
     def prerequisites_of_data_analysis(self):
         # doing successful login with valid credentials

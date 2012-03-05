@@ -11,7 +11,7 @@ from tests.remindertests.reminder_data import *
 from nose.plugins.skip import SkipTest
 from framework.utils.data_fetcher import fetch_, from_
 
-
+@attr('suit_3')
 class TestReminderSend(BaseTest):
     def login_with(self, account):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)

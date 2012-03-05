@@ -6,6 +6,7 @@ from tests.websubmissiontests.web_submission_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS, TRIAL_CREDENTIALS_VALIDATES
 from nose.plugins.skip import SkipTest
 
+@attr('suit_3')
 class TestWebSubmission(BaseTest):
     dashboard_page = None
 

@@ -11,7 +11,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_S
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.adddatasenderstests.add_data_senders_data import *
 
-
+@attr('suit_1')
 class TestAddDataSender(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

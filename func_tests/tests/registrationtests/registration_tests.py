@@ -14,6 +14,7 @@ def register_and_get_email(driver):
     registration_page = RegistrationPage(driver)
     return registration_page.successful_registration_with(REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION)
 
+@attr('suit_2')
 class TestRegistrationPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -98,6 +99,7 @@ class TestRegistrationPage(unittest.TestCase):
         price_link.click()
         new_tab = self.driver.window_handles[1]
         self.driver.switch_to_window(new_tab)
+        self.driver.wait_for_page_with_title(2, "Pricing")
         self.assertEqual("Pricing", self.driver.get_title())
 
     @attr('functional_test')

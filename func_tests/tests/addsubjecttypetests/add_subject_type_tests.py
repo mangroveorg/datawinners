@@ -11,7 +11,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT
 from tests.addsubjecttypetests.add_subject_type_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 
-
+@attr('suit_1')
 class TestAddSubjectType(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

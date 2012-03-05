@@ -30,7 +30,7 @@ def do_login(driver, email, password):
     login_page = LoginPage(driver)
     return login_page.do_successful_login_with({USERNAME:email, PASSWORD:password})
 
-
+@attr('suit_2')
 class TestApplicationEndToEnd(BaseTest):
     def tearDown(self):
         import sys

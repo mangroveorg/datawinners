@@ -8,7 +8,7 @@ from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import *
 
-
+@attr('suit_2')
 class TestLoginPage(BaseTest):
     @attr('functional_test', 'smoke')
     def test_login_with_valid_credentials(self):

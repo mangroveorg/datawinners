@@ -11,7 +11,7 @@ from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.createprojecttests.create_project_data import *
 from tests.createquestionnairetests.create_questionnaire_data import *
 
-
+@attr('suit_1')
 class TestCreateQuestionnaire(BaseTest):
     def prerequisites_of_create_questionnaire(self):
         # doing successful login with valid credentials

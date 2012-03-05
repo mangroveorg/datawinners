@@ -8,7 +8,7 @@ from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editprojecttests.edit_project_data import *
 
-
+@attr('suit_2')
 class TestEditProject(BaseTest):
     def prerequisites_of_edit_project(self):
         # doing successful login with valid credentials
