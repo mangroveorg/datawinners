@@ -794,7 +794,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager, get_location_tree(), get_location_hierarchy).accept(
+            response = WebPlayer(manager, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy).accept(
                 helper.create_request(questionnaire_form, request.user.username))
             if response.success:
                 if subject:
