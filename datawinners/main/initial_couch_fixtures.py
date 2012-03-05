@@ -226,7 +226,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                              instruction="Answer must be a number between 18-100.")
     question4 = DateField(label="What is réporting date?", code="RD", name="What is réporting date?",
                           date_format="dd.mm.yyyy", ddtype=date_type,
-                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+                          instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011", event_time_field_flag=True)
     question5 = SelectField(label="What is your blood group?", code="BG", name="What is your blood group?",
                             options=[("O+", "a"), ("O-", "b"), ("AB", "c"), ("B+", "d")], single_select_flag=True,
                             ddtype=select_type, instruction="Choose 1 answer from the list.")
