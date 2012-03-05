@@ -165,6 +165,7 @@ INSTALLED_APPS = (
     'south',
     'datawinners.home',
     'datawinners.countrytotrialnumbermapping',
+    'datawinners.custom_reports.crs',
     'django_nose',
     )
 
