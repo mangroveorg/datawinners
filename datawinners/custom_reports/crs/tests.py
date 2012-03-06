@@ -6,6 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from datawinners.custom_reports.crs.models import WayBillSent
 
 
 class SimpleTest(TestCase):
@@ -14,3 +15,4 @@ class SimpleTest(TestCase):
         Tests that 1 + 1 always equals 2.
         """
         self.assertEqual(1 + 1, 2)
+
