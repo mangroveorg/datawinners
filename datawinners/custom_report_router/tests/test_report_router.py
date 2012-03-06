@@ -7,14 +7,24 @@ class TestReportRouter(unittest.TestCase):
     def setUp(self):
         self.form_submission=Mock()
         self.client_specific_custom_report_handler = Mock()
+        self.org_id_for_custom_report = '123'
         self.routing_table={'123':self.client_specific_custom_report_handler}
+        self.form_submission.errors = None
 
     def test_should_route_to_appropriate_client_handler(self):
-        ReportRouter(self.routing_table).route('123', self.form_submission)
+        ReportRouter(self.routing_table).route(self.org_id_for_custom_report, self.form_submission)
         self.client_specific_custom_report_handler.assert_called_once_with(self.form_submission)
 
     def test_should_not_route_if_organization_handler_is_not_present(self):
-        ReportRouter(self.routing_table).route('345',None)
+        ReportRouter(self.routing_table).route('345',self.form_submission)
         self.assertEqual(0,self.client_specific_custom_report_handler.call_count)
+
+    def test_should_not_call_client_handler_if_errors_exist_in_form_submission(self):
+        self.form_submission.errors = ["some error"]
+        ReportRouter(self.routing_table).route(self.org_id_for_custom_report,self.form_submission)
+        self.assertEqual(0,self.client_specific_custom_report_handler.call_count)
+
+
+
 
 
