@@ -1,11 +1,13 @@
 import unittest
 from collections import OrderedDict
-from datawinners.custom_reports.crs.handler import CRSCustomReportHandler
-from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived
+from datawinners.custom_reports.crs.handler import CRSCustomReportHandler, model_routing_dict
+from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived, waybillsent_handler
 
 class TestWayBillSent(unittest.TestCase):
     def setUp(self):
         self.way_bill_sent = None
+        self.question_code = 'WBS01'
+        model_routing_dict[self.question_code]=waybillsent_handler
 
     def tearDown(self):
         if self.way_bill_sent is not None:
@@ -16,9 +18,8 @@ class TestWayBillSent(unittest.TestCase):
             [('q1', u'pac1'), ('q2', u'2'), ('q3', '11.11.2011'), ('q4', u'Transfer'), ('q5', u'2'),
                 ('q6', u'test'), ('q7', u'9'), ('q8', u'Oil'), ('q9', 400)])
         crs_custom_report_handler = CRSCustomReportHandler()
-        waybill_sent_questionnaire_form_code = '18'
-        crs_custom_report_handler.handle(waybill_sent_questionnaire_form_code, waybill_sent_submission_data)
-        self.way_bill_sent = WayBillSent.objects.get(pl_code='pac1')
+        crs_custom_report_handler.handle(self.question_code, waybill_sent_submission_data)
+        self.way_bill_sent = WayBillSent.objects.filter(pl_code='pac1')[0]
         self.assertEquals('2', self.way_bill_sent.waybill_code)
         self.assertEquals('11.11.2011', self.way_bill_sent.sent_date)
         self.assertEquals('Transfer', self.way_bill_sent.transaction_type)

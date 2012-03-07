@@ -16,8 +16,10 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_datasender_form
 from datawinners.entity import import_data as import_module
+from datawinners.utils import get_organization
 
 import helper
 
@@ -797,6 +799,7 @@ def web_questionnaire(request, project_id=None, subject=False):
             response = WebPlayer(manager, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy).accept(
                 helper.create_request(questionnaire_form, request.user.username))
             if response.success:
+                ReportRouter().route(get_organization(request).org_id, response)
                 if subject:
                     success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                         response.short_code,)

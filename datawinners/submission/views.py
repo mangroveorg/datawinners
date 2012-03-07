@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 
 from mangrove.transport.player.player import SMSPlayer
+from datawinners.custom_report_router.report_router import ReportRouter
 
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.submission.models import  SMSResponse
@@ -93,6 +94,10 @@ def process_sms_counter(incoming_request):
     return incoming_request
 
 
+def send_message(incoming_request, response):
+    ReportRouter().route(incoming_request['organization'].org_id, response.processed_data)
+
+
 def submit_to_player(incoming_request):
     try:
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(incoming_request['dbm'], incoming_request),
@@ -104,6 +109,7 @@ def submit_to_player(incoming_request):
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
         message = SMSResponse(response).text()
+        send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = ugettext("%s with %s = %s already exists.") % (ugettext(e.data[2]), ugettext(e.data[0]), e.data[1])
     except Exception as exception:
