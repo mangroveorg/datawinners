@@ -1,23 +1,12 @@
 from django.db import models
 
-# Create your models here.
-
-def populate_db(django_fields=None, submission_data=None):
-    waybill_fields = [field.name for field in django_fields if field.name != 'id']
-    submission_values = submission_data.itervalues()
-    return {field: submission_values.next() for field in waybill_fields}
-
 
 def waybillsent_handler(submission_data):
-    sent_django_fields = WayBillSent._meta.fields
-    submission_values = populate_db(django_fields=sent_django_fields, submission_data=submission_data)
-    WayBillSent(**submission_values).save()
+    _save_submission_via_model(submission_data,WayBillSent)
 
 
 def waybillreceived_handler(submission_data):
-    received_django_fields = WayBillReceived._meta.fields
-    submission_values = populate_db(django_fields=received_django_fields, submission_data=submission_data)
-    WayBillReceived(**submission_values).save()
+    _save_submission_via_model(submission_data,WayBillReceived)
 
 
 class WayBillSent(models.Model):
@@ -41,3 +30,15 @@ class WayBillReceived(models.Model):
     truck_id = models.TextField()
     good_net_weight = models.IntegerField()
     damaged_net_weight = models.IntegerField()
+
+def _convert_submission_data_to_model_fields(fields=None, submission_data=None):
+    fields_name = [field.name for field in fields if field.name != 'id']
+    submission_values = submission_data.itervalues()
+    return {field_name: submission_values.next() for field_name in fields_name}
+
+
+def _save_submission_via_model(submission_data,model):
+    model_fields = model._meta.fields
+    submission_values = _convert_submission_data_to_model_fields(fields=model_fields,
+        submission_data=submission_data)
+    model(**submission_values).save()
