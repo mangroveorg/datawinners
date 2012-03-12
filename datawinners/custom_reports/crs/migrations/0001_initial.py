@@ -11,29 +11,29 @@ class Migration(SchemaMigration):
         # Adding model 'WayBillSent'
         db.create_table('crs_waybillsent', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pl_code', self.gf('django.db.models.fields.TextField')()),
-            ('waybill_code', self.gf('django.db.models.fields.TextField')()),
-            ('sent_date', self.gf('django.db.models.fields.TextField')()),
-            ('transaction_type', self.gf('django.db.models.fields.TextField')()),
-            ('site_code', self.gf('django.db.models.fields.TextField')()),
-            ('sender_name', self.gf('django.db.models.fields.TextField')()),
-            ('truck_id', self.gf('django.db.models.fields.TextField')()),
-            ('food_type', self.gf('django.db.models.fields.TextField')()),
-            ('weight', self.gf('django.db.models.fields.IntegerField')()),
+            ('q1', self.gf('django.db.models.fields.TextField')(db_column='pl_code')),
+            ('q2', self.gf('django.db.models.fields.TextField')(db_column='waybill_code')),
+            ('q3', self.gf('django.db.models.fields.TextField')(db_column='sent_date')),
+            ('q4', self.gf('django.db.models.fields.TextField')(db_column='transaction_type')),
+            ('q5', self.gf('django.db.models.fields.TextField')(db_column='site_code')),
+            ('q6', self.gf('django.db.models.fields.TextField')(db_column='sender_name')),
+            ('q7', self.gf('django.db.models.fields.TextField')(db_column='truck_id')),
+            ('q8', self.gf('django.db.models.fields.TextField')(db_column='food_type')),
+            ('q9', self.gf('django.db.models.fields.IntegerField')(db_column='weight')),
         ))
         db.send_create_signal('crs', ['WayBillSent'])
 
         # Adding model 'WayBillReceived'
         db.create_table('crs_waybillreceived', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pl_code', self.gf('django.db.models.fields.TextField')()),
-            ('waybill_code', self.gf('django.db.models.fields.TextField')()),
-            ('site_code', self.gf('django.db.models.fields.TextField')()),
-            ('receiver_name', self.gf('django.db.models.fields.TextField')()),
-            ('received_date', self.gf('django.db.models.fields.TextField')()),
-            ('truck_id', self.gf('django.db.models.fields.TextField')()),
-            ('good_net_weight', self.gf('django.db.models.fields.IntegerField')()),
-            ('damaged_net_weight', self.gf('django.db.models.fields.IntegerField')()),
+            ('q1', self.gf('django.db.models.fields.TextField')(db_column='pl_code')),
+            ('q2', self.gf('django.db.models.fields.TextField')(db_column='waybill_code')),
+            ('q3', self.gf('django.db.models.fields.TextField')(db_column='site_code')),
+            ('q4', self.gf('django.db.models.fields.TextField')(db_column='receiver_name')),
+            ('q5', self.gf('django.db.models.fields.TextField')(db_column='received_date')),
+            ('q6', self.gf('django.db.models.fields.TextField')(db_column='truck_id')),
+            ('q7', self.gf('django.db.models.fields.IntegerField')(db_column='good_net_weight')),
+            ('q8', self.gf('django.db.models.fields.IntegerField')(db_column='damaged_net_weight')),
         ))
         db.send_create_signal('crs', ['WayBillReceived'])
 
@@ -50,28 +50,28 @@ class Migration(SchemaMigration):
     models = {
         'crs.waybillreceived': {
             'Meta': {'object_name': 'WayBillReceived'},
-            'damaged_net_weight': ('django.db.models.fields.IntegerField', [], {}),
-            'good_net_weight': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'pl_code': ('django.db.models.fields.TextField', [], {}),
-            'received_date': ('django.db.models.fields.TextField', [], {}),
-            'receiver_name': ('django.db.models.fields.TextField', [], {}),
-            'site_code': ('django.db.models.fields.TextField', [], {}),
-            'truck_id': ('django.db.models.fields.TextField', [], {}),
-            'waybill_code': ('django.db.models.fields.TextField', [], {})
+            'q1': ('django.db.models.fields.TextField', [], {'db_column': "'pl_code'"}),
+            'q2': ('django.db.models.fields.TextField', [], {'db_column': "'waybill_code'"}),
+            'q3': ('django.db.models.fields.TextField', [], {'db_column': "'site_code'"}),
+            'q4': ('django.db.models.fields.TextField', [], {'db_column': "'receiver_name'"}),
+            'q5': ('django.db.models.fields.TextField', [], {'db_column': "'received_date'"}),
+            'q6': ('django.db.models.fields.TextField', [], {'db_column': "'truck_id'"}),
+            'q7': ('django.db.models.fields.IntegerField', [], {'db_column': "'good_net_weight'"}),
+            'q8': ('django.db.models.fields.IntegerField', [], {'db_column': "'damaged_net_weight'"})
         },
         'crs.waybillsent': {
             'Meta': {'object_name': 'WayBillSent'},
-            'food_type': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'pl_code': ('django.db.models.fields.TextField', [], {}),
-            'sender_name': ('django.db.models.fields.TextField', [], {}),
-            'sent_date': ('django.db.models.fields.TextField', [], {}),
-            'site_code': ('django.db.models.fields.TextField', [], {}),
-            'transaction_type': ('django.db.models.fields.TextField', [], {}),
-            'truck_id': ('django.db.models.fields.TextField', [], {}),
-            'waybill_code': ('django.db.models.fields.TextField', [], {}),
-            'weight': ('django.db.models.fields.IntegerField', [], {})
+            'q1': ('django.db.models.fields.TextField', [], {'db_column': "'pl_code'"}),
+            'q2': ('django.db.models.fields.TextField', [], {'db_column': "'waybill_code'"}),
+            'q3': ('django.db.models.fields.TextField', [], {'db_column': "'sent_date'"}),
+            'q4': ('django.db.models.fields.TextField', [], {'db_column': "'transaction_type'"}),
+            'q5': ('django.db.models.fields.TextField', [], {'db_column': "'site_code'"}),
+            'q6': ('django.db.models.fields.TextField', [], {'db_column': "'sender_name'"}),
+            'q7': ('django.db.models.fields.TextField', [], {'db_column': "'truck_id'"}),
+            'q8': ('django.db.models.fields.TextField', [], {'db_column': "'food_type'"}),
+            'q9': ('django.db.models.fields.IntegerField', [], {'db_column': "'weight'"})
         }
     }
 

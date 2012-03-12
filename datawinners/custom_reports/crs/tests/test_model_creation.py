@@ -1,7 +1,7 @@
 import unittest
 from collections import OrderedDict
 from datawinners.custom_reports.crs.handler import CRSCustomReportHandler, model_routing_dict
-from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived, waybillsent_handler
+from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived, waybillsent_handler, waybillreceived_handler
 
 class TestWayBillSent(unittest.TestCase):
     def setUp(self):
@@ -19,19 +19,23 @@ class TestWayBillSent(unittest.TestCase):
                 ('q6', u'test'), ('q7', u'9'), ('q8', u'Oil'), ('q9', 400)])
         crs_custom_report_handler = CRSCustomReportHandler()
         crs_custom_report_handler.handle(self.question_code, waybill_sent_submission_data)
-        self.way_bill_sent = WayBillSent.objects.filter(pl_code='pac1')[0]
-        self.assertEquals('2', self.way_bill_sent.waybill_code)
-        self.assertEquals('11.11.2011', self.way_bill_sent.sent_date)
-        self.assertEquals('Transfer', self.way_bill_sent.transaction_type)
-        self.assertEquals('2', self.way_bill_sent.site_code)
-        self.assertEquals('test', self.way_bill_sent.sender_name)
-        self.assertEquals('Oil', self.way_bill_sent.food_type)
-        self.assertEquals(400, self.way_bill_sent.weight)
+        self.way_bill_sent = WayBillSent.objects.filter(q1='pac1')[0]
+        self.assertEquals('2', self.way_bill_sent.q2)
+        self.assertEquals('11.11.2011', self.way_bill_sent.q3)
+        self.assertEquals('Transfer', self.way_bill_sent.q4)
+        self.assertEquals('2', self.way_bill_sent.q5)
+        self.assertEquals('test', self.way_bill_sent.q6)
+        self.assertEquals('9', self.way_bill_sent.q7)
+        self.assertEquals('Oil', self.way_bill_sent.q8)
+        self.assertEquals(400, self.way_bill_sent.q9)
 
 
 class TestWayBillReceived(unittest.TestCase):
     def setUp(self):
         self.way_bill_received= None
+        self.question_code = 'WBR01'
+        model_routing_dict[self.question_code]=waybillreceived_handler
+
 
     def tearDown(self):
         if self.way_bill_received is not None:
@@ -42,13 +46,12 @@ class TestWayBillReceived(unittest.TestCase):
             [('q1', u'pac1'), ('q2', u'2'), ('q3', u'3'), ('q4', u'test'), ('q5', u'11.11.2011'), ('q6', u'2'), ('q7', 3),
                 ('q8', 4)])
         crs_custom_report_handler = CRSCustomReportHandler()
-        waybill_received_questionnaire_form_code = '20'
-        crs_custom_report_handler.handle(waybill_received_questionnaire_form_code, waybill_received_submission_data)
-        self.way_bill_received = WayBillReceived.objects.get(pl_code='pac1')
-        self.assertEquals('2', self.way_bill_received.waybill_code)
-        self.assertEquals('3', self.way_bill_received.site_code)
-        self.assertEquals('test', self.way_bill_received.receiver_name)
-        self.assertEquals('11.11.2011', self.way_bill_received.received_date)
-        self.assertEquals('2', self.way_bill_received.truck_id)
-        self.assertEquals(3, self.way_bill_received.good_net_weight)
-        self.assertEquals(4, self.way_bill_received.damaged_net_weight)
+        crs_custom_report_handler.handle(self.question_code, waybill_received_submission_data)
+        self.way_bill_received = WayBillReceived.objects.get(q1='pac1')
+        self.assertEquals('2', self.way_bill_received.q2)
+        self.assertEquals('3', self.way_bill_received.q3)
+        self.assertEquals('test', self.way_bill_received.q4)
+        self.assertEquals('11.11.2011', self.way_bill_received.q5)
+        self.assertEquals('2', self.way_bill_received.q6)
+        self.assertEquals(3, self.way_bill_received.q7)
+        self.assertEquals(4, self.way_bill_received.q8)

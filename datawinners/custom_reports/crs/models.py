@@ -2,42 +2,42 @@ from django.db import models
 
 
 def waybillsent_handler(submission_data):
-    _save_submission_via_model(submission_data,WayBillSent)
+    _save_submission_via_model(submission_data, WayBillSent)
 
 
 def waybillreceived_handler(submission_data):
-    _save_submission_via_model(submission_data,WayBillReceived)
+    _save_submission_via_model(submission_data, WayBillReceived)
 
 
 class WayBillSent(models.Model):
-    pl_code = models.TextField()
-    waybill_code = models.TextField()
-    sent_date = models.TextField()
-    transaction_type = models.TextField()
-    site_code = models.TextField()
-    sender_name = models.TextField()
-    truck_id = models.TextField()
-    food_type = models.TextField()
-    weight = models.IntegerField()
+    q1 = models.TextField(db_column='pl_code')
+    q2 = models.TextField(db_column='waybill_code')
+    q3 = models.TextField(db_column='sent_date')
+    q4 = models.TextField(db_column='transaction_type')
+    q5 = models.TextField(db_column='site_code')
+    q6 = models.TextField(db_column='sender_name')
+    q7 = models.TextField(db_column='truck_id')
+    q8 = models.TextField(db_column='food_type')
+    q9 = models.IntegerField(db_column='weight')
 
 
 class WayBillReceived(models.Model):
-    pl_code = models.TextField()
-    waybill_code = models.TextField()
-    site_code = models.TextField()
-    receiver_name = models.TextField()
-    received_date = models.TextField()
-    truck_id = models.TextField()
-    good_net_weight = models.IntegerField()
-    damaged_net_weight = models.IntegerField()
+    q1 = models.TextField(db_column='pl_code')
+    q2 = models.TextField(db_column='waybill_code')
+    q3 = models.TextField(db_column='site_code')
+    q4 = models.TextField(db_column='receiver_name')
+    q5 = models.TextField(db_column='received_date')
+    q6 = models.TextField(db_column='truck_id')
+    q7 = models.IntegerField(db_column='good_net_weight')
+    q8 = models.IntegerField(db_column='damaged_net_weight')
+
 
 def _convert_submission_data_to_model_fields(fields=None, submission_data=None):
-    fields_name = [field.name for field in fields if field.name != 'id']
-    submission_values = submission_data.itervalues()
-    return {field_name: submission_values.next() for field_name in fields_name}
+    field_names = [field.name for field in fields if field.name != 'id']
+    return  {field_name: submission_data.get(field_name) for field_name in field_names}
 
 
-def _save_submission_via_model(submission_data,model):
+def _save_submission_via_model(submission_data, model):
     model_fields = model._meta.fields
     submission_values = _convert_submission_data_to_model_fields(fields=model_fields,
         submission_data=submission_data)
