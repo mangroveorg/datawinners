@@ -52,9 +52,9 @@ def _get_or_create_data_dict(dbm, name, slug, primitive_type, description=None):
     return ddtype
 
 
-def _create_constraints_for_mobile_number(manager):
-    mobile_number_length = TextLengthConstraint(manager, max=15)
-    mobile_number_pattern = RegexConstraint(manager, reg='^[0-9]+$')
+def _create_constraints_for_mobile_number():
+    mobile_number_length = TextLengthConstraint(max=15)
+    mobile_number_pattern = RegexConstraint(reg='^[0-9]+$')
     mobile_constraints = [mobile_number_length, mobile_number_pattern]
     return mobile_constraints
 
@@ -98,13 +98,13 @@ def _create_registration_form(manager, entity_name=None, form_code=None, entity_
         instruction=_(
             "Enter the (%(entity_type)s)'s number with the country code and telephone number. Example: 261333745269") % {
             'entity_type': entity_name}, constraints=(
-            _create_constraints_for_mobile_number(manager)))
+            _create_constraints_for_mobile_number()))
     question6 = TextField(name=SHORT_CODE_FIELD, code=code_generator.next(),
         label=_("What is the %(entity_type)s's Unique ID Number?") % {'entity_type': entity_name},
         defaultValue="some default value", language=language, ddtype=name_type,
         instruction=unicode(_("Enter an id, or allow us to generate it")),
         entity_question_flag=True,
-        constraints=[TextLengthConstraint(manager,max=12)], required=False)
+        constraints=[TextLengthConstraint(max=12)], required=False)
     questions = [question1, question2, question3, question4, question5, question6]
 
     form_model = FormModel(manager, name=entity_name, form_code=form_code, fields=questions, is_registration_model=True,

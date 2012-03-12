@@ -130,10 +130,10 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
     question1 = TextField(label="Which packaging list are you reporting on??", code="q1",
         name="Which packaging list are you reporting on?",
         language="en", entity_question_flag=True, ddtype=entity_id_type,
-        constraints=[TextLengthConstraint(manager, min=1, max=12)],
+        constraints=[TextLengthConstraint(min=1, max=12)],
         instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="What is the waybill code?", code="q2", name="What is the waybill code?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = DateField(label="Date of sending?", code="q3", name="Date of sending?",
@@ -141,27 +141,27 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
         instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
         event_time_field_flag=True)
     question4 = TextField(label="What is the Type of transaction?", code="q4", name="What is the Type of transaction?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question5 = TextField(label="What is the Warehouse Code?", code="q5", name="What is the Warehouse Code?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question6 = TextField(label="Name of Sender?", code="q6", name="Name of Sender?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question7 = TextField(label="What is the Truck Id?", code="q7", name="What is the Truck Id?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question8 = TextField(label="What is the Food Type?", code="q8", name="What is the Food Type?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question9 = IntegerField(label="What is the Net Weight?", code="q9", name="What is the Net Weight?",
-        constraints=[NumericRangeConstraint(manager, min=18, max=10000)], ddtype=weight_type,
+        constraints=[NumericRangeConstraint(min=18, max=10000)], ddtype=weight_type,
         instruction="Answer must be a number between 18-100.")
 
     form_model = FormModel(manager, name="WAYBILL_SENT", label="WAYBILL form_model",
@@ -192,18 +192,18 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
     question1 = TextField(label="Which packaging list are you reporting on??", code="q1",
         name="Which packaging list are you reporting on?",
         language="en", entity_question_flag=True, ddtype=entity_id_type,
-        constraints=[TextLengthConstraint(manager, min=1, max=12)],
+        constraints=[TextLengthConstraint(min=1, max=12)],
         instruction="Answer must be a word or phrase 12 characters maximum")
     question2 = TextField(label="What is the waybill code?", code="q2", name="What is the waybill code?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question3 = TextField(label="What is the Warehouse Code?", code="q3", name="What is the Warehouse Code?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question4 = TextField(label="Name of Receiver?", code="q4", name="Name of Receiver?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question5 = DateField(label="Date of receipt?", code="q5", name="Date of receipt?",
@@ -211,14 +211,14 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
         instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
         event_time_field_flag=True)
     question6 = TextField(label="What is the Truck Id?", code="q6", name="What is the Truck Id?",
-        constraints=[TextLengthConstraint(manager, min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
         instruction="Answer must be a word or phrase 10 characters maximum")
     question7 = IntegerField(label="What is the Good Weight?", code="q7", name="What is the Good Weight?",
-        constraints=[NumericRangeConstraint(manager, min=18, max=10000)], ddtype=weight_type,
+        constraints=[NumericRangeConstraint(min=18, max=10000)], ddtype=weight_type,
         instruction="Answer must be a number between 18-100.")
     question8 = IntegerField(label="What is the Net Weight?", code="q8", name="What is the Net Weight?",
-        constraints=[NumericRangeConstraint(manager, min=18, max=10000)], ddtype=weight_type,
+        constraints=[NumericRangeConstraint(min=18, max=10000)], ddtype=weight_type,
         instruction="Answer must be a number between 18-100.")
 
 

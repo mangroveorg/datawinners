@@ -241,25 +241,22 @@ class TestPreviewCreator(unittest.TestCase):
 
 
     def test_should_add_constraint_text_for_text_field_with_min(self):
-        manager = Mock(DatabaseManager)
-        type = DataDictType(manager, name="Name type")
-        constraints = [TextLengthConstraint(manager, min=10)]
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        constraints = [TextLengthConstraint(min=10)]
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max(self):
-        manager = Mock(DatabaseManager)
-        type = DataDictType(manager, name="Name type")
-        constraints = [TextLengthConstraint(manager, max=100)]
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        constraints = [TextLengthConstraint(max=100)]
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100 characters", preview["constraints"])
 
     def test_should_add_constraint_text_for_text_field_with_max_and_min(self):
-        dbm = Mock(DatabaseManager)
-        type = DataDictType(dbm, name="Name type")
-        constraints = [TextLengthConstraint(dbm, min=10, max=100)]
+        type = DataDictType(Mock(DatabaseManager), name="Name type")
+        constraints = [TextLengthConstraint(min=10, max=100)]
         field = TextField(name="What's in a name?", code="nam", label="naam", ddtype=type, constraints=constraints)
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Between 10 -- 100 characters", preview["constraints"])
@@ -272,26 +269,23 @@ class TestPreviewCreator(unittest.TestCase):
 
 
     def test_should_add_constraint_text_for_numeric_field_with_min(self):
-        dbm = Mock(DatabaseManager)
-        type = DataDictType(dbm, name="age type")
-        constraint = NumericRangeConstraint(dbm, min=10)
+        type = DataDictType(Mock(DatabaseManager), name="age type")
+        constraint = NumericRangeConstraint(min=10)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Minimum 10", preview["constraints"])
         self.assertEqual("integer", preview["type"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max(self):
-        dbm = Mock(DatabaseManager)
-        type = DataDictType(dbm, name="age type")
-        constraint = NumericRangeConstraint(dbm, max=100)
+        type = DataDictType(Mock(DatabaseManager), name="age type")
+        constraint = NumericRangeConstraint(max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("Upto 100", preview["constraints"])
 
     def test_should_add_constraint_text_for_numeric_field_with_max_and_min(self):
-        dbm = Mock(DatabaseManager)
-        type = DataDictType(dbm, name="age type")
-        constraint = NumericRangeConstraint(dbm, min=10, max=100)
+        type = DataDictType(Mock(DatabaseManager), name="age type")
+        constraint = NumericRangeConstraint(min=10, max=100)
         field = IntegerField(name="What's in the age?", code="nam", label="naam", ddtype=type, constraints=[constraint])
         preview = helper.get_preview_for_field(field)
         self.assertEqual("10 -- 100", preview["constraints"])

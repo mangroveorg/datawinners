@@ -289,13 +289,13 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         form_model = self._get_form_model()
         phone_number_field = TelephoneNumberField(name=self.field_name, code='m', label=self.field_name,
             ddtype=Mock(spec=DataDictType),
-            constraints=[TextLengthConstraint(self.dbm, max=15), RegexConstraint(self.dbm, reg='^[0-9]+$')])
+            constraints=[TextLengthConstraint(max=15), RegexConstraint(reg='^[0-9]+$')])
         return phone_number_field
 
 
     def _get_integer_field(self):
         integer_field = IntegerField(name=self.field_name, code='ag', label=self.field_name,
-            ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(self.dbm, min=18, max=100)])
+            ddtype=Mock(spec=DataDictType), constraints=[NumericRangeConstraint(min=18, max=100)])
         return integer_field
 
 
