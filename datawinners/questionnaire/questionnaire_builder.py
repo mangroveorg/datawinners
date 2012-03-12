@@ -69,7 +69,7 @@ class QuestionBuilder(object):
         entity_id_question = TextField(name=name, code=entity_id_code,
             label=name,
             entity_question_flag=True, ddtype=entity_data_dict_type,
-            constraints=[TextLengthConstraint(min=1, max=12)],
+            constraints=[TextLengthConstraint(self.dbm, min=1, max=12)],
             instruction=ugettext("Choose Data Sender from this list."),language=language)
         return entity_id_question
 
@@ -85,7 +85,7 @@ class QuestionBuilder(object):
         min_length = min_length_from_post if not is_empty(min_length_from_post) else None
         constraints = []
         if not (max_length is None and min_length is None):
-            constraints.append(TextLengthConstraint(min=min_length, max=max_length))
+            constraints.append(TextLengthConstraint(self.dbm, min=min_length, max=max_length))
         return TextField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
             entity_question_flag=post_dict.get("is_entity_question"), constraints=constraints, ddtype=ddtype,
             instruction=post_dict.get("instruction"), required=post_dict.get("required"),language=language)
@@ -96,7 +96,7 @@ class QuestionBuilder(object):
         min_range_from_post = post_dict.get("range_min")
         max_range = max_range_from_post if not is_empty(max_range_from_post) else None
         min_range = min_range_from_post if not is_empty(min_range_from_post) else None
-        range = NumericRangeConstraint(min=min_range, max=max_range)
+        range = NumericRangeConstraint(self.dbm, min=min_range, max=max_range)
         return IntegerField(name=self._get_name(post_dict), code=code, label=post_dict["title"],
             constraints=[range], ddtype=ddtype, instruction=post_dict.get("instruction"),
             required=post_dict.get("required"),language=language)
@@ -128,8 +128,8 @@ class QuestionBuilder(object):
                 self._create_constraints_for_mobile_number()),required=post_dict.get("required"),language=language)
 
     def _create_constraints_for_mobile_number(self):
-        mobile_number_length = TextLengthConstraint(max=15)
-        mobile_number_pattern = RegexConstraint(reg='^[0-9]+$')
+        mobile_number_length = TextLengthConstraint(self.dbm, max=15)
+        mobile_number_pattern = RegexConstraint(self.dbm, reg='^[0-9]+$')
         mobile_constraints = [mobile_number_length, mobile_number_pattern]
         return mobile_constraints
 

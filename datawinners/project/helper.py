@@ -46,7 +46,7 @@ def _create_entity_id_question(dbm, entity_id_question_code):
     entity_id_question = TextField(name=name, code=entity_id_question_code,
         label=name,
         entity_question_flag=True, ddtype=entity_data_dict_type,
-        constraints=[TextLengthConstraint(min=1, max=12)],
+        constraints=[TextLengthConstraint(dbm, min=1, max=12)],
         instruction=(ugettext('Answer must be a word %d characters maximum') % 12))
     return entity_id_question
 
@@ -90,7 +90,7 @@ def _create_entity_id_question_for_activity_report(dbm):
     entity_id_question = TextField(name=name, code='eid',
         label=name,
         entity_question_flag=True, ddtype=entity_data_dict_type,
-        constraints=[TextLengthConstraint(min=1, max=12)],
+        constraints=[TextLengthConstraint(dbm, min=1, max=12)],
         instruction=ugettext("Choose Data Sender from this list."))
     return entity_id_question
 

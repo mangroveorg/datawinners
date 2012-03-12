@@ -73,7 +73,7 @@ class TestProjectModel(MangroveTestCase):
                               language="eng", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
                               defaultValue="some default value", language="eng",
-                              constraints=[TextLengthConstraint(5, 10)],
+                              constraints=[TextLengthConstraint(self.manager, 5, 10)],
                               ddtype=ddtype)
         self.form_model = FormModel(self.manager, name=self.project1.name, form_code="abc", fields=[question1, question2],
                                     entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
