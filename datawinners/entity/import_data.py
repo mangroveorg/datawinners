@@ -60,19 +60,18 @@ class FilePlayer(Player):
             submission = self._create_submission(transport_info, form_code, values)
             try:
                 form_model, values = self._process(form_code, values)
-                form_submission = self.submit(form_model, values, submission)
-                response = Response(reporters=[], submission_id=submission.uuid, form_submission=form_submission)
-                if not form_submission.saved:
-                    response.errors = dict(error=form_submission.errors, row=values)
+                response = self.submit(form_model, values, submission, [])
+                if not response.success:
+                    response.errors = dict(error=response.errors, row=values)
                 responses.append(response)
             except DataObjectAlreadyExists as e:
-                response = Response(reporters=[], submission_id=None, form_submission=None)
+                response = Response(reporters=[], submission_id=None)
                 response.success = False
                 message = ugettext("%s with %s = %s already exists.")
                 response.errors = dict(error=message % (e.data[2], e.data[0], e.data[1]), row=values)
                 responses.append(response)
             except MangroveException as e:
-                response = Response(reporters=[], submission_id=None, form_submission=None)
+                response = Response(reporters=[], submission_id=None)
                 response.success = False
                 response.errors = dict(error=e.message, row=values)
                 responses.append(response)
