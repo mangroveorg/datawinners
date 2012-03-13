@@ -95,7 +95,7 @@ def process_sms_counter(incoming_request):
 
 
 def send_message(incoming_request, response):
-    ReportRouter().route(incoming_request['organization'].org_id, response.processed_data)
+    ReportRouter().route(incoming_request['organization'].org_id, response)
 
 
 def submit_to_player(incoming_request):
