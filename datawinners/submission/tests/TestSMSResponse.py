@@ -3,7 +3,7 @@ import unittest
 from mock import Mock
 from datawinners.submission.models import SMSResponse
 from mangrove.form_model.form_model import NAME_FIELD
-from mangrove.transport.player.player import Response
+from mangrove.transport.facade import Response, create_response_from_form_submission
 
 class TestSMSResponse(unittest.TestCase):
     def setUp(self):
@@ -14,13 +14,13 @@ class TestSMSResponse(unittest.TestCase):
 
     def test_should_return_expected_success_response(self):
         self.form_submission_mock.is_registration = False
-        response = Response(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
+        response = create_response_from_form_submission(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
         self.assertEqual(u"Thank you Mr. X. We received : name: Clinic X", SMSResponse(response).text())
 
     def test_should_return_expected_success_response_for_registration(self):
         self.form_submission_mock.is_registration = True
 
-        response = Response(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
+        response = create_response_from_form_submission(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
         self.assertEqual(u'Registration successful. Unique identification number(ID) is: CLI001.We received : name: Clinic X',
                          SMSResponse(response).text())
 
@@ -30,6 +30,6 @@ class TestSMSResponse(unittest.TestCase):
         self.form_submission_mock.errors= error_response
 
 
-        response = Response(reporters=[], submission_id=123,form_submission=self.form_submission_mock)
+        response = create_response_from_form_submission(reporters=[], submission_id=123,form_submission=self.form_submission_mock)
         self.assertEqual(error_response,
                          SMSResponse(response).text())
