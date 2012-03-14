@@ -22,7 +22,8 @@ COUCH_DB_SERVER = "http://localhost:5984"
 VUMI_API_URL = "http://178.79.161.90:7000"
 VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
-
+AUTO_REFRESH = 1
+REFRESH_RATE = 10
 
 
 # Local time zone for this installation. Choices can be found here:

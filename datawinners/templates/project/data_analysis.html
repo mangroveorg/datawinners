@@ -7,6 +7,11 @@
 {% activetab "tab_nav" "data" %}
 {{ block.super }}
 {% endblock %}
+{% if refresh_rate  != None%}
+    {% block page_meta %}
+        <meta http-equiv="refresh" count="{{ refresh_rate }}" />
+    {% endblock %}
+{% endif %}
 
 {% block body %}
 {% activetab "main_nav" "projects" %}
@@ -52,7 +57,7 @@
     <div class="grid_23">
         {% if  project.state  == "Test"  %}
         <div class="warning-message-box">
-           <p> {% trans "This Project is not yet active. Data displayed is test data." %} <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
+           <p> {% trans "This Project is not yet active. Data displayed is test data FRESH." %} <a href="{{ project_links.activate_project_link }}" class="activate_project">{% trans "Click Here to Activate" %}</a></p>
         </div>
         {% endif %}
         <ul class="links">
