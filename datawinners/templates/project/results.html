@@ -7,6 +7,12 @@
 {% activetab "tab_nav" "data" %}
 {{ block.super }}
 {% endblock %}
+{% if refresh_rate  != None%}
+    {% block page_meta %}
+        <meta http-equiv="refresh" content={{ refresh_rate }} />
+
+    {% endblock %}
+{% endif %}
 
 {% block body %}
 {% activetab "main_nav" "projects" %}

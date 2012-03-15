@@ -232,6 +232,8 @@ def project_results(request, project_id=None, questionnaire_code=None):
     project = Project.load(manager.database, project_id)
     project_links = make_project_links(project, questionnaire_code)
     questionnaire = get_form_model_by_code(manager, questionnaire_code)
+    if settings.AUTO_REFRESH == 1:
+        refresh_rate = settings.REFRESH_RATE
     if request.method == 'GET':
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
         submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
@@ -240,7 +242,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
                 {'questionnaire_code': questionnaire_code, 'questions': questionnaire.fields,
                  'submissions': submission_display, 'pages': count,
                  'error_message': error_message, 'project_links': project_links, 'project': project,
-                 'in_trial_mode': in_trial_mode},
+                 'in_trial_mode': in_trial_mode,'refresh_rate': refresh_rate},
             context_instance=RequestContext(request)
         )
     if request.method == "POST":
