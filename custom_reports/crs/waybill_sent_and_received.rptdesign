@@ -1,0 +1,1477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <simple-property-list name="includeResource">
+        <value>properties/messages</value>
+        <value>properties/messages_fr_CA</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">143</property>
+    <parameters>
+        <scalar-parameter name="waybill_code" id="725">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="CRS" id="8">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql:geodjango</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cG9zdGdyZXM=</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Data Set" id="9">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">total_net_weight</property>
+                    <expression name="expression">if(row["receiver_name"]!=null){
+	row["good_net_weight"]+row["damaged_net_weight"]
+}</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">Ecart</property>
+                    <expression name="expression">if(row["receiver_name"]!=null){
+	row["total_net_weight"]-row["weight"]
+}</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">in_transit</property>
+                    <expression name="expression">if(row["receiver_name"]==null){
+	row["weight"]
+}</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">pl_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">pl_code</text-property>
+                    <text-property name="heading">pl_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">waybill_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">waybill_code</text-property>
+                    <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sent_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_date</text-property>
+                    <text-property name="heading">sent_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sender_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sender_name</text-property>
+                    <text-property name="heading">sender_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">transaction_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">transaction_type</text-property>
+                    <text-property name="heading">transaction_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">site_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">site_code</text-property>
+                    <text-property name="heading">site_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sent_truck_id</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_truck_id</text-property>
+                    <text-property name="heading">sent_truck_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">food_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <text-property name="heading">food_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">weight</text-property>
+                    <text-property name="heading">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">receiver_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">receiver_name</text-property>
+                    <text-property name="heading">receiver_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_date</text-property>
+                    <text-property name="heading">received_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">recv_truck_id</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">recv_truck_id</text-property>
+                    <text-property name="heading">recv_truck_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">good_net_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">good_net_weight</text-property>
+                    <text-property name="heading">good_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">damaged_net_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">damaged_net_weight</text-property>
+                    <text-property name="heading">damaged_net_weight</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">waybill_code</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">1</property>
+                    <expression name="defaultValue" type="javascript">5</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">pl_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">sent_date</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sender_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">transaction_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">site_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">sent_truck_id</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">food_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">site_code_10</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">receiver_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">received_date</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">recv_truck_id</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">good_net_weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">damaged_net_weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">total_net_weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">Ecart</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">in_transit</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">pl_code</property>
+                    <property name="nativeName">pl_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">waybill_code</property>
+                    <property name="nativeName">waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">sent_date</property>
+                    <property name="nativeName">sent_date</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sender_name</property>
+                    <property name="nativeName">sender_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">transaction_type</property>
+                    <property name="nativeName">transaction_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">site_code</property>
+                    <property name="nativeName">site_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">sent_truck_id</property>
+                    <property name="nativeName">sent_truck_id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">food_type</property>
+                    <property name="nativeName">food_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">weight</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">site_code_10</property>
+                    <property name="nativeName">site_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">receiver_name</property>
+                    <property name="nativeName">receiver_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">received_date</property>
+                    <property name="nativeName">received_date</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">recv_truck_id</property>
+                    <property name="nativeName">recv_truck_id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">good_net_weight</property>
+                    <property name="nativeName">good_net_weight</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">damaged_net_weight</property>
+                    <property name="nativeName">damaged_net_weight</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,sent.sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,recv.received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code WHERE sent.waybill_code < ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>pl_code</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>pl_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>pl_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>waybill_code</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>waybill_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>waybill_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sender_name</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sender_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sender_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_date</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_truck_id</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_truck_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_truck_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>weight</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>receiver_name</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>receiver_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>receiver_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>received_date</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>received_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>received_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>recv_truck_id</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>recv_truck_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>recv_truck_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>good_net_weight</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>good_net_weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>good_net_weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>damaged_net_weight</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>damaged_net_weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>damaged_net_weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="page" id="7">
+            <property name="backgroundImage">images/application_bg.gif</property>
+        </style>
+        <style name="styledTable" id="81">
+            <property name="color">red</property>
+            <property name="marginBottom">30px</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">landscape</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="720">
+            <property name="height">0.5734265734265734in</property>
+            <column id="721"/>
+            <row id="722">
+                <property name="height">0.5734265734265734in</property>
+                <cell id="723">
+                    <property name="backgroundImage">images/header_app_bg.gif</property>
+                    <property name="backgroundImageType">embed</property>
+                    <image id="724">
+                        <property name="height">20px</property>
+                        <property name="width">133px</property>
+                        <property name="source">embed</property>
+                        <property name="imageName">datawinners_logo.png</property>
+                        <list-property name="action">
+                            <structure>
+                                <property name="linkType">hyperlink</property>
+                                <expression name="uri" type="constant">http://localhost:8000/dashboard</expression>
+                                <property name="targetWindow">_blank</property>
+                            </structure>
+                        </list-property>
+                    </image>
+                </cell>
+            </row>
+        </grid>
+        <grid id="711">
+            <property name="height">10.678321678321678in</property>
+            <column id="712"/>
+            <row id="713">
+                <property name="height">10.678321678321678in</property>
+                <cell id="714">
+                    <table id="314">
+                        <property name="marginTop">auto</property>
+                        <property name="marginLeft">auto</property>
+                        <property name="marginBottom">auto</property>
+                        <property name="marginRight">auto</property>
+                        <property name="dataSet">Data Set</property>
+                        <list-property name="paramBindings">
+                            <structure>
+                                <property name="paramName">waybill_code</property>
+                                <simple-property-list name="expression">
+                                    <value type="javascript">params["waybill_code"]</value>
+                                </simple-property-list>
+                            </structure>
+                        </list-property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">pl_code</property>
+                                <text-property name="displayName">pl_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["pl_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">waybill_code</property>
+                                <text-property name="displayName">waybill_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["waybill_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sent_date</property>
+                                <text-property name="displayName">sent_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["sent_date"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sender_name</property>
+                                <text-property name="displayName">sender_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["sender_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">transaction_type</property>
+                                <text-property name="displayName">transaction_type</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["transaction_type"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">site_code</property>
+                                <text-property name="displayName">site_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["site_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sent_truck_id</property>
+                                <text-property name="displayName">sent_truck_id</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["sent_truck_id"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">food_type</property>
+                                <text-property name="displayName">food_type</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["food_type"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">weight</property>
+                                <text-property name="displayName">weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">site_code_10</property>
+                                <text-property name="displayName">site_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["site_code_10"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">receiver_name</property>
+                                <text-property name="displayName">receiver_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["receiver_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">received_date</property>
+                                <text-property name="displayName">received_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["received_date"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">recv_truck_id</property>
+                                <text-property name="displayName">recv_truck_id</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["recv_truck_id"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">good_net_weight</property>
+                                <text-property name="displayName">good_net_weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["good_net_weight"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">damaged_net_weight</property>
+                                <text-property name="displayName">damaged_net_weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["damaged_net_weight"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">total_net_weight</property>
+                                <text-property name="displayName">total_net_weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["total_net_weight"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Ecart</property>
+                                <text-property name="displayName">Ecart</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["Ecart"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Aggregation</property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">dataSetRow["Ecart"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Aggregation_1</property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">vars["in_transit"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">in_transit</property>
+                                <text-property name="displayName">in_transit</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["in_transit"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">total_in_transit</property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">dataSetRow["in_transit"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <column id="403"/>
+                        <column id="404"/>
+                        <column id="405"/>
+                        <column id="406"/>
+                        <column id="407"/>
+                        <column id="408"/>
+                        <column id="409"/>
+                        <column id="410"/>
+                        <column id="411"/>
+                        <column id="412"/>
+                        <column id="413"/>
+                        <column id="414"/>
+                        <column id="415"/>
+                        <column id="416"/>
+                        <column id="417"/>
+                        <column id="418"/>
+                        <column id="419"/>
+                        <column id="578"/>
+                        <header>
+                            <row id="532">
+                                <property name="backgroundColor">#846F6F</property>
+                                <property name="color">#F2E4E4</property>
+                                <cell id="533">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="317">
+                                        <text-property name="text">pl_code</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="534">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="319">
+                                        <text-property name="text">waybill_code</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="535">
+                                    <property name="colSpan">7</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="550">
+                                        <structure name="toc"/>
+                                        <text-property name="text" key="way_bill_sent.label">Way Bill Sent Designer</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="542">
+                                    <property name="colSpan">8</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="551">
+                                        <text-property name="text">Way Bill Received</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="574">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                </cell>
+                            </row>
+                            <row id="315">
+                                <cell id="316">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                </cell>
+                                <cell id="318">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                </cell>
+                                <cell id="320">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="321">
+                                        <text-property name="text">sent_date</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="322">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="323">
+                                        <text-property name="text">sender_name</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="324">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="325">
+                                        <text-property name="text">transaction_type</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="326">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="327">
+                                        <text-property name="text">site_code</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="328">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="329">
+                                        <text-property name="text">sent_truck_id</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="330">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="331">
+                                        <text-property name="text">food_type</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="332">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="333">
+                                        <text-property name="text">weight</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="334">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="335">
+                                        <text-property name="text">site_code</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="336">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="337">
+                                        <text-property name="text">receiver_name</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="338">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="339">
+                                        <text-property name="text">received_date</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="340">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="341">
+                                        <text-property name="text">recv_truck_id</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="342">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="343">
+                                        <text-property name="text">good_net_weight</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="344">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="345">
+                                        <text-property name="text">damaged_net_weight</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="346">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="347">
+                                        <text-property name="text">total_net_weight</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="348">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="349">
+                                        <text-property name="text">Ecart</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="575">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="579">
+                                        <text-property name="text">In Transit</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="350">
+                                <cell id="351">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="352">
+                                        <property name="resultSetColumn">pl_code</property>
+                                    </data>
+                                </cell>
+                                <cell id="353">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="354">
+                                        <property name="resultSetColumn">waybill_code</property>
+                                    </data>
+                                </cell>
+                                <cell id="355">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="356">
+                                        <property name="resultSetColumn">sent_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="357">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="358">
+                                        <property name="resultSetColumn">sender_name</property>
+                                    </data>
+                                </cell>
+                                <cell id="359">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="360">
+                                        <property name="resultSetColumn">transaction_type</property>
+                                    </data>
+                                </cell>
+                                <cell id="361">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="362">
+                                        <property name="resultSetColumn">site_code</property>
+                                    </data>
+                                </cell>
+                                <cell id="363">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="364">
+                                        <property name="resultSetColumn">sent_truck_id</property>
+                                    </data>
+                                </cell>
+                                <cell id="365">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="366">
+                                        <property name="resultSetColumn">food_type</property>
+                                    </data>
+                                </cell>
+                                <cell id="367">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="368">
+                                        <property name="resultSetColumn">weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="369">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="370">
+                                        <property name="resultSetColumn">site_code_10</property>
+                                    </data>
+                                </cell>
+                                <cell id="371">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="372">
+                                        <property name="resultSetColumn">receiver_name</property>
+                                    </data>
+                                </cell>
+                                <cell id="373">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="374">
+                                        <property name="resultSetColumn">received_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="375">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="376">
+                                        <property name="resultSetColumn">recv_truck_id</property>
+                                    </data>
+                                </cell>
+                                <cell id="377">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="378">
+                                        <property name="resultSetColumn">good_net_weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="379">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="380">
+                                        <property name="resultSetColumn">damaged_net_weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="381">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="382">
+                                        <property name="resultSetColumn">total_net_weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="383">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="384">
+                                        <property name="resultSetColumn">Ecart</property>
+                                    </data>
+                                </cell>
+                                <cell id="576">
+                                    <method name="onCreate"><![CDATA[if(row["receiver_name"]!=""){
+	in_transit=row["weight"]
+}]]></method>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <data id="709">
+                                        <property name="resultSetColumn">in_transit</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                        <footer>
+                            <row id="552">
+                                <cell id="553"/>
+                                <cell id="554"/>
+                                <cell id="555"/>
+                                <cell id="556"/>
+                                <cell id="557"/>
+                                <cell id="558"/>
+                                <cell id="559"/>
+                                <cell id="560"/>
+                                <cell id="561"/>
+                                <cell id="562"/>
+                                <cell id="563"/>
+                                <cell id="564"/>
+                                <cell id="565"/>
+                                <cell id="566"/>
+                                <cell id="567"/>
+                                <cell id="568">
+                                    <label id="570">
+                                        <text-property name="text">Total</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="569">
+                                    <data id="571">
+                                        <property name="resultSetColumn">Aggregation</property>
+                                    </data>
+                                </cell>
+                                <cell id="577">
+                                    <data id="710">
+                                        <property name="resultSetColumn">total_in_transit</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </footer>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">Crs-sq-200.gif</property>
+            <property name="type">image/gif</property>
+            <property name="data">
+                R0lGODlhyADIAMQAAEB9tX+ozb/U5u/0+WCTwTBzrxBdot/p85++2iBoqM/e7I+z1FCIu6/J4HCexwBS
+                nP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAA
+                AADIAMgAAAX/ICSOZGmeaKqubOu+cCzPdG3feK7vfO//wKBwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+16
+                v+CweEwum8/otHrNbrvf8Lh8Tq/b7/i8fs/v+/+AgYKDhIWGh4iJiouMjY6PkJE2BwsCknADCwUPBAeX
+                bQoEDw8Mnp9rAgCjCZanaqmjDwGuagqqq60nAQAEA7RbA6KxDL4owg8Av1kLBrEPCyoNzg8KylUKm7EG
+                1SoJ0w7WUgMO0wXFKQvTDwXhUArezr0szeqm7UsB6rMsCOqjCPeUHMjmDGALeOoIBETSgJ42biwE+Fu1
+                0Ai5adteHPN3ruKPAbecJYDYwqG/XB57/7xTZw6GtImj9qXk0ZBlxxYb/TGYyaOfTRkIJ7LjmSPnqJYx
+                DsB0RhSH0XU3XbxcSq1pjacZZ+Sj+gClVRcDCDrLOuOpvq8wwk70GiPkUploV6j1Z7CGW5jJ4rK4Gwvc
+                Db7+8upNYVawDcDqEgwmPDFBVK1cRy3WBZOkja1cJ5fw6Q+aDomRNY8ArZOH0shs4x4wOfaxDdZrNc/1
+                18AHA9SazZL6kY5raqu9/RlwfUMB7sHGYdb1AVvdb56z1Rm27XvwxYmWewSH+TwlaX8KhXyPjXZA0HpE
+                qqPF7A9uEMSxui9MPnF4Ed2j5AeEz8kIe39oTTWRPUOMpw5a500TXv8Rp8H0FWfkGbHUUE0lKFISFo4y
+                XUoQdpYEfDtVSBWBRcDnXg0DCLBAAAQA4OKLAQQgAIl4dKhOiEhcp45nNAyAAAEZCsfAAgQqEOORSCYZ
+                IwICEDfDAQg4AIBYDyTAi4xOrkClOsv5xx0NCNwWGUwLDtAcVQYwgECWKmSy5VI8wmAgekn85wyNcgVw
+                5pixGGYnn6ToV8IAegIaU1lUUYjEn5LBUKiheJHQIKR94nmCAEFSdSILA3C1KRGMbpgCphMSEGMDAjQQ
+                o5TNTUepOgZ0eYKNgH6qAq3TCOoDo36xoONYBDTAJpRialgCX+4p0IADb8ay4KxCVVKNAgJESaX/rSnw
+                16gSjMpqQnSxJLAAm98u4M10yKZwgG69liBgn9lJ6gA92J4wqVBMMBovCdi0R+6tz0KQrgoDTVTboLAF
+                nAKhBtRrwnYTtbuocCsoANtIQAzc5pv2kWCnqATrOkKxMMU58Y1twobUDxq3aaF7sFm6Q6fqceshCuBC
+                JUTLKsyp2Ajv7jZE0BwxAdi+EBjl2BA8q/AmRL/KQkTUABqdWApEI71D0+jQNQJfItfQrDOKYpgQzrA5
+                nAPXKMwpE9hD0EwVyEXQhkLUSxPBtr3tfX2WeJHhmAR92qBw7z9G7G0C4bG8jbIQjE6j9g9BKyyCUQYc
+                oXgJc9YVdcdAkAzT/+QzhOmanQcjrI7EO//dwp8QEU36DGM7M7tL+aFw188m0Kp1D5uTsCXvIjT3uw1j
+                ps6DxaNYyhrrIoheJRLBi+B2CX+StfyYYbsQHPH80jkoeNS77jKsN5kn3PEyzHkSD7D0hQLEgpNAtMlM
+                m5+C9M9cWp+3NoDYl3DgJnXsi0q/+VP3/qK/b/HPciLAFSn+9Tru2UAAAWhW2UZwL7oBRmYsayAJSMWS
+                FUjQAMqzAdXel5QFaOsBAIRYCoVXNc2JEAKhmAgEN7MUAIDQBS/M3QvWNSbw0bBPKpjIh/SnAE2M7gU1
+                GR0FTxBEGIIFPztqW66SWMPESSdGLdoTMtgnqf/axcouY1KbAMSIPmM4g24iUGL5KJUAAFawh2Q8Vhr5
+                AalP3et3crShoQBgxyFqC397GdMOIwgp0JVgI9ArQSC9yKdO9ESMxIBBFeEoQThpURtsmmSJbnQmIxJw
+                hUehYBVNKYLVQIqVAnPGDE/QnAUeRh8SvJ0LbAGTDWaLT7+E1CwhsJ36BXMahfRBulZogB/WgBkRc0Hk
+                nOM/SIHMlaNwpAqeEsmM/Q0xcCxOswQ1zWkgkn9ospRYhnkCAa5jjrYTgZkmgkgd5AwZLXBfacYHqXpC
+                EgaMi4Uzt+a6gMYijzK4pzMPtxQTEI0qxmRkLFbmgubUM4SSIwGuKNoDhl7/lARslCX2DJU3Hj5EBk+B
+                pTL1Z5ZFOkU6LUDnPkdQTozEq0Ps7JnBKBlPPXoNCEFT6QjcCRMC1dQZNzVnDSzkS4z2lATq8wdCYcDQ
+                FjCUTBrlk7cg5lIT0nOUGV1cc7S5gy46DVD2kNtSDMCWYCgIBxZqpt5uuNEpvsCsKegkTGmaKBr1i2x2
+                rWYJ8xdWyviDozgwUFO/FVJnxMksBkCknRBLA3R2lYGFPUFLtXM2aRpqOQgISgHGZQISAnZmGbosGjP7
+                rWbJQwcJSiZUG1uQElCrSZcCzGt3wDzwBBaINxzBPXWGAxuRNRqQ2m1eEaNaGTx0HVO1FwNQErzhFiC6
+                /6pjbUwbGQAaQYkAe5KtDToZgN9CgGFdIUH1hhtZFG3puHLJ1FKs9CI2YmwIvRVOd6kK3vioN7iDgo8P
+                E/qmnKogv6/iSiYZVDtSLEBrGNwSSrY0O1RyYqDWe5Mu+UXbRhr4B0ddBwAYECMXZQolM5WKGINVsc0W
+                p8N8coB5cXAAmSY4FwYV6gkGYGMNBaASAgjyApilHAiEVlwoqmJkLPkEAWDRULkwiy0F0GBAXRcCVC7A
+                lGw5AgTAGFZMlgIlqkyVBDD5qvgEk5IbU5cASCMBqroBoeR72DVl4btVLACJhVWCAwT5z4Dm8ggU4AA6
+                3yiFYVqHmnTQAAI02Mx2Bv+Dn6t1JCDj9glNZMDYDAAAB/BZswUoQHPlpCokBdkqKQJ0HgcwY9G4+tWw
+                jrWsF4LhWReXAc0AgMmmS9MX+VoBB3CR/QAAFwEwwBuitoeUUugiAoUp1/hjgIsIQFos+1rYtqgfAoht
+                5GvvpAHX3tC6zlUNafu6Ni8iwJqCPR1wd1fYHHR0lUqxbV+HqAG4NkA3y6hvBLDIMErBkZkDkIAEsOhn
+                abae1M4rCmIvQBgGIcdNVMHBAvT73yZQRQBu05JOEZtFfumP/R5QG4l8XNcQUMrJJWYmcRHcEhoPALN8
+                oXGOu5Uk/agNp0dADmJHiRUmLzE0pKEmB0R0UKGW2UX/SATvESQcywsXxXLW+ABP5CPjD5Bn0ldAcWI+
+                IOQnWvho0iuRsNsq53rEugjS4QCJPPZn8M6HrMp+LB17LL1oU4XEmh5Hw9Cd7iVIh0KunnYI5EM/XYdA
+                msXudPdIxBKAJwHjR8rsrBde8ckouHC/LgJhK8Vyke+83UeQgMV63RaO5DvmRyg1ctCoU4oh/H9FUPoW
+                dL0f+5i84h1Pdt3rnoNVIkni/bb2/uWDG/0whbDTkZrQG17kLYD+CawEAWnESfUP4PSLNjGL4c9e9sRX
+                /GVVgUHiVulFBpn846FOXwAcDBlHyo6XG+a3F4WI/PloiVL8oumvJeM2WtR+ByMK/wUgKNLnLl8XZAZA
+                PNhncEciCt1neWoHfp2XdZ9ne7EQJ/CXQaagfr1HbMzidMQGJI/RL0MRc9wWS6NwfYrRKTwibN43diC4
+                MtAkW++kO+qQOtjnd1JzG/FSexQYS3Fken4jCoLje7wHeUiIE/0Tg6ogCs+Sc+lwDsImCs33eym3CVmy
+                CXiiFDJhJoKxg6w3C4JXWpwXhF3HhYkEAbfBI0vIekpodi6wG06YdW24eY4mOMLWD6CHhdWHd1hDXCQg
+                CgQiCtwghmM3C/O0HGFhH2hoedJAWbOnFu8nh3AIdZZoL8AXgWqnFlHWDMoDb94wQ853DsfHAqJQR0G2
+                cWBoW/gip2WSxIP7QHUEEGShlRWHlyrUJoSXUyVMgkHG1HWNWA2cYIuWVIwqwg4SUXLI+CPn5YcbF2QW
+                5wnkt4rQIIwWxw3SkDkkQH041AxtlyoAEGTN2AskVi071wLgFg/pYEzNoxTc2ErZRwJlKAIKUCwGEGZu
+                YR/NYA/r6Cwm4A3cABIF8C7JwDizkA8KwVVGJjTQsgrccB6W0I/yNCWk9yzwKFz9BZEMeQzKZWsgGZIi
+                OZIkWZImeZIomZIquZIs2ZIu+ZIwGZMyOZM0WZM2eZM4mZM6uZM82ZM++ZNAGZRCOZREWZRGeZRImZRK
+                uZRM2ZRO+ZRQ2QMhAAA7
+            </property>
+        </structure>
+        <structure>
+            <property name="name">wizard_slider_handle.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAABUAAAAZCAYAAADe1WXtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFn
+                ZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/
+                IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6
+                bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8w
+                Mi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9y
+                Zy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIg
+                eG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDov
+                L25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20v
+                eGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9w
+                IENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDE3RUMyMTU2QTRDMTFFMEE2
+                QzdFNUU4NTk5REYxMzIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDE3RUMyMTY2QTRDMTFFMEE2
+                QzdFNUU4NTk5REYxMzIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlp
+                ZDo0MTdFQzIxMzZBNEMxMUUwQTZDN0U1RTg1OTlERjEzMiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRp
+                ZDo0MTdFQzIxNDZBNEMxMUUwQTZDN0U1RTg1OTlERjEzMiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9y
+                ZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmOmqaIAAARtSURBVHjatFXva1tV
+                GH7OvUmaH+2SJm2pXVa7EkuxOqa4uvqrljEGBYUhKP2gICj6B+yD4OexIdoPExVEFO2wMFsmFsbwg1rU
+                uoHbzOza1FbWdE3XLl2apVlvcu859/iee7d0rmVU0RMO9+T8eN73fZ73PYdJKfFfNw3/Q/NsZZO9MpTQ
+                pC3IBx0afSMvXv5XoMvzF96embf2FAp5vloUpuB6XzQSRnBb9XA8nhbbY8VRPdDx4WZn2d2cmtlv9oxe
+                9B/y+fx6S7z5BX8khFgoAsZ05It5FPNFpOevgBvFga7H2xcC4fvf2oCqQGV+uF19/5g80//V0OCXqdSE
+                tKyy5KaQVtmUwuL035Kc29I0aSy4nJhIyaETw0MTk8kvZPaTGgfnVq94Ojk+etQoB5tb29v6qn1hmilT
+                HLqjJaMtkvGKrpLZ0GjOWBOYmh6Hrusndu9+9KUN6q8Uqto7HtrVF6wKQsCkkxpZZdQFfls0kVwQkLZe
+                ic6mNV9Qw4Mdj6B8c628gdNPB4fkgWe6UFfX4HoBBooab46UcTJTgkauKk4taeNg3IePeoMIVrngjqjL
+                y0gmk+jt7WUV9R9oaUJ9bRTctsmMCZs8empgDTnLi9ZYFGs2eUz7ArrAT0sl7DtewI8vh6A4YIwhGo0i
+                Eon8PfmbGuodL2wClRbDuz9zXLX8MHwhTJWAOcvCFW5i2tBQ9vlpzYujv1gVYYQQaGhoQDqdlhXQ6ppa
+                CAIF8ad4/Hi8BKl7UCQgIeiwRca47hxeERwlqoHPLrmgnHPHu3A4jEwms578VT6P66V0tMYC4XupcARx
+                qTMPuFJejR3xbBhERp4MKUAVvjrr8bgYFVBRNqHRpNDcyQB5ZFCXTHNTy5FcwNYIlH6CDPrIkH1nNhCg
+                3+9f59SwSk74Kh+ZYOiMeihcg8ZlB4xRyA41Foeu7HILXTWeCphqpVIJgUBgHbSQN751CCdgKhoceVqD
+                n0IFUwdc7lSyQ7dgkyG1dqR7HVB9C4WCw2sFdHx2/oIUrvK2zbEzYuO9TiDICYnyFR7KDCoJNQ6RkP2d
+                NlrCFrhwgVVfyi4iGtu2zqlhlEQ2m0W0rhaa5qPKMXAw4cGzO3T0j+k4c50MenV0Ngoc2msiGtDIG52q
+                ingmZnK5HIxVA0G/C8re+GDsiZiv1NDTIk62tSXghY8EU2LbpDwDh5tm7m66Tmleaopjj6O8IG+npiax
+                f/9+tuHqS/56+uyNm1WdzTtbCUyprJBJGEkeOZprjlgaZYAKV5WtzUpfz/45p3d39zy/6XOya8f0c7Fa
+                LTUzleIr13Ngt9NIjaRVSSsh3WTP5a6NzE5fyt0NuPklPfdO4Lvf4xdD0ZZEU2MjVOqq6J19t8K/ml06
+                JW+kxp488OrhLd38t9vMuWOvLK52fF5/X5zk1OElZHpUkLm2cKrePzPYsfe14//4jUps104nGvexc98f
+                k2bwMadc0+nLIz0PFw7Xtb9+9p4v5Z3PwL36+R8GpJF5P76VvX8JMABzp8BbnRTkggAAAABJRU5ErkJg
+                gg==
+            </property>
+        </structure>
+        <structure>
+            <property name="name">hedaer_app_bg.gif</property>
+            <property name="type">image/gif</property>
+            <property name="data">
+                R0lGODlhBQBKAMQAACUlJS8vLzU1NSkpKTY2Ni4uLjExMUhISCwsLCYmJj8/PygoKDMzMxoaGgAAACoq
+                KjAwMC0tLScnJysrKyMjIzQ0NCQkJCEhIRsbGzIyMh0dHR4eHhwcHCIiIh8fHyAgICH/C1hNUCBEYXRh
+                WE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6
+                eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4w
+                LWMwNjAgNjEuMTM0Nzc3LCAyMDEwLzAyLzEyLTE3OjMyOjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxu
+                czpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRl
+                c2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEu
+                MC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJl
+                Zj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0
+                b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCIgeG1wTU06SW5zdGFuY2VJRD0ieG1w
+                LmlpZDo3NDAzMTIyMDZEOTYxMUUwODFEOUM3N0ZBNDg3MEIxNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1w
+                LmRpZDo3NDAzMTIyMTZEOTYxMUUwODFEOUM3N0ZBNDg3MEIxNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBz
+                dFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc0MDMxMjFFNkQ5NjExRTA4MUQ5Qzc3RkE0ODcwQjE1IiBz
+                dFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc0MDMxMjFGNkQ5NjExRTA4MUQ5Qzc3RkE0ODcwQjE1Ii8+
+                IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJy
+                Ij8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnI
+                x8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2M
+                i4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQ
+                T05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUU
+                ExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAAAAAAAsAAAAAAUASgAABX+gJYpUaZ5dqq5X675fLM+0Z994
+                vu18r/3AoFDIKRqPSCRmyWw6G1CoYzo9WK2KbJbA5Qq+4HBlTC6bGWh0Zs1uuw1wOGROrwfu+Hxhv4/4
+                /4AIgoIThYaHD4mJA4yNjguQkBKTlJUJl5cAmpucI54jJxQro6QvFzSoMzk6Pa0hADs=
+            </property>
+        </structure>
+        <structure>
+            <property name="name">datawinners_logo.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAIUAAAAUCAYAAAHU585MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFn
+                ZVJlYWR5ccllPAAABgxJREFUeNpi/P//PwOlgAmIHaAYZNp7IN6PJH8fiOcj8f9DMQwEgPlAlzj8RwUM
+                aLgAiY1NTQNAADFS2zsMUO8gO3k/Fm8oYHgL6JL5SE7bj+Y1ASzemI/uZYAAgoVJAY7w2I8njO5jkSMb
+                M0E9dQGIHaFBE4AlJgWQxCYAcQEQK2JR9x9LEP5Hwwxo6sHRARBAVIlgqGEHKEkg/5FCgAGLa9FBPxaf
+                H6DIC0hpApagCtDEYOngPZqYApQOQBJrQEqU65HiHpaOBJDU7kdOoOgW/sch9h4pgaInzv8EEiAM7Edz
+                xH9kR/QjKUK33AHqg/dIhr7Hog6fI/qxhBq85AEIwFoV0EAMwsBJQMJLQMIkTAISXsI7mIRJQQISkICE
+                LktKcumu8J/fkiWjBdYedwezr+tJX8grKfyzeRWOqK8TB0l5Uv6/vgjGaopdgWPMEJs5xW0AqJjvA/a/
+                OF6IT2bNNUPDrDV0vSDQUWMNtIP7VtCQ6H/DCAw7XozIbhx32CCEzgkuAXGA8nQnk3gjzD3Imrd3AbHm
+                u2tFyCViJpkUXwZAWYB23b8+BIZMDIvFX9Dr4nlGdKgvxq6FuK6Qxnv+MynyHzA6OwoYcSBzAkh1x9wp
+                ADFWdNQwDENJrwOEDTqCs0E2oJ2AMAHdoO4EhA3YIGzgYwK6QbpBsgFcek93rzo5Ntdw9U/lWJVlWX56
+                9lKVfalW31ygb2QXc3wo1jzR1lnuYPQd9R3R3HCvHViRPJHOT8hdxn8PmYHQ7UxUTey8Qy7ulovGdYf7
+                pTr/GhR7Ii9D5Io1KFRvZvAgEKA6nGXGl4Y4zY9xr+mM72LLk/1vjVupQFgAaQWCAUqCt6dq5FVdT5XP
+                YASzJB9K0tsqzi5FYCCdYJTwK6KYCsQVNTX0LLbpjDGN+m9EpftIIGqVKTVseuWTj3AKtqXn2Gi/1xmn
+                p8f9fEzoTU8UTUJHbByBQ1+Ql6g25QzQv5BcYU0PwMTdJKwzEb/AZDFUDxh/xGIth7a06JEeS5YAyBGv
+                DFWG7onm7OBrsVLlcID8Qd9b/D4ndkQccsa4ZED7T5h/Mub1EV3O2p1VPg9Ir1Gl0h5R20RKaIAjkkFd
+                hHPo1mYct7+0CvN7pP5TRO8VGy4bf9mcXwHKtRbbtoEYejEygLSBRlAmqD1B3Q3UCRpPYGUCNxPIncDu
+                BNIGdiaoNpA2UBHgMXglyJNkO2iLEBDgSPc/3iPfu7xmljGXb5Hp/fhbGd+IZZh0CzEtVqbH0R2DAX28
+                78IHs8WERS/gNMOFyaSFrQN58jXWAvwz4LGXBIsq6/X3SHDWU7K9Ch/QLKRYKVSolTPcObHjM+F3i0xh
+                Hwm4sgnWRiVwxk/4Hai9VpV97fPkBFFBiT36zJzxd+gnvTGM/59mqDRat4t93xns7KTeVUYer60mCYlZ
+                XIdvmtllDuvSY6+ofOHwg4Ik9jDCOWoiVB2RrpKUqZ3BT3ZYlw5jKqmtk6OaD6p8Re+WzriW9LujsXBf
+                wk9OVC73dMy5TpETy6tH6gTnCrE07iakvWJGvVw5F2uUVURLZXqezXSK4Nxk8hqJUxyc8qUxH9n8tVOn
+                Mm4QYmtTRshy0A7Bt6SXpvsregriNJcqcBtqr4Gw9WtCPnNGbrGkECa5xLNqnxnAGuWtsDQ29zn2MrFc
+                jnU8K57Kz0uEClrheI+2tljHCvNOvLksrow+BSWNFTq6JkFLkB8McIYCzCedwH6eyRkkQT6qScvfW6Jk
+                4UYqyS0smXEYN8a3xknGU+RSD+Qg/J8jfyhL9xMGWSlVpDFkqr3i85ewlIzkpACKOef0NnjW6uR4gokk
+                vMeZ/bynNST0tO8wrrOBDAfsZSYosxihjB0JNb3K7hOFGDsSS6aGj2+oVxin5ID2qhl0+InCwtGBeXm/
+                /MdQgg9DT0hp0edh4p1UwPoykutDn9O6vCFFH4FmoZZHg6p9waAFrh9R7ivaq1XnzP9LxESp1wBtUop5
+                OepJ+FhTHO0jJ+076j6N5C5b5+TEoPg80r/+LuJfOyIOtgqNU8x9SxcM0v5PgzrHxrXBU2Btl+QcvF9v
+                9hvKUuiK2sR9JgAAAABJRU5ErkJggg==
+            </property>
+        </structure>
+    </list-property>
+</report>
