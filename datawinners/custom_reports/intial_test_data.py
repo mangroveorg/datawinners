@@ -1,23 +1,15 @@
-from django.contrib.auth.models import User, Group
-from django.utils.translation import activate
-from datawinners.common.constant import DEFAULT_LANGUAGE
 from datawinners import initializer
 from datawinners.accountmanagement.models import Organization
-
-from datawinners.entity.helper import create_registration_form
-from datawinners.main.utils import get_database_manager
 from datawinners.project.models import Project, ProjectState, Reminder
-from mangrove.datastore.datadict import create_datadict_type, get_datadict_type_by_slug
-from mangrove.datastore.entity import  create_entity, get_by_short_code
-from mangrove.datastore.entity_type import define_type
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, DataObjectNotFound, DataObjectAlreadyExists
+from mangrove.datastore.datadict import  get_datadict_type_by_slug
+from mangrove.errors.MangroveException import   DataObjectAlreadyExists
 from mangrove.form_model.field import TextField, IntegerField, DateField
-from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, get_form_model_by_code
+from mangrove.form_model.form_model import FormModel, NAME_FIELD, MOBILE_NUMBER_FIELD, get_form_model_by_code
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
+    create_data_dict, define_entity_instance, register
 
-
-FIRST_NAME_FIELD = "firstname"
 
 def load_data():
     manager = load_manager_for_default_test_account()
@@ -37,23 +29,6 @@ def load_data():
         short_code="rep5", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
 
-def load_manager_for_default_test_account():
-    DEFAULT_USER = "tester150411@gmail.com"
-    user = User.objects.get(username=DEFAULT_USER)
-    group = Group.objects.filter(name="NGO Admins")
-    user.groups.add(group[0])
-    return get_database_manager(user)
-
-
-def create_entity_types(manager, entity_types):
-    for entity_type in entity_types:
-        try:
-            define_type(manager, entity_type)
-            activate(DEFAULT_LANGUAGE)
-            create_registration_form(manager, entity_type)
-        except EntityTypeAlreadyDefined:
-            pass
-
 
 #Data Dict Types
 def load_datadict_types(manager):
@@ -67,14 +42,6 @@ def load_datadict_types(manager):
         description='Patient Count')
 
 
-def create_data_dict(dbm, name, slug, primitive_type, description=None):
-    try:
-        existing = get_datadict_type_by_slug(dbm, slug)
-        existing.delete()
-    except DataObjectNotFound:
-        pass
-    return create_datadict_type(dbm, name, slug, primitive_type, description)
-
 
 def load_packaginglist_entities(PACKAGING_LIST_ENTITY_TYPE, manager):
     e = define_entity_instance(manager, PACKAGING_LIST_ENTITY_TYPE, ['India', 'MP', 'Bhopal'], short_code="pac1",
@@ -85,38 +52,6 @@ def load_packaginglist_entities(PACKAGING_LIST_ENTITY_TYPE, manager):
         e.save()
     except Exception:
         pass
-
-
-def define_entity_instance(manager, entity_type, location, short_code, geometry, name=None, mobile_number=None,
-                           description=None, firstname=None):
-    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-        short_code=short_code, geometry=geometry)
-
-    name_type = create_data_dict(manager, name='Name Type', slug='name', primitive_type='string')
-    first_name_type = create_data_dict(manager, name='Name Type', slug='firstname', primitive_type='string')
-    mobile_type = create_data_dict(manager, name='Mobile Number Type', slug='mobile_number', primitive_type='string')
-    description_type = create_data_dict(manager, name='Description', slug='description', primitive_type='string')
-    e.add_data(data=[(NAME_FIELD, name, name_type)])
-    e.add_data([(FIRST_NAME_FIELD, firstname, first_name_type)])
-    e.add_data([(MOBILE_NUMBER_FIELD, mobile_number, mobile_type)])
-    e.add_data([(DESCRIPTION_FIELD, description, description_type)])
-    return e
-
-
-def create_or_update_entity(manager, entity_type, location, aggregation_paths, short_code, geometry=None):
-    try:
-        entity = get_by_short_code(manager, short_code, entity_type)
-        entity.delete()
-    except DataObjectNotFound:
-        pass
-    return create_entity(manager, entity_type, short_code, location, aggregation_paths, geometry)
-
-
-def register(manager, entity_type, data, location, short_code, geometry=None):
-    e = create_or_update_entity(manager, entity_type=entity_type, location=location, aggregation_paths=None,
-        short_code=short_code, geometry=geometry)
-    e.add_data(data=data)
-    return e
 
 
 def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
