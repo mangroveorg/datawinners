@@ -9,7 +9,8 @@
 {% endblock %}
 {% if refresh_rate  != None%}
     {% block page_meta %}
-        <meta http-equiv="refresh" count="{{ refresh_rate }}" />
+        <meta http-equiv="refresh" content={{ refresh_rate }} />
+
     {% endblock %}
 {% endif %}
 
