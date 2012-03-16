@@ -4,9 +4,10 @@ from django.conf import settings
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
-from mangrove.datastore.entity import create_entity, get_all_entities
+from mangrove.datastore.entity import create_entity
 from mangrove.datastore.datadict import   get_or_create_data_dict
 from mangrove.form_model.form_model import REPORTER, MOBILE_NUMBER_FIELD, NAME_FIELD
+from mangrove.datastore.queries import get_entity_count_for_type
 
 def create_org_database(sender, user, request, **kwargs):
     from datawinners.initializer import run
@@ -37,8 +38,7 @@ def active_organization(org):
         org.save()
 
 def make_user_as_a_datasender(manager, organization, current_user_name, mobile_number):
-    entities = get_all_entities(dbm=manager)
-    total_entity = len([entity for entity in entities if entity.type_path[0] == REPORTER])
+    total_entity = get_entity_count_for_type(manager, [REPORTER])
     reporter_short_code = 'rep' + str(total_entity+1)
     entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
         location=[organization.country])

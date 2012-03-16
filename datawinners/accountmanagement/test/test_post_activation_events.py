@@ -3,7 +3,7 @@ from mangrove.datastore.entity import Entity
 from django.utils import unittest
 from mangrove.form_model.form_model import REPORTER
 from mock import Mock, patch
-from accountmanagement.models import DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import DataSenderOnTrialAccount
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.accountmanagement.post_activation_events import active_organization
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
@@ -33,7 +33,7 @@ class TestPostActivationEvents(unittest.TestCase):
         self.trial_user_profile = NGOUserProfile(user=self.trial_user, title='Mr.', org_id=self.trial_org.org_id,mobile_phone=self.trial_mobile_number)
         self.trial_user_profile.save()
 
-        self.patcher1 = patch('datawinners.accountmanagement.post_activation_events.get_all_entities')
+        self.patcher1 = patch('datawinners.accountmanagement.post_activation_events.get_entity_count_for_type')
         self.get_all_entities_mock = self.patcher1.start()
 
         self.patcher2 = patch('datawinners.accountmanagement.post_activation_events.create_entity')
@@ -51,7 +51,7 @@ class TestPostActivationEvents(unittest.TestCase):
         mock_manager = Mock(spec=DatabaseManager)
         entity_mock = Mock(spec=Entity)
         entity_mock.type_path = [REPORTER]
-        self.get_all_entities_mock.return_value = [entity_mock]
+        self.get_all_entities_mock.return_value = 1
         self.create_entity_mock = entity_mock
         self.get_or_create_data_dict_mock.return_value = Mock()
 
@@ -64,7 +64,7 @@ class TestPostActivationEvents(unittest.TestCase):
         mock_manager = Mock(spec=DatabaseManager)
         entity_mock = Mock(spec=Entity)
         entity_mock.type_path = [REPORTER]
-        self.get_all_entities_mock.return_value = [entity_mock]
+        self.get_all_entities_mock.return_value = 1
         self.create_entity_mock = entity_mock
         self.get_or_create_data_dict_mock.return_value = Mock()
 
