@@ -43,6 +43,7 @@ from datawinners.entity.helper import get_country_appended_location
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from datawinners.utils import get_organization_country
+from django.contrib import messages
 
 COUNTRY = ',MADAGASCAR'
 
@@ -147,13 +148,16 @@ def all_subjects(request):
 def delete_entity(request):
     manager = get_database_manager(request.user)
     transport_info = TransportInfo("web", request.user.username, "")
+    entity_type = request.POST['entity_type']
     all_ids = request.POST['all_ids'].split(';')
-    message = {ENTITY_TYPE_FIELD_CODE:request.POST['entity_type'],
-               SHORT_CODE: all_ids[0],
-               'form_code': ENTITY_DELETION_FORM_CODE}
-    mangrove_request = Request(message, transport_info)
-    response = WebPlayer(manager).accept(mangrove_request)
-    return HttpResponse(json.dumps({'success':response.success}))
+    for entity_id in all_ids:
+        message = {ENTITY_TYPE_FIELD_CODE: entity_type,
+                   SHORT_CODE: entity_id,
+                   'form_code': ENTITY_DELETION_FORM_CODE}
+        mangrove_request = Request(message, transport_info)
+        WebPlayer(manager).accept(mangrove_request)
+    messages.success(request, 'Subject(s) successfully deleted.')
+    return HttpResponse(json.dumps({'success':True}))
 
 
 def _get_project_association(projects):
