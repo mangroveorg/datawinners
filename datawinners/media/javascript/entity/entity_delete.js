@@ -15,7 +15,7 @@ $(document).ready(function () {
                 function(json_response){
                     var response = $.parseJSON(json_response);
                     if (response.success){
-                        window.location.reload();
+                        window.location.href = window.location.href;
                     }
                 }
         );
