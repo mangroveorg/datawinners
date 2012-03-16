@@ -1,6 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import defaultdict
 import json
+from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from django.contrib.auth.decorators import login_required
 from django.utils import translation
 from django.contrib.auth.forms import PasswordResetForm
@@ -13,6 +14,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
+from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, SHORT_CODE
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.accountmanagement.models import NGOUserProfile
@@ -138,6 +140,20 @@ def all_subjects(request):
     return render_to_response('entity/all_subjects.html',
             {'all_data': subjects_data, 'current_language': translation.get_language()},
         context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_new_user
+@is_datasender
+def delete_entity(request):
+    manager = get_database_manager(request.user)
+    transport_info = TransportInfo("web", request.user.username, "")
+    all_ids = request.POST['all_ids'].split(';')
+    message = {ENTITY_TYPE_FIELD_CODE:request.POST['entity_type'],
+               SHORT_CODE: all_ids[0],
+               'form_code': ENTITY_DELETION_FORM_CODE}
+    mangrove_request = Request(message, transport_info)
+    response = WebPlayer(manager).accept(mangrove_request)
+    return HttpResponse(json.dumps({'success':response.success}))
 
 
 def _get_project_association(projects):

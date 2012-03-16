@@ -22,10 +22,15 @@
         </div>
         
         {% include 'popup-import.html' %}
-        
+
+        <select class="margin_bottom_10 action">
+            <option value="--" selected="selected">--</option>
+            <option value="{{ subject.entity }}-{{ subject.code }}">Delete</option>
+        </select>
         {% if subject.data|length > 0 %}
             <table class="styled_table" id="{{ subject.entity }}-table">
                 <thead>
+                    <th></th>
                     {% for title in subject.labels %}
                         <th>{{ title }}</th>
                     {% endfor %}
@@ -33,6 +38,9 @@
                 <tbody id="{{ subject.code }}-table">
                 {% for row in subject.data %}
                     <tr>
+                        <td>
+                            <input type="checkbox" value="{{ row.short_code }}" id="{{ row.short_code }}">
+                        </td>
                         {% for col in row.cols %}
                             <td>{{ col }}</td>
                         {% endfor %}
