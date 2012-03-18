@@ -13,6 +13,7 @@ from datawinners.entity.import_data import load_all_subjects_of_type
 from mangrove.form_model.field import SelectField, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField
 from datawinners.entity.fields import PhoneNumberField
 from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
+from mangrove.utils.types import is_empty
 
 def question_form_init__(self, country=None, *args, **kwargs):
     self.country = country
@@ -31,6 +32,39 @@ def questionnaire_form_clean(self):
             self.cleaned_data[question_code] = get_country_appended_location(values, self.country)
 
     return self.cleaned_data
+
+def get_text_field_constraint_text(field):
+    if not is_empty(field.constraints):
+        length_constraint = field.constraints[0]
+        min = length_constraint.min
+        max = length_constraint.max
+        if min is not None and max is None:
+            constraint_text = _("Minimum %s characters") % min
+            return constraint_text
+        if min is None and max is not None:
+            constraint_text = _("Upto %s characters") % max
+            return constraint_text
+        elif min is not None and max is not None:
+            constraint_text = _("Between %s -- %s characters") % (min, max)
+            return constraint_text
+    return ""
+
+def get_integer_field_constraint_text(field):
+    max = min = None
+    if len(field.constraints) > 0:
+        constraint = field.constraints[0]
+        min = constraint.min
+        max = constraint.max
+    if min is not None and max is None:
+        constraint_text = _("Minimum %s") % min
+        return constraint_text
+    if min is None and max is not None:
+        constraint_text = _("Upto %s") % max
+        return constraint_text
+    elif min is not None and max is not None:
+        constraint_text = _("%s -- %s") % (min, max)
+        return constraint_text
+    return ""
 
 
 def clean_geocode(self):
@@ -117,7 +151,7 @@ class WebQuestionnaireFormCreater(object):
     def _create_char_field(self, field, language):
         char_field = forms.CharField(label=field.label[language], initial=field.value, required=field.is_required(),
             help_text=field.instruction)
-        watermark = "xx.xxxx,yy.yyyy" if type(field) == GeoCodeField else field.get_constraint_text()
+        watermark = "xx.xxxx,yy.yyyy" if type(field) == GeoCodeField else get_text_field_constraint_text(field)
         char_field.widget.attrs["watermark"] = watermark
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
         self._create_field_type_class(char_field, field)
@@ -145,7 +179,7 @@ class WebQuestionnaireFormCreater(object):
     def _create_phone_number_field(self, field, language):
         telephone_number_field = PhoneNumberField(label=field.label[language], required=field.is_required(),
             help_text=field.instruction)
-        telephone_number_field.widget.attrs["watermark"] = field.get_constraint_text()
+        telephone_number_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
         if field.name == LOCATION_TYPE_FIELD_NAME and isinstance(field, HierarchyField):
             telephone_number_field.widget.attrs['class'] = 'location_field'
@@ -155,7 +189,7 @@ class WebQuestionnaireFormCreater(object):
     def _create_integer_field(self, field, language):
         integer_field = django.forms.fields.IntegerField(label=field.label[language], required=field.is_required(),
             error_messages={'invalid': _('Enter a valid integer')})
-        integer_field.widget.attrs["watermark"] = field.get_constraint_text()
+        integer_field.widget.attrs["watermark"] = get_integer_field_constraint_text(field)
         integer_field.widget.attrs['style'] = 'padding-top: 7px;'
         return integer_field
 
