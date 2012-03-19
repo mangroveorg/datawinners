@@ -75,14 +75,14 @@ class ReporterRegistrationForm(Form):
             self.cleaned_data['geo_code'] = geo_code_string
 
     def clean(self):
-        a = self.cleaned_data.get("location")
-        b = self.cleaned_data.get("geo_code")
-        if not (bool(a) or bool(b)):
+        location = self.cleaned_data.get("location")
+        geo_code = self.cleaned_data.get("geo_code")
+        if not (bool(location) or bool(geo_code)):
             msg = _("Please fill out at least one location field correctly.")
             self._errors['location'] = self.error_class([msg])
             self._errors['geo_code'] = self.error_class([msg])
-        if bool(b):
-            self._geo_code_validations(b)
+        if bool(geo_code):
+            self._geo_code_validations(geo_code)
         return self.cleaned_data
 
 
