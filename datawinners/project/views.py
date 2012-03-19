@@ -337,6 +337,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
     form_model = get_form_model_by_code(manager, questionnaire_code)
+    refresh_rate = False
     if settings.AUTO_REFRESH == 1:
         refresh_rate = settings.REFRESH_RATE
     field_values, header_list, type_list, grand_totals = _get_aggregated_data(form_model, manager, questionnaire_code,
