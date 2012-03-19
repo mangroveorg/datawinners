@@ -616,3 +616,7 @@ msgstr ""
 
 msgid "answer"
 msgstr ""
+
+msgid "Please select atleast 1 subject"
+msgstr ""
+

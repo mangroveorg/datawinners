@@ -4044,3 +4044,17 @@ msgstr "%d"
 
 msgid "%dth"
 msgstr "%d"
+
+msgid "entity delete error text"
+msgstr ""
+       "Si vous supprimer un(e) Sujet, vous ne pourrez plus collecter des données s’y rapportant.\n"
+       "Cependant, vous pourrez encore voir les données collectées auparavant pour ce(tte) Sujet dans les pages Données.\n\n"
+       "Etes-vous sûr de vouloir supprimer ?"
+
+msgid "Yes, Delete"
+msgstr "Oui, Supprimer"
+
+msgid "Subject(s) successfully deleted."
+msgstr "Sujet(s) supprimé(s) avec succès."
+
+

@@ -627,3 +627,6 @@ msgstr "La réponse doit être une coordonnées GPS dans le format suivant: xx.x
 
 msgid "answer"
 msgstr "réponse"
+
+msgid "Please select atleast 1 subject"
+msgstr "Veuillez sélectionner au moins 1 Sujet"

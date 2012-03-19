@@ -150,13 +150,14 @@ def delete_entity(request):
     transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
     all_ids = request.POST['all_ids'].split(';')
+    web_player = WebPlayer(manager)
     for entity_id in all_ids:
         message = {ENTITY_TYPE_FIELD_CODE: entity_type,
                    SHORT_CODE: entity_id,
                    'form_code': ENTITY_DELETION_FORM_CODE}
         mangrove_request = Request(message, transport_info)
-        WebPlayer(manager).accept(mangrove_request)
-    messages.success(request, 'Subject(s) successfully deleted.')
+        web_player.accept(mangrove_request)
+    messages.success(request, _("Subject(s) successfully deleted."))
     return HttpResponse(json.dumps({'success':True}))
 
 

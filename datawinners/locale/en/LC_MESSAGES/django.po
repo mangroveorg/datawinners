@@ -3998,3 +3998,17 @@ msgstr ""
 
 msgid "%dth"
 msgstr ""
+
+msgid "entity delete error text"
+msgstr ""
+        "If you delete a Subject, you can no longer collect data about it.\n"
+        "However, you can still view previously collected data for this Subject on the Data pages.\n\n"
+        "Are you sure you want to delete?"
+
+msgid "Yes, Delete"
+msgstr ""
+
+msgid "Subject(s) successfully deleted."
+msgstr ""
+
+
