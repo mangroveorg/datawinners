@@ -1,3 +1,13 @@
 .import_link{
     color: #0070AC !important;
 }
+
+#delete_entity_block{
+    a{
+        float: right !important;
+        .cancel_link{
+            padding-left: 5px !important;
+            padding-top: 7px !important;
+        }
+    }
+}

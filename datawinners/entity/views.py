@@ -142,6 +142,15 @@ def all_subjects(request):
             {'all_data': subjects_data, 'current_language': translation.get_language()},
         context_instance=RequestContext(request))
 
+
+def get_success_message(entity_type):
+    if entity_type == REPORTER:
+        return _("Data Sender(s) successfully deleted.")
+    return _("Subject(s) successfully deleted.")
+
+
+@csrf_view_exempt
+@csrf_response_exempt
 @login_required(login_url='/login')
 @is_new_user
 @is_datasender
@@ -157,7 +166,7 @@ def delete_entity(request):
                    'form_code': ENTITY_DELETION_FORM_CODE}
         mangrove_request = Request(message, transport_info)
         web_player.accept(mangrove_request)
-    messages.success(request, _("Subject(s) successfully deleted."))
+    messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success':True}))
 
 

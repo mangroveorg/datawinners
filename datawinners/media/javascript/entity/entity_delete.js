@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     $("#delete_entity_block .cancel_link").bind("click", function() {
         $("#delete_entity_block").dialog("close");
-        $('#delete_entity_block').data("action_element").value = "--";
+        $('#delete_entity_block').data("action_element").value = "";
         return false;
     });
 
@@ -41,13 +41,17 @@ $(document).ready(function () {
             $(this).val("--");
             return;
         }
-        $("#delete_entity_block").data("allIds",allIds);
-        $("#delete_entity_block").data("entity_type",entity_type);
-        $("#delete_entity_block").data("action_element",this);
-
-        $("#delete_entity_block").dialog("open");
+        openEntityWarningDialogBox(allIds, entity_type, this);
     });
 
 
 
 });
+
+function openEntityWarningDialogBox(allIds, entity_type, action_element) {
+    $("#delete_entity_block").data("allIds", allIds);
+    $("#delete_entity_block").data("entity_type", entity_type);
+    $("#delete_entity_block").data("action_element", action_element);
+
+    $("#delete_entity_block").dialog("open");
+}

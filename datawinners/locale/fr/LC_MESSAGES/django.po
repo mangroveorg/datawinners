@@ -4057,4 +4057,8 @@ msgstr "Oui, Supprimer"
 msgid "Subject(s) successfully deleted."
 msgstr "Sujet(s) supprimé(s) avec succès."
 
+msgid "Data Sender(s) successfully deleted."
+msgstr "Expéditeur(s) supprimé(s) avec succès."
 
+msgid "data sender delete error text"
+msgstr ""

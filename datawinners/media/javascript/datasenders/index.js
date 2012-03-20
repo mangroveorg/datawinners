@@ -96,7 +96,10 @@ $(document).ready(function() {
         if(action=='makewebuser'){
             populate_dialog_box_for_web_users();
             return false;
-        }else{
+        }else if(action=="delete"){
+            openEntityWarningDialogBox(allIds, "reporter", this)
+        }
+        else{
             $("#all_project_block").dialog("open");
         }
     });

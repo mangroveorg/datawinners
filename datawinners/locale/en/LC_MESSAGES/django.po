@@ -4011,4 +4011,14 @@ msgstr ""
 msgid "Subject(s) successfully deleted."
 msgstr ""
 
+msgid "Data Sender(s) successfully deleted."
+msgstr ""
+
+msgid "data sender delete error text"
+msgstr "If you delete Data Senders, they can no longer send in data.\n"
+       "However, you can still view their previous data submissions on the Data pages."
+
+       "Are you sure you want to delete?"
+
+
 
