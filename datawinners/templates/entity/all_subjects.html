@@ -102,5 +102,10 @@
             </div>
         </div>
     </div>
-    {% include "entity/entity_delete_warning.html" %}
+    <div id="delete_entity_block">
+        <p class="warning_message">{% trans "entity delete error text" %}</p>
+        <a href="{% url datawinners.entity.views.all_subjects %}" class="button" id="confirm_delete">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+    </div>
+
 {% endblock %}

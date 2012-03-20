@@ -22,10 +22,12 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/registered_subjects.js"></script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/help_accordion.js"></script>
     <script type="text/javascript" src="/media/javascript/entity_import.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/entity_delete.js"></script>
     <script type="text/javascript">
         var upload_url = "{% url datawinners.entity.views.all_subjects %}";
     </script>
@@ -55,9 +57,14 @@
     </div>
 
     <div class="help_accordion">{% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}<br/><br/></div>
+    <select class="margin_bottom_10 action">
+        <option value="--" selected="selected">--</option>
+        <option value="{{ project.entity_type }}">Delete</option>
+    </select>
     <table class="styled_table">
         <thead>
             <tr>
+                <th></th>
             {% for title in labels %}
                 <th>{{ title }}</th>
             {% endfor %}
@@ -66,6 +73,9 @@
         <tbody>
         {% for row in all_data %}
             <tr>
+                <td>
+                    <input type="checkbox" value="{{ row.short_code }}" id="{{ row.short_code }}">
+                </td>
                 {% for col in row.cols %}
                     <td>{{ col }}</td>
                 {% endfor %}
@@ -73,6 +83,11 @@
         {% endfor %}
         </tbody>
     </table>
+    <div id="delete_entity_block">
+        <p class="warning_message">{% trans "entity delete error text" %}</p>
+        <a href="{{ project_links.registered_subjects_link }}" class="button" id="confirm_delete">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
+    </div>
 
 {% endblock %}
 
