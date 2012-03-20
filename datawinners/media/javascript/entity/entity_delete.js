@@ -16,7 +16,7 @@ $(document).ready(function () {
     });
 
 
-    $("#confirm_delete").bind("click", function() {
+    $("#ok_button").bind("click", function() {
         $("#delete_entity_block").dialog("close");
         var allIds = $('#delete_entity_block').data("allIds");
         var entity_type = $('#delete_entity_block').data("entity_type");

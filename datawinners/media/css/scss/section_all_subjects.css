@@ -74,10 +74,8 @@
     background: url("/media/images/icons.png") left top no-repeat !important;
     padding: 5px 0 5px 30px; }
 
-.cancel_link {
-  float: right !important;
-  padding-left: 5px;
-  padding-top: 7px; }
-
-#confirm_delete {
+#delete_entity_block a {
   float: right !important; }
+  #delete_entity_block a .cancel_link {
+    padding-left: 5px;
+    padding-top: 7px; }

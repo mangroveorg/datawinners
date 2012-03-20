@@ -57,6 +57,14 @@
     </div>
 
     <div class="help_accordion">{% blocktrans with project.entity_type as entity_type %}View each of your registered {{ entity_type }} in detail.{% endblocktrans %}<br/><br/></div>
+    {% if messages %}
+        <ul class="messages margin_bottom_20">
+            {% for message in messages %}
+                <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <select class="margin_bottom_10 action">
         <option value="--" selected="selected">--</option>
         <option value="{{ project.entity_type }}">Delete</option>
@@ -85,7 +93,7 @@
     </table>
     <div id="delete_entity_block">
         <p class="warning_message">{% trans "entity delete error text" %}</p>
-        <a href="{{ project_links.registered_subjects_link }}" class="button" id="confirm_delete">{% trans "Yes, Delete" %}</a>
+        <a href="{{ project_links.registered_subjects_link }}" class="button" id="ok_button">{% trans "Yes, Delete" %}</a>
         <a href="#" class="cancel_link" >{% trans "Cancel" %}</a>
     </div>
 
