@@ -16,9 +16,12 @@
             <text-property name="helpText">Put % if you do not want to filter</text-property>
             <text-property name="promptText">Packing List code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="concealValue">false</property>
@@ -32,13 +35,50 @@
             <text-property name="helpText">Put % if you do not want to filter</text-property>
             <text-property name="promptText">Way bill code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="concealValue">false</property>
             <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="food_type" id="729">
+            <text-property name="promptText">Food Type</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <list-property name="selectionList">
+                <structure>
+                    <property name="value">csb</property>
+                </structure>
+                <structure>
+                    <property name="value">oil</property>
+                </structure>
+                <structure>
+                    <property name="value">rice</property>
+                </structure>
+                <structure>
+                    <property name="value">sorghum</property>
+                </structure>
+                <structure>
+                    <property name="value">%</property>
+                </structure>
+            </list-property>
+            <property name="paramType">simple</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">true</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
@@ -153,12 +193,6 @@
                     <text-property name="heading">weight</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">site_code_10</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">site_code</text-property>
-                    <text-property name="heading">site_code</text-property>
-                </structure>
-                <structure>
                     <property name="columnName">receiver_name</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">receiver_name</text-property>
@@ -207,6 +241,16 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                     <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">food_type</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">3</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -415,7 +459,8 @@
             </list-property>
             <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,sent.sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,recv.received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
 WHERE sent.pl_code like ?
-and sent.waybill_code like ?]]></xml-property>
+and sent.waybill_code like ?
+and sent.food_type like ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -442,6 +487,21 @@ and sent.waybill_code like ?]]></xml-property>
           <design:identifier>
             <design:name></design:name>
             <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
