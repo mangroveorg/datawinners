@@ -34,10 +34,8 @@ $(document).ready(function () {
 
     $('.action').change(function() {
         $('#error').hide();
-        var typeCodeList = $(this).val().split('-');
-        var entity_type = typeCodeList[0];
-        var entity_code = typeCodeList[1];
-        var allIds = getEntityIdsToBeDeleted(entity_code);
+        var allIds = getEntityIdsToBeDeleted(this);
+        var entity_type = getEntityType(this);
         if (allIds.length == 0){
             $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($(this));
             $(this).val("--");
@@ -51,12 +49,5 @@ $(document).ready(function () {
     });
 
 
-    function getEntityIdsToBeDeleted(entity_code) {
-        var allIds = [];
-        var tbody_id = entity_code + "-table";
-        $('#' + tbody_id + ' :checked').each(function () {
-            allIds.push($(this).val());
-        });
-        return allIds;
-    }
+
 });

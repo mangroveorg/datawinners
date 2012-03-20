@@ -46,4 +46,20 @@ $(document).ready(function() {
 
         }
     });
+
+
 });
+
+function getEntityIdsToBeDeleted(action_element) {
+    var entity_code = $(action_element).val().split('-')[1];
+    var allIds = [];
+    var tbody_id = entity_code + "-table";
+    $('#' + tbody_id + ' :checked').each(function () {
+        allIds.push($(this).val());
+    });
+    return allIds;
+}
+
+function getEntityType(action_element){
+    return $(action_element).val().split('-')[0];
+}
