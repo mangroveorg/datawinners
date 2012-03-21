@@ -9,7 +9,13 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script src="/media/javascript/home/country_networks_fr.js" type="text/javascript"></script>
     <script src="/media/javascript/home/pricing.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/pricing.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_breadcrumbs %}
@@ -19,9 +25,6 @@
 {% block main_content %}
 <div id="nav_content">
     <h1><a href="/fr/pricing/">TARIFICATION</a></h1>
-    <ul>
-        <li class="active"><a href="/fr/pricing/">Tarification</a></li>
-    </ul>
 </div>
 <div id="main_content">
     <div class="margin_left_20">
@@ -31,21 +34,23 @@
                     <div class="plan">
                         <div class="padding_10">
                             <h2>30 Jours d’Essai </h2>
-                            A l’échelle mondiale<br />
-                            Gratuit
+                            <strong> Gratuit </strong>
                             <a href="/register/trial" class="try_button">Essai gratuit</a>
                             <ul>
-                                <li>Les mêmes fonctionnalités de collecte de donn&eacute;es en ligne qu'un abonnement payant</li>
+                                <li>Les mêmes fonctionnalités en ligne qu'un abonnement payé</li>
                                 <li>Un numéro de téléphone international à des fins d’essai</li>
-                                <li>Un paquet de 100 SMS*</li>
-                                <li>Soumissions Web illimit&eacute;es</li>
+                                <li>10 soumissions SMS *</li>
+                                <li>Soumissions Web illimitées</li>
+                                <li>Disponible à l’échelle mondiale</li>
                             </ul>
                             <em><small>* La tarification internationale s'applique pour les SMS (pour l’Offre d’Essai seulement)</small></em>
                         </div>
                     </div>
+                    <!-- Try it Star
                     <div class="badge">
                         <img src="/media/images/dw_badge_tryit_fr.png" width="80" height="80" alt="worldwide" />
                     </div>
+                    -->
                 </div>
             </div>
             <div class="grid_9 alpha omega">
@@ -53,33 +58,32 @@
                     <div class="plan">
                         <div class="padding_10">
                             <h2>Prêt à l’Emploi</h2>
-                            $850 <small>par mois</small>
-                            <br/><br/>
+                            <strong>$850</strong> <small>par mois</small>
                             <a href="/register/" class="try_button">Abonnez-vous</a>
                             <ul>
                                 <li>Accès complet à l'outil de collecte de données en ligne</li>
-                                <li>Un numéro de téléphone local pour votre organisation</li>
-                                <li>Un paquet de 5000 SMS</li>
+                                <li>Numéro de téléphone local lié à votre compte</li>
+                                <li>5000 SMS</li>
                                 <li>Soumissions Web illimitées</li>
+                                <li>Disponible à l’échelle mondiale</li>
                             </ul>
                             Économisez 10% <a id="learn_more" href="#a3">En savoir plus </a>
                         </div>
                     </div>
+                    <!-- Try it Star
                     <div class="badge">
                         <img src="/media/images/dw_badge_subscribe_fr.png" width="80" height="80" alt="Madagascar" />
                     </div>
+                    -->
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <a name="a1"></a><h2>Où est-ce que la plateforme DataWinners est-elle disponible</h2>
-        <p>DataWinners est actuellement disponible à Madagascaret et sera lancé  dans le monde entier en début 2012. En attendant, vous pouvez vous inscrire pour un compte d’essai gratuit pour voir comment DataWinners peut répondre à vos besoins. </p>
-
-        <a name="a2"></a><h2>Comment fonctionne l'abonnement mensuel</h2>
+        <a name="a2"></a><h2>Détails Importants sur l'Abonnement Mensuel</h2>
         <ul class="bulleted">
             <li>Une souscription par organisation par pays</li>
-            <li>Un numéro local fourni par HNI</li>
-            <li>5000 SMS inclus <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
+            <li>Numéro de téléphone local lié à votre compte fourni par HNI</li>
+            <li>Un paquet de 5000 SMS sortants inclus <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
                 <div class="tooltip"><p>
                     Le paquet mensuel de 5000 SMS inclut à la fois :<br/>
                     &bull;&nbsp;les SMS <strong>entrants</strong> (vous recevez des SMS de vos personnels de terrain)<br/>
@@ -87,14 +91,25 @@
                 </p></div>
             </li>
             <li>Excédents : 50 $ pour 500 SMS supplémentaires</li>
-            <li>Couverture : Airtel (contactez-nous pour Orange et TELMA)</li>
-            <li>Facturation SMS Inversée <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
+            <li>Couverture
+                <select id="country_select">
+                    <option>S&eacute;lectionnez votre pays</option>
+                </select>
+                <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;" />
+                 <div class="tooltip">
+                     <p>
+                        En utilisant les opérateurs téléphoniques ici, vous pouvez envoyer et recevoir des SMS de votre compte DataWinners.
+                     </p>
+                 </div>
+                <ul class="bulleted" id="networks_list"></ul>
+            </li>
+            <li>Facturation SMS Inversée disponible <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-2px;" />
                 <div class="tooltip"><p>
                     Les personnels de terrain ne paient rien pour l’envoi de leurs données via SMS. Ces SMS sortants sont déduits de votre paquet mensuel de 5000 SMS.
                 </p></div>
             </li>
+            <li>Assistance technique et assistance à la clientèle pour vous aider à démarrer</li>
         </ul>
-        <p>Voir les <a href="/fr/terms-and-conditions/">Termes et Conditions</a> et les <a href="/fr/privacy-policy/">Politiques de Confidentialit&eacute;</a> de HNI pour plus de d&eacute;tails.</p>
         <a name="a3"></a><h2>Frais d'Abonnement Mensuel</h2>
         <table width="500" class="pricelist">
             <tr>
@@ -112,9 +127,9 @@
         </table>
         <a name="a4"></a><h2>Paiement</h2>
         <ol>
-            <li>Virement</li>
-            <li>Carte de crédit<br/><i style="color: #666666;">Appelez-nous directement et nous pouvons par téléphone, procéder à votre paiement par carte de crédit en toute sécurité.</i></li>
-            <li>Paiement par transfert ACH <br/><i style="color: #666666;">Transfert de fonds direct et sécurisé entre deux comptes bancaires basés aux États-Unis (gratuit , normalement).</i></li>
+            <li><strong>Virement</strong></li>
+            <li><strong>Carte de crédit</strong><br/>Appelez-nous directement et nous pouvons par téléphone, procéder à votre paiement par carte de crédit en toute sécurité.</li>
+            <li><strong>Paiement par transfert ACH </strong><br/>Transfert de fonds direct et sécurisé entre deux comptes bancaires basés aux États-Unis (gratuit , normalement).</li>
         </ol>
         <a name="a5"></a><h2>Besoin d'aide pour démarrer ?</h2>
         <p>Si vous avez besoin d'aide pour démarrer, ou avez un projet de collecte de données ambitieux qui nécessite une solution personnalisée de la part de DataWinners, contactez-nous au <a href="mailto:info@datawinners.com">info@datawinners.com</a> ou utilisez notre formulaire de contact. </p>

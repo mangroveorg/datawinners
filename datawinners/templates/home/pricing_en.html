@@ -9,7 +9,13 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script src="/media/javascript/home/country_networks_en.js" type="text/javascript"></script>
     <script src="/media/javascript/home/pricing.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/pricing.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_breadcrumbs %}
@@ -18,10 +24,7 @@
 
 {% block main_content %}
 <div id="nav_content">
-    <h1><a href="/en/pricing/">PLANS AND PRICING</a></h1>
-    <ul>
-        <li class="active"><a href="/en/pricing/">Pricing</a></li>
-    </ul>
+    <h1><a href="/en/pricing/">PRICING</a></h1>
 </div>
 <div id="main_content">
     <div class="margin_left_20">
@@ -31,59 +34,58 @@
                     <div class="plan">
                         <div class="padding_10">
                             <h2>30 Day Test Drive</h2>
-                            Worldwide<br/>
-                            free
+                             <strong>free</strong>
                             <a href="/register/trial" class="try_button">Try it free</a>
                             <ul>
                                 <li>Same online data collection tools as paid subscription</li>
                                 <li>International telephone number for test purposes</li>
-                                <li>Packet of 100 SMS*</li>
+                                <li>100 SMS*</li>
                                 <li>Unlimited Web submissions</li>
+                                <li>Available worldwide</li>
                             </ul>
                             <em><small>* For Test Drive Accounts international SMS rates apply</small></em>
                         </div>
                     </div>
+                    <!-- Try it star
                     <div class="badge">
-                        <img src="/media/images/dw_badge_try.png" width="80" height="80" alt="worldwide" />
+                    <img src="/media/images/dw_badge_try.png" width="80" height="80" alt="worldwide" />
                     </div>
+                    -->
                 </div>
             </div>
+
             <div class="grid_9 alpha omega">
                 <div class="container_plan">
                     <div class="plan">
                         <div class="padding_10">
                             <h2>Ready to Work</h2>
-                            Madagascar only. Worldwide early 2012
-                            $850 <small>per month</small>
-                            <br/>
+                            <strong> $850 </strong> <small>per month</small>
                             <a href="/register/" class="try_button">Subscribe now</a>
                             <ul>
                                 <li>Full access to online data collection tool</li>
-                                <li>Local telephone number for your organization</li>
-                                <li>Packet of 5000 SMS</li>
+                                <li>Local telephone number linked to your account</li>
+                                <li>5,000 SMS</li>
                                 <li>Unlimited Web submissions</li>
+                                <li>Available worldwide</li>
                             </ul>
                             Save 10% <a id="learn_more" href="#a3">learn more</a>
                         </div>
                     </div>
+                     <!-- Try it star
                     <div class="badge">
                         <img src="/media/images/dw_badge_subscribe.png" width="80" height="80" alt="Madagascar" />
                     </div>
+                    -->
                 </div>
             </div>
             <div class="clear"></div>
         </div>
-        <h2>Where DataWinners is available</h2>
-        <p>DataWinners is currently available in Madagascar
-            and will be launched worldwide in early 2012.
-            Until then, consider signing up for a free trial
-            account to see how DataWinners can fit your needs.
-        </p>
-        <h2>How the Monthly Subscription Works</h2>
+
+ <h2>How the Monthly Subscription Works</h2>
         <ul class="bulleted">
             <li>Subscription per organization per country</li>
-            <li>Local number provided by HNI</li>
-            <li>5000 SMS included <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
+            <li>Local telephone number linked to your account</li>
+            <li>Packet of 5,000 outgoing SMS <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
                 <div class="tooltip"><p>
                     Monthly packet of 5000 SMS includes both:<br/>
                     &bull;&nbsp;<strong>in-bound</strong> (you receive SMS from your field staff)<br/>
@@ -91,15 +93,27 @@
                 </p></div>
             </li>
             <li>Overage: $50 for 500 additional SMS</li>
-            <li>Coverage: Airtel (ask us about  Orange and Telma)</li>
-            <li>Reverse SMS Billing <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;" />
+            <li>Coverage 
+                <select id="country_select">
+                    <option>Select your country</option>
+                </select>
+                <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;" />
+                <div class="tooltip"><p>
+                    Using the telephone companies here, you can send SMS to and receive SMS from your DataWinners account.
+                    </p></div>
+                <ul class="bulleted" id="networks_list"></ul>
+            </li>
+            <li>Reverse SMS Billing <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;" />
                 <div class="tooltip"><p>
                     Field staff pay nothing to send in their data via SMS. These in-bound SMS are deducted from your monthly packet of 5000.
                 </p></div>
             </li>
+            <li>
+                Technical and customer support to get you started
+            </li>
         </ul>
         <p>View HNI’s <a href="/en/terms-and-conditions/">Terms and Conditions</a> and <a href="/en/privacy-policy/">Privacy Policy</a> for more details.</p>
-        <h2>Monthly Subscription Costs</h2>
+        <a name="a3"></a><h2>Monthly Subscription Costs</h2>
         <table width="500" class="pricelist">
             <tr>
                 <td width="400">Price per month:</td>
@@ -116,14 +130,16 @@
         </table>
         <a name="a4"></a><h2>Payment</h2>
         <ol>
-            <li>Wire transfer.</li>
-            <li>Credit card<br/><i style="color: #666666;">Call us directly and we can securely process your credit card payment over the phone.</i></li>
-            <li>Pay via ACH<br/><i style="color: #666666;">Securely transfer funds between your US-based bank account and ours (normally free of charge).</i></li>
+            <li><strong>Wire transfer</strong></li>
+            <li><strong>Credit card</strong><br/>Call us directly and we can securely process your credit card payment over the phone.</li>
+            <li><strong>Pay via ACH</strong><br/>Securely transfer funds between your US-based bank account and ours (normally free of charge).</li>
         </ol>
-        <a name="a5"></a><h2>Need help getting started? </h2>
-        <p>If you need help getting started or have an ambitious data collection project that requires a DataWinners custom solution, contact us at
-        <a href="mailto:info@datawinners.com">info@datawinners.com</a> or use our contact form</p>
-        <p>Our team has extensive experience developing mobile data collection systems. See our <a href="/en/success-stories">Success Stories.</a></p>
+        <a name="a5"></a>
+
+        <h2>Need help getting started? </h2>
+        <p>If you need help getting started or have an ambitious data collection project that requires a      DataWinners custom solution, contact us at
+        <a href="mailto:info@datawinners.com">info@datawinners.com</a> or use our <a href="/en/support/ask-us/">contact form</a>.</p>
+        <p>Our team has extensive experience developing mobile data collection systems. See our <a href="/en/success-stories">Success Stories</a>.</p>
     </div>
 </div>
 <div class="clear"></div>
