@@ -12,7 +12,8 @@ $(document).ready(function() {
     $('#action').change(function(){
         updateIds();
         $('#error').remove();
-        if ($(this).val()=='disassociate' && allIds.length > 0){
+        var action = $(this).val();
+        if (action=='disassociate' && allIds.length > 0){
                 $.post('/project/disassociate/',
                         {'ids':allIds.join(';'),'project_id':$("#project_id").val()}
                 ).success(function(data){
@@ -22,6 +23,9 @@ $(document).ready(function() {
                         }
                 );
         }
+        else if(action=='delete'){
+            openEntityWarningDialogBox(allIds, "reporter", this)
+        }
         else if (allIds.length == 0){
             $('<div class="message-box" id="error">' + gettext("Please select at least 1 data sender") + '</div>').insertAfter($(this));
             $('#project').val('');
@@ -29,4 +33,15 @@ $(document).ready(function() {
         }
     });
 });
+
+
+function openEntityWarningDialogBox(allIds, entity_type, action_element) {
+    $("#delete_entity_block").data("allIds", allIds);
+    $("#delete_entity_block").data("entity_type", entity_type);
+    $("#delete_entity_block").data("action_element", action_element);
+
+    $("#delete_entity_block").dialog("open");
+}
+
+
 

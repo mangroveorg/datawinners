@@ -28,6 +28,7 @@
 {% endblock %}
 {% block page_js %}
     {{ block.super }}
+    {% include "web_questionnaire_questions_js.html" %}
     <script type="text/javascript" src="/media/javascript/project/entity.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subjects_registration_questionnaire_preview.js"></script>

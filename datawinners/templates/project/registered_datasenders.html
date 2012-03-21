@@ -25,6 +25,8 @@
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
+    <script type="text/javascript" src="/media/javascript/entity/entity_delete.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -40,39 +42,54 @@
     </div>
 
     <div id="my_subjects">
-    {% block secondary_navigation_datasenders %}
-        {% activetab "secondary_tab_nav" "datasenders" %}
-        {{ block.super }}
-    {% endblock %}
+        {% block secondary_navigation_datasenders %}
+            {% activetab "secondary_tab_nav" "datasenders" %}
+            {{ block.super }}
+        {% endblock %}
     </div>
+
+    {% if messages %}
+        <ul class="messages padding_bottom_10">
+            {% for message in messages %}
+                <li{% if message.tags %} class="error {{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <label class="float_left">{% trans "Actions:" %} </label>
     <select id='action' class="margin_bottom_20">
         <option value="">--</option>
         <option value="disassociate">{% trans "Dis-Associate" %}</option>
+        <option value="delete">{% trans "Delete" %}</option>
     </select>
     <table id='associated_data_senders' class="styled_table">
         <thead>
-            <tr>
-                <th>{% trans "Select" %}</th>
+        <tr>
+            <th>{% trans "Select" %}</th>
             {% for title in labels %}
                 <th>{% trans title %}</th>
             {% endfor %}
-            </tr>
+        </tr>
         </thead>
         <tbody id="tbody">
         {% for row in all_data %}
             <tr>
                 <td><input type="checkbox" value="{{ row.short_code }}"/>
-                {% for col in row.cols %}
-                    <td>{{ col }}</td>
-                {% endfor %}
+                    {% for col in row.cols %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <div id="delete_entity_block">
+        <p class="warning_message">{% trans "data sender delete error text" %}</p>
+        <a href="" class="button"
+           id="ok_button">{% trans "Yes, Delete" %}</a>
+        <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
+    </div>
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
     <div id="popup-import">
-    {% include "import-datasenders.html" %}
+        {% include "import-datasenders.html" %}
     </div>
 {% endblock %}
