@@ -19,13 +19,19 @@
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet" />
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
     <link href="/media/css/scss/section_application.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/media/javascript/OpenLayers-2.10/theme/default/style.css" media="screen">
+
 {% endblock %}
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/OpenLayers.js"></script>
+    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: 0 });
+            var marker_image = $('#marker_image').html();
+            init('{{ entity_type  }}', marker_image );
         });
         var quessionarie_preview_link ="{{ project_links.questionnaire_preview_link }}";
     </script>
@@ -50,12 +56,12 @@
             </b></p></div>
 
         <!--Map div-->
+
         {% include 'maps/entity_map.html'  %}
         <!--Questionnaire & DS div-->
         <div class="float_left" id="questionnaire_and_DS">
             {% include 'project/questionnaire_and_DS.html'%}
         </div>
-    <a href="http://localhost:9090/birt-viewer/frameset?__report=crs.rptdesign">WayBill Sent vs WayBill Received</a>
 
     </div>
 
