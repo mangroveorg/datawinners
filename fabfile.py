@@ -115,6 +115,13 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
     set_mangrove_commit_sha(branch, mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
 
+    ENVIRONMENT_CONFIGURATIONS = {
+        "showcase": "showcase_local_settings.py",
+        "test": "test_local_settings.py",
+        "master": "showcase_local_settings.py",
+        "beta": "local_settings.py"
+    }
+
     mangrove_code_dir = home_dir + '/mangrove'
     datawinners_code_dir = home_dir + '/datawinners'
     with settings(warn_only=True):
@@ -122,6 +129,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
         check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env)
         with cd(datawinners_code_dir + '/datawinners'):
             run("cd %s/datawinners" % datawinners_code_dir)
+            run("cp %s local_settings.py" % (ENVIRONMENT_CONFIGURATIONS[environment],))
             activate_and_run(virtual_env, "python manage.py syncdb --noinput")
             activate_and_run(virtual_env, "python manage.py migrate")
             activate_and_run(virtual_env, "python manage.py recreatedb")
