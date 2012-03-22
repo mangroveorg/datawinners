@@ -2,7 +2,6 @@
 
 from fabric.api import run, env
 from fabric.context_managers import cd, settings
-from fabric.operations import sudo
 import os
 import sys
 
@@ -59,13 +58,13 @@ def restart_servers():
 
 
 def stop_servers():
-    sudo("service uwsgi stop")
-    sudo("service nginx stop")
+    run("sudo service uwsgi stop")
+    run("sudo service nginx stop")
 
 
 def start_servers():
-    sudo("service uwsgi start")
-    sudo("service nginx start")
+    run("sudo service uwsgi start")
+    run("sudo service nginx start")
 
 
 def set_mangrove_commit_sha(branch, mangrove_build_number):
@@ -126,8 +125,6 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
     mangrove_code_dir = home_dir + '/mangrove'
     datawinners_code_dir = home_dir + '/datawinners'
     with settings(warn_only=True):
-        run("tty")
-        run("sudo pwd")
         check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env)
         check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env)
         with cd(datawinners_code_dir + '/datawinners'):
