@@ -23,7 +23,7 @@ $(document).ready(function() {
                         }
                 );
         }
-        else if(action=='delete'){
+        else if(action=='delete' && allIds.length > 0){
             openEntityWarningDialogBox(allIds, "reporter", this)
         }
         else if (allIds.length == 0){
