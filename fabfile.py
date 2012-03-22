@@ -25,7 +25,6 @@ def branch_exists(branch_name):
 
 
 def sync_branch(branch):
-    run("git pull")
     run("git checkout %s" % branch)
     run("git pull origin %s" % branch)
 
@@ -112,6 +111,9 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
        home_dir: directory where you want to deploy the source code
        virtual_env : path to your virtual_env folder
     """
+    run("tty")
+    run("sudo pwd")
+
     set_mangrove_commit_sha(branch, mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
 
@@ -144,3 +146,11 @@ def showcase():
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
+
+def local():
+    env.user = "anirudha"
+    env.hosts = ["127.0.0.1"]
+    env.key_filename = ["/home/anirudha/.ssh/id_rsa"]
+
+def anonymous():
+    run("uname -a")
