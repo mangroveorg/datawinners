@@ -11,8 +11,8 @@ from datawinners.tests.test_data_utils import load_manager_for_default_test_acco
     create_data_dict, define_entity_instance, register
 
 
-def load_data():
-    manager = load_manager_for_default_test_account()
+def load_data(manager = None):
+    manager = manager or load_manager_for_default_test_account()
     initializer.run(manager)
     PACKAGING_LIST_ENTITY_TYPE = [u"packaginglist"]
     create_entity_types(manager, [PACKAGING_LIST_ENTITY_TYPE])
