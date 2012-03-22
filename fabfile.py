@@ -2,6 +2,7 @@
 
 from fabric.api import run, env
 from fabric.context_managers import cd, settings
+from fabric.operations import sudo
 import os
 import sys
 
@@ -58,13 +59,13 @@ def restart_servers():
 
 
 def stop_servers():
-    run("sudo service uwsgi stop")
-    run("sudo service nginx stop")
+    sudo("service uwsgi stop")
+    sudo("service nginx stop")
 
 
 def start_servers():
-    run("sudo service uwsgi start")
-    run("sudo service nginx start")
+    sudo("service uwsgi start")
+    sudo("service nginx start")
 
 
 def set_mangrove_commit_sha(branch, mangrove_build_number):
