@@ -14,12 +14,13 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
-from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, SHORT_CODE
+from mangrove.datastore.entity import get_by_short_code_include_voided
+from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from datawinners.accountmanagement.models import NGOUserProfile
+from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
-from datawinners.entity.helper import create_registration_form, process_create_datasender_form
+from datawinners.entity.helper import create_registration_form, process_create_datasender_form, delete_datasender_for_trial_mode, delete_entity_instance
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -38,7 +39,7 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
-from datawinners.utils import get_excel_sheet, workbook_add_sheet
+from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization
 from datawinners.entity.helper import get_country_appended_location
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
@@ -156,16 +157,13 @@ def get_success_message(entity_type):
 @is_datasender
 def delete_entity(request):
     manager = get_database_manager(request.user)
+    organization = get_organization(request)
     transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
     all_ids = request.POST['all_ids'].split(';')
-    web_player = WebPlayer(manager)
-    for entity_id in all_ids:
-        message = {ENTITY_TYPE_FIELD_CODE: entity_type,
-                   SHORT_CODE: entity_id,
-                   'form_code': ENTITY_DELETION_FORM_CODE}
-        mangrove_request = Request(message, transport_info)
-        web_player.accept(mangrove_request)
+    delete_entity_instance(manager, all_ids,entity_type, transport_info)
+    if organization.in_trial_mode and entity_type == REPORTER:
+        delete_datasender_for_trial_mode(manager, all_ids, entity_type)
     messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success':True}))
 

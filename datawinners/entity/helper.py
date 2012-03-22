@@ -1,14 +1,16 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 
 from mangrove.datastore.datadict import get_datadict_type_by_slug,\
     create_datadict_type
+from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.errors import MangroveException
 from mangrove.form_model.field import TextField, HierarchyField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
@@ -26,6 +28,7 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
+from datawinners.utils import get_organization
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
@@ -190,3 +193,19 @@ def question_code_generator():
         code = 'q' + str(i)
         yield code
         i += 1
+
+
+def delete_entity_instance(manager, all_ids, entity_type, transport_info):
+    web_player = WebPlayer(manager)
+    for entity_id in all_ids:
+        message = {ENTITY_TYPE_FIELD_CODE: entity_type,
+                   SHORT_CODE: entity_id,
+                   'form_code': ENTITY_DELETION_FORM_CODE}
+        mangrove_request = Request(message, transport_info)
+        web_player.accept(mangrove_request)
+
+def delete_datasender_for_trial_mode(manager, all_ids, entity_type):
+    for entity_id in all_ids:
+        entity_to_be_deleted = get_by_short_code_include_voided(manager, entity_id, [entity_type])
+        DataSenderOnTrialAccount.objects.get(mobile_number=entity_to_be_deleted.value(MOBILE_NUMBER_FIELD)).delete()
+
