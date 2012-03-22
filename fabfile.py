@@ -58,13 +58,13 @@ def restart_servers():
 
 
 def stop_servers():
-    run("sudo service uwsgi stop")
-    run("sudo service nginx stop")
+    run("sudo service uwsgi stop, pty=True")
+    run("sudo service nginx stop, pty=True")
 
 
 def start_servers():
-    run("sudo service uwsgi start")
-    run("sudo service nginx start")
+    run("sudo service uwsgi start, pty=True")
+    run("sudo service nginx start, pty=True")
 
 
 def set_mangrove_commit_sha(branch, mangrove_build_number):
