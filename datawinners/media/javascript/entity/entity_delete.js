@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#delete_entity_block").dialog({
-            title: gettext("Delete this Project?"),
+            title: gettext("Warning !!"),
             modal: true,
             autoOpen: false,
             height: 230,
