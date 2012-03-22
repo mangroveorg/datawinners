@@ -810,6 +810,7 @@ and sent.food_type like ?]]></xml-property>
                     <image id="724">
                         <property name="height">20px</property>
                         <property name="width">133px</property>
+                        <structure name="toc"/>
                         <property name="source">embed</property>
                         <property name="imageName">datawinners_logo.png</property>
                         <list-property name="action">
@@ -981,6 +982,7 @@ and sent.food_type like ?]]></xml-property>
                                 <property name="allowExport">true</property>
                             </structure>
                         </list-property>
+                        <structure name="toc"/>
                         <column id="403"/>
                         <column id="404"/>
                         <column id="405"/>
@@ -1009,7 +1011,7 @@ and sent.food_type like ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="317">
-                                        <text-property name="text">pl_code</text-property>
+                                        <text-property name="text" key="pl_code">pl_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="534">
@@ -1018,7 +1020,7 @@ and sent.food_type like ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="319">
-                                        <text-property name="text">waybill_code</text-property>
+                                        <text-property name="text" key="waybill_code">waybill_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="535">
@@ -1030,7 +1032,7 @@ and sent.food_type like ?]]></xml-property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="550">
                                         <structure name="toc"/>
-                                        <text-property name="text" key="way_bill_sent.label">Way Bill Sent Designer</text-property>
+                                        <text-property name="text" key="way_bill_sent">Way Bill Sent Designer</text-property>
                                     </label>
                                 </cell>
                                 <cell id="542">
@@ -1041,7 +1043,7 @@ and sent.food_type like ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="551">
-                                        <text-property name="text">Way Bill Received</text-property>
+                                        <text-property name="text" key="way_bill_received">Way Bill Received</text-property>
                                     </label>
                                 </cell>
                                 <cell id="574">
@@ -1070,7 +1072,7 @@ and sent.food_type like ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="321">
-                                        <text-property name="text">sent_date</text-property>
+                                        <text-property name="text" key="sent_date">sent_date</text-property>
                                     </label>
                                 </cell>
                                 <cell id="322">
