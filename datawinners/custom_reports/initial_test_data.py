@@ -76,9 +76,9 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
         instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011",
         event_time_field_flag=True)
     question4 = TextField(label="What is the Type of transaction?", code="q4", name="What is the Type of transaction?",
-        constraints=[TextLengthConstraint(min=1, max=10)],
+        constraints=[TextLengthConstraint(min=1, max=30)],
         defaultValue="some default value", language="en", ddtype=name_type,
-        instruction="Answer must be a word or phrase 10 characters maximum")
+        instruction="Answer must be a word or phrase 30 characters maximum")
     question5 = TextField(label="What is the Warehouse Code?", code="q5", name="What is the Warehouse Code?",
         constraints=[TextLengthConstraint(min=1, max=10)],
         defaultValue="some default value", language="en", ddtype=name_type,
