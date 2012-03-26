@@ -45,6 +45,7 @@ from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from datawinners.utils import get_organization_country
 from django.contrib import messages
+from datawinners.accountmanagement.views import is_not_expired
 
 COUNTRY = ',MADAGASCAR'
 
@@ -53,6 +54,7 @@ COUNTRY = ',MADAGASCAR'
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
+@is_not_expired
 def submit(request):
     dbm = get_database_manager(request.user)
     post = json.loads(request.POST['data'])
@@ -83,6 +85,7 @@ def submit(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def create_datasender(request):
     if request.method == 'GET':
         form = ReporterRegistrationForm()
@@ -101,6 +104,7 @@ def create_datasender(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def create_type(request):
     success = False
     form = EntityTypeForm(request.POST)
@@ -129,6 +133,7 @@ def create_type(request):
 @login_required(login_url='/login')
 @is_new_user
 @is_datasender
+@is_not_expired
 def all_subjects(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
@@ -190,6 +195,7 @@ def _get_all_datasenders(manager, projects, user):
 
 @login_required(login_url='/login')
 @csrf_view_exempt
+@is_not_expired
 def create_web_users(request):
     org_id = request.user.get_profile().org_id
     if request.method == 'POST':
@@ -221,6 +227,7 @@ def create_web_users(request):
 @login_required(login_url='/login')
 @is_new_user
 @is_datasender
+@is_not_expired
 def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = models.get_all_projects(manager)
@@ -253,6 +260,7 @@ def all_datasenders(request):
 @csrf_response_exempt
 @login_required(login_url='/login')
 @is_new_user
+@is_not_expired
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
@@ -266,6 +274,7 @@ def disassociate_datasenders(request):
 @csrf_response_exempt
 @login_required(login_url='/login')
 @is_new_user
+@is_not_expired
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
@@ -285,6 +294,7 @@ def _associate_data_senders_to_project(imported_entities, manager, project_id):
 @csrf_response_exempt
 @require_http_methods(['POST'])
 @login_required(login_url='/login')
+@is_not_expired
 def import_subjects_from_project_wizard(request):
     manager = get_database_manager(request.user)
     project_id = request.GET.get('project_id')
@@ -308,6 +318,7 @@ def _get_response(request, questionnaire_form, entity_type):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
@@ -363,6 +374,7 @@ def _get_all_datasenders(manager, projects, user):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def edit_subject_questionnaire(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:
@@ -384,6 +396,7 @@ def edit_subject_questionnaire(request, entity_type=None):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def save_questionnaire(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
@@ -414,6 +427,7 @@ def save_questionnaire(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def export_subject(request):
     entity_type = request.POST["entity_type"]
     entity_list = request.POST.getlist("checked")
@@ -436,6 +450,7 @@ def export_subject(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def export_template(request, entity_type=None):
     manager = get_database_manager(request.user)
     if entity_type is None:

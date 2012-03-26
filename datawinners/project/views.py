@@ -20,6 +20,7 @@ from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_datasender_form
 from datawinners.entity import import_data as import_module
 from datawinners.utils import get_organization
+from datawinners.accountmanagement.views import is_not_expired
 
 import helper
 
@@ -55,6 +56,7 @@ from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from datawinners.accountmanagement.views import is_not_expired
 
 logger = logging.getLogger("django")
 
@@ -120,6 +122,7 @@ def make_data_sender_links(project):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def save_questionnaire(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
@@ -151,6 +154,7 @@ def save_questionnaire(request):
 @login_required(login_url='/login')
 @is_new_user
 @is_datasender
+@is_not_expired
 def index(request):
     project_list = []
     rows = models.get_all_projects(dbm=get_database_manager(request.user))
@@ -172,6 +176,7 @@ def index(request):
 @login_required(login_url='/login')
 @is_new_user
 @is_datasender
+@is_not_expired
 def delete_project(request, project_id):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -191,6 +196,8 @@ def undelete_project(request, project_id):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
+@is_not_expired
 def project_overview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -227,6 +234,7 @@ def project_overview(request, project_id=None):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def project_results(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -274,6 +282,7 @@ def _get_submissions(manager, questionnaire_code, request, paginate=True):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def submissions(request):
     """
             Called via ajax, returns the partial HTML for the submissions made for the project, paginated.
@@ -332,6 +341,7 @@ def _get_aggregated_data(form_model, manager, questionnaire_code, request):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def project_data(request, project_id=None, questionnaire_code=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -353,6 +363,7 @@ def project_data(request, project_id=None, questionnaire_code=None):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def export_data(request):
     questionnaire_code = request.POST.get("questionnaire_code")
     manager = get_database_manager(request.user)
@@ -375,6 +386,7 @@ def _create_excel_response(raw_data_list, file_name):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def export_log(request):
     questionnaire_code = request.GET.get("questionnaire_code")
     manager = get_database_manager(request.user)
@@ -450,6 +462,7 @@ def _format_reminders(reminders, project_id):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def create_reminder(request, project_id):
     if is_empty(request.POST['id']):
         Reminder(project_id=project_id, day=request.POST.get('day', 0), message=request.POST['message'],
@@ -469,6 +482,7 @@ def create_reminder(request, project_id):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def get_reminder(request, project_id):
     reminder_id = request.GET['id']
     reminder = Reminder.objects.filter(project_id=project_id, id=reminder_id)[0]
@@ -477,6 +491,7 @@ def get_reminder(request, project_id):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def delete_reminder(request, project_id, reminder_id):
     Reminder.objects.filter(project_id=project_id, id=reminder_id)[0].delete()
     messages.success(request, 'Reminder deleted')
@@ -485,6 +500,7 @@ def delete_reminder(request, project_id, reminder_id):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def manage_reminders(request, project_id):
     if request.method == 'GET':
         reminders = Reminder.objects.filter(project_id=project_id, voided=False)
@@ -502,6 +518,7 @@ def manage_reminders(request, project_id):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def sent_reminders(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
@@ -528,6 +545,7 @@ def _get_data_senders(dbm, form, project):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def broadcast_message(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
@@ -571,6 +589,7 @@ def _get_all_data_senders(dbm):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def activate_project(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -586,6 +605,7 @@ def activate_project(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def review_and_test(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -619,6 +639,7 @@ def _get_project_and_project_link(manager, project_id):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -639,6 +660,7 @@ def subjects(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def registered_subjects(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -654,6 +676,7 @@ def registered_subjects(request, project_id=None):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -686,6 +709,7 @@ def registered_datasenders(request, project_id=None):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, request.POST['project_id'])
@@ -706,6 +730,7 @@ def _get_questions_for_datasenders_registration_for_wizard(questions):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -724,6 +749,7 @@ def datasenders(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def questionnaire(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
@@ -771,6 +797,7 @@ def _get_response(template, form_code, project, questionnaire_form, request, dis
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
+@is_not_expired
 def web_questionnaire(request, project_id=None, subject=False):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -834,6 +861,7 @@ def get_example_sms(fields):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def questionnaire_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
@@ -886,6 +914,7 @@ def get_example_sms_message(fields, registration_questionnaire):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def subject_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -901,6 +930,7 @@ def subject_registration_form_preview(request, project_id=None):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def sender_registration_form_preview(request, project_id=None):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
@@ -929,6 +959,7 @@ def _get_subject_form_model(manager, entity_type):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def edit_subject(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
@@ -954,6 +985,7 @@ def edit_subject(request, project_id=None):
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
+@is_not_expired
 def create_datasender(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)

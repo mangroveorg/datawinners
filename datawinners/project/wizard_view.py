@@ -21,6 +21,7 @@ from django.utils.translation import ugettext as _
 from datawinners.utils import get_organization
 from mangrove.form_model.form_model import  FormModel
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
+from datawinners.accountmanagement.views import is_not_expired
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -46,6 +47,7 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -98,6 +100,7 @@ def create_project(request):
 @login_required(login_url='/login')
 @is_datasender
 @csrf_exempt
+@is_not_expired
 def edit_project(request, project_id=None):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -146,6 +149,7 @@ def edit_project(request, project_id=None):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def reminders(request, project_id):
     if request.method == 'GET':
         dbm = get_database_manager(request.user)
@@ -167,6 +171,7 @@ def reminders(request, project_id):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def reminder_settings(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)

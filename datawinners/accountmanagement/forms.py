@@ -201,7 +201,6 @@ class LoginForm(AuthenticationForm):
             elif not self.user_cache.is_active:
                 raise forms.ValidationError(_("This account is inactive."))
 
-            self.check_trial_account_expired()
 
     def check_trial_account_expired(self):
         org = Organization.objects.get(org_id=self.user_cache.get_profile().org_id)

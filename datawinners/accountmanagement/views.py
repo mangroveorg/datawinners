@@ -99,7 +99,17 @@ def is_expired(f):
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
         return f(*args, **kw)
 
+def is_not_expired(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        org = Organization.objects.get(org_id=user.get_profile().org_id)
+        if org.is_expired():
+            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
+        return f(*args, **kw)
+
     return wrapper
+
 
 
 def is_trial(f):
@@ -140,6 +150,7 @@ def custom_reset_password(request):
 
 @login_required(login_url='/login')
 @is_admin
+@is_not_expired
 def settings(request):
     if request.method == 'GET':
         organization = get_organization(request)
@@ -166,6 +177,7 @@ def _associate_user_with_existing_project(manager, reporter_id):
 
 @login_required(login_url='/login')
 @is_admin
+@is_not_expired
 def new_user(request):
     add_user_success = False
     if request.method == 'GET':
@@ -208,6 +220,7 @@ def new_user(request):
 
 @login_required(login_url='/login')
 @is_admin
+@is_not_expired
 def users(request):
     if request.method == 'GET':
         org_id = request.user.get_profile().org_id
@@ -217,6 +230,7 @@ def users(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def edit_user(request):
     if request.method == 'GET':
         profile = request.user.get_profile()

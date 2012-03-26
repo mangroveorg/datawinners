@@ -22,6 +22,7 @@ from datawinners.utils import  get_database_manager_for_org
 from mangrove.transport.facade import Request
 from datawinners.messageprovider.exception_handler import handle
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
+from datawinners.accountmanagement.views import is_not_expired
 
 logger = logging.getLogger("django")
 
@@ -37,6 +38,7 @@ def sms(request):
 @csrf_view_exempt
 @csrf_response_exempt
 @require_http_methods(['POST'])
+@is_not_expired
 def web_sms(request):
     message = Responder(next_state_processor=find_dbm_for_web_sms).respond(request)
     return HttpResponse(message)

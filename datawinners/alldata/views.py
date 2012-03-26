@@ -11,9 +11,11 @@ from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
 from datawinners.entity.views import create_subject
+from datawinners.accountmanagement.views import is_not_expired
 
 @login_required(login_url='/login')
 @is_new_user
+@is_not_expired
 def index(request):
     reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)
@@ -53,6 +55,7 @@ def index(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def failed_submissions(request):
     logs = DatawinnerLog.objects.all()
     organization = get_organization(request)

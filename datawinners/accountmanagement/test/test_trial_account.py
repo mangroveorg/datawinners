@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from django.test.client import RequestFactory
 from django.utils import unittest
 from mock import Mock
-from datawinners.accountmanagement.views import is_expired
+from datawinners.accountmanagement.views import is_not_expired
 from datawinners.accountmanagement.models import Organization
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
 from datetime import datetime
@@ -64,7 +64,7 @@ class TestTrialAccount(unittest.TestCase):
         request = self._prepare_request_with_user_of(self.org)
 
         function = Mock()
-        decorated_function=is_expired(function)
+        decorated_function=is_not_expired(function)
 
         response = decorated_function(request)
         self.assertEqual(self._initial_status_code_of(response),3)

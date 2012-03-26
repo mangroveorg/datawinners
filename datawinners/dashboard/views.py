@@ -12,7 +12,7 @@ from mangrove.datastore.entity import get_by_short_code
 from mangrove.datastore.queries import get_entities_by_type
 from datawinners import settings
 from datawinners.accountmanagement.models import NGOUserProfile, Organization
-from datawinners.accountmanagement.views import is_datasender
+from datawinners.accountmanagement.views import is_datasender, is_not_expired
 from datawinners.dashboard import helper
 
 from datawinners.main.utils import get_database_manager
@@ -40,6 +40,7 @@ def _make_message(row):
 
 @login_required(login_url='/login')
 @csrf_exempt
+@is_not_expired
 def get_submission_breakup(request, project_id):
     dbm = get_database_manager(request.user)
     project = Project.load(dbm.database, project_id)
@@ -76,6 +77,7 @@ def is_project_inactive(row):
 
 @login_required(login_url='/login')
 @is_datasender
+@is_not_expired
 def dashboard(request):
     manager = get_database_manager(request.user)
     user_profile = NGOUserProfile.objects.get(user=request.user)
@@ -94,6 +96,7 @@ def dashboard(request):
 
 
 @login_required(login_url='/login')
+@is_not_expired
 def start(request):
     text_dict = {'project': _('Projects'), 'datasenders': _('Data Senders'),
                  'subjects': _('Subjects'), 'alldata': _('Data Records')}
