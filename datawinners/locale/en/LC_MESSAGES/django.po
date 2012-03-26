@@ -4022,3 +4022,12 @@ msgstr "If you delete Data Senders, they can no longer send in data.\n"
 
 msgid "ID is:"
 msgstr ""
+
+msgid "Your 30 Day Test Drive is expired"
+msgstr ""
+
+msgid "Thank you for trying out DataWinners"
+msgstr ""
+
+msgid "Sign up for a monthly subscription to continue using DataWinners"
+msgstr ""

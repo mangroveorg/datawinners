@@ -4067,3 +4067,12 @@ msgstr "Attention Si vous supprimez des Expéditeurs de Données, ils ne pourron
 
 msgid "ID is:"
 msgstr "ID est:"
+
+msgid "Your 30 Day Test Drive is expired"
+msgstr "Votre période de test de 30 jours est expirée"
+
+msgid "Thank you for trying out DataWinners"
+msgstr "Merci d'avoir testé DataWinners"
+
+msgid "Sign up for a monthly subscription to continue using DataWinners"
+msgstr "Inscrivez-vous pour un abonnement mensuel pour continuer à utiliser DataWinners"
