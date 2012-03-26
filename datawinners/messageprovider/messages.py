@@ -90,7 +90,7 @@ def get_submission_success_message():
     return _("Thank you") + " %s. " + _("We received : ")
 
 def get_registration_success_message():
-    return _("Registration successful.") + " %s."
+    return _("Registration successful.") + " %s. "
 
 def get_wrong_number_of_answer_error_message():
     return _("Error. Incorrect number of answers submitted. Review printed questionnaire and resend SMS.")

@@ -4064,3 +4064,6 @@ msgid "data sender delete error text"
 msgstr "Attention Si vous supprimez des Expéditeurs de Données, ils ne pourront plus envoyer des données."
        "Par contre, vous pouvez toujours voir les données qu’ils ont soumis avant la suppression sur les pages Données."
        "Etes-vous sûr de vouloir supprimer ?"
+
+msgid "ID is:"
+msgstr "ID est:"

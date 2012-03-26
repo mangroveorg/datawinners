@@ -76,7 +76,7 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_registration_with_short_code(self):
-        expected_message = get_registration_success_message() % "Unique identification number(ID) is: REP1"
+        expected_message = get_registration_success_message() % "ID is: REP1"
         form_submission_mock = Mock()
         form_submission_mock.cleaned_data = {'name': 'tester'}
         form_submission_mock.short_code = "REP1"

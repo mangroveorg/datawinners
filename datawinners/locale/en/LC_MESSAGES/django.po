@@ -4020,4 +4020,5 @@ msgstr "If you delete Data Senders, they can no longer send in data.\n"
        "Are you sure you want to delete?"
 
 
-
+msgid "ID is:"
+msgstr ""

@@ -21,7 +21,7 @@ class TestSMSResponse(unittest.TestCase):
         self.form_submission_mock.is_registration = True
 
         response = create_response_from_form_submission(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
-        self.assertEqual(u'Registration successful. Unique identification number(ID) is: CLI001.We received : name: Clinic X',
+        self.assertEqual(u'Registration successful. ID is: CLI001. name: Clinic X',                 
                          SMSResponse(response).text())
 
     def test_should_return_expected_error_response(self):

@@ -3286,3 +3286,6 @@ msgstr ""
 
 msgid "Register a %(subject)s"
 msgstr ""
+
+msgid "ID is:"
+msgstr "ID dia:"
