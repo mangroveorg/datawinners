@@ -4,7 +4,7 @@ from datawinners.main.utils import  sync_views
 
 from mangrove.bootstrap import initializer as mangrove_intializer
 from mangrove.datastore.datadict import get_or_create_data_dict
-from mangrove.datastore.entity import create_entity, get_by_short_code
+from mangrove.datastore.entity import create_entity, get_by_short_code_include_voided
 from mangrove.errors.MangroveException import DataObjectNotFound
 from mangrove.form_model.form_model import   MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
@@ -15,7 +15,7 @@ DEFAULT_LOCATION = ["madagascar"]
 
 def create_default_reporter(manager):
     try:
-        entity = get_by_short_code(manager, REPORTER_SHORT_CODE, REPORTER_ENTITY_TYPE)
+        entity = get_by_short_code_include_voided(manager, REPORTER_SHORT_CODE, REPORTER_ENTITY_TYPE)
         entity.delete()
     except DataObjectNotFound:
         pass

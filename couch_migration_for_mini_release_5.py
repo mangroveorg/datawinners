@@ -26,8 +26,8 @@ def migrate_01(managers):
             failed_managers.append((manager,e.message))
 
     print 'failed managers if any'
-    for manager,exception_mesage in failed_managers:
-        print " %s failed. the reason :  %s" %(manager,exception_mesage)
+    for manager,exception_message in failed_managers:
+        print " %s failed. the reason :  %s" %(manager,exception_message)
 
 
 migrate_01(managers)
