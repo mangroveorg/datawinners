@@ -12,7 +12,7 @@ def waybillreceived_handler(submission_data):
 class WayBillSent(models.Model):
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='waybill_code')
-    q3 = models.TextField(db_column='sent_date')
+    q3 = models.DateField(db_column='sent_date')
     q4 = models.TextField(db_column='transaction_type')
     q5 = models.TextField(db_column='site_code')
     q6 = models.TextField(db_column='sender_name')
@@ -26,7 +26,7 @@ class WayBillReceived(models.Model):
     q2 = models.TextField(db_column='waybill_code')
     q3 = models.TextField(db_column='site_code')
     q4 = models.TextField(db_column='receiver_name')
-    q5 = models.TextField(db_column='received_date')
+    q5 = models.DateField(db_column='received_date')
     q6 = models.TextField(db_column='truck_id')
     q7 = models.IntegerField(db_column='good_net_weight')
     q8 = models.IntegerField(db_column='damaged_net_weight')
@@ -34,7 +34,7 @@ class WayBillReceived(models.Model):
 
 class SFMDistribution(models.Model):
     q1 = models.TextField(db_column='site_code')
-    q2 = models.TextField(db_column='distribution_date')
+    q2 = models.DateField(db_column='distribution_date')
     q3 = models.TextField(db_column='received_waybill_code')
     q4 = models.IntegerField(db_column='distributed_oil_quantity')
     q5 = models.IntegerField(db_column='distributed_csb_quantity')
@@ -45,8 +45,8 @@ class SFMDistribution(models.Model):
 
 class PhysicalInventorySheet(models.Model):
     q1 = models.TextField(db_column='store_house_code')
-    q2 = models.TextField(db_column='physical_inventory_closing_date')
-    q3 = models.TextField(db_column='actual_physical_inventory_date')
+    q2 = models.DateField(db_column='physical_inventory_closing_date')
+    q3 = models.DateField(db_column='actual_physical_inventory_date')
     q4 = models.TextField(db_column='pl_code')
     q5 = models.TextField(db_column='food_type')
     q6 = models.IntegerField(db_column='good_net_weight')
