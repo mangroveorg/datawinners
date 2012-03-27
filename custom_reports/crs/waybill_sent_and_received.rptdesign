@@ -5,20 +5,6 @@
         <value>properties/messages</value>
         <value>properties/messages_fr_CA</value>
     </simple-property-list>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">9</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">9</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">9</property>
-        </structure>
-    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
@@ -30,7 +16,7 @@
             <text-property name="helpText">Put % if you do not want to filter</text-property>
             <text-property name="promptText">Packing List code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -49,7 +35,7 @@
             <text-property name="helpText">Put % if you do not want to filter</text-property>
             <text-property name="promptText">Way bill code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -66,7 +52,7 @@
         <scalar-parameter name="food_type" id="729">
             <text-property name="promptText">Food Type</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -102,28 +88,34 @@
             <parameters>
                 <scalar-parameter name="from" id="731">
                     <property name="valueType">static</property>
-                    <property name="isRequired">false</property>
+                    <property name="isRequired">true</property>
                     <property name="dataType">date</property>
                     <property name="distinct">true</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">2000-01-01</value>
+                    </simple-property-list>
                     <list-property name="selectionList"/>
                     <property name="paramType">simple</property>
                     <property name="controlType">text-box</property>
                     <structure name="format">
-                        <property name="category">Short Date</property>
-                        <property name="pattern">Short Date</property>
+                        <property name="category">Custom</property>
+                        <property name="pattern">dd/MM/yyyy</property>
                     </structure>
                 </scalar-parameter>
                 <scalar-parameter name="to" id="732">
                     <property name="valueType">static</property>
-                    <property name="isRequired">false</property>
+                    <property name="isRequired">true</property>
                     <property name="dataType">date</property>
                     <property name="distinct">true</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="javascript">new Date()</value>
+                    </simple-property-list>
                     <list-property name="selectionList"/>
                     <property name="paramType">simple</property>
                     <property name="controlType">text-box</property>
                     <structure name="format">
-                        <property name="category">Short Date</property>
-                        <property name="pattern">Short Date</property>
+                        <property name="category">Custom</property>
+                        <property name="pattern">dd/MM/yyyy</property>
                     </structure>
                 </scalar-parameter>
             </parameters>
@@ -1067,7 +1059,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="317">
-                                        <text-property name="text" key="pl_code">pl_code</text-property>
+                                        <text-property name="text" key="transaction_type">pl_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="534">
@@ -1137,7 +1129,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="323">
-                                        <text-property name="text">sender_name</text-property>
+                                        <text-property name="text" key="sender_name">sender_name</text-property>
                                     </label>
                                 </cell>
                                 <cell id="324">
@@ -1146,7 +1138,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="325">
-                                        <text-property name="text">transaction_type</text-property>
+                                        <text-property name="text" key="transaction_type">transaction_type</text-property>
                                     </label>
                                 </cell>
                                 <cell id="326">
@@ -1155,7 +1147,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="327">
-                                        <text-property name="text">site_code</text-property>
+                                        <text-property name="text" key="site_code">site_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="328">
@@ -1164,7 +1156,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="329">
-                                        <text-property name="text">sent_truck_id</text-property>
+                                        <text-property name="text" key="sent_truck_id">sent_truck_id</text-property>
                                     </label>
                                 </cell>
                                 <cell id="330">
@@ -1173,7 +1165,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="331">
-                                        <text-property name="text">food_type</text-property>
+                                        <text-property name="text" key="food_type">food_type</text-property>
                                     </label>
                                 </cell>
                                 <cell id="332">
@@ -1182,7 +1174,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="333">
-                                        <text-property name="text">weight</text-property>
+                                        <text-property name="text" key="weight">weight</text-property>
                                     </label>
                                 </cell>
                                 <cell id="334">
@@ -1191,7 +1183,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="335">
-                                        <text-property name="text">site_code</text-property>
+                                        <text-property name="text" key="site_code_recv">site_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="336">
@@ -1200,7 +1192,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="337">
-                                        <text-property name="text">receiver_name</text-property>
+                                        <text-property name="text" key="receiver_name">receiver_name</text-property>
                                     </label>
                                 </cell>
                                 <cell id="338">
@@ -1209,7 +1201,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="339">
-                                        <text-property name="text">received_date</text-property>
+                                        <text-property name="text" key="received_date">received_date</text-property>
                                     </label>
                                 </cell>
                                 <cell id="340">
@@ -1218,7 +1210,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="341">
-                                        <text-property name="text">recv_truck_id</text-property>
+                                        <text-property name="text" key="recv_truck_id">recv_truck_id</text-property>
                                     </label>
                                 </cell>
                                 <cell id="342">
@@ -1227,7 +1219,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="343">
-                                        <text-property name="text">good_net_weight</text-property>
+                                        <text-property name="text" key="good_net_weight">good_net_weight</text-property>
                                     </label>
                                 </cell>
                                 <cell id="344">
@@ -1236,7 +1228,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="345">
-                                        <text-property name="text">damaged_net_weight</text-property>
+                                        <text-property name="text" key="damaged_net_weight">damaged_net_weight</text-property>
                                     </label>
                                 </cell>
                                 <cell id="346">
@@ -1245,7 +1237,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="347">
-                                        <text-property name="text">total_net_weight</text-property>
+                                        <text-property name="text" key="total_net_weight">total_net_weight</text-property>
                                     </label>
                                 </cell>
                                 <cell id="348">
@@ -1254,7 +1246,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="349">
-                                        <text-property name="text">Ecart</text-property>
+                                        <text-property name="text" key="ecart">Ecart</text-property>
                                     </label>
                                 </cell>
                                 <cell id="575">
@@ -1263,7 +1255,7 @@ and sent.food_type ilike ?]]></xml-property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="579">
-                                        <text-property name="text">In Transit</text-property>
+                                        <text-property name="text" key="in_transit">In Transit</text-property>
                                     </label>
                                 </cell>
                             </row>
