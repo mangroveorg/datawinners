@@ -5,6 +5,20 @@
         <value>properties/messages</value>
         <value>properties/messages_fr_CA</value>
     </simple-property-list>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">9</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">9</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">9</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
@@ -83,6 +97,37 @@
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
+        <parameter-group name="date" id="730">
+            <text-property name="displayName">Date Filter</text-property>
+            <parameters>
+                <scalar-parameter name="from" id="731">
+                    <property name="valueType">static</property>
+                    <property name="isRequired">false</property>
+                    <property name="dataType">date</property>
+                    <property name="distinct">true</property>
+                    <list-property name="selectionList"/>
+                    <property name="paramType">simple</property>
+                    <property name="controlType">text-box</property>
+                    <structure name="format">
+                        <property name="category">Short Date</property>
+                        <property name="pattern">Short Date</property>
+                    </structure>
+                </scalar-parameter>
+                <scalar-parameter name="to" id="732">
+                    <property name="valueType">static</property>
+                    <property name="isRequired">false</property>
+                    <property name="dataType">date</property>
+                    <property name="distinct">true</property>
+                    <list-property name="selectionList"/>
+                    <property name="paramType">simple</property>
+                    <property name="controlType">text-box</property>
+                    <structure name="format">
+                        <property name="category">Short Date</property>
+                        <property name="pattern">Short Date</property>
+                    </structure>
+                </scalar-parameter>
+            </parameters>
+        </parameter-group>
     </parameters>
     <data-sources>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="CRS" id="8">
@@ -221,6 +266,17 @@
                     <property name="analysis">measure</property>
                     <text-property name="displayName">damaged_net_weight</text-property>
                     <text-property name="heading">damaged_net_weight</text-property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">between</property>
+                    <expression name="expr" type="javascript">row["sent_date"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["from"].value=params["from"].value||new Date()</value>
+                    </simple-property-list>
+                    <expression name="value2">params["to"].value=params["to"].value||new Date()</expression>
+                    <property name="updateAggregation">true</property>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -457,10 +513,10 @@
                     <property name="nativeDataType">4</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,sent.sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,recv.received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
-WHERE sent.pl_code like ?
-and sent.waybill_code like ?
-and sent.food_type like ?]]></xml-property>
+            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
+WHERE sent.pl_code ilike ?
+and sent.waybill_code ilike ?
+and sent.food_type ilike ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
