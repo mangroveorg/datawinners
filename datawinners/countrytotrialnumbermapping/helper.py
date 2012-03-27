@@ -13,6 +13,6 @@ def _get_formatted_country_name(country):
 
 
 def get_trial_numbers():
-    :networks = Network.objects.values_list('trial_sms_number', flat=True).distinct()
+    networks = Network.objects.values_list('trial_sms_number', flat=True).distinct()
     return [network for network in networks if network != 'None']
 
