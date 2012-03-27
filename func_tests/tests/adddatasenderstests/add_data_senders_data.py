@@ -13,13 +13,13 @@ BLANK_FIELDS = {NAME: "",
                 MOBILE_NUMBER: "",
                 COMMUNE: "",
                 GPS: "",
-                ERROR_MSG: "Name Enter Data Sender's name This field is required.Mobile Number Enter Data Sender's number This field is required.Please fill out at least one location field correctly.Please fill out at least one location field correctly."}
+                ERROR_MSG: "Name This field is required.Mobile Number This field is required.Please fill out at least one location field correctly.Please fill out at least one location field correctly."}
 
 VALID_DATA = {NAME: "Mickey Duck",
               MOBILE_NUMBER: "9876-543-2101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
               GPS: "-21.7622088847 48.0690991394",
-              SUCCESS_MSG: "Registration successful. Unique identification number\(ID\) is: rep"}
+              SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 EXISTING_DATA = {NAME: "Mickey Mouse",
                  MOBILE_NUMBER: "123-4567-890",
@@ -31,13 +31,13 @@ WITHOUT_LOCATION_NAME = {NAME: "Mini Mouse",
                          MOBILE_NUMBER: "345-673-45681",
                          COMMUNE: "",
                          GPS: "-20.676646 47.197266",
-                         SUCCESS_MSG: "Registration successful. Unique identification number\(ID\) is: rep"}
+                         SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 WITHOUT_GPS = {NAME: "Alladin",
                MOBILE_NUMBER: "45673456821",
                COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
                GPS: "",
-               SUCCESS_MSG: "Registration successful. Unique identification number\(ID\) is: rep"}
+               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 INVALID_LATITUDE_GPS = {NAME: "Invalid Latitude GPS",
                         MOBILE_NUMBER: "+673-4568-345",
