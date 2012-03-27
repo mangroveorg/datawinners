@@ -32,7 +32,7 @@ from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
-from mangrove.utils.dates import convert_to_epoch
+from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from mangrove.datastore import aggregrate as aggregate_module
 from mangrove.utils.json_codecs import encode_json
 from mangrove.utils.types import is_empty, is_string
@@ -270,8 +270,8 @@ def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
     start_time = request_bag.get("start_time") or ""
     end_time = request_bag.get("end_time") or ""
-    start_time_epoch = convert_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
-    end_time_epoch = convert_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
+    start_time_epoch = convert_date_string_in_UTC_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
+    end_time_epoch = convert_date_string_in_UTC_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
     current_page = (int(request_bag.get('page_number') or 1) - 1) if paginate else 0
     page_size = PAGE_SIZE if paginate else None
     submissions = get_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch, current_page,
@@ -326,15 +326,15 @@ def _load_data(form_model, manager, questionnaire_code, aggregation_types=None, 
 
 def _get_aggregated_data(form_model, manager, questionnaire_code, request):
     if request.method == "GET":
-        aaggregation_types = request.GET.get("aggregation-types")
+        aggregation_types = request.GET.get("aggregation-types")
         start_time = request.GET.get("start_time")
         end_time = request.GET.get("end_time")
     else:
-        aaggregation_types = request.POST.get("aggregation-types")
+        aggregation_types = request.POST.get("aggregation-types")
         start_time = request.POST.get("start_time")
         end_time = request.POST.get("end_time")
 
-    entity_values_dict = _load_data(form_model, manager, questionnaire_code, aaggregation_types,
+    entity_values_dict = _load_data(form_model, manager, questionnaire_code, aggregation_types,
         start_time, end_time)
     return _format_data_for_presentation(entity_values_dict, form_model)
 
