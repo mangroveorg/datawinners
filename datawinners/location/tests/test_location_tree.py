@@ -16,7 +16,7 @@ class TestLocationTree(TestCase):
         self.assertEqual([u'AMBOANJO',u'MANAKARA ATSIMO',u'VATOVAVY FITOVINANY',u'Madagascar'], get_location_hierarchy('Amboanjo'))
 
     def test_should_return_same_value_if_not_in_path(self):
-        self.assertEqual(['pune'], get_location_hierarchy('pune'))
+        self.assertEqual(['pune','mh'], get_location_hierarchy('pune,mh'))
 
     def test_should_get_location_hierarchy_for_geocode(self):
         self.assertEqual([u'madagascar', u'itasy', u'miarinarivo', u'ambatomanjaka', u'fkt ambaribe'],

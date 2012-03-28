@@ -19,12 +19,13 @@ from mangrove.errors.MangroveException import DataObjectAlreadyExists, MultipleR
 from mangrove.form_model.form_model import FormModel
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.entity.helper import create_registration_form
+from datawinners.submission.location import LocationBridge
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
         MangroveTestCase.setUp(self)
         self._create_entities()
-        self.player = SMSPlayer(self.manager, get_location_tree(), get_location_hierarchy=get_location_hierarchy)
+        self.player = SMSPlayer(self.manager, location_tree=LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
         self.transport = TransportInfo(transport="sms", source="1234", destination="5678")
         initializer.run(self.manager)
 
@@ -45,7 +46,7 @@ class TestImportData(MangroveTestCase):
         self.assertEqual(6, len(subjects[0]["labels"]))
 
         self.assertEqual(subjects[0]['data'][0]['cols'][0], 'Bhopal')
-        self.assertEqual(subjects[0]['data'][0]['cols'][2], 'india')
+        self.assertEqual(subjects[0]['data'][0]['cols'][2], 'India')
         self.assertEqual(subjects[0]['data'][0]['cols'][5], 'clb')
 
         self.assertEqual(subjects[0]['data'][1]['cols'][0], 'Satna')
@@ -169,7 +170,7 @@ class TestFilePlayer(MangroveTestCase):
                                 ABC,"reporter",Dr. A,-95 48,"Description",201
         """
         self.parser = CsvParser()
-        self.file_player = FilePlayer(self.manager,self.parser, Channel.CSV, DummyLocationTree(),dummy_get_location_hierarchy)
+        self.file_player = FilePlayer(self.manager,self.parser, Channel.CSV, LocationBridge(DummyLocationTree(),dummy_get_location_hierarchy))
 
     def tearDown(self):
         MangroveTestCase.tearDown(self)
@@ -203,7 +204,7 @@ class TestFilePlayer(MangroveTestCase):
         self.assertTrue(responses[2].success)
         submission_log = Submission.get(self.manager, responses[0].submission_id)
         self.assertEquals({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
-        self.assertEquals({'error':{'m': u'Sorry, the telephone number 201 has already been registered'}, 'row':{'t':u'reporter', 'n':u'Dr. B','l':[u'arantany'],'d':u'Description','m':u'201','g':'-12 60','s':u'rep3'}}, responses[1].errors)
+        self.assertEquals({'error':{'m': u'Sorry, the telephone number 201 has already been registered'}, 'row':{'t':u'reporter', 'n':u'Dr. B','l':[u'arantany'],'d':u'Description','m':u'201','s':u'rep3'}}, responses[1].errors)
         submission_log = Submission.get(self.manager, responses[2].submission_id)
         self.assertEquals({'t':'reporter', 'n':'Dr. C','l':'Pune','d':'Description','m':'202'}, submission_log.values)
 

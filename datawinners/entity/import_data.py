@@ -23,10 +23,11 @@ from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
 from datawinners.location.LocationTree import get_location_hierarchy
+from datawinners.submission.location import LocationBridge
 
 class FilePlayer(Player):
-    def __init__(self, dbm, parser, channel_name, location_tree=None, get_location_hierarchy=None):
-        Player.__init__(self, dbm, location_tree, get_location_hierarchy)
+    def __init__(self, dbm, parser, channel_name, location_tree=None):
+        Player.__init__(self, dbm, location_tree)
         self.parser = parser
         self.channel_name = channel_name
 
@@ -40,13 +41,13 @@ class FilePlayer(Player):
             channel = Channel.XLS
         else:
             raise InvalidFileFormatException()
-        return FilePlayer(manager, parser, channel, location_tree, get_location_hierarchy)
+        return FilePlayer(manager, parser, channel, location_tree=LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
 
     def _process(self,form_code, values):
         form_model = get_form_model_by_code(self.dbm, form_code)
         values = GeneralWorkFlow().process(values)
         if form_model.is_registration_form():
-            values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree, self.get_location_hierarchy).process(values)
+            values = RegistrationWorkFlow(self.dbm, form_model, self.location_tree).process(values)
         if form_model.entity_defaults_to_reporter():
             reporter_entity = entity.get_by_short_code(self.dbm, values.get(form_model.entity_question.code.lower()), form_model.entity_type)
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)

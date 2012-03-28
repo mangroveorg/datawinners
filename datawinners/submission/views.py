@@ -9,6 +9,7 @@ from mangrove.transport.player.player import SMSPlayer
 from datawinners.custom_report_router.report_router import ReportRouter
 
 from datawinners.location.LocationTree import get_location_tree
+from datawinners.submission.location import LocationBridge
 from datawinners.submission.models import  SMSResponse
 
 import logging
@@ -104,8 +105,7 @@ def submit_to_player(incoming_request):
     try:
         post_sms_parser_processors = [PostSMSProcessorLanguageActivator(incoming_request['dbm'], incoming_request),
                     PostSMSProcessorNumberOfAnswersValidators(incoming_request['dbm'], incoming_request)]
-        sms_player = SMSPlayer(incoming_request['dbm'], get_location_tree(),
-            get_location_hierarchy=get_location_hierarchy,
+        sms_player = SMSPlayer(incoming_request['dbm'], LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy),
             post_sms_parser_processors=post_sms_parser_processors)
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])

@@ -19,6 +19,7 @@ from mangrove.form_model.validation import NumericRangeConstraint, TextLengthCon
 from mangrove.transport.player.player import SMSPlayer
 from mangrove.transport import Request, TransportInfo
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
+from datawinners.submission.location import LocationBridge
 from datawinners.tests.test_data_utils import load_manager_for_default_test_account, create_entity_types, \
     create_data_dict, define_entity_instance, register
 
@@ -751,7 +752,7 @@ def load_sms_data_for_cli001(manager):
     LAST_WEEK = today - timedelta(days=7)
     THIS_MONTH = datetime(today.year, today.month, 2, 12, 45, 58)
     PREV_MONTH = THIS_MONTH - timedelta(days=6)
-    sms_player = SMSPlayer(manager, get_location_tree(), get_location_hierarchy=get_location_hierarchy)
+    sms_player = SMSPlayer(manager, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy))
     FROM_NUMBER = '1234567890'
     TO_NUMBER = '919880734937'
     transport = TransportInfo(SMS, FROM_NUMBER, TO_NUMBER)

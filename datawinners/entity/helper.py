@@ -28,6 +28,7 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
+from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
 
 FIRSTNAME_FIELD = "firstname"
@@ -174,7 +175,7 @@ def process_create_datasender_form(dbm, form, org_id, project):
                 _add_data_sender_to_trial_organization(telephone_number, org_id)
 
         try:
-            web_player = WebPlayer(dbm, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy)
+            web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")

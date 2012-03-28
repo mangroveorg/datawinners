@@ -39,6 +39,7 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
+from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization
 from datawinners.entity.helper import get_country_appended_location
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -60,7 +61,7 @@ def submit(request):
     post = json.loads(request.POST['data'])
     success = True
     try:
-        web_player = WebPlayer(dbm, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy)
+        web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
         message = post['message']
         message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
             get_organization_country(request))
@@ -336,7 +337,7 @@ def create_subject(request, entity_type=None):
         error_message = None
         try:
             from datawinners.project.helper import create_request
-            response = WebPlayer(manager, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy).accept(
+            response = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
                 create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (

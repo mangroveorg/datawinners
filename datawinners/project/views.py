@@ -8,6 +8,7 @@ from time import mktime
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
+from django.template import response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.translation import ugettext_lazy as _, ugettext_lazy
@@ -19,6 +20,7 @@ from django.contrib import messages
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_datasender_form
 from datawinners.entity import import_data as import_module
+from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
 from datawinners.accountmanagement.views import is_not_expired
 
@@ -823,7 +825,7 @@ def web_questionnaire(request, project_id=None, subject=False):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager, location_tree=get_location_tree(), get_location_hierarchy=get_location_hierarchy).accept(
+            response = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
                 helper.create_request(questionnaire_form, request.user.username))
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)

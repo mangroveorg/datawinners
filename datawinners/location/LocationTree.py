@@ -61,7 +61,7 @@ def get_location_hierarchy(lowest_level):
     location_hierarchy = []
     for level, location in rows:
         location_hierarchy.append(location.split(','))
-    return location_hierarchy[0] if len(location_hierarchy) > 0 else [lowest_level]
+    return location_hierarchy[0] if len(location_hierarchy) > 0 else lowest_level.split(',')
 
 _tree = None
 _tree_lock = Lock()
