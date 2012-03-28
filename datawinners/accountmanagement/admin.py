@@ -109,8 +109,8 @@ class NullAdmin:
         return self
 
 class CountryAdmin(admin.ModelAdmin):
-    ordering = ('country_name',)
-    list_display = ('country_name','country_code')
+    ordering = ('country_name_en',)
+    list_display = ('country_name_en','country_code')
 
 class NetworkAdmin(admin.ModelAdmin):
     ordering = ('network_name',)
