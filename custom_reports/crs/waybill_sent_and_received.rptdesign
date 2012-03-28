@@ -51,30 +51,17 @@
         </scalar-parameter>
         <scalar-parameter name="food_type" id="729">
             <text-property name="promptText">Food Type</text-property>
-            <property name="valueType">static</property>
+            <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
+            <property name="dataSetName">Food Type</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["upper"]</expression>
+            <expression name="labelExpr" type="javascript">dataSetRow["upper"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
                 <value type="constant">%</value>
             </simple-property-list>
-            <list-property name="selectionList">
-                <structure>
-                    <property name="value">csb</property>
-                </structure>
-                <structure>
-                    <property name="value">oil</property>
-                </structure>
-                <structure>
-                    <property name="value">rice</property>
-                </structure>
-                <structure>
-                    <property name="value">sorghum</property>
-                </structure>
-                <structure>
-                    <property name="value">%</property>
-                </structure>
-            </list-property>
+            <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">list-box</property>
             <property name="mustMatch">true</property>
@@ -120,6 +107,26 @@
                 </scalar-parameter>
             </parameters>
         </parameter-group>
+        <scalar-parameter name="Type of Transaction" id="733">
+            <property name="valueType">dynamic</property>
+            <property name="isRequired">true</property>
+            <property name="dataSetName">Type_of_transaction</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["upper"]</expression>
+            <expression name="labelExpr" type="javascript">dataSetRow["upper"]</expression>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">true</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
     </parameters>
     <data-sources>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="CRS" id="8">
@@ -299,6 +306,16 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                     <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">Type of Transaction</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">4</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -508,7 +525,8 @@
             <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
 WHERE sent.pl_code ilike ?
 and sent.waybill_code ilike ?
-and sent.food_type ilike ?]]></xml-property>
+and sent.food_type ilike ?
+and sent.transaction_type ilike ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -550,6 +568,21 @@ and sent.food_type ilike ?]]></xml-property>
           <design:identifier>
             <design:name></design:name>
             <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -798,6 +831,70 @@ and sent.food_type ilike ?]]></xml-property>
     </design:resultSetDefinitions>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Type_of_transaction" id="734">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">upper</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">upper</text-property>
+                    <text-property name="heading">upper</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">upper</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">upper</property>
+                    <property name="nativeName">upper</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select distinct upper(transaction_type)
+from crs_waybillsent ]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Food Type" id="735">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">upper</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">upper</text-property>
+                    <text-property name="heading">upper</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">upper</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">upper</property>
+                    <property name="nativeName">upper</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select distinct upper(food_type)
+from crs_waybillsent]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
