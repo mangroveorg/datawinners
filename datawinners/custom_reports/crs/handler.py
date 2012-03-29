@@ -14,9 +14,6 @@ class CRSCustomReportHandler(object):
 
 
     def handle(self, form_code, submission_data):
-        crs_model_creator(submission_data, model_routing_dict.get(form_code))
-
-    def dummy_handler(self, submission_data):
-        pass
-
-
+        model = self.routing_dict.get(form_code)
+        if model:
+            crs_model_creator(submission_data, model)
