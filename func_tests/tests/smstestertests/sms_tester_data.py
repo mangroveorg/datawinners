@@ -54,7 +54,7 @@ UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .t Reporter .m 0123456789 .L  Jaipur .g 26.917 75.817 .N Donald Duck",
-                        ERROR_MSG: "Registration successful. ID is: rep[\d]+. t: Reporter m: 0123456789 l: jaipur g: 26.917,75.817 n: Donald Duck s: rep[\d]+"}
+                        ERROR_MSG: "Registration successful. ID is: rep[\d]. t: Reporter m: 0123456789 l: Jaipur g: 26.917,75.817 n: Donald Duck s: rep[\d]"}
 
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
                                             RECEIVER: "919880734937",
@@ -64,7 +64,7 @@ REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
 REGISTER_NEW_SUBJECT = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .T Clinic .m   123456 .l Jaipur .G 26.917 75.817 ..  .n Clinic Jaipur .S clijpr . ",
-                        SUCCESS_MESSAGE: "Registration successful. ID is: clijpr. t: Clinic m: 123456 l: jaipur g: 26.917,75.817 n: Clinic Jaipur s: clijpr"}
+                        SUCCESS_MESSAGE: "Registration successful. ID is: clijpr. t: Clinic m: 123456 l: Jaipur g: 26.917,75.817 n: Clinic Jaipur s: clijpr"}
 
 REGISTER_EXISTING_SUBJECT_SHORT_CODE = {SENDER: "1234567890",
                                         RECEIVER: "919880734937",
