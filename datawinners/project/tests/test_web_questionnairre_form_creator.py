@@ -92,7 +92,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         web_form = questionnaire_form_class(country="India", data=post_data)
         web_form.is_valid()
 
-        self.assertEqual("pune,India", web_form.cleaned_data[LOCATION_TYPE_FIELD_CODE])
+        self.assertEqual("India,pune", web_form.cleaned_data[LOCATION_TYPE_FIELD_CODE])
 
 
     def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):
