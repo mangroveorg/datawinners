@@ -2,11 +2,10 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import django
-from django.forms.fields import ChoiceField, Field
+from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
-from mangrove.errors.MangroveException import GeoCodeFormatException
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import GeoCodeConstraint
 from datawinners.entity.import_data import load_all_subjects_of_type
