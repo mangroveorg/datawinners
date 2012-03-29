@@ -1,13 +1,8 @@
 from django.db import models
 
 
-def waybillsent_handler(submission_data):
-    _save_submission_via_model(submission_data, WayBillSent)
-
-
-def waybillreceived_handler(submission_data):
-    _save_submission_via_model(submission_data, WayBillReceived)
-
+def crs_model_creator(submission_data, model):
+    _save_submission_via_model(submission_data, model)
 
 class WayBillSent(models.Model):
     q1 = models.TextField(db_column='pl_code')

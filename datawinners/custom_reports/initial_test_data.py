@@ -11,6 +11,70 @@ from datawinners.tests.test_data_utils import load_manager_for_default_test_acco
     create_data_dict, define_entity_instance, register
 
 
+def create_physical_inventory_project(PACKAGING_LIST_ENTITY_TYPE, manager):
+    organization = Organization.objects.get(pk='SLX364903')
+    Reminder.objects.filter(organization=organization).delete()
+    name_type = create_data_dict(manager, name='Name', slug='Name', primitive_type='string')
+    # Entity id is a default type in the system.
+    weight_type = create_data_dict(manager, name='Weight Type', slug='weight', primitive_type='integer')
+    entity_id_type = get_datadict_type_by_slug(manager, slug='entity_id')
+    date_type = create_data_dict(manager, name='Report Date', slug='date', primitive_type='date')
+    question1 = TextField(label="What is the code of the Storehouse?", code="q1",
+        name="What is the code of the Storehouse?",
+        language="en", ddtype=name_type,
+        constraints=[TextLengthConstraint(min=1, max=12)],
+        instruction="Answer must be a word or phrase 12 characters maximum")
+    question2 = DateField(label="What is the closing Date fixed by the Administrators for this physical inventory?", code="q2",
+        name="What is the closing Date fixed by the Administrators for this physical inventory?",
+        language="en", date_format="dd.mm.yyyy", ddtype=date_type,
+        instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+    question3 = DateField(label="What is the actual Date of the physical inventory of the Storehouse?", code="q3",
+        name="What is the actual Date of the physical inventory of the Storehouse?",
+        language="en", date_format="dd.mm.yyyy", ddtype=date_type,
+        instruction="Answer must be a date in the following format: day.month.year. Example: 25.12.2011")
+    question4 = TextField(label="What is the Packing List Code?", code="q4",
+        name="What is the Packing List Code?",
+        language="en", entity_question_flag=True, ddtype=entity_id_type,
+        constraints=[TextLengthConstraint(min=1, max=10)],
+        instruction="Answer must be a word or phrase 10 characters maximum")
+    question5 = TextField(label="What is the Type of foods?", code="q5",
+        name="What is the Type of foods?",
+        language="en", ddtype=name_type,
+        constraints=[TextLengthConstraint(min=1, max=10)],
+        instruction="Answer must be a word or phrase 10 characters maximum")
+    question6 = IntegerField(label="What is the Good Weight?", code="q6", name="What is the Good Weight?",
+        constraints=[NumericRangeConstraint(min=18, max=10000)], ddtype=weight_type,
+        instruction="Answer must be a number between 18-100.")
+    question7 = IntegerField(label="What is the Damaged Weight?", code="q7", name="What is the Damaged Weight?",
+        constraints=[NumericRangeConstraint(min=18, max=10000)], ddtype=weight_type,
+        instruction="Answer must be a number between 18-100.")
+
+    form_model = FormModel(manager, name="PHYSICAL_INVENTORY", label="PHYSICAL_INVENTORY form_model",
+        form_code="PI01", type='survey',
+        fields=[question1, question2, question3, question4, question5, question6, question7],
+        entity_type=PACKAGING_LIST_ENTITY_TYPE
+    )
+
+    try:
+        qid = form_model.save()
+    except DataObjectAlreadyExists as e:
+        get_form_model_by_code(manager, "PI01").delete()
+        qid = form_model.save()
+    project1 = Project(name="Physical Inventory", goals="This project is for automation", project_type="survey",
+        entity_type=PACKAGING_LIST_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+    project1.qid = qid
+    project1.state = ProjectState.ACTIVE
+    try:
+        project1.save(manager)
+    except Exception:
+        pass
+
+    # Associate datasenders/reporters with project 1
+    project1.data_senders.extend(["rep5"])
+    project1.save(manager)
+
+
+
 def load_data(manager = None):
     manager = manager or load_manager_for_default_test_account()
     initializer.run(manager)
@@ -19,6 +83,7 @@ def load_data(manager = None):
     load_datadict_types(manager)
     load_packaginglist_entities(PACKAGING_LIST_ENTITY_TYPE, manager)
     create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager)
+    create_physical_inventory_project(PACKAGING_LIST_ENTITY_TYPE, manager)
     #Register Reporters
     phone_number_type = create_data_dict(manager, name='Telephone Number', slug='telephone_number',
         primitive_type='string')

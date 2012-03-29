@@ -2,13 +2,13 @@ import unittest
 from datetime import datetime
 from collections import OrderedDict
 from datawinners.custom_reports.crs.handler import CRSCustomReportHandler, model_routing_dict
-from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived, waybillsent_handler, waybillreceived_handler
+from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived
 
 class TestWayBillSent(unittest.TestCase):
     def setUp(self):
         self.way_bill_sent = None
         self.question_code = 'WBS01'
-        model_routing_dict[self.question_code]=waybillsent_handler
+        model_routing_dict[self.question_code]=WayBillSent
 
     def tearDown(self):
         if self.way_bill_sent is not None:
@@ -36,7 +36,7 @@ class TestWayBillReceived(unittest.TestCase):
     def setUp(self):
         self.way_bill_received= None
         self.question_code = 'WBR01'
-        model_routing_dict[self.question_code]=waybillreceived_handler
+        model_routing_dict[self.question_code]=WayBillReceived
 
 
     def tearDown(self):

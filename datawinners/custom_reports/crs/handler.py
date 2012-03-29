@@ -1,8 +1,12 @@
-from datawinners.custom_reports.crs.models import waybillsent_handler
-from datawinners.custom_reports.crs.models import waybillreceived_handler
-from datawinners.local_settings import WAYBILL_SENT_QUESTIONNAIRE_CODE, WAYBILL_RECEIVED_QUESTIONNAIRE_CODE
+from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBillSent, WayBillReceived, crs_model_creator
+from datawinners.local_settings import WAYBILL_SENT_QUESTIONNAIRE_CODE, WAYBILL_RECEIVED_QUESTIONNAIRE_CODE,\
+    PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE
 
-model_routing_dict = {WAYBILL_SENT_QUESTIONNAIRE_CODE: waybillsent_handler, WAYBILL_RECEIVED_QUESTIONNAIRE_CODE: waybillreceived_handler}
+model_routing_dict = {
+    WAYBILL_SENT_QUESTIONNAIRE_CODE: WayBillSent,
+    WAYBILL_RECEIVED_QUESTIONNAIRE_CODE: WayBillReceived,
+    PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE: PhysicalInventorySheet,
+}
 
 class CRSCustomReportHandler(object):
     def __init__(self, routing_dict=None):
@@ -10,8 +14,7 @@ class CRSCustomReportHandler(object):
 
 
     def handle(self, form_code, submission_data):
-        crs_model_creater = self.routing_dict.get(form_code, self.dummy_handler)
-        crs_model_creater(submission_data)
+        crs_model_creator(submission_data, model_routing_dict.get(form_code))
 
     def dummy_handler(self, submission_data):
         pass
