@@ -11,8 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'Country'
         db.create_table('countrytotrialnumbermapping_country', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('country_name_en', self.gf('django.db.models.fields.TextField')(unique=True)),
-            ('country_name_fr', self.gf('django.db.models.fields.TextField')()),
+            ('country_name', self.gf('django.db.models.fields.TextField')(unique=True)),
             ('country_code', self.gf('django.db.models.fields.TextField')()),
         ))
         db.send_create_signal('countrytotrialnumbermapping', ['Country'])

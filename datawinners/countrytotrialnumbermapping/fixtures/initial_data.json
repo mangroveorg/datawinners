@@ -1,8 +1,7 @@
 [
     {
         "fields":{
-            "country_name_en":"Afghanistan",
-            "country_name_fr":"Afghanistan",
+            "country_name":"Afghanistan",
             "country_code":"93"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -10,8 +9,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Albania",
-            "country_name_fr":"Albanie",
+            "country_name":"Albania",
             "country_code":"355"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -19,8 +17,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Algeria",
-            "country_name_fr":"Algeria",
+            "country_name":"Algeria",
             "country_code":"213"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -28,8 +25,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Andorra",
-            "country_name_fr":"Andorre",
+            "country_name":"Andorra",
             "country_code":"376"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -37,8 +33,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Angola",
-            "country_name_fr":"Angola",
+            "country_name":"Angola",
             "country_code":"244"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -46,8 +41,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Anguilla",
-            "country_name_fr":"Anguilla",
+            "country_name":"Anguilla",
             "country_code":"1264"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -55,8 +49,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Antigua & Barbuda",
-            "country_name_fr":"Antigua-et-Barbuda",
+            "country_name":"Antigua & Barbuda",
             "country_code":"1268"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -64,8 +57,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Argentina",
-            "country_name_fr":"Argentine",
+            "country_name":"Argentina",
             "country_code":"54"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -73,8 +65,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Armenia",
-            "country_name_fr":"Arménie",
+            "country_name":"Armenia",
             "country_code":"374"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -82,8 +73,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Aruba",
-            "country_name_fr":"Aruba",
+            "country_name":"Aruba",
             "country_code":"297"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -91,8 +81,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Australia",
-            "country_name_fr":"Australie",
+            "country_name":"Australia",
             "country_code":"61"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -100,8 +89,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Austria",
-            "country_name_fr":"Autriche",
+            "country_name":"Austria",
             "country_code":"43"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -109,8 +97,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Azerbaijan",
-            "country_name_fr":"Azerbaïdjan",
+            "country_name":"Azerbaijan",
             "country_code":"994"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -118,8 +105,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bahamas, the",
-            "country_name_fr":"Bahamas",
+            "country_name":"Bahamas, the",
             "country_code":"1242"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -127,8 +113,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bahrain",
-            "country_name_fr":"Bahrein",
+            "country_name":"Bahrain",
             "country_code":"973"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -136,8 +121,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bangladesh",
-            "country_name_fr":"Bangladesh",
+            "country_name":"Bangladesh",
             "country_code":"880"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -145,8 +129,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Barbados",
-            "country_name_fr":"Barbades",
+            "country_name":"Barbados",
             "country_code":"1246"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -154,8 +137,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Barbuda",
-            "country_name_fr":"Barbuda",
+            "country_name":"Barbuda",
             "country_code":"1268"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -163,8 +145,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Belarus",
-            "country_name_fr":"Biélorussie",
+            "country_name":"Belarus",
             "country_code":"375"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -172,8 +153,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Belgium",
-            "country_name_fr":"Belgique",
+            "country_name":"Belgium",
             "country_code":"32"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -181,8 +161,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Belize",
-            "country_name_fr":"Bélize",
+            "country_name":"Belize",
             "country_code":"501"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -190,8 +169,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Benin",
-            "country_name_fr":"Bénin",
+            "country_name":"Benin",
             "country_code":"229"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -199,8 +177,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bermuda",
-            "country_name_fr":"Bermudes",
+            "country_name":"Bermuda",
             "country_code":"1441"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -208,8 +185,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bhutan",
-            "country_name_fr":"Bhoutan",
+            "country_name":"Bhutan",
             "country_code":"975"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -217,8 +193,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bolivia",
-            "country_name_fr":"Bolivie",
+            "country_name":"Bolivia",
             "country_code":"591"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -226,8 +201,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bosnia-Herzegovina",
-            "country_name_fr":"Bosnie Herzégovine",
+            "country_name":"Bosnia-Herzegovina",
             "country_code":"387"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -235,8 +209,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Botswana",
-            "country_name_fr":"Botswana",
+            "country_name":"Botswana",
             "country_code":"267"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -244,8 +217,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Brazil",
-            "country_name_fr":"Brésil",
+            "country_name":"Brazil",
             "country_code":"55"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -253,8 +225,7 @@
     },
     {
         "fields":{
-            "country_name_en":"British Virgin Islands",
-            "country_name_fr":"Iles Vierges Britanniques",
+            "country_name":"British Virgin Islands",
             "country_code":"1284"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -262,8 +233,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Brunei",
-            "country_name_fr":"Brunei",
+            "country_name":"Brunei",
             "country_code":"673"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -271,8 +241,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Bulgaria",
-            "country_name_fr":"Bulgarie",
+            "country_name":"Bulgaria",
             "country_code":"359"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -280,8 +249,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Burkina Faso",
-            "country_name_fr":"Burkina Faso",
+            "country_name":"Burkina Faso",
             "country_code":"226"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -289,8 +257,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Burundi",
-            "country_name_fr":"Burundi",
+            "country_name":"Burundi",
             "country_code":"257"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -298,8 +265,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cambodia",
-            "country_name_fr":"Cambodge",
+            "country_name":"Cambodia",
             "country_code":"855"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -307,8 +273,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cameroon",
-            "country_name_fr":"Cameroun",
+            "country_name":"Cameroon",
             "country_code":"237"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -316,8 +281,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Canada",
-            "country_name_fr":"Canada",
+            "country_name":"Canada",
             "country_code":"1"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -325,8 +289,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cape Verde",
-            "country_name_fr":"Cap Vert",
+            "country_name":"Cape Verde",
             "country_code":"238"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -334,8 +297,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cayman Islands",
-            "country_name_fr":"Iles Caymans",
+            "country_name":"Cayman Islands",
             "country_code":"1345"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -343,8 +305,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Central African Republic",
-            "country_name_fr":"République Centrafricaine",
+            "country_name":"Central African Republic",
             "country_code":"236"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -352,8 +313,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Chad",
-            "country_name_fr":"Tchad",
+            "country_name":"Chad",
             "country_code":"235"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -361,8 +321,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Chile",
-            "country_name_fr":"Chilie",
+            "country_name":"Chile",
             "country_code":"56"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -370,8 +329,7 @@
     },
     {
         "fields":{
-            "country_name_en":"China",
-            "country_name_fr":"Chine",
+            "country_name":"China",
             "country_code":"86"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -379,8 +337,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Colombia",
-            "country_name_fr":"Colombie",
+            "country_name":"Colombia",
             "country_code":"57"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -388,8 +345,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Comoros",
-            "country_name_fr":"Comores",
+            "country_name":"Comoros",
             "country_code":"269"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -397,8 +353,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Congo",
-            "country_name_fr":"Congo",
+            "country_name":"Congo",
             "country_code":"242"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -406,8 +361,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Congo, Democratic Republic",
-            "country_name_fr":"République Démocratique du Congo",
+            "country_name":"Congo, Democratic Republic",
             "country_code":"243"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -415,8 +369,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cook Islands",
-            "country_name_fr":"Iles Cook",
+            "country_name":"Cook Islands",
             "country_code":"682"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -424,8 +377,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Costa Rica",
-            "country_name_fr":"Costa Rica",
+            "country_name":"Costa Rica",
             "country_code":"506"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -433,8 +385,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Croatia",
-            "country_name_fr":"Croatie",
+            "country_name":"Croatia",
             "country_code":"385"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -442,8 +393,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cuba",
-            "country_name_fr":"Cuba",
+            "country_name":"Cuba",
             "country_code":"53"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -451,8 +401,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Curacao",
-            "country_name_fr":"Curaçao",
+            "country_name":"Curacao",
             "country_code":"5999"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -460,8 +409,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Cyprus",
-            "country_name_fr":"Chypres",
+            "country_name":"Cyprus",
             "country_code":"357"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -469,8 +417,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Czech Republic",
-            "country_name_fr":"République Tchèque",
+            "country_name":"Czech Republic",
             "country_code":"420"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -478,8 +425,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Denmark",
-            "country_name_fr":"Danemark",
+            "country_name":"Denmark",
             "country_code":"45"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -487,8 +433,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Djibouti",
-            "country_name_fr":"Djibouti",
+            "country_name":"Djibouti",
             "country_code":"253"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -496,8 +441,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Dominica",
-            "country_name_fr":"Dominique",
+            "country_name":"Dominica",
             "country_code":"1767"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -505,8 +449,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Dominican Republic",
-            "country_name_fr":"République Dominicaine",
+            "country_name":"Dominican Republic",
             "country_code":"1"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -514,8 +457,7 @@
     },
     {
         "fields":{
-            "country_name_en":"East Timor",
-            "country_name_fr":"Timor Oriental",
+            "country_name":"East Timor",
             "country_code":"670"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -523,8 +465,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Ecuador",
-            "country_name_fr":"Equateur",
+            "country_name":"Ecuador",
             "country_code":"593"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -532,8 +473,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Egypt",
-            "country_name_fr":"Egypte",
+            "country_name":"Egypt",
             "country_code":"20"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -541,8 +481,7 @@
     },
     {
         "fields":{
-            "country_name_en":"El Salvador",
-            "country_name_fr":"El Salvador",
+            "country_name":"El Salvador",
             "country_code":"503"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -550,8 +489,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Estonia",
-            "country_name_fr":"Estonie",
+            "country_name":"Estonia",
             "country_code":"372"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -559,8 +497,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Ethiopia",
-            "country_name_fr":"Ethiopie",
+            "country_name":"Ethiopia",
             "country_code":"251"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -568,8 +505,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Faroe Islands",
-            "country_name_fr":"Iles Feroe",
+            "country_name":"Faroe Islands",
             "country_code":"298"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -577,8 +513,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Fiji",
-            "country_name_fr":"Fidji",
+            "country_name":"Fiji",
             "country_code":"679"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -586,8 +521,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Finland",
-            "country_name_fr":"Finlande",
+            "country_name":"Finland",
             "country_code":"358"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -595,8 +529,7 @@
     },
     {
         "fields":{
-            "country_name_en":"France",
-            "country_name_fr":"France",
+            "country_name":"France",
             "country_code":"33"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -604,8 +537,7 @@
     },
     {
         "fields":{
-            "country_name_en":"French Guyana",
-            "country_name_fr":"Guyane française",
+            "country_name":"French Guyana",
             "country_code":"594"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -613,8 +545,7 @@
     },
     {
         "fields":{
-            "country_name_en":"French Polynesia",
-            "country_name_fr":"Polynésie françaises",
+            "country_name":"French Polynesia",
             "country_code":"689"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -622,8 +553,7 @@
     },
     {
         "fields":{
-            "country_name_en":"French West Indies",
-            "country_name_fr":"Antilles françaises",
+            "country_name":"French West Indies",
             "country_code":"590"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -631,8 +561,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Gabon",
-            "country_name_fr":"Gabon",
+            "country_name":"Gabon",
             "country_code":"241"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -640,8 +569,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Gambia",
-            "country_name_fr":"Gambie",
+            "country_name":"Gambia",
             "country_code":"220"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -649,8 +577,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Georgia",
-            "country_name_fr":"Géorgie",
+            "country_name":"Georgia",
             "country_code":"995"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -658,8 +585,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Germany",
-            "country_name_fr":"Allemagne",
+            "country_name":"Germany",
             "country_code":"49"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -667,8 +593,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Ghana",
-            "country_name_fr":"Ghana",
+            "country_name":"Ghana",
             "country_code":"233"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -676,8 +601,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Gibraltar",
-            "country_name_fr":"Gibraltar",
+            "country_name":"Gibraltar",
             "country_code":"350"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -685,8 +609,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Greece",
-            "country_name_fr":"Grèce",
+            "country_name":"Greece",
             "country_code":"30"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -694,8 +617,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Greenland",
-            "country_name_fr":"Groenland",
+            "country_name":"Greenland",
             "country_code":"299"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -703,8 +625,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Grenada",
-            "country_name_fr":"Grenade",
+            "country_name":"Grenada",
             "country_code":"1473"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -712,8 +633,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Guadeloupe",
-            "country_name_fr":"Guadeloupe",
+            "country_name":"Guadeloupe",
             "country_code":"590"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -721,8 +641,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Guam",
-            "country_name_fr":"Guam",
+            "country_name":"Guam",
             "country_code":"1671"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -730,8 +649,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Guatemala",
-            "country_name_fr":"Guatémala",
+            "country_name":"Guatemala",
             "country_code":"502"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -739,8 +657,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Guernsey",
-            "country_name_fr":"Guernesey",
+            "country_name":"Guernsey",
             "country_code":"44"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -748,8 +665,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Guinea",
-            "country_name_fr":"Guinée",
+            "country_name":"Guinea",
             "country_code":"224"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -757,8 +673,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Guyana",
-            "country_name_fr":"Guyane",
+            "country_name":"Guyana",
             "country_code":"592"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -766,8 +681,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Haiti",
-            "country_name_fr":"Haïti",
+            "country_name":"Haiti",
             "country_code":"509"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -775,8 +689,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Honduras",
-            "country_name_fr":"Honduras",
+            "country_name":"Honduras",
             "country_code":"504"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -784,8 +697,7 @@
     },
     {
         "fields":{
-            "country_name_en":"HongKong",
-            "country_name_fr":"Hong Kong",
+            "country_name":"HongKong",
             "country_code":"852"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -793,8 +705,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Hungary",
-            "country_name_fr":"Hongrie",
+            "country_name":"Hungary",
             "country_code":"36"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -802,8 +713,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Iceland",
-            "country_name_fr":"Islande",
+            "country_name":"Iceland",
             "country_code":"354"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -811,8 +721,7 @@
     },
     {
         "fields":{
-            "country_name_en":"India",
-            "country_name_fr":"Inde",
+            "country_name":"India",
             "country_code":"91"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -820,8 +729,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Indonesia",
-            "country_name_fr":"Indonesie",
+            "country_name":"Indonesia",
             "country_code":"62"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -829,8 +737,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Iran",
-            "country_name_fr":"Iran",
+            "country_name":"Iran",
             "country_code":"98"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -838,8 +745,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Iraq",
-            "country_name_fr":"Irak",
+            "country_name":"Iraq",
             "country_code":"964"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -847,8 +753,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Ireland",
-            "country_name_fr":"Irlande",
+            "country_name":"Ireland",
             "country_code":"353"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -856,8 +761,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Isle of Man",
-            "country_name_fr":"Ile de Man",
+            "country_name":"Isle of Man",
             "country_code":"44"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -865,8 +769,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Israel",
-            "country_name_fr":"Israël",
+            "country_name":"Israel",
             "country_code":"972"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -874,8 +777,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Italy",
-            "country_name_fr":"Italie",
+            "country_name":"Italy",
             "country_code":"39"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -883,8 +785,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Ivory Coast",
-            "country_name_fr":"Côte d'Ivoire",
+            "country_name":"Ivory Coast",
             "country_code":"225"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -892,8 +793,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Jamaica",
-            "country_name_fr":"Jamaïque",
+            "country_name":"Jamaica",
             "country_code":"1876"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -901,8 +801,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Japan",
-            "country_name_fr":"Japon",
+            "country_name":"Japan",
             "country_code":"81"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -910,8 +809,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Jersey",
-            "country_name_fr":"Jersey",
+            "country_name":"Jersey",
             "country_code":"44"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -919,8 +817,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Jordan",
-            "country_name_fr":"Jordanie",
+            "country_name":"Jordan",
             "country_code":"962"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -928,8 +825,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Kazakhstan",
-            "country_name_fr":"Kazakhstan",
+            "country_name":"Kazakhstan",
             "country_code":"7"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -937,8 +833,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Kenya",
-            "country_name_fr":"Kénya",
+            "country_name":"Kenya",
             "country_code":"254"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -946,8 +841,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Korea (South)",
-            "country_name_fr":"Corée du Sud",
+            "country_name":"Korea (South)",
             "country_code":"82"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -955,8 +849,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Kosovo",
-            "country_name_fr":"Kosovo",
+            "country_name":"Kosovo",
             "country_code":"381"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -964,8 +857,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Kuwait",
-            "country_name_fr":"Kuweit",
+            "country_name":"Kuwait",
             "country_code":"965"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -973,8 +865,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Kyrgyzstan",
-            "country_name_fr":"Kirghizstan",
+            "country_name":"Kyrgyzstan",
             "country_code":"996"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -982,8 +873,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Lao",
-            "country_name_fr":"Laos",
+            "country_name":"Lao",
             "country_code":"856"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -991,8 +881,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Latvia",
-            "country_name_fr":"Lettonie",
+            "country_name":"Latvia",
             "country_code":"371"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1000,8 +889,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Lebanon",
-            "country_name_fr":"Liban",
+            "country_name":"Lebanon",
             "country_code":"961"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1009,8 +897,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Lesotho",
-            "country_name_fr":"Lesotho",
+            "country_name":"Lesotho",
             "country_code":"266"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1018,8 +905,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Liberia",
-            "country_name_fr":"Libéria",
+            "country_name":"Liberia",
             "country_code":"231"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1027,8 +913,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Libya",
-            "country_name_fr":"Libye",
+            "country_name":"Libya",
             "country_code":"218"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1036,8 +921,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Liechtenstein",
-            "country_name_fr":"Liechtenstein",
+            "country_name":"Liechtenstein",
             "country_code":"423"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1045,8 +929,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Lithuania",
-            "country_name_fr":"Lituanie",
+            "country_name":"Lithuania",
             "country_code":"370"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1054,8 +937,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Luxembourg",
-            "country_name_fr":"Luxembourg",
+            "country_name":"Luxembourg",
             "country_code":"352"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1063,8 +945,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Macau",
-            "country_name_fr":"Macao",
+            "country_name":"Macau",
             "country_code":"853"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1072,8 +953,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Macedonia",
-            "country_name_fr":"Macédoine",
+            "country_name":"Macedonia",
             "country_code":"389"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1081,8 +961,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Madagascar",
-            "country_name_fr":"Madagascar",
+            "country_name":"Madagascar",
             "country_code":"261"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1090,8 +969,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Malawi",
-            "country_name_fr":"Malawi",
+            "country_name":"Malawi",
             "country_code":"265"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1099,8 +977,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Malaysia",
-            "country_name_fr":"Malaisie",
+            "country_name":"Malaysia",
             "country_code":"60"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1108,8 +985,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Maldives",
-            "country_name_fr":"Maldives",
+            "country_name":"Maldives",
             "country_code":"960"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1117,8 +993,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Mali",
-            "country_name_fr":"Mali",
+            "country_name":"Mali",
             "country_code":"223"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1126,8 +1001,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Malta",
-            "country_name_fr":"Malte",
+            "country_name":"Malta",
             "country_code":"356"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1135,8 +1009,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Martinique",
-            "country_name_fr":"Martinique",
+            "country_name":"Martinique",
             "country_code":"596"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1144,8 +1017,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Mauritania",
-            "country_name_fr":"Mauritanie",
+            "country_name":"Mauritania",
             "country_code":"222"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1153,8 +1025,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Mauritius",
-            "country_name_fr":"Maurice",
+            "country_name":"Mauritius",
             "country_code":"230"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1162,8 +1033,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Mexico",
-            "country_name_fr":"Mexique",
+            "country_name":"Mexico",
             "country_code":"52"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1171,8 +1041,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Moldova",
-            "country_name_fr":"Moldavie",
+            "country_name":"Moldova",
             "country_code":"373"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1180,8 +1049,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Monaco",
-            "country_name_fr":"Monaco",
+            "country_name":"Monaco",
             "country_code":"377"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1189,8 +1057,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Mongolia",
-            "country_name_fr":"Mongolie",
+            "country_name":"Mongolia",
             "country_code":"976"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1198,8 +1065,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Montenegro",
-            "country_name_fr":"Monténégro",
+            "country_name":"Montenegro",
             "country_code":"382"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1207,8 +1073,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Montserrat",
-            "country_name_fr":"Montserrat",
+            "country_name":"Montserrat",
             "country_code":"1664"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1216,8 +1081,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Morocco",
-            "country_name_fr":"Maroc",
+            "country_name":"Morocco",
             "country_code":"212"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1225,8 +1089,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Mozambique",
-            "country_name_fr":"Mozambique",
+            "country_name":"Mozambique",
             "country_code":"258"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1234,8 +1097,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Namibia",
-            "country_name_fr":"Namibie",
+            "country_name":"Namibia",
             "country_code":"264"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1243,8 +1105,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Nepal",
-            "country_name_fr":"Népal",
+            "country_name":"Nepal",
             "country_code":"977"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1252,8 +1113,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Netherlands",
-            "country_name_fr":"Pays Bas",
+            "country_name":"Netherlands",
             "country_code":"31"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1261,8 +1121,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Netherlands Antilles",
-            "country_name_fr":"Antilles Néerlandaises",
+            "country_name":"Netherlands Antilles",
             "country_code":"599"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1270,8 +1129,7 @@
     },
     {
         "fields":{
-            "country_name_en":"New Caledonia",
-            "country_name_fr":"Nouvelle Calédonie",
+            "country_name":"New Caledonia",
             "country_code":"687"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1279,8 +1137,7 @@
     },
     {
         "fields":{
-            "country_name_en":"New Zealand",
-            "country_name_fr":"Nouvelle Zélande",
+            "country_name":"New Zealand",
             "country_code":"64"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1288,8 +1145,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Nicaragua",
-            "country_name_fr":"Nicaragua",
+            "country_name":"Nicaragua",
             "country_code":"505"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1297,8 +1153,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Niger",
-            "country_name_fr":"Niger",
+            "country_name":"Niger",
             "country_code":"227"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1306,8 +1161,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Nigeria",
-            "country_name_fr":"Nigéria",
+            "country_name":"Nigeria",
             "country_code":"234"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1315,8 +1169,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Norway",
-            "country_name_fr":"Norvège",
+            "country_name":"Norway",
             "country_code":"47"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1324,8 +1177,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Oman",
-            "country_name_fr":"Sultanat d'Oman",
+            "country_name":"Oman",
             "country_code":"968"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1333,8 +1185,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Pakistan",
-            "country_name_fr":"Pakistan",
+            "country_name":"Pakistan",
             "country_code":"92"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1342,8 +1193,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Palestine (+970)",
-            "country_name_fr":"Palestine (+970)",
+            "country_name":"Palestine (+970)",
             "country_code":"970"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1351,8 +1201,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Palestine (+9725)",
-            "country_name_fr":"Palestine (+9725)",
+            "country_name":"Palestine (+9725)",
             "country_code":"9725"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1360,8 +1209,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Panama",
-            "country_name_fr":"Panama",
+            "country_name":"Panama",
             "country_code":"507"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1369,8 +1217,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Papua New Guinea",
-            "country_name_fr":"Papouasie Nouvelle Guinée",
+            "country_name":"Papua New Guinea",
             "country_code":"675"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1378,8 +1225,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Paraguay",
-            "country_name_fr":"Paraguay",
+            "country_name":"Paraguay",
             "country_code":"595"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1387,8 +1233,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Peru",
-            "country_name_fr":"Pérou",
+            "country_name":"Peru",
             "country_code":"51"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1396,8 +1241,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Philippines",
-            "country_name_fr":"Philippines",
+            "country_name":"Philippines",
             "country_code":"63"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1405,8 +1249,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Poland",
-            "country_name_fr":"Pologne",
+            "country_name":"Poland",
             "country_code":"48"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1414,8 +1257,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Portugal",
-            "country_name_fr":"Portugal",
+            "country_name":"Portugal",
             "country_code":"351"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1423,8 +1265,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Puerto Rico",
-            "country_name_fr":"Porto Rico",
+            "country_name":"Puerto Rico",
             "country_code":"1"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1432,8 +1273,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Qatar",
-            "country_name_fr":"Qatar",
+            "country_name":"Qatar",
             "country_code":"974"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1441,8 +1281,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Reunion",
-            "country_name_fr":"La Réunion",
+            "country_name":"Reunion",
             "country_code":"262"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1450,8 +1289,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Romania",
-            "country_name_fr":"Roumanie",
+            "country_name":"Romania",
             "country_code":"40"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1459,8 +1297,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Russia",
-            "country_name_fr":"Russie",
+            "country_name":"Russia",
             "country_code":"7"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1468,8 +1305,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Rwanda",
-            "country_name_fr":"Rwanda",
+            "country_name":"Rwanda",
             "country_code":"250"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1477,8 +1313,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Samoa (American)",
-            "country_name_fr":"Samoa (Américaines)",
+            "country_name":"Samoa (American)",
             "country_code":"1684"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1486,8 +1321,7 @@
     },
     {
         "fields":{
-            "country_name_en":"San Marino",
-            "country_name_fr":"Saint-Marin",
+            "country_name":"San Marino",
             "country_code":"378"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1495,8 +1329,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Saudi Arabia",
-            "country_name_fr":"Arabie Saoudite",
+            "country_name":"Saudi Arabia",
             "country_code":"966"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1504,8 +1337,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Senegal",
-            "country_name_fr":"Sénégal",
+            "country_name":"Senegal",
             "country_code":"221"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1513,8 +1345,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Serbia",
-            "country_name_fr":"Serbie",
+            "country_name":"Serbia",
             "country_code":"381"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1522,8 +1353,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Seychelles",
-            "country_name_fr":"Seychelles",
+            "country_name":"Seychelles",
             "country_code":"248"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1531,8 +1361,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Sierra Leone",
-            "country_name_fr":"Sierra Leone",
+            "country_name":"Sierra Leone",
             "country_code":"232"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1540,8 +1369,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Singapore",
-            "country_name_fr":"Singapour",
+            "country_name":"Singapore",
             "country_code":"65"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1549,8 +1377,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Slovakia",
-            "country_name_fr":"Slovaquie",
+            "country_name":"Slovakia",
             "country_code":"421"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1558,8 +1385,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Slovenia",
-            "country_name_fr":"Slovénie",
+            "country_name":"Slovenia",
             "country_code":"386"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1567,8 +1393,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Solomon Islands",
-            "country_name_fr":"Iles Salomon",
+            "country_name":"Solomon Islands",
             "country_code":"677"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1576,8 +1401,7 @@
     },
     {
         "fields":{
-            "country_name_en":"South Africa",
-            "country_name_fr":"Afrique du Sud",
+            "country_name":"South Africa",
             "country_code":"27"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1585,8 +1409,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Spain",
-            "country_name_fr":"Espagne",
+            "country_name":"Spain",
             "country_code":"34"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1594,8 +1417,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Sri Lanka",
-            "country_name_fr":"Sri Lanka",
+            "country_name":"Sri Lanka",
             "country_code":"94"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1603,8 +1425,7 @@
     },
     {
         "fields":{
-            "country_name_en":"St. Kitts And Nevis",
-            "country_name_fr":"Saint Kitts et Nevis",
+            "country_name":"St. Kitts And Nevis",
             "country_code":"1869"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1612,8 +1433,7 @@
     },
     {
         "fields":{
-            "country_name_en":"St. Lucia",
-            "country_name_fr":"Sainte-Lucie",
+            "country_name":"St. Lucia",
             "country_code":"1758"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1621,8 +1441,7 @@
     },
     {
         "fields":{
-            "country_name_en":"St. Vincent",
-            "country_name_fr":"Saint Vincent",
+            "country_name":"St. Vincent",
             "country_code":"1784"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1630,8 +1449,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Sudan",
-            "country_name_fr":"Soudan",
+            "country_name":"Sudan",
             "country_code":"249"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1639,8 +1457,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Suriname",
-            "country_name_fr":"Surinam",
+            "country_name":"Suriname",
             "country_code":"597"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1648,8 +1465,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Swaziland",
-            "country_name_fr":"Swaziland",
+            "country_name":"Swaziland",
             "country_code":"268"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1657,8 +1473,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Sweden",
-            "country_name_fr":"Suède",
+            "country_name":"Sweden",
             "country_code":"46"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1666,8 +1481,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Switzerland",
-            "country_name_fr":"Suisse",
+            "country_name":"Switzerland",
             "country_code":"41"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1675,8 +1489,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Syria",
-            "country_name_fr":"Syrie",
+            "country_name":"Syria",
             "country_code":"963"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1684,8 +1497,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Taiwan",
-            "country_name_fr":"Tauïwan",
+            "country_name":"Taiwan",
             "country_code":"886"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1693,8 +1505,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Tajikistan",
-            "country_name_fr":"Tadjikistan",
+            "country_name":"Tajikistan",
             "country_code":"992"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1702,8 +1513,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Tanzania",
-            "country_name_fr":"Tanzanie",
+            "country_name":"Tanzania",
             "country_code":"255"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1711,8 +1521,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Thailand",
-            "country_name_fr":"Thaïlande",
+            "country_name":"Thailand",
             "country_code":"66"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1720,8 +1529,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Togo",
-            "country_name_fr":"Togo",
+            "country_name":"Togo",
             "country_code":"228"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1729,8 +1537,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Tonga Islands",
-            "country_name_fr":"Tonga",
+            "country_name":"Tonga Islands",
             "country_code":"676"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1738,8 +1545,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Trinidad and Tobago",
-            "country_name_fr":"Trinité et Tobago",
+            "country_name":"Trinidad and Tobago",
             "country_code":"1868"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1747,8 +1553,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Tunisia",
-            "country_name_fr":"Tunisie",
+            "country_name":"Tunisia",
             "country_code":"216"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1756,8 +1561,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Turkey",
-            "country_name_fr":"Turquie",
+            "country_name":"Turkey",
             "country_code":"90"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1765,8 +1569,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Turkmenistan",
-            "country_name_fr":"Turkménistan",
+            "country_name":"Turkmenistan",
             "country_code":"993"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1774,8 +1577,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Turks and Caicos Islands",
-            "country_name_fr":"Turks et Caïcos",
+            "country_name":"Turks and Caicos Islands",
             "country_code":"1649"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1783,8 +1585,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Uganda",
-            "country_name_fr":"Ouganda",
+            "country_name":"Uganda",
             "country_code":"256"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1792,8 +1593,7 @@
     },
     {
         "fields":{
-            "country_name_en":"UK",
-            "country_name_fr":"Royaume Uni",
+            "country_name":"UK",
             "country_code":"44"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1801,8 +1601,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Ukraine",
-            "country_name_fr":"Ukraine",
+            "country_name":"Ukraine",
             "country_code":"380"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1810,8 +1609,7 @@
     },
     {
         "fields":{
-            "country_name_en":"United Arab Emirates",
-            "country_name_fr":"Iles Vierges Américaines",
+            "country_name":"United Arab Emirates",
             "country_code":"971"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1819,8 +1617,7 @@
     },
     {
         "fields":{
-            "country_name_en":"United States",
-            "country_name_fr":"Etats-Unis",
+            "country_name":"United States",
             "country_code":"1"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1828,8 +1625,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Uruguay",
-            "country_name_fr":"Uruguay",
+            "country_name":"Uruguay",
             "country_code":"598"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1837,8 +1633,7 @@
     },
     {
         "fields":{
-            "country_name_en":"US Virgin Islands",
-            "country_name_fr":"Iles Vierges Américaines",
+            "country_name":"US Virgin Islands",
             "country_code":"1340"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1846,8 +1641,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Uzbekistan",
-            "country_name_fr":"Uzbékistan",
+            "country_name":"Uzbekistan",
             "country_code":"998"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1855,8 +1649,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Vanuatu",
-            "country_name_fr":"Vanuatu",
+            "country_name":"Vanuatu",
             "country_code":"678"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1864,8 +1657,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Venezuela",
-            "country_name_fr":"Venezuela",
+            "country_name":"Venezuela",
             "country_code":"58"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1873,8 +1665,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Vietnam",
-            "country_name_fr":"Vietnam",
+            "country_name":"Vietnam",
             "country_code":"84"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1882,8 +1673,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Yemen",
-            "country_name_fr":"Yémen",
+            "country_name":"Yemen",
             "country_code":"967"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1891,8 +1681,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Zambia",
-            "country_name_fr":"Zambie",
+            "country_name":"Zambia",
             "country_code":"260"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1900,8 +1689,7 @@
     },
     {
         "fields":{
-            "country_name_en":"Zimbabwe",
-            "country_name_fr":"Zimbabwe",
+            "country_name":"Zimbabwe",
             "country_code":"263"
         },
         "model":"countrytotrialnumbermapping.country",

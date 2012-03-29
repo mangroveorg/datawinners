@@ -1,12 +1,11 @@
 from django.db import models
 
 class Country(models.Model):
-    country_name_en = models.TextField(unique=True)
-    country_name_fr = models.TextField(unique=True)
+    country_name = models.TextField(unique=True)
     country_code = models.TextField()
 
     def __unicode__(self):
-        return self.country_name_en
+        return self.country_name
 
 
 class Network(models.Model):
