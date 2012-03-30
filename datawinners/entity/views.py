@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import defaultdict
 import json
-from mangrove.contrib.deletion import ENTITY_DELETION_FORM_CODE
 from django.contrib.auth.decorators import login_required
 from django.utils import translation
 from django.contrib.auth.forms import PasswordResetForm
@@ -14,13 +13,11 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
-from mangrove.datastore.entity import get_by_short_code_include_voided
-from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from datawinners.accountmanagement.models import NGOUserProfile, DataSenderOnTrialAccount
+from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
-from datawinners.entity.helper import create_registration_form, process_create_datasender_form, delete_datasender_for_trial_mode, delete_entity_instance
+from datawinners.entity.helper import create_registration_form, process_create_datasender_form, delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -61,7 +58,8 @@ def submit(request):
     post = json.loads(request.POST['data'])
     success = True
     try:
-        web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+        web_player = WebPlayer(dbm,
+            LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
         message = post['message']
         message[LOCATION_TYPE_FIELD_CODE] = get_country_appended_location(message.get(LOCATION_TYPE_FIELD_CODE),
             get_organization_country(request))
@@ -167,11 +165,13 @@ def delete_entity(request):
     transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
     all_ids = request.POST['all_ids'].split(';')
-    delete_entity_instance(manager, all_ids,entity_type, transport_info)
-    if organization.in_trial_mode and entity_type == REPORTER:
-        delete_datasender_for_trial_mode(manager, all_ids, entity_type)
+    delete_entity_instance(manager, all_ids, entity_type, transport_info)
+    if entity_type == REPORTER:
+        delete_datasender_from_project(manager, all_ids)
+        if organization.in_trial_mode:
+            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
     messages.success(request, get_success_message(entity_type))
-    return HttpResponse(json.dumps({'success':True}))
+    return HttpResponse(json.dumps({'success': True}))
 
 
 def _get_project_association(projects):
@@ -231,12 +231,14 @@ def all_datasenders(request):
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request, manager)
+        error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
+            manager)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
                  'error_message': error_message,
-                 'failure_imports': failure_imports, 'all_data': all_data_senders, 'imported_datasenders': imported_datasenders}))
+                 'failure_imports': failure_imports, 'all_data': all_data_senders,
+                 'imported_datasenders': imported_datasenders}))
 
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html',
@@ -325,7 +327,9 @@ def create_subject(request, entity_type=None):
         error_message = None
         try:
             from datawinners.project.helper import create_request
-            response = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
+
+            response = WebPlayer(manager,
+                LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
                 create_request(questionnaire_form, request.user.username))
             if response.success:
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
@@ -333,6 +337,7 @@ def create_subject(request, entity_type=None):
                 questionnaire_form = QuestionnaireForm()
             else:
                 from datawinners.project.helper import errors_to_list
+
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 return _get_response(request, questionnaire_form, entity_type)
 
@@ -403,8 +408,8 @@ def save_questionnaire(request):
                 form_model.save()
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
-                    return HttpResponse(json.dumps({'success':False,
-                        'error_message':"Questionnaire with this code already exists"}))
+                    return HttpResponse(json.dumps({'success': False,
+                                                    'error_message': "Questionnaire with this code already exists"}))
                 return HttpResponseServerError(e.message)
 
         json_string = request.POST['question-set']

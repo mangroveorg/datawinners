@@ -1,8 +1,7 @@
 # vim: ai ts=4 sts=4 et sw= encoding=utf-8
 from datetime import timedelta, date
-import couchdb
 from couchdb.mapping import  TextField, ListField, DictField
-from django.db.models.fields import IntegerField, CharField, BooleanField
+from django.db.models.fields import IntegerField, CharField
 from django.db.models.fields.related import ForeignKey
 from datawinners.accountmanagement.models import Organization
 from datawinners.entity.import_data import load_all_subjects_of_type
@@ -74,7 +73,7 @@ class Reminder(models.Model):
 
     def log(self, dbm, project_id, date, to_number, sent_status='sent', number_of_sms=0):
         log = ReminderLog(dbm=dbm, reminder=self, project_id=project_id, date=date, sent_status=sent_status,
-                          number_of_sms=number_of_sms, to_number=to_number)
+            number_of_sms=number_of_sms, to_number=to_number)
         log.save()
         return log
 
@@ -105,7 +104,8 @@ class ReminderLogDocument(DocumentBase):
 class ReminderLog(DataObject):
     __document_class__ = ReminderLogDocument
 
-    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_id=None, to_number=""):
+    def __init__(self, dbm, reminder=None, sent_status=None, number_of_sms=None, date=None, project_id=None,
+                 to_number=""):
         DataObject.__init__(self, dbm)
         if reminder is not None:
             if reminder.reminder_mode == ReminderMode.ON_DEADLINE:
@@ -113,9 +113,9 @@ class ReminderLog(DataObject):
             else:
                 reminder_mode = str(reminder.day) + ' days ' + self._format_string_before_saving(reminder.reminder_mode)
             doc = ReminderLogDocument(reminder_id=reminder.id, project_id=project_id, sent_status=sent_status,
-                                      number_of_sms=number_of_sms, date=date, message=reminder.message,
-                                      remind_to=self._format_string_before_saving(to_number),
-                                      reminder_mode=reminder_mode)
+                number_of_sms=number_of_sms, date=date, message=reminder.message,
+                remind_to=self._format_string_before_saving(to_number),
+                reminder_mode=reminder_mode)
             DataObject._set_document(self, doc)
 
     @property
@@ -159,8 +159,7 @@ class Project(DocumentBase):
     language = TextField(default='en')
 
     def __init__(self, id=None, name=None, goals=None, project_type=None, entity_type=None, devices=None,
-                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None,language='en'):
-
+                 state=ProjectState.INACTIVE, activity_report=None, sender_group=None, language='en'):
         assert entity_type is None or is_string(entity_type), "Entity type %s should be a string." % (entity_type,)
         DocumentBase.__init__(self, id=id, document_type='Project')
         self.devices = []
@@ -184,13 +183,13 @@ class Project(DocumentBase):
 
     def get_data_senders(self, dbm):
         all_data, fields, label = load_all_subjects_of_type(dbm)
-        return [dict(zip(fields,data["cols"])) for data in all_data if data['short_code'] in self.data_senders]
+        return [dict(zip(fields, data["cols"])) for data in all_data if data['short_code'] in self.data_senders]
 
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):
         start_date, end_date = self.deadline().get_applicable_frequency_period_for(deadline_date)
         form_code = self._load_form(dbm).form_code
         data_senders_with_submission = get_reporters_who_submitted_data_for_frequency_period(dbm, form_code, start_date,
-                                                                                             end_date)
+            end_date)
         return [ds.short_code for ds in data_senders_with_submission]
 
     def get_data_senders_without_submissions_for(self, deadline_date, dbm):
@@ -245,7 +244,7 @@ class Project(DocumentBase):
         for key in value_dict:
             if key in attribute_list:
                 setattr(self, key, value_dict.get(key).lower()) if key == 'name' else setattr(self, key,
-                                                                                              value_dict.get(key))
+                    value_dict.get(key))
 
     def update_questionnaire(self, dbm):
         form_model = self._load_form(dbm)
@@ -285,11 +284,17 @@ class Project(DocumentBase):
         self.void = void
         self.save(dbm)
 
-    def is_on_type(self,type):
-        return self.entity_type==type
+    def is_on_type(self, type):
+        return self.entity_type == type
+
     def _load_form(self, dbm):
         form_model = dbm.get(self.qid, FormModel)
         return form_model
+
+    def delete_datasender(self, manager, entity_id):
+        self.data_senders.remove(entity_id)
+        self.save(manager)
+
 
 def get_all_projects(dbm, data_sender_id=None):
     if data_sender_id:
@@ -299,8 +304,8 @@ def get_all_projects(dbm, data_sender_id=None):
 
 def count_projects(dbm, include_voided_projects=True):
     if include_voided_projects:
-        rows =  dbm.load_all_rows_in_view('count_projects', reduce = True, group_level=0)
+        rows = dbm.load_all_rows_in_view('count_projects', reduce=True, group_level=0)
     else:
-        rows =  dbm.load_all_rows_in_view('count_projects', reduce = True, group_level=1, key=False)
+        rows = dbm.load_all_rows_in_view('count_projects', reduce=True, group_level=1, key=False)
 
     return rows[0]['value'] if not is_empty(rows) else 0

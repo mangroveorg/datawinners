@@ -9,7 +9,6 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity import Entity
-from mangrove.errors.MangroveException import DataObjectAlreadyExists
 from mangrove.form_model.field import TextField
 from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.form_model.validation import TextLengthConstraint
@@ -20,10 +19,10 @@ class TestProjectModel(MangroveTestCase):
         MangroveTestCase.setUp(self)
         create_views(self.manager)
         self.project1 = Project(name="Test1", goals="Testing", project_type="Survey", entity_type="Clinic",
-                                devices=['web'])
+            devices=['web'])
         self.project1_id = self.project1.save(self.manager)
         self.project2 = Project(name="Test2", goals="Testing", project_type="Survey", entity_type="Clinic",
-                                devices=['web'])
+            devices=['web'])
         self.project2_id = self.project2.save(self.manager)
 
         self._create_form_model_for_project(self.project1)
@@ -58,7 +57,7 @@ class TestProjectModel(MangroveTestCase):
             project.save(self.manager)
         the_exception = cm.exception
         self.assertEqual(the_exception.message, "Project with Name = 'test2' already exists.")
-        
+
     def test_should_check_for_unique_name_while_update_project(self):
         self.project1.update(dict(name='Test2', devices=['web', 'sms'], goals="New goals"))
         with self.assertRaises(Exception) as cm:
@@ -68,15 +67,16 @@ class TestProjectModel(MangroveTestCase):
 
     def _create_form_model_for_project(self, project):
         ddtype = DataDictType(self.manager, name='Default String Datadict Type', slug='string_default',
-                              primitive_type='string')
+            primitive_type='string')
         question1 = TextField(name="entity_question", code="ID", label="What is associated entity",
-                              language="eng", entity_question_flag=True, ddtype=ddtype)
+            language="eng", entity_question_flag=True, ddtype=ddtype)
         question2 = TextField(name="question1_Name", code="Q1", label="What is your name",
-                              defaultValue="some default value", language="eng",
-                              constraints=[TextLengthConstraint(5, 10)],
-                              ddtype=ddtype)
-        self.form_model = FormModel(self.manager, name=self.project1.name, form_code="abc", fields=[question1, question2],
-                                    entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
+            defaultValue="some default value", language="eng",
+            constraints=[TextLengthConstraint(5, 10)],
+            ddtype=ddtype)
+        self.form_model = FormModel(self.manager, name=self.project1.name, form_code="abc",
+            fields=[question1, question2],
+            entity_type=["Clinic"], state=attributes.INACTIVE_STATE)
         qid = self.form_model.save()
         project.qid = qid
         project.save(self.manager)
@@ -109,7 +109,7 @@ class TestProjectModel(MangroveTestCase):
             project_save_mock.assert_called_once_with(dbm)
 
         self.assertEqual(ProjectState.INACTIVE, project.state)
-    
+
     def test_should_set_form_to_test_on_project_set_to_test(self):
         project = Project(state=ProjectState.ACTIVE)
         dbm = Mock(spec=DatabaseManager)
@@ -153,16 +153,18 @@ class TestProjectModel(MangroveTestCase):
             "frequency_period": "month"
         }
         project = Project()
-        project.reminder_and_deadline=reminder_and_deadline_for_month
+        project.reminder_and_deadline = reminder_and_deadline_for_month
         project.data_senders = ["rep1", "rep2", "rep3", "rep4", "rep5"]
         dbm = Mock(spec=DatabaseManager)
 
         with patch(
             "datawinners.project.models.get_reporters_who_submitted_data_for_frequency_period") as get_reporters_who_submitted_data_for_frequency_period_mock:
             with patch("datawinners.project.models.load_all_subjects_of_type") as load_all_subjects_of_type_mock:
-                load_all_subjects_of_type_mock.return_value = ([{"cols": ["rep%s" % i, i],"short_code": "rep%s" % i}  for i in
-                                                                                                                      range(
-                                                                                                                          10)],["short_code", "mobile_number"], ["What is DS Unique ID", "What is DS phone number"])
+                load_all_subjects_of_type_mock.return_value = (
+                [{"cols": ["rep%s" % i, i], "short_code": "rep%s" % i}  for i in
+                                                                        range(
+                                                                            10)], ["short_code", "mobile_number"],
+                ["What is DS Unique ID", "What is DS phone number"])
                 get_reporters_who_submitted_data_for_frequency_period_mock.return_value = [
                     self._create_reporter_entity("rep1"), self._create_reporter_entity("rep3")]
 
@@ -172,6 +174,17 @@ class TestProjectModel(MangroveTestCase):
         self.assertIn("rep2", [ds["short_code"]  for ds in data_senders])
         self.assertIn("rep4", [ds["short_code"]  for ds in data_senders])
         self.assertIn("rep5", [ds["short_code"]  for ds in data_senders])
+
+    def test_should_delete_datasender_from_project(self):
+        self.project1.data_senders = ['rep1', 'rep2']
+        datasender_to_be_deleted = 'rep1'
+        self.project1.delete_datasender(self.manager, datasender_to_be_deleted)
+        self.project1 = Project.load(self.manager.database, self.project1_id)
+        expected_datasenders = ['rep2']
+        self.assertEqual(self.project1.data_senders, expected_datasenders)
+
+
+
 
 
 

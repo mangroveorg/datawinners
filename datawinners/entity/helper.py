@@ -10,7 +10,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
@@ -28,8 +28,8 @@ from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
     get_success_msg_for_registration_using
 from datawinners.location.LocationTree import get_location_hierarchy
+from datawinners.project.models import get_all_projects, Project
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_organization
 
 FIRSTNAME_FIELD = "firstname"
 FIRSTNAME_FIELD_CODE = "f"
@@ -211,4 +211,11 @@ def delete_datasender_for_trial_mode(manager, all_ids, entity_type):
     for entity_id in all_ids:
         entity_to_be_deleted = get_by_short_code_include_voided(manager, entity_id, [entity_type])
         DataSenderOnTrialAccount.objects.get(mobile_number=entity_to_be_deleted.value(MOBILE_NUMBER_FIELD)).delete()
+
+def delete_datasender_from_project(manager, all_ids):
+    for entity_id in all_ids:
+        associated_projects = get_all_projects(manager, data_sender_id=entity_id)
+        for associated_project in associated_projects:
+            project = Project.load(manager.database, associated_project['value']['_id'])
+            project.delete_datasender(manager, entity_id)
 

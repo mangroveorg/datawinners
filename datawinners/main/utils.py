@@ -3,14 +3,11 @@ import os
 from glob import iglob
 import string
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from mangrove.datastore.database import get_db_manager
-from mangrove.errors.MangroveException import UnknownOrganization, NumberNotRegisteredException
 
-from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount, TEST_REPORTER_MOBILE_NUMBER
-from datawinners.entity.helper import remove_hyphens
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 
 def get_database_manager(user):
     profile = user.get_profile()
