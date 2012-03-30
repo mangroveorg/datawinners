@@ -20,7 +20,7 @@
     {
         "fields":{
             "country_name_en":"Algeria",
-            "country_name_fr":"Algerie",
+            "country_name_fr":"Algeria",
             "country_code":"213"
         },
         "model":"countrytotrialnumbermapping.country",
@@ -1685,7 +1685,7 @@
     {
         "fields":{
             "country_name_en":"Taiwan",
-            "country_name_fr":"Taiwan",
+            "country_name_fr":"Tauïwan",
             "country_code":"886"
         },
         "model":"countrytotrialnumbermapping.country",
