@@ -125,7 +125,7 @@ admin.site.unregister(Group)
 admin.site.unregister(User)
 
 admin.site.register(OrganizationSetting, OrganizationSettingAdmin)
-admin.site.register(SMSC,DatawinnerAdmin)
+admin.site.register(SMSC,admin.ModelAdmin)
 admin.site.register(MessageTracker, MessageTrackerAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Country, CountryAdmin)
