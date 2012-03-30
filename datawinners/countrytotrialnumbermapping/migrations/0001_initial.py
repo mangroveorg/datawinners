@@ -7,12 +7,11 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding model 'Country'
         db.create_table('countrytotrialnumbermapping_country', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('country_name_en', self.gf('django.db.models.fields.TextField')(unique=True)),
-            ('country_name_fr', self.gf('django.db.models.fields.TextField')()),
+            ('country_name', self.gf('django.db.models.fields.TextField')(unique=True)),
             ('country_code', self.gf('django.db.models.fields.TextField')()),
         ))
         db.send_create_signal('countrytotrialnumbermapping', ['Country'])
@@ -35,7 +34,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Deleting model 'Country'
         db.delete_table('countrytotrialnumbermapping_country')
 
@@ -63,3 +62,4 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['countrytotrialnumbermapping']
+  
