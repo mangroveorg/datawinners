@@ -4,12 +4,13 @@ from django.utils.translation import ugettext as _
 from countrytotrialnumbermapping.models import Network
 import re
 
-def get_countries_in_display_format(countries):
-    return [(country.country_name, _get_formatted_country_name(country)) for country in countries]
+def get_countries_in_display_format(countries, language="en"):
+    return [(country.country_name_en, _get_formatted_country_name(country, language)) for country in countries]
 
 
-def _get_formatted_country_name(country):
-    return _(country.country_name) + ' (' + country.country_code + ')'
+def _get_formatted_country_name(country, language):
+    field = "country_name_"+language
+    return getattr(country, field) + ' (' + country.country_code + ')'
 
 
 def get_trial_numbers():

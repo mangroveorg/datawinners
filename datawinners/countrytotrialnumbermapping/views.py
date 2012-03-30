@@ -11,15 +11,13 @@ import json
 def trial_account_phone_numbers(request, language):
     template = 'countrytotrialaccountmapping/trial_account_phone_number_%s.html' % (language, )
     if request.method == 'GET':
-        countries = Country.objects.order_by('country_name')
-        countries = get_countries_in_display_format(countries)
-        if language != 'en':
-            countries.sort(key=lambda x: x[1])
+        countries = Country.objects.order_by('country_name_'+language)
+        countries = get_countries_in_display_format(countries, language)
         return render_to_response(template, {'formatted_countries': countries},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         country_name = request.POST['country']
-        country = Country.objects.filter(country_name=country_name)
+        country = Country.objects.filter(country_name_en=country_name)
         networks = Network.objects.filter(country=country)
         network_display = {network.network_name: network.trial_sms_number for network in networks}
         return HttpResponse(json.dumps(network_display))
