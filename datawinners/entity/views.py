@@ -182,18 +182,6 @@ def _get_project_association(projects):
     return project_association
 
 
-def _get_all_datasenders(manager, projects, user):
-    all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
-    project_association = _get_project_association(projects)
-    for datasender in all_data_senders:
-        org_id = NGOUserProfile.objects.get(user=user).org_id
-        user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_name'], org_id=org_id)
-        datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
-        association = project_association.get(datasender['short_name'])
-        datasender['projects'] = ' ,'.join(association) if association is not None else '--'
-    return all_data_senders
-
-
 @login_required(login_url='/login')
 @csrf_view_exempt
 @is_not_expired
@@ -366,6 +354,10 @@ def _get_all_datasenders(manager, projects, user):
     all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
     project_association = _get_project_association(projects)
     for datasender in all_data_senders:
+        if datasender["short_code"] == "test":
+            index = all_data_senders.index(datasender)
+            del all_data_senders[index]
+            continue
         org_id = NGOUserProfile.objects.get(user=user).org_id
         user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
         datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
