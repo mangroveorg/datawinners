@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <simple-property-list name="includeResource">
+        <value>properties/messages</value>
+        <value>properties/messages_fr_CA</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <scalar-parameter name="Type of Food" id="10">
+            <property name="valueType">dynamic</property>
+            <property name="dataSetName">Food type</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["food_type"]</expression>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">true</property>
+            <structure name="format">
+                <property name="category">></property>
+                <property name="pattern">></property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="CRS_conn_profile" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql:geodjango</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
+            <property name="odaJndiName">java:comp/env/jdbc/crs</property>
+            <property name="OdaConnProfileName">CRS_conn_profile</property>
+            <property name="OdaConnProfileStorePath">crs_conn_profile</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Data Set" id="8">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">total_net_weight</property>
+                    <expression name="expression">row["good_net_weight"]+row["damaged_net_weight"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">pl_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">pl_code</text-property>
+                    <text-property name="heading">pl_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">physical_inventory_closing_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">physical_inventory_closing_date</text-property>
+                    <text-property name="heading">physical_inventory_closing_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">actual_physical_inventory_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">actual_physical_inventory_date</text-property>
+                    <text-property name="heading">actual_physical_inventory_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">food_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <text-property name="heading">food_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">good_net_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">good_net_weight</text-property>
+                    <text-property name="heading">good_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">damaged_net_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">damaged_net_weight</text-property>
+                    <text-property name="heading">damaged_net_weight</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">food_type</property>
+                    <property name="paramName">Type of Food</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">pl_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">physical_inventory_closing_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">actual_physical_inventory_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">food_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">good_net_weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">damaged_net_weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">total_net_weight</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">pl_code</property>
+                    <property name="nativeName">pl_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">physical_inventory_closing_date</property>
+                    <property name="nativeName">physical_inventory_closing_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">actual_physical_inventory_date</property>
+                    <property name="nativeName">actual_physical_inventory_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">food_type</property>
+                    <property name="nativeName">food_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">good_net_weight</property>
+                    <property name="nativeName">good_net_weight</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">damaged_net_weight</property>
+                    <property name="nativeName">damaged_net_weight</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select pl_code,physical_inventory_closing_date,actual_physical_inventory_date,food_type,good_net_weight, damaged_net_weight
+from crs_physicalinventorysheet
+where food_type ilike ?
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>good_net_weight</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>good_net_weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>good_net_weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>damaged_net_weight</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>damaged_net_weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>damaged_net_weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Food type" id="9">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">upper</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">upper</text-property>
+                    <text-property name="heading">upper</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">upper</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">upper</property>
+                    <property name="nativeName">upper</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select distinct upper(food_type)
+from crs_physicalinventorysheet]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>food_type</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>food_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>food_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="backgroundImage">images/application_bg.gif</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopWidth">thin</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <label id="728">
+            <property name="backgroundImage">images/header_app_bg.gif</property>
+            <property name="backgroundRepeat">repeat-x</property>
+            <property name="fontSize">16pt</property>
+            <property name="color">#FFFFFF</property>
+            <property name="height">74px</property>
+            <text-property name="text">DataWinners</text-property>
+            <list-property name="action">
+                <structure>
+                    <property name="linkType">hyperlink</property>
+                    <expression name="uri" type="constant">/reports</expression>
+                    <property name="targetWindow">_blank</property>
+                </structure>
+            </list-property>
+        </label>
+        <table id="61">
+            <property name="borderBottomStyle">none</property>
+            <property name="borderBottomWidth">thick</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="marginTop">10px</property>
+            <property name="dataSet">Data Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">pl_code</property>
+                    <text-property name="displayName">pl_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["pl_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">physical_inventory_closing_date</property>
+                    <text-property name="displayName">physical_inventory_closing_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">actual_physical_inventory_date</property>
+                    <text-property name="displayName">actual_physical_inventory_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["actual_physical_inventory_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">food_type</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["food_type"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">good_net_weight</property>
+                    <text-property name="displayName">good_net_weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["good_net_weight"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">damaged_net_weight</property>
+                    <text-property name="displayName">damaged_net_weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["damaged_net_weight"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">total_net_weight</property>
+                    <text-property name="displayName">total_net_weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total_net_weight"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <column id="100"/>
+            <column id="104"/>
+            <column id="105"/>
+            <column id="106"/>
+            <header>
+                <row id="107">
+                    <property name="height">0.28125in</property>
+                    <property name="backgroundColor">#846F6F</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="borderTopWidth">medium</property>
+                    <cell id="108">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                    </cell>
+                    <cell id="109">
+                        <property name="colSpan">3</property>
+                        <property name="rowSpan">1</property>
+                        <label id="112">
+                            <text-property name="text" key="last_physical_inventory"></text-property>
+                        </label>
+                    </cell>
+                </row>
+                <row id="62">
+                    <property name="height">0.28125in</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <cell id="63">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="64">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <text-property name="text" key="pl_code">pl_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="71">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="72">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <text-property name="text" key="good_net_weight">good_net_weight</text-property>
+                        </label>
+                    </cell>
+                    <cell id="73">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="74">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <text-property name="text" key="damaged_net_weight">damaged_net_weight</text-property>
+                        </label>
+                    </cell>
+                    <cell id="75">
+                        <label id="76">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <text-property name="text" key="total_net_weight">total_net_weight</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="77">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <cell id="78">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="79">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">pl_code</property>
+                        </data>
+                    </cell>
+                    <cell id="86">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="87">
+                            <property name="numberAlign">center</property>
+                            <property name="resultSetColumn">good_net_weight</property>
+                        </data>
+                    </cell>
+                    <cell id="88">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="89">
+                            <property name="numberAlign">center</property>
+                            <property name="resultSetColumn">damaged_net_weight</property>
+                        </data>
+                    </cell>
+                    <cell id="90">
+                        <data id="91">
+                            <property name="numberAlign">center</property>
+                            <property name="resultSetColumn">total_net_weight</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="92">
+                    <property name="borderBottomStyle">solid</property>
+                    <cell id="93">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                    </cell>
+                    <cell id="97">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                    </cell>
+                    <cell id="98">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                    </cell>
+                    <cell id="99"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>
