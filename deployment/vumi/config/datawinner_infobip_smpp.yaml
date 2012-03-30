@@ -1,0 +1,12 @@
+# The unique name of this transport
+TRANSPORT_NAME: smpp_transport_infobip
+POST_TO_URL: http://178.79.161.90:8000/submission
+system_id: dmcafee  # username
+password:  # password
+host: smpp3.infobip.com         # the host to connect to
+port: 8888              # the port to connect to
+
+exchange_name: vumi.topic   # the AMQ exchange name
+exchange_type: topic        # the AMQ exchange type
+system-type: "VMA"
+USER_ACCOUNT: "vumi"
