@@ -38,12 +38,13 @@ from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization
-from datawinners.entity.helper import get_country_appended_location
+from datawinners.entity.helper import get_country_appended_location, add_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from datawinners.utils import get_organization_country
 from django.contrib import messages
 from datawinners.accountmanagement.views import is_not_expired
+from datawinners.accountmanagement.models import Organization
 
 COUNTRY = ',MADAGASCAR'
 
@@ -233,7 +234,15 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
             manager)
+        org_id = request.user.get_profile().org_id
+        organization = Organization.objects.get(org_id=org_id)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
+        if organization.in_trial_mode:
+            mobile_number_index = fields.index('mobile_number')
+            for ds in all_data_senders:
+                if ds['short_code'] in imported_datasenders:
+                    add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
+
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
                  'error_message': error_message,

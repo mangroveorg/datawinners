@@ -152,7 +152,7 @@ def _get_data(form_data, country):
     return data
 
 
-def _add_data_sender_to_trial_organization(telephone_number, org_id):
+def add_data_sender_to_trial_organization(telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=telephone_number,
         organization=Organization.objects.get(org_id=org_id))
     data_sender.save()
@@ -174,7 +174,7 @@ def process_create_datasender_form(dbm, form, org_id, project):
                     [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
                 return message
             else:
-                _add_data_sender_to_trial_organization(telephone_number, org_id)
+                add_data_sender_to_trial_organization(telephone_number, org_id)
 
         try:
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
