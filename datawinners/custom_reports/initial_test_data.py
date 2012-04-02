@@ -50,7 +50,7 @@ def create_physical_inventory_project(PACKAGING_LIST_ENTITY_TYPE, manager):
         instruction="Answer must be a number between 18-100.")
 
     form_model = FormModel(manager, name="PHYSICAL_INVENTORY", label="PHYSICAL_INVENTORY form_model",
-        form_code="PI01", type='survey',
+        form_code="pi01", type='survey',
         fields=[question1, question2, question3, question4, question5, question6, question7],
         entity_type=PACKAGING_LIST_ENTITY_TYPE
     )
@@ -58,7 +58,7 @@ def create_physical_inventory_project(PACKAGING_LIST_ENTITY_TYPE, manager):
     try:
         qid = form_model.save()
     except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "PI01").delete()
+        get_form_model_by_code(manager, "pi01").delete()
         qid = form_model.save()
     project1 = Project(name="Physical Inventory", goals="This project is for automation", project_type="survey",
         entity_type=PACKAGING_LIST_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
@@ -165,7 +165,7 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
         instruction="Answer must be a number between 18-100.")
 
     form_model = FormModel(manager, name="WAYBILL_SENT", label="WAYBILL form_model",
-        form_code="WBS01", type='survey',
+        form_code="wbs01", type='survey',
         fields=[question1, question2, question3, question4, question5, question6, question7,
                 question8, question9],
         entity_type=PACKAGING_LIST_ENTITY_TYPE
@@ -174,7 +174,7 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
     try:
         qid = form_model.save()
     except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "WBS01").delete()
+        get_form_model_by_code(manager, "wbs01").delete()
         qid = form_model.save()
     project1 = Project(name="Way Bill Sent", goals="This project is for automation", project_type="survey",
         entity_type=PACKAGING_LIST_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
@@ -223,7 +223,7 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
 
 
     form_model = FormModel(manager, name="WAYBILL_RECEIVED", label="WAYBILL form_model",
-        form_code="WBR01", type='survey',
+        form_code="wbr01", type='survey',
         fields=[question1, question2, question3, question4, question5, question6, question7,
                 question8],
         entity_type=PACKAGING_LIST_ENTITY_TYPE
@@ -232,7 +232,7 @@ def create_waybill_sent_received_project(PACKAGING_LIST_ENTITY_TYPE, manager):
     try:
         qid = form_model.save()
     except DataObjectAlreadyExists as e:
-        get_form_model_by_code(manager, "WBR01").delete()
+        get_form_model_by_code(manager, "wbr01").delete()
         qid = form_model.save()
     project2 = Project(name="Way Bill Received", goals="This project is for automation", project_type="survey",
         entity_type=PACKAGING_LIST_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")

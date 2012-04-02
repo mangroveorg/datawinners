@@ -7,7 +7,7 @@ from datawinners.custom_reports.crs.models import WayBillSent, WayBillReceived
 class TestWayBillSent(unittest.TestCase):
     def setUp(self):
         self.way_bill_sent = None
-        self.question_code = 'WBS01'
+        self.question_code = 'wbs01'
         model_routing_dict[self.question_code]=WayBillSent
 
     def tearDown(self):
@@ -35,7 +35,7 @@ class TestWayBillSent(unittest.TestCase):
 class TestWayBillReceived(unittest.TestCase):
     def setUp(self):
         self.way_bill_received= None
-        self.question_code = 'WBR01'
+        self.question_code = 'wbr01'
         model_routing_dict[self.question_code]=WayBillReceived
 
 

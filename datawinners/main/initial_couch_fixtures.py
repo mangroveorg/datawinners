@@ -185,7 +185,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
                             ddtype=select_type,
                             instruction="Choose 1 or more answers from the list.", required=False)
     form_model = FormModel(manager, name="AIDS", label="Aids form_model",
-                           form_code="cli001", type='survey',
+                               form_code="cli001", type='survey',
                            fields=[question1, question2, question3, question4, question5, question6, question7,
                                    question8],
                            entity_type=CLINIC_ENTITY_TYPE
