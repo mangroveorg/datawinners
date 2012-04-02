@@ -17,7 +17,9 @@ from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
-from datawinners.entity.helper import create_registration_form, process_create_datasender_form, delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project
+from datawinners.entity.helper import create_registration_form, process_create_datasender_form, \
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
+    delete_datasender_users_if_any
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -169,6 +171,7 @@ def delete_entity(request):
     delete_entity_instance(manager, all_ids, entity_type, transport_info)
     if entity_type == REPORTER:
         delete_datasender_from_project(manager, all_ids)
+        delete_datasender_users_if_any(all_ids, organization)
         if organization.in_trial_mode:
             delete_datasender_for_trial_mode(manager, all_ids, entity_type)
     messages.success(request, get_success_message(entity_type))

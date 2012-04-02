@@ -14,7 +14,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
-from mangrove.utils.types import is_empty, is_sequence
+from mangrove.utils.types import is_empty, is_sequence, is_not_empty
 import re
 from mangrove.errors.MangroveException import NumberNotRegisteredException,\
     DataObjectNotFound
@@ -22,7 +22,7 @@ from mangrove.transport.reporter import find_reporter_entity
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _, get_language
 from datawinners.accountmanagement.models import Organization,\
-    DataSenderOnTrialAccount
+    DataSenderOnTrialAccount, NGOUserProfile
 from datawinners.location.LocationTree import get_location_tree
 from mangrove.transport import Request, TransportInfo
 from datawinners.messageprovider.message_handler import\
@@ -206,6 +206,12 @@ def delete_entity_instance(manager, all_ids, entity_type, transport_info):
                    'form_code': ENTITY_DELETION_FORM_CODE}
         mangrove_request = Request(message, transport_info)
         web_player.accept(mangrove_request)
+
+def delete_datasender_users_if_any(all_ids, organization):
+    for id in all_ids:
+        profiles = NGOUserProfile.objects.filter(org_id=organization.org_id,reporter_id=id)
+        if is_not_empty(profiles):
+            profiles[0].user.delete()
 
 def delete_datasender_for_trial_mode(manager, all_ids, entity_type):
     for entity_id in all_ids:
