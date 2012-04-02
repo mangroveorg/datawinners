@@ -229,7 +229,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     reminder.save()
 
     # Associate datasenders/reporters with project 1
-    project1.data_senders.extend(["rep5","rep6","rep1"])
+    project1.data_senders.extend(["rep5","rep6","rep1", "rep8"])
     project1.save(manager)
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",
@@ -1217,6 +1217,10 @@ def load_data():
         (NAME_FIELD, "AkshaY", first_name_type)],
          location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
          short_code="rep7", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
+    register(manager, entity_type=REPORTER_ENTITY_TYPE, data=[(MOBILE_NUMBER_FIELD, "919049008976", phone_number_type),
+        (NAME_FIELD, "Ashwini", first_name_type)],
+        location=[u'Madagascar', u'Menabe', u'Mahabo', u'Beronono'],
+        short_code="rep8", geometry={"type": "Point", "coordinates": [-21.0399440737, 45.2363669927]})
 
     load_sms_data_for_cli001(manager)
 

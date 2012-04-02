@@ -27,6 +27,8 @@ UID_LABEL_BY_MOBILE_XPATH = "//tr/td[7][text()='%s']/../td[2]"
 
 CANCEL_LINK = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[@id='cancel_link']")
 CONFIRM_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Confirm']")
+DELETE_BUTTON = by_id("ok_button")
 
 ERROR_MESSAGE_LABEL = by_css("div#error.message-box")
 SUCCESS_MESSAGE_LABEL = by_xpath("//div[@class='success-message-box' and not(contains(@id,'none'))]")
+DELETE_SUCCESS_MESSAGE = by_xpath("//ul[@class='messages']/li")

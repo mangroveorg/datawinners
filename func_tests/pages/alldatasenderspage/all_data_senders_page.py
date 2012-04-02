@@ -62,6 +62,14 @@ class AllDataSendersPage(Page):
          """
         self.driver.find(CANCEL_LINK).click()
 
+    def click_delete(self, wait=False):
+        """
+        Function to cancel the association/dissociation with projects on all data sender page
+        """
+        self.driver.find(DELETE_BUTTON).click()
+        if wait:
+            self.driver.wait_until_modal_dismissed(7)
+
     def associate_data_sender(self):
         """
         Function to associate data sender with project
@@ -80,6 +88,13 @@ class AllDataSendersPage(Page):
          """
         return self.driver.find(SUCCESS_MESSAGE_LABEL).text
 
+    def get_delete_success_message(self):
+
+        """
+        Function to fetch the success message for delete data sender
+        """
+        return self.driver.find(DELETE_SUCCESS_MESSAGE).text
+
     def get_error_message(self):
         """
         Function to fetch the error message from success label
@@ -97,3 +112,8 @@ class AllDataSendersPage(Page):
         Function to fetch the mobile number from the all data senders page
          """
         return self.driver.find(by_xpath(UID_LABEL_BY_MOBILE_XPATH % data_sender_mobile)).text
+
+    def delete_data_sender(self):
+        """"
+        Function to delete datasender """
+        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(DELETE)
