@@ -234,7 +234,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=form_model).create()
         django_integer_field = questionnaire_form_class().fields['ag']
 
-        self.assertEqual(django.forms.fields.IntegerField, type(django_integer_field))
+        self.assertEqual(django.forms.fields.FloatField, type(django_integer_field))
 
     def test_should_validate_gps_code_and_return_error_if_only_longitude_is_passed(self):
         mock = Mock()
