@@ -14,7 +14,7 @@ from mangrove.datastore import data
 from copy import copy
 from mangrove.datastore.aggregrate import Sum, Latest
 from mangrove.form_model.validation import TextLengthConstraint, NumericRangeConstraint
-
+from datetime import datetime
 
 class TestHelper(unittest.TestCase):
     def setUp(self):
@@ -176,20 +176,37 @@ class TestHelper(unittest.TestCase):
         actual_list = helper.get_headers(form_model)
         self.assertListEqual(["Clinic Code", "What is your name"], actual_list)
 
+    def text_field_with(self, name, entity_question_flag=False):
+        return TextField(name, "code", name, Mock(spec=DataDictType),entity_question_flag=entity_question_flag)
+
     def test_should_create_value_list(self):
         data_dictionary = {'1': {'What is age of father?': 55, 'What is your name?': 'shweta',
                                  "What colour do you choose?": ["red", "blue"],
                                  "what is your loc?": [21.1, 23.3],
+                                 "what is reporting date?": datetime.strptime('25.12.2011', '%d.%m.%Y'),
                                  'What is associated entity?': 'cid002'},
                            '2': {'What is age of father?': 35, 'What is your name?': 'asif',
                                  "What colour do you choose?": ["red"], "what is your loc?": [21.1],
+                                 "what is reporting date?": datetime.strptime('25.12.2011', '%d.%m.%Y'),
                                  'What is associated entity?': 'cid001'}}
-        header_list = ["Clinic code?", "What is your name?", "What is age of father?",
-                       "What colour do you choose?", "what is your loc?"]
-        field_valus, grand_totals = helper.get_all_values(data_dictionary, header_list, 'What is associated entity?')
-        expected_list = [["cid002", 'shweta', 55, "red,blue", "21.1,23.3"],
-            ["cid001", 'asif', 35, "red", "21.1"]]
-        self.assertListEqual(expected_list, field_valus)
+        form_model_mock = Mock(spec=FormModel)
+        form_model_mock.entity_type = ['Clinic']
+        form_model_mock.activeLanguages = ['en']
+        q1 = self.text_field_with("Clinic code?")
+        q2 = self.text_field_with("What is your name?")
+        q3 = self.text_field_with("What is age of father?")
+        q4 = self.text_field_with("What colour do you choose?")
+        q5 = self.text_field_with("what is your loc?")
+        q6 = DateField("what is reporting date?","code","what is reporting date?","dd.mm.yyyy",Mock(spec=DataDictType))
+        form_model_mock.fields= [q1,q2,q3,q4,q5,q6]
+        mock = Mock()
+        mock.name = 'What is associated entity?'
+        form_model_mock.entity_question = mock
+        field_values, grand_totals = helper.get_all_values(data_dictionary, form_model_mock)
+        expected_list = [["cid002", 'shweta', 55, "red,blue", "21.1,23.3", "25.12.2011"],
+            ["cid001", 'asif', 35, "red", "21.1", "25.12.2011"]]
+        self.assertListEqual(expected_list, field_values)
+
 
     def test_should_create_type_list(self):
         ddtype = Mock(spec=DataDictType)

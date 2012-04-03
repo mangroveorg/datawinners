@@ -305,7 +305,7 @@ def submissions(request):
 def _format_data_for_presentation(entity_values_dict, form_model):
     headers = helper.get_headers(form_model)
     type_list = helper.get_aggregation_options_for_all_fields(form_model.fields[1:])
-    field_values, grand_totals = helper.get_all_values(entity_values_dict, headers, form_model.entity_question.name)
+    field_values, grand_totals = helper.get_all_values(entity_values_dict, form_model)
     return field_values, headers, type_list, grand_totals
 
 

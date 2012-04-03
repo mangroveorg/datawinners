@@ -153,27 +153,36 @@ def get_headers(form_model):
     field.label[form_model.activeLanguages[0]] for field in form_model.fields[1:]]
 
 
-def _to_str(value):
+def _to_str(value, form_field=None):
     if value is None:
         return u"--"
     if is_sequence(value):
         return sequence_to_str(value)
+    if isinstance(value, datetime):
+        date_format = DateField.DATE_DICTIONARY.get(form_field.date_format) if form_field else '%d.%m.%Y'
+        return datetime.strftime(value, date_format)
     return value
 
-
-def _to_value_list(first_element, header_list, value_dict):
+def _to_value_list_headers(first_element, header_list, value_dict):
     return [first_element] + [_to_str(value_dict.get(header)) for header in header_list[1:]]
 
+def _to_value_list(first_element, form_model, value_dict):
+    form_fields = form_model.fields
 
-def get_all_values(data_dictionary, header_list, entity_question_description):
+    return [first_element] + [_to_str(value_dict.get(field.label[form_model.activeLanguages[0]]), field) for field in form_fields[1:]]
+
+
+def get_all_values(data_dictionary, form_model):
     """
        data_dictionary = {'Clinic/cid002': {'What is age of father?': 55, 'What is your name?': 'shweta', 'What is associated entity?': 'cid002'}, 'Clinic/cid001': {'What is age of father?': 35, 'What is your name?': 'asif', 'What is associated entity?': 'cid001'}}
        header_list = ["What is associated entity", "What is your name", "What is age of father?"]
        expected_list = [ ['cid002',''shweta', 55 ],['cid001','asif', 35]]
     """
+    header_list = get_headers(form_model)
+    entity_question_description = form_model.entity_question.name
     grand_totals_dict = data_dictionary.pop('GrandTotals') if 'GrandTotals' in data_dictionary else {}
-    grand_totals = _to_value_list("Grand Total", header_list, grand_totals_dict)
-    return [_to_value_list(value_dict.get(entity_question_description), header_list, value_dict) for value_dict in
+    grand_totals = _to_value_list_headers("Grand Total", header_list, grand_totals_dict)
+    return [_to_value_list(value_dict.get(entity_question_description), form_model, value_dict) for value_dict in
             data_dictionary.values()], grand_totals
 
 
