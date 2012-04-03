@@ -15,20 +15,20 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password
+from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
+from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password,\
+                                    is_not_expired
 from datawinners.entity.helper import create_registration_form, process_create_datasender_form, \
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
-    delete_datasender_users_if_any
+    delete_datasender_users_if_any, get_country_appended_location, add_data_sender_to_trial_organization
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
 from datawinners.messageprovider.message_handler import get_success_msg_for_registration_using, get_submission_error_message_for, get_exception_message_for
 
 from datawinners.messageprovider.messages import exception_messages, WEB
-from datawinners.project.models import Project
+from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
-from datawinners.project import  models
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME
@@ -39,14 +39,10 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization
-from datawinners.entity.helper import get_country_appended_location, add_data_sender_to_trial_organization
+from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
-from datawinners.utils import get_organization_country
 from django.contrib import messages
-from datawinners.accountmanagement.views import is_not_expired
-from datawinners.accountmanagement.models import Organization
 
 COUNTRY = ',MADAGASCAR'
 
@@ -156,6 +152,8 @@ def get_success_message(entity_type):
         return _("Data Sender(s) successfully deleted.")
     return _("Subject(s) successfully deleted.")
 
+def _get_full_name(user):
+    return user.first_name + ' ' + user.last_name
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -168,13 +166,18 @@ def delete_entity(request):
     transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
     all_ids = request.POST['all_ids'].split(';')
-    delete_entity_instance(manager, all_ids, entity_type, transport_info)
-    if entity_type == REPORTER:
-        delete_datasender_from_project(manager, all_ids)
-        delete_datasender_users_if_any(all_ids, organization)
-        if organization.in_trial_mode:
-            delete_datasender_for_trial_mode(manager, all_ids, entity_type)
-    messages.success(request, get_success_message(entity_type))
+    ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
+    if ngo_admin_user_profile.reporter_id in all_ids:
+        messages.error(request, _("Your organization's account Administrator %s cannot be deleted") %
+                                (_get_full_name(ngo_admin_user_profile.user)), "error_message")
+    else:
+        delete_entity_instance(manager, all_ids, entity_type, transport_info)
+        if entity_type == REPORTER:
+            delete_datasender_from_project(manager, all_ids)
+            delete_datasender_users_if_any(all_ids, organization)
+            if organization.in_trial_mode:
+                delete_datasender_for_trial_mode(manager, all_ids, entity_type)
+        messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
 
@@ -223,7 +226,7 @@ def create_web_users(request):
 @is_not_expired
 def all_datasenders(request):
     manager = get_database_manager(request.user)
-    projects = models.get_all_projects(manager)
+    projects = get_all_projects(manager)
     grant_web_access = False
     fields, old_labels, codes = get_entity_type_fields(manager)
     labels = []

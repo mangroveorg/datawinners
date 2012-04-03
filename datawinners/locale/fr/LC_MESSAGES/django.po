@@ -4076,3 +4076,6 @@ msgstr "Merci d'avoir testé DataWinners"
 
 msgid "Sign up for a monthly subscription to continue using DataWinners"
 msgstr "Inscrivez-vous pour un abonnement mensuel pour continuer à utiliser DataWinners"
+
+msgid "Your organization's account Administrator %s cannot be deleted"
+msgstr "L'administrateur du votre compte DataWinners, %s, ne peut pas être supprimé"

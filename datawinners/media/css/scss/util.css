@@ -103,7 +103,7 @@
 
 /*Error and Success*/
 .error_message {
-  color: #FF0000;
+  color: #FF0000 !important;
   padding: 5px; }
 
 .success_message {

@@ -4031,3 +4031,6 @@ msgstr ""
 
 msgid "Sign up for a monthly subscription to continue using DataWinners"
 msgstr ""
+
+msgid "Your organization's account Administrator %s cannot be deleted"
+msgstr ""

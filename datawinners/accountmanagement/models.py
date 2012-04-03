@@ -104,6 +104,10 @@ class DataSenderOnTrialAccount(models.Model):
     mobile_number = models.TextField(unique=True, primary_key=True)
     organization = models.ForeignKey(Organization)
 
+def get_ngo_admin_user_profiles_for(organization):
+    user_profiles = NGOUserProfile.objects.filter(org_id=organization.org_id)
+    return [user_profile for user_profile in user_profiles if
+            user_profile.user.groups.filter(name="NGO Admins")]
 
 class NGOUserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
