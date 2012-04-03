@@ -132,10 +132,9 @@ def _associate_data_sender_to_project(dbm, project, project_id, response):
     project.save(dbm)
 
 
-def get_country_appended_location(reverse_location_hierarchy, country):
-    location_hierarchy = reverse_location_hierarchy.split(',')
-    location_hierarchy.reverse()
-    return country + ',' + ','.join(location_hierarchy)  if reverse_location_hierarchy is not None else None
+def get_country_appended_location(location_hierarchy, country):
+    location_hierarchy = location_hierarchy.split(',')
+    return ','.join(location_hierarchy) + ',' + country  if location_hierarchy is not None else None
 
 
 def _get_data(form_data, country):

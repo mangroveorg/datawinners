@@ -8,7 +8,6 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
 from mock import Mock, patch, self
 from mangrove.form_model.validation import TextLengthConstraint, RegexConstraint, NumericRangeConstraint
-import mock
 from datawinners.common.constant import DEFAULT_LANGUAGE, FRENCH_LANGUAGE
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator, clean_geocode
 from datawinners.entity.fields import PhoneNumberField
@@ -92,7 +91,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         web_form = questionnaire_form_class(country="India", data=post_data)
         web_form.is_valid()
 
-        self.assertEqual("India,pune", web_form.cleaned_data[LOCATION_TYPE_FIELD_CODE])
+        self.assertEqual("pune,India", web_form.cleaned_data[LOCATION_TYPE_FIELD_CODE])
 
 
     def test_should_create_web_questionnaire_for_multiple_choice_select_field(self):
