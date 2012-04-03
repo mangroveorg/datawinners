@@ -6,7 +6,7 @@ class Country(models.Model):
     country_code = models.TextField()
 
     def __unicode__(self):
-        return self.country_name
+        return self.country_name_en
 
 
 class Network(models.Model):
