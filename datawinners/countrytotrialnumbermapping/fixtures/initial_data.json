@@ -1811,7 +1811,7 @@
     {
         "fields":{
             "country_name_en":"United Arab Emirates",
-            "country_name_fr":"Iles Vierges Américaines",
+            "country_name_fr":"Émirats arabes unis  ",
             "country_code":"971"
         },
         "model":"countrytotrialnumbermapping.country",

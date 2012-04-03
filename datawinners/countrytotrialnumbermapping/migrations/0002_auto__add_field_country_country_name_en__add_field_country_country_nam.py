@@ -7,11 +7,20 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.rename_column('countrytotrialnumbermapping_country', 'country_name', 'country_name_en')
-        db.add_column('countrytotrialnumbermapping_country', 'country_name_fr', self.gf('django.db.models.fields.TextField')(blank=False))
+        
+        # Adding field 'Country.country_name_en'
+        db.add_column('countrytotrialnumbermapping_country', 'country_name_en', self.gf('django.db.models.fields.TextField')(unique=True, null=True), keep_default=False)
+
+        # Adding field 'Country.country_name_fr'
+        db.add_column('countrytotrialnumbermapping_country', 'country_name_fr', self.gf('django.db.models.fields.TextField')(unique=True, null=True), keep_default=False)
+
 
     def backwards(self, orm):
-        db.rename_column('countrytotrialnumbermapping_country', 'country_name_en', 'country_name')
+        
+        # Deleting field 'Country.country_name_en'
+        db.delete_column('countrytotrialnumbermapping_country', 'country_name_en')
+
+        # Deleting field 'Country.country_name_fr'
         db.delete_column('countrytotrialnumbermapping_country', 'country_name_fr')
 
 
@@ -19,8 +28,9 @@ class Migration(SchemaMigration):
         'countrytotrialnumbermapping.country': {
             'Meta': {'object_name': 'Country'},
             'country_code': ('django.db.models.fields.TextField', [], {}),
-            'country_name_fr': ('django.db.models.fields.TextField', [], {'unique': 'True'}),
-            'country_name_en': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'country_name': ('django.db.models.fields.TextField', [], {'unique': 'True'}),
+            'country_name_en': ('django.db.models.fields.TextField', [], {'unique': 'True', 'null': 'True'}),
+            'country_name_fr': ('django.db.models.fields.TextField', [], {'unique': 'True', 'null': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'countrytotrialnumbermapping.network': {
