@@ -23,7 +23,7 @@ DW.date_template = {
 
 };
 DW.question = function(question) {
-    var question_name = "Question" + questionnaireViewModel.questions().length;
+    var question_name = DW.next_question_name_generator();
     var defaults = {
         name : question_name,
         code : "code",
@@ -215,4 +215,9 @@ DW.isRegistrationQuestionnaire = function() {
     } else {
         return false;
     }
+};
+
+DW.next_question_number = 1;
+DW.next_question_name_generator = function(){
+    return 'Question'+ DW.next_question_number++;
 };
