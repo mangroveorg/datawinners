@@ -25,8 +25,6 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/OpenLayers.js"></script>
-    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $( "#how_to" ).accordion({ collapsible: true, active: 0 });
@@ -39,6 +37,9 @@
 
 
 {% block content %}
+    <script type="text/javascript" src="/media/javascript/OpenLayers-2.10/OpenLayers.js"></script>
+    <script type="text/javascript" src="/media/javascript/mapping.js"></script>
+
     <span id="project_id" style="display: none;">{{ project.id }}</span>
     <div class="span-18 box">
         <!--Success Message div-->
