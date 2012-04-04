@@ -1,7 +1,12 @@
 from unittest.case import TestCase
 from mock import Mock, patch
-from datawinners.entity.helper import delete_datasender_from_project
+from datawinners.entity.helper import delete_datasender_from_project, \
+    add_imported_data_sender_to_trial_organization,add_data_sender_to_trial_organization
 from datawinners.project.models import Project
+from datawinners.accountmanagement.models import DataSenderOnTrialAccount, Organization
+from django.contrib.auth.models import User
+
+
 
 class TestHelper(TestCase):
     def setUp(self):
@@ -21,6 +26,31 @@ class TestHelper(TestCase):
         delete_datasender_from_project(self.manager, entity_ids)
         self.assertEqual(self.mock_project.delete_datasender.call_count, 2)
 
+    def test_should_add_imported_data_senders_to_trial_organization(self):
+        self.org_id = "QZJ729195"
+        with patch.object(User, "get_profile") as get_profile:
+            get_profile.return_value = dict(org_id=self.org_id)
+        request = Mock()
+        request.user = Mock(spec=User)
+        ds_mobile_numbers = ["0333333333", "0333733333"]
+        with patch("datawinners.entity.helper.add_data_sender_to_trial_organization") as add_ds_to_trial:
+            with patch("datawinners.accountmanagement.models.Organization.objects.get") as get_organization_mock:
+                get_organization_mock.return_value = self.get_organization(org_id=self.org_id)
+                org = Organization.objects.get(org_id="AK29")
+                self.assertEqual(org.org_id, self.org_id)
+
+                all_data_senders = [dict(cols=[mobile_number],short_code="rep%d" % key)
+                    for key,mobile_number in enumerate(ds_mobile_numbers)]
+                add_imported_data_sender_to_trial_organization(request, ['rep0', 'rep1'], all_data_senders)
+                self.assertEqual(add_ds_to_trial.call_count,2)
+
     def tearDown(self):
         self.all_projects_patch.stop()
+
+    def get_organization(self, org_id="ABCD"):
+        organization = Mock(spec=Organization)
+        organization.org_id = org_id
+        organization.in_trial_mode = True
+        organization._state = "Madagascar"
+        return organization
 

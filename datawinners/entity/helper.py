@@ -224,3 +224,11 @@ def delete_datasender_from_project(manager, all_ids):
             project = Project.load(manager.database, associated_project['value']['_id'])
             project.delete_datasender(manager, entity_id)
 
+def add_imported_data_sender_to_trial_organization(request, imported_datasenders, all_data_senders, index=0):
+    org_id = request.user.get_profile().org_id
+    organization = Organization.objects.get(org_id=org_id)
+    if organization.in_trial_mode:
+        mobile_number_index = index
+        for ds in all_data_senders:
+            if ds['short_code'] in imported_datasenders:
+                add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)

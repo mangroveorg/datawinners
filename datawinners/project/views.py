@@ -18,7 +18,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import process_create_datasender_form
+from datawinners.entity.helper import process_create_datasender_form, add_imported_data_sender_to_trial_organization
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
@@ -681,6 +681,7 @@ def registered_subjects(request, project_id=None):
 @is_not_expired
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
+    profile = request.user.get_profile()
     project, project_links = _get_project_and_project_link(manager, project_id)
     if request.method == 'GET':
         fields, old_labels, codes = get_entity_type_fields(manager)
@@ -701,6 +702,9 @@ def registered_datasenders(request, project_id=None):
         all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
         project.data_senders.extend([id for id in imported_entities.keys()])
         project.save(manager)
+        mobile_number_index = fields.index('mobile_number')
+        add_imported_data_sender_to_trial_organization(request, imported_entities,
+            all_data_senders=all_data_senders, index=mobile_number_index)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
                  'error_message': error_message,

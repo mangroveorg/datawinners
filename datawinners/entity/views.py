@@ -20,7 +20,7 @@ from datawinners.accountmanagement.views import is_datasender, is_new_user, _get
                                     is_not_expired
 from datawinners.entity.helper import create_registration_form, process_create_datasender_form, \
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
-    delete_datasender_users_if_any, get_country_appended_location, add_data_sender_to_trial_organization
+    delete_datasender_users_if_any, get_country_appended_location
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -40,6 +40,7 @@ from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country
+from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from django.contrib import messages
@@ -240,14 +241,10 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
             manager)
-        org_id = request.user.get_profile().org_id
-        organization = Organization.objects.get(org_id=org_id)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
-        if organization.in_trial_mode:
-            mobile_number_index = fields.index('mobile_number')
-            for ds in all_data_senders:
-                if ds['short_code'] in imported_datasenders:
-                    add_data_sender_to_trial_organization(ds['cols'][mobile_number_index], org_id)
+        mobile_number_index = fields.index('mobile_number')
+        add_imported_data_sender_to_trial_organization(request, imported_datasenders,
+            all_data_senders=all_data_senders, index=mobile_number_index)
 
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
