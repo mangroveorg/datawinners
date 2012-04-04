@@ -126,6 +126,13 @@ table {
   .aggregation_block td {
     height: 0px;
     border: 0; }
+  .aggregation_block .first_span{
+    font-size: 25px;
+    height: 23px;
+    opacity:0; }
+  .aggregation_block .second_span{
+    display: inline-block;
+    opacity: 0; }
 
 #data_analysis_wrapper .dataTables_scroll {
   position: relative;

@@ -145,6 +145,15 @@ table{
         height:0px;
         border:0;
     }
+    .first_span{
+        font-size: 25px;
+        height: 23px;
+        opacity:0;
+    }
+    .second_span{
+        display: inline-block;
+        opacity: 0;
+    }
 }
 
 
