@@ -1,8 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from django.utils.datastructures import SortedDict
-from django.utils.translation import ugettext as _
-from countrytotrialnumbermapping.models import Network
-import re
+from datawinners.countrytotrialnumbermapping.models import Network
 
 def get_countries_in_display_format(countries, language="en"):
     return [(country.country_name_en, _get_formatted_country_name(country, language)) for country in countries]
