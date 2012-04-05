@@ -8,10 +8,9 @@ from time import mktime
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response
-from django.template import response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.conf import settings
 from django.utils import translation
@@ -22,12 +21,11 @@ from datawinners.entity.helper import process_create_datasender_form, add_import
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
-from datawinners.accountmanagement.views import is_not_expired
 
 import helper
 
 from mangrove.datastore.data import EntityAggregration
-from mangrove.datastore.queries import get_entity_count_for_type
+from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
@@ -50,7 +48,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
-from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
+from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders, save_questionnaire as subject_save_questionnaire
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
@@ -613,8 +611,8 @@ def review_and_test(request, project_id=None):
     project = Project.load(manager.database, project_id)
     form_model = FormModel.get(manager, project.qid)
     if request.method == 'GET':
-        number_of_registered_subjects = get_entity_count_for_type(manager, project.entity_type)
-        number_of_registered_datasenders = get_entity_count_for_type(manager, 'reporter')
+        number_of_registered_subjects = get_non_voided_entity_count_for_type(manager, project.entity_type)
+        number_of_registered_datasenders = get_non_voided_entity_count_for_type(manager, 'reporter')
         fields = form_model.fields
         if form_model.entity_defaults_to_reporter():
             fields = helper.hide_entity_question(form_model.fields)

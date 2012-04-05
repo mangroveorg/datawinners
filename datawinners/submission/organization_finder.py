@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from datawinners.accountmanagement.models import OrganizationSetting, DataSenderOnTrialAccount
-from countrytotrialnumbermapping.helper import get_trial_numbers
+from datawinners.countrytotrialnumbermapping.helper import get_trial_numbers
 import re
 
 class OrganizationFinder(object):
