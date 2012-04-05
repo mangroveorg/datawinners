@@ -178,9 +178,6 @@ class MessageTracker(models.Model):
         return "organization : %s incoming messages: %d outgoing messages: %d" % (
             self.organization.name, self.incoming_sms_count, self.outgoing_sms_count)
 
-
-
-
-
-
+def get_all_registered_phone_numbers_on_trial_account():
+    return DataSenderOnTrialAccount.objects.values_list('mobile_number', flat=True)
 

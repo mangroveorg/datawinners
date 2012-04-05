@@ -240,7 +240,7 @@ def all_datasenders(request):
         grant_web_access = True
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
-            manager)
+            manager, import_reporter=True)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_datasenders,
