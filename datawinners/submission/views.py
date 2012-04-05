@@ -110,7 +110,7 @@ def submit_to_player(incoming_request):
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
-        message = SMSResponse(response).text()
+        message = SMSResponse(response, incoming_request['dbm']).text()
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = ugettext("%s with %s = %s already exists.") % (ugettext(e.data[2]), ugettext(e.data[0]), e.data[1])

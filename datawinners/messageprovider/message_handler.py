@@ -2,7 +2,7 @@
 from collections import OrderedDict
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
-from mangrove.form_model.form_model import NAME_FIELD
+from mangrove.form_model.form_model import NAME_FIELD, get_form_model_by_code
 from mangrove.utils.types import is_empty, is_sequence, sequence_to_str
 from datawinners.messageprovider.messages import exception_messages, DEFAULT, get_submission_success_message, get_registration_success_message, get_validation_failure_error_message
 
@@ -47,12 +47,13 @@ def get_expanded_response(response_dict):
     return expanded_response
 
 
-def get_success_msg_for_submission_using(response):
+def get_success_msg_for_submission_using(response, dbm):
     reporters = response.reporters
     message = get_submission_success_message()
     thanks = message % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else message % ""
-    expanded_response = get_expanded_response(response.processed_data)
-    return thanks + expanded_response
+    form_model = get_form_model_by_code(dbm, response.form_code)
+    new_dict = form_model.stringify(response.processed_data)
+    return thanks + " ".join([": ".join(each) for each in new_dict.items()])
 
 
 def get_success_msg_for_registration_using(response, source):
@@ -69,16 +70,16 @@ def _stringify(item):
     return unicode(item)
 
 
-def _get_response_message(response):
+def _get_response_message(response, dbm):
     if response.success:
-        message = _get_success_message(response)
+        message = _get_success_message(response, dbm)
     else:
         message = get_submission_error_message_for(response.errors)
     return message
 
 
-def _get_success_message(response):
+def _get_success_message(response, dbm):
     if response.is_registration:
         return get_success_msg_for_registration_using(response, "sms")
     else:
-        return get_success_msg_for_submission_using(response)
+        return get_success_msg_for_submission_using(response, dbm)
