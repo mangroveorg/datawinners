@@ -696,8 +696,7 @@ def registered_datasenders(request, project_id=None):
                  'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
             context_instance=RequestContext(request))
     if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
-            import_reporter=True)
+        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
         all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
         project.data_senders.extend([id for id in imported_entities.keys()])
         project.save(manager)
