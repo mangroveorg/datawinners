@@ -20,8 +20,6 @@ from mangrove.datastore import entity
 from mangrove.transport.facade import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
 from mangrove.transport import reporter
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
-from datawinners.accountmanagement.models import get_all_registered_phone_numbers_on_trial_account
-
 
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
 from datawinners.location.LocationTree import get_location_hierarchy
@@ -55,7 +53,7 @@ class FilePlayer(Player):
             values = ActivityReportWorkFlow(form_model, reporter_entity).process(values)
         return form_model, values
 
-    def accept(self, file_contents, registered_phone_numbers=[]):
+    def accept(self, file_contents):
         responses = []
         submissions = self.parser.parse(file_contents)
         for (form_code, values) in submissions:
@@ -63,8 +61,7 @@ class FilePlayer(Player):
             submission = self._create_submission(transport_info, form_code, values)
             try:
                 form_model, values = self._process(form_code, values)
-                response = self.submit(form_model, values, submission, [],
-                    registered_phone_numbers=registered_phone_numbers)
+                response = self.submit(form_model, values, submission, [])
                 if not response.success:
                     response.errors = dict(error=response.errors, row=values)
                 responses.append(response)
@@ -221,10 +218,10 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REP
     return load_subject_registration_data(manager, filter_entities, type)
 
 
-def _handle_uploaded_file(file_name, file, manager, form_code=None, registered_phone_numbers=[]):
+def _handle_uploaded_file(file_name, file, manager, form_code=None):
     base_name, extension = os.path.splitext(file_name)
     player = FilePlayer.build(manager, extension, get_location_tree(), form_code)
-    response = player.accept(file, registered_phone_numbers=registered_phone_numbers)
+    response = player.accept(file)
     return response
 
 
@@ -241,18 +238,16 @@ def _get_success_status(successful_imports, total):
     return True if total == successful_imports else False
 
 
-def import_data(request, manager, import_reporter=False):
+def import_data(request, manager):
     response_message = ''
     error_message = None
     failure_imports = None
     imported_entities = {}
-    registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() if import_reporter else []
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
         form_code = request.GET.get("form_code", None)
-        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, form_code=form_code,
-            registered_phone_numbers=registered_phone_numbers)
+        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
         successful_imports = len(imported_entities)
         total = len(responses)
