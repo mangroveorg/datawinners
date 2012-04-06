@@ -56,11 +56,14 @@ def get_success_msg_for_submission_using(response, dbm):
     return thanks + " ".join([": ".join(each) for each in new_dict.items()])
 
 
-def get_success_msg_for_registration_using(response, source):
+def get_success_msg_for_registration_using(response, source, dbm=None):
     resp_string = (_("ID is:") + " %s") % (response.short_code,)
+
     thanks = get_registration_success_message() % resp_string
     if source == "sms":
-        return thanks + get_expanded_response(response.processed_data)
+        form_model = get_form_model_by_code(dbm, response.form_code)
+        new_dict = form_model.stringify(response.processed_data)
+        return thanks + " ".join([": ".join(each) for each in new_dict.items()])
     return thanks
 
 
@@ -80,6 +83,6 @@ def _get_response_message(response, dbm):
 
 def _get_success_message(response, dbm):
     if response.is_registration:
-        return get_success_msg_for_registration_using(response, "sms")
+        return get_success_msg_for_registration_using(response, "sms", dbm)
     else:
         return get_success_msg_for_submission_using(response, dbm)
