@@ -7,8 +7,7 @@ from datawinners.messageprovider.messages import get_submission_success_message,
 from mangrove.errors.MangroveException import FormModelDoesNotExistsException, NumberNotRegisteredException,\
     MangroveException, EntityQuestionCodeNotSubmitted
 from datawinners.messageprovider.message_handler import get_exception_message_for, get_submission_error_message_for, get_success_msg_for_submission_using, get_success_msg_for_registration_using
-from mangrove.transport.facade import Response, create_response_from_form_submission
-from datawinners.messageprovider.message_handler import get_expanded_response
+from mangrove.transport.facade import  create_response_from_form_submission
 
 
 class TestGetExceptionMessageHandler(unittest.TestCase):
@@ -64,34 +63,20 @@ class TestShouldTemplatizeMessage(unittest.TestCase):
         expected_message = get_submission_success_message() % "rep1" + "age: 12 name: tester choice: red"
         form_submission_mock = self.create_form_submission_mock()
         response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123, form_submission=form_submission_mock)
-        dbm_mock = Mock(spec=DatabaseManager)
-        with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_by_code_mock :
-            form_model_mock = Mock(spec=FormModel)
-            get_form_model_by_code_mock.return_value = form_model_mock
-            form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
-            message = get_success_msg_for_submission_using(response, dbm_mock)
-            get_form_model_by_code_mock.assert_called_once_with(dbm_mock, 'form_code')
+        form_model_mock = Mock(spec=FormModel)
+        form_model_mock.stringify.return_value = {'name': 'tester', 'age': '12', 'choice': 'red'}
+        message = get_success_msg_for_submission_using(response, form_model_mock)
         self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_submission_with_blank_if_no_reporter(self):
         expected_message = get_submission_success_message() % "" + "name: tester"
-        dbm_mock = Mock(spec=DatabaseManager)
         form_submission_mock = self.create_form_submission_mock()
         response = create_response_from_form_submission(reporters=[], submission_id=123, form_submission=form_submission_mock)
-        with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_by_code_mock :
-            form_model_mock = Mock(spec=FormModel)
-            get_form_model_by_code_mock.return_value = form_model_mock
-            form_model_mock.stringify.return_value = {'name': 'tester'}
-            message = get_success_msg_for_submission_using(response, dbm_mock)
+        form_model_mock = Mock(spec=FormModel)
+        form_model_mock.stringify.return_value = {'name': 'tester'}
+        message = get_success_msg_for_submission_using(response, form_model_mock)
         self.assertEqual(expected_message, message)
 
-    def test_should_return_expanded_response_message_for_submission_of_response_dict(self):
-        expected_message = "age: 12 name: tester choice: red"
-        form_submission_mock = Mock()
-        form_submission_mock.cleaned_data = {'name': 'tester', 'age': 12, 'choice': ['red']}
-        response = create_response_from_form_submission(reporters=[{"name": "rep1"}], submission_id=123, form_submission=form_submission_mock)
-        message = get_expanded_response(response.processed_data)
-        self.assertEqual(expected_message, message)
 
     def test_should_format_success_message_for_registration_with_short_code(self):
         expected_message = get_registration_success_message() % "ID is: REP1"

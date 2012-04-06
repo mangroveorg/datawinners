@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
+from mangrove.form_model.form_model import get_form_model_by_code
 
 from mangrove.transport.player.player import SMSPlayer
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -110,7 +111,8 @@ def submit_to_player(incoming_request):
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
-        message = SMSResponse(response, incoming_request['dbm']).text()
+        form_model = get_form_model_by_code(incoming_request['dbm'], response.form_code)
+        message = SMSResponse(response).text(form_model)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = ugettext("%s with %s = %s already exists.") % (ugettext(e.data[2]), ugettext(e.data[0]), e.data[1])

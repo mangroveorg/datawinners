@@ -14,9 +14,8 @@ class DatawinnerLog(models.Model):
 
 #TODO: Move all message templating for responses here.
 class SMSResponse(object):
-    def __init__(self,response, dbm=None):
+    def __init__(self,response):
         self.response = response
-        self.dbm = dbm
 
-    def text(self):
-        return _get_response_message(self.response, self.dbm)
+    def text(self,form_model):
+        return _get_response_message(self.response, form_model)
