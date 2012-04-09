@@ -9,7 +9,7 @@
     background:url('/media/images/hedaer_app_bg.gif') repeat top left;
 }
 #container_content, #container_wizard{
-    overflow:auto;
+    overflow:hidden;
     min-height:600px;
     background:#e8eff6 url('/media/images/application_bg.gif') repeat-x top left !important;
     .content{
@@ -17,7 +17,6 @@
         background:#FFFFFF;
         border:1px solid #cccccc;
         padding:25px;
-        width: auto;
     }
     .wizard_content{
         margin-top:50px;

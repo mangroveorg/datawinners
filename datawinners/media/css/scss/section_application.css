@@ -9,14 +9,13 @@
   background: url("/media/images/hedaer_app_bg.gif") repeat top left; }
 
 #container_content, #container_wizard {
-  overflow: auto;
+  overflow: hidden;
   min-height: 600px;
   background: #e8eff6 url("/media/images/application_bg.gif") repeat-x top left !important; }
   #container_content .content, #container_wizard .content {
     min-height: 550px;
     background: #FFFFFF;
     border: 1px solid #cccccc;
-    width: auto;
     padding: 25px; }
   #container_content .wizard_content, #container_wizard .wizard_content {
     margin-top: 50px;
