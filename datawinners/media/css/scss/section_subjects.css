@@ -103,6 +103,7 @@
   float: none;
   margin: 10px 0;
   border-bottom: 3px solid #2A2A2A;
+  width: auto;
   background: none; }
   #my_subjects .secondary_tab li {
     height: 40px;
