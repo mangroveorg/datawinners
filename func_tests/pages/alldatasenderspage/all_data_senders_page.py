@@ -117,3 +117,7 @@ class AllDataSendersPage(Page):
         """"
         Function to delete datasender """
         self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(DELETE)
+
+    def check_links(self):
+        self.driver.is_element_present(IMPORT_LINK)
+        self.driver.is_element_present(ADD_A_DATA_SENDER_LINK)
