@@ -16,6 +16,7 @@
     min-height: 550px;
     background: #FFFFFF;
     border: 1px solid #cccccc;
+    overflow: auto;
     padding: 25px; }
   #container_content .wizard_content, #container_wizard .wizard_content {
     margin-top: 50px;
