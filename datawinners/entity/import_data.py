@@ -112,21 +112,17 @@ def tabulate_failures(rows):
     return tabulated_data
 
 
-def _format(value):
-    if value is None:
-        return u"--"
-    if is_sequence(value):
-        return sequence_to_str(value, u", ")
-    return value
-
-
 def _tabulate_data(entity, form_model, values_for_fields):
     data = {'id': entity.id, 'short_code': entity.short_code}
 
     dict = OrderedDict()
     tuples = [(field.code, field.name) for field in form_model.fields]
     for (code, name) in tuples :
-        dict[code] = entity.value(name)
+        if name in entity.data.keys():
+            dict[code] = _get_field_value(name, entity)
+        else:
+            dict[code] = _get_field_default_value(name, entity)
+
     stringified_dict = form_model.stringify(dict)
 
     dict_values = [stringified_dict[field] for field in values_for_fields]
@@ -308,27 +304,18 @@ def _get_field_value(key, entity):
     value = entity.value(key)
     if key == 'geo_code':
         if value is None:
-            value = entity.geometry.get('coordinates')
-            value = ", ".join([str(i) for i in value]) if value is not None else "--"
-        else:
-            value = ", ".join([str(i) for i in value])
+            return entity.geometry.get('coordinates')
     elif key == 'location':
         if value is None:
-            value = entity.location_path
-        value = _format(value)
-    else:
-        value = _format(value)
+            return entity.location_path
+
     return value
 
 def _get_field_default_value(key, entity):
     if key == 'geo_code':
-        value = entity.geometry.get('coordinates')
-        value = ", ".join([str(i) for i in value]) if value is not None else "--"
-    elif key == 'location':
-        value = sequence_to_str(entity.location_path, u", ")
-        value = _format(value)
-    elif key == 'short_code':
-        value = entity.short_code
-    else:
-        value = "--"
-    return value
+        return entity.geometry.get('coordinates')
+    if key == 'location':
+        return  entity.location_path
+    if key == 'short_code':
+        return entity.short_code
+    return None
