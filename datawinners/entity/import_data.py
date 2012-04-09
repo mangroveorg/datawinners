@@ -1,6 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+import code
+from collections import OrderedDict
 from copy import copy
-from mangrove.datastore.documents import attributes
+from mangrove.datastore.documents import attributes, FormModelDocument
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.transport.submissions import Submission
 import os
@@ -11,7 +13,7 @@ from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, MultipleReportersForANumberException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code, get_form_model_by_entity_type
+from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code, get_form_model_by_entity_type, FormModel
 from mangrove.transport.player.parser import CsvParser, XlsOrderedParser, XlsParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
@@ -118,13 +120,17 @@ def _format(value):
     return value
 
 
-def _tabulate_data(entity, fields):
-    data = {'id': entity.id, 'short_code': entity.short_code, 'cols': []}
-    for i in range(len(fields)):
-        if fields[i] in entity.data.keys():
-            data['cols'].append(_get_field_value(fields[i], entity))
-        else:
-            data['cols'].append(_get_field_default_value(fields[i], entity))
+def _tabulate_data(entity, form_model, values_for_fields):
+    data = {'id': entity.id, 'short_code': entity.short_code}
+
+    dict = OrderedDict()
+    tuples = [(field.code, field.name) for field in form_model.fields]
+    for (code, name) in tuples :
+        dict[code] = entity.value(name)
+    stringified_dict = form_model.stringify(dict)
+
+    dict_values = [stringified_dict[field] for field in values_for_fields]
+    data['cols'] = dict_values
     return data
 
 
@@ -136,12 +142,17 @@ def _get_entity_type_from_row(row):
 def load_subject_registration_data(manager,
                                    filter_entities=exclude_of_type,
                                    type=REPORTER, tabulate_function=_tabulate_data):
+    if type==REPORTER :
+        form_model = get_form_model_by_code(manager, 'reg')
+    else:
+        form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
+
     fields, labels, codes = get_entity_type_fields(manager, type)
     entities = get_all_entities(dbm=manager)
     data = []
     for entity in entities:
         if filter_entities(entity, type):
-            data.append(tabulate_function(entity, fields))
+            data.append(tabulate_function(entity, form_model, codes))
     return data, fields, labels
 
 
@@ -186,6 +197,7 @@ def get_entity_type_infos(entity, form_model=None, manager=None):
         code = form_model.value["form_code"],
         names = names,
         labels = labels,
+        codes = codes,
         data = [],
     )
     return subject
@@ -198,17 +210,18 @@ def load_all_subjects(manager):
     subjects_list = {}
     for entity in entity_types_names:
         if entity in subjects.keys():
-            form_model = subjects[entity]
+            form_model_row = subjects[entity]
         else:
-            form_model = subjects['registration']
-        subjects_list[entity] = get_entity_type_infos(entity, form_model)
+            form_model_row = subjects['registration']
+        subjects_list[entity] = get_entity_type_infos(entity, form_model_row)
 
     entities = get_all_entities(dbm=manager)
     for entity in entities:
         if exclude_of_type(entity, REPORTER):
             entity_type = entity.type_string
             if entity_type in subjects_list.keys():
-                subjects_list[entity_type]['data'].append(_tabulate_data(entity, subjects_list[entity_type]['names']))
+                form_model = get_form_model_by_code(manager, subjects_list[entity_type]['code'])
+                subjects_list[entity_type]['data'].append(_tabulate_data(entity, form_model, subjects_list[entity_type]['codes']))
 
     data = [subjects_list[entity] for entity in entity_types_names]
     return data
@@ -282,8 +295,8 @@ def _entity_type_as_sequence(entity_type):
 
 
 def get_entity_type_fields(manager, type=REPORTER):
-    form_code = "reg"
     form_model = get_form_model_by_entity_type(manager, _entity_type_as_sequence(type))
+    form_code = "reg"
     if form_model is not None:
         form_code = form_model.form_code
     form_model_rows = manager.load_all_rows_in_view("questionnaire", key=form_code)
