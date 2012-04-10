@@ -2,7 +2,8 @@
 from mangrove.errors.MangroveException import NumberNotRegisteredException
 from mangrove.utils.types import is_empty
 from mangrove.transport.reporter import find_reporters_by_from_number
-from datawinners.accountmanagement.models import Organization, NGOUserProfile, get_data_senders_on_trial_account_with_mobile_number
+from datawinners.accountmanagement.models import Organization, NGOUserProfile,\
+    get_data_senders_on_trial_account_with_mobile_number, DataSenderOnTrialAccount
 from datawinners.utils import get_database_manager_for_org
 
 def get_trial_account_user_phone_numbers():
@@ -29,3 +30,6 @@ def is_mobile_number_unique_for_paid_account(org,mobile_number):
         return False
     except NumberNotRegisteredException:
         return True
+
+def get_all_registered_phone_numbers_on_trial_account():
+    return DataSenderOnTrialAccount.objects.values_list('mobile_number', flat=True)

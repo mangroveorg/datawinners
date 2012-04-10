@@ -26,6 +26,10 @@ from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 #TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
+from datawinners.utils import get_organization_from_manager
+from mangrove.contrib.registration_validators import case_insensitive_lookup
+from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
+from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
@@ -57,12 +61,20 @@ class FilePlayer(Player):
 
     def accept(self, file_contents):
         responses = []
+        from datawinners.utils import get_organization_from_manager
+        organization = get_organization_from_manager(self.dbm)
+        registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() \
+            if organization.in_trial_mode else []
         submissions = self.parser.parse(file_contents)
         for (form_code, values) in submissions:
             transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
             submission = self._create_submission(transport_info, form_code, values)
             try:
                 form_model, values = self._process(form_code, values)
+                if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
+                    phone_number = case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE)
+                    if phone_number in registered_phone_numbers:
+                        raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
                 response = self.submit(form_model, values, submission, [])
                 if not response.success:
                     response.errors = dict(error=response.errors, row=values)

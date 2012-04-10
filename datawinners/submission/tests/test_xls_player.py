@@ -11,6 +11,7 @@ from mangrove.form_model.form_model import FormModel, FormSubmission, FormSubmis
 from mangrove.transport.player.parser import XlsParser
 from mangrove.transport import Channel
 import xlwt
+from datawinners.accountmanagement.models import Organization
 
 class TestXlsPlayer(unittest.TestCase):
     def _mock_form_model(self):
@@ -58,8 +59,10 @@ class TestXlsPlayer(unittest.TestCase):
     def test_should_import_xls_string(self):
         with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
             get_form_submission_mock.return_value = self.form_submission_mock
-
-            self.player.accept(file_contents=open(self.file_name).read())
+            organization = Mock(spec=Organization)
+            with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+                get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+                self.player.accept(file_contents=open(self.file_name).read())
             self.assertEqual(5, self.form_model_mock.validate_submission.call_count)
 
     def test_should_process_next_submission_if_exception_with_prev(self):
@@ -72,7 +75,10 @@ class TestXlsPlayer(unittest.TestCase):
         self.form_model_mock.validate_submission.side_effect = expected_side_effect
         with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
             get_form_submission_mock.return_value = self.form_submission_mock
-            response = self.player.accept(file_contents=open(self.file_name).read())
+            organization = Mock(spec=Organization)
+            with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+                get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+                response = self.player.accept(file_contents=open(self.file_name).read())
             self.assertEqual(5, len(response))
             self.assertEqual(False, response[2].success)
 

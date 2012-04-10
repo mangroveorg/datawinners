@@ -9,6 +9,7 @@ from mangrove.errors.MangroveException import FormModelDoesNotExistsException
 from mangrove.form_model.form_model import FormModel, FormSubmission, FormSubmissionFactory
 from mangrove.transport.player.parser import CsvParser
 from mangrove.transport import Channel
+from datawinners.accountmanagement.models import Organization
 
 
 class TestCsvPlayer(unittest.TestCase):
@@ -48,7 +49,10 @@ class TestCsvPlayer(unittest.TestCase):
     def test_should_import_csv_string(self):
         with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
             get_form_submission_mock.return_value = self.form_submission_mock
-            self.player.accept(self.csv_data)
+            organization = Mock(spec=Organization)
+            with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+                get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+                self.player.accept(self.csv_data)
             self.assertEqual(5, self.form_model_mock.validate_submission.call_count)
 
     def test_should_process_next_submission_if_exception_with_prev(self):
@@ -62,8 +66,10 @@ class TestCsvPlayer(unittest.TestCase):
 
         with patch.object(FormSubmissionFactory, 'get_form_submission') as get_form_submission_mock:
             get_form_submission_mock.return_value = self.form_submission_mock
-
-            response = self.player.accept(self.csv_data)
+            organization = Mock(spec=Organization)
+            with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+                get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+                response = self.player.accept(self.csv_data)
             self.assertEqual(5, len(response))
             self.assertEqual(False, response[2].success)
 

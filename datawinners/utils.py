@@ -67,3 +67,9 @@ def workbook_add_sheet(wb, raw_data, sheet_name):
                 cell_style = xlwt.easyxf(num_format_str='dd-mm-yyyy hh:mm:ss')
             ws.write(row_number, col_number, val, style=cell_style)
     return ws
+
+def get_organization_from_manager(manager):
+    from datawinners.accountmanagement.models import Organization, OrganizationSetting
+    setting = OrganizationSetting.objects.get(document_store=manager.database_name)
+    organization = Organization.objects.get(org_id=setting.organization_id)
+    return organization

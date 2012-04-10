@@ -20,6 +20,8 @@ from mangrove.form_model.form_model import FormModel
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.entity.helper import create_registration_form
 from datawinners.submission.location import LocationBridge
+from datawinners.accountmanagement.models import Organization
+from mock import Mock, patch
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
@@ -176,7 +178,10 @@ class TestFilePlayer(MangroveTestCase):
         MangroveTestCase.tearDown(self)
 
     def test_should_import_csv_string_if_it_contains_data_about_reporters(self):
-        responses = self.file_player.accept(self.csv_data_about_reporter)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_about_reporter)
         self.assertTrue(responses[0].success)
         submission_log = Submission.get(self.manager, responses[0].submission_id)
         self.assertEquals(True, submission_log. status)
@@ -185,20 +190,29 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEquals({'t':'reporter', 'n':'Dr. A','l':'Pune','d':'Description','m':'201'}, submission_log.values)
 
     def test_should_import_csv_string_if_it_contains_data_for_activity_reporters(self):
-        responses = self.file_player.accept(self.csv_data_for_activity_report)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_for_activity_report)
         self.assertTrue(responses[0].success)
         submission_log = Submission.get(self.manager, responses[0].submission_id)
         self.assertEquals("csv", submission_log.channel)
         self.assertEquals(u'rep1', responses[0].short_code)
 
     def test_should_not_import_data_if_multiple_reporter_have_same_mobile_number(self):
-        responses = self.file_player.accept(self.csv_data_with_same_mobile_number)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_with_same_mobile_number)
         self.assertTrue(responses[0].success)
         self.assertFalse(responses[1].success)
         self.assertEqual(u'Sorry, the telephone number 201 has already been registered',responses[1].errors['error']['m'])
 
     def test_should_import_next_value_if_exception_with_previous(self):
-        responses = self.file_player.accept(self.csv_data_with_exception)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_with_exception)
         self.assertTrue(responses[0].success)
         self.assertFalse(responses[1].success)
         self.assertTrue(responses[2].success)
@@ -209,16 +223,22 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEquals({'t':'reporter', 'n':'Dr. C','l':'Pune','d':'Description','m':'202'}, submission_log.values)
 
     def test_should_not_import_data_for_missing_field(self):
-        responses = self.file_player.accept(self.csv_data_with_missing_name)
-        self.assertFalse(responses[0].success)
-        self.assertEqual(OrderedDict([('n', 'Answer for question n is required')]),responses[0].errors['error'])
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_with_missing_name)
+            self.assertFalse(responses[0].success)
+            self.assertEqual(OrderedDict([('n', 'Answer for question n is required')]),responses[0].errors['error'])
 
-        responses = self.file_player.accept(self.csv_data_with_missing_type)
-        self.assertFalse(responses[0].success)
-        self.assertEqual(OrderedDict([('t', 'Answer for question t is required')]),responses[0].errors['error'])
+            responses = self.file_player.accept(self.csv_data_with_missing_type)
+            self.assertFalse(responses[0].success)
+            self.assertEqual(OrderedDict([('t', 'Answer for question t is required')]),responses[0].errors['error'])
 
     def test_should_not_import_data_for_invalid_mobile_number(self):
-        responses = self.file_player.accept(self.csv_data_with_incorrect_mobile_number)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_with_incorrect_mobile_number)
         self.assertFalse(responses[0].success)
         self.assertFalse(responses[1].success)
         self.assertFalse(responses[2].success)
@@ -227,14 +247,20 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEqual(OrderedDict([('m', 'Mobile number is missing')]),responses[2].errors['error'])
 
     def test_should_not_import_data_for_incorrect_GPS_format(self):
-        responses = self.file_player.accept(self.csv_data_with_incorrect_GPS)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_with_incorrect_GPS)
         self.assertFalse(responses[0].success)
         error_message = OrderedDict([('g',
             'Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx yy.yyyy. Example -18.8665 47.5315')])
         self.assertEqual(error_message,responses[0].errors['error'])
 
     def test_should_not_import_data_for_out_of_range_GPS_code(self):
-        responses = self.file_player.accept(self.csv_data_with_out_of_range_GPS_value)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_with_out_of_range_GPS_value)
         self.assertFalse(responses[0].success)
         self.assertFalse(responses[1].success)
         error_message1 = OrderedDict([('g',
@@ -245,8 +271,24 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEqual(error_message2,responses[1].errors['error'])
 
     def test_should_not_import_data_for_invalid_form_code(self):
-        responses = self.file_player.accept(self.csv_data_without_form_code)
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(self.csv_data_without_form_code)
         self.assertFalse(responses[0].success)
         self.assertEqual('The questionnaire does not exist.',responses[0].errors['error'])
         self.assertFalse(responses[1].success)
         self.assertEqual(u'The questionnaire with code abc does not exist.',responses[1].errors['error'])
+
+    def test_should_not_import_ds_if_phone_number_already_registered(self):
+        organization = Mock(spec=Organization)
+        csv_data = """
+                                FORM_CODE,t,n,l,d,m
+                                REG,"reporter",used number,Tana,"...",1234567890
+        """
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            responses = self.file_player.accept(csv_data)
+                
+        self.assertFalse(responses[0].success)
+        self.assertEqual(responses[0].errors['error'],"Data Sender with Mobile Number = 1234567890 already exists.")
