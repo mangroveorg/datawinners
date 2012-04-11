@@ -18,10 +18,10 @@ EXCEED_NAME_LENGTH = {
     RESPONSE_MESSAGE: "Error. Incorrect answer for na. Please resend entire message."}
 
 VALID_DATA2 = {SMS: "cli005 .EID cid004 .NA Mr. O'man .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789",
-               RESPONSE_MESSAGE: "Thank you TEST. We received : EID: cid004 NA: Mr. O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057,-78.007789"}
+               RESPONSE_MESSAGE: "Thank you TEST. We received : EID: cid004 NA: Mr. O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
 
 VALID_ORDERED_SMS_DATA = {SMS: "cli005 cid004 O'man 58 17.05.2011 b ade 27.178057,-78.007789",
-               RESPONSE_MESSAGE: "Thank you TEST. We received : EID: cid004 NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057,-78.007789"}
+               RESPONSE_MESSAGE: "Thank you TEST. We received : EID: cid004 NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders  GPS: 27.178057, -78.007789"}
 
 VALID_ORDERED_SMS_DATA_WITH_ACTIVITY_REPORT = {SMS: "cli017 O'man 58 17.05.2011 b ade",
                RESPONSE_MESSAGE: "Thank you TEST. We received : NA: O'man FA: 58 RD: 17.05.2011 BG: O- SY: Rapid weight loss,Memory loss,Neurological disorders"}

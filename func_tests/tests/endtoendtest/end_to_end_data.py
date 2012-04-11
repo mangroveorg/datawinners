@@ -93,7 +93,7 @@ MESSAGE = "message"
 
 RESPONSE_MESSAGE = "message"
 
-SUCCESS_MESSAGE_TEXT = "Thank you Donald Mouse. We received : q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057,-78.007789"
+SUCCESS_MESSAGE_TEXT = "Thank you Donald Mouse. We received : q1: wat1 q2: 11.10.2011 q3: 98 q4: 12.04.2011 q5: 04.2011 q6: 04.12.2011 q7: DARK YELLOW q8: Mr.Tessy q9: Aquificae,Bacteroids q10: 27.178057, -78.007789"
 
 SMS_SUBMISSION = "sms"
 UNIQUE_VALUE = "unique_value"

@@ -12,6 +12,7 @@ YEAR_TO_DATE = "year_to_date"
 today = datetime.today()
 month = today.month - 1
 year = today.year
+
 if not(month):
     month = 12
     year = today.year - 1
