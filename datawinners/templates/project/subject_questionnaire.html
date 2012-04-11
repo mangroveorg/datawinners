@@ -48,6 +48,14 @@
             var upload_url = "{% url datawinners.entity.views.all_subjects %}";
     </script>
 
+{% endblock %}
+
+
+{% block step_number %}
+    <h3>{% trans "Step3:" %} {% trans "Subjects" %}</h3>
+    <p>{% trans "Review the questions by clicking on each" %}</p>
+{% endblock %}
+{% block content %}
     <script type="text/html" id="choice-template">
         <li>
             <input id="choice_text" name="choice_text" class="required" type="text"
@@ -59,28 +67,21 @@
     </script>
     <script type="text/html" id="question-list-template_new">
         <div class="question_list">
-             <ol>
-             {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-             <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
-                 <a href="questionnaire.html#" data-bind="text: question.display"></a>
-                 <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
-                     <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
-                 </div>
+            <ol>
+                {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
+                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()} ">
+                    <a href="questionnaire.html#" data-bind="text: question.display"></a>
+                    <div data-bind="visible: question.canBeDeleted()" class="question_delete_link delete">
+                        <a href="questionnaire.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForRegistration(question); } else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete" %}</a>
+                    </div>
                  <span class="selected_question_arrow"
-                              data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
-             </li>
-             {% templatetag openvariable %}/each{% templatetag closevariable %}
-             </ol>
+                       data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
+                </li>
+                {% templatetag openvariable %}/each{% templatetag closevariable %}
+            </ol>
         </div>
     </script>
-{% endblock %}
 
-
-{% block step_number %}
-    <h3>{% trans "Step3:" %} {% trans "Subjects" %}</h3>
-    <p>{% trans "Review the questions by clicking on each" %}</p>
-{% endblock %}
-{% block content %}
     <h2>{% trans "My Subjects" %}</h2>
     {% include 'project/my_subjects_help.html' %}
     {% include "popup-import.html" %}
