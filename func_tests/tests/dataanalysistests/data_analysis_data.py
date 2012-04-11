@@ -11,16 +11,23 @@ YEAR_TO_DATE = "year_to_date"
 
 today = datetime.today()
 month = today.month - 1
+str_month = str(today.month - 1)
 year = today.year
 
-if not(month):
+if month < 10:
+    str_month = "0" + str(month)
+
+if not month:
     month = 12
     year = today.year - 1
-last_month_date = "12." + str(month) + "." + str(year)
 
-current_month_date = "01." + str(today.month) + "." + str(today.year)
+last_month_date = "12." + str_month + "." + str(year)
 
-today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
+#current_month_date = "01." + str(today.month) + "." + str(today.year)
+current_month_date = "01." + today.strftime("%m.%Y")
+
+#today_date = str(today.day) + "." + str(today.month) + "." + str(today.year)
+today_date = today.strftime("%d.%m.%Y")
 
 def get_year_to_date_data():
     march_data = [
