@@ -120,3 +120,6 @@ INSTALLED_APPS = (
     'datawinners.custom_reports.crs',
     'django_nose',
     )
+
+VUMI_API_URL = "http://178.79.161.90:8123/datawinner"
+USE_NEW_VUMI = True
