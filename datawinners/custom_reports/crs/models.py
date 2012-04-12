@@ -9,18 +9,20 @@ way_bill_sent_mapping = {
     'q3' : 'q4',
     'q4' : 'q8',
     'q5' : 'q2',
-    'q6' : 'q17',
-    'q7' : 'q9',
-    'q8' : 'q15',
+    'q6' : 'q3',
+    'q7' : 'q17',
+    'q8' : 'q9',
+    'q9' : 'q15',
 }
 way_bill_received_mapping = {
     'q1' : 'q2',
     'q2' : 'q1',
     'q3' : 'q5',
-    'q4' : 'q3',
-    'q5' : 'q7',
-    'q6' : 'q13',
-    'q7' : 'q15',
+    'q4' : 'q6',
+    'q5' : 'q3',
+    'q6' : 'q7',
+    'q7' : 'q13',
+    'q8' : 'q15',
 }
 class WayBillSent(models.Model):
     q1 = models.TextField(db_column='pl_code')
@@ -28,19 +30,21 @@ class WayBillSent(models.Model):
     q3 = models.DateField(db_column='sent_date')
     q4 = models.TextField(db_column='transaction_type')
     q5 = models.TextField(db_column='site_code')
-    q6 = models.TextField(db_column='truck_id')
-    q7 = models.TextField(db_column='food_type')
-    q8 = models.FloatField(db_column='weight')
+    q6 = models.TextField(db_column='sender_name')
+    q7 = models.TextField(db_column='truck_id')
+    q8 = models.TextField(db_column='food_type')
+    q9 = models.FloatField(db_column='weight')
 
 
 class WayBillReceived(models.Model):
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='waybill_code')
     q3 = models.TextField(db_column='site_code')
-    q4 = models.DateField(db_column='received_date')
-    q5 = models.TextField(db_column='truck_id')
-    q6 = models.FloatField(db_column='good_net_weight')
-    q7 = models.FloatField(db_column='damaged_net_weight')
+    q4 = models.TextField(db_column='receiver_name')
+    q5 = models.DateField(db_column='received_date')
+    q6 = models.TextField(db_column='truck_id')
+    q7 = models.FloatField(db_column='good_net_weight')
+    q8 = models.FloatField(db_column='damaged_net_weight')
 
 
 class SFMDistribution(models.Model):
