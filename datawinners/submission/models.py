@@ -7,15 +7,16 @@ class DatawinnerLog(models.Model):
     from_number = models.CharField(max_length=15)
     to_number = models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
-    form_code = models.TextField(default="") #Because if there is grabage sms which doesnt have any whitespace before 20 chars this would break
+    form_code = models.TextField(
+        default="") #Because if there is grabage sms which doesnt have any whitespace before 20 chars this would break
     error = models.TextField()
     organization = models.ForeignKey(Organization, null=True)
 
 
 #TODO: Move all message templating for responses here.
 class SMSResponse(object):
-    def __init__(self,response):
+    def __init__(self, response):
         self.response = response
 
-    def text(self,form_model):
-        return _get_response_message(self.response, form_model)
+    def text(self, dbm):
+        return _get_response_message(self.response, dbm)

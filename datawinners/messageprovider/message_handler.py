@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from collections import OrderedDict
 from django.utils.translation import ugettext as _
 from mangrove.errors.MangroveException import MangroveException
 from mangrove.form_model.form_model import NAME_FIELD, get_form_model_by_code
@@ -12,7 +11,8 @@ def default_formatter(exception, message):
         return message % exception.data
     return message
 
-def get_exception_message_for(exception, channel=None,formatter=default_formatter):
+
+def get_exception_message_for(exception, channel=None, formatter=default_formatter):
     ex_type = type(exception)
     if channel is not None:
         message_dict = exception_messages.get(ex_type)
@@ -30,10 +30,10 @@ def get_exception_message_for(exception, channel=None,formatter=default_formatte
 
 def get_submission_error_message_for(errors):
 # :-( :-( :-(
-    if isinstance(errors,dict):
+    if isinstance(errors, dict):
         error_message = get_validation_failure_error_message() % ", ".join(errors.keys())
     else:
-        error_message=errors
+        error_message = errors
     return error_message
 
 
@@ -41,11 +41,12 @@ def __get_expanded_response(form_model, processed_data):
     new_dict = form_model.stringify(processed_data)
     return " ".join([": ".join(each) for each in new_dict.items()])
 
+
 def get_success_msg_for_submission_using(response, form_model):
     reporters = response.reporters
     message = get_submission_success_message()
     thanks = message % reporters[0].get(NAME_FIELD) if not is_empty(reporters) else message % ""
-    return thanks + __get_expanded_response(form_model=form_model,processed_data=response.processed_data)
+    return thanks + __get_expanded_response(form_model=form_model, processed_data=response.processed_data)
 
 
 def get_success_msg_for_registration_using(response, source, form_model=None):
@@ -53,7 +54,7 @@ def get_success_msg_for_registration_using(response, source, form_model=None):
 
     thanks = get_registration_success_message() % resp_string
     if source == "sms":
-        return thanks + __get_expanded_response(form_model=form_model,processed_data=response.processed_data)
+        return thanks + __get_expanded_response(form_model=form_model, processed_data=response.processed_data)
     return thanks
 
 
@@ -63,8 +64,9 @@ def _stringify(item):
     return unicode(item)
 
 
-def _get_response_message(response, form_model):
+def _get_response_message(response, dbm):
     if response.success:
+        form_model = get_form_model_by_code(dbm, response.form_code)
         message = _get_success_message(response, form_model)
     else:
         message = get_submission_error_message_for(response.errors)

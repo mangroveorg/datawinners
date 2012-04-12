@@ -16,9 +16,12 @@ class TestSMSResponse(unittest.TestCase):
     def test_should_return_expected_success_response(self):
         self.form_submission_mock.is_registration = False
         response = create_response_from_form_submission(reporters=[{ NAME_FIELD : "Mr. X"}], submission_id=123,form_submission=self.form_submission_mock)
+        dbm_mock = Mock()
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'Clinic X'}
-        response_text = SMSResponse(response).text(form_model_mock)
+        with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_mock:
+            get_form_model_mock.return_value = form_model_mock
+            response_text = SMSResponse(response).text(dbm_mock)
         self.assertEqual(u"Thank you Mr. X. We received : name: Clinic X", response_text)
 
     def test_should_return_expected_success_response_for_registration(self):
@@ -26,10 +29,14 @@ class TestSMSResponse(unittest.TestCase):
 
         response = create_response_from_form_submission(reporters=[{NAME_FIELD: "Mr. X"}], submission_id=123,
             form_submission=self.form_submission_mock)
+        dbm_mock = Mock()
         form_model_mock = Mock(spec=FormModel)
         form_model_mock.stringify.return_value = {'name': 'Clinic X'}
+        with patch("datawinners.messageprovider.message_handler.get_form_model_by_code") as get_form_model_mock:
+            get_form_model_mock.return_value = form_model_mock
+            response_text = SMSResponse(response).text(dbm_mock)
         self.assertEqual(u'Registration successful. ID is: CLI001. name: Clinic X',
-            SMSResponse(response).text(form_model_mock))
+            response_text)
 
     def test_should_return_expected_error_response(self):
         self.form_submission_mock.saved= False

@@ -104,15 +104,15 @@ def send_message(incoming_request, response):
 
 def submit_to_player(incoming_request):
     try:
-        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(incoming_request['dbm'], incoming_request),
-                    PostSMSProcessorNumberOfAnswersValidators(incoming_request['dbm'], incoming_request)]
-        sms_player = SMSPlayer(incoming_request['dbm'], LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy),
+        dbm = incoming_request['dbm']
+        post_sms_parser_processors = [PostSMSProcessorLanguageActivator(dbm, incoming_request),
+                    PostSMSProcessorNumberOfAnswersValidators(dbm, incoming_request)]
+        sms_player = SMSPlayer(dbm, LocationBridge(get_location_tree(),get_loc_hierarchy=get_location_hierarchy),
             post_sms_parser_processors=post_sms_parser_processors)
         mangrove_request = Request(message=incoming_request['incoming_message'],
             transportInfo=incoming_request['transport_info'])
         response = sms_player.accept(mangrove_request)
-        form_model = get_form_model_by_code(incoming_request['dbm'], response.form_code)
-        message = SMSResponse(response).text(form_model)
+        message = SMSResponse(response).text(dbm)
         send_message(incoming_request, response)
     except DataObjectAlreadyExists as e:
         message = ugettext("%s with %s = %s already exists.") % (ugettext(e.data[2]), ugettext(e.data[0]), e.data[1])
