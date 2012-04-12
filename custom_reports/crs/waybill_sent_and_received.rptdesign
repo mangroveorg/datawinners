@@ -27,8 +27,8 @@
     <parameters>
         <scalar-parameter name="PL code" id="727">
             <property name="hidden">false</property>
-            <text-property name="helpText">Put % if you do not want to filter</text-property>
-            <text-property name="promptText">Packing List code</text-property>
+            <text-property name="helpText" key="filter_help_text">Put % if you do not want to filter</text-property>
+            <text-property name="promptText" key="pl_code">Packing List code</text-property>
             <property name="valueType">static</property>
             <property name="isRequired">true</property>
             <property name="dataType">string</property>
@@ -46,8 +46,8 @@
         </scalar-parameter>
         <scalar-parameter name="Waybill_code" id="728">
             <property name="hidden">false</property>
-            <text-property name="helpText">Put % if you do not want to filter</text-property>
-            <text-property name="promptText">Way bill code</text-property>
+            <text-property name="helpText" key="filter_help_text">Put % if you do not want to filter</text-property>
+            <text-property name="promptText" key="waybill_code">Way bill code</text-property>
             <property name="valueType">static</property>
             <property name="isRequired">true</property>
             <property name="dataType">string</property>
@@ -64,7 +64,8 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="food_type" id="729">
-            <text-property name="promptText">Food Type</text-property>
+            <text-property name="helpText" key="filter_help_text"></text-property>
+            <text-property name="promptText" key="food_type">Food Type</text-property>
             <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
             <property name="dataSetName">Food Type</property>
@@ -85,7 +86,7 @@
             </structure>
         </scalar-parameter>
         <parameter-group name="date" id="730">
-            <text-property name="displayName">Date Filter</text-property>
+            <text-property name="displayName">Date</text-property>
             <parameters>
                 <scalar-parameter name="from" id="731">
                     <property name="valueType">static</property>
@@ -122,6 +123,8 @@
             </parameters>
         </parameter-group>
         <scalar-parameter name="Type of Transaction" id="733">
+            <text-property name="helpText" key="filter_help_text"></text-property>
+            <text-property name="promptText" key="transaction_type"></text-property>
             <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
             <property name="dataSetName">Type_of_transaction</property>
