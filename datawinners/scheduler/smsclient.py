@@ -17,6 +17,7 @@ class SMSClient(object):
             smsc = OrganizationSetting.objects.filter(sms_tel_number = from_tel)[0].smsc
             if smsc is not None:
                 socket.setdefaulttimeout(10)
+                logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
                 if settings.USE_NEW_VUMI:
                     client = VumiApiClient(connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
                     sms_response = client.send_sms(to_addr=to_tel, from_addr=from_tel, content=message.encode('utf-8'),
@@ -48,5 +49,5 @@ class VumiApiClient(object):
             response = self.connection.post('/', kwargs)
             return True, response
         except URLError as err:
-            logger.critical('Unabe to send sms. %s' %err)
+            logger.critical('Unable to send sms. %s' %err)
             return False, 'Unable to send sms'
