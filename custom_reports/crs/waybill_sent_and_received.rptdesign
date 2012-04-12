@@ -389,7 +389,7 @@
                     <structure>
                         <property name="position">9</property>
                         <property name="name">weight</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">10</property>
@@ -414,12 +414,12 @@
                     <structure>
                         <property name="position">14</property>
                         <property name="name">good_net_weight</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">15</property>
                         <property name="name">damaged_net_weight</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">16</property>
@@ -500,8 +500,8 @@
                     <property name="position">9</property>
                     <property name="name">weight</property>
                     <property name="nativeName">weight</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
                     <property name="position">10</property>
@@ -535,19 +535,20 @@
                     <property name="position">14</property>
                     <property name="name">good_net_weight</property>
                     <property name="nativeName">good_net_weight</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
                     <property name="position">15</property>
                     <property name="name">damaged_net_weight</property>
                     <property name="nativeName">damaged_net_weight</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
-WHERE sent.pl_code ilike ?
+WHERE sent.transaction_type is not null
+and sent.pl_code ilike ?
 and sent.waybill_code ilike ?
 and sent.food_type ilike ?
 and sent.transaction_type ilike ?
@@ -1206,15 +1207,19 @@ from crs_waybillsent]]></xml-property>
                                 <property name="backgroundColor">#846F6F</property>
                                 <property name="color">#F2E4E4</property>
                                 <cell id="533">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
                                     <label id="317">
-                                        <text-property name="text" key="transaction_type">pl_code</text-property>
+                                        <text-property name="text" key="pl_code">pl_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="534">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
@@ -1236,7 +1241,7 @@ from crs_waybillsent]]></xml-property>
                                     </label>
                                 </cell>
                                 <cell id="542">
-                                    <property name="colSpan">8</property>
+                                    <property name="colSpan">7</property>
                                     <property name="rowSpan">1</property>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderLeftStyle">solid</property>
@@ -1246,26 +1251,30 @@ from crs_waybillsent]]></xml-property>
                                         <text-property name="text" key="way_bill_received">Way Bill Received</text-property>
                                     </label>
                                 </cell>
-                                <cell id="574">
+                                <cell id="759">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
+                                    <label id="349">
+                                        <text-property name="text" key="ecart">Ecart</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="574">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <label id="579">
+                                        <text-property name="text" key="in_transit">In Transit</text-property>
+                                    </label>
                                 </cell>
                             </row>
                             <row id="315">
-                                <cell id="316">
-                                    <property name="borderBottomStyle">solid</property>
-                                    <property name="borderLeftStyle">solid</property>
-                                    <property name="borderRightStyle">solid</property>
-                                    <property name="borderTopStyle">solid</property>
-                                </cell>
-                                <cell id="318">
-                                    <property name="borderBottomStyle">solid</property>
-                                    <property name="borderLeftStyle">solid</property>
-                                    <property name="borderRightStyle">solid</property>
-                                    <property name="borderTopStyle">solid</property>
-                                </cell>
                                 <cell id="320">
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderLeftStyle">solid</property>
@@ -1280,8 +1289,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <label id="323">
-                                        <text-property name="text" key="sender_name">sender_name</text-property>
+                                    <label id="748">
+                                        <text-property name="text" key="transaction_type">transaction_type</text-property>
                                     </label>
                                 </cell>
                                 <cell id="324">
@@ -1289,8 +1298,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <label id="325">
-                                        <text-property name="text" key="transaction_type">transaction_type</text-property>
+                                    <label id="750">
+                                        <text-property name="text" key="site_code">site_code</text-property>
                                     </label>
                                 </cell>
                                 <cell id="326">
@@ -1298,8 +1307,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <label id="327">
-                                        <text-property name="text" key="site_code">site_code</text-property>
+                                    <label id="752">
+                                        <text-property name="text" key="sender_name">sender_name</text-property>
                                     </label>
                                 </cell>
                                 <cell id="328">
@@ -1392,24 +1401,6 @@ from crs_waybillsent]]></xml-property>
                                         <text-property name="text" key="total_net_weight">total_net_weight</text-property>
                                     </label>
                                 </cell>
-                                <cell id="348">
-                                    <property name="borderBottomStyle">solid</property>
-                                    <property name="borderLeftStyle">solid</property>
-                                    <property name="borderRightStyle">solid</property>
-                                    <property name="borderTopStyle">solid</property>
-                                    <label id="349">
-                                        <text-property name="text" key="ecart">Ecart</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="575">
-                                    <property name="borderBottomStyle">solid</property>
-                                    <property name="borderLeftStyle">solid</property>
-                                    <property name="borderRightStyle">solid</property>
-                                    <property name="borderTopStyle">solid</property>
-                                    <label id="579">
-                                        <text-property name="text" key="in_transit">In Transit</text-property>
-                                    </label>
-                                </cell>
                             </row>
                         </header>
                         <detail>
@@ -1446,8 +1437,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="358">
-                                        <property name="resultSetColumn">sender_name</property>
+                                    <data id="749">
+                                        <property name="resultSetColumn">transaction_type</property>
                                     </data>
                                 </cell>
                                 <cell id="359">
@@ -1455,8 +1446,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="360">
-                                        <property name="resultSetColumn">transaction_type</property>
+                                    <data id="751">
+                                        <property name="resultSetColumn">site_code</property>
                                     </data>
                                 </cell>
                                 <cell id="361">
@@ -1464,8 +1455,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="362">
-                                        <property name="resultSetColumn">site_code</property>
+                                    <data id="747">
+                                        <property name="resultSetColumn">sender_name</property>
                                     </data>
                                 </cell>
                                 <cell id="363">

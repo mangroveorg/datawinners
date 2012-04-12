@@ -14,6 +14,15 @@ way_bill_sent_mapping = {
     'q8' : 'q9',
     'q9' : 'q15',
 }
+way_bill_sent_by_site_mapping = {
+    'q1' : 'q2',
+    'q2' : 'q11',
+    'q3' : 'q3',
+    'q6' : 'q5',
+    'q7' : 'q6',
+    'q8' : 'q7',
+    'q9' : 'q8',
+}
 way_bill_received_mapping = {
     'q1' : 'q2',
     'q2' : 'q1',
@@ -24,12 +33,22 @@ way_bill_received_mapping = {
     'q7' : 'q13',
     'q8' : 'q15',
 }
+way_bill_received_by_site_mapping = {
+    'q1' : 'q2',
+    'q2' : 'q1',
+    'q3' : 'q4',
+    'q4' : 'q5',
+    'q5' : 'q3',
+    'q6' : 'q6',
+    'q7' : 'q8',
+    'q8' : 'q9',
+}
 class WayBillSent(models.Model):
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='waybill_code')
     q3 = models.DateField(db_column='sent_date')
-    q4 = models.TextField(db_column='transaction_type')
-    q5 = models.TextField(db_column='site_code')
+    q4 = models.TextField(db_column='transaction_type', null=True)
+    q5 = models.TextField(db_column='site_code', null=True)
     q6 = models.TextField(db_column='sender_name')
     q7 = models.TextField(db_column='truck_id')
     q8 = models.TextField(db_column='food_type')

@@ -1,10 +1,13 @@
-from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBillSent, WayBillReceived, crs_model_creator, way_bill_sent_mapping, way_bill_received_mapping
+from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBillSent, WayBillReceived, crs_model_creator, way_bill_sent_mapping, way_bill_received_mapping, way_bill_sent_by_site_mapping, way_bill_received_by_site_mapping
 from datawinners.local_settings import WAYBILL_SENT_QUESTIONNAIRE_CODE, WAYBILL_RECEIVED_QUESTIONNAIRE_CODE,\
-    PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE
+    PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE, WAYBILL_SENT_BY_SITE, WAYBILL_RECEIVED_BY_SITE, WAYBILL_RECEIVED_BY_WH
 
 model_routing_dict = {
     WAYBILL_SENT_QUESTIONNAIRE_CODE: {'model': WayBillSent, 'question_mapping': way_bill_sent_mapping},
+    WAYBILL_SENT_BY_SITE: {'model': WayBillSent, 'question_mapping': way_bill_sent_by_site_mapping},
     WAYBILL_RECEIVED_QUESTIONNAIRE_CODE: {'model': WayBillReceived, 'question_mapping': way_bill_received_mapping},
+    WAYBILL_RECEIVED_BY_WH: {'model': WayBillReceived, 'question_mapping': way_bill_received_mapping},
+    WAYBILL_RECEIVED_BY_SITE: {'model': WayBillReceived, 'question_mapping': way_bill_received_by_site_mapping},
     PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE: PhysicalInventorySheet,
 }
 

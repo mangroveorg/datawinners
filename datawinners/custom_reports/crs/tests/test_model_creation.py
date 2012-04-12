@@ -16,8 +16,8 @@ class TestWayBillSent(unittest.TestCase):
     def test_should_create_WayBillSent_from_submission_data(self):
         sent_date = datetime.strptime('11.11.2011', '%d.%m.%Y')
         waybill_sent_submission_data = OrderedDict(
-            [('q7', u'pac1'), ('q18', u'2'), ('q4', sent_date), ('q3',u'sender_name'), ('q8', u'Transfer'), ('q2', u'2'),
-                ('q17', u'9'), ('q9', u'Oil'), ('q15', 400)])
+            [('q7', u'pac1'), ('q18', u'2'), ('q4', sent_date), ('q3',u'sender_name'),
+                ('q8', u'Transfer'), ('q2', u'2'), ('q17', u'9'), ('q9', u'Oil'), ('q15', 400)])
         crs_custom_report_handler = CRSCustomReportHandler()
         crs_custom_report_handler.handle(self.question_code, waybill_sent_submission_data)
         self.way_bill_sent = WayBillSent.objects.filter(q1='pac1')[0]
@@ -44,7 +44,8 @@ class TestWayBillReceived(unittest.TestCase):
     def test_should_create_WayBillReceived_from_submission_data(self):
         received_date = datetime.strptime('11.11.2011', '%d.%m.%Y')
         waybill_received_submission_data = OrderedDict(
-            [('q2', u'pac1'), ('q1', u'2'), ('q5', u'3'), ('q3', received_date), ('q6', u'receiver_name'), ('q7', u'2'), ('q13', 3), ('q15', 4)])
+            [('q2', u'pac1'), ('q1', u'2'), ('q5', u'3'), ('q3', received_date),
+                ('q6', u'receiver_name'), ('q7', u'2'), ('q13', 3), ('q15', 4)])
         crs_custom_report_handler = CRSCustomReportHandler()
         crs_custom_report_handler.handle(self.question_code, waybill_received_submission_data)
         self.way_bill_received = WayBillReceived.objects.get(q1='pac1')
