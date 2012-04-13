@@ -16,3 +16,7 @@
 grant select on crs_physicalinventorysheet to reporting;grant select on crs_sfmdistribution to reporting;grant select on crs_siteactivities to reporting;grant select on crs_warehouse to reporting;grant select on crs_waybillreceived to reporting;grant select on crs_waybillsent to reporting;
 
 6. copy postgresql jdbc4 jar in WEB-INF/lib. The driver VERSION should match that of PostgreSQL installed on your machine
+
+7. Go into the directory : tomcat_dir/webapps/birt-dir/
+
+and  create a SYMLINK  to datawinners/custom_reports/crs by issuing the command: 'ln -s /proj_dir/datawinnners/custom_reports/crs ./crs'
