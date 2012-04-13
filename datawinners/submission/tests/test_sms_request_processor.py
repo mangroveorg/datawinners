@@ -1,11 +1,9 @@
 import unittest
 from django.contrib.auth.models import User
-from accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER
-from messageprovider.messages import SMS
-from submission.request_processor import SMSTransportInfoRequestProcessor
-from tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME
-from tests.fake_request import FakeRequest
-from utils import get_organization_settings_from_request, generate_document_store_name
+from datawinners.messageprovider.messages import SMS
+from datawinners.submission.request_processor import SMSTransportInfoRequestProcessor
+from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_TEL_NO
+from datawinners.tests.fake_request import FakeRequest
 
 class TestSMSRequestProcessor(unittest.TestCase):
     fixtures = ['initial_data.json']
@@ -16,7 +14,7 @@ class TestSMSRequestProcessor(unittest.TestCase):
         self.sms_message = "Hi"
         self.from_number = "1234"
         self.to_number = DEFAULT_TEST_ORG_TEL_NO
-        self.http_request = FakeRequest(post=dict(from_msisdn=self.from_number,to_msisdn=self.to_number,message=self.sms_message), user=user)
+        self.http_request = FakeRequest(post=dict(from_addr=self.from_number,to_addr=self.to_number,content=self.sms_message), user=user)
 
     def test_should_put_transport_info_in_request_for_sms_submission(self):
         processor = SMSTransportInfoRequestProcessor()

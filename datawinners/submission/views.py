@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from mangrove.form_model.form_model import get_form_model_by_code
 
 from mangrove.transport.player.player import SMSPlayer
 from datawinners.custom_report_router.report_router import ReportRouter
@@ -18,7 +17,7 @@ from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.utils import get_organization
 from datawinners.messageprovider.handlers import create_failure_log
 from datawinners.submission.organization_finder import OrganizationFinder
-from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor
+from datawinners.submission.request_processor import    MangroveWebSMSRequestProcessor, SMSMessageRequestProcessor, SMSTransportInfoRequestProcessor, get_vumi_parameters
 from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator, PostSMSProcessorNumberOfAnswersValidators
 from datawinners.utils import  get_database_manager_for_org
 from mangrove.transport.facade import Request
@@ -129,7 +128,6 @@ def _get_organization(request):
 
 
 def _get_from_and_to_numbers(request):
-    _from = request.POST["from_msisdn"]
-    _to = request.POST["to_msisdn"]
-    return _from, _to
+    vumi_parameters = get_vumi_parameters(request)
+    return vumi_parameters.from_number, vumi_parameters.to_number
 

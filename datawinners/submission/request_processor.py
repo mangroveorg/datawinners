@@ -1,3 +1,4 @@
+from django.conf import settings
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, OrganizationSetting
 from datawinners.messageprovider.messages import SMS
@@ -23,12 +24,14 @@ class WebSMSOrganizationFinderRequestProcessor(object):
 
 class SMSMessageRequestProcessor(object):
     def process(self, http_request, mangrove_request):
-        mangrove_request['incoming_message']=http_request.POST['message']
+        message_ = http_request.POST['content'] if settings.USE_NEW_VUMI else http_request.POST['message']
+        mangrove_request['incoming_message']= message_
 
 class SMSTransportInfoRequestProcessor(object):
     def process(self, http_request, mangrove_request):
-        mangrove_request['transport_info']=TransportInfo(SMS, http_request.POST["from_msisdn"],
-            http_request.POST["to_msisdn"])
+        vumi_parameters = get_vumi_parameters(http_request)
+        mangrove_request['transport_info']=TransportInfo(SMS, vumi_parameters.from_number,
+            vumi_parameters.to_number)
 
 class MangroveWebSMSRequestProcessor(object):
     middlewares=[SMSMessageRequestProcessor(),WebSMSOrganizationFinderRequestProcessor(),WebSMSTransportInfoRequestProcessor(),WebSMSDBMRequestProcessor()]
@@ -38,3 +41,27 @@ class MangroveWebSMSRequestProcessor(object):
 
 def get_organization_number(organization_number):
     return organization_number[0] if(isinstance(organization_number, list)) else organization_number
+
+
+def try_get_value(http_request_post, key):
+    return http_request_post[key] if http_request_post.has_key(key) else None
+
+
+def get_vumi_parameters(http_request):
+    http_request_post = http_request.POST
+
+    if settings.USE_NEW_VUMI:
+        from_addr_ = try_get_value(http_request_post, "from_addr")
+        to_addr_ = try_get_value(http_request_post, "to_addr")
+        return VumiParameters(from_number=from_addr_, to_number=to_addr_, content=http_request_post["content"], is_new_vumi = True)
+    else:
+        from_addr_ = try_get_value(http_request_post, "from_msisdn")
+        to_addr_ = try_get_value(http_request_post, "to_msisdn")
+        return VumiParameters(from_number=from_addr_, to_number=to_addr_, content=http_request_post["message"], is_new_vumi=False)
+
+class VumiParameters(object):
+    def __init__(self, from_number, to_number, content, is_new_vumi):
+        self.from_number = from_number
+        self.to_number = to_number
+        self.content = content
+        self.is_new_vumi = is_new_vumi
