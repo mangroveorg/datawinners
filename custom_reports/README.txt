@@ -15,4 +15,4 @@
 5. create user "reporting" for psql db. set its password as "password". and as postgres user grant select access to it on all the CRS tables :
 grant select on crs_physicalinventorysheet to reporting;grant select on crs_sfmdistribution to reporting;grant select on crs_siteactivities to reporting;grant select on crs_warehouse to reporting;grant select on crs_waybillreceived to reporting;grant select on crs_waybillsent to reporting;
 
-6. copy postgresql jdbc jar in WEB-INF/lib postgresql-8.4-703.jdbc4.jar
+6. copy postgresql jdbc4 jar in WEB-INF/lib. The driver VERSION should match that of PostgreSQL installed on your machine
