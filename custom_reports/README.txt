@@ -19,4 +19,4 @@ grant select on crs_physicalinventorysheet to reporting;grant select on crs_sfmd
 
 7. Go into the directory : tomcat_dir/webapps/birt-dir/
 
-and  create a SYMLINK  to datawinners/custom_reports/crs by issuing the command: 'ln -s /proj_dir/datawinnners/custom_reports/crs ./crs'
+8. create a SYMLINK  to datawinners/custom_reports/crs by issuing the command: 'ln -s /<proj_dir>/datawinnners/custom_reports/crs ./crs'. DO NOT confuse "custom_reports/crs" with Django module "custom_reports" which is in "datawinners/datawinners"
