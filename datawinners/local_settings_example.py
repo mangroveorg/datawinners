@@ -60,3 +60,5 @@ INSTALLED_APPS = (
     'datawinners.custom_reports.crs',
     'django_nose',
     )
+
+USE_NEW_VUMI = True
