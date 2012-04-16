@@ -48,13 +48,13 @@ PLUS_IN_THE_BEGINNING = {SENDER: "1234567890",
 
 UNREGISTERED_FROM_NUMBER = {SENDER: "123445567",
                             RECEIVER: "919880734937",
-                            SMS: "cli002 .EID CID005 . .NA Mr. Kessy .FA 58 .RD 17.05.2011 .BG b .SY ade .RM ac",
+                            SMS: "cli002 .EID CID005 . .NA Mr. Kessy .FA 58 .RD 17.05.2011 .BG b .SY ade .GPS 27.178057  -78.007789 .RM ac",
                             ERROR_MSG: "Your telephone number is not yet registered in our system. Please contact your supervisor."}
 
 REGISTER_DATA_SENDER = {SENDER: "1234567890",
                         RECEIVER: "919880734937",
                         SMS: "REG .t Reporter .m 0123456789 .L  Jaipur .g 26.917 75.817 .N Donald Duck",
-                        ERROR_MSG: "Registration successful. ID is: rep[\d]. t: Reporter n: Donald Duck s: rep[\d] l: Jaipur g: 26.917,75.817 m: 0123456789"}
+                        ERROR_MSG: u"Registration successful. ID is: rep\d+. t: Reporter n: Donald Duck s: rep\d+ l: Jaipur g: 26.917, 75.817 m: 0123456789"}
 
 REGISTER_DATA_SENDER_FROM_UNKNOWN_NUMBER = {SENDER: "12345678453",
                                             RECEIVER: "919880734937",
@@ -78,7 +78,7 @@ REGISTER_INVALID_GEO_CODE = {SENDER: "1234567890",
 
 WITH_INVALID_GEO_CODE_FORMAT = {SENDER: "1234567890",
                                 RECEIVER: "919880734937",
-                                SMS: 'cli002 .EID cid002 . .NA Mr. De`Melo .FA 58 .RD 17.05.2011 .BG ab .SY ade .GPS 127.178057  -78.007789',
+                                SMS: 'cli002 .EID cid002 . .NA Mr. De`Melo .FA 58 .RD 17.05.2011 .BG ab .SY ade .GPS 127.178057  -78.007789 .RM a',
                                 ERROR_MSG: "Error. Incorrect answer for na, bg, gps. Please resend entire message."}
 
 ONLY_QUESTIONNAIRE_CODE = {SENDER: "1234567890",

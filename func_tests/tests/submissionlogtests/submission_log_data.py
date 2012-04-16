@@ -18,6 +18,6 @@ EXTRA_PLUS_IN_BTW_LOG = {SMS_SUBMISSION: "True False cid002 Mr. Dessy 58 17.05.2
                          UNIQUE_VALUE: "Mr. Dessy"}
 
 WITH_INVALID_GEO_CODE_FORMAT_LOG = {
-    SMS_SUBMISSION: "False True cid002 Mr. De`Melo 58 17.05.2011 ab ade 127.178057 -78.007789",
+    SMS_SUBMISSION: "False True cid002 Mr. De`Melo 58 17.05.2011 ab ade 127.178057 -78.007789 a",
     UNIQUE_VALUE: "Mr. De`Melo",
     FAILURE_MSG: "Answer Mr. De`Melo for question NA is longer than allowed.,Answer ab for question BG contains more than one value.,The answer 127.178057 must be between -90 and 90"}
