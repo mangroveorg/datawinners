@@ -66,15 +66,19 @@ class WayBillReceived(models.Model):
     q8 = models.FloatField(db_column='damaged_net_weight')
 
 
-class SFMDistribution(models.Model):
+class Distribution(models.Model):
     q1 = models.TextField(db_column='site_code')
     q2 = models.DateField(db_column='distribution_date')
     q3 = models.TextField(db_column='received_waybill_code')
-    q4 = models.FloatField(db_column='distributed_oil_quantity')
-    q5 = models.FloatField(db_column='distributed_csb_quantity')
-    q6 = models.TextField(db_column='returned_waybill_code')
-    q7 = models.IntegerField(db_column='returned_oil_quantity')
-    q8 = models.IntegerField(db_column='returned_csb_quantity')
+    q4 = models.TextField(db_column='returned_waybill_code')
+    q5 = models.FloatField(db_column='oil')
+    q6 = models.FloatField(db_column='csb')
+    q7 = models.FloatField(db_column='sorghum')
+    q8 = models.FloatField(db_column='rice')
+    q9 = models.IntegerField(db_column='returned_oil')
+    q10 = models.IntegerField(db_column='returned_csb')
+    q11 = models.IntegerField(db_column='returned_sorghum')
+    q12 = models.IntegerField(db_column='returned_rice')
 
 
 class PhysicalInventorySheet(models.Model):
