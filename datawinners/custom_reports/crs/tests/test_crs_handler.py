@@ -15,7 +15,7 @@ class TestCRSCustomReportHandler(unittest.TestCase):
     def test_should_route_request_to_appropriate_handler(self):
         with patch("datawinners.custom_reports.crs.handler.crs_model_creator") as crs_model_creator_mock:
             self.handler.handle('18', self.submission_data)
-            crs_model_creator_mock.assert_called_once_with(self.submission_data,self.model_mock,self.mapping)
+            crs_model_creator_mock.assert_called_once_with(self.submission_data,self.model_mock,self.mapping, None)
 
 
     def test_should_route_ignore_request_if_appropriate_handler_not_found(self):
