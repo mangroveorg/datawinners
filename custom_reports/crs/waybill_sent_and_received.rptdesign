@@ -167,7 +167,7 @@
             <property name="odaURL">jdbc:postgresql:geodjango</property>
             <property name="odaUser">postgres</property>
             <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
-            <property name="odaJndiName">java:comp/env/jdbc/crs</property>
+            <property name="odaJndiName">java:comp/env/jdbc/postgres</property>
             <property name="OdaConnProfileName">CRS_conn_profile</property>
             <property name="OdaConnProfileStorePath">crs_conn_profile</property>
         </oda-data-source>
