@@ -1,7 +1,7 @@
 from django.db import models
 
-def crs_model_creator(submission_data, model,question_mapping):
-    _save_submission_via_model(submission_data, model,question_mapping)
+def crs_model_creator(submission_data, model,question_mapping, defaults=None):
+    _save_submission_via_model(submission_data, model,question_mapping, defaults)
 
 way_bill_sent_mapping = {
     'q1' : 'q7',
@@ -76,6 +76,9 @@ sfm_distribution_mapping = {
     'q9' : 'q7',
     'q10' : 'q8',
 }
+sfm_distribution_defaults = {
+    'distribution_type' : 'SFM'
+}
 sfe_distribution_mapping = {
     'q1' : 'q1',
     'q2' : 'q2',
@@ -85,6 +88,9 @@ sfe_distribution_mapping = {
     'q6' : 'q5',
     'q9' : 'q7',
     'q10' : 'q8',
+}
+sfe_distribution_defaults = {
+    'distribution_type' : 'SFE'
 }
 ffa_distribution_mapping = {
     'q1' : 'q1',
@@ -97,6 +103,9 @@ ffa_distribution_mapping = {
     'q9' : 'q9',
     'q11' : 'q10',
     'q12' : 'q8',
+}
+ffa_distribution_defaults = {
+    'distribution_type' : 'FFA'
 }
 class Distribution(models.Model):
     q1 = models.TextField(db_column='site_code')
@@ -111,7 +120,7 @@ class Distribution(models.Model):
     q10 = models.IntegerField(db_column='returned_csb', null=True)
     q11 = models.IntegerField(db_column='returned_sorghum', null=True)
     q12 = models.IntegerField(db_column='returned_rice', null=True)
-
+    distribution_type = models.TextField()
 
 class PhysicalInventorySheet(models.Model):
     q1 = models.TextField(db_column='store_house_code')
@@ -152,8 +161,10 @@ def _convert_submission_data_to_model_fields(fields=None, submission_data=None,q
     return  {field_name: convert_to_sql_compatible(submission_data.get(question_mapping.get(field_name))) for field_name in field_names}
 
 
-def _save_submission_via_model(submission_data, model,question_mapping):
+def _save_submission_via_model(submission_data, model,question_mapping, defaults=None):
+    if defaults is None: defaults={}
     model_fields = model._meta.fields
     submission_values = _convert_submission_data_to_model_fields(fields=model_fields,
         submission_data=submission_data,question_mapping=question_mapping)
+    submission_values.update(defaults)
     model(**submission_values).save()
