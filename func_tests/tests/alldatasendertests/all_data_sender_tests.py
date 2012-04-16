@@ -5,6 +5,7 @@ from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
@@ -21,7 +22,7 @@ class TestAllDataSender(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.page = AllDataSendersPage(cls.driver) #global_navigation.navigate_to_all_data_sender_page()
+        cls.page = AllDataSendersPage(cls.driver)
 
     def setUp(self):
         #self.driver.refresh()
@@ -30,6 +31,11 @@ class TestAllDataSender(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         teardown_driver(cls.driver)
+
+    def login(self):
+        login_page = LoginPage(self.driver)
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page.do_successful_login_with(VALID_CREDENTIALS)
 
     def associate(self, all_data_sender_page):
         all_data_sender_page.select_a_data_sender_by_id(fetch_(UID, from_(ASSOCIATE_DATA_SENDER)))
@@ -133,18 +139,27 @@ class TestAllDataSender(unittest.TestCase):
         all_data_sender_page = self.page
         self.delete_ds(all_data_sender_page)
         self.assertEqual(all_data_sender_page.get_delete_success_message(), DELETE_SUCCESS_TEXT)
+        global_navigation = GlobalNavigationPage(self.driver)
+        global_navigation.sign_out()
+
         sms_tester_page = SMSTesterPage(self.driver)
         self.send_sms(VALID_SMS, sms_tester_page)
         self.assertEqual(sms_tester_page.get_response_message(), SMS_ERROR_MESSAGE)
 
+        self.login()
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         add_data_sender_page = AddDataSenderPage(self.driver)
         add_data_sender_page.add_data_sender_with(VALID_DATA)
         message = add_data_sender_page.get_success_message()
         self.assertRegexpMatches(message, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
         self.assertNotEqual(message.split()[-1], fetch_(UID, from_(DELETE_DATA_SENDER)))
+        global_navigation.sign_out()
+
         self.send_sms(VALID_SMS, sms_tester_page)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_SMS)))
+        self.login()
+
+
 
 
 

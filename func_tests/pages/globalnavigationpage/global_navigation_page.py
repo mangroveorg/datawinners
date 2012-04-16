@@ -66,3 +66,9 @@ class GlobalNavigationPage(Page):
          """
         self.driver.find(ALL_DATA_LINK).click()
         return AllDataPage(self.driver)
+
+    def sign_out(self):
+        """
+        Function to sign out from any account
+        """
+        self.driver.find(SIGN_OUT_LINK).click()
