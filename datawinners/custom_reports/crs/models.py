@@ -23,26 +23,7 @@ way_bill_sent_by_site_mapping = {
     'q8' : 'q7',
     'q9' : 'q8',
 }
-way_bill_received_mapping = {
-    'q1' : 'q2',
-    'q2' : 'q1',
-    'q3' : 'q5',
-    'q4' : 'q6',
-    'q5' : 'q3',
-    'q6' : 'q7',
-    'q7' : 'q13',
-    'q8' : 'q15',
-}
-way_bill_received_by_site_mapping = {
-    'q1' : 'q2',
-    'q2' : 'q1',
-    'q3' : 'q4',
-    'q4' : 'q5',
-    'q5' : 'q3',
-    'q6' : 'q6',
-    'q7' : 'q8',
-    'q8' : 'q9',
-}
+
 class WayBillSent(models.Model):
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='waybill_code')
@@ -54,6 +35,26 @@ class WayBillSent(models.Model):
     q8 = models.TextField(db_column='food_type')
     q9 = models.FloatField(db_column='weight')
 
+way_bill_received_mapping = {
+    'q1' : 'q2',
+    'q2' : 'q1',
+    'q3' : 'q5',
+    'q4' : 'q6',
+    'q5' : 'q3',
+    'q6' : 'q7',
+    'q7' : 'q13',
+    'q8' : 'q15',
+    }
+way_bill_received_by_site_mapping = {
+    'q1' : 'q2',
+    'q2' : 'q1',
+    'q3' : 'q4',
+    'q4' : 'q5',
+    'q5' : 'q3',
+    'q6' : 'q6',
+    'q7' : 'q8',
+    'q8' : 'q9',
+    }
 
 class WayBillReceived(models.Model):
     q1 = models.TextField(db_column='pl_code')
@@ -65,20 +66,51 @@ class WayBillReceived(models.Model):
     q7 = models.FloatField(db_column='good_net_weight')
     q8 = models.FloatField(db_column='damaged_net_weight')
 
-
+sfm_distribution_mapping = {
+    'q1' : 'q1',
+    'q2' : 'q2',
+    'q3' : 'q3',
+    'q4' : 'q6',
+    'q5' : 'q4',
+    'q6' : 'q5',
+    'q9' : 'q7',
+    'q10' : 'q8',
+}
+sfe_distribution_mapping = {
+    'q1' : 'q1',
+    'q2' : 'q2',
+    'q3' : 'q3',
+    'q4' : 'q6',
+    'q5' : 'q4',
+    'q6' : 'q5',
+    'q9' : 'q7',
+    'q10' : 'q8',
+}
+ffa_distribution_mapping = {
+    'q1' : 'q1',
+    'q2' : 'q2',
+    'q3' : 'q3',
+    'q4' : 'q7',
+    'q5' : 'q5',
+    'q7' : 'q6',
+    'q8' : 'q4',
+    'q9' : 'q9',
+    'q11' : 'q10',
+    'q12' : 'q8',
+}
 class Distribution(models.Model):
     q1 = models.TextField(db_column='site_code')
     q2 = models.DateField(db_column='distribution_date')
     q3 = models.TextField(db_column='received_waybill_code')
     q4 = models.TextField(db_column='returned_waybill_code')
-    q5 = models.FloatField(db_column='oil')
-    q6 = models.FloatField(db_column='csb')
-    q7 = models.FloatField(db_column='sorghum')
-    q8 = models.FloatField(db_column='rice')
-    q9 = models.IntegerField(db_column='returned_oil')
-    q10 = models.IntegerField(db_column='returned_csb')
-    q11 = models.IntegerField(db_column='returned_sorghum')
-    q12 = models.IntegerField(db_column='returned_rice')
+    q5 = models.FloatField(db_column='oil', null=True)
+    q6 = models.FloatField(db_column='csb', null=True)
+    q7 = models.FloatField(db_column='sorghum', null=True)
+    q8 = models.FloatField(db_column='rice', null=True)
+    q9 = models.IntegerField(db_column='returned_oil', null=True)
+    q10 = models.IntegerField(db_column='returned_csb', null=True)
+    q11 = models.IntegerField(db_column='returned_sorghum', null=True)
+    q12 = models.IntegerField(db_column='returned_rice', null=True)
 
 
 class PhysicalInventorySheet(models.Model):
