@@ -55,6 +55,58 @@
                     <expression name="expression">row[row["food_type"].toLowerCase()]</expression>
                     <property name="dataType">float</property>
                 </structure>
+                <structure>
+                    <property name="name">total_received</property>
+                    <expression name="expression">if(row["good_net_weight"] != null){
+row["good_net_weight"]+row["damaged_net_weight"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_lost_in_transport</property>
+                    <expression name="expression">if(row["total_received"] != null){
+	row["weight"]-row["total_received"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_not_distributed</property>
+                    <expression name="expression">if(row["distributed"]!=null){
+	row["total_received"]-row["distributed"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_lost_site_return</property>
+                    <expression name="expression">if(row["weight_33"] != null){
+	row["quantity_not_distributed"]-row["weight_33"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">total_received_from_site</property>
+                    <expression name="expression">if(row["damaged_net_weight_42"] != null){
+	row["good_net_weight_41"]+row["damaged_net_weight_42"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_lost_received_from_site</property>
+                    <expression name="expression">if(row["total_received_from_site"] != null){
+	row["weight_33"]-row["total_received_from_site"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">in_transit</property>
+                    <expression name="expression">if (row["received_date"]==null) {
+	row["weight"]
+}
+else if(row["received_date_39"] == null){
+ row["weight_33"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -218,36 +270,6 @@
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">receiver_name</text-property>
                     <text-property name="heading">receiver_name</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">id_24</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">id</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">sent_date_27</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">sent_date</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">transaction_type_28</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">transaction_type</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">site_code_29</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">site_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">food_type_32</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">food_type</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">weight_33</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">weight</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -468,8 +490,44 @@
                         <property name="name">distributed</property>
                         <property name="dataType">float</property>
                     </structure>
+                    <structure>
+                        <property name="position">44</property>
+                        <property name="name">total_received</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">45</property>
+                        <property name="name">quantity_lost_in_transport</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">46</property>
+                        <property name="name">quantity_not_distributed</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">47</property>
+                        <property name="name">quantity_lost_site_return</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">48</property>
+                        <property name="name">total_received_from_site</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">49</property>
+                        <property name="name">quantity_lost_received_from_site</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">50</property>
+                        <property name="name">in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
                 </list-property>
             </structure>
+            <property name="rowFetchLimit">0</property>
             <property name="dataSource">CRS_conn_profile</property>
             <list-property name="resultSet">
                 <structure>
@@ -780,14 +838,14 @@ recv.good_net_weight,
 recv.damaged_net_weight
 from 
 crs_waybillsent as sent 
-INNER JOIN 
+LEFT JOIN 
 crs_waybillreceived as recv ON sent.waybill_code=recv.waybill_code
 where sent.site_code is not null) as recv_site_join
-Inner join 
+Left join 
 crs_distribution on recv_site_join.sent_wh=crs_distribution.received_waybill_code) as site_dist_join
-Inner join
+Left join
 crs_waybillsent as return_sent ON site_dist_join.returned_waybill_code=return_sent.waybill_code) as site_return_join
-inner join
+LEFT join
 crs_waybillreceived as return_recv on site_return_join.waybill_code=return_recv.waybill_code
 ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
