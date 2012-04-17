@@ -14,7 +14,7 @@ model_routing_dict = {
     WAYBILL_RECEIVED_QUESTIONNAIRE_CODE: {'model': WayBillReceived, 'question_mapping': way_bill_received_mapping},
     WAYBILL_RECEIVED_BY_WH: {'model': WayBillReceived, 'question_mapping': way_bill_received_mapping},
     WAYBILL_RECEIVED_BY_SITE: {'model': WayBillReceived, 'question_mapping': way_bill_received_by_site_mapping},
-    PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE: PhysicalInventorySheet,
+    PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE: {'model' : PhysicalInventorySheet},
     FFA_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': ffa_distribution_mapping, 'defaults': ffa_distribution_defaults},
     SFE_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': sfe_distribution_mapping, 'defaults': sfe_distribution_defaults},
     SFM_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': sfm_distribution_mapping, 'defaults': sfm_distribution_defaults}

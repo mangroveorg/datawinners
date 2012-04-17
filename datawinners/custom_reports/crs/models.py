@@ -1,6 +1,8 @@
 from django.db import models
 
-def crs_model_creator(submission_data, model,question_mapping, defaults=None):
+def crs_model_creator(submission_data, model, question_mapping=None, defaults=None):
+    if not question_mapping: question_mapping = {}
+    if not defaults: defaults = {}
     _save_submission_via_model(submission_data, model,question_mapping, defaults)
 
 way_bill_sent_mapping = {
@@ -158,11 +160,10 @@ def convert_to_sql_compatible(param):
 
 def _convert_submission_data_to_model_fields(fields=None, submission_data=None,question_mapping=None):
     field_names = [field.name for field in fields if field.name != 'id']
-    return  {field_name: convert_to_sql_compatible(submission_data.get(question_mapping.get(field_name))) for field_name in field_names}
+    return  {field_name: convert_to_sql_compatible(submission_data.get(question_mapping.get(field_name, field_name))) for field_name in field_names}
 
 
-def _save_submission_via_model(submission_data, model,question_mapping, defaults=None):
-    if defaults is None: defaults={}
+def _save_submission_via_model(submission_data, model,question_mapping, defaults):
     model_fields = model._meta.fields
     submission_values = _convert_submission_data_to_model_fields(fields=model_fields,
         submission_data=submission_data,question_mapping=question_mapping)
