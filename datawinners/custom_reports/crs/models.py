@@ -31,7 +31,7 @@ class WayBillSent(models.Model):
     q2 = models.TextField(db_column='waybill_code')
     q3 = models.DateField(db_column='sent_date')
     q4 = models.TextField(db_column='transaction_type', null=True)
-    q5 = models.TextField(db_column='site_code', null=True)
+    q5 = models.TextField(db_column='warehouse_code', null=True)
     q6 = models.TextField(db_column='sender_name')
     q7 = models.TextField(db_column='truck_id')
     q8 = models.TextField(db_column='food_type')

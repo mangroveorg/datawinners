@@ -315,12 +315,6 @@ else if(row["received_date_41"] == null){
                     <text-property name="heading">distribution_type</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">id_26</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">id</text-property>
-                    <text-property name="heading">id</text-property>
-                </structure>
-                <structure>
                     <property name="columnName">pl_code</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">pl_code</text-property>
@@ -333,22 +327,10 @@ else if(row["received_date_41"] == null){
                     <text-property name="heading">waybill_code</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">sent_date_29</property>
+                    <property name="columnName">warehouse_code</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">sent_date</text-property>
-                    <text-property name="heading">sent_date</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">transaction_type_30</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">transaction_type</text-property>
-                    <text-property name="heading">transaction_type</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">site_code_31</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">site_code</text-property>
-                    <text-property name="heading">site_code</text-property>
+                    <text-property name="displayName">warehouse_code</text-property>
+                    <text-property name="heading">warehouse_code</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">sender_name</property>
@@ -363,70 +345,10 @@ else if(row["received_date_41"] == null){
                     <text-property name="heading">truck_id</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">food_type_34</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">food_type</text-property>
-                    <text-property name="heading">food_type</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">weight_35</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">weight</text-property>
-                    <text-property name="heading">weight</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">id_36</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">id</text-property>
-                    <text-property name="heading">id</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">pl_code_37</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">pl_code</text-property>
-                    <text-property name="heading">pl_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">waybill_code_38</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">waybill_code</text-property>
-                    <text-property name="heading">waybill_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">site_code_39</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">site_code</text-property>
-                    <text-property name="heading">site_code</text-property>
-                </structure>
-                <structure>
                     <property name="columnName">receiver_name</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">receiver_name</text-property>
                     <text-property name="heading">receiver_name</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">received_date_41</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">received_date</text-property>
-                    <text-property name="heading">received_date</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">truck_id_42</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">truck_id</text-property>
-                    <text-property name="heading">truck_id</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">good_net_weight_43</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">good_net_weight</text-property>
-                    <text-property name="heading">good_net_weight</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">damaged_net_weight_44</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">damaged_net_weight</text-property>
-                    <text-property name="heading">damaged_net_weight</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -617,7 +539,7 @@ else if(row["received_date_41"] == null){
                     </structure>
                     <structure>
                         <property name="position">31</property>
-                        <property name="name">site_code_31</property>
+                        <property name="name">warehouse_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
@@ -942,8 +864,8 @@ else if(row["received_date_41"] == null){
                 </structure>
                 <structure>
                     <property name="position">31</property>
-                    <property name="name">site_code_31</property>
-                    <property name="nativeName">site_code</property>
+                    <property name="name">warehouse_code</property>
+                    <property name="nativeName">warehouse_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
@@ -1046,7 +968,7 @@ sent.sent_date as wh_sent_date,
 sent.food_type,
 sent.weight, 
 sent.transaction_type,
-sent.site_code as sent_site_code,
+sent.warehouse_code as sent_site_code,
 
 to_char(recv.received_date, 'dd Mon yyyy') as received_date,
 recv.good_net_weight,
@@ -1056,7 +978,7 @@ from
 crs_waybillsent as sent 
 LEFT JOIN 
 crs_waybillreceived as recv ON sent.waybill_code=recv.waybill_code 
-where sent.site_code is not null) as recv_site_join
+where sent.warehouse_code is not null) as recv_site_join
 Left join 
 crs_distribution on recv_site_join.sent_wh=crs_distribution.received_waybill_code) as site_dist_join
 Left join
