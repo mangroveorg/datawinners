@@ -5,20 +5,6 @@
         <value>properties/messages_fr_CA</value>
         <value>properties/messages</value>
     </simple-property-list>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">8</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">8</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">8</property>
-        </structure>
-    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -40,7 +26,9 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="site_code" id="10">
-            <property name="valueType">static</property>
+            <property name="valueType">dynamic</property>
+            <property name="dataSetName">Data Set</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["recv_site_code"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -48,7 +36,9 @@
             </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
-            <property name="controlType">text-box</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">true</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
@@ -143,22 +133,22 @@ row["good_net_weight"]+row["damaged_net_weight"]
                 </structure>
                 <structure>
                     <property name="name">quantity_lost_site_return</property>
-                    <expression name="expression">if(row["weight_34"] != null){
-	row["quantity_not_distributed"]-row["weight_34"]
+                    <expression name="expression">if(row["weight_35"] != null){
+	row["quantity_not_distributed"]-row["weight_35"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_received_from_site</property>
-                    <expression name="expression">if(row["damaged_net_weight_43"] != null){
-	row["good_net_weight_42"]+row["damaged_net_weight_43"]
+                    <expression name="expression">if(row["damaged_net_weight_44"] != null){
+	row["good_net_weight_43"]+row["damaged_net_weight_44"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">quantity_lost_received_from_site</property>
                     <expression name="expression">if(row["total_received_from_site"] != null){
-	row["weight_34"]-row["total_received_from_site"]
+	row["weight_35"]-row["total_received_from_site"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
@@ -167,8 +157,8 @@ row["good_net_weight"]+row["damaged_net_weight"]
                     <expression name="expression">if (row["received_date"]==null) {
 	row["weight"]
 }
-else if(row["received_date_40"] == null){
- row["weight_34"]
+else if(row["received_date_41"] == null){
+ row["weight_35"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
@@ -227,6 +217,12 @@ else if(row["received_date_40"] == null){
                     <property name="analysis">measure</property>
                     <text-property name="displayName">good_net_weight</text-property>
                     <text-property name="heading">good_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">recv_site_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">recv_site_code</text-property>
+                    <text-property name="heading">recv_site_code</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">damaged_net_weight</property>
@@ -319,6 +315,12 @@ else if(row["received_date_40"] == null){
                     <text-property name="heading">distribution_type</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">id_26</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">pl_code</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">pl_code</text-property>
@@ -329,6 +331,24 @@ else if(row["received_date_40"] == null){
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">waybill_code</text-property>
                     <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sent_date_29</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_date</text-property>
+                    <text-property name="heading">sent_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">transaction_type_30</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">transaction_type</text-property>
+                    <text-property name="heading">transaction_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">site_code_31</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">site_code</text-property>
+                    <text-property name="heading">site_code</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">sender_name</property>
@@ -343,10 +363,70 @@ else if(row["received_date_40"] == null){
                     <text-property name="heading">truck_id</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">food_type_34</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <text-property name="heading">food_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight_35</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">weight</text-property>
+                    <text-property name="heading">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">id_36</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">pl_code_37</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">pl_code</text-property>
+                    <text-property name="heading">pl_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">waybill_code_38</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">waybill_code</text-property>
+                    <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">site_code_39</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">site_code</text-property>
+                    <text-property name="heading">site_code</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">receiver_name</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">receiver_name</text-property>
                     <text-property name="heading">receiver_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_date_41</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_date</text-property>
+                    <text-property name="heading">received_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">truck_id_42</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">truck_id</text-property>
+                    <text-property name="heading">truck_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">good_net_weight_43</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">good_net_weight</text-property>
+                    <text-property name="heading">good_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">damaged_net_weight_44</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">damaged_net_weight</text-property>
+                    <text-property name="heading">damaged_net_weight</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -432,211 +512,216 @@ else if(row["received_date_40"] == null){
                     </structure>
                     <structure>
                         <property name="position">10</property>
+                        <property name="name">recv_site_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
                         <property name="name">damaged_net_weight</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">id</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">site_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">distribution_date</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">14</property>
+                        <property name="position">15</property>
                         <property name="name">received_waybill_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">15</property>
+                        <property name="position">16</property>
                         <property name="name">returned_waybill_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">16</property>
+                        <property name="position">17</property>
                         <property name="name">oil</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">17</property>
+                        <property name="position">18</property>
                         <property name="name">csb</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">18</property>
+                        <property name="position">19</property>
                         <property name="name">sorghum</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">19</property>
+                        <property name="position">20</property>
                         <property name="name">rice</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">20</property>
+                        <property name="position">21</property>
                         <property name="name">returned_oil</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">21</property>
+                        <property name="position">22</property>
                         <property name="name">returned_csb</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">22</property>
+                        <property name="position">23</property>
                         <property name="name">returned_sorghum</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">23</property>
+                        <property name="position">24</property>
                         <property name="name">returned_rice</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">24</property>
+                        <property name="position">25</property>
                         <property name="name">distribution_type</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">25</property>
-                        <property name="name">id_25</property>
+                        <property name="position">26</property>
+                        <property name="name">id_26</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">26</property>
+                        <property name="position">27</property>
                         <property name="name">pl_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">27</property>
+                        <property name="position">28</property>
                         <property name="name">waybill_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">28</property>
-                        <property name="name">sent_date_28</property>
+                        <property name="position">29</property>
+                        <property name="name">sent_date_29</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">29</property>
-                        <property name="name">transaction_type_29</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
                         <property name="position">30</property>
-                        <property name="name">site_code_30</property>
+                        <property name="name">transaction_type_30</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">31</property>
-                        <property name="name">sender_name</property>
+                        <property name="name">site_code_31</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">32</property>
-                        <property name="name">truck_id</property>
+                        <property name="name">sender_name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">33</property>
-                        <property name="name">food_type_33</property>
+                        <property name="name">truck_id</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">34</property>
-                        <property name="name">weight_34</property>
-                        <property name="dataType">float</property>
-                    </structure>
-                    <structure>
-                        <property name="position">35</property>
-                        <property name="name">id_35</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">36</property>
-                        <property name="name">pl_code_36</property>
+                        <property name="name">food_type_34</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
+                        <property name="position">35</property>
+                        <property name="name">weight_35</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">36</property>
+                        <property name="name">id_36</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
                         <property name="position">37</property>
-                        <property name="name">waybill_code_37</property>
+                        <property name="name">pl_code_37</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">38</property>
-                        <property name="name">site_code_38</property>
+                        <property name="name">waybill_code_38</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">39</property>
-                        <property name="name">receiver_name</property>
+                        <property name="name">site_code_39</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">40</property>
-                        <property name="name">received_date_40</property>
-                        <property name="dataType">date</property>
-                    </structure>
-                    <structure>
-                        <property name="position">41</property>
-                        <property name="name">truck_id_41</property>
+                        <property name="name">receiver_name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
+                        <property name="position">41</property>
+                        <property name="name">received_date_41</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
                         <property name="position">42</property>
-                        <property name="name">good_net_weight_42</property>
-                        <property name="dataType">float</property>
+                        <property name="name">truck_id_42</property>
+                        <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">43</property>
-                        <property name="name">damaged_net_weight_43</property>
+                        <property name="name">good_net_weight_43</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">44</property>
-                        <property name="name">distributed</property>
+                        <property name="name">damaged_net_weight_44</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">45</property>
-                        <property name="name">total_received</property>
+                        <property name="name">distributed</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">46</property>
-                        <property name="name">quantity_lost_in_transport</property>
+                        <property name="name">total_received</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">47</property>
-                        <property name="name">quantity_not_distributed</property>
+                        <property name="name">quantity_lost_in_transport</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">48</property>
-                        <property name="name">quantity_lost_site_return</property>
+                        <property name="name">quantity_not_distributed</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">49</property>
-                        <property name="name">total_received_from_site</property>
+                        <property name="name">quantity_lost_site_return</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">50</property>
-                        <property name="name">quantity_lost_received_from_site</property>
+                        <property name="name">total_received_from_site</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">51</property>
+                        <property name="name">quantity_lost_received_from_site</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">52</property>
                         <property name="name">in_transit</property>
                         <property name="dataType">float</property>
                     </structure>
@@ -710,238 +795,245 @@ else if(row["received_date_40"] == null){
                 </structure>
                 <structure>
                     <property name="position">10</property>
+                    <property name="name">recv_site_code</property>
+                    <property name="nativeName">recv_site_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
                     <property name="name">damaged_net_weight</property>
                     <property name="nativeName">damaged_net_weight</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">id</property>
                     <property name="nativeName">id</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                     <property name="name">site_code</property>
                     <property name="nativeName">site_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">13</property>
+                    <property name="position">14</property>
                     <property name="name">distribution_date</property>
                     <property name="nativeName">distribution_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">14</property>
+                    <property name="position">15</property>
                     <property name="name">received_waybill_code</property>
                     <property name="nativeName">received_waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">15</property>
+                    <property name="position">16</property>
                     <property name="name">returned_waybill_code</property>
                     <property name="nativeName">returned_waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">16</property>
+                    <property name="position">17</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">17</property>
+                    <property name="position">18</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">18</property>
+                    <property name="position">19</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">19</property>
+                    <property name="position">20</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">20</property>
+                    <property name="position">21</property>
                     <property name="name">returned_oil</property>
                     <property name="nativeName">returned_oil</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">21</property>
+                    <property name="position">22</property>
                     <property name="name">returned_csb</property>
                     <property name="nativeName">returned_csb</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">22</property>
+                    <property name="position">23</property>
                     <property name="name">returned_sorghum</property>
                     <property name="nativeName">returned_sorghum</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">23</property>
+                    <property name="position">24</property>
                     <property name="name">returned_rice</property>
                     <property name="nativeName">returned_rice</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">24</property>
+                    <property name="position">25</property>
                     <property name="name">distribution_type</property>
                     <property name="nativeName">distribution_type</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">25</property>
-                    <property name="name">id_25</property>
+                    <property name="position">26</property>
+                    <property name="name">id_26</property>
                     <property name="nativeName">id</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">26</property>
+                    <property name="position">27</property>
                     <property name="name">pl_code</property>
                     <property name="nativeName">pl_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">27</property>
+                    <property name="position">28</property>
                     <property name="name">waybill_code</property>
                     <property name="nativeName">waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">28</property>
-                    <property name="name">sent_date_28</property>
+                    <property name="position">29</property>
+                    <property name="name">sent_date_29</property>
                     <property name="nativeName">sent_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">29</property>
-                    <property name="name">transaction_type_29</property>
+                    <property name="position">30</property>
+                    <property name="name">transaction_type_30</property>
                     <property name="nativeName">transaction_type</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">30</property>
-                    <property name="name">site_code_30</property>
+                    <property name="position">31</property>
+                    <property name="name">site_code_31</property>
                     <property name="nativeName">site_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">31</property>
+                    <property name="position">32</property>
                     <property name="name">sender_name</property>
                     <property name="nativeName">sender_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">32</property>
+                    <property name="position">33</property>
                     <property name="name">truck_id</property>
                     <property name="nativeName">truck_id</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">33</property>
-                    <property name="name">food_type_33</property>
+                    <property name="position">34</property>
+                    <property name="name">food_type_34</property>
                     <property name="nativeName">food_type</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">34</property>
-                    <property name="name">weight_34</property>
+                    <property name="position">35</property>
+                    <property name="name">weight_35</property>
                     <property name="nativeName">weight</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">35</property>
-                    <property name="name">id_35</property>
+                    <property name="position">36</property>
+                    <property name="name">id_36</property>
                     <property name="nativeName">id</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">36</property>
-                    <property name="name">pl_code_36</property>
+                    <property name="position">37</property>
+                    <property name="name">pl_code_37</property>
                     <property name="nativeName">pl_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">37</property>
-                    <property name="name">waybill_code_37</property>
+                    <property name="position">38</property>
+                    <property name="name">waybill_code_38</property>
                     <property name="nativeName">waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">38</property>
-                    <property name="name">site_code_38</property>
+                    <property name="position">39</property>
+                    <property name="name">site_code_39</property>
                     <property name="nativeName">site_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">39</property>
+                    <property name="position">40</property>
                     <property name="name">receiver_name</property>
                     <property name="nativeName">receiver_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">40</property>
-                    <property name="name">received_date_40</property>
+                    <property name="position">41</property>
+                    <property name="name">received_date_41</property>
                     <property name="nativeName">received_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">41</property>
-                    <property name="name">truck_id_41</property>
+                    <property name="position">42</property>
+                    <property name="name">truck_id_42</property>
                     <property name="nativeName">truck_id</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">42</property>
-                    <property name="name">good_net_weight_42</property>
+                    <property name="position">43</property>
+                    <property name="name">good_net_weight_43</property>
                     <property name="nativeName">good_net_weight</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">43</property>
-                    <property name="name">damaged_net_weight_43</property>
+                    <property name="position">44</property>
+                    <property name="name">damaged_net_weight_44</property>
                     <property name="nativeName">damaged_net_weight</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
@@ -958,11 +1050,12 @@ sent.site_code as sent_site_code,
 
 to_char(recv.received_date, 'dd Mon yyyy') as received_date,
 recv.good_net_weight,
+recv.site_code as recv_site_code,
 recv.damaged_net_weight
 from 
 crs_waybillsent as sent 
 LEFT JOIN 
-crs_waybillreceived as recv ON sent.waybill_code=recv.waybill_code
+crs_waybillreceived as recv ON sent.waybill_code=recv.waybill_code 
 where sent.site_code is not null) as recv_site_join
 Left join 
 crs_distribution on recv_site_join.sent_wh=crs_distribution.received_waybill_code) as site_dist_join
@@ -971,7 +1064,7 @@ crs_waybillsent as return_sent ON site_dist_join.returned_waybill_code=return_se
 LEFT join
 crs_waybillreceived as return_recv on site_return_join.waybill_code=return_recv.waybill_code
 where sent_wh like ?
-and sent_site_code like ?
+and recv_site_code like ?
 and wh_sent_date >= ?
 and wh_sent_date <= ? 
 ]]></xml-property>
