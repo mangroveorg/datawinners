@@ -33,7 +33,7 @@ def get_year_to_date_data():
     march_data = [
         u'cid001 ànita 45 07.03.2011 O- Dry cough,Neurological disorders 45.233,28.3324 --',
         u'cid002 Amanda 69 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 --',
-        u'cid003 Jimanda 86 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 --',
+        u'cid003 Jimanda 86 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 Hivid,Vidéx EC',
         u'cid004 ànnita 30 07.03.2011 O- Dry cough,Neurological disorders 45.233,28.3324 --',
         u'cid005 Qamanda 47 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 --',]
 
@@ -63,7 +63,7 @@ DEFAULT_DATA_FOR_QUESTIONNAIRE = {PROJECT_NAME: "clinic test project",
                                   u'What are the required medicines?'],
                       DATA_RECORDS: [u'cid001 Ianda (",) 34 27.03.2011 B+ Dry cough,Neurological disorders 38.3452,15.3345 --',
                                      u'cid002 Amanda 69 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 --',
-                                     u'cid003 Jimanda 86 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 --',
+                                     u'cid003 Jimanda 86 12.03.2011 AB Dry cough,Memory loss 40.2,69.3123 Hivid,Vidéx EC',
                                      u'cid004 Panda (",) 34 27.03.2011 B+ Dry cough,Neurological disorders 38.3452,15.3345 --',
                                      u'cid005 Vanda (",) 34 27.03.2011 B+ Dry cough,Neurological disorders 38.3452,15.3345 --',
                                      u'cid007 Amanda 73 12.11.2010 AB Dry cough,Memory loss 40.2,69.3123 --',

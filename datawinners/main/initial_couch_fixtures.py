@@ -837,7 +837,7 @@ def load_sms_data_for_cli001(manager):
         "cli001 .EID cid005 .NA ànnita .FA 50 .RD 07.03.2011 .BG b .SY bbe .GPS 45.233 28.3324", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
-        "cli001 .EID cid003 .NA Jimanda .FA 86 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123", transport)
+        "cli001 .EID cid003 .NA Jimanda .FA 86 .RD 12.03.2011 .BG c .SY bd .GPS 40.2 69.3123 .RM ac", transport)
     response = sms_player.accept(mangrove_request)
     mangrove_request = Request(
         'cli001 .EID cli10 .NA Kanda (",) .FA 64 .RD 27.03.2011 .BG d .SY be .GPS 38.3452 15.3345', transport)
