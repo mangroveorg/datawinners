@@ -1,4 +1,5 @@
 from django.db import models
+from mangrove.utils.types import is_empty
 
 def crs_model_creator(submission_data, model, question_mapping=None, defaults=None):
     if not question_mapping: question_mapping = {}
@@ -15,6 +16,7 @@ way_bill_sent_mapping = {
     'q7' : 'q17',
     'q8' : 'q9',
     'q9' : 'q15',
+    'q10' : 'q6'
 }
 way_bill_sent_by_site_mapping = {
     'q1' : 'q2',
@@ -24,6 +26,7 @@ way_bill_sent_by_site_mapping = {
     'q7' : 'q6',
     'q8' : 'q7',
     'q9' : 'q8',
+    'q10' : 'q9'
 }
 
 class WayBillSent(models.Model):
@@ -36,6 +39,7 @@ class WayBillSent(models.Model):
     q7 = models.TextField(db_column='truck_id')
     q8 = models.TextField(db_column='food_type')
     q9 = models.FloatField(db_column='weight')
+    q10 = models.TextField(db_column='receiver_code')
 
 way_bill_received_mapping = {
     'q1' : 'q2',
@@ -160,7 +164,9 @@ def convert_to_sql_compatible(param):
 
 def _convert_submission_data_to_model_fields(fields=None, submission_data=None,question_mapping=None):
     field_names = [field.name for field in fields if field.name != 'id']
-    return  {field_name: convert_to_sql_compatible(submission_data.get(question_mapping.get(field_name, field_name))) for field_name in field_names}
+    if is_empty(question_mapping):
+        return  {field_name: convert_to_sql_compatible(submission_data.get(field_name)) for field_name in field_names}
+    return  {field_name: convert_to_sql_compatible(submission_data.get(question_mapping.get(field_name))) for field_name in field_names}
 
 
 def _save_submission_via_model(submission_data, model,question_mapping, defaults):
