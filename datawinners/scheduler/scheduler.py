@@ -3,7 +3,7 @@ from _collections import defaultdict
 from datetime import date, datetime
 from datawinners import  settings
 from datawinners.accountmanagement.models import OrganizationSetting, Organization
-from datawinners.project.models import Reminder, Project
+from datawinners.project.models import Project, get_reminder_repository
 from datawinners.scheduler.smsclient import SMSClient
 
 import logging
@@ -45,7 +45,6 @@ def send_reminders_for_an_organization(org,on_date,sms_client,from_number,dbm):
     Sends out all reminders for an organization, scheduled for the given date.
     """
     reminders_grouped_by_proj = _get_reminders_grouped_by_project_for_organization(org.org_id)
-
     logger.info("Projects with reminders:- %d" % len(reminders_grouped_by_proj) )
     for project_id, reminders in reminders_grouped_by_proj.items():
         project = dbm._load_document(project_id, Project)
@@ -53,8 +52,9 @@ def send_reminders_for_an_organization(org,on_date,sms_client,from_number,dbm):
             continue
         #send reminders to next projects in the queue if their is any error while sending reminders to previous project
         try:
-            send_reminders_on(project,reminders,on_date,sms_client,from_number,dbm)
-        except Exception as ex:
+            _, total_sms_sent = send_reminders_on(project, reminders, on_date, sms_client, from_number, dbm)
+            org.increment_all_message_count_by(0, total_sms_sent)
+        except Exception:
             logger.exception("Exception while sending reminders for this project")
 
 def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
@@ -64,24 +64,26 @@ def send_reminders_on(project,reminders, on_date, sms_client,from_number,dbm):
     assert isinstance(on_date,date)
     logger.info("Project:- %s" % project.name )
     reminders_sent = []
+    total_sent = 0
     reminders_to_be_sent = [reminder for reminder in reminders if reminder.should_be_send_on(project.deadline(),on_date) ]
     for reminder in reminders_to_be_sent:
         #send next reminder if their is any error in sending reminder
         smses_sent = 0
         try:
             smses_sent = sms_client.send_reminder(from_number,on_date,project,reminder,dbm)
-        except Exception as ex:
+        except Exception:
             logger.exception("Exception while sending Reminder")
 
         if smses_sent > 0:
+            total_sent += smses_sent
             reminders_sent.append(reminder)
     logger.info("Reminders scheduled: %d " % len(reminders_to_be_sent) )
     logger.info("Reminders sent: %d " % len(reminders_sent) )
-    return reminders_sent
+    return reminders_sent, total_sent
 
 def _get_reminders_grouped_by_project_for_organization(organization_id):
     reminders_grouped_project_id = defaultdict(list)
-    for reminder in Reminder.objects.filter(organization=organization_id):
+    for reminder in get_reminder_repository().get_all_reminders_for(organization_id):
         reminders_grouped_project_id[reminder.project_id].append(reminder)
     return reminders_grouped_project_id
 

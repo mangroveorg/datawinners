@@ -20,6 +20,12 @@ def get_all_reminder_logs_for_project(project_id, dbm):
     rows = dbm.view.reminder_log(startkey=project_id, endkey=project_id, include_docs=True)
     return [ReminderLog.new_from_doc(dbm=dbm, doc=ReminderLog.__document_class__.wrap(row['doc'])) for row in rows]
 
+class ReminderRepository(object):
+    def get_all_reminders_for(self, organization_id):
+        return Reminder.objects.filter(organization=organization_id)
+
+def get_reminder_repository():
+    return ReminderRepository()
 
 class ReminderMode(object):
     BEFORE_DEADLINE = 'before_deadline'

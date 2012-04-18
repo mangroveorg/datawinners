@@ -60,7 +60,7 @@ class Organization(models.Model):
             org_id=OrganizationIdCreator().generateId(),
             in_trial_mode=True
         )
-        organization_setting = organization._configure_organization_settings()
+        organization._configure_organization_settings()
         return organization
 
     def has_exceeded_message_limit(self):
@@ -71,10 +71,16 @@ class Organization(models.Model):
     def increment_all_message_count(self):
         current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
         message_tracker = self._get_message_tracker(current_month)
-        message_tracker.increment_incoming_message_count()
-        message_tracker.increment_outgoing_message_count()
+        message_tracker.increment_incoming_message_count_by(1)
+        message_tracker.increment_outgoing_message_count_by(1)
 
-    #TODO SHould be removed??
+    def increment_all_message_count_by(self, incoming_count, outgoing_count):
+        current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
+        message_tracker = self._get_message_tracker(current_month)
+        message_tracker.increment_incoming_message_count_by(incoming_count)
+        message_tracker.increment_outgoing_message_count_by(outgoing_count)
+
+    #TODO Should be removed??
     def _configure_organization_settings(self):
         organization_setting = OrganizationSetting()
         organization_setting.organization = self
@@ -158,12 +164,12 @@ class MessageTracker(models.Model):
     incoming_sms_count = models.IntegerField(default=0)
     outgoing_sms_count = models.IntegerField(default=0)
 
-    def increment_incoming_message_count(self):
-        self.incoming_sms_count += 1
+    def increment_incoming_message_count_by(self, count):
+        self.incoming_sms_count += count
         self.save()
 
-    def increment_outgoing_message_count(self):
-        self.outgoing_sms_count += 1
+    def increment_outgoing_message_count_by(self, count):
+        self.outgoing_sms_count += count
         self.save()
 
     def get_total_message_count(self):

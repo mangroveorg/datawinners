@@ -1,9 +1,9 @@
 from datetime import date
-from datawinners.accountmanagement.models import Organization
+from datawinners.accountmanagement.models import Organization, MessageTracker
 from django.utils import unittest
 from mock import Mock,patch
-from datawinners.project.models import  Reminder, Project, RemindTo
-from datawinners.scheduler.scheduler import   send_reminders_on
+from datawinners.project.models import  Reminder, Project, RemindTo, ReminderRepository
+from datawinners.scheduler.scheduler import   send_reminders_on, send_reminders_for_an_organization
 
 #TODO: reinder to be sent to only those not sent
 #TODO: reinder to be sent to all ds
@@ -58,20 +58,16 @@ class TestScheduler(unittest.TestCase):
     def tearDown(self):
         try:
             self.organization.delete()
-        except :
+        except Exception:
             pass
 
     def test_should_return_reminders_scheduled_for_the_day(self):
-        reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        reminders_sent, total_reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
 
         self.assertEqual(2,len(reminders_sent))
         self.assertIn(self.reminder1,reminders_sent)
         self.assertIn(self.reminder3,reminders_sent)
-
-    def test_should_send_sms_for_reminders_scheduled_for_the_day(self):
-        send_reminders_on(self.project, self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
-        self.assertEqual(8,self.sms_client.send_sms.call_count)
-
+        self.assertEqual(8, total_reminders_sent)
 
     def test_should_send_reminders_to_all_data_senders(self):
         send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
@@ -99,9 +95,14 @@ class TestScheduler(unittest.TestCase):
 
     def test_should_log_reminders_when_sent(self):
         dbm_mock = Mock(spec=DatabaseManager)
-        send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER, dbm_mock)
+        sent_reminders, total_reminders_sent = send_reminders_on(self.project,self.reminders, self.mock_date, self.sms_client,self.FROM_NUMBER, dbm_mock)
+        self.assertIn(self.reminder1, sent_reminders)
         self.reminder1.log.assert_called_once()
+
+        self.assertIn(self.reminder3, sent_reminders)
         self.reminder3.log.assert_called_once()
+
+        self.assertNotIn(self.reminder2, sent_reminders)
         self.assertEqual(0,self.reminder2.log.call_count)
 
     def test_get_paid_org_should_return_only_paid_org(self):
@@ -117,7 +118,7 @@ class TestScheduler(unittest.TestCase):
         self.assertNotIn(self.organization,organizations)
 
     def test_should_continue_with_sending_reminders_if_exception_in_prev(self):
-        def expected_side_effect(*args, **kwargs):
+        def expected_side_effect(*args):
             reminder_message = args[3].message
             if reminder_message == "reminder4 message":
                 raise Exception()
@@ -128,8 +129,37 @@ class TestScheduler(unittest.TestCase):
         self.sms_client.send_reminder.side_effect = expected_side_effect
 
         reminders = [self.reminder1, self.reminder4, self.reminder3]
-        reminders_sent = send_reminders_on(self.project, reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
+        reminders_sent, total_reminders_sent = send_reminders_on(self.project, reminders, self.mock_date, self.sms_client,self.FROM_NUMBER,None)
         self.assertEqual(2,len(reminders_sent))
         self.assertNotIn(self.reminder4,reminders_sent)
         self.assertIn(self.reminder1,reminders_sent)
         self.assertIn(self.reminder3,reminders_sent)
+
+    def test_should_not_update_message_tracker_counts_if_no_reminders_are_sent_for_an_organization(self):
+        org_mock = Mock(spec=Organization)
+        org_mock.org_id = 'test'
+        with patch("datawinners.scheduler.scheduler.get_reminder_repository") as get_reminder_repository_mock:
+            reminder_repository_mock = Mock(spec=ReminderRepository)
+
+            reminder_repository_mock.get_all_reminders_for.return_value = []
+
+            get_reminder_repository_mock.return_value = reminder_repository_mock
+            send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
+                self.FROM_NUMBER, None)
+            self.assertEqual(0,org_mock._get_message_tracker.call_count)
+
+    def test_should_update_message_trackers_on_sending_reminders_for_organization(self):
+        org_mock = Mock(spec=Organization)
+        org_mock.org_id = 'test'
+        dbm = Mock()
+        dbm._load_document.return_value = self.project
+        message_tracker_mock = Mock(spec=MessageTracker)
+        org_mock._get_message_tracker.return_value = message_tracker_mock
+        with patch("datawinners.scheduler.scheduler.get_reminder_repository") as get_reminder_repository_mock:
+            reminder_repository_mock = Mock(spec=ReminderRepository)
+            self.reminder1.project_id = 'test_project'
+            reminder_repository_mock.get_all_reminders_for.return_value = [self.reminder1]
+            get_reminder_repository_mock.return_value = reminder_repository_mock
+            send_reminders_for_an_organization(org_mock, date.today(), self.sms_client,
+                self.FROM_NUMBER, dbm)
+            org_mock.increment_all_message_count_by.assert_called_once_with(0, 4)

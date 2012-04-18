@@ -64,4 +64,4 @@ INSTALLED_APPS = (
     'django_nose',
     )
 
-USE_NEW_VUMI = True
+#USE_NEW_VUMI = True

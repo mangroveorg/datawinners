@@ -284,14 +284,14 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
             logger.info(("Sending broadcast message to %s from %s") % (phone_number, organization_tel_number))
             sms_sent = sms_client.send_sms(organization_tel_number, phone_number, message)
         if sms_sent:
-            message_tracker.increment_outgoing_message_count()
+            message_tracker.increment_outgoing_message_count_by(1)
 
     for number in other_numbers:
         number = number.strip()
         logger.info(("Sending broadcast message to %s from %s") % (number, organization_tel_number))
         sms_sent = sms_client.send_sms(organization_tel_number, number, message)
         if sms_sent:
-            message_tracker.increment_outgoing_message_count()
+            message_tracker.increment_outgoing_message_count_by(1)
 
 
 

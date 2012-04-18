@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, OrganizationSetting
@@ -10,7 +11,6 @@ class WebSMSDBMRequestProcessor(object):
 
 
 class WebSMSTransportInfoRequestProcessor(object):
-
     def process(self, http_request, mangrove_request):
         organization_settings = OrganizationSetting.objects.get(organization=mangrove_request['organization'])
         _to = get_organization_number(organization_settings.get_organisation_sms_number())
@@ -24,7 +24,12 @@ class WebSMSOrganizationFinderRequestProcessor(object):
 
 class SMSMessageRequestProcessor(object):
     def process(self, http_request, mangrove_request):
-        message_ = http_request.POST['content'] if settings.USE_NEW_VUMI else http_request.POST['message']
+        if settings.USE_NEW_VUMI:
+            data = http_request.raw_post_data
+            params = json.loads(data)
+            message_ = params['content']
+        else:
+            message_ = http_request.POST['message']
         mangrove_request['incoming_message']= message_
 
 class SMSTransportInfoRequestProcessor(object):
@@ -43,8 +48,8 @@ def get_organization_number(organization_number):
     return organization_number[0] if(isinstance(organization_number, list)) else organization_number
 
 
-def try_get_value(http_request_post, key):
-    return http_request_post[key] if http_request_post.has_key(key) else None
+def try_get_value(request_params, key):
+    return request_params[key] if request_params.has_key(key) else None
 
 
 def get_vumi_parameters(http_request):

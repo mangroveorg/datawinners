@@ -32,7 +32,10 @@ logger = logging.getLogger("django")
 @require_http_methods(['POST'])
 def sms(request):
     message = Responder().respond(request)
-    return HttpResponse(message)
+    response = HttpResponse(message)
+    response['X-Vumi-HTTPRelay-Reply'] = 'true'
+    response['Content-Length'] = len(response.content)
+    return response
 
 
 @login_required(login_url='/login')

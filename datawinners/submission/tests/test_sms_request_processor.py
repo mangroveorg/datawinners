@@ -14,7 +14,7 @@ class TestSMSRequestProcessor(unittest.TestCase):
         self.sms_message = "Hi"
         self.from_number = "1234"
         self.to_number = DEFAULT_TEST_ORG_TEL_NO
-        self.http_request = FakeRequest(post=dict(from_addr=self.from_number,to_addr=self.to_number,content=self.sms_message), user=user)
+        self.http_request = FakeRequest(post=dict(from_msisdn=self.from_number,to_msisdn=self.to_number,message=self.sms_message), user=user)
 
     def test_should_put_transport_info_in_request_for_sms_submission(self):
         processor = SMSTransportInfoRequestProcessor()

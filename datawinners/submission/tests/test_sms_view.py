@@ -7,5 +7,5 @@ class TestSmsView(unittest.TestCase):
         self.client = Client()
 
     def test_should_render_if_logged_in(self):
-        response = self.client.post('/submission',{'to_addr': u'919880734937', 'content': u'cli001 cid001 abc 45 10.10.2011 a a 1,1 a', 'from_addr': u'1234567890'})
+        response = self.client.post('/submission',{'to_msisdn': u'919880734937', 'message': u'cli001 cid001 abc 45 10.10.2011 a a 1,1 a', 'from_msisdn': u'1234567890'})
         self.assertEqual(200,response.status_code)

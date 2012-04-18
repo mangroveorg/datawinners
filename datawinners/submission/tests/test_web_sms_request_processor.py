@@ -15,7 +15,7 @@ class TestWebSMSRequestProcessor(unittest.TestCase):
         user = User.objects.get(username=DEFAULT_TEST_USER)
         self.mangrove_request = dict()
         self.sms_message = "Hi"
-        self.http_request = FakeRequest(post=dict(test_mode=True,content=self.sms_message), user=user)
+        self.http_request = FakeRequest(post=dict(test_mode=True,message=self.sms_message), user=user)
         self.organization = Organization.objects.get(org_id=DEFAULT_TEST_ORG_ID)
 
     def test_should_put_dbm_in_request_for_web_sms_submission(self):
