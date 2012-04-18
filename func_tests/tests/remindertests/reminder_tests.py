@@ -1,9 +1,5 @@
 from nose.plugins.attrib import attr
-import time
-import os
-import sys
 from framework.base_test import BaseTest
-from pages.createprojectpage import create_project_page
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import TRIAL_CREDENTIALS_VALIDATES, VALID_CREDENTIALS
@@ -56,6 +52,7 @@ class TestReminderSend(BaseTest):
         self.assertEqual(fetch_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())
 
     #@attr("functional_test")
+    @SkipTest
     def test_trial_account_should_see_reminder_not_work_message_at_sent_tab_in_active_project(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
         all_reminder_pages.click_sent_reminder_tab()
