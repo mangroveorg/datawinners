@@ -230,10 +230,10 @@
                     <text-property name="heading">transaction_type</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">site_code</property>
+                    <property name="columnName">warehouse_code</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">site_code</text-property>
-                    <text-property name="heading">site_code</text-property>
+                    <text-property name="displayName">warehouse_code</text-property>
+                    <text-property name="heading">warehouse_code</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">sent_truck_id</property>
@@ -252,6 +252,12 @@
                     <property name="analysis">measure</property>
                     <text-property name="displayName">weight</text-property>
                     <text-property name="heading">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">recv_site_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">recv_site_code</text-property>
+                    <text-property name="heading">recv_site_code</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">receiver_name</property>
@@ -376,7 +382,7 @@
                     </structure>
                     <structure>
                         <property name="position">6</property>
-                        <property name="name">site_code</property>
+                        <property name="name">warehouse_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
@@ -396,7 +402,7 @@
                     </structure>
                     <structure>
                         <property name="position">10</property>
-                        <property name="name">site_code_10</property>
+                        <property name="name">recv_site_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
@@ -480,8 +486,8 @@
                 </structure>
                 <structure>
                     <property name="position">6</property>
-                    <property name="name">site_code</property>
-                    <property name="nativeName">site_code</property>
+                    <property name="name">warehouse_code</property>
+                    <property name="nativeName">warehouse_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
@@ -508,8 +514,8 @@
                 </structure>
                 <structure>
                     <property name="position">10</property>
-                    <property name="name">site_code_10</property>
-                    <property name="nativeName">site_code</property>
+                    <property name="name">recv_site_code</property>
+                    <property name="nativeName">recv_site_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
@@ -549,7 +555,7 @@
                     <property name="nativeDataType">8</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.site_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
+            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.warehouse_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code as recv_site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
 WHERE sent.transaction_type is not null
 and sent.pl_code ilike ?
 and sent.waybill_code ilike ?
@@ -1185,6 +1191,18 @@ from crs_waybillsent]]></xml-property>
                                 </list-property>
                                 <property name="allowExport">true</property>
                             </structure>
+                            <structure>
+                                <property name="name">warehouse_code</property>
+                                <text-property name="displayName">warehouse_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["warehouse_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">recv_site_code</property>
+                                <text-property name="displayName">recv_site_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["recv_site_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
                         </list-property>
                         <structure name="toc"/>
                         <column id="403"/>
@@ -1449,8 +1467,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="751">
-                                        <property name="resultSetColumn">site_code</property>
+                                    <data id="760">
+                                        <property name="resultSetColumn">warehouse_code</property>
                                     </data>
                                 </cell>
                                 <cell id="361">
@@ -1494,8 +1512,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="370">
-                                        <property name="resultSetColumn">site_code_10</property>
+                                    <data id="762">
+                                        <property name="resultSetColumn">recv_site_code</property>
                                     </data>
                                 </cell>
                                 <cell id="371">
