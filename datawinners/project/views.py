@@ -556,7 +556,8 @@ def broadcast_message(request, project_id):
         html = 'project/broadcast_message_trial.html' if organization.in_trial_mode else 'project/broadcast_message.html'
         return render_to_response(html, {'project': project,
                                          "project_links": make_project_links(project, questionnaire.form_code),
-                                         "form": form},
+                                         "form": form,
+                                         "success": None},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         form = BroadcastMessageForm(request.POST)
@@ -566,19 +567,19 @@ def broadcast_message(request, project_id):
             current_month = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1)
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
-            helper.broadcast_message(data_senders, form.cleaned_data['text'],
+            sms_sent = helper.broadcast_message(data_senders, form.cleaned_data['text'],
                 organization_setting.get_organisation_sms_number(), other_numbers, message_tracker)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
                      "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                     'success': True},
+                     'success': sms_sent},
                 context_instance=RequestContext(request))
 
         return render_to_response('project/broadcast_message.html',
                 {'project': project,
                  "project_links": make_project_links(project, questionnaire.form_code), "form": form,
-                 'success': False},
+                 'success': None},
             context_instance=RequestContext(request))
 
 

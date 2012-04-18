@@ -27,8 +27,14 @@
 
 {% block content %}
     <div>
-        {% if success %}
-            <div class="success-message-box">{% trans "Your message has been sent successfully." %}</div>
+        {% if success == None %}
+
+        {% else %}
+            {%if success %}
+                <div class="success-message-box">{% trans "Your message has been sent successfully." %}</div>
+            {% else %}
+                <div class="success-message-box">{% trans "Your message could not be sent." %}</div>
+            {% endif %}
         {% endif %}
 
         <div id="broadcast-form">

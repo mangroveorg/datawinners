@@ -2651,6 +2651,9 @@ msgstr ""
 msgid "Your message has been sent successfully."
 msgstr ""
 
+msgid "Your message could not be sent."
+msgstr "You cannot send SMS because your DataWinners account hasn’t been configured to send SMS. Please contact our support team: support@datawinners.com"
+
 #accountmanagement/form.py
 msgid "Please Select..."
 msgstr ""

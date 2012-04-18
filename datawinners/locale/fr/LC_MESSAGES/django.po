@@ -2681,6 +2681,9 @@ msgstr "Ajouter des Expéditeurs"
 msgid "Your message has been sent successfully."
 msgstr "Votre message a été envoyé avec succès."
 
+msgid "Your message could not be sent."
+msgstr "Vous ne pouvez pas envoyer un SMS car votre compte DataWinners n’a pas été configuré pour l’envoi de SMS. Veuillez contacter notre équipe de support : support@datawinners.com"
+
 #accountmanagement/form.py
 msgid "Please Select..."
 msgstr "Veuillez Choisir ..."
