@@ -1078,12 +1078,6 @@ from crs_waybillsent]]></xml-property>
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
-                                <property name="name">site_code</property>
-                                <text-property name="displayName">site_code</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["site_code"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                            <structure>
                                 <property name="name">sent_truck_id</property>
                                 <text-property name="displayName">sent_truck_id</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["sent_truck_id"]</expression>
@@ -1100,12 +1094,6 @@ from crs_waybillsent]]></xml-property>
                                 <text-property name="displayName">weight</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
                                 <property name="dataType">integer</property>
-                            </structure>
-                            <structure>
-                                <property name="name">site_code_10</property>
-                                <text-property name="displayName">site_code</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["site_code_10"]</expression>
-                                <property name="dataType">string</property>
                             </structure>
                             <structure>
                                 <property name="name">receiver_name</property>
