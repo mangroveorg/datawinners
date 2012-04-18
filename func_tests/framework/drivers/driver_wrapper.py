@@ -3,6 +3,7 @@ import datetime
 import os
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from framework.exception import ElementStillPresentException, CouldNotLocatePageException, ElementFoundWithoutDesiredVisibility
 from framework.exception import CouldNotLocateElementException
 from framework.utils.drop_down_web_element import DropDown
@@ -23,7 +24,8 @@ def get_default_browser_name():
 def get_driver_for_browser(browser):
     print "Getting driver for browser: ", browser
     if browser == "firefox":
-        return webdriver.Firefox()
+        fprofile = FirefoxProfile()
+        return webdriver.Firefox(fprofile)
     elif browser == "ie":
         return webdriver.Ie()
     elif browser == "chrome":

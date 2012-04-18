@@ -52,8 +52,10 @@ class TestReminderSend(BaseTest):
     def test_trial_account_should_see_reminder_not_work_message_at_reminder_tab_in_active_project(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
         self.assertEqual(DISABLED_REMINDER[WARNING_MESSAGE], all_reminder_pages.get_warning_message())
+        all_reminder_pages.click_sent_reminder_tab()
+        self.assertEqual(fetch_(WARNING_MESSAGE, from_(DISABLED_REMINDER)), all_reminder_pages.get_warning_message())
 
-    @attr("functional_test")
+    #@attr("functional_test")
     def test_trial_account_should_see_reminder_not_work_message_at_sent_tab_in_active_project(self):
         all_reminder_pages = self.go_to_reminder_page(fetch_(PROJECT_NAME, from_(DISABLED_REMINDER)), TRIAL_CREDENTIALS_VALIDATES)
         all_reminder_pages.click_sent_reminder_tab()
