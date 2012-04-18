@@ -62,8 +62,8 @@ def get_vumi_parameters(http_request):
         data = http_request.raw_post_data
         logger.info('http request raw post data: %s' % data)
         params = json.loads(data)
-        from_addr_ = try_get_value(data, "from_addr")
-        to_addr_ = try_get_value(data, "to_addr")
+        from_addr_ = try_get_value(params, "from_addr")
+        to_addr_ = try_get_value(params, "to_addr")
         return VumiParameters(from_number=from_addr_, to_number=to_addr_, content=params["content"], is_new_vumi = True)
     else:
         from_addr_ = try_get_value(http_request_post, "from_msisdn")
