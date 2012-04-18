@@ -44,6 +44,7 @@ class DriverWrapper(object):
 
     def __init__(self, browser=get_default_browser_name()):
         self._driver = get_driver_for_browser(browser)
+        self._driver.delete_all_cookies()
 
     def find_drop_down(self, locator_dict):
         """
