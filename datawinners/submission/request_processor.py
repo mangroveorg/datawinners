@@ -1,9 +1,12 @@
 import json
+import logging
 from django.conf import settings
 from mangrove.transport import TransportInfo
 from datawinners.accountmanagement.models import TEST_REPORTER_MOBILE_NUMBER, OrganizationSetting
 from datawinners.messageprovider.messages import SMS
 from datawinners.utils import get_organization, get_database_manager_for_org
+
+logger = logging.getLogger("django")
 
 class WebSMSDBMRequestProcessor(object):
     def process(self, http_request, mangrove_request):
@@ -57,9 +60,10 @@ def get_vumi_parameters(http_request):
 
     if settings.USE_NEW_VUMI:
         data = http_request.raw_post_data
+        logger.info('http request raw post data: %s' % data)
         params = json.loads(data)
-        from_addr_ = try_get_value(http_request_post, "from_addr")
-        to_addr_ = try_get_value(http_request_post, "to_addr")
+        from_addr_ = try_get_value(data, "from_addr")
+        to_addr_ = try_get_value(data, "to_addr")
         return VumiParameters(from_number=from_addr_, to_number=to_addr_, content=params["content"], is_new_vumi = True)
     else:
         from_addr_ = try_get_value(http_request_post, "from_msisdn")
