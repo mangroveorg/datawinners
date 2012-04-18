@@ -17,7 +17,7 @@ class TestWayBillSent(unittest.TestCase):
         sent_date = datetime.strptime('11.11.2011', '%d.%m.%Y')
         waybill_sent_submission_data = OrderedDict(
             [('q7', u'pac1'), ('q18', u'2'), ('q4', sent_date), ('q3',u'sender_name'),
-                ('q8', u'Transfer'), ('q2', u'2'), ('q17', u'9'), ('q9', u'Oil'), ('q15', 400)])
+                ('q8', u'Transfer'), ('q2', u'2'), ('q17', u'9'), ('q9', u'Oil'), ('q15', 400), ('q6', 'receiver_code')])
         crs_custom_report_handler = CRSCustomReportHandler()
         crs_custom_report_handler.handle(self.question_code, waybill_sent_submission_data)
         self.way_bill_sent = WayBillSent.objects.filter(q1='pac1')[0]
@@ -29,6 +29,7 @@ class TestWayBillSent(unittest.TestCase):
         self.assertEquals('9', self.way_bill_sent.q7)
         self.assertEquals('Oil', self.way_bill_sent.q8)
         self.assertEquals(400, self.way_bill_sent.q9)
+        self.assertEquals('receiver_code', self.way_bill_sent.q10)
 
 
 class TestWayBillReceived(unittest.TestCase):
