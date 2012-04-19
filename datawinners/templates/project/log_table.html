@@ -23,7 +23,7 @@
         {% trans "Submission Status" %}
     </th>
     <th>
-        {% trans "Deleted Record" %}
+        {% trans "Submission Deleted" %}
     </th>
     {% for question in questions %}
         <th>
@@ -48,11 +48,11 @@
                 {{ answer.3 }}
             </td>
             <td>
-                <span title='{{ answer.4 }}'>{{ answer.5|yesno:_("True,False") }}
+                <span title='{{ answer.4 }}'>{% trans  answer.5   %}
 </span>
             </td>
             <td>
-                {{ answer.6|yesno:_("True,False") }}
+                {% trans answer.6 %}
             </td>
             {% for each in answer|slice:"7:" %}
                 <td>

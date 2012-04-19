@@ -1312,8 +1312,8 @@ msgid "Submission Status"
 msgstr "Statut des envois"
 
 #: templates/project/log_table.html:26
-msgid "Deleted Record"
-msgstr "Enregistrements supprimés"
+msgid "Submission Deleted"
+msgstr "Soumission supprimée"
 
 #: templates/project/overview.html:3
 msgid "Projects - Overview"
@@ -4082,3 +4082,6 @@ msgstr "Inscrivez-vous pour un abonnement mensuel pour continuer à utiliser Dat
 
 msgid "Your organization's account Administrator %s cannot be deleted"
 msgstr "L'administrateur du votre compte DataWinners, %s, ne peut pas être supprimé"
+
+msgid "Success"
+msgstr "Succès"
