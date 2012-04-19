@@ -50,6 +50,7 @@ way_bill_received_mapping = {
     'q6' : 'q7',
     'q7' : 'q13',
     'q8' : 'q15',
+    'q9' : 'q4',
     }
 way_bill_received_by_site_mapping = {
     'q1' : 'q2',
@@ -71,6 +72,7 @@ class WayBillReceived(models.Model):
     q6 = models.TextField(db_column='truck_id')
     q7 = models.FloatField(db_column='good_net_weight')
     q8 = models.FloatField(db_column='damaged_net_weight')
+    q9 = models.TextField(db_column='transaction_type', null=True)
 
 sfm_distribution_mapping = {
     'q1' : 'q1',
@@ -79,8 +81,6 @@ sfm_distribution_mapping = {
     'q4' : 'q6',
     'q5' : 'q4',
     'q6' : 'q5',
-    'q9' : 'q7',
-    'q10' : 'q8',
 }
 sfm_distribution_defaults = {
     'distribution_type' : 'SFM'
@@ -92,8 +92,6 @@ sfe_distribution_mapping = {
     'q4' : 'q6',
     'q5' : 'q4',
     'q6' : 'q5',
-    'q9' : 'q7',
-    'q10' : 'q8',
 }
 sfe_distribution_defaults = {
     'distribution_type' : 'SFE'
@@ -106,9 +104,6 @@ ffa_distribution_mapping = {
     'q5' : 'q5',
     'q7' : 'q6',
     'q8' : 'q4',
-    'q9' : 'q9',
-    'q11' : 'q10',
-    'q12' : 'q8',
 }
 ffa_distribution_defaults = {
     'distribution_type' : 'FFA'
@@ -122,10 +117,6 @@ class Distribution(models.Model):
     q6 = models.FloatField(db_column='csb', null=True)
     q7 = models.FloatField(db_column='sorghum', null=True)
     q8 = models.FloatField(db_column='rice', null=True)
-    q9 = models.IntegerField(db_column='returned_oil', null=True)
-    q10 = models.IntegerField(db_column='returned_csb', null=True)
-    q11 = models.IntegerField(db_column='returned_sorghum', null=True)
-    q12 = models.IntegerField(db_column='returned_rice', null=True)
     distribution_type = models.TextField()
 
 class PhysicalInventorySheet(models.Model):
