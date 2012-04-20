@@ -13,7 +13,7 @@ from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
 from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException
+from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from django.contrib import messages
 from mangrove.form_model.field import field_to_json
 from mangrove.utils.types import is_string
@@ -80,7 +80,7 @@ def create_project(request):
 
             try:
                 questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=form.cleaned_data['entity_type'], name=form.cleaned_data['name'], language=form.cleaned_data['language'])
-            except (QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
+            except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
                 return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': False}))
 
             try:
@@ -132,7 +132,7 @@ def edit_project(request, project_id=None):
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
-            except (QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
+            except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': ex.message}))
             except DataObjectAlreadyExists:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': 'Questionnaire with this code already exists'}))

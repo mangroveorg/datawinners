@@ -45,6 +45,11 @@ exception_messages = {
         WEB: u"Question Code %s provided already exists"
     },
 
+    ex.QuestionAlreadyExistsException: {
+        DEFAULT: u"Question Already Exists",
+        WEB: u"Question %s provided already exists"
+    },
+
     ex.InvalidAnswerSubmissionException: {
         DEFAULT: u"Error. Invalid Submission. Refer to printed Questionnaire. Resend the question ID and answer for: %s"
     },

@@ -3,7 +3,7 @@ import django
 from django.core.exceptions import ValidationError
 from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField, GeoCodeField
+from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE
 from mock import Mock, patch, self
@@ -144,9 +144,12 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         form_model = self._get_form_model()
         subject_code = "subject_code"
         subject_question_code = 'subject_question_code'
-        form_model.add_field(self._get_text_field(True, True, subject_code))
-        form_model.add_field(self._get_text_field(False, False))
-        form_model.add_field(self._get_select_field(False, False)[1])
+        field1 = self._get_text_field(True, True, subject_code)
+        form_model.add_field(field1)
+        field2 = self._get_text_field(False, False)
+        form_model.add_field(field2)
+        field3 = self._get_select_field(False, False, 'test 2')[1]
+        form_model.add_field(field3)
         subject_question_creator_mock = Mock(spec=SubjectQuestionFieldCreator)
         subject_question_creator_mock.create.return_value = ChoiceField()
         subject_question_creator_mock.create_code_hidden_field.return_value = {subject_question_code: CharField()}
@@ -257,10 +260,10 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         self.assertEqual(mock.cleaned_data[self.geo_code], clean_geocode(mock))
 
 
-    def _get_select_field(self, is_required, single_select_flag):
+    def _get_select_field(self, is_required, single_select_flag, label='test'):
         choices = [("Red", "a"), ("Green", "b"), ("Blue", "c")]
         expected_choices = [("a", "Red"), ("b", "Green"), ("c", "Blue")]
-        text_field = SelectField(name=self.field_name, code=self.select_field_code, label=self.field_name,
+        text_field = SelectField(name=label, code=self.select_field_code, label=label,
             ddtype=Mock(spec=DataDictType),
             options=choices, single_select_flag=single_select_flag, required=is_required)
         return expected_choices, text_field

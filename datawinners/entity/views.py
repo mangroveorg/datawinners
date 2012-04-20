@@ -29,7 +29,7 @@ from datawinners.messageprovider.message_handler import get_success_msg_for_regi
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
-from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound
+from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
 from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME
 from mangrove.transport.player.player import WebPlayer
@@ -431,6 +431,8 @@ def save_questionnaire(request):
             form_model.save()
             return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
+            return HttpResponseServerError(e)
+        except QuestionAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponseServerError(e.message)

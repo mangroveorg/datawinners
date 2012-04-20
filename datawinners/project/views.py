@@ -26,7 +26,7 @@ import helper
 
 from mangrove.datastore.data import EntityAggregration
 from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided_entity_count_for_type
-from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound
+from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
@@ -135,6 +135,8 @@ def save_questionnaire(request):
         try:
             QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
         except QuestionCodeAlreadyExistsException as e:
+            return HttpResponseServerError(e)
+        except QuestionAlreadyExistsException as e:
             return HttpResponseServerError(e)
         except EntityQuestionAlreadyExistsException as e:
             return HttpResponseServerError(e.message)

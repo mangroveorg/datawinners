@@ -1,11 +1,11 @@
 import unittest
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.datadict import DataDictType
-from mangrove.form_model.field import TextField, IntegerField, SelectField, HierarchyField, GeoCodeField, TelephoneNumberField
+from mangrove.form_model.field import TextField, IntegerField, SelectField, GeoCodeField, TelephoneNumberField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME
 from mock import Mock, patch
-from entity.helper import question_code_generator
-from questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
+from datawinners.entity.helper import question_code_generator
+from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder, QuestionBuilder
 
 class TestQuestionnaireBuilder(unittest.TestCase):
 
@@ -223,7 +223,7 @@ class TestQuestionBuilder(unittest.TestCase):
 
 
 def _patch_get_ddtype_by_slug():
-    patcher = patch("questionnaire.questionnaire_builder.get_datadict_type_by_slug")
+    patcher = patch("datawinners.questionnaire.questionnaire_builder.get_datadict_type_by_slug")
     get_datadict_type_by_slug_mock = patcher.start()
     get_datadict_type_by_slug_mock.return_value = Mock(spec=DataDictType)
     return patcher
