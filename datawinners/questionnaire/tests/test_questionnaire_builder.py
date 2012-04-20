@@ -19,9 +19,9 @@ class TestQuestionnaireBuilder(unittest.TestCase):
 
 
     def test_should_update_questionnaire_when_entity_type_is_not_reporter(self):
-        form_model = FormModel(self.dbm, name="test", label="test", form_code="fc",
+        form_model = FormModel(self.dbm, language="en", name="test", label="test", form_code="fc",
             fields=[Mock(spec=TextField), Mock(spec=TextField)],
-            entity_type=["clinic"], type="survey")
+            entity_type=["clinic"], type="survey", enforce_unique_labels=False)
 
         post = [{"title": "What is your age", "code": "age", "type": "integer", "choices": [],
                 "is_entity_question": False,
@@ -59,7 +59,8 @@ class TestQuestionnaireBuilder(unittest.TestCase):
                 {"title": "q3", "code": "qc3", "type": "select", "choices": [{"value": "c1"}, {"value": "c2"}],
                  "is_entity_question": False}
         ]
-        form_model = FormModel(self.dbm, "test", "test", "test", [Mock(spec=TextField)], ["test"], "test")
+        form_model = FormModel(self.dbm, "test", "test", "test", [Mock(spec=TextField)], ["test"], "test", enforce_unique_labels=False)
+        form_model._enforce_unique_labels = False
         QuestionnaireBuilder(form_model,self.dbm).update_questionnaire_with_questions(post)
         self.assertEqual(3, len(form_model.fields))
 
