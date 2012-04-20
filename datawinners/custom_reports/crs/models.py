@@ -194,11 +194,20 @@ break_bulk_received_at_port_mapping = {
     'q4' : 'q15',
 }
 
+container_received_at_port_mapping = {
+    'q1' : 'q15',
+    'q2' : 'q2',
+    'q3' : 'q12',
+    'q4' : 'q14',
+    'q5' : 'q1',
+}
+
 class WayBillReceivedPort(models.Model):
     q1 = models.TextField(db_column='waybill_code')
     q2 = models.DateField(db_column='received_date')
     q3 = models.FloatField(db_column='good_weight')
     q4 = models.FloatField(db_column='damaged_weight')
+    q5 = models.TextField(db_column='container_code', null=True)
 
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
