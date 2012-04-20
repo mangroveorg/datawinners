@@ -146,6 +146,35 @@ class Warehouse(models.Model):
     q4 = models.TextField(db_column='tel_no')
     q5 = models.TextField(db_column='initials')
 
+bill_of_lading_mapping = {
+    'q1' : 'q1',
+    'q2' : 'q2',
+    'q3' : 'q4',
+    'q4' : 'q9',
+    'q5' : 'q10',
+    'q6' : 'q13',
+}
+
+class BillOfLading(models.Model):
+    q1 = models.TextField(db_column='pl_code')
+    q2 = models.TextField(db_column='shipment_type')
+    q3 = models.DateField(db_column='issue_date')
+    q4 = models.TextField(db_column='food_type')
+    q5 = models.TextField(db_column='bill_of_lading_code')
+    q6 = models.FloatField(db_column='weight')
+
+break_bulk_sent_mapping = {
+    'q1' : 'q2',
+    'q2' : 'q13',
+    'q3' : 'q16',
+    'q4' : 'q6',
+}
+
+class BreakBulkSent(models.Model):
+    q1 = models.DateField(db_column='sent_date')
+    q2 = models.FloatField(db_column='weight')
+    q3 = models.TextField(db_column='waybill_code')
+    q4 = models.TextField(db_column='pl_code')
 
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
