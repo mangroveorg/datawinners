@@ -2,17 +2,35 @@
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
     <simple-property-list name="includeResource">
-        <value>properties/messages_fr_CA</value>
         <value>properties/messages</value>
+        <value>properties/messages_fr_CA</value>
     </simple-property-list>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">8</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">8</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">8</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">147</property>
     <parameters>
         <scalar-parameter name="waybill_code" id="9">
+            <property name="hidden">false</property>
+            <text-property name="helpText" key="filter_help_text">Put % if you do not want to filter</text-property>
+            <text-property name="promptText" key="waybill_code">Waybill code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -26,6 +44,7 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="site_code" id="10">
+            <text-property name="promptText" key="code_of_site"></text-property>
             <property name="valueType">dynamic</property>
             <property name="dataSetName">Data Set</property>
             <expression name="valueExpr" type="javascript">dataSetRow["recv_site_code"]</expression>
@@ -44,6 +63,7 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="from_date" id="11">
+            <text-property name="promptText" key="label_from_date"></text-property>
             <property name="valueType">static</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
@@ -59,6 +79,7 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="to_date" id="12">
+            <text-property name="promptText" key="label_to_date"></text-property>
             <property name="valueType">static</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
@@ -107,8 +128,20 @@
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">distributed</property>
-                    <expression name="expression">if (row["food_type"].toLowerCase() in row){
-row[row["food_type"].toLowerCase()]
+                    <expression name="expression">switch(row["food_type"].toLowerCase()){
+case "sorgho":
+    row["sorghum"]
+    break;
+case "huile":
+    row["oil"]
+    break;
+case "csb":
+    row["csb"]
+    break;
+case "riz":
+default:
+    row["rice"]
+    break;
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
@@ -134,23 +167,23 @@ row["good_net_weight"]+row["damaged_net_weight"]
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
-                    <property name="name">quantity_lost_site_return</property>
-                    <expression name="expression">if("weight_34" in row &amp;&amp; row["weight_34"] != null){
-	row["quantity_not_distributed"]-row["weight_34"]
+                    <property name="name">lost_in_distribution</property>
+                    <expression name="expression">if(row["quantity_returned"] != null){
+	row["quantity_not_distributed"]-row["quantity_returned"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_received_from_site</property>
-                    <expression name="expression">if("damaged_net_weight_44" in row &amp;&amp; row["damaged_net_weight_44"] != null){
-	row["good_net_weight_43"]+row["damaged_net_weight_44"]
+                    <expression name="expression">if(row["quantity_damaged_returned"] != null){
+	row["quantity_good_returned"]+row["quantity_damaged_returned"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">quantity_lost_received_from_site</property>
                     <expression name="expression">if(row["total_received_from_site"] != null){
-	row["weight_34"]-row["total_received_from_site"]
+	row["quantity_returned"]-row["total_received_from_site"]
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
@@ -159,10 +192,25 @@ row["good_net_weight"]+row["damaged_net_weight"]
                     <expression name="expression">if (row["received_date"]==null) {
 	row["weight"]
 }
-else if(row["received_date_41"] == null){
- row["weight_34"]
+else if(row["received_return_date"] == null){
+ row["quantity_returned"]
 }</expression>
                     <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">bl_original</property>
+                    <expression name="expression">if(row["date_of_return"]) row["sent_wh"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">code_mag_receiver</property>
+                    <expression name="expression">if(row["received_return_date"]) row["warehouse_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">code_bl_return_received</property>
+                    <expression name="expression">if(row["received_return_date"]) row["returned_waybill_code"]</expression>
+                    <property name="dataType">string</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
@@ -305,64 +353,34 @@ else if(row["received_date_41"] == null){
                     <text-property name="heading">site_return_waybill_code</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">id_24</property>
+                    <property name="columnName">date_of_return</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">date_of_return</text-property>
+                    <text-property name="heading">date_of_return</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_returned</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">id</text-property>
-                    <text-property name="heading">id</text-property>
+                    <text-property name="displayName">quantity_returned</text-property>
+                    <text-property name="heading">quantity_returned</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">pl_code</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">pl_code</text-property>
-                    <text-property name="heading">pl_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">waybill_code</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">waybill_code</text-property>
-                    <text-property name="heading">waybill_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">sent_date_27</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">sent_date</text-property>
-                    <text-property name="heading">sent_date</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">transaction_type_28</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">transaction_type</text-property>
-                    <text-property name="heading">transaction_type</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">warehouse_code_29</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">warehouse_code</text-property>
-                    <text-property name="heading">warehouse_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">sender_name</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">sender_name</text-property>
-                    <text-property name="heading">sender_name</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">truck_id</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">truck_id</text-property>
-                    <text-property name="heading">truck_id</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">food_type_32</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">food_type</text-property>
-                    <text-property name="heading">food_type</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">weight_33</property>
+                    <property name="columnName">quantity_damaged_returned</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">weight</text-property>
-                    <text-property name="heading">weight</text-property>
+                    <text-property name="displayName">quantity_damaged_returned</text-property>
+                    <text-property name="heading">quantity_damaged_returned</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_good_returned</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_good_returned</text-property>
+                    <text-property name="heading">quantity_good_returned</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_return_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_return_date</text-property>
+                    <text-property name="heading">received_return_date</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">receiver_code</property>
@@ -371,64 +389,10 @@ else if(row["received_date_41"] == null){
                     <text-property name="heading">receiver_code</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">id_35</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">id</text-property>
-                    <text-property name="heading">id</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">pl_code_36</property>
+                    <property name="columnName">return_sender_code</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">pl_code</text-property>
-                    <text-property name="heading">pl_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">waybill_code_37</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">waybill_code</text-property>
-                    <text-property name="heading">waybill_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">site_code_38</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">site_code</text-property>
-                    <text-property name="heading">site_code</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">receiver_name</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">receiver_name</text-property>
-                    <text-property name="heading">receiver_name</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">received_date_40</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">received_date</text-property>
-                    <text-property name="heading">received_date</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">truck_id_41</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">truck_id</text-property>
-                    <text-property name="heading">truck_id</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">good_net_weight_42</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">good_net_weight</text-property>
-                    <text-property name="heading">good_net_weight</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">damaged_net_weight_43</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">damaged_net_weight</text-property>
-                    <text-property name="heading">damaged_net_weight</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">transaction_type_44</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">transaction_type</text-property>
-                    <text-property name="heading">transaction_type</text-property>
+                    <text-property name="displayName">return_sender_code</text-property>
+                    <text-property name="heading">return_sender_code</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -475,7 +439,7 @@ else if(row["received_date_41"] == null){
                     <structure>
                         <property name="position">2</property>
                         <property name="name">sent_date</property>
-                        <property name="dataType">date</property>
+                        <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
@@ -510,7 +474,7 @@ else if(row["received_date_41"] == null){
                     <structure>
                         <property name="position">9</property>
                         <property name="name">received_date</property>
-                        <property name="dataType">date</property>
+                        <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">10</property>
@@ -584,148 +548,93 @@ else if(row["received_date_41"] == null){
                     </structure>
                     <structure>
                         <property name="position">24</property>
-                        <property name="name">id_24</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">25</property>
-                        <property name="name">pl_code</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">26</property>
-                        <property name="name">waybill_code</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">27</property>
-                        <property name="name">sent_date_27</property>
+                        <property name="name">date_of_return</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">28</property>
-                        <property name="name">transaction_type_28</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">29</property>
-                        <property name="name">warehouse_code_29</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">30</property>
-                        <property name="name">sender_name</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">31</property>
-                        <property name="name">truck_id</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">32</property>
-                        <property name="name">food_type_32</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">33</property>
-                        <property name="name">weight_33</property>
+                        <property name="position">25</property>
+                        <property name="name">quantity_returned</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">34</property>
+                        <property name="position">26</property>
+                        <property name="name">quantity_damaged_returned</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">quantity_good_returned</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">28</property>
+                        <property name="name">received_return_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">29</property>
                         <property name="name">receiver_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">35</property>
-                        <property name="name">id_35</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">36</property>
-                        <property name="name">pl_code_36</property>
+                        <property name="position">30</property>
+                        <property name="name">return_sender_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">37</property>
-                        <property name="name">waybill_code_37</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">38</property>
-                        <property name="name">site_code_38</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">39</property>
-                        <property name="name">receiver_name</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">40</property>
-                        <property name="name">received_date_40</property>
-                        <property name="dataType">date</property>
-                    </structure>
-                    <structure>
-                        <property name="position">41</property>
-                        <property name="name">truck_id_41</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">42</property>
-                        <property name="name">good_net_weight_42</property>
-                        <property name="dataType">float</property>
-                    </structure>
-                    <structure>
-                        <property name="position">43</property>
-                        <property name="name">damaged_net_weight_43</property>
-                        <property name="dataType">float</property>
-                    </structure>
-                    <structure>
-                        <property name="position">44</property>
-                        <property name="name">transaction_type_44</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">45</property>
+                        <property name="position">31</property>
                         <property name="name">distributed</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">46</property>
+                        <property name="position">32</property>
                         <property name="name">total_received</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">47</property>
+                        <property name="position">33</property>
                         <property name="name">quantity_lost_in_transport</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">48</property>
+                        <property name="position">34</property>
                         <property name="name">quantity_not_distributed</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">49</property>
-                        <property name="name">quantity_lost_site_return</property>
+                        <property name="position">35</property>
+                        <property name="name">lost_in_distribution</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">50</property>
+                        <property name="position">36</property>
                         <property name="name">total_received_from_site</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">51</property>
+                        <property name="position">37</property>
                         <property name="name">quantity_lost_received_from_site</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">52</property>
+                        <property name="position">38</property>
                         <property name="name">in_transit</property>
                         <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">39</property>
+                        <property name="name">bl_original</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">40</property>
+                        <property name="name">code_mag_receiver</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">41</property>
+                        <property name="name">code_bl_return_received</property>
+                        <property name="dataType">string</property>
                     </structure>
                 </list-property>
             </structure>
@@ -743,8 +652,8 @@ else if(row["received_date_41"] == null){
                     <property name="position">2</property>
                     <property name="name">sent_date</property>
                     <property name="nativeName">sent_date</property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
@@ -792,8 +701,8 @@ else if(row["received_date_41"] == null){
                     <property name="position">9</property>
                     <property name="name">received_date</property>
                     <property name="nativeName">received_date</property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">10</property>
@@ -895,155 +804,57 @@ else if(row["received_date_41"] == null){
                 </structure>
                 <structure>
                     <property name="position">24</property>
-                    <property name="name">id_24</property>
-                    <property name="nativeName">id</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">25</property>
-                    <property name="name">pl_code</property>
-                    <property name="nativeName">pl_code</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">26</property>
-                    <property name="name">waybill_code</property>
-                    <property name="nativeName">waybill_code</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">27</property>
-                    <property name="name">sent_date_27</property>
-                    <property name="nativeName">sent_date</property>
+                    <property name="name">date_of_return</property>
+                    <property name="nativeName">date_of_return</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">28</property>
-                    <property name="name">transaction_type_28</property>
-                    <property name="nativeName">transaction_type</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">29</property>
-                    <property name="name">warehouse_code_29</property>
-                    <property name="nativeName">warehouse_code</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">30</property>
-                    <property name="name">sender_name</property>
-                    <property name="nativeName">sender_name</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">31</property>
-                    <property name="name">truck_id</property>
-                    <property name="nativeName">truck_id</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">32</property>
-                    <property name="name">food_type_32</property>
-                    <property name="nativeName">food_type</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">33</property>
-                    <property name="name">weight_33</property>
-                    <property name="nativeName">weight</property>
+                    <property name="position">25</property>
+                    <property name="name">quantity_returned</property>
+                    <property name="nativeName">quantity_returned</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">34</property>
+                    <property name="position">26</property>
+                    <property name="name">quantity_damaged_returned</property>
+                    <property name="nativeName">quantity_damaged_returned</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">quantity_good_returned</property>
+                    <property name="nativeName">quantity_good_returned</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">28</property>
+                    <property name="name">received_return_date</property>
+                    <property name="nativeName">received_return_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">29</property>
                     <property name="name">receiver_code</property>
                     <property name="nativeName">receiver_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">35</property>
-                    <property name="name">id_35</property>
-                    <property name="nativeName">id</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">36</property>
-                    <property name="name">pl_code_36</property>
-                    <property name="nativeName">pl_code</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">37</property>
-                    <property name="name">waybill_code_37</property>
-                    <property name="nativeName">waybill_code</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">38</property>
-                    <property name="name">site_code_38</property>
-                    <property name="nativeName">site_code</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">39</property>
-                    <property name="name">receiver_name</property>
-                    <property name="nativeName">receiver_name</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">40</property>
-                    <property name="name">received_date_40</property>
-                    <property name="nativeName">received_date</property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
-                </structure>
-                <structure>
-                    <property name="position">41</property>
-                    <property name="name">truck_id_41</property>
-                    <property name="nativeName">truck_id</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">42</property>
-                    <property name="name">good_net_weight_42</property>
-                    <property name="nativeName">good_net_weight</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
-                </structure>
-                <structure>
-                    <property name="position">43</property>
-                    <property name="name">damaged_net_weight_43</property>
-                    <property name="nativeName">damaged_net_weight</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
-                </structure>
-                <structure>
-                    <property name="position">44</property>
-                    <property name="name">transaction_type_44</property>
-                    <property name="nativeName">transaction_type</property>
+                    <property name="position">30</property>
+                    <property name="name">return_sender_code</property>
+                    <property name="nativeName">return_sender_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select * from 
-((select sent.waybill_code as sent_wh,
-sent.sent_date as sent_date,
+(select recv_site_join.*, crs_distribution.* from (select sent.waybill_code as sent_wh,
+to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,
 sent.sent_date as wh_sent_date,
 sent.food_type,
 sent.weight, 
@@ -1051,7 +862,7 @@ sent.transaction_type,
 sent.warehouse_code,
 sent.receiver_code as sent_receiver_code,
 
-recv.received_date as received_date,
+to_char(recv.received_date, 'dd Mon yyyy') as received_date,
 recv.good_net_weight,
 recv.site_code as recv_site_code,
 recv.damaged_net_weight
@@ -1066,12 +877,18 @@ crs_distribution on recv_site_join.sent_wh=crs_distribution.received_waybill_cod
 left join
 
 (
-select return_sent.waybill_code as site_return_waybill_code,* from
+select return_sent.waybill_code as site_return_waybill_code, 
+return_sent.sent_date as date_of_return, 
+return_sent.weight as quantity_returned,
+return_recv.damaged_net_weight as quantity_damaged_returned,
+return_recv.good_net_weight as quantity_good_returned,
+return_recv.received_date as received_return_date, 
+return_sent.receiver_code, return_sent.warehouse_code as return_sender_code
+ from
 crs_waybillsent as return_sent
 full join
 crs_waybillreceived as return_recv
 ON return_sent.waybill_code=return_recv.waybill_code
-where return_sent.warehouse_code is null
 ) as b
 
 ON a.returned_waybill_code=site_return_waybill_code
@@ -1079,8 +896,7 @@ ON a.returned_waybill_code=site_return_waybill_code
 where sent_wh like ?
 and sent_receiver_code like ?
 and wh_sent_date >= ?
-and wh_sent_date <= ? 
-]]></xml-property>
+and wh_sent_date <= ? ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -1337,15 +1153,810 @@ and wh_sent_date <= ?
             <property name="borderTopStyle">solid</property>
             <property name="borderTopWidth">1pt</property>
         </style>
+        <style name="page" id="865">
+            <property name="backgroundImage">images/application_bg.gif</property>
+        </style>
+        <style name="first_th" id="871">
+            <property name="backgroundColor">#846F6F</property>
+            <property name="color">#FFFFFF</property>
+        </style>
+        <style name="with_border" id="872">
+            <property name="fontSize">12px</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderTopStyle">solid</property>
+        </style>
+        <style name="secound_th" id="878">
+            <property name="fontSize">10px</property>
+        </style>
+        <style name="rowspan2" id="897">
+            <property name="backgroundColor">#846F6F</property>
+            <property name="fontSize">12px</property>
+            <property name="color">#FFFFFF</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderTopStyle">solid</property>
+            <structure name="stringFormat">
+                <property name="category">Unformatted</property>
+            </structure>
+            <property name="verticalAlign">middle</property>
+        </style>
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
-            <page-footer>
-                <text id="3">
-                    <property name="contentType">html</property>
-                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
-                </text>
-            </page-footer>
+            <property name="orientation">landscape</property>
+            <property name="rightMargin">0in</property>
         </simple-master-page>
     </page-setup>
+    <body>
+        <grid id="13">
+            <property name="fontSize">14pt</property>
+            <property name="verticalAlign">bottom</property>
+            <property name="height">10.678in</property>
+            <property name="width">23.791666666666668in</property>
+            <column id="14">
+                <property name="width">23.791666666666668in</property>
+            </column>
+            <row id="15">
+                <cell id="16">
+                    <grid id="720">
+                        <property name="height">0.5734265734265734in</property>
+                        <property name="width">33.84722222222222in</property>
+                        <column id="721">
+                            <property name="width">33.84722222222222in</property>
+                        </column>
+                        <row id="722">
+                            <property name="height">0.5734265734265734in</property>
+                            <cell id="723">
+                                <property name="backgroundImage">images/header_app_bg.gif</property>
+                                <property name="backgroundImageType">embed</property>
+                                <image id="724">
+                                    <property name="height">20px</property>
+                                    <property name="width">133px</property>
+                                    <structure name="toc"/>
+                                    <property name="source">embed</property>
+                                    <property name="imageName">datawinners_logo.png</property>
+                                    <list-property name="action">
+                                        <structure>
+                                            <property name="linkType">hyperlink</property>
+                                            <expression name="uri" type="constant">http://localhost:8000/dashboard</expression>
+                                            <property name="targetWindow">_blank</property>
+                                        </structure>
+                                    </list-property>
+                                </image>
+                            </cell>
+                        </row>
+                    </grid>
+                    <table id="725">
+                        <property name="width">23.694444444444443in</property>
+                        <property name="dataSet">Data Set</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">sent_wh</property>
+                                <text-property name="displayName">sent_wh</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["sent_wh"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">food_type</property>
+                                <text-property name="displayName">food_type</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["food_type"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">weight</property>
+                                <text-property name="displayName">weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">wh_sent_date</property>
+                                <text-property name="displayName">wh_sent_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["wh_sent_date"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                            <structure>
+                                <property name="name">transaction_type</property>
+                                <text-property name="displayName">transaction_type</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["transaction_type"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">receiver_code</property>
+                                <text-property name="displayName">receiver_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["receiver_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sent_date</property>
+                                <text-property name="displayName">sent_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["sent_date"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sent_receiver_code</property>
+                                <text-property name="displayName">sent_receiver_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["sent_receiver_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">received_date</property>
+                                <text-property name="displayName">received_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["received_date"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">good_net_weight</property>
+                                <text-property name="displayName">good_net_weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["good_net_weight"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">damaged_net_weight</property>
+                                <text-property name="displayName">damaged_net_weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["damaged_net_weight"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">total_received</property>
+                                <text-property name="displayName">total_received</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["total_received"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_lost_in_transport</property>
+                                <text-property name="displayName">quantity_lost_in_transport</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["quantity_lost_in_transport"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">distribution_date</property>
+                                <text-property name="displayName">distribution_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["distribution_date"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                            <structure>
+                                <property name="name">distributed</property>
+                                <text-property name="displayName">distributed</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["distributed"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_not_distributed</property>
+                                <text-property name="displayName">quantity_not_distributed</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["quantity_not_distributed"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">date_of_return</property>
+                                <text-property name="displayName">date_of_return</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["date_of_return"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                            <structure>
+                                <property name="name">site_return_waybill_code</property>
+                                <text-property name="displayName">site_return_waybill_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["site_return_waybill_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_returned</property>
+                                <text-property name="displayName">quantity_returned</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["quantity_returned"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">lost_in_distribution</property>
+                                <text-property name="displayName">lost_in_distribution</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["lost_in_distribution"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">received_return_date</property>
+                                <text-property name="displayName">received_return_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["received_return_date"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                            <structure>
+                                <property name="name">warehouse_code</property>
+                                <text-property name="displayName">warehouse_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["warehouse_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">returned_waybill_code</property>
+                                <text-property name="displayName">returned_waybill_code</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["returned_waybill_code"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_good_returned</property>
+                                <text-property name="displayName">quantity_good_returned</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["quantity_good_returned"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_damaged_returned</property>
+                                <text-property name="displayName">quantity_damaged_returned</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["quantity_damaged_returned"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">total_received_from_site</property>
+                                <text-property name="displayName">total_received_from_site</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["total_received_from_site"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">in_transit</property>
+                                <text-property name="displayName">in_transit</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["in_transit"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_lost_received_from_site</property>
+                                <text-property name="displayName">quantity_lost_received_from_site</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["quantity_lost_received_from_site"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">bl_original</property>
+                                <text-property name="displayName">bl_original</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["bl_original"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">code_mag_receiver</property>
+                                <text-property name="displayName">code_mag_receiver</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["code_mag_receiver"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">code_bl_return_received</property>
+                                <text-property name="displayName">code_bl_return_received</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["code_bl_return_received"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <column id="810">
+                            <property name="width">1in</property>
+                        </column>
+                        <column id="811">
+                            <property name="width">0.7777777777777778in</property>
+                        </column>
+                        <column id="812">
+                            <property name="width">0.8888888888888888in</property>
+                        </column>
+                        <column id="813">
+                            <property name="width">0.8888888888888888in</property>
+                        </column>
+                        <column id="814">
+                            <property name="width">1.4861111111111112in</property>
+                        </column>
+                        <column id="815">
+                            <property name="width">0.7916666666666666in</property>
+                        </column>
+                        <column id="816">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="817">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="818">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="819">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="820">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="821">
+                            <property name="width">0.9861111111111112in</property>
+                        </column>
+                        <column id="822">
+                            <property name="width">0.9444444444444444in</property>
+                        </column>
+                        <column id="823">
+                            <property name="width">0.9722222222222222in</property>
+                        </column>
+                        <column id="824">
+                            <property name="width">0.7638888888888888in</property>
+                        </column>
+                        <column id="825">
+                            <property name="width">0.8888888888888888in</property>
+                        </column>
+                        <column id="826">
+                            <property name="width">0.9027777777777778in</property>
+                        </column>
+                        <column id="827">
+                            <property name="width">0.7361111111111112in</property>
+                        </column>
+                        <column id="828">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="829">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="830">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="831">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="832">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="833">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="834">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="835">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <column id="836">
+                            <property name="width">0.875in</property>
+                        </column>
+                        <header>
+                            <row id="726">
+                                <property name="style">first_th</property>
+                                <cell id="727">
+                                    <property name="colSpan">6</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="style">with_border</property>
+                                    <label id="870">
+                                        <text-property name="text" key="wb_sent_wh2site">Bon de livraison envoyé du magasin vers le site</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="733">
+                                    <property name="colSpan">4</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="style">with_border</property>
+                                    <label id="887">
+                                        <text-property name="text" key="wb_received_wh2site">Bon de livraison recu sur le site</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="737">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
+                                    <property name="height">20px</property>
+                                    <property name="style">rowspan2</property>
+                                    <label id="898">
+                                        <text-property name="text" key="lost_in_transport">Perte lors du transport</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="738">
+                                    <property name="colSpan">3</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="style">with_border</property>
+                                    <label id="900">
+                                        <text-property name="text">Distribution</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="741">
+                                    <property name="colSpan">4</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="style">with_border</property>
+                                    <label id="907">
+                                        <text-property name="text" key="wb_sent_from_site">BL envoyé par le site pour retour de vivres</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="745">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
+                                    <property name="style">rowspan2</property>
+                                    <label id="921">
+                                        <text-property name="text" key="loss_distribution">Perte lors de la distribution</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="746">
+                                    <property name="colSpan">6</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="style">with_border</property>
+                                    <label id="923">
+                                        <text-property name="text" key="wb_recv_from_site">BL recu par le magasin pour retour de vivres par le site</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="752">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
+                                    <property name="style">rowspan2</property>
+                                    <label id="936">
+                                        <text-property name="text" key="differece_net_weight">Ecart poids net</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="753">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">2</property>
+                                    <property name="style">rowspan2</property>
+                                    <label id="937">
+                                        <text-property name="text" key="in_transit">En transit</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="837">
+                                <property name="height">0.1in</property>
+                                <property name="style">secound_th</property>
+                                <cell id="838">
+                                    <property name="style">with_border</property>
+                                    <label id="879">
+                                        <text-property name="text" key="expedition_date">Date d'expéditon</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="839">
+                                    <property name="style">with_border</property>
+                                    <label id="880">
+                                        <text-property name="text" key="wb_sent_code">Code BL envoyé</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="840">
+                                    <property name="style">with_border</property>
+                                    <label id="883">
+                                        <text-property name="text" key="food_type">Type de vivres</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="841">
+                                    <property name="style">with_border</property>
+                                    <label id="884">
+                                        <text-property name="text" key="tw_net_sent">PT net envoyé</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="842">
+                                    <property name="style">with_border</property>
+                                    <label id="885">
+                                        <text-property name="text" key="transaction_type">Type de transaction</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="843">
+                                    <property name="style">with_border</property>
+                                    <label id="886">
+                                        <text-property name="text" key="code_of_site">Code site</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="844">
+                                    <property name="style">with_border</property>
+                                    <label id="888">
+                                        <text-property name="text" key="received_date">Date de réception</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="845">
+                                    <property name="style">with_border</property>
+                                    <label id="889">
+                                        <text-property name="text" key="good_net_weight">Poids en bon état</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="846">
+                                    <property name="style">with_border</property>
+                                    <label id="890">
+                                        <text-property name="text" key="damaged_net_weight">Poids endommagé</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="847">
+                                    <property name="style">with_border</property>
+                                    <label id="891">
+                                        <text-property name="text" key="total_received">Poids total recu</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="849">
+                                    <property name="style">with_border</property>
+                                    <label id="901">
+                                        <text-property name="text" key="distribution_date">Date de distribution</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="850">
+                                    <property name="style">with_border</property>
+                                    <label id="903">
+                                        <text-property name="text" key="distributed">Quantité distribuée</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="851">
+                                    <property name="style">with_border</property>
+                                    <label id="905">
+                                        <text-property name="text" key="not_distributed">Qtt non distribuée</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="852">
+                                    <property name="style">with_border</property>
+                                    <label id="908">
+                                        <text-property name="text" key="return_date">Date de retour</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="853">
+                                    <property name="style">with_border</property>
+                                    <label id="909">
+                                        <text-property name="text" key="wb_return_code">Code BL retour</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="854">
+                                    <property name="style">with_border</property>
+                                    <label id="910">
+                                        <text-property name="text" key="original_wb_code">Code BL original</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="855">
+                                    <property name="style">with_border</property>
+                                    <label id="911">
+                                        <text-property name="text" key="quantity_returned">Qtt retournée</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="857">
+                                    <property name="style">with_border</property>
+                                    <label id="924">
+                                        <text-property name="text" key="received_date">Date de réception</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="858">
+                                    <property name="style">with_border</property>
+                                    <label id="925">
+                                        <text-property name="text" key="wh_code">Code mag recpetionnaire</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="859">
+                                    <property name="style">with_border</property>
+                                    <label id="928">
+                                        <text-property name="text" key="wb_return_code">Code BL retour</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="860">
+                                    <property name="style">with_border</property>
+                                    <label id="926">
+                                        <text-property name="text" key="good_net_weight">PT vivres en bon état</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="861">
+                                    <property name="style">with_border</property>
+                                    <label id="927">
+                                        <text-property name="text" key="damaged_net_weight">PT vivres endommagés</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="862">
+                                    <property name="style">with_border</property>
+                                    <label id="929">
+                                        <text-property name="text" key="total_received">PT recu</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="754">
+                                <cell id="755">
+                                    <property name="style">with_border</property>
+                                    <data id="881">
+                                        <property name="resultSetColumn">sent_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="756">
+                                    <property name="style">with_border</property>
+                                    <data id="867">
+                                        <property name="resultSetColumn">sent_wh</property>
+                                    </data>
+                                </cell>
+                                <cell id="757">
+                                    <property name="style">with_border</property>
+                                    <data id="869">
+                                        <property name="resultSetColumn">food_type</property>
+                                    </data>
+                                </cell>
+                                <cell id="758">
+                                    <property name="style">with_border</property>
+                                    <data id="873">
+                                        <property name="resultSetColumn">weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="759">
+                                    <property name="style">with_border</property>
+                                    <data id="875">
+                                        <property name="resultSetColumn">transaction_type</property>
+                                    </data>
+                                </cell>
+                                <cell id="760">
+                                    <property name="style">with_border</property>
+                                    <data id="882">
+                                        <property name="resultSetColumn">sent_receiver_code</property>
+                                    </data>
+                                </cell>
+                                <cell id="761">
+                                    <property name="style">with_border</property>
+                                    <data id="892">
+                                        <property name="resultSetColumn">received_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="762">
+                                    <property name="style">with_border</property>
+                                    <data id="893">
+                                        <property name="resultSetColumn">good_net_weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="763">
+                                    <property name="style">with_border</property>
+                                    <data id="894">
+                                        <property name="resultSetColumn">damaged_net_weight</property>
+                                    </data>
+                                </cell>
+                                <cell id="764">
+                                    <property name="style">with_border</property>
+                                    <data id="895">
+                                        <property name="resultSetColumn">total_received</property>
+                                    </data>
+                                </cell>
+                                <cell id="765">
+                                    <property name="style">with_border</property>
+                                    <data id="899">
+                                        <property name="resultSetColumn">quantity_lost_in_transport</property>
+                                    </data>
+                                </cell>
+                                <cell id="766">
+                                    <property name="style">with_border</property>
+                                    <data id="902">
+                                        <property name="resultSetColumn">distribution_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="767">
+                                    <property name="style">with_border</property>
+                                    <data id="904">
+                                        <property name="resultSetColumn">distributed</property>
+                                    </data>
+                                </cell>
+                                <cell id="768">
+                                    <property name="style">with_border</property>
+                                    <data id="906">
+                                        <property name="resultSetColumn">quantity_not_distributed</property>
+                                    </data>
+                                </cell>
+                                <cell id="769">
+                                    <property name="style">with_border</property>
+                                    <data id="917">
+                                        <property name="resultSetColumn">date_of_return</property>
+                                    </data>
+                                </cell>
+                                <cell id="770">
+                                    <property name="style">with_border</property>
+                                    <data id="918">
+                                        <property name="resultSetColumn">site_return_waybill_code</property>
+                                    </data>
+                                </cell>
+                                <cell id="771">
+                                    <property name="style">with_border</property>
+                                    <data id="941">
+                                        <property name="resultSetColumn">bl_original</property>
+                                    </data>
+                                </cell>
+                                <cell id="772">
+                                    <property name="style">with_border</property>
+                                    <data id="920">
+                                        <property name="resultSetColumn">quantity_returned</property>
+                                    </data>
+                                </cell>
+                                <cell id="773">
+                                    <property name="style">with_border</property>
+                                    <data id="922">
+                                        <property name="resultSetColumn">lost_in_distribution</property>
+                                    </data>
+                                </cell>
+                                <cell id="774">
+                                    <property name="style">with_border</property>
+                                    <data id="930">
+                                        <property name="resultSetColumn">received_return_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="775">
+                                    <property name="style">with_border</property>
+                                    <data id="942">
+                                        <property name="resultSetColumn">code_mag_receiver</property>
+                                    </data>
+                                </cell>
+                                <cell id="776">
+                                    <property name="style">with_border</property>
+                                    <data id="943">
+                                        <property name="resultSetColumn">code_bl_return_received</property>
+                                    </data>
+                                </cell>
+                                <cell id="777">
+                                    <property name="style">with_border</property>
+                                    <data id="933">
+                                        <property name="resultSetColumn">quantity_good_returned</property>
+                                    </data>
+                                </cell>
+                                <cell id="778">
+                                    <property name="style">with_border</property>
+                                    <data id="934">
+                                        <property name="resultSetColumn">quantity_damaged_returned</property>
+                                    </data>
+                                </cell>
+                                <cell id="779">
+                                    <property name="style">with_border</property>
+                                    <data id="935">
+                                        <property name="resultSetColumn">total_received_from_site</property>
+                                    </data>
+                                </cell>
+                                <cell id="780">
+                                    <property name="style">with_border</property>
+                                    <data id="939">
+                                        <property name="resultSetColumn">quantity_lost_received_from_site</property>
+                                    </data>
+                                </cell>
+                                <cell id="781">
+                                    <property name="style">with_border</property>
+                                    <data id="938">
+                                        <property name="resultSetColumn">in_transit</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                        <footer>
+                            <row id="782">
+                                <cell id="783"/>
+                                <cell id="784"/>
+                                <cell id="785"/>
+                                <cell id="786"/>
+                                <cell id="787"/>
+                                <cell id="788"/>
+                                <cell id="789"/>
+                                <cell id="790"/>
+                                <cell id="791"/>
+                                <cell id="792"/>
+                                <cell id="793"/>
+                                <cell id="794"/>
+                                <cell id="795"/>
+                                <cell id="796"/>
+                                <cell id="797"/>
+                                <cell id="798"/>
+                                <cell id="799"/>
+                                <cell id="800"/>
+                                <cell id="801"/>
+                                <cell id="802"/>
+                                <cell id="803"/>
+                                <cell id="804"/>
+                                <cell id="805"/>
+                                <cell id="806"/>
+                                <cell id="807"/>
+                                <cell id="808"/>
+                                <cell id="809"/>
+                            </row>
+                        </footer>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">datawinners_logo.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAIUAAAAUCAYAAAHU585MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFn
+                ZVJlYWR5ccllPAAABgxJREFUeNpi/P//PwOlgAmIHaAYZNp7IN6PJH8fiOcj8f9DMQwEgPlAlzj8RwUM
+                aLgAiY1NTQNAADFS2zsMUO8gO3k/Fm8oYHgL6JL5SE7bj+Y1ASzemI/uZYAAgoVJAY7w2I8njO5jkSMb
+                M0E9dQGIHaFBE4AlJgWQxCYAcQEQK2JR9x9LEP5Hwwxo6sHRARBAVIlgqGEHKEkg/5FCgAGLa9FBPxaf
+                H6DIC0hpApagCtDEYOngPZqYApQOQBJrQEqU65HiHpaOBJDU7kdOoOgW/sch9h4pgaInzv8EEiAM7Edz
+                xH9kR/QjKUK33AHqg/dIhr7Hog6fI/qxhBq85AEIwFoV0EAMwsBJQMJLQMIkTAISXsI7mIRJQQISkICE
+                LktKcumu8J/fkiWjBdYedwezr+tJX8grKfyzeRWOqK8TB0l5Uv6/vgjGaopdgWPMEJs5xW0AqJjvA/a/
+                OF6IT2bNNUPDrDV0vSDQUWMNtIP7VtCQ6H/DCAw7XozIbhx32CCEzgkuAXGA8nQnk3gjzD3Imrd3AbHm
+                u2tFyCViJpkUXwZAWYB23b8+BIZMDIvFX9Dr4nlGdKgvxq6FuK6Qxnv+MynyHzA6OwoYcSBzAkh1x9wp
+                ADFWdNQwDENJrwOEDTqCs0E2oJ2AMAHdoO4EhA3YIGzgYwK6QbpBsgFcek93rzo5Ntdw9U/lWJVlWX56
+                9lKVfalW31ygb2QXc3wo1jzR1lnuYPQd9R3R3HCvHViRPJHOT8hdxn8PmYHQ7UxUTey8Qy7ulovGdYf7
+                pTr/GhR7Ii9D5Io1KFRvZvAgEKA6nGXGl4Y4zY9xr+mM72LLk/1vjVupQFgAaQWCAUqCt6dq5FVdT5XP
+                YASzJB9K0tsqzi5FYCCdYJTwK6KYCsQVNTX0LLbpjDGN+m9EpftIIGqVKTVseuWTj3AKtqXn2Gi/1xmn
+                p8f9fEzoTU8UTUJHbByBQ1+Ql6g25QzQv5BcYU0PwMTdJKwzEb/AZDFUDxh/xGIth7a06JEeS5YAyBGv
+                DFWG7onm7OBrsVLlcID8Qd9b/D4ndkQccsa4ZED7T5h/Mub1EV3O2p1VPg9Ir1Gl0h5R20RKaIAjkkFd
+                hHPo1mYct7+0CvN7pP5TRO8VGy4bf9mcXwHKtRbbtoEYejEygLSBRlAmqD1B3Q3UCRpPYGUCNxPIncDu
+                BNIGdiaoNpA2UBHgMXglyJNkO2iLEBDgSPc/3iPfu7xmljGXb5Hp/fhbGd+IZZh0CzEtVqbH0R2DAX28
+                78IHs8WERS/gNMOFyaSFrQN58jXWAvwz4LGXBIsq6/X3SHDWU7K9Ch/QLKRYKVSolTPcObHjM+F3i0xh
+                Hwm4sgnWRiVwxk/4Hai9VpV97fPkBFFBiT36zJzxd+gnvTGM/59mqDRat4t93xns7KTeVUYer60mCYlZ
+                XIdvmtllDuvSY6+ofOHwg4Ik9jDCOWoiVB2RrpKUqZ3BT3ZYlw5jKqmtk6OaD6p8Re+WzriW9LujsXBf
+                wk9OVC73dMy5TpETy6tH6gTnCrE07iakvWJGvVw5F2uUVURLZXqezXSK4Nxk8hqJUxyc8qUxH9n8tVOn
+                Mm4QYmtTRshy0A7Bt6SXpvsregriNJcqcBtqr4Gw9WtCPnNGbrGkECa5xLNqnxnAGuWtsDQ29zn2MrFc
+                jnU8K57Kz0uEClrheI+2tljHCvNOvLksrow+BSWNFTq6JkFLkB8McIYCzCedwH6eyRkkQT6qScvfW6Jk
+                4UYqyS0smXEYN8a3xknGU+RSD+Qg/J8jfyhL9xMGWSlVpDFkqr3i85ewlIzkpACKOef0NnjW6uR4gokk
+                vMeZ/bynNST0tO8wrrOBDAfsZSYosxihjB0JNb3K7hOFGDsSS6aGj2+oVxin5ID2qhl0+InCwtGBeXm/
+                /MdQgg9DT0hp0edh4p1UwPoykutDn9O6vCFFH4FmoZZHg6p9waAFrh9R7ivaq1XnzP9LxESp1wBtUop5
+                OepJ+FhTHO0jJ+076j6N5C5b5+TEoPg80r/+LuJfOyIOtgqNU8x9SxcM0v5PgzrHxrXBU2Btl+QcvF9v
+                9hvKUuiK2sR9JgAAAABJRU5ErkJggg==
+            </property>
+        </structure>
+    </list-property>
 </report>
