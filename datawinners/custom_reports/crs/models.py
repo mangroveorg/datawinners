@@ -176,6 +176,30 @@ class BreakBulkSent(models.Model):
     q3 = models.TextField(db_column='waybill_code')
     q4 = models.TextField(db_column='pl_code')
 
+container_sent_mapping = {
+    'q1' : 'q1',
+    'q2' : 'q5',
+    'q3' : 'q6',
+}
+
+class ContainerSent(models.Model):
+    q1 = models.TextField(db_column='bill_of_lading')
+    q2 = models.FloatField(db_column='weight')
+    q3 = models.TextField(db_column='container_code')
+
+break_bulk_received_at_port_mapping = {
+    'q1' : 'q1',
+    'q2' : 'q3',
+    'q3' : 'q13',
+    'q4' : 'q15',
+}
+
+class WayBillReceivedPort(models.Model):
+    q1 = models.TextField(db_column='waybill_code')
+    q2 = models.DateField(db_column='received_date')
+    q3 = models.FloatField(db_column='good_weight')
+    q4 = models.FloatField(db_column='damaged_weight')
+
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
         return ",".join(param)
