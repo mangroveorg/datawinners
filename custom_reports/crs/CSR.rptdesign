@@ -4,15 +4,15 @@
     <list-property name="propertyBindings">
         <structure>
             <property name="name">queryText</property>
-            <property name="id">10</property>
+            <property name="id">8</property>
         </structure>
         <structure>
             <property name="name">queryTimeOut</property>
-            <property name="id">10</property>
+            <property name="id">8</property>
         </structure>
         <structure>
             <property name="name">rowFetchSize</property>
-            <property name="id">10</property>
+            <property name="id">8</property>
         </structure>
     </list-property>
     <property name="units">in</property>
@@ -31,7 +31,7 @@
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
-                <value type="constant">TVE1</value>
+                <value type="constant">%</value>
             </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
@@ -62,12 +62,13 @@
             <property name="valueType">dynamic</property>
             <property name="dataSetName">physical_inv_date</property>
             <expression name="valueExpr" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
+            <expression name="labelExpr" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
             <expression name="sortByColumn">dataSetRow["physical_inventory_closing_date"]</expression>
             <property name="sortDirection">asc</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
-                <value type="constant">2012-01-01</value>
+                <value type="javascript">"2012-01-01"</value>
             </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
@@ -84,6 +85,9 @@
             <property name="valueType">dynamic</property>
             <property name="dataSetName">physical_inv_date</property>
             <expression name="valueExpr" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
+            <expression name="labelExpr" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
+            <expression name="sortByColumn">dataSetRow["physical_inventory_closing_date"]</expression>
+            <property name="sortDirection">asc</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -93,7 +97,7 @@
             <property name="paramType">simple</property>
             <property name="controlType">list-box</property>
             <property name="mustMatch">true</property>
-            <property name="fixedOrder">true</property>
+            <property name="fixedOrder">false</property>
             <structure name="format">
                 <property name="category">Custom</property>
                 <property name="pattern">dd/MM/yyyy</property>
@@ -130,6 +134,152 @@
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Food_type_from_sent" id="8">
             <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">Transfert aux autres CS</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Transfert aux autres CS"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Livraisons pour SFM</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Livraisons pour SFM"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Transfert aux magasins de CRS</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Transfert aux magasins de CRS"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Transfert aux autres organisations</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Transfert aux autres organisations"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Transfert aux Centres PS</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Transfert aux Centres PS"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Transfert aux Partenaires IPs</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Transfert aux Partenaires IPs"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Destruction</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Destruction"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Livraisons pour SFE</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Livraisons pour SFE"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Livraisons pour FFA</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Livraisons pour FFA"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Labtest</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Labtest"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Vente</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Vente"</expression>
+                </structure>
+                <structure>
+                    <property name="name">Autres</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type"] == "Autres"</expression>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">transaction_type</property>
@@ -200,6 +350,66 @@
                     <structure>
                         <property name="position">3</property>
                         <property name="name">sum</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">Transfert aux autres CS</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">Livraisons pour SFM</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">Transfert aux magasins de CRS</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">Transfert aux autres organisations</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">Transfert aux Centres PS</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">Transfert aux Partenaires IPs</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">Destruction</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">Livraisons pour SFE</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">Livraisons pour FFA</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">Labtest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">Vente</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">Autres</property>
                         <property name="dataType">float</property>
                     </structure>
                 </list-property>
@@ -642,6 +852,34 @@ from crs_physicalinventorysheet]]></xml-property>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
     </data-sets>
+    <cubes>
+        <tabular-cube name="Data Cube" id="17">
+            <property name="dimensions">
+                <tabular-dimension name="per_food_type" id="18">
+                    <property name="defaultHierarchy">NewTabularHierarchy</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy" id="19">
+                            <property name="levels">
+                                <tabular-level name="food_type" id="20">
+                                    <property name="dataType">string</property>
+                                    <property name="levelType">dynamic</property>
+                                    <list-property name="attributes">
+                                        <structure>
+                                            <property name="name">transaction_type</property>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="columnName">food_type</property>
+                                    <expression name="displayColumnName" type="javascript">dataSetRow["sum"]</expression>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="dataSet">Food_type_from_sent</property>
+        </tabular-cube>
+    </cubes>
     <styles>
         <style name="report" id="4">
             <property name="fontFamily">sans-serif</property>
