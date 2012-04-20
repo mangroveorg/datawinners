@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4utf-8
-import time
 from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from framework.utils.common_utils import get_epoch_last_ten_digit
