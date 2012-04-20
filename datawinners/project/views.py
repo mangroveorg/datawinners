@@ -43,7 +43,7 @@ import datawinners.utils as utils
 from datawinners.accountmanagement.views import is_datasender, is_datasender_allowed, is_new_user, project_has_web_device
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_infos
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager, include_of_type
+from datawinners.main.utils import get_database_manager
 from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
@@ -272,8 +272,10 @@ def _get_submissions(manager, questionnaire_code, request, paginate=True):
     request_bag = request.GET
     start_time = request_bag.get("start_time") or ""
     end_time = request_bag.get("end_time") or ""
-    start_time_epoch = convert_date_string_in_UTC_to_epoch(helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
-    end_time_epoch = convert_date_string_in_UTC_to_epoch(helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
+    start_time_epoch = convert_date_string_in_UTC_to_epoch(
+        helper.get_formatted_time_string(start_time.strip() + START_OF_DAY))
+    end_time_epoch = convert_date_string_in_UTC_to_epoch(
+        helper.get_formatted_time_string(end_time.strip() + END_OF_DAY))
     current_page = (int(request_bag.get('page_number') or 1) - 1) if paginate else 0
     page_size = PAGE_SIZE if paginate else None
     submissions = get_submissions(manager, questionnaire_code, start_time_epoch, end_time_epoch, current_page,
@@ -795,7 +797,7 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
 def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
     form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
     subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
-    form_context.update({'subject': subject, 'add_link': add_link(project)})
+    form_context.update({'subject': subject, 'add_link': add_link(project), "entity_type": project.entity_type})
     return render_to_response(template, form_context,
         context_instance=RequestContext(request))
 
@@ -829,7 +831,8 @@ def web_questionnaire(request, project_id=None, subject=False):
         success_message = None
         error_message = None
         try:
-            response = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
+            response = WebPlayer(manager,
+                LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
                 helper.create_request(questionnaire_form, request.user.username))
             if response.success:
                 ReportRouter().route(get_organization(request).org_id, response)
@@ -854,7 +857,8 @@ def web_questionnaire(request, project_id=None, subject=False):
         subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
         _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
         _project_context.update(
-                {'success_message': success_message, 'error_message': error_message, 'add_link': add_link(project), "subject": subject})
+                {'success_message': success_message, 'error_message': error_message, 'add_link': add_link(project),
+                 "subject": subject, "entity_type": project.entity_type})
         return render_to_response(template, _project_context,
             context_instance=RequestContext(request))
 

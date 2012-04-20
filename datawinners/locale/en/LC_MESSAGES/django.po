@@ -3180,7 +3180,7 @@ msgstr ""
 msgid "Click the gold Upload a file button and select the saved template"
 msgstr ""
 
-msgid "Edit registration form"
+msgid "Edit Registration Form"
 msgstr ""
 
 msgid "You are sharing this %(entity_type)s Registration Form with other projects."
@@ -4041,3 +4041,5 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
+msgid "Register a Data Sender"
+msgstr ""

@@ -15,12 +15,12 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
+from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password,\
-                                    is_not_expired
-from datawinners.entity.helper import create_registration_form, process_create_datasender_form, \
-    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project, \
-    delete_datasender_users_if_any, get_country_appended_location
+    is_not_expired
+from datawinners.entity.helper import create_registration_form, process_create_datasender_form,\
+    delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
+    delete_datasender_users_if_any
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -153,8 +153,10 @@ def get_success_message(entity_type):
         return _("Data Sender(s) successfully deleted.")
     return _("Subject(s) successfully deleted.")
 
+
 def _get_full_name(user):
     return user.first_name + ' ' + user.last_name
+
 
 @csrf_view_exempt
 @csrf_response_exempt
@@ -311,7 +313,7 @@ def import_subjects_from_project_wizard(request):
 
 
 def _make_form_context(questionnaire_form, entity_type):
-    return {'questionnaire_form': questionnaire_form, 'entity': entity_type, }
+    return {'questionnaire_form': questionnaire_form, 'entity_type': entity_type, }
 
 
 def _get_response(request, questionnaire_form, entity_type):

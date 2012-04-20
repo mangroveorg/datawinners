@@ -3225,8 +3225,8 @@ msgstr "Enregistrez le modèle sur votre ordinateur"
 msgid "Click the gold Upload a file button and select the saved template"
 msgstr "Cliquez sur le bouton Télécharger un fichier et sélectionnez le modèle enregistré"
 
-msgid "Edit registration form"
-msgstr "Editer le formulaire d'enregistrement"
+msgid "Edit Registration Form"
+msgstr "Modifier le Formulaire d’Enregistrement"
 
 msgid "You are sharing this %(entity_type)s Registration Form with other projects."
 msgstr "Vous partagez ce formulaire d'enregistrement %(entity_type)s avec d'autre projets."
@@ -4085,3 +4085,6 @@ msgstr "L'administrateur du votre compte DataWinners, %s, ne peut pas être supp
 
 msgid "Success"
 msgstr "Succès"
+
+msgid "Register a Data Sender"
+msgstr "Enregistrer un Expéditeur de Données"
