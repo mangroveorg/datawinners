@@ -32,7 +32,7 @@ MOBILE_NUMBER_TB = by_css("input#id_q5")
 FNAME_TB = by_css("input#id_q1")
 LNAME_TB = by_css("input#id_q2")
 UNIQUE_ID_TB = by_css("input#id_q6")
-SUBMIT_BTN = by_css("input[value='Register a Waterpoint']")
+SUBMIT_BTN = by_css("input[id='submit']")
 
 ADD_BTN = by_css("input#register_entity")
 ERROR_MESSAGE_LABEL = by_css("ul.errorlist>li") #by_xpath("//div[@class='error_message message-box'] | //label[@class='error']/../../..")
