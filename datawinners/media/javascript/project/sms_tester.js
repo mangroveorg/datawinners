@@ -4,7 +4,7 @@ $(document).ready(function() {
         autoOpen: false,
         width: 1200,
         modal: true,
-        title: 'SMS Tester',
+        title: sms_tester_title,
         zIndex:1100,
         open: function(){
             $(".questionnaire_preview1").load(quessionarie_preview_link, function() {
