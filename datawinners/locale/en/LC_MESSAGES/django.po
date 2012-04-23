@@ -4041,3 +4041,26 @@ msgstr ""
 msgid "Answer the Questions"
 msgstr ""
 
+msgid "Tips"
+msgstr ""
+
+msgid "Start your SMS with the Questionnaire Code \"bois\""
+msgstr ""
+
+msgid "Leave a space between answers in your SMS"
+msgstr ""
+
+msgid "If you are reporting on a specific Subject, you must use the Subject’s Unique ID"
+msgstr ""
+
+msgid "DataWinners Automatic Reply SMS"
+msgstr ""
+
+msgid "Refer to the Example SMS Answer and re-type your SMS"
+msgstr ""
+
+msgid "Congratulations ! Go to"
+msgstr ""
+
+msgid "to see the data you submitted"
+msgstr ""

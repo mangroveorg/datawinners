@@ -4085,3 +4085,27 @@ msgstr "Répondez aux questions figurant sur votre Questionnaire SMS. Ensuite, s
 
 msgid "Answer the Questions"
 msgstr "Répondez aux Questions"
+
+msgid "Tips"
+msgstr "Conseils"
+
+msgid "Start your SMS with the Questionnaire Code \"bois\""
+msgstr "Commencez votre SMS par le Code Questionnaire \"bois\""
+
+msgid "Leave a space between answers in your SMS"
+msgstr "Laissez un espace entre les réponses dans votre SMS"
+
+msgid "If you are reporting on a specific Subject, you must use the Subject’s Unique ID"
+msgstr "Si vous faites un rapport sur un Sujet spécifique, vous devez utiliser l’Identification Unique du Sujet"
+
+msgid "DataWinners Automatic Reply SMS"
+msgstr "Réponse SMS Automatique de DataWinners"
+
+msgid "Refer to the Example SMS Answer and re-type your SMS"
+msgstr "Référez-vous à l’Exemple de Réponse SMS et retapez votre SMS"
+
+msgid "Congratulations ! Go to"
+msgstr "Félicitations ! Allez à la"
+
+msgid "to see the data you submitted"
+msgstr "pour voir les données que vous avez soumises"

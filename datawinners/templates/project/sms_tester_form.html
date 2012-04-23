@@ -12,19 +12,51 @@
 
             <td width="50%">
                 <h4>2. {% trans "Send all your Answers in a single SMS" %}</h4>
-                    <div class="margin_left_20 mobile_block">
-                        <input id='from_msisdn' type='hidden' value="{{ from_number }}">
-                        <input id='to_msisdn' type='hidden' value="{{ to_number }}">
+                <div class="mobile_container">
+                    <div class="mobile_image">
+                        <div class="margin_left_20 mobile_block">
+                            <input id='from_msisdn' type='hidden' value="{{ from_number }}">
+                            <input id='to_msisdn' type='hidden' value="{{ to_number }}">
 
-                        <div class="mobile">
-                            <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
+                            <div class="mobile">
+                                <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="info">
+                        <div class="padding_bottom_10">
+                            <h5>{% trans 'Tips' %}</h5>
+                            <ul>
+                                <li>
+                                    - {% trans 'Start your SMS with the Questionnaire Code "bois"' %}
+                                </li>
+                                <li>
+                                    - {% trans 'Leave a space between answers in your SMS' %}
+                                </li>
+                                <li>
+                                    - {% trans 'If you are reporting on a specific Subject, you must use the Subject’s Unique ID' %}
+                                </li>
+                            </ul>
                         </div>
                         <div>
-                            <a id="clear_sms" class="padding_left_right_10 size_1_em" >{% trans 'Clear' %}</a>
-                            <input id="send_sms" type="button" class="button" value="{% trans 'Send SMS' %}"/>
+                            <div>
+                                <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
+                                <h5>"{% trans '"Error"' %}</h5>
+                                    {% trans 'Refer to the Example SMS Answer and re-type your SMS' %}
+                                <h5>"{% trans '"Thank you"' %}</h5>
+                                    {% trans 'Congratulations ! Go to ' %} <a id="submission_log_link" href="{{ project_links.submission_log_link }}">{% trans 'All Data Records' %}</a> {% trans 'to see the data you submitted' %}
+                            </div>
+                            <div>
+
+                            </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="clear-both padding_top_20">
+                    <a id="clear_sms" class="padding_left_right_10 size_1_em" >{% trans 'Clear' %}</a>
+                    <input id="send_sms" type="button" class="button" value="{% trans 'Send SMS' %}"/>
+                </div>
             </td>
         </tr>
     </table>
