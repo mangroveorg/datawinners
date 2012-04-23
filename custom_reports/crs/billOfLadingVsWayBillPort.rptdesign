@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">9</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">9</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">9</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -34,6 +48,22 @@
     </data-sources>
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Container data set" id="8">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">total</property>
+                    <expression name="expression">if(row["good_weight"] &amp;&amp; row["damaged_weight"]){
+row["good_weight"]+row["damaged_weight"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">Excess Landed</property>
+                    <expression name="expression">if(row["total"] &amp;&amp; row["weight_10"]){
+row["total"]- row["weight_10"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">id</property>
@@ -202,6 +232,16 @@
                         <property name="name">container_code_17</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">total</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">Excess Landed</property>
+                        <property name="dataType">float</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">CRS_conn_profile</property>
@@ -338,6 +378,16 @@ on A.container_code = crs_waybillreceivedport.container_code
 ]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="BreakBulk_data_set" id="9">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">total_received</property>
+                    <expression name="expression">if(row["good_weight"] &amp;&amp; row["damaged_weight"]){
+	row["good_weight"]+row["damaged_weight"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">id</property>
@@ -394,6 +444,18 @@ on A.container_code = crs_waybillreceivedport.container_code
                     <text-property name="heading">waybill_code</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">id_13</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">waybill_code_14</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">waybill_code</text-property>
+                    <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">received_date</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">received_date</text-property>
@@ -417,8 +479,22 @@ on A.container_code = crs_waybillreceivedport.container_code
                     <text-property name="displayName">container_code</text-property>
                     <text-property name="heading">container_code</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">id_8</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight_10</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">pl_code_12</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">pl_code</text-property>
+                </structure>
             </list-property>
-            <list-property name="parameters"/>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -510,6 +586,11 @@ on A.container_code = crs_waybillreceivedport.container_code
                         <property name="position">18</property>
                         <property name="name">container_code</property>
                         <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">total_received</property>
+                        <property name="dataType">float</property>
                     </structure>
                 </list-property>
             </structure>
