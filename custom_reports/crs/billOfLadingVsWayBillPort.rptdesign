@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">147</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="CRS_conn_profile" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql:geodjango</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
+            <property name="odaJndiName">java:comp/env/jdbc/postgres</property>
+            <property name="OdaConnProfileName">CRS_conn_profile</property>
+            <property name="OdaConnProfileStorePath">crs_conn_profile</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Container data set" id="8">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">pl_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">pl_code</text-property>
+                    <text-property name="heading">pl_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">shipment_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">shipment_type</text-property>
+                    <text-property name="heading">shipment_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">issue_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">issue_date</text-property>
+                    <text-property name="heading">issue_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">food_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <text-property name="heading">food_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">bill_of_lading_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">bill_of_lading_code</text-property>
+                    <text-property name="heading">bill_of_lading_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">weight</text-property>
+                    <text-property name="heading">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">bill_of_lading</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">bill_of_lading</text-property>
+                    <text-property name="heading">bill_of_lading</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">container_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">container_code</text-property>
+                    <text-property name="heading">container_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">waybill_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">waybill_code</text-property>
+                    <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_date</text-property>
+                    <text-property name="heading">received_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">good_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">good_weight</text-property>
+                    <text-property name="heading">good_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">damaged_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">damaged_weight</text-property>
+                    <text-property name="heading">damaged_weight</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">pl_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">shipment_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">issue_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">food_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">bill_of_lading_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">id_8</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">bill_of_lading</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">weight_10</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">container_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">id_12</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">received_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">good_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">damaged_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">container_code_17</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">pl_code</property>
+                    <property name="nativeName">pl_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">shipment_type</property>
+                    <property name="nativeName">shipment_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">issue_date</property>
+                    <property name="nativeName">issue_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">food_type</property>
+                    <property name="nativeName">food_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">bill_of_lading_code</property>
+                    <property name="nativeName">bill_of_lading_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">weight</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">id_8</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">bill_of_lading</property>
+                    <property name="nativeName">bill_of_lading</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">weight_10</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">container_code</property>
+                    <property name="nativeName">container_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">id_12</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">waybill_code</property>
+                    <property name="nativeName">waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">received_date</property>
+                    <property name="nativeName">received_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">good_weight</property>
+                    <property name="nativeName">good_weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">damaged_weight</property>
+                    <property name="nativeName">damaged_weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">container_code_17</property>
+                    <property name="nativeName">container_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select * from
+(select *
+from crs_billoflading 
+inner join
+crs_containersent
+on crs_billoflading.bill_of_lading_code = crs_containersent.bill_of_lading) as A
+left join
+crs_waybillreceivedport
+on A.container_code = crs_waybillreceivedport.container_code
+]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="BreakBulk_data_set" id="9">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">pl_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">pl_code</text-property>
+                    <text-property name="heading">pl_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">shipment_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">shipment_type</text-property>
+                    <text-property name="heading">shipment_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">issue_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">issue_date</text-property>
+                    <text-property name="heading">issue_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">food_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <text-property name="heading">food_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">bill_of_lading_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">bill_of_lading_code</text-property>
+                    <text-property name="heading">bill_of_lading_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">weight</text-property>
+                    <text-property name="heading">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sent_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_date</text-property>
+                    <text-property name="heading">sent_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">waybill_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">waybill_code</text-property>
+                    <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_date</text-property>
+                    <text-property name="heading">received_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">good_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">good_weight</text-property>
+                    <text-property name="heading">good_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">damaged_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">damaged_weight</text-property>
+                    <text-property name="heading">damaged_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">container_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">container_code</text-property>
+                    <text-property name="heading">container_code</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">pl_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">shipment_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">issue_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">food_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">bill_of_lading_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">id_8</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">sent_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">weight_10</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">pl_code_12</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">id_13</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">waybill_code_14</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">received_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">good_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">damaged_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">container_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">pl_code</property>
+                    <property name="nativeName">pl_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">shipment_type</property>
+                    <property name="nativeName">shipment_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">issue_date</property>
+                    <property name="nativeName">issue_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">food_type</property>
+                    <property name="nativeName">food_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">bill_of_lading_code</property>
+                    <property name="nativeName">bill_of_lading_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">weight</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">id_8</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">sent_date</property>
+                    <property name="nativeName">sent_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">weight_10</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">waybill_code</property>
+                    <property name="nativeName">waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">pl_code_12</property>
+                    <property name="nativeName">pl_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">id_13</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">waybill_code_14</property>
+                    <property name="nativeName">waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">received_date</property>
+                    <property name="nativeName">received_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">good_weight</property>
+                    <property name="nativeName">good_weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">damaged_weight</property>
+                    <property name="nativeName">damaged_weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">container_code</property>
+                    <property name="nativeName">container_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select * from
+(select *
+from crs_billoflading 
+inner join
+crs_breakbulksent
+on crs_billoflading.pl_code = crs_breakbulksent.pl_code) as A
+left join
+crs_waybillreceivedport
+on A.waybill_code = crs_waybillreceivedport.waybill_code
+]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+</report>
