@@ -75,6 +75,12 @@
     background: -moz-linear-gradient(top, #525252, #262626); }
     .ui-widget-content .ui-widget-header .ui-dialog-title {
       font-size: 18px; }
+  .ui-widget-content a {
+    color: #0070AC;
+    font-size: 12px; }
+  .ui-widget-content a.size_1_em {
+    color: #0070AC;
+    font-size: 1em; }
 
 #error_table {
   display: none; }
@@ -89,10 +95,6 @@
   position: relative;
   top: 10px;
   margin-left: 10px; }
-
-.ui-widget-content a {
-  color: #0070AC;
-  font-size: 12px; }
 
 #message {
   clear: both; }

@@ -1617,15 +1617,6 @@ msgstr "Envoyez vos réponses de test"
 msgid "Refer to the Web Questionnaire Preview for a sample SMS"
 msgstr "Référez-vous à l'aperçu du questionnaire Web pour un exemple de SMS"
 
-#: templates/project/sms_tester_form.html:20
-msgid "sms_tester_form"
-msgstr ""
-"<p>Remarque : Quand vous activez un projet, toutes les données de test sont "
-"supprimées automatiquement.</p><p>Vous avez 2 options</p><p>A. Cliquez sur "
-"l'écran du mobile et saisissez votre message de test.</p><p>B. Enregistrez-"
-"vous en tant qu'envoyeur de données. Puis envoyez par SMS votre sms de test"
-"au numéro de téléphone donné par DataWinners.</p>"
-
 #: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
 msgstr "Envoyez un SMS"

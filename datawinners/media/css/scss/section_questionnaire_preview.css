@@ -38,8 +38,8 @@
     float: left; }
     .questionnaire_title li p, .questionnaire_title li h5 {
       float: left; }
-    .questionnaire_title li h5 {
-      margin: -5px 0 0 10px; }
+    .questionnaire_title li p, .questionnaire_title li h5 {
+      margin: -5px 0  0 10px; }
     .questionnaire_title li p.content {
       margin-left: 10px; }
 

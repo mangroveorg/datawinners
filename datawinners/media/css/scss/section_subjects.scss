@@ -110,6 +110,14 @@
                 font-size:18px;
             }
         }
+        a{
+            color: #0070AC;
+            font-size: 12px;
+        }
+        a.size_1_em {
+            color: #0070AC;
+            font-size: 1em;
+        }
 }
 #error_table{
     display:none;
@@ -133,11 +141,6 @@
             margin-left:10px;
         }
     }
-}
-
-.ui-widget-content a{
-    color: #0070AC;
-    font-size: 12px;
 }
 
 #message{

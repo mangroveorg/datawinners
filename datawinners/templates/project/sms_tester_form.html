@@ -1,5 +1,8 @@
 {% load i18n %}
 <div class="sms_tester_form none">
+    <div class="content italic padding_bottom_10">
+        {% trans "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone" %}
+    </div>
     <table>
         <tr>
             <td width="50%">
@@ -8,36 +11,19 @@
             </td>
 
             <td width="50%">
-                <h4>{% trans "Test the SMS Questionnaire" %}</h4>
-                <p class="italic margin_bottom_20">{% trans "Verify you can send in test answers" %}</p>
-                <ul>
-                    <li>
-                        <h6>1. {% trans "Send in your test answers." %}</h6>
+                <h4>2. {% trans "Send all your Answers in a single SMS" %}</h4>
+                    <div class="margin_left_20 mobile_block">
+                        <input id='from_msisdn' type='hidden' value="{{ from_number }}">
+                        <input id='to_msisdn' type='hidden' value="{{ to_number }}">
 
-                        <p class="italic margin_bottom_20">{% trans "Refer to the Web Questionnaire Preview for a sample SMS" %}</p>
-
-                        <div class="margin_left_20 mobile_block">
-                            {% trans "sms_tester_form" %}
-                            <input id='from_msisdn' type='hidden' value="{{ from_number }}">
-                            <input id='to_msisdn' type='hidden' value="{{ to_number }}">
-
-                            <div class="mobile">
-                                <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
-                            </div>
-                            <div>
-                                <input id="send_sms" type="button" class="button" value="{% trans 'Send SMS' %}"/>
-                                <input id="clear_sms" type="button" class="button margin_left_20"
-                                       value="{% trans 'Clear' %}"/>
-                            </div>
+                        <div class="mobile">
+                            <textarea name="message" cols="30" rows="4" id="id_message"></textarea>
                         </div>
-                    </li>
-                    <li>
-                        <h6 class="margin_top_20">2. {% trans "See the data you received" %} </h6>
-
-                        <p class="italic">{% trans "See if DataWinners received your SMS. (Go to " %}<a
-                                href="{{project_links.submission_log_link}}">{% trans "All Data Records " %}</a> {% trans "page to view submission status)" %}</p>
-                    </li>
-                </ul>
+                        <div>
+                            <a id="clear_sms" class="padding_left_right_10 size_1_em" >{% trans 'Clear' %}</a>
+                            <input id="send_sms" type="button" class="button" value="{% trans 'Send SMS' %}"/>
+                        </div>
+                    </div>
 
             </td>
         </tr>

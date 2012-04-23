@@ -1622,8 +1622,8 @@ msgid "Questionnarie Code:"
 msgstr "Code Questionnaire :"
 
 #: templates/project/questionnaire_preview.html:23
-msgid "Example SMS:"
-msgstr "Exemple de SMS :"
+msgid "Example SMS Answer:"
+msgstr "Exemple de SMS Réponse:"
 
 #: templates/project/questionnaire_wizard.html:62
 msgid "Define the questions you want your Data Senders to answer."
@@ -1773,8 +1773,8 @@ msgid "Results"
 msgstr "Résultats"
 
 #: templates/project/sms_tester_form.html:11
-msgid "Test the SMS Questionnaire"
-msgstr "Testez le Questionnaire SMS"
+msgid "Send all your Answers in a single SMS"
+msgstr "Envoyez toutes vos Réponses par le biais d’un seul SMS"
 
 #: templates/project/sms_tester_form.html:12
 msgid "Verify you can send in test answers"
@@ -1787,15 +1787,6 @@ msgstr "Envoyez vos réponses de test"
 #: templates/project/sms_tester_form.html:17
 msgid "Refer to the Web Questionnaire Preview for a sample SMS"
 msgstr "Référez-vous à l'aperçu du questionnaire Web pour un example de SMS"
-
-#: templates/project/sms_tester_form.html:20
-msgid "sms_tester_form"
-msgstr ""
-"<p>Remarque : Quand vous activez un projet, toutes les données de test sont "
-"supprimées automatiquement.</p><p>Vous avez 2 options</p><p>A. Cliquez sur "
-"l'écran du mobile et saisissez votre message de test.</p><p>B. Enregistrez-"
-"vous en tant qu'expéditeur de données. Puis envoyez par SMS votre sms de test"
-" au numéro de téléphone donné par DataWinners.</p>"
 
 #: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
@@ -4088,3 +4079,9 @@ msgstr "Succès"
 
 msgid "Register a Data Sender"
 msgstr "Enregistrer un Expéditeur de Données"
+
+msgid "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone"
+msgstr "Répondez aux questions figurant sur votre Questionnaire SMS. Ensuite, suivez l’Exemple de Format de Réponse SMS pour taper le SMS dans le téléphone. Notez que vous pouvez aussi utiliser votre propre téléphone cellulaire."
+
+msgid "Answer the Questions"
+msgstr "Répondez aux Questions"

@@ -1602,7 +1602,7 @@ msgid "Questionnarie Code:"
 msgstr ""
 
 #: templates/project/questionnaire_preview.html:23
-msgid "Example SMS:"
+msgid "Example SMS Answer:"
 msgstr ""
 
 #: templates/project/questionnaire_wizard.html:62
@@ -1752,7 +1752,7 @@ msgid "Results"
 msgstr ""
 
 #: templates/project/sms_tester_form.html:11
-msgid "Test the SMS Questionnaire"
+msgid "Send all your Answers in a single SMS"
 msgstr ""
 
 #: templates/project/sms_tester_form.html:12
@@ -1766,15 +1766,6 @@ msgstr ""
 #: templates/project/sms_tester_form.html:17
 msgid "Refer to the Web Questionnaire Preview for a sample SMS"
 msgstr ""
-
-#: templates/project/sms_tester_form.html:20
-msgid "sms_tester_form"
-msgstr ""
-"<p>Note : When you activate this project, all the test data will be removed "
-"automatically.</p><p>You have 2 options</p><p>A. Click on the mobile phone "
-"screen and type your test answers.</p><p>B. Register yourself as a Data "
-"Sender. Then sms your test answers to the telephone number provided by "
-"DataWinners.</p>"
 
 #: templates/project/sms_tester_form.html:28
 msgid "Send SMS"
@@ -4043,3 +4034,10 @@ msgstr ""
 
 msgid "Register a Data Sender"
 msgstr ""
+
+msgid "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone"
+msgstr ""
+
+msgid "Answer the Questions"
+msgstr ""
+
