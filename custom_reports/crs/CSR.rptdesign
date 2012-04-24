@@ -1716,7 +1716,8 @@ food_type in ('CSB','RIZ','HUILE','SORGHO')
 and store_house_code like ?
 and pl_code like ?
 and physical_inventory_closing_date >= ?
-and physical_inventory_closing_date <= ?]]></xml-property>
+and physical_inventory_closing_date <= ?
+order by food_type]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="physical_inv_date" id="15">
             <list-property name="columnHints">
