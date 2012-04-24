@@ -48,17 +48,12 @@
                                 </li>
                             </ul>
                         </div>
-                        <div>
-                            <div>
-                                <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
-                                <h5>"{% trans "Error" %}"</h5>
-                                    {% trans 'Refer to the Example SMS Answer and re-type your SMS' %}
-                                <h5>"{% trans "Thank you" %}"</h5>
-                                    {% trans 'Congratulations ! Go to ' %} <a id="submission_log_link" href="{{ project_links.submission_log_link }}">{% trans 'All Data Records' %}</a> {% trans 'to see the data you submitted' %}
-                            </div>
-                            <div>
-
-                            </div>
+                        <div id="response_info">
+                            <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
+                            <h5>"{% trans "Error" %}"</h5>
+                                {% trans 'Refer to the Example SMS Answer and re-type your SMS' %}
+                            <h5>"{% trans "Thank you" %}"</h5>
+                                {% trans 'Congratulations ! Go to ' %} <a id="submission_log_link" href="{{ project_links.submission_log_link }}">{% trans 'All Data Records' %}</a> {% trans 'to see the data you submitted' %}
                         </div>
                     </div>
                 </div>
