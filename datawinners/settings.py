@@ -160,6 +160,7 @@ INSTALLED_APPS = (
     'datawinners.location',
     'datawinners.entity',
     'datawinners.submission',
+    'datawinners.xforms',
     'django_extensions',
     'django.contrib.flatpages',
     'south',

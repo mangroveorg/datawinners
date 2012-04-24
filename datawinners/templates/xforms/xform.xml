@@ -1,0 +1,21 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:jr="http://openrosa.org/javarosa">
+    <h:head>
+        <h:title>{{ questionnaire.name }}</h:title>
+        <model>
+            <instance>
+                <data>
+                    <mystring>Hello World!  This is my answer!</mystring>
+                </data>
+            </instance>
+            <bind nodeset="/data/mystring" type="text"/>
+        </model>
+    </h:head>
+    <h:body>
+        <input ref="mystring">
+            <label>This is a string prompt</label>
+            <hint>You don't need a hint, but you can add one</hint>
+        </input>
+    </h:body>
+</h:html>
