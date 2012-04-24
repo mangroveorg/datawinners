@@ -1103,6 +1103,296 @@ order by tuples.food_type, tuples.transaction_type) as b]]></xml-property>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Food_type_from_received" id="9">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">("Recues venant du Port",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues venant du Port",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues venant du Port",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues venant du Port",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues venant du Port",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues venant du Port",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues venant du Port",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues venant du Port",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres CS",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres CS",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres CS",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres CS",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres CS",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres CS",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres CS",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres CS",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres magasins de CRS",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres magasins de CRS",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres magasins de CRS",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres magasins de CRS",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres magasins de CRS",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres magasins de CRS",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres magasins de CRS",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres magasins de CRS",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres organisations",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres organisations",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres organisations",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres organisations",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres organisations",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Recues des autres organisations",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Recues des autres organisations",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant du Centre",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant du Centre",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Retour venant du Centre",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant du Centre",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]='("Retour venant du Centre",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant du Centre",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]='("Retour venant du Centre",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant des sites",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Retour venant des sites",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant des sites",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Retour venant des sites",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant des sites",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Retour venant des sites",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Retour venant des sites",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["sum_recv_weight"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["transaction_type_food_type_for_recv"]=='("Retour venant des sites",SORGHUM)'</expression>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">transaction_type_food_type_for_recv</property>
@@ -1161,6 +1451,126 @@ order by tuples.food_type, tuples.transaction_type) as b]]></xml-property>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">sum_recv_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">("Recues venant du Port",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">("Recues venant du Port",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">("Recues venant du Port",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">("Recues venant du Port",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">("Recues des autres CS",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">("Recues des autres CS",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">("Recues des autres CS",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">("Recues des autres CS",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">("Recues des autres magasins de CRS",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">("Recues des autres magasins de CRS",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">("Recues des autres magasins de CRS",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">("Recues des autres magasins de CRS",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">("Recues des autres organisations",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">("Recues des autres organisations",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">("Recues des autres organisations",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">("Recues des autres organisations",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">("Retour venant du Centre",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">("Retour venant du Centre",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">("Retour venant du Centre",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">("Retour venant du Centre",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">("Retour venant des sites",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">("Retour venant des sites",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">("Retour venant des sites",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">("Retour venant des sites",SORGHUM)</property>
                         <property name="dataType">float</property>
                     </structure>
                 </list-property>
