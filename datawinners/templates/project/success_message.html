@@ -10,7 +10,7 @@
             <div class="gray_text">{% trans "Just one more step..." %} </div>
             <ul>
                 <li><a id="datasenders_edit_link"
-                       href="{{project_links.datasenders_link}}">{% trans "Add data senders" %} </a>
+                       href="{{project_links.register_datasenders_link}}">{% trans "Add data senders" %} </a>
                     <span class="italic_grey">{% trans "required"  %}</span>
                     <p class="black_italic">{% trans "Register each Data Sender (e.g. field staff) to enable them to send data into your project." %} </p>
                 </li>
@@ -18,7 +18,7 @@
             <div class="gray_text">{% trans "Enhance your project..." %} </div>
             <ul>
                 {% if not project.is_activity_report %}
-                <li><a id="subjects_edit_link" href="{{project_links.subjects_link}}">{% trans "Add a new" %} {{ project.entity_type }} </a>
+                <li><a id="subjects_edit_link" href="{{project_links.register_subjects_link}}">{% trans "Add a new" %} {{ project.entity_type }} </a>
 
                     <p class="black_italic">{% trans "Register each Subject (e.g. patient, retail shop, village) you need to collect data about and want to track on a map." %} </p>
                 </li>
