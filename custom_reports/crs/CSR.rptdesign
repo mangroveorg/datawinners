@@ -134,6 +134,584 @@
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Food_type_from_sent" id="8">
             <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">(Autres ,HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]== '(Autres,HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Autres,RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"] == "(Autres,RIZ)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Autres,CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Autres,CSB)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Autres,SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Autres,SORGHUM)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Destruction,HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Destruction,HUILE)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Destruction,RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Destruction,RIZ)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Destruction,CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"] =="(Destruction,CSB)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Destruction,SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Destruction,SORGHUM)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Labtest,HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Labtest,HUILE)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Labtest,RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"] == "(Labtest,RIZ)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Labtest,CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"] == "(Labtest,CSB)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Labtest,SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=="(Labtest,SORGHUM)"</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour FFA",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"] == '("Livraisons pour FFA",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour FFA",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour FFA",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour FFA",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour FFA",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour FFA",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour FFA",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFE",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFE",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFE",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFE",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFE",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFE",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFE",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFE",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFM",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFM",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFM",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFM",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFM",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFM",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Livraisons pour SFM",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Livraisons pour SFM",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres CS",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres CS",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres CS",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres CS",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres CS",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres CS",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres CS",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres CS",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres organisations",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres organisations",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres organisations",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres organisations",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres organisations",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres organisations",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux autres organisations",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux autres organisations",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Centres PS",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Centres PS",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Centres PS",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Centres PS",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Centres PS",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Centres PS",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Centres PS",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Centres PS",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux magasins de CRS",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux magasins de CRS",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux magasins de CRS",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux magasins de CRS",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux magasins de CRS",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux magasins de CRS",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux magasins de CRS",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux magasins de CRS",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Partenaires IPs",CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Partenaires IPs",CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Partenaires IPs",RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Partenaires IPs",RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Partenaires IPs",SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Partenaires IPs",SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">("Transfert aux Partenaires IPs",HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='("Transfert aux Partenaires IPs",HUILE)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Vente,CSB)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='(Vente,CSB)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Vente,RIZ)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='(Vente,RIZ)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Vente,SORGHUM)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='(Vente,SORGHUM)'</expression>
+                </structure>
+                <structure>
+                    <property name="name">(Vente,HUILE)</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["weight_sent_sum"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">row["food_type_transaction_type_for_sent"]=='(Vente,HUILE)'</expression>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">food_type_transaction_type_for_sent</property>
@@ -193,6 +771,246 @@
                     <structure>
                         <property name="position">2</property>
                         <property name="name">weight_sent_sum</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">(Autres ,HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">(Autres,RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">(Autres,CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">(Autres,SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">(Destruction,HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">(Destruction,RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">(Destruction,CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">(Destruction,SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">(Labtest,HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">(Labtest,RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">(Labtest,CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">(Labtest,SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">("Livraisons pour FFA",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">("Livraisons pour FFA",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">("Livraisons pour FFA",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">("Livraisons pour FFA",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">("Livraisons pour SFE",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">("Livraisons pour SFE",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">("Livraisons pour SFE",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">("Livraisons pour SFE",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">("Livraisons pour SFM",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">("Livraisons pour SFM",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">("Livraisons pour SFM",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">("Livraisons pour SFM",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">("Transfert aux autres CS",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">28</property>
+                        <property name="name">("Transfert aux autres CS",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">29</property>
+                        <property name="name">("Transfert aux autres CS",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">30</property>
+                        <property name="name">("Transfert aux autres CS",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">31</property>
+                        <property name="name">("Transfert aux autres organisations",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">("Transfert aux autres organisations",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">("Transfert aux autres organisations",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">34</property>
+                        <property name="name">("Transfert aux autres organisations",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">35</property>
+                        <property name="name">("Transfert aux Centres PS",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">36</property>
+                        <property name="name">("Transfert aux Centres PS",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">37</property>
+                        <property name="name">("Transfert aux Centres PS",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">38</property>
+                        <property name="name">("Transfert aux Centres PS",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">39</property>
+                        <property name="name">("Transfert aux magasins de CRS",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">40</property>
+                        <property name="name">("Transfert aux magasins de CRS",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">41</property>
+                        <property name="name">("Transfert aux magasins de CRS",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">42</property>
+                        <property name="name">("Transfert aux magasins de CRS",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">43</property>
+                        <property name="name">("Transfert aux Partenaires IPs",CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">44</property>
+                        <property name="name">("Transfert aux Partenaires IPs",RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">45</property>
+                        <property name="name">("Transfert aux Partenaires IPs",SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">46</property>
+                        <property name="name">("Transfert aux Partenaires IPs",HUILE)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">47</property>
+                        <property name="name">(Vente,CSB)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">48</property>
+                        <property name="name">(Vente,RIZ)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">49</property>
+                        <property name="name">(Vente,SORGHUM)</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">50</property>
+                        <property name="name">(Vente,HUILE)</property>
                         <property name="dataType">float</property>
                     </structure>
                 </list-property>
@@ -353,6 +1171,7 @@ order by tuples.food_type, tuples.transaction_type) as b]]></xml-property>
                     <property name="position">1</property>
                     <property name="name">transaction_type_food_type_for_recv</property>
                     <property name="nativeName">transaction_type_food_type_for_recv</property>
+                    <property name="dataType">string</property>
                     <property name="nativeDataType">1111</property>
                 </structure>
                 <structure>
