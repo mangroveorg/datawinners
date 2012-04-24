@@ -2305,6 +2305,10 @@ msgstr "Votre numéro de téléphone n'est pas encore enregistré dans notre sys
 "votre superviseur."
 
 #, python-format
+msgid "All questions must be unique"
+msgstr "Toutes les questions doivent être uniques. S'il vous plaît supprimer les doublons."
+
+#, python-format
 msgid "Question Code Already Exists"
 msgstr "Ce Code Question existe déja"
 

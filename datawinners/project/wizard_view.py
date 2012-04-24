@@ -133,7 +133,7 @@ def edit_project(request, project_id=None):
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
-                return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': ex.message}))
+                return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': _(ex.message)}))
             except DataObjectAlreadyExists:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': 'Questionnaire with this code already exists'}))
 

@@ -2293,6 +2293,10 @@ msgid "Your telephone number is not yet registered in our system. Please contact
 msgstr ""
 
 #, python-format
+msgid "All questions must be unique"
+msgstr "All questions must be unique. Please delete duplicates."
+
+#, python-format
 msgid "Question Code Already Exists"
 msgstr ""
 

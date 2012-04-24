@@ -103,7 +103,7 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
                 questionnaire_section.show();
             }
             $('#project-message-label').removeClass('none');
-            $('#project-message-label').html("<label class='error_message'> " + gettext(responseJson.error_message) + ".</label>");
+            $('#project-message-label').html("<label class='error_message'> " + gettext(responseJson.error_message) + "</label>");
         }
     });
 };
