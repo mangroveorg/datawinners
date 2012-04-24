@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from urllib2 import URLError
+from urllib2 import URLError, HTTPError
 from django.conf import settings
 import logging
 from datawinners.accountmanagement.models import OrganizationSetting
@@ -24,9 +24,14 @@ class SMSClient(object):
                         transport_name=smsc.vumi_username)
                     return sms_response[0]
                 else:
-                    client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
-                    client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
-                    return True
+                    try:
+                        client = VumiClient(None, None, connection=Connection(smsc.vumi_username, smsc.vumi_username, base_url=settings.VUMI_API_URL))
+                        client.debug = True
+                        client.send_sms(to_msisdn=to_tel,from_msisdn=from_tel, message=message.encode('utf-8'))
+                        return True
+                    except URLError as err:
+                        logger.exception('Unable to send sms. %s' %err)
+                        return False
         return False
 
     def send_reminder(self,from_number, on_date, project, reminder, dbm):
@@ -49,5 +54,5 @@ class VumiApiClient(object):
             response = self.connection.post('/', kwargs)
             return True, response
         except URLError as err:
-            logger.critical('Unable to send sms. %s' %err)
+            logger.exception('Unable to send sms. %s' %err)
             return False, 'Unable to send sms'
