@@ -3,6 +3,16 @@
     <div class="content italic padding_bottom_10">
         {% trans "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone" %}
     </div>
+    <table class="no_border">
+        <tr>
+            <td width="50%">
+                <h4>1. {% trans "Answer the Questions" %}</h4>
+            </td>
+            <td width="50%">
+                <h4>2. {% trans "Send all your Answers in a single SMS" %}</h4>
+            </td>
+        </tr>
+    </table>
     <table>
         <tr>
             <td width="50%">
@@ -11,7 +21,6 @@
             </td>
 
             <td width="50%">
-                <h4>2. {% trans "Send all your Answers in a single SMS" %}</h4>
                 <div class="mobile_container">
                     <div class="mobile_image">
                         <div class="margin_left_20 mobile_block">
@@ -42,9 +51,9 @@
                         <div>
                             <div>
                                 <h5>{% trans 'DataWinners Automatic Reply SMS' %}</h5>
-                                <h5>"{% trans '"Error"' %}</h5>
+                                <h5>"{% trans "Error" %}"</h5>
                                     {% trans 'Refer to the Example SMS Answer and re-type your SMS' %}
-                                <h5>"{% trans '"Thank you"' %}</h5>
+                                <h5>"{% trans "Thank you" %}"</h5>
                                     {% trans 'Congratulations ! Go to ' %} <a id="submission_log_link" href="{{ project_links.submission_log_link }}">{% trans 'All Data Records' %}</a> {% trans 'to see the data you submitted' %}
                             </div>
                             <div>

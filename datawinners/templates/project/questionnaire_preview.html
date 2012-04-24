@@ -10,18 +10,17 @@
 {% block body %}
     <div id="questionnaire_preview">
         <div class="preview_block"><a href="#" class="printBtn">{% trans "Print" %}</a></div>
-        <h4>1. {% trans "Answer the Questions" %}</h4>
         <h4 class="padding_bottom_10">{% trans "Project : " %}{{ project.name }}</h4>
 
         <ul class="questionnaire_title">
             <li>
-                <p><h5>{% trans "SMS your answers to" %} {{ org_number|format_organization_number }} </h5></p>
+                <p><h6>{% trans "SMS your answers to" %} {{ org_number|format_organization_number }} </h6></p>
             </li>
             <li>
-                <p>{% trans "Questionnarie Code:" %} {{ questionnaire_code }}</p>
+                <span class="content italic">{% trans "Questionnarie Code:" %} {{ questionnaire_code }}</span>
             </li>
             <li>
-                <p><h5>{% trans "Example SMS Answer:" %} </h5>
+                <p><h6>{% trans "Example SMS Answer:" %} </h6>
                 <span class="content italic">{{ example_sms }}</span></p>
             </li>
         </ul>

@@ -148,6 +148,12 @@ table{
     }
 }
 
+table.no_border{
+    td, th {
+        border: none;
+    }
+}
+
 /* Inline and block */
 .inline{
     display:inline !important;

@@ -4104,8 +4104,8 @@ msgstr "Réponse SMS Automatique de DataWinners"
 msgid "Refer to the Example SMS Answer and re-type your SMS"
 msgstr "Référez-vous à l’Exemple de Réponse SMS et retapez votre SMS"
 
-msgid "Congratulations ! Go to"
-msgstr "Félicitations ! Allez à la"
+msgid "Congratulations ! Go to "
+msgstr "Félicitations ! Allez à la "
 
 msgid "to see the data you submitted"
 msgstr "pour voir les données que vous avez soumises"

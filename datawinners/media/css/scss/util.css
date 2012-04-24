@@ -136,6 +136,9 @@ table {
     font-weight: bold;
     padding: 10px; }
 
+table.no_border td, table.no_border th {
+  border: none; }
+
 /* Inline and block */
 .inline {
   display: inline !important; }
