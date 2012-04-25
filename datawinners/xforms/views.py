@@ -1,8 +1,8 @@
-from django.contrib.sites.models import Site
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from mangrove.form_model.form_model import  FormModel
 from datawinners.accountmanagement.httpauth import logged_in_or_basicauth
 from datawinners.alldata.helper import get_all_project_for_user
@@ -24,19 +24,12 @@ def formList(request):
 
 
 @csrf_exempt
+@require_http_methods(['POST'])
 def submission(request):
-    context = RequestContext(request)
-    show_options = True
-    # request.FILES is a django.utils.datastructures.MultiValueDict
-    # for each key we have a list of values
-    if show_options:
-        context.domain = Site.objects.get(id=1).domain
-        response = render_to_response("xforms/submission.html",
-            context_instance=context)
-    else:
-        response = HttpResponse()
+    submission_data = request.FILES.get("xml_submission_file").read()
+    response = render_to_response("xforms/submission.html")
     response.status_code = 201
-    response['Location'] = "http://10.12.6.209:8443/xforms/submission"
+    response['Location'] = request.build_absolute_uri(request.path)
     return response
 
 
