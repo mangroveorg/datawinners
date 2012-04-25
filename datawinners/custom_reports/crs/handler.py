@@ -3,14 +3,16 @@ from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBil
     way_bill_received_by_site_mapping, Distribution, sfm_distribution_mapping, sfe_distribution_mapping, \
     ffa_distribution_mapping, BillOfLading, bill_of_lading_mapping, BreakBulkSent, break_bulk_sent_mapping, \
     WayBillReceivedPort, break_bulk_received_at_port_mapping, ContainerSent, container_sent_mapping,\
-    container_received_at_port_mapping
+    container_received_at_port_mapping, BAV, ffa_bav_mapping, sf_bav_mapping, cps_bav_mapping, cps_bav_defaults
+
 from datawinners.custom_reports.crs.models import sfm_distribution_defaults, ffa_distribution_defaults, \
-    sfe_distribution_defaults
+    sfe_distribution_defaults, ffa_bav_defaults
+
 from datawinners.settings import WAYBILL_SENT_QUESTIONNAIRE_CODE, WAYBILL_RECEIVED_QUESTIONNAIRE_CODE,\
     PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE, WAYBILL_SENT_BY_SITE, WAYBILL_RECEIVED_BY_SITE, WAYBILL_RECEIVED_BY_WH, \
     SFM_DISTRIBUTION_CODE, SFE_DISTRIBUTION_CODE, FFA_DISTRIBUTION_CODE, BILL_OF_LADING_QUESTIONNAIRE_CODE,\
     BREAK_BULK_SENT_QUESTIONNAIRE_CODE, BREAK_BULK_RECEIVED_PORT_QUESTIONNAIRE_CODE, CONTAINER_SENT_QUESTIONNAIRE_CODE,\
-    CONTAINER_RECEIVED_PORT_QUESTIONNAIRE_CODE
+    CONTAINER_RECEIVED_PORT_QUESTIONNAIRE_CODE, BAV_FFA_CODE, BAV_SF_CODE, BAV_CPS_CODE
 
 model_routing_dict = {
     WAYBILL_SENT_QUESTIONNAIRE_CODE: {'model': WayBillSent, 'question_mapping': way_bill_sent_mapping},
@@ -26,7 +28,10 @@ model_routing_dict = {
     CONTAINER_RECEIVED_PORT_QUESTIONNAIRE_CODE:{'model' : WayBillReceivedPort, 'question_mapping': container_received_at_port_mapping},
     FFA_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': ffa_distribution_mapping, 'defaults': ffa_distribution_defaults},
     SFE_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': sfe_distribution_mapping, 'defaults': sfe_distribution_defaults},
-    SFM_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': sfm_distribution_mapping, 'defaults': sfm_distribution_defaults}
+    SFM_DISTRIBUTION_CODE: {'model': Distribution, 'question_mapping': sfm_distribution_mapping, 'defaults': sfm_distribution_defaults},
+    BAV_FFA_CODE: {'model': BAV, 'question_mapping': ffa_bav_mapping, 'defaults': ffa_bav_defaults},
+    BAV_CPS_CODE: {'model': BAV, 'question_mapping': cps_bav_mapping, 'defaults': cps_bav_defaults},
+    BAV_SF_CODE: {'model': BAV, 'question_mapping': sf_bav_mapping},
 }
 
 class CRSCustomReportHandler(object):

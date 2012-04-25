@@ -209,6 +209,47 @@ class WayBillReceivedPort(models.Model):
     q4 = models.FloatField(db_column='damaged_weight')
     q5 = models.TextField(db_column='container_code', null=True)
 
+sf_bav_mapping = {
+    'q1' : 'q3',
+    'q2' : 'q2',
+    'q3' : 'q4',
+    'q5' : 'q5',
+    'q6' : 'q6',
+}
+
+ffa_bav_mapping = {
+    'q2' : 'q2',
+    'q3' : 'q3',
+    'q4' : 'q4',
+    'q5' : 'q5',
+    'q7' : 'q6',
+}
+
+ffa_bav_defaults = {
+    'q1' : 'FFA'
+}
+
+cps_bav_mapping = {
+    'q2' : 'q2',
+    'q3' : 'q3',
+    'q4' : 'q4',
+    'q5' : 'q5',
+    'q6' : 'q6',
+}
+
+cps_bav_defaults = {
+    'q1' : 'CPS'
+}
+
+class BAV(models.Model):
+    q1 = models.TextField(db_column='bav_type')
+    q2 = models.DateField(db_column='bav_date')
+    q3 = models.IntegerField(db_column='no_of_recipients')
+    q4 = models.FloatField(db_column='rice', null=True)
+    q5 = models.FloatField(db_column='oil', null=True)
+    q6 = models.FloatField(db_column='csb', null=True)
+    q7 = models.FloatField(db_column='sorghum', null=True)
+
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
         return ",".join(param)
