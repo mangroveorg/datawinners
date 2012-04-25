@@ -11,7 +11,7 @@
 {#                    <mystring>Hello World!  This is my answer!</mystring>#}
 {#                    <q2/>#}
                     {% endfor %}
-                <form_code></form_code>
+                    <form_code>{{ questionnaire.form_code }}</form_code>
                 </data>
             </instance>
             {% for field in questionnaire.fields %}
