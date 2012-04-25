@@ -3,7 +3,9 @@ from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBil
     way_bill_received_by_site_mapping, Distribution, sfm_distribution_mapping, sfe_distribution_mapping, \
     ffa_distribution_mapping, BillOfLading, bill_of_lading_mapping, BreakBulkSent, break_bulk_sent_mapping, \
     WayBillReceivedPort, break_bulk_received_at_port_mapping, ContainerSent, container_sent_mapping,\
-    container_received_at_port_mapping, BAV, ffa_bav_mapping, sf_bav_mapping, cps_bav_mapping, cps_bav_defaults
+    container_received_at_port_mapping, BAV, ffa_bav_mapping, sf_bav_mapping, cps_bav_mapping, cps_bav_defaults, \
+    NumberOfRecipientServed, sfm_no_of_recipient_defaults, sfe_no_of_recipient_defaults, cps_no_of_recipient_defaults, \
+    ffa_no_of_recipient_defaults
 
 from datawinners.custom_reports.crs.models import sfm_distribution_defaults, ffa_distribution_defaults, \
     sfe_distribution_defaults, ffa_bav_defaults
@@ -12,7 +14,9 @@ from datawinners.settings import WAYBILL_SENT_QUESTIONNAIRE_CODE, WAYBILL_RECEIV
     PHYSICAL_INVENTORY_QUESTIONNAIRE_CODE, WAYBILL_SENT_BY_SITE, WAYBILL_RECEIVED_BY_SITE, WAYBILL_RECEIVED_BY_WH, \
     SFM_DISTRIBUTION_CODE, SFE_DISTRIBUTION_CODE, FFA_DISTRIBUTION_CODE, BILL_OF_LADING_QUESTIONNAIRE_CODE,\
     BREAK_BULK_SENT_QUESTIONNAIRE_CODE, BREAK_BULK_RECEIVED_PORT_QUESTIONNAIRE_CODE, CONTAINER_SENT_QUESTIONNAIRE_CODE,\
-    CONTAINER_RECEIVED_PORT_QUESTIONNAIRE_CODE, BAV_FFA_CODE, BAV_SF_CODE, BAV_CPS_CODE
+    CONTAINER_RECEIVED_PORT_QUESTIONNAIRE_CODE, BAV_FFA_CODE, BAV_SF_CODE, BAV_CPS_CODE, NO_OF_RECIPIENT_SFM_CODE, \
+    NO_OF_RECIPIENT_SFE_CODE, NO_OF_RECIPIENT_CPS_CODE, NO_OF_RECIPIENT_FFA_CODE
+
 
 model_routing_dict = {
     WAYBILL_SENT_QUESTIONNAIRE_CODE: {'model': WayBillSent, 'question_mapping': way_bill_sent_mapping},
@@ -32,6 +36,10 @@ model_routing_dict = {
     BAV_FFA_CODE: {'model': BAV, 'question_mapping': ffa_bav_mapping, 'defaults': ffa_bav_defaults},
     BAV_CPS_CODE: {'model': BAV, 'question_mapping': cps_bav_mapping, 'defaults': cps_bav_defaults},
     BAV_SF_CODE: {'model': BAV, 'question_mapping': sf_bav_mapping},
+    NO_OF_RECIPIENT_SFM_CODE: {'model': NumberOfRecipientServed, 'defaults': sfm_no_of_recipient_defaults},
+    NO_OF_RECIPIENT_SFE_CODE: {'model': NumberOfRecipientServed, 'defaults': sfe_no_of_recipient_defaults},
+    NO_OF_RECIPIENT_FFA_CODE: {'model': NumberOfRecipientServed, 'defaults': ffa_no_of_recipient_defaults},
+    NO_OF_RECIPIENT_CPS_CODE: {'model': NumberOfRecipientServed, 'defaults': cps_no_of_recipient_defaults},
 }
 
 class CRSCustomReportHandler(object):

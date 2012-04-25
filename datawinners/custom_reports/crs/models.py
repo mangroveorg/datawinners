@@ -250,6 +250,30 @@ class BAV(models.Model):
     q6 = models.FloatField(db_column='csb', null=True)
     q7 = models.FloatField(db_column='sorghum', null=True)
 
+sfm_no_of_recipient_defaults = {
+    'q1' : 'SFM'
+}
+
+sfe_no_of_recipient_defaults = {
+    'q1' : 'SFE'
+}
+
+ffa_no_of_recipient_defaults = {
+    'q1' : 'FFA'
+}
+
+cps_no_of_recipient_defaults = {
+    'q1' : 'CPS'
+}
+
+class NumberOfRecipientServed(models.Model):
+    q1 = models.TextField(db_column='received_type')
+    q2 = models.DateField(db_column='received_date')
+    q3 = models.IntegerField(db_column='no_of_type1_recipient')
+    q4 = models.IntegerField(db_column='no_of_type2_recipient')
+    q5 = models.IntegerField(db_column='no_of_new_type1_recipient')
+    q6 = models.IntegerField(db_column='no_of_new_type2_recipient')
+
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
         return ",".join(param)
