@@ -6,16 +6,33 @@
         <model>
             <instance>
                 <data>
-                    <mystring>Hello World!  This is my answer!</mystring>
+                    {% for field in questionnaire.fields %}
+                        <{{ field.code }}>{{ field.name }}</{{ field.code }}>
+{#                    <mystring>Hello World!  This is my answer!</mystring>#}
+{#                    <q2/>#}
+                    {% endfor %}
+                <form_code></form_code>
                 </data>
             </instance>
-            <bind nodeset="/data/mystring" type="text"/>
+            {% for field in questionnaire.fields %}
+                <bind nodeset="/data/{{ field.code }}" type="{{ field.type }}"/>
+                <bind nodeset="/data/form_code" type="string" visible="false()">{{ questionnaire.form_code }}</bind>
+{#            <bind nodeset="/data/q2" required="true()"/>#}
+            {% endfor %}
         </model>
     </h:head>
     <h:body>
-        <input ref="mystring">
-            <label>This is a string prompt</label>
-            <hint>You don't need a hint, but you can add one</hint>
+        {% for field in questionnaire.fields %}
+
+        <input ref="{{ field.code }}">
+            <label>{{ field.name }}</label>
+            <hint>{{ field.instruction }}</hint>
         </input>
+{#        <input ref="q2">#}
+{#            <label>This is another prompt</label>#}
+{#            <hint>This prompt is required</hint>#}
+{#        </input>#}
+        {% endfor %}
+
     </h:body>
 </h:html>

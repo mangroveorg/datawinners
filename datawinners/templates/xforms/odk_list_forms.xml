@@ -2,7 +2,9 @@
     {% if projects %}
         {% for project_name, qid in projects %}
             <formID>{{ project_name }}</formID>
-            <form url="http://10.12.6.209:8443/xforms/{{ qid }}">{{ project_name }}</form>
+            <form url="{{ base_url }}{% url datawinners.xforms.views.xform qid %}">{{ project_name }}</form>
+            <formID>{{ project_name }}</formID>
+
         {% endfor %}
     {% endif %}
 </forms>
