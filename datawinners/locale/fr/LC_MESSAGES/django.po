@@ -4093,8 +4093,8 @@ msgstr "Répondez aux Questions"
 msgid "Tips"
 msgstr "Conseils"
 
-msgid "Start your SMS with the Questionnaire Code \"bois\""
-msgstr "Commencez votre SMS par le Code Questionnaire \"bois\""
+msgid "Start your SMS with the Questionnaire Code"
+msgstr "Commencez votre SMS par le Code Questionnaire"
 
 msgid "Leave a space between answers in your SMS"
 msgstr "Laissez un espace entre les réponses dans votre SMS"

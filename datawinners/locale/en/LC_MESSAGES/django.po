@@ -4048,7 +4048,7 @@ msgstr ""
 msgid "Tips"
 msgstr ""
 
-msgid "Start your SMS with the Questionnaire Code \"bois\""
+msgid "Start your SMS with the Questionnaire Code"
 msgstr ""
 
 msgid "Leave a space between answers in your SMS"

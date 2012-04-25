@@ -206,7 +206,8 @@ def project_overview(request, project_id=None):
     form_model = FormModel.get(manager, project.qid)
     questionnaire = FormModel.get(manager, project['qid'])
     number_of_questions = len(questionnaire.fields)
-    project_links = make_project_links(project, questionnaire.form_code)
+    questionnaire_code = questionnaire.form_code
+    project_links = make_project_links(project, questionnaire_code)
     map_api_key = settings.API_KEYS.get(request.META['HTTP_HOST'])
     number_data_sender = len(project.get_data_senders(manager))
     number_records = submission_count(manager, form_model.form_code, None, None)
@@ -230,7 +231,8 @@ def project_overview(request, project_id=None):
         'links': links,
         'add_data_senders_to_see_on_map_msg': add_data_senders_to_see_on_map_msg,
         'add_subjects_to_see_on_map_msg': add_subjects_to_see_on_map_msg,
-        'in_trial_mode': in_trial_mode
+        'in_trial_mode': in_trial_mode,
+        'questionnaire_code' : questionnaire_code
     }))
 
 
