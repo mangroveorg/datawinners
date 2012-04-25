@@ -274,6 +274,14 @@ class NumberOfRecipientServed(models.Model):
     q5 = models.IntegerField(db_column='no_of_new_type1_recipient')
     q6 = models.IntegerField(db_column='no_of_new_type2_recipient')
 
+class DistributionAtCPS(models.Model):
+    q1 = models.TextField(db_column='centre_code')
+    q2 = models.DateField(db_column='received_date')
+    q3 = models.TextField(db_column='pl_code')
+    q4 = models.FloatField(db_column='rice')
+    q5 = models.FloatField(db_column='oil')
+    q6 = models.FloatField(db_column='csb')
+
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
         return ",".join(param)
