@@ -5,20 +5,6 @@
         <value>properties/messages</value>
         <value>properties/messages_fr_CA</value>
     </simple-property-list>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">9</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">9</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">9</property>
-        </structure>
-    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
@@ -181,21 +167,21 @@
                     <expression name="expression">if(row["receiver_name"]!=null){
 	row["good_net_weight"]+row["damaged_net_weight"]
 }</expression>
-                    <property name="dataType">integer</property>
+                    <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">Ecart</property>
                     <expression name="expression">if(row["receiver_name"]!=null){
 	row["total_net_weight"]-row["weight"]
 }</expression>
-                    <property name="dataType">integer</property>
+                    <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">in_transit</property>
                     <expression name="expression">if(row["receiver_name"]==null){
 	row["weight"]
 }</expression>
-                    <property name="dataType">integer</property>
+                    <property name="dataType">float</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
@@ -433,17 +419,17 @@
                     <structure>
                         <property name="position">16</property>
                         <property name="name">total_net_weight</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">17</property>
                         <property name="name">Ecart</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">18</property>
                         <property name="name">in_transit</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">float</property>
                     </structure>
                 </list-property>
             </structure>
@@ -1093,7 +1079,8 @@ from crs_waybillsent]]></xml-property>
                                 <property name="name">weight</property>
                                 <text-property name="displayName">weight</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">receiver_name</property>
@@ -1117,25 +1104,29 @@ from crs_waybillsent]]></xml-property>
                                 <property name="name">good_net_weight</property>
                                 <text-property name="displayName">good_net_weight</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["good_net_weight"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">damaged_net_weight</property>
                                 <text-property name="displayName">damaged_net_weight</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["damaged_net_weight"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">total_net_weight</property>
                                 <text-property name="displayName">total_net_weight</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["total_net_weight"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">Ecart</property>
                                 <text-property name="displayName">Ecart</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["Ecart"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">Aggregation</property>
@@ -1165,7 +1156,8 @@ from crs_waybillsent]]></xml-property>
                                 <property name="name">in_transit</property>
                                 <text-property name="displayName">in_transit</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["in_transit"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">total_in_transit</property>
