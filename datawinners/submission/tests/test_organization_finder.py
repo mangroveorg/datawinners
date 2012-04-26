@@ -1,8 +1,8 @@
 import unittest
 from datawinners.submission.organization_finder import OrganizationFinder
 from datawinners.tests.data import TRIAL_ACCOUNT_ORGANIZATION_ID, TRIAL_ACCOUNT_DATA_SENDER_MOBILE_NO, DEFAULT_TEST_ORG_TEL_NO, DEFAULT_TEST_ORG_ID
-from countrytotrialnumbermapping.helper import get_trial_numbers
-from countrytotrialnumbermapping.models import Network
+from datawinners.countrytotrialnumbermapping.helper import get_trial_numbers
+from datawinners.countrytotrialnumbermapping.models import Network
 
 class TestOrganizationFinder(unittest.TestCase):
     def setUp(self):

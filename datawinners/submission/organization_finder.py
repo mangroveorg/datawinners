@@ -21,10 +21,12 @@ class OrganizationFinder(object):
 
 
     def find_paid_organization(self, to_number):
-        try:
-            organization_settings = OrganizationSetting.objects.get(sms_tel_number=to_number)
-        except ObjectDoesNotExist:
-            return None, u'No organization found for telephone number %s' % (to_number,)
-        return organization_settings.organization, None
+        organization_settings = self._find_organization_settings(to_number)
+        for os in organization_settings:
+            if to_number in [num.strip() for num in os.sms_tel_number.split(',')]:
+                return os.organization, None
+        return None, u'No organization found for telephone number %s' % (to_number,)
 
+    def _find_organization_settings(self, number):
+        return OrganizationSetting.objects.filter(sms_tel_number__contains=number)
 

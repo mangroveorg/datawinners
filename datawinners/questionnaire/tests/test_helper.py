@@ -4,7 +4,7 @@ from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import HierarchyField, TextField
 from mangrove.form_model.form_model import FormModel, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME,GEO_CODE
 from mock import Mock
-from questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
+from datawinners.questionnaire.helper import get_location_field_code, get_geo_code_field_question_code
 
 class QuestionnaireHelper(unittest.TestCase):
     def test_should_give_location_code(self):

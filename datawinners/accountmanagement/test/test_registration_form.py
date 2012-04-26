@@ -4,7 +4,7 @@ import unittest
 from django.core.exceptions import ValidationError
 
 from mock import patch
-from accountmanagement.forms import MinimalRegistrationForm
+from datawinners.accountmanagement.forms import MinimalRegistrationForm
 from datawinners.accountmanagement.forms import FullRegistrationForm
 
 

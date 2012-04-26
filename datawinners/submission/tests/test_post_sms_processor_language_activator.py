@@ -3,12 +3,12 @@ from unittest.case import SkipTest
 from django.utils import translation
 from mock import patch, Mock
 from mangrove.form_model.form_model import FormModel
-from submission.submission_utils import PostSMSProcessorLanguageActivator
+from datawinners.submission.submission_utils import PostSMSProcessorLanguageActivator
 
 class TestPostSMSProcessorLanguageActivator(unittest.TestCase):
     def setUp(self):
         self.language = 'fr'
-        self.patcher = patch('submission.submission_utils.get_form_model_by_code')
+        self.patcher = patch('datawinners.submission.submission_utils.get_form_model_by_code')
         get_form_model_mock = self.patcher.start()
         get_form_model_mock.return_value=self.mocked_form_model_active_language(self.language)
 
