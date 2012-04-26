@@ -149,10 +149,12 @@ class OrganizationSetting(models.Model):
         blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
 
     def get_organisation_sms_number(self):
-        if self.organization.in_trial_mode:
+        if self._get_organization().in_trial_mode:
             return settings.TRIAL_ACCOUNT_PHONE_NUMBER
         return [number.strip() for number in self.sms_tel_number.split(',')] if self.sms_tel_number is not None else ['']
 
+    def _get_organization(self):
+        return self.organization
 
     def __unicode__(self):
         return self.organization.name
