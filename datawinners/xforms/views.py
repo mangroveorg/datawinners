@@ -8,7 +8,7 @@ from mangrove.form_model.form_model import  FormModel
 from mangrove.transport import Request
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.player.player import WebPlayer
-from mangrove.transport.xforms.xform import list_all_forms
+from mangrove.transport.xforms.xform import list_all_forms, xform_for
 from datawinners.accountmanagement.httpauth import logged_in_or_basicauth
 from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.main.utils import get_database_manager
@@ -20,7 +20,7 @@ def formList(request):
     rows = get_all_project_for_user(request.user)
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
-    return HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml", )
+    return HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
 
 
 @csrf_exempt
@@ -48,10 +48,4 @@ def submission(request):
 
 @logged_in_or_basicauth()
 def xform(request, questionnaire_code=None):
-    questionnaire = FormModel.get(get_database_manager(request.user), questionnaire_code)
-
-    return render_to_response(
-        "xforms/xform.xml",
-            {"questionnaire": questionnaire},
-        mimetype="text/xml",
-        context_instance=RequestContext(request))
+    return HttpResponse(content=xform_for(get_database_manager(request.user), questionnaire_code), mimetype="text/xml")
