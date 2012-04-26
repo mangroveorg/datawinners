@@ -151,7 +151,7 @@ class OrganizationSetting(models.Model):
     def get_organisation_sms_number(self):
         if self.organization.in_trial_mode:
             return settings.TRIAL_ACCOUNT_PHONE_NUMBER
-        return self.sms_tel_number
+        return [number.strip() for number in self.sms_tel_number.split(',')] if self.sms_tel_number is not None else ['']
 
 
     def __unicode__(self):

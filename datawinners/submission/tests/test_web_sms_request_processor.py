@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from datawinners.accountmanagement.models import Organization, TEST_REPORTER_MOBILE_NUMBER
 from datawinners.messageprovider.messages import SMS
 from datawinners.submission.request_processor import WebSMSDBMRequestProcessor, WebSMSTransportInfoRequestProcessor, SMSMessageRequestProcessor, WebSMSOrganizationFinderRequestProcessor, get_organization_number, MangroveWebSMSRequestProcessor
-from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME
+from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_ORG_ID, DEFAULT_TEST_ORG_NAME, DEFAULT_TEST_ORG_TEL_NO
 from datawinners.tests.fake_request import FakeRequest
 from datawinners.utils import generate_document_store_name, get_organization_settings_from_request
 
@@ -35,7 +35,7 @@ class TestWebSMSRequestProcessor(unittest.TestCase):
         processor.process(self.http_request, self.mangrove_request)
         self.assertEqual(SMS,self.mangrove_request['transport_info'].transport)
         self.assertEqual(TEST_REPORTER_MOBILE_NUMBER,self.mangrove_request['transport_info'].source)
-        organization_telephone_number = get_organization_number(get_organization_settings_from_request(self.http_request).get_organisation_sms_number())
+        organization_telephone_number = get_organization_number(get_organization_settings_from_request(self.http_request).get_organisation_sms_number()[0])
         self.assertEqual(organization_telephone_number,self.mangrove_request['transport_info'].destination)
 
     def test_should_put_organization_in_request_for_web_sms_submission(self):
@@ -49,7 +49,7 @@ class TestWebSMSRequestProcessor(unittest.TestCase):
         self.assertEqual(self.sms_message, self.mangrove_request['incoming_message'])
         self.assertEqual(SMS,self.mangrove_request['transport_info'].transport)
         self.assertEqual(TEST_REPORTER_MOBILE_NUMBER,self.mangrove_request['transport_info'].source)
-        organization_telephone_number = get_organization_number(get_organization_settings_from_request(self.http_request).get_organisation_sms_number())
+        organization_telephone_number = get_organization_number(get_organization_settings_from_request(self.http_request).get_organisation_sms_number()[0])
         self.assertEqual(organization_telephone_number,self.mangrove_request['transport_info'].destination)
         self.assertEqual(self.organization,self.mangrove_request['organization'])
 

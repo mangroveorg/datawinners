@@ -574,7 +574,7 @@ def broadcast_message(request, project_id):
             message_tracker = organization._get_message_tracker(current_month)
             other_numbers = form.cleaned_data['others']
             sms_sent = helper.broadcast_message(data_senders, form.cleaned_data['text'],
-                organization_setting.get_organisation_sms_number(), other_numbers, message_tracker)
+                organization_setting.get_organisation_sms_number()[0], other_numbers, message_tracker)
             form = BroadcastMessageForm()
             return render_to_response('project/broadcast_message.html',
                     {'project': project,
@@ -961,7 +961,7 @@ def sender_registration_form_preview(request, project_id=None):
 
 def _get_organization_telephone_number(request):
     organization_settings = utils.get_organization_settings_from_request(request)
-    return organization_settings.get_organisation_sms_number()
+    return organization_settings.get_organisation_sms_number()[0]
 
 
 def _get_subject_form_model(manager, entity_type):
