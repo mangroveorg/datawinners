@@ -81,7 +81,7 @@ def create_project(request):
             try:
                 questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=form.cleaned_data['entity_type'], name=form.cleaned_data['name'], language=form.cleaned_data['language'])
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
-                return HttpResponse(json.dumps({'success': False ,'error_message': ex.message, 'error_in_project_section': False}))
+                return HttpResponse(json.dumps({'success': False ,'error_message': _(ex.message), 'error_in_project_section': False}))
 
             try:
                 project.qid = questionnaire.save()
