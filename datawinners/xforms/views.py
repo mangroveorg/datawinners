@@ -1,3 +1,5 @@
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -6,6 +8,7 @@ from mangrove.form_model.form_model import  FormModel
 from mangrove.transport import Request
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.player.player import WebPlayer
+from mangrove.transport.xforms.xform import list_all_forms
 from datawinners.accountmanagement.httpauth import logged_in_or_basicauth
 from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.main.utils import get_database_manager
@@ -15,15 +18,9 @@ from datawinners.xforms.xml_to_dict_parser import xmltodict
 @logged_in_or_basicauth()
 def formList(request):
     rows = get_all_project_for_user(request.user)
-    projects = [(row['value']['name'], row['value']['qid']) for row in rows]
-
-    base_url = request.build_absolute_uri().replace(request.path, "")
-    return render_to_response(
-        "xforms/odk_list_forms.xml",
-            {"projects": projects,
-             "base_url": base_url},
-        mimetype="text/xml",
-        context_instance=RequestContext(request))
+    form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
+    xform_base_url = request.build_absolute_uri('/xforms')
+    return HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml", )
 
 
 @csrf_exempt
