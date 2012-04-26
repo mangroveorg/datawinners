@@ -34,30 +34,52 @@
     </data-sources>
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="loss during transport" id="10">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">rice_loss</property>
+                    <expression name="expression">row["riz_sent"]-row["riz_received"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">oil_loss</property>
+                    <expression name="expression">row["oil_sent"]-row["oil_received"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">csb_loss</property>
+                    <expression name="expression">row["csb_sent"]-row["csb_received"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">sorghum_loss</property>
+                    <expression name="expression">row["sorghum_sent"]-row["sorghum_received"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
-                    <property name="columnName">riz</property>
+                    <property name="columnName">riz_sent</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">riz</text-property>
-                    <text-property name="heading">riz</text-property>
+                    <text-property name="displayName">riz_sent</text-property>
+                    <text-property name="heading">riz_sent</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">oil</property>
+                    <property name="columnName">oil_sent</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">oil</text-property>
-                    <text-property name="heading">oil</text-property>
+                    <text-property name="displayName">oil_sent</text-property>
+                    <text-property name="heading">oil_sent</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">csb</property>
+                    <property name="columnName">csb_sent</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">csb</text-property>
-                    <text-property name="heading">csb</text-property>
+                    <text-property name="displayName">csb_sent</text-property>
+                    <text-property name="heading">csb_sent</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">sorghum</property>
+                    <property name="columnName">sorghum_sent</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">sorghum</text-property>
-                    <text-property name="heading">sorghum</text-property>
+                    <text-property name="displayName">sorghum_sent</text-property>
+                    <text-property name="heading">sorghum_sent</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">riz_received</property>
@@ -89,22 +111,22 @@
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">riz</property>
+                        <property name="name">riz_sent</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">oil</property>
+                        <property name="name">oil_sent</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">csb</property>
+                        <property name="name">csb_sent</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
-                        <property name="name">sorghum</property>
+                        <property name="name">sorghum_sent</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
@@ -127,35 +149,55 @@
                         <property name="name">sorghum_received</property>
                         <property name="dataType">float</property>
                     </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">rice_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">oil_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">csb_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">sorghum_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">CRS_conn_profile</property>
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
-                    <property name="name">riz</property>
-                    <property name="nativeName">riz</property>
+                    <property name="name">riz_sent</property>
+                    <property name="nativeName">riz_sent</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">oil</property>
-                    <property name="nativeName">oil</property>
+                    <property name="name">oil_sent</property>
+                    <property name="nativeName">oil_sent</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">csb</property>
-                    <property name="nativeName">csb</property>
+                    <property name="name">csb_sent</property>
+                    <property name="nativeName">csb_sent</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
-                    <property name="name">sorghum</property>
-                    <property name="nativeName">sorghum</property>
+                    <property name="name">sorghum_sent</property>
+                    <property name="nativeName">sorghum_sent</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
@@ -190,10 +232,10 @@
             </list-property>
             <xml-property name="queryText"><![CDATA[(select * from   
 (SELECT
-SUM(CASE food_type WHEN 'RIZ' THEN weight END) AS riz,
-SUM(CASE food_type WHEN 'HUILE' THEN weight END) AS oil,
-SUM(CASE food_type WHEN 'CSB' THEN weight END) AS csb,
-SUM(CASE food_type WHEN 'SORGHO' THEN weight END) AS sorghum
+SUM(CASE food_type WHEN 'RIZ' THEN weight END) AS riz_sent,
+SUM(CASE food_type WHEN 'HUILE' THEN weight END) AS oil_sent,
+SUM(CASE food_type WHEN 'CSB' THEN weight END) AS csb_sent,
+SUM(CASE food_type WHEN 'SORGHO' THEN weight END) AS sorghum_sent
 FROM crs_waybillsent
 ) as Y,
 (select
