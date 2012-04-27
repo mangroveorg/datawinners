@@ -2,8 +2,8 @@
 from urllib2 import URLError
 from django.conf import settings
 import logging
-from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.scheduler.vumiclient import VumiClient, Connection
+from datawinners.submission.organization_finder import OrganizationFinder
 from mangrove.utils.types import is_not_empty
 import socket
 
@@ -14,7 +14,8 @@ class SMSClient(object):
 
     def send_sms(self,from_tel,to_tel, message):
         if is_not_empty(from_tel):
-            smsc = OrganizationSetting.objects.filter(sms_tel_number = from_tel)[0].smsc
+            organization_setting = OrganizationFinder().find_organization_setting(from_tel)
+            smsc = organization_setting.smsc if organization_setting is not None else None
             if smsc is not None:
                 socket.setdefaulttimeout(10)
                 logger.debug("Posting sms to %s" % settings.VUMI_API_URL)
