@@ -12,6 +12,7 @@ $(document).ready(function() {
             $(".questionnaire_preview1").load(quessionarie_preview_link, function() {
                 $('.printBtn').addClass('none');
                 $('.displayText').hide();
+                $('.questionnaire-code').text($('#questionnaire-code').text())
             });
         }
     });
