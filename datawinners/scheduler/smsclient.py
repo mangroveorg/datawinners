@@ -1,5 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-from urllib2 import URLError, HTTPError
+from urllib2 import URLError
 from django.conf import settings
 import logging
 from datawinners.accountmanagement.models import OrganizationSetting
