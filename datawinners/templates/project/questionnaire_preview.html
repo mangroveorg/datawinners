@@ -17,7 +17,9 @@
                 <p><h6>{% trans "SMS your answers to" %} {{ org_number|format_organization_number }} </h6></p>
             </li>
             <li>
-                <span class="content italic">{% trans "Questionnarie Code:" %} {{ questionnaire_code }}</span>
+                <span class="content italic">
+                    {% trans "Questionnarie Code:" %} <span id="questionnaire-code">{{ questionnaire_code }}</span>
+                </span>
             </li>
             <li>
                 <p><h6>{% trans "Example SMS Answer:" %} </h6>

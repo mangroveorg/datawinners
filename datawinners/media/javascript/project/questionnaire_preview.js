@@ -8,7 +8,9 @@ $(document).ready(function() {
                 closeText: 'hide',
                 open: function() {
                     // Here I load the content. This is the content of your link.
-                    $(".questionnaire_preview").load(quessionarie_preview_link, function() {});
+                    $(".questionnaire_preview").load(quessionarie_preview_link, function() {
+                        $('.questionnaire-code').text($('#questionnaire-code').text())
+                    });
                 }
             }
     );
