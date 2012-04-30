@@ -48,7 +48,7 @@ class CRSCustomReportHandler(object):
         self.routing_dict = routing_dict or model_routing_dict
 
 
-    def handle(self, form_code, submission_data):
+    def handle(self, form_code, submission_data, data_record_id):
         dictionary = self.routing_dict.get(form_code)
         if dictionary :
-            crs_model_creator(submission_data, dictionary.get('model'),dictionary.get('question_mapping'), dictionary.get('defaults'))
+            crs_model_creator(data_record_id, submission_data, dictionary.get('model'),dictionary.get('question_mapping'), dictionary.get('defaults'))

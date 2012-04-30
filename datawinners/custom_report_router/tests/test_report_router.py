@@ -12,11 +12,13 @@ class TestReportRouter(unittest.TestCase):
         self.org_id_for_custom_report = '123'
         custom_report_routing_table.update({'123': self.client_specific_custom_report_handler})
         self.form_submission.errors = None
+        self.data_rec_id = 'data_rec_id'
+        self.form_submission.datarecord_id = self.data_rec_id
 
     def test_should_route_to_appropriate_client_handler(self):
         ReportRouter().route(self.org_id_for_custom_report, self.form_submission)
         self.client_specific_custom_report_handler.assert_called_once_with(self.form_submission.form_code,
-            self.form_submission.processed_data)
+            self.form_submission.processed_data,self.data_rec_id)
 
     def test_should_not_route_if_organization_handler_is_not_present(self):
         ReportRouter().route('345', self.form_submission)

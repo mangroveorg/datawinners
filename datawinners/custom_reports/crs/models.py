@@ -1,10 +1,12 @@
 from django.db import models
 from mangrove.utils.types import is_empty
 
-def crs_model_creator(submission_data, model, question_mapping=None, defaults=None):
+def crs_model_creator(data_record_id, submission_data, model, question_mapping=None, defaults=None):
     if not question_mapping: question_mapping = {}
-    if not defaults: defaults = {}
-    _save_submission_via_model(submission_data, model,question_mapping, defaults)
+    data_record = {'data_record_id': data_record_id}
+    if not defaults: defaults = data_record
+    else:   defaults.update(data_record)
+    _save_submission_via_model( submission_data, model,question_mapping, defaults)
 
 way_bill_sent_mapping = {
     'q1' : 'q7',
@@ -30,6 +32,7 @@ way_bill_sent_by_site_mapping = {
 }
 
 class WayBillSent(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='waybill_code')
     q3 = models.DateField(db_column='sent_date')
@@ -64,6 +67,7 @@ way_bill_received_by_site_mapping = {
     }
 
 class WayBillReceived(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='waybill_code')
     q3 = models.TextField(db_column='site_code')
@@ -109,6 +113,7 @@ ffa_distribution_defaults = {
     'distribution_type' : 'FFA'
 }
 class Distribution(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='site_code')
     q2 = models.DateField(db_column='distribution_date')
     q3 = models.TextField(db_column='received_waybill_code')
@@ -120,6 +125,7 @@ class Distribution(models.Model):
     distribution_type = models.TextField()
 
 class PhysicalInventorySheet(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='store_house_code')
     q2 = models.DateField(db_column='physical_inventory_closing_date')
     q3 = models.DateField(db_column='actual_physical_inventory_date')
@@ -130,6 +136,7 @@ class PhysicalInventorySheet(models.Model):
 
 
 class SiteActivities(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='fiscal_year_with_initials')
     q2 = models.TextField(db_column='site_location')
     q3 = models.TextField(db_column='site_gps_coordinates')
@@ -140,6 +147,7 @@ class SiteActivities(models.Model):
 
 
 class Warehouse(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='name')
     q2 = models.TextField(db_column='address')
     q3 = models.TextField(db_column='gps_coordinates')
@@ -156,6 +164,7 @@ bill_of_lading_mapping = {
 }
 
 class BillOfLading(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='pl_code')
     q2 = models.TextField(db_column='shipment_type')
     q3 = models.DateField(db_column='issue_date')
@@ -171,6 +180,7 @@ break_bulk_sent_mapping = {
 }
 
 class BreakBulkSent(models.Model):
+    data_record_id = models.TextField()
     q1 = models.DateField(db_column='sent_date')
     q2 = models.FloatField(db_column='weight')
     q3 = models.TextField(db_column='waybill_code')
@@ -183,6 +193,7 @@ container_sent_mapping = {
 }
 
 class ContainerSent(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='bill_of_lading')
     q2 = models.FloatField(db_column='weight')
     q3 = models.TextField(db_column='container_code')
@@ -203,6 +214,7 @@ container_received_at_port_mapping = {
 }
 
 class WayBillReceivedPort(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='waybill_code')
     q2 = models.DateField(db_column='received_date')
     q3 = models.FloatField(db_column='good_weight')
@@ -242,6 +254,7 @@ cps_bav_defaults = {
 }
 
 class BAV(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='bav_type')
     q2 = models.DateField(db_column='bav_date')
     q3 = models.IntegerField(db_column='no_of_recipients')
@@ -267,6 +280,7 @@ cps_no_of_recipient_defaults = {
 }
 
 class NumberOfRecipientServed(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='received_type')
     q2 = models.DateField(db_column='received_date')
     q3 = models.IntegerField(db_column='no_of_type1_recipient')
@@ -275,6 +289,7 @@ class NumberOfRecipientServed(models.Model):
     q6 = models.IntegerField(db_column='no_of_new_type2_recipient')
 
 class DistributionAtCPS(models.Model):
+    data_record_id = models.TextField()
     q1 = models.TextField(db_column='centre_code')
     q2 = models.DateField(db_column='received_date')
     q3 = models.TextField(db_column='pl_code')
@@ -295,7 +310,7 @@ def _convert_submission_data_to_model_fields(fields=None, submission_data=None,q
     return  {field_name: convert_to_sql_compatible(submission_data.get(question_mapping.get(field_name))) for field_name in field_names}
 
 
-def _save_submission_via_model(submission_data, model,question_mapping, defaults):
+def _save_submission_via_model( submission_data, model,question_mapping, defaults):
     model_fields = model._meta.fields
     submission_values = _convert_submission_data_to_model_fields(fields=model_fields,
         submission_data=submission_data,question_mapping=question_mapping)
