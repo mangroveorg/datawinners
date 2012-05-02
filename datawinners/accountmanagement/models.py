@@ -140,13 +140,18 @@ class SMSC(models.Model):
     def __unicode__(self):
         return self.vumi_username
 
+class OutgoingNumberSetting(models.Model):
+    phone_number = models.CharField(unique=True, max_length=30, help_text='Number to be used for sms originating in DataWinners, like broadcasts and reminders')
+    smsc = models.ForeignKey(SMSC, null=True,on_delete=models.SET_NULL, help_text='SMS Center to be used to for sending outgoing message.')
+
+    def __unicode__(self):
+        return "%s: %s" % (self.phone_number, self.smsc.vumi_username)
 
 class OrganizationSetting(models.Model):
     organization = models.ForeignKey(Organization, unique=True)
     document_store = models.TextField()
-    sms_tel_number = models.TextField(unique=True, null=True)
-    smsc = models.ForeignKey(SMSC, null=True,
-        blank=True) # The SMSC could be blank or null when the organization is created and it may be assigned later.
+    sms_tel_number = models.TextField(unique=True, null=True, help_text='Phone numbers registered to the organization for sending in messages.')
+    outgoing_number = models.ForeignKey(OutgoingNumberSetting,null=True,on_delete=models.SET_NULL, help_text='Number to be used for outgoing messages.')
 
     def get_organisation_sms_number(self):
         if self._get_organization().in_trial_mode:

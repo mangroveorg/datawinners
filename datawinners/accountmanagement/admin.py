@@ -1,8 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
-from registration.models import RegistrationProfile
-from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile
+from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile, OutgoingNumberSetting
 from mangrove.utils.types import is_empty, is_not_empty
 from datawinners.countrytotrialnumbermapping.models import Country, Network
 
@@ -12,12 +11,12 @@ class DatawinnerAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    def has_add_permission(self, request, obj=None):
+    def has_add_permission(self, request):
         return False
 
 class OrganizationSettingAdmin(DatawinnerAdmin):
     list_display = ('organization_name', 'organization_id', 'type', 'payment_details', 'activation_date')
-    fields = ('sms_tel_number', 'smsc')
+    fields = ('sms_tel_number', 'outgoing_number')
 
     def organization_name(self, obj):
         return obj.organization.name
@@ -125,6 +124,7 @@ admin.site.unregister(Group)
 admin.site.unregister(User)
 
 admin.site.register(OrganizationSetting, OrganizationSettingAdmin)
+admin.site.register(OutgoingNumberSetting,admin.ModelAdmin)
 admin.site.register(SMSC,admin.ModelAdmin)
 admin.site.register(MessageTracker, MessageTrackerAdmin)
 admin.site.register(Organization, OrganizationAdmin)
