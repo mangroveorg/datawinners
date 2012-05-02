@@ -8,6 +8,13 @@ def crs_model_creator(data_record_id, submission_data, model, question_mapping=N
     else:   defaults.update(data_record)
     _save_submission_via_model( submission_data, model,question_mapping, defaults)
 
+def crs_record_delete(data_record_id,model):
+    data_record = model.objects.filter(data_record_id=data_record_id)
+    if not is_empty(data_record):
+        data_record[0].delete()
+
+
+
 way_bill_sent_mapping = {
     'q1' : 'q7',
     'q2' : 'q18',

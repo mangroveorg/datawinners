@@ -5,7 +5,7 @@ from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBil
     WayBillReceivedPort, break_bulk_received_at_port_mapping, ContainerSent, container_sent_mapping,\
     container_received_at_port_mapping, BAV, ffa_bav_mapping, sf_bav_mapping, cps_bav_mapping, cps_bav_defaults, \
     NumberOfRecipientServed, sfm_no_of_recipient_defaults, sfe_no_of_recipient_defaults, cps_no_of_recipient_defaults, \
-    ffa_no_of_recipient_defaults, DistributionAtCPS
+    ffa_no_of_recipient_defaults, DistributionAtCPS, crs_record_delete
 
 from datawinners.custom_reports.crs.models import sfm_distribution_defaults, ffa_distribution_defaults, \
     sfe_distribution_defaults, ffa_bav_defaults
@@ -52,3 +52,9 @@ class CRSCustomReportHandler(object):
         dictionary = self.routing_dict.get(form_code)
         if dictionary :
             crs_model_creator(data_record_id, submission_data, dictionary.get('model'),dictionary.get('question_mapping'), dictionary.get('defaults'))
+
+    def delete_handler(self,form_code,data_record_id):
+        dictionary = self.routing_dict.get(form_code)
+        if dictionary:
+            crs_record_delete(data_record_id,dictionary.get('model'))
+

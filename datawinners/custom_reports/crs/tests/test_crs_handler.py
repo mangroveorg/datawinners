@@ -18,6 +18,11 @@ class TestCRSCustomReportHandler(unittest.TestCase):
             self.handler.handle('18', self.submission_data,self.data_record_id)
             crs_model_creator_mock.assert_called_once_with(self.data_record_id,self.submission_data,self.model_mock,self.mapping, None)
 
+    def test_should_route_request_to_delete_handler(self):
+        with patch("datawinners.custom_reports.crs.handler.crs_record_delete") as crs_model_delete:
+            self.handler.delete_handler('18',self.data_record_id)
+            crs_model_delete.assert_called_once_with(self.data_record_id,self.model_mock)
+
 
     def test_should_route_ignore_request_if_appropriate_handler_not_found(self):
         with patch("datawinners.custom_reports.crs.handler.crs_model_creator") as crs_model_creator_mock:
