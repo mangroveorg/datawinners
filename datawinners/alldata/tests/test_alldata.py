@@ -12,7 +12,6 @@ class TestAllData(unittest.TestCase):
         response = self.client.get('/alldata/')
         self.assertEquals(response.status_code, 302)
 
-    @SkipTest
     def test_should_render_alldata_view_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
         response = self.client.get('/alldata/')
