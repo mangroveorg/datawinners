@@ -12,7 +12,6 @@ class TestProject(TestCase):
         response = self.client.post('/project/')
         self.assertEquals(response.status_code,302)
 
-    @SkipTest
     def test_should_render_project_view_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
         response = self.client.post('/project/')
