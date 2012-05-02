@@ -269,6 +269,7 @@ def all_datasenders(request):
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
+    projects.remove(None)
     for project in projects:
         [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
         project.save(manager)
@@ -283,6 +284,7 @@ def disassociate_datasenders(request):
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
+    projects.remove(None)
     for project in projects:
         project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
         project.save(manager)

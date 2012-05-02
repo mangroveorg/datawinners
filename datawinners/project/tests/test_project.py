@@ -1,6 +1,6 @@
+from unittest.case import SkipTest
 from django.test import TestCase
 from django.test import Client
-from nose.plugins.skip import SkipTest
 
 
 class TestProject(TestCase):
@@ -21,8 +21,7 @@ class TestProject(TestCase):
         response = self.client.post('/project/wizard/create/')
         self.assertEquals(response.status_code,302)
 
-    @SkipTest
-    def test_should_render_questionary_view_if_not_logged_in(self):
+    def test_should_render_questionnaire_view_if_not_logged_in(self):
         project_id = 'fe84831af56111e0aa085c260a236744'
         response = self.client.get('project/questionnaire')
         self.assertEquals(response.status_code,302)

@@ -1,4 +1,3 @@
-from unittest.case import SkipTest
 from django.utils import unittest
 from django.test import Client
 
