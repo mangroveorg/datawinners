@@ -18,7 +18,6 @@ class TestEntityLoggedIn(TestCase):
         response = self.client.get('/entity/subject/create/clinic/')
         self.assertEquals(response.status_code,200)
 
-    @SkipTest
     def test_should_render_entity_datasenders_view_if_logged_in(self):
         response = self.client.get('/entity/datasenders/')
         self.assertEquals(response.status_code,200)
@@ -32,7 +31,6 @@ class TestEntityLoggedIn(TestCase):
         response = self.client.post('/entity/webuser/create/',{'post_data' : json.dumps([{"email":email1,"reporter_id":"rep4"}])})
         self.assertEquals(response.status_code,200)
 
-    @SkipTest
     def test_should_render_all_subjects_view_if_logged_in(self):
         response = self.client.get('/entity/subjects/')
         self.assertEquals(response.status_code,200)
