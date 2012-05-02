@@ -177,6 +177,7 @@ break_bulk_sent_mapping = {
     'q2' : 'q13',
     'q3' : 'q16',
     'q4' : 'q6',
+    'q5' : 'q7',
 }
 
 class BreakBulkSent(models.Model):
@@ -185,6 +186,7 @@ class BreakBulkSent(models.Model):
     q2 = models.FloatField(db_column='weight')
     q3 = models.TextField(db_column='waybill_code')
     q4 = models.TextField(db_column='pl_code')
+    q5 = models.TextField(db_column='food_type')
 
 container_sent_mapping = {
     'q1' : 'q1',
