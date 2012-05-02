@@ -268,12 +268,22 @@ def all_datasenders(request):
 @is_not_expired
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
-    projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
-    projects.remove(None)
+    projects = _get_projects(manager, request)
+
     for project in projects:
         [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
         project.save(manager)
     return HttpResponse(reverse(all_datasenders))
+
+
+def _get_projects(manager, request):
+    project_ids = request.POST.get('project_id').split(';')
+    projects = []
+    for project_id in project_ids:
+        project = Project.load(manager.database, project_id)
+        if project is not None:
+            projects.append(project)
+    return projects
 
 
 @csrf_view_exempt
@@ -283,8 +293,7 @@ def disassociate_datasenders(request):
 @is_not_expired
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
-    projects = [Project.load(manager.database, project_id) for project_id in request.POST.get('project_id').split(';')]
-    projects.remove(None)
+    projects = _get_projects(manager, request)
     for project in projects:
         project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
         project.save(manager)
@@ -357,7 +366,7 @@ def create_subject(request, entity_type=None):
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 return _get_response(request, questionnaire_form, entity_type)
 
-        except DataObjectNotFound as exception:
+        except DataObjectNotFound:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except DataObjectAlreadyExists as exception:
