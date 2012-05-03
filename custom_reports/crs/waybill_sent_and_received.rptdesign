@@ -541,7 +541,7 @@
                     <property name="nativeDataType">8</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.warehouse_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code as recv_site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON sent.pl_code=recv.pl_code and sent.waybill_code=recv.waybill_code 
+            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.warehouse_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code as recv_site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON lower(sent.pl_code)=lower(recv.pl_code) and lower(sent.waybill_code)=lower(recv.waybill_code)
 WHERE sent.transaction_type is not null
 and sent.pl_code ilike ?
 and sent.waybill_code ilike ?
