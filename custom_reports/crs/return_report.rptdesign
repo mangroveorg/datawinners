@@ -347,6 +347,12 @@ else if(row["received_return_date"] == null){
                     <text-property name="heading">distribution_type</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">data_record_id</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">data_record_id</text-property>
+                    <text-property name="heading">data_record_id</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">site_return_waybill_code</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">site_return_waybill_code</text-property>
@@ -543,96 +549,101 @@ else if(row["received_return_date"] == null){
                     </structure>
                     <structure>
                         <property name="position">23</property>
-                        <property name="name">site_return_waybill_code</property>
+                        <property name="name">data_record_id</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">24</property>
+                        <property name="name">site_return_waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
                         <property name="name">date_of_return</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">25</property>
+                        <property name="position">26</property>
                         <property name="name">quantity_returned</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">26</property>
+                        <property name="position">27</property>
                         <property name="name">quantity_damaged_returned</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">27</property>
+                        <property name="position">28</property>
                         <property name="name">quantity_good_returned</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">28</property>
+                        <property name="position">29</property>
                         <property name="name">received_return_date</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">29</property>
+                        <property name="position">30</property>
                         <property name="name">receiver_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">30</property>
+                        <property name="position">31</property>
                         <property name="name">return_sender_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">31</property>
+                        <property name="position">32</property>
                         <property name="name">distributed</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">32</property>
+                        <property name="position">33</property>
                         <property name="name">total_received</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">33</property>
+                        <property name="position">34</property>
                         <property name="name">quantity_lost_in_transport</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">34</property>
+                        <property name="position">35</property>
                         <property name="name">quantity_not_distributed</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">35</property>
+                        <property name="position">36</property>
                         <property name="name">lost_in_distribution</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">36</property>
+                        <property name="position">37</property>
                         <property name="name">total_received_from_site</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">37</property>
+                        <property name="position">38</property>
                         <property name="name">quantity_lost_received_from_site</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">38</property>
+                        <property name="position">39</property>
                         <property name="name">in_transit</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">39</property>
+                        <property name="position">40</property>
                         <property name="name">bl_original</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">40</property>
+                        <property name="position">41</property>
                         <property name="name">code_mag_receiver</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">41</property>
+                        <property name="position">42</property>
                         <property name="name">code_bl_return_received</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -797,55 +808,62 @@ else if(row["received_return_date"] == null){
                 </structure>
                 <structure>
                     <property name="position">23</property>
+                    <property name="name">data_record_id</property>
+                    <property name="nativeName">data_record_id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
                     <property name="name">site_return_waybill_code</property>
                     <property name="nativeName">site_return_waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">24</property>
+                    <property name="position">25</property>
                     <property name="name">date_of_return</property>
                     <property name="nativeName">date_of_return</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">25</property>
+                    <property name="position">26</property>
                     <property name="name">quantity_returned</property>
                     <property name="nativeName">quantity_returned</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">26</property>
+                    <property name="position">27</property>
                     <property name="name">quantity_damaged_returned</property>
                     <property name="nativeName">quantity_damaged_returned</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">27</property>
+                    <property name="position">28</property>
                     <property name="name">quantity_good_returned</property>
                     <property name="nativeName">quantity_good_returned</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">28</property>
+                    <property name="position">29</property>
                     <property name="name">received_return_date</property>
                     <property name="nativeName">received_return_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">29</property>
+                    <property name="position">30</property>
                     <property name="name">receiver_code</property>
                     <property name="nativeName">receiver_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">30</property>
+                    <property name="position">31</property>
                     <property name="name">return_sender_code</property>
                     <property name="nativeName">return_sender_code</property>
                     <property name="dataType">string</property>
@@ -869,10 +887,10 @@ recv.damaged_net_weight
 from 
 crs_waybillsent as sent 
 left JOIN 
-crs_waybillreceived as recv ON sent.waybill_code=recv.waybill_code 
+crs_waybillreceived as recv ON lower(sent.waybill_code)=lower(recv.waybill_code) 
 where sent.transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA')) as recv_site_join
 left join 
-crs_distribution on recv_site_join.sent_wh=crs_distribution.received_waybill_code) as a
+crs_distribution on lower(recv_site_join.sent_wh)=lower(crs_distribution.received_waybill_code)) as a
 
 left join
 
@@ -888,15 +906,19 @@ return_sent.receiver_code, return_sent.warehouse_code as return_sender_code
 crs_waybillsent as return_sent
 full join
 crs_waybillreceived as return_recv
-ON return_sent.waybill_code=return_recv.waybill_code
+ON lower(return_sent.waybill_code)=lower(return_recv.waybill_code)
 ) as b
 
-ON a.returned_waybill_code=site_return_waybill_code
+ON lower(a.returned_waybill_code)=lower(site_return_waybill_code)
 
-where sent_wh like ?
-and sent_receiver_code like ?
+where sent_wh ilike ?
+and sent_receiver_code ilike ?
 and wh_sent_date >= ?
-and wh_sent_date <= ? ]]></xml-property>
+and wh_sent_date <= ? 
+
+
+
+]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
