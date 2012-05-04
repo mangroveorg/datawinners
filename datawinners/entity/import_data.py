@@ -68,7 +68,7 @@ class FilePlayer(Player):
         submissions = self.parser.parse(file_contents)
         for (form_code, values) in submissions:
             transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
-            submission = self._create_submission(transport_info, form_code, values)
+            submission = self._create_submission(transport_info, form_code, copy(values))
             try:
                 form_model, values = self._process(form_code, values)
                 if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
