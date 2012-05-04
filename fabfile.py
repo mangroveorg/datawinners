@@ -145,6 +145,11 @@ def showcase():
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
 
+def test():
+    env.user = "mangrover"
+    env.hosts = ["178.79.161.33"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+
 def local():
     env.user = "anirudha"
     env.hosts = ["127.0.0.1"]
