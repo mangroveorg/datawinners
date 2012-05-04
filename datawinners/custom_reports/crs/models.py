@@ -170,6 +170,7 @@ bill_of_lading_mapping = {
     'q6' : 'q13',
     'q7' : 'q12',
     'q8' : 'q3',
+    'q9' : 'q8'
 }
 
 class BillOfLading(models.Model):
@@ -182,6 +183,7 @@ class BillOfLading(models.Model):
     q6 = models.FloatField(db_column='weight')
     q7 = models.FloatField(db_column='net_weight')
     q8 = models.TextField(db_column='ccc_number')
+    q9 = models.FloatField(db_column='freight')
 
 break_bulk_sent_mapping = {
     'q1' : 'q2',
