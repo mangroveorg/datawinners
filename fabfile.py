@@ -143,7 +143,7 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
 def showcase():
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
-    env.key_filename = ["/home/mangrover/.ssh/id_dsa"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
 def test():
     env.user = "mangrover"
