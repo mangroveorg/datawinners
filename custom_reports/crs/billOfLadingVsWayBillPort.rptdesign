@@ -861,7 +861,7 @@ where A.packing_list_code LIKE ?]]></xml-property>
                 </structure>
                 <structure>
                     <property name="name">total_received</property>
-                    <expression name="expression">row['good_weight']+row['damaged_weight']</expression>
+                    <expression name="expression">if('damaged_weight' in row){row['good_weight']+row['damaged_weight']}else{row["good_weight"]}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
@@ -918,6 +918,12 @@ row['total_received']-row['gross_weight_bb']
                     <text-property name="heading">weight</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">data_record_id</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">data_record_id</text-property>
+                    <text-property name="heading">data_record_id</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">packing_list_code</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">packing_list_code</text-property>
@@ -954,6 +960,18 @@ row['total_received']-row['gross_weight_bb']
                     <text-property name="heading">weight_bb</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">id_15</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">waybill_code_16</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">waybill_code</text-property>
+                    <text-property name="heading">waybill_code</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">received_date</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">received_date</text-property>
@@ -970,6 +988,18 @@ row['total_received']-row['gross_weight_bb']
                     <property name="analysis">measure</property>
                     <text-property name="displayName">damaged_weight</text-property>
                     <text-property name="heading">damaged_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">container_code_20</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">container_code</text-property>
+                    <text-property name="heading">container_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">data_record_id_21</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">data_record_id</text-property>
+                    <text-property name="heading">data_record_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">waybill_received_code</property>
@@ -1079,86 +1109,96 @@ row['total_received']-row['gross_weight_bb']
                     </structure>
                     <structure>
                         <property name="position">8</property>
-                        <property name="name">packing_list_code</property>
+                        <property name="name">data_record_id</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">9</property>
-                        <property name="name">container_code</property>
+                        <property name="name">packing_list_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">10</property>
+                        <property name="name">container_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
                         <property name="name">weight_in_container</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">sent_date</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">waybill_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">weight_bb</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">14</property>
-                        <property name="name">id_14</property>
+                        <property name="position">15</property>
+                        <property name="name">id_15</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">15</property>
-                        <property name="name">waybill_code_15</property>
+                        <property name="position">16</property>
+                        <property name="name">waybill_code_16</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">16</property>
+                        <property name="position">17</property>
                         <property name="name">received_date</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">17</property>
+                        <property name="position">18</property>
                         <property name="name">good_weight</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">18</property>
+                        <property name="position">19</property>
                         <property name="name">damaged_weight</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">19</property>
-                        <property name="name">container_code_19</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
                         <property name="position">20</property>
-                        <property name="name">waybill_received_code</property>
+                        <property name="name">container_code_20</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">21</property>
+                        <property name="name">data_record_id_21</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">waybill_received_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
                         <property name="name">gross_weight_bb</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">22</property>
+                        <property name="position">24</property>
                         <property name="name">gross_weight_container</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">23</property>
+                        <property name="position">25</property>
                         <property name="name">total_received</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">24</property>
+                        <property name="position">26</property>
                         <property name="name">excess_landed</property>
                         <property name="dataType">float</property>
                     </structure>
@@ -1217,90 +1257,104 @@ row['total_received']-row['gross_weight_bb']
                 </structure>
                 <structure>
                     <property name="position">8</property>
+                    <property name="name">data_record_id</property>
+                    <property name="nativeName">data_record_id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
                     <property name="name">packing_list_code</property>
                     <property name="nativeName">packing_list_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">container_code</property>
                     <property name="nativeName">container_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                     <property name="name">weight_in_container</property>
                     <property name="nativeName">weight_in_container</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">sent_date</property>
                     <property name="nativeName">sent_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                     <property name="name">waybill_code</property>
                     <property name="nativeName">waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">13</property>
+                    <property name="position">14</property>
                     <property name="name">weight_bb</property>
                     <property name="nativeName">weight_bb</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">14</property>
-                    <property name="name">id_14</property>
+                    <property name="position">15</property>
+                    <property name="name">id_15</property>
                     <property name="nativeName">id</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">15</property>
-                    <property name="name">waybill_code_15</property>
+                    <property name="position">16</property>
+                    <property name="name">waybill_code_16</property>
                     <property name="nativeName">waybill_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">16</property>
+                    <property name="position">17</property>
                     <property name="name">received_date</property>
                     <property name="nativeName">received_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">17</property>
+                    <property name="position">18</property>
                     <property name="name">good_weight</property>
                     <property name="nativeName">good_weight</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">18</property>
+                    <property name="position">19</property>
                     <property name="name">damaged_weight</property>
                     <property name="nativeName">damaged_weight</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">19</property>
-                    <property name="name">container_code_19</property>
+                    <property name="position">20</property>
+                    <property name="name">container_code_20</property>
                     <property name="nativeName">container_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">20</property>
+                    <property name="position">21</property>
+                    <property name="name">data_record_id_21</property>
+                    <property name="nativeName">data_record_id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
                     <property name="name">waybill_received_code</property>
                     <property name="nativeName">waybill_received_code</property>
                     <property name="dataType">string</property>
@@ -1336,7 +1390,7 @@ crs_containersent.container_code,
 crs_containersent.weight as weight_in_container,
 null as sent_date,
 null as waybill_code,
-null as weight_bb
+0 as weight_bb
 from crs_billoflading 
 inner join
 crs_containersent
@@ -1601,12 +1655,6 @@ and t.issue_date <= ?]]></xml-property>
                                 <text-property name="displayName">weight_bb</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["weight_bb"]</expression>
                                 <property name="dataType">float</property>
-                            </structure>
-                            <structure>
-                                <property name="name">waybill_code_15</property>
-                                <text-property name="displayName">waybill_code_15</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["waybill_code_15"]</expression>
-                                <property name="dataType">string</property>
                             </structure>
                             <structure>
                                 <property name="name">received_date</property>
