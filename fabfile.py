@@ -145,15 +145,10 @@ def showcase():
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
-def test():
-    env.user = "mangrover"
-    env.hosts = ["178.79.161.33"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
-
 def local():
-    env.user = "anirudha"
+    env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
-    env.key_filename = ["/home/anirudha/.ssh/id_rsa"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
 def anonymous():
     run("uname -a")
