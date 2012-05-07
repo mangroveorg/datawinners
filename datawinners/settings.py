@@ -119,7 +119,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django_geoip.middleware.LocationMiddleware',
     )
 
 ROOT_URLCONF = 'datawinners.urls'
@@ -171,7 +170,6 @@ INSTALLED_APPS = (
     'datawinners.countrytotrialnumbermapping',
     'django_nose',
     'django_digest',
-    'django_geoip',
     )
 
 COMPILER_FORMATS = {
