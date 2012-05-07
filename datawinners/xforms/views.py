@@ -11,7 +11,6 @@ from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.main.utils import get_database_manager
 
 
-#@logged_in_or_basicauth()
 @httpdigest
 def formList(request):
     rows = get_all_project_for_user(request.user)
