@@ -75,8 +75,8 @@ INSTALLED_APPS = (
     'datawinners.countrytotrialnumbermapping',
     'datawinners.custom_reports.crs',
     'django_nose',
-    'django_digest'
-
+    'django_digest',
+    'django_geoip',
     )
 
 #USE_NEW_VUMI = True
