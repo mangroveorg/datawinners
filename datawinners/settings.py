@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 # Django settings for web project.
-from django.conf.project_template.settings import STATIC_URL
 import os
 
 DEBUG = True
@@ -13,6 +12,8 @@ EXPIRED_DAYS_FOR_TRIAL_ACCOUNT = 30
 ADMINS = (
 # ('Your Name', 'your_email@example.com'),
 )
+
+DIGEST_ENFORCE_NONCE_COUNT = False
 
 if not DEBUG:
     COMPRESS_DEBUG_TOGGLE = "foo"
@@ -111,6 +112,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'django_digest.middleware.HttpDigestMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -167,6 +169,7 @@ INSTALLED_APPS = (
     'datawinners.home',
     'datawinners.countrytotrialnumbermapping',
     'django_nose',
+    'django_digest',
     )
 
 COMPILER_FORMATS = {
