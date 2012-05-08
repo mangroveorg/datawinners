@@ -12,6 +12,18 @@ from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.main.utils import get_database_manager
 from django.contrib.gis.utils import GeoIP
 
+def restrict_request_country(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        org = Organization.objects.get(org_id=user.get_profile().org_id)
+        country_name_by_ip = GeoIP().country_name_by_addr(request.META.get('REMOTE_ADDR'))
+        if org.country.lower() == country_name_by_ip.lower():
+            return f(*args, **kw)
+        return HttpResponse(status=401)
+
+    return wrapper
+
 
 @httpdigest
 @restrict_request_country
@@ -57,14 +69,3 @@ def xform(request, questionnaire_code=None):
         mimetype="text/xml")
 
 
-def restrict_request_country(f):
-    def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-        org = Organization.objects.get(org_id=user.get_profile().org_id)
-        country_name_by_ip = GeoIP().country_name_by_addr(request.META.get('REMOTE_ADDR'))
-        if org.country.lower() == country_name_by_ip.lower():
-            return f(*args, **kw)
-        return HttpResponse(status=401)
-
-    return wrapper
