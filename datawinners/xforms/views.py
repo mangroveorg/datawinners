@@ -7,20 +7,25 @@ from mangrove.transport import Request
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.player.player import XFormPlayer
 from mangrove.transport.xforms.xform import list_all_forms, xform_for
+from datawinners.accountmanagement.models import Organization
 from datawinners.alldata.helper import get_all_project_for_user
 from datawinners.main.utils import get_database_manager
+from django.contrib.gis.utils import GeoIP
 
 
 @httpdigest
+@restrict_request_country
 def formList(request):
     rows = get_all_project_for_user(request.user)
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     return HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
 
+
 @csrf_exempt
 @require_http_methods(['POST'])
 @httpdigest
+@restrict_request_country
 def submission(request):
     request_user = request.user
     manager = get_database_manager(request_user)
@@ -46,6 +51,20 @@ def submission(request):
 
 
 @httpdigest
+@restrict_request_country
 def xform(request, questionnaire_code=None):
     return HttpResponse(content=xform_for(get_database_manager(request.user), questionnaire_code),
         mimetype="text/xml")
+
+
+def restrict_request_country(f):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        org = Organization.objects.get(org_id=user.get_profile().org_id)
+        country_name_by_ip = GeoIP().country_name_by_addr(request.META.get('REMOTE_ADDR'))
+        if org.country.lower() == country_name_by_ip.lower():
+            return f(*args, **kw)
+        return HttpResponse(status=401)
+
+    return wrapper

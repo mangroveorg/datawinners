@@ -14,6 +14,7 @@ ADMINS = (
 )
 
 DIGEST_ENFORCE_NONCE_COUNT = False
+GEOIP_PATH = "../../"
 
 if not DEBUG:
     COMPRESS_DEBUG_TOGGLE = "foo"
