@@ -9,15 +9,26 @@ s
 {% endblock %}
 
 {% load dw_tabs %}
-{% block body %}
-    {% activetab "main_nav" "all_data" %}
-    {{ block.super }}
-{% endblock %}
+
 
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
 {% endblock %}
+
+{% block body %}
+    {% activetab "tab_nav" "projects" %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block navigation %}
+{% if is_crs_user %}
+{% include 'alldata/tab_navigation.html' %}
+{% endif %}
+{% endblock %}
+
+
 
 {% load i18n %}
 {% block content %}

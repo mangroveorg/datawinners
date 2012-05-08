@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from datawinners.local_settings import CRS_ORG_ID
 from datawinners.main.utils import get_database_manager
 from datawinners.project import models
 
@@ -17,3 +18,8 @@ def get_page_heading(user):
     if user.get_profile().reporter:
         return "Data Submission"
     return "All Data"
+
+def get_reports_list(org_id):
+    if org_id == CRS_ORG_ID:
+        return [{'link' : '/127.0.0.1:8080/WebViewerExample/frameset?__report=crs/waybill_sent_and_received.rptdesign','name': 'WayBillSentVSReceived', 'desc': 'some description'}]
+    return  []

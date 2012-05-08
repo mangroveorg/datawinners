@@ -1,0 +1,43 @@
+{% extends 'layout_application.html' %}
+{% load i18n %}
+{% block page_title %}{% trans page_heading %}{% endblock %}
+
+
+{% load dw_tabs %}
+
+
+{% block page_scss %}
+    {{ block.super }}
+    <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    {% activetab "tab_nav" "reports" %}
+    {{ block.super }}
+{% endblock %}
+
+
+
+{% block navigation %}
+{% include 'alldata/tab_navigation.html' %}
+{% endblock %}
+
+
+
+
+{% block content %}
+    <div>
+        <table class="styled_table">
+            <thead>
+            <th> {% trans "Report" %}</th>
+            <th> {% trans "Description" %}</th>
+            </thead>
+            {% for report in reports %}
+                <tr>
+                    <td><a href="{{ report.link }}"  class="project-id-class"> {{ report.name }}</a></td>
+                    <td class="{{ hide_link_class }}">{{ report.desc }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
