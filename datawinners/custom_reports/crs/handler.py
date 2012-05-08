@@ -5,7 +5,7 @@ from datawinners.custom_reports.crs.models import PhysicalInventorySheet, WayBil
     WayBillReceivedPort, break_bulk_received_at_port_mapping, ContainerSent, container_sent_mapping,\
     container_received_at_port_mapping, BAV, ffa_bav_mapping, sf_bav_mapping, cps_bav_mapping, cps_bav_defaults, \
     NumberOfRecipientServed, sfm_no_of_recipient_defaults, sfe_no_of_recipient_defaults, cps_no_of_recipient_defaults, \
-    ffa_no_of_recipient_defaults, DistributionAtCPS, crs_record_delete
+    ffa_no_of_recipient_defaults, DistributionAtCPS, crs_record_delete, PackingList, packing_list_mapping
 
 from datawinners.custom_reports.crs.models import sfm_distribution_defaults, ffa_distribution_defaults, \
     sfe_distribution_defaults, ffa_bav_defaults
@@ -15,7 +15,8 @@ from datawinners.settings import WAYBILL_SENT_QUESTIONNAIRE_CODE, WAYBILL_RECEIV
     SFM_DISTRIBUTION_CODE, SFE_DISTRIBUTION_CODE, FFA_DISTRIBUTION_CODE, BILL_OF_LADING_QUESTIONNAIRE_CODE,\
     BREAK_BULK_SENT_QUESTIONNAIRE_CODE, BREAK_BULK_RECEIVED_PORT_QUESTIONNAIRE_CODE, CONTAINER_SENT_QUESTIONNAIRE_CODE,\
     CONTAINER_RECEIVED_PORT_QUESTIONNAIRE_CODE, BAV_FFA_CODE, BAV_SF_CODE, BAV_CPS_CODE, NO_OF_RECIPIENT_SFM_CODE, \
-    NO_OF_RECIPIENT_SFE_CODE, NO_OF_RECIPIENT_CPS_CODE, NO_OF_RECIPIENT_FFA_CODE, CPS_DISTRIBUTION_CODE
+    NO_OF_RECIPIENT_SFE_CODE, NO_OF_RECIPIENT_CPS_CODE, NO_OF_RECIPIENT_FFA_CODE, CPS_DISTRIBUTION_CODE,\
+    PACKING_LIST_QUESTIONNAIRE_CODE
 
 
 model_routing_dict = {
@@ -41,6 +42,7 @@ model_routing_dict = {
     NO_OF_RECIPIENT_FFA_CODE: {'model': NumberOfRecipientServed, 'defaults': ffa_no_of_recipient_defaults},
     NO_OF_RECIPIENT_CPS_CODE: {'model': NumberOfRecipientServed, 'defaults': cps_no_of_recipient_defaults},
     CPS_DISTRIBUTION_CODE: {'model': DistributionAtCPS},
+    PACKING_LIST_QUESTIONNAIRE_CODE: {'model': PackingList, 'question_mapping': packing_list_mapping},
 }
 
 class CRSCustomReportHandler(object):

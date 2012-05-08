@@ -312,6 +312,22 @@ class DistributionAtCPS(models.Model):
     q5 = models.FloatField(db_column='oil')
     q6 = models.FloatField(db_column='csb')
 
+packing_list_mapping= {
+    'q1' : 'q25',
+    'q2' : 'q9',
+    'q3' : 'q14',
+    'q4' : 'q19',
+    'q5' : 'q24'
+}
+class PackingList(models.Model):
+    data_record_id = models.TextField()
+    q1 = models.TextField(db_column='pl_code')
+    q2 = models.FloatField(db_column='rice_cost')
+    q3 = models.FloatField(db_column='oil_cost')
+    q4 = models.FloatField(db_column='csb_cost')
+    q5 = models.FloatField(db_column='sorghum_cost')
+
+
 def convert_to_sql_compatible(param):
     if isinstance(param, list) :
         return ",".join(param)
