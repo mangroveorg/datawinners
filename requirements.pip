@@ -18,7 +18,7 @@ xlrd
 psycopg2==2.4.1
 django-extensions
 apscheduler
-south
+south==0.7.3
 supervisor
 python-dateutil
 http://github.com/jbalogh/django-nose/tarball/master#egg=django-nose

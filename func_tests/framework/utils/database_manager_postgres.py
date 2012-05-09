@@ -118,6 +118,7 @@ class DatabaseManager(object):
             cur.execute("delete from accountmanagement_messagetracker where organization_id=%s;", (org_id,))
             cur.execute("delete from accountmanagement_organizationsetting where organization_id=%s;", (org_id,))
             cur.execute("delete from auth_user_groups where user_id=%s;", (user_id,))
+            cur.execute("delete from django_digest_partialdigest where user_id=%s;", (user_id,))
             cur.execute("delete from auth_user where id=%s;", (user_id,))
             con.commit()
             return organization_db_name
