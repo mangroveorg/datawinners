@@ -237,7 +237,7 @@ class WayBillReceivedPort(models.Model):
     q3 = models.FloatField(db_column='good_weight')
     q4 = models.FloatField(db_column='damaged_weight')
     q5 = models.TextField(db_column='container_code', null=True)
-    q6 = models.TextField(db_column='warehouse_code')
+    q6 = models.TextField(db_column='receiver_code')
 
 sf_bav_mapping = {
     'q1' : 'q3',
