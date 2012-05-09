@@ -218,6 +218,7 @@ break_bulk_received_at_port_mapping = {
     'q2' : 'q3',
     'q3' : 'q13',
     'q4' : 'q15',
+    'q6' : 'q5',
 }
 
 container_received_at_port_mapping = {
@@ -226,6 +227,7 @@ container_received_at_port_mapping = {
     'q3' : 'q12',
     'q4' : 'q14',
     'q5' : 'q1',
+    'q6' : 'q4',
 }
 
 class WayBillReceivedPort(models.Model):
@@ -235,6 +237,7 @@ class WayBillReceivedPort(models.Model):
     q3 = models.FloatField(db_column='good_weight')
     q4 = models.FloatField(db_column='damaged_weight')
     q5 = models.TextField(db_column='container_code', null=True)
+    q6 = models.TextField(db_column='warehouse_code')
 
 sf_bav_mapping = {
     'q1' : 'q3',
