@@ -139,6 +139,9 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
             else:
                 restart_servers()
 
+def killfirefox():
+    with settings(warn_only=True):
+        run("killall firefox")
 
 def showcase():
     env.user = "mangrover"
