@@ -18,7 +18,7 @@ def restrict_request_country(f):
         user = request.user
         org = Organization.objects.get(org_id=user.get_profile().org_id)
         country_name_by_ip = GeoIP().country_name_by_addr(request.META.get('REMOTE_ADDR'))
-        if org.country.lower() == country_name_by_ip.lower():
+        if country_name_by_ip is None or org.country.lower() == country_name_by_ip.lower():
             return f(*args, **kw)
         return HttpResponse(status=401)
 
@@ -26,7 +26,7 @@ def restrict_request_country(f):
 
 
 @httpdigest
-#@restrict_request_country
+@restrict_request_country
 def formList(request):
     rows = get_all_project_for_user(request.user)
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
@@ -37,7 +37,7 @@ def formList(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 @httpdigest
-#@restrict_request_country
+@restrict_request_country
 def submission(request):
     request_user = request.user
     manager = get_database_manager(request_user)
@@ -63,7 +63,7 @@ def submission(request):
 
 
 @httpdigest
-#@restrict_request_country
+@restrict_request_country
 def xform(request, questionnaire_code=None):
     return HttpResponse(content=xform_for(get_database_manager(request.user), questionnaire_code),
         mimetype="text/xml")

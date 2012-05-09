@@ -1,16 +1,24 @@
 from unittest.case import TestCase, SkipTest
+from django.contrib.gis.utils.geoip import GeoIP
+from django.http import HttpRequest
+from django_digest import HttpDigestAuthenticator
 from mock import Mock, patch
-from datawinners.xforms.views import formList, xform
+from datawinners.xforms.views import formList, xform, restrict_request_country
 
 class TestXFormsViews(TestCase):
     def setUp(self):
-        self.digest_patcher = patch("datawinners.xforms.views.httpdigest")
-        self.digest_mock = self.digest_patcher.start()
-        self.digest_mock.return_value = True
+        self.request = Mock(spec=HttpRequest)
+        self.request.user = Mock()
 
-    def tearDown(self):
-        self.digest_patcher.stop()
-
+            #### All The Skipped Tests Cannot be tested because of decorators need to find a way
+    @SkipTest
+    def test_should_authenticate_with_digest_authentication(self):
+        with patch.object(HttpDigestAuthenticator, 'authenticate') as mock_authenticate:
+            with patch("datawinners.xforms.views.get_all_project_for_user") as mock_get_all_projects:
+                mock_get_all_projects.return_value = []
+                with patch("datawinners.xforms.views.list_all_forms"):
+                    formList(self.request)
+                    self.assertEquals(mock_authenticate.call_count, 1)
 
     @SkipTest
     def test_should_retrieve_list_of_all_forms(self):
@@ -23,8 +31,9 @@ class TestXFormsViews(TestCase):
         with patch("datawinners.xforms.views.get_all_project_for_user") as mock_get_all_projects:
             mock_get_all_projects.return_value = projects
             with patch("datawinners.xforms.views.list_all_forms") as mock_list_all_forms:
-                formList(request)
-                mock_list_all_forms.assert_called_once_with(form_tuples, uri)
+                with patch.object('HttpDigestAuthenticator', 'authenticate') as mock_authenticate:
+                    formList(request)
+                    mock_list_all_forms.assert_called_once_with(form_tuples, uri)
 
     @SkipTest
     def test_should_retrieve_specific_xform_by_questionnaire_code(self):
@@ -36,5 +45,27 @@ class TestXFormsViews(TestCase):
             with patch("datawinners.xforms.views.xform_for") as mock_xform_for:
                 xform(request, questionnaire_code)
                 mock_xform_for.assert_called_once_with(mock_get_dbm(), questionnaire_code)
+
+    def test_should_restrict_submission_based_on_country(self):
+        request = Mock(spec=HttpRequest)
+        request.user = Mock()
+        request.META = {'REMOTE_ADDR': "someIp"}
+        with patch('datawinners.xforms.views.Organization') as organization_mock:
+            mock_organization = Mock()
+            country = 'INDIA'
+            mock_organization.country = country
+            objects_mock = Mock()
+            objects_mock.get.return_value = mock_organization
+            organization_mock.objects = objects_mock
+            with patch.object(GeoIP, 'country_name_by_addr') as geo_ip_mock:
+                geo_ip_mock.return_value = 'AUS'
+                self.assertEquals(dummy_form_list(request).status_code, 401)
+
+
+@restrict_request_country
+def dummy_form_list(request):
+    pass
+
+
 
 
