@@ -6,6 +6,6 @@ class Command(BaseCommand):
         db_url = 'http://www.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz'
         gz_file = db_url.split('/')[-1]
         call(['wget', db_url])
-        call(['tar', '-xzvf', gz_file])
+        call(['gunzip', gz_file])
         call(['mv', 'GeoIP.dat', '../../'])
         call(['rm', gz_file])
