@@ -1,13 +1,11 @@
-import base64
-import urllib2
+from __builtin__ import dict
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
-from datawinners.accountmanagement.views import is_new_user
+from datawinners.accountmanagement.views import is_new_user, is_allowed_to_view_reports
 from datawinners.alldata.helper import get_all_project_for_user, get_visibility_settings_for, get_page_heading,get_reports_list
-from datawinners.local_settings import CRS_ORG_ID
+from datawinners.settings import CRS_ORG_ID
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
 from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
@@ -25,7 +23,6 @@ def get_crs_project_links():
 
 
 def projects_index(request):
-    reporter_id = request.user.get_profile().reporter_id
     manager = get_database_manager(request.user)
     project_list = []
     rows = get_all_project_for_user(request.user)
@@ -90,28 +87,11 @@ def failed_submissions(request):
 
 @login_required(login_url='/login')
 @is_not_expired
+@is_allowed_to_view_reports
 def reports(request):
-    org_id = get_organization(request).org_id
-    if org_id != CRS_ORG_ID:
-        return HttpResponseRedirect('/alldata/')
-    else:
-        report_list = get_reports_list(get_organization(request).org_id)
-        url = 'http://localhost:8080/WebViewerExample/frameset?__report=crs/waybill_sent_and_received.rptdesign'
-        handle = urllib2.Request(url)
-        username = 'datawinners'
-        password = 'datawinners'
-        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-        handle.add_header("Authorization", "Basic %s" % base64string)
-        result1 = urllib2.urlopen(handle)
-        headers_list = result1.headers.dict['set-cookie'].split(';')
-
-        cookie_key,cookie_val = headers_list[0].split('=')
-
-        response = render_to_response('alldata/reports_page.html',
-                {'reports': report_list, 'page_heading': "Reports",'project_links' : get_crs_project_links()},
-            context_instance=RequestContext(request))
-        response.set_cookie(cookie_key,value=cookie_val,path=headers_list[1].split('=')[1])
-        response['CRS'] = 'Valid'
-        return response
-
-
+    report_list = get_reports_list(get_organization(request).org_id)
+    response = render_to_response('alldata/reports_page.html',
+            {'reports': report_list, 'page_heading': "Reports", 'project_links': get_crs_project_links()},
+        context_instance=RequestContext(request))
+    response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
+    return response

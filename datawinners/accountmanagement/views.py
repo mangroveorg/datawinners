@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
-from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
+from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_ID
 
 from mangrove.errors.MangroveException import AccountExpiredException
 from datawinners.accountmanagement.forms import OrganizationForm, UserProfileForm, EditUserProfileForm, UpgradeForm, ResetPasswordForm
@@ -106,6 +106,18 @@ def is_not_expired(f):
         org = Organization.objects.get(org_id=user.get_profile().org_id)
         if org.is_expired():
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
+        return f(*args, **kw)
+
+    return wrapper
+
+
+def is_allowed_to_view_reports(f, redirect_to = '/alldata'):
+    def wrapper(*args, **kw):
+        request = args[0]
+        user = request.user
+        org_id = user.get_profile().org_id
+        if CRS_ORG_ID != get_organization(request).org_id:
+            return HttpResponseRedirect(redirect_to)
         return f(*args, **kw)
 
     return wrapper
