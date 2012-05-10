@@ -67,5 +67,3 @@ def submission(request):
 def xform(request, questionnaire_code=None):
     return HttpResponse(content=xform_for(get_database_manager(request.user), questionnaire_code),
         mimetype="text/xml")
-
-

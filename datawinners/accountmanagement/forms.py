@@ -13,6 +13,7 @@ from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
+from django_countries.countries import OFFICIAL_COUNTRIES
 
 def get_organization_sectors():
     return (('', _('Please Select...')),
@@ -26,6 +27,11 @@ def get_organization_sectors():
             ('WaterSanitation', _('Water and Sanitation')),
             ('Other', _('Other')))
 
+
+def get_country_list():
+    return tuple(sorted(OFFICIAL_COUNTRIES.items(), key=lambda (k, v): (v, k)))
+
+
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
 
@@ -36,7 +42,9 @@ class OrganizationForm(ModelForm):
     address = forms.CharField(required=True, max_length=30, label=_('Address'))
     city = forms.CharField(max_length=30, required=True, label=_('City'))
     state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
-    country = forms.CharField(max_length=30, required=True, label=_('Country'))
+    country = forms.CharField(max_length=30, required=True, widget=(
+        forms.TextInput(attrs={'disabled': 'disabled'})),
+        label=_('Country'))
     zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
     office_phone = PhoneNumberField(required=False, label=_("Office Phone Number"))
     website = forms.URLField(required=False, label=_('Website'))
@@ -63,7 +71,7 @@ class UserProfileForm(forms.Form):
         'invalid': _('Enter a valid email address. Example:name@organization.com')})
     mobile_phone = PhoneNumberField(required=True, label=_("Phone Number"))
 
-    def __init__(self, organization=None,*args, **kwargs):
+    def __init__(self, organization=None, *args, **kwargs):
         self.organization = organization
         forms.Form.__init__(self, *args, **kwargs)
 
@@ -82,8 +90,7 @@ class UserProfileForm(forms.Form):
 
 
 class EditUserProfileForm(UserProfileForm):
-
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         forms.Form.__init__(self, *args, **kwargs)
 
     def clean_mobile_phone(self):
@@ -91,6 +98,7 @@ class EditUserProfileForm(UserProfileForm):
 
     def clean_username(self):
         return self.cleaned_data.get('username')
+
 
 class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     required_css_class = 'required'
@@ -113,8 +121,10 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
     organization_sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
         label=_('Organization Sector'))
+    organization_country = forms.CharField(required=True, widget=(
+        forms.Select(attrs={'class': 'width-200px'}, choices=get_country_list())),
+        label=_('Country'))
     organization_city = forms.CharField(max_length=30, required=True, label=_('City'))
-    organization_country = forms.CharField(max_length=30, required=True, label=_('Country'))
     username = forms.CharField(max_length=30, required=False)
 
     def clean_mobile_phone(self):
@@ -176,6 +186,7 @@ class FullRegistrationForm(MinimalRegistrationForm):
     def clean_mobile_phone(self):
         return self.cleaned_data['mobile_phone']
 
+
 class LoginForm(AuthenticationForm):
     required_css_class = 'required'
     username = forms.CharField(label=_("Username"), max_length=75)
@@ -214,6 +225,7 @@ class ResetPasswordForm(PasswordResetForm):
 
 class PasswordSetForm(SetPasswordForm):
     required_css_class = 'required'
+
 
 class UpgradeForm(forms.Form):
     invoice_period, preferred_payment = payment_details_form()
