@@ -33,7 +33,7 @@ class DatabaseManager(object):
 
         Return activation code
         """
-        return RegistrationProfile.objects.get(email=email).activation_key
+        return RegistrationProfile.objects.get(user__email=email).activation_key
 
     def set_sms_telephone_number(self, telephone_number, email):
         """
