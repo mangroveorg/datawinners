@@ -21,5 +21,5 @@ def get_page_heading(user):
 
 def get_reports_list(org_id):
     if org_id == CRS_ORG_ID:
-        return [{'link' : '/127.0.0.1:8080/WebViewerExample/frameset?__report=crs/waybill_sent_and_received.rptdesign','name': 'WayBillSentVSReceived', 'desc': 'some description'}]
+        return [{'link' : 'http://localhost/WebViewerExample/frameset?__report=crs/waybill_sent_and_received.rptdesign','name': 'WayBillSentVSReceived', 'desc': 'some description'}]
     return  []
