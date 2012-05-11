@@ -4068,3 +4068,58 @@ msgstr ""
 
 msgid "to see the data you submitted"
 msgstr ""
+
+# CRS Reports
+msgid "Way Bill Sent vs Received Report"
+msgstr "Waybill Sent VS Waybill Received"
+
+msgid "Way bill sent vs received description"
+msgstr "Compares quantities sent from CRS warehouse to quantities received by recipient"
+
+msgid "CSR"
+msgstr ""
+
+msgid "CSR description"
+msgstr "Commodity Status Report – National Level"
+
+msgid "LSR"
+msgstr ""
+
+msgid "LSR description"
+msgstr "Loss Status Report"
+
+msgid "MSL"
+msgstr ""
+
+msgid "MSL description"
+msgstr "Master Shipping Ledger"
+
+msgid "Recipient Status Report"
+msgstr "RSR"
+
+msgid "Recipient Status Report description"
+msgstr "Recipient Status Report"
+
+msgid "Return Report"
+msgstr ""
+
+msgid "Return Report description"
+msgstr "Compares quantities sent from CRS warehouses to quantities received by distribution sites, quantities distributed, quantities sent back by distribution sites to warehouse and quantities received at warehouse."
+
+msgid "Theoretical vs Physical Inventory Report"
+msgstr ""
+
+msgid "Theoretical vs Physical Inventory Report description"
+msgstr "Theoretical vs Physical Inventory"
+
+msgid "Bill Of Lading vs Way Bill Port"
+msgstr "Bill Of Lading vs Waybill Port"
+
+msgid "Bill Of Lading vs Way Bill Port description"
+msgstr "Compares quantities listed in Packing List to quantities received at CRS warehouses"
+
+msgid "CSR Warehouse"
+msgstr "CSR Warehouse"
+
+msgid "CSR Warehouse description"
+msgstr "Commodity Status Report – Warehouse Level"

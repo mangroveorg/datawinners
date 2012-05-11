@@ -4113,3 +4113,58 @@ msgstr "Félicitations ! Allez à la "
 
 msgid "to see the data you submitted"
 msgstr "pour voir les données que vous avez soumises"
+
+# CRS Reports
+msgid "Way Bill Sent vs Received Report"
+msgstr "Bon de Livraison Envoyée VS Bon de Livraison Reçue"
+
+msgid "Way bill sent vs received description"
+msgstr "Comparer les quantités envoyées depuis le magasin CRS avec les quantités reçues par le réceptionnaire."
+
+msgid "CSR"
+msgstr ""
+
+msgid "CSR description"
+msgstr "Commodity Status Report – Au Niveau National"
+
+msgid "LSR"
+msgstr ""
+
+msgid "LSR description"
+msgstr "Loss Status Report"
+
+msgid "MSL"
+msgstr ""
+
+msgid "MSL description"
+msgstr "Master Shipping Ledger"
+
+msgid "Recipient Status Report"
+msgstr "RSR"
+
+msgid "Recipient Status Report description"
+msgstr "Recipient Status Report"
+
+msgid "Return Report"
+msgstr "Rapport de Retour"
+
+msgid "Return Report description"
+msgstr "Comparer les quantités envoyées depuis les magasins CRS avec les quantités reçues par les sites de distribution, les quantités distribuées, les quantités retournées par les sites de distribution au magasin et les quantités reçues par le magasin."
+
+msgid "Theoretical vs Physical Inventory Report"
+msgstr "Bon de Livraison Envoyée VS Bon de Livraison Reçue"
+
+msgid "Theoretical vs Physical Inventory Report description"
+msgstr "Comparer les quantités envoyées depuis le magasin CRS avec les quantités reçues par le réceptionnaire."
+
+msgid "Bill Of Lading vs Way Bill Port"
+msgstr "Connaissement vs Bon de Livraison Port"
+
+msgid "Bill Of Lading vs Way Bill Port description"
+msgstr "Comparer les quantités mentionnées dans le Packing List avec les quantités reçues dans les magasins CRS."
+
+msgid "CSR Warehouse"
+msgstr "CSR Magasin"
+
+msgid "CSR Warehouse description"
+msgstr "Commodity Status Report – Au Niveau du Magasin"
