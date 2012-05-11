@@ -29,7 +29,8 @@ def get_organization_sectors():
 
 
 def get_country_list():
-    return tuple(sorted(OFFICIAL_COUNTRIES.items(), key=lambda (k, v): (v, k)))
+    return (('', _('Please Select...')),) + tuple(sorted(OFFICIAL_COUNTRIES.items(), key=lambda (k, v): (v, k)))
+
 
 
 class OrganizationForm(ModelForm):
