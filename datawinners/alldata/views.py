@@ -91,7 +91,7 @@ def failed_submissions(request):
 def reports(request):
     report_list = get_reports_list(get_organization(request).org_id)
     response = render_to_response('alldata/reports_page.html',
-            {'reports': report_list, 'page_heading': "Reports", 'project_links': get_crs_project_links()},
+            {'reports': report_list, 'page_heading': "All Data", 'project_links': get_crs_project_links()},
         context_instance=RequestContext(request))
     response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
     return response
