@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">22</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">22</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">22</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -92,7 +106,18 @@
                     <text-property name="heading">sorghum_in_transit</text-property>
                 </structure>
             </list-property>
-            <list-property name="parameters"/>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -154,10 +179,30 @@ SUM(CASE food_type WHEN 'HUILE' THEN weight END) AS oil_in_transit,
 SUM(CASE food_type WHEN 'CSB' THEN weight END) AS csb_in_transit,
 SUM(CASE food_type WHEN 'SORGHO' THEN weight END) AS sorghum_in_transit
 from crs_waybillsent 
-where waybill_code not in (select waybill_code from crs_waybillreceived)]]></xml-property>
+where waybill_code not in (select waybill_code from crs_waybillreceived)
+and transaction_type in ('Transfert aux autres CS', 'Transfert aux magasins de CRS', 'Transfert aux Centres PS', 
+'Transfert aux Partenaires IPs', 'Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA' )
+and sent_date <= ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
   <design:ResultSets derivedMetaData="true">
     <design:resultSetDefinitions>
       <design:resultSetColumns>
@@ -2752,6 +2797,937 @@ and sent_date <= ? ) as A
 	
 
 WHERE sent_date BETWEEN ? AND ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>pl_code</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>pl_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>pl_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>waybill_code</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>waybill_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>waybill_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_date</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>13</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>13</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>transaction_type</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>transaction_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>transaction_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>warehouse_code</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>warehouse_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>warehouse_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sender_name</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sender_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sender_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>truck_id</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>truck_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>truck_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>food_type</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>food_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>food_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>weight</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>receiver_code</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>receiver_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>receiver_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>data_record_id</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>data_record_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>data_record_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Physical inventory at end of period" id="21">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">riz</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz</text-property>
+                    <text-property name="heading">riz</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil</text-property>
+                    <text-property name="heading">oil</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb</text-property>
+                    <text-property name="heading">csb</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorghum</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorghum</text-property>
+                    <text-property name="heading">sorghum</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">riz</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">oil</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">csb</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sorghum</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">riz</property>
+                    <property name="nativeName">riz</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">oil</property>
+                    <property name="nativeName">oil</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">csb</property>
+                    <property name="nativeName">csb</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sorghum</property>
+                    <property name="nativeName">sorghum</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+SUM(CASE food_type WHEN 'RIZ' THEN good_net_weight + damaged_net_weight END) AS riz,
+SUM(CASE food_type WHEN 'HUILE' THEN good_net_weight + damaged_net_weight END) AS oil,
+SUM(CASE food_type WHEN 'CSB' THEN good_net_weight + damaged_net_weight END) AS csb,
+SUM(CASE food_type WHEN 'SORGHO' THEN good_net_weight + damaged_net_weight END) AS sorghum
+
+from crs_physicalinventorysheet where
+physical_inventory_closing_date = ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>riz</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>riz</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>riz</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>oil</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>oil</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>oil</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>csb</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>csb</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>csb</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sorghum</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>sorghum</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sorghum</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All in transit" id="22">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">riz_to_wh_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_wh_in_transit</text-property>
+                    <text-property name="heading">riz_to_wh_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_wh_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_wh_in_transit</text-property>
+                    <text-property name="heading">oil_to_wh_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_wh_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_wh_in_transit</text-property>
+                    <text-property name="heading">csb_to_wh_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_wh_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_wh_in_transit</text-property>
+                    <text-property name="heading">sorgho_to_wh_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_other_cs_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_other_cs_in_transit</text-property>
+                    <text-property name="heading">riz_to_other_cs_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_other_cs_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_other_cs_in_transit</text-property>
+                    <text-property name="heading">oil_to_other_cs_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_other_cs_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_other_cs_in_transit</text-property>
+                    <text-property name="heading">csb_to_other_cs_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_other_cs_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_other_cs_in_transit</text-property>
+                    <text-property name="heading">sorgho_to_other_cs_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_ips_partners_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_ips_partners_in_transit</text-property>
+                    <text-property name="heading">riz_to_ips_partners_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_ips_partners_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_ips_partners_in_transit</text-property>
+                    <text-property name="heading">oil_to_ips_partners_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_ips_partners_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_ips_partners_in_transit</text-property>
+                    <text-property name="heading">csb_to_ips_partners_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_ips_partners_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_ips_partners_in_transit</text-property>
+                    <text-property name="heading">sorgho_to_ips_partners_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_center_ps_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_center_ps_in_transit</text-property>
+                    <text-property name="heading">riz_to_center_ps_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_center_ps_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_center_ps_in_transit</text-property>
+                    <text-property name="heading">oil_to_center_ps_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_center_ps_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_center_ps_in_transit</text-property>
+                    <text-property name="heading">csb_to_center_ps_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_center_ps_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_center_ps_in_transit</text-property>
+                    <text-property name="heading">sorgho_to_center_ps_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_site_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_site_in_transit</text-property>
+                    <text-property name="heading">riz_to_site_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_site_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_site_in_transit</text-property>
+                    <text-property name="heading">oil_to_site_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_site_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_site_in_transit</text-property>
+                    <text-property name="heading">csb_to_site_in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_site_in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_site_in_transit</text-property>
+                    <text-property name="heading">sorgho_to_site_in_transit</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_2</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">riz_to_wh_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">oil_to_wh_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">csb_to_wh_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sorgho_to_wh_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">riz_to_other_cs_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">oil_to_other_cs_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">csb_to_other_cs_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">sorgho_to_other_cs_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">riz_to_ips_partners_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">oil_to_ips_partners_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">csb_to_ips_partners_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">sorgho_to_ips_partners_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">riz_to_center_ps_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">oil_to_center_ps_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">csb_to_center_ps_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">sorgho_to_center_ps_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">riz_to_site_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">oil_to_site_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">csb_to_site_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">sorgho_to_site_in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">riz_to_wh_in_transit</property>
+                    <property name="nativeName">riz_to_wh_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">oil_to_wh_in_transit</property>
+                    <property name="nativeName">oil_to_wh_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">csb_to_wh_in_transit</property>
+                    <property name="nativeName">csb_to_wh_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sorgho_to_wh_in_transit</property>
+                    <property name="nativeName">sorgho_to_wh_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">riz_to_other_cs_in_transit</property>
+                    <property name="nativeName">riz_to_other_cs_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">oil_to_other_cs_in_transit</property>
+                    <property name="nativeName">oil_to_other_cs_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">csb_to_other_cs_in_transit</property>
+                    <property name="nativeName">csb_to_other_cs_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">sorgho_to_other_cs_in_transit</property>
+                    <property name="nativeName">sorgho_to_other_cs_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">riz_to_ips_partners_in_transit</property>
+                    <property name="nativeName">riz_to_ips_partners_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">oil_to_ips_partners_in_transit</property>
+                    <property name="nativeName">oil_to_ips_partners_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">csb_to_ips_partners_in_transit</property>
+                    <property name="nativeName">csb_to_ips_partners_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">sorgho_to_ips_partners_in_transit</property>
+                    <property name="nativeName">sorgho_to_ips_partners_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">riz_to_center_ps_in_transit</property>
+                    <property name="nativeName">riz_to_center_ps_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">oil_to_center_ps_in_transit</property>
+                    <property name="nativeName">oil_to_center_ps_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">csb_to_center_ps_in_transit</property>
+                    <property name="nativeName">csb_to_center_ps_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">sorgho_to_center_ps_in_transit</property>
+                    <property name="nativeName">sorgho_to_center_ps_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">riz_to_site_in_transit</property>
+                    <property name="nativeName">riz_to_site_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">oil_to_site_in_transit</property>
+                    <property name="nativeName">oil_to_site_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">csb_to_site_in_transit</property>
+                    <property name="nativeName">csb_to_site_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">sorgho_to_site_in_transit</property>
+                    <property name="nativeName">sorgho_to_site_in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux magasins de CRS' THEN weight	 ELSE 0 END) AS riz_to_wh_in_transit,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux magasins de CRS' THEN weight	 ELSE 0 END) AS oil_to_wh_in_transit,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux magasins de CRS' THEN weight	 ELSE 0 END) AS csb_to_wh_in_transit,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux magasins de CRS' THEN  weight	 ELSE 0 END) AS sorgho_to_wh_in_transit,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux autres CS' THEN weight	 ELSE 0 END) AS riz_to_other_cs_in_transit,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux autres CS' THEN weight	 ELSE 0 END) AS oil_to_other_cs_in_transit,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux autres CS' THEN weight	 ELSE 0 END) AS csb_to_other_cs_in_transit,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux autres CS' THEN  weight	 ELSE 0 END) AS sorgho_to_other_cs_in_transit,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux Partenaires IPs' THEN weight	 ELSE 0 END) AS riz_to_ips_partners_in_transit,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux Partenaires IPs' THEN weight	 ELSE 0 END) AS oil_to_ips_partners_in_transit,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux Partenaires IPs' THEN weight	 ELSE 0 END) AS csb_to_ips_partners_in_transit,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux Partenaires IPs' THEN  weight	 ELSE 0 END) AS sorgho_to_ips_partners_in_transit,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux Centres PS' THEN weight	 ELSE 0 END) AS riz_to_center_ps_in_transit,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux Centres PS' THEN weight	 ELSE 0 END) AS oil_to_center_ps_in_transit,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux Centres PS' THEN weight	 ELSE 0 END) AS csb_to_center_ps_in_transit,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux Centres PS' THEN  weight	 ELSE 0 END) AS sorgho_to_center_ps_in_transit,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA') THEN weight	 ELSE 0 END) AS riz_to_site_in_transit,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA') THEN weight	 ELSE 0 END) AS oil_to_site_in_transit,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA') THEN weight	 ELSE 0 END) AS csb_to_site_in_transit,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA') THEN  weight	 ELSE 0 END) AS sorgho_to_site_in_transit	
+from crs_waybillsent
+where waybill_code not in (select waybill_code from crs_waybillreceived)
+and sent_date BETWEEN ? AND ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
