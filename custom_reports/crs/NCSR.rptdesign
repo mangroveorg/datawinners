@@ -783,7 +783,7 @@ physical_inventory_closing_date = ?]]></xml-property>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Received from Others CS and other orgs and External outputs" id="17">
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Received from Others CS and other orgs and internal inputs" id="17">
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">riz_received_from_other_org</property>
@@ -1856,6 +1856,1189 @@ and sent_date <= ? ) as A
             <design:label>sum</design:label>
             <design:formattingHints>
               <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="external and internal outputs" id="20">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">riz_to_other_cs</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_other_cs</text-property>
+                    <text-property name="heading">riz_to_other_cs</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_other_cs</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_other_cs</text-property>
+                    <text-property name="heading">oil_to_other_cs</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_other_cs</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_other_cs</text-property>
+                    <text-property name="heading">csb_to_other_cs</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_other_cs</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_other_cs</text-property>
+                    <text-property name="heading">sorgho_to_other_cs</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_org</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_org</text-property>
+                    <text-property name="heading">riz_to_org</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_org</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_org</text-property>
+                    <text-property name="heading">oil_to_org</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_org</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_org</text-property>
+                    <text-property name="heading">csb_to_org</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_org</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_org</text-property>
+                    <text-property name="heading">sorgho_to_org</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_center_ps</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_center_ps</text-property>
+                    <text-property name="heading">riz_to_center_ps</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_center_ps</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_center_ps</text-property>
+                    <text-property name="heading">oil_to_center_ps</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_center_ps</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_center_ps</text-property>
+                    <text-property name="heading">csb_to_center_ps</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_center_ps</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_center_ps</text-property>
+                    <text-property name="heading">sorgho_to_center_ps</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_ips_partners</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_ips_partners</text-property>
+                    <text-property name="heading">riz_to_ips_partners</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_ips_partners</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_ips_partners</text-property>
+                    <text-property name="heading">oil_to_ips_partners</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_ips_partners</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_ips_partners</text-property>
+                    <text-property name="heading">csb_to_ips_partners</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_ips_partners</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_ips_partners</text-property>
+                    <text-property name="heading">sorgho_to_ips_partners</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_dest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_dest</text-property>
+                    <text-property name="heading">riz_to_dest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_dest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_dest</text-property>
+                    <text-property name="heading">oil_to_dest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_dest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_dest</text-property>
+                    <text-property name="heading">csb_to_dest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_dest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_dest</text-property>
+                    <text-property name="heading">sorgho_to_dest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_sfm</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_sfm</text-property>
+                    <text-property name="heading">riz_to_sfm</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_sfm</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_sfm</text-property>
+                    <text-property name="heading">oil_to_sfm</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_sfm</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_sfm</text-property>
+                    <text-property name="heading">csb_to_sfm</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_sfm</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_sfm</text-property>
+                    <text-property name="heading">sorgho_to_sfm</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_sfe</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_sfe</text-property>
+                    <text-property name="heading">riz_to_sfe</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_sfe</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_sfe</text-property>
+                    <text-property name="heading">oil_to_sfe</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_sfe</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_sfe</text-property>
+                    <text-property name="heading">csb_to_sfe</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_sfe</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_sfe</text-property>
+                    <text-property name="heading">sorgho_to_sfe</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_ffa</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_ffa</text-property>
+                    <text-property name="heading">riz_to_ffa</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_ffa</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_ffa</text-property>
+                    <text-property name="heading">oil_to_ffa</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_ffa</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_ffa</text-property>
+                    <text-property name="heading">csb_to_ffa</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_ffa</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_ffa</text-property>
+                    <text-property name="heading">sorgho_to_ffa</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_labtest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_labtest</text-property>
+                    <text-property name="heading">riz_to_labtest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_labtest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_labtest</text-property>
+                    <text-property name="heading">oil_to_labtest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_labtest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_labtest</text-property>
+                    <text-property name="heading">csb_to_labtest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_labtest</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_labtest</text-property>
+                    <text-property name="heading">sorgho_to_labtest</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_sales</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_sales</text-property>
+                    <text-property name="heading">riz_to_sales</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_sales</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_sales</text-property>
+                    <text-property name="heading">oil_to_sales</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_sales</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_sales</text-property>
+                    <text-property name="heading">csb_to_sales</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_sales</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_sales</text-property>
+                    <text-property name="heading">sorgho_to_sales</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">riz_to_others</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_to_others</text-property>
+                    <text-property name="heading">riz_to_others</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_to_others</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_to_others</text-property>
+                    <text-property name="heading">oil_to_others</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_to_others</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_to_others</text-property>
+                    <text-property name="heading">csb_to_others</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorgho_to_others</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorgho_to_others</text-property>
+                    <text-property name="heading">sorgho_to_others</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_2</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">riz_to_other_cs</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">oil_to_other_cs</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">csb_to_other_cs</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sorgho_to_other_cs</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">riz_to_org</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">oil_to_org</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">csb_to_org</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">sorgho_to_org</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">riz_to_center_ps</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">oil_to_center_ps</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">csb_to_center_ps</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">sorgho_to_center_ps</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">riz_to_ips_partners</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">oil_to_ips_partners</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">csb_to_ips_partners</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">sorgho_to_ips_partners</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">riz_to_dest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">oil_to_dest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">csb_to_dest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">sorgho_to_dest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">riz_to_sfm</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">oil_to_sfm</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">csb_to_sfm</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">sorgho_to_sfm</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">riz_to_sfe</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">oil_to_sfe</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">csb_to_sfe</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">28</property>
+                        <property name="name">sorgho_to_sfe</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">29</property>
+                        <property name="name">riz_to_ffa</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">30</property>
+                        <property name="name">oil_to_ffa</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">31</property>
+                        <property name="name">csb_to_ffa</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">sorgho_to_ffa</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">riz_to_labtest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">34</property>
+                        <property name="name">oil_to_labtest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">35</property>
+                        <property name="name">csb_to_labtest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">36</property>
+                        <property name="name">sorgho_to_labtest</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">37</property>
+                        <property name="name">riz_to_sales</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">38</property>
+                        <property name="name">oil_to_sales</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">39</property>
+                        <property name="name">csb_to_sales</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">40</property>
+                        <property name="name">sorgho_to_sales</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">41</property>
+                        <property name="name">riz_to_others</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">42</property>
+                        <property name="name">oil_to_others</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">43</property>
+                        <property name="name">csb_to_others</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">44</property>
+                        <property name="name">sorgho_to_others</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">riz_to_other_cs</property>
+                    <property name="nativeName">riz_to_other_cs</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">oil_to_other_cs</property>
+                    <property name="nativeName">oil_to_other_cs</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">csb_to_other_cs</property>
+                    <property name="nativeName">csb_to_other_cs</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sorgho_to_other_cs</property>
+                    <property name="nativeName">sorgho_to_other_cs</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">riz_to_org</property>
+                    <property name="nativeName">riz_to_org</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">oil_to_org</property>
+                    <property name="nativeName">oil_to_org</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">csb_to_org</property>
+                    <property name="nativeName">csb_to_org</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">sorgho_to_org</property>
+                    <property name="nativeName">sorgho_to_org</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">riz_to_center_ps</property>
+                    <property name="nativeName">riz_to_center_ps</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">oil_to_center_ps</property>
+                    <property name="nativeName">oil_to_center_ps</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">csb_to_center_ps</property>
+                    <property name="nativeName">csb_to_center_ps</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">sorgho_to_center_ps</property>
+                    <property name="nativeName">sorgho_to_center_ps</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">riz_to_ips_partners</property>
+                    <property name="nativeName">riz_to_ips_partners</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">oil_to_ips_partners</property>
+                    <property name="nativeName">oil_to_ips_partners</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">csb_to_ips_partners</property>
+                    <property name="nativeName">csb_to_ips_partners</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">sorgho_to_ips_partners</property>
+                    <property name="nativeName">sorgho_to_ips_partners</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">riz_to_dest</property>
+                    <property name="nativeName">riz_to_dest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">oil_to_dest</property>
+                    <property name="nativeName">oil_to_dest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">csb_to_dest</property>
+                    <property name="nativeName">csb_to_dest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">sorgho_to_dest</property>
+                    <property name="nativeName">sorgho_to_dest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">riz_to_sfm</property>
+                    <property name="nativeName">riz_to_sfm</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">oil_to_sfm</property>
+                    <property name="nativeName">oil_to_sfm</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">csb_to_sfm</property>
+                    <property name="nativeName">csb_to_sfm</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">sorgho_to_sfm</property>
+                    <property name="nativeName">sorgho_to_sfm</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">riz_to_sfe</property>
+                    <property name="nativeName">riz_to_sfe</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">oil_to_sfe</property>
+                    <property name="nativeName">oil_to_sfe</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">csb_to_sfe</property>
+                    <property name="nativeName">csb_to_sfe</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">28</property>
+                    <property name="name">sorgho_to_sfe</property>
+                    <property name="nativeName">sorgho_to_sfe</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">29</property>
+                    <property name="name">riz_to_ffa</property>
+                    <property name="nativeName">riz_to_ffa</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">30</property>
+                    <property name="name">oil_to_ffa</property>
+                    <property name="nativeName">oil_to_ffa</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">31</property>
+                    <property name="name">csb_to_ffa</property>
+                    <property name="nativeName">csb_to_ffa</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">32</property>
+                    <property name="name">sorgho_to_ffa</property>
+                    <property name="nativeName">sorgho_to_ffa</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">33</property>
+                    <property name="name">riz_to_labtest</property>
+                    <property name="nativeName">riz_to_labtest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">34</property>
+                    <property name="name">oil_to_labtest</property>
+                    <property name="nativeName">oil_to_labtest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">35</property>
+                    <property name="name">csb_to_labtest</property>
+                    <property name="nativeName">csb_to_labtest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">36</property>
+                    <property name="name">sorgho_to_labtest</property>
+                    <property name="nativeName">sorgho_to_labtest</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">37</property>
+                    <property name="name">riz_to_sales</property>
+                    <property name="nativeName">riz_to_sales</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">38</property>
+                    <property name="name">oil_to_sales</property>
+                    <property name="nativeName">oil_to_sales</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">39</property>
+                    <property name="name">csb_to_sales</property>
+                    <property name="nativeName">csb_to_sales</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">40</property>
+                    <property name="name">sorgho_to_sales</property>
+                    <property name="nativeName">sorgho_to_sales</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">41</property>
+                    <property name="name">riz_to_others</property>
+                    <property name="nativeName">riz_to_others</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">42</property>
+                    <property name="name">oil_to_others</property>
+                    <property name="nativeName">oil_to_others</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">43</property>
+                    <property name="name">csb_to_others</property>
+                    <property name="nativeName">csb_to_others</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">44</property>
+                    <property name="name">sorgho_to_others</property>
+                    <property name="nativeName">sorgho_to_others</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux autres CS' THEN weight	 ELSE 0 END) AS riz_to_other_cs,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux autres CS' THEN weight ELSE 0 END) AS oil_to_other_cs,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux autres CS' THEN weight	 ELSE 0 END) AS csb_to_other_cs,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux autres CS' THEN  weight	 ELSE 0 END) AS sorgho_to_other_cs,
+		
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux autres organisations' THEN weight	 ELSE 0 END) AS riz_to_org,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux autres organisations' THEN weight	 ELSE 0 END) AS oil_to_org,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux autres organisations' THEN weight	 ELSE 0 END) AS csb_to_org,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux autres organisations' THEN  weight	 ELSE 0 END) AS sorgho_to_org,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux Centres PS' THEN weight	 ELSE 0 END) AS riz_to_center_ps,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux Centres PS' THEN weight	 ELSE 0 END) AS oil_to_center_ps,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux Centres PS' THEN weight	 ELSE 0 END) AS csb_to_center_ps,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux Centres PS' THEN  weight	 ELSE 0 END) AS sorgho_to_center_ps,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Transfert aux Partenaires IPs' THEN weight	 ELSE 0 END) AS riz_to_ips_partners,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Transfert aux Partenaires IPs' THEN weight	 ELSE 0 END) AS oil_to_ips_partners,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Transfert aux Partenaires IPs' THEN weight	 ELSE 0 END) AS csb_to_ips_partners,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Transfert aux Partenaires IPs' THEN  weight	 ELSE 0 END) AS sorgho_to_ips_partners,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Destruction' THEN weight	 ELSE 0 END) AS riz_to_dest,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Destruction' THEN weight	 ELSE 0 END) AS oil_to_dest,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Destruction' THEN weight	 ELSE 0 END) AS csb_to_dest,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Destruction' THEN  weight	 ELSE 0 END) AS sorgho_to_dest,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Livraisons pour SFM' THEN weight	 ELSE 0 END) AS riz_to_sfm,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Livraisons pour SFM' THEN weight	 ELSE 0 END) AS oil_to_sfm,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Livraisons pour SFM' THEN weight	 ELSE 0 END) AS csb_to_sfm,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Livraisons pour SFM' THEN  weight	 ELSE 0 END) AS sorgho_to_sfm,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Livraisons pour SFE' THEN weight	 ELSE 0 END) AS riz_to_sfe,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Livraisons pour SFE' THEN weight	 ELSE 0 END) AS oil_to_sfe,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Livraisons pour SFE' THEN weight	 ELSE 0 END) AS csb_to_sfe,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Livraisons pour SFE' THEN  weight	 ELSE 0 END) AS sorgho_to_sfe,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Livraisons pour FFA' THEN weight	 ELSE 0 END) AS riz_to_ffa,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Livraisons pour FFA' THEN weight	 ELSE 0 END) AS oil_to_ffa,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Livraisons pour FFA' THEN weight	 ELSE 0 END) AS csb_to_ffa,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Livraisons pour FFA' THEN  weight	 ELSE 0 END) AS sorgho_to_ffa,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Labtest' THEN weight	 ELSE 0 END) AS riz_to_labtest,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Labtest' THEN weight	 ELSE 0 END) AS oil_to_labtest,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Labtest' THEN weight	 ELSE 0 END) AS csb_to_labtest,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Labtest' THEN  weight	 ELSE 0 END) AS sorgho_to_labtest,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Vente' THEN weight	 ELSE 0 END) AS riz_to_sales,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Vente' THEN weight	 ELSE 0 END) AS oil_to_sales,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Vente' THEN weight	 ELSE 0 END) AS csb_to_sales,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Vente' THEN  weight	 ELSE 0 END) AS sorgho_to_sales,
+	
+	SUM(CASE WHEN upper(food_type)='RIZ' AND transaction_type='Autres' THEN weight	 ELSE 0 END) AS riz_to_others,
+	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Autres' THEN weight	 ELSE 0 END) AS oil_to_others,
+	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Autres' THEN weight	 ELSE 0 END) AS csb_to_others,
+	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Autres' THEN  weight	 ELSE 0 END) AS sorgho_to_others
+
+
+	FROM crs_waybillsent
+	
+	
+
+WHERE sent_date BETWEEN ? AND ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>pl_code</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>pl_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>pl_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>waybill_code</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>waybill_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>waybill_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_date</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>13</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>13</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>transaction_type</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>transaction_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>transaction_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>warehouse_code</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>warehouse_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>warehouse_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sender_name</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sender_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sender_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>truck_id</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>truck_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>truck_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>food_type</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>food_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>food_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>weight</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>receiver_code</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>receiver_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>receiver_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>data_record_id</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>data_record_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>data_record_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
             </design:formattingHints>
           </design:usageHints>
         </design:resultColumnDefinitions>
