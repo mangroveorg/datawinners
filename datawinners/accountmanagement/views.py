@@ -115,8 +115,8 @@ def is_allowed_to_view_reports(f, redirect_to = '/alldata'):
     def wrapper(*args, **kw):
         request = args[0]
         user = request.user
-        org_id = user.get_profile().org_id
-        if CRS_ORG_ID != get_organization(request).org_id:
+        profile = user.get_profile()
+        if CRS_ORG_ID != profile.org_id:
             return HttpResponseRedirect(redirect_to)
         return f(*args, **kw)
 
@@ -136,7 +136,7 @@ def is_trial(f):
     return wrapper
 
 
-def registration_complete(request, user=None):
+def registration_complete(request):
     return render_to_response('registration/registration_complete.html')
 
 
