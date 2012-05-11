@@ -14,7 +14,7 @@ REGISTRATION_CONFIRM_PASSWORD = 'password2'
 REGISTRATION_DATA_FOR_SUCCESSFUL_TRIAL_REGISTRATION = {ORGANIZATION_NAME: "Automation NGO Trial",
                                                  ORGANIZATION_SECTOR: "Health",
                                                  ORGANIZATION_CITY: "Xi'an",
-                                                 ORGANIZATION_COUNTRY: "China",
+                                                 ORGANIZATION_COUNTRY: "CN",
                                                  TITLE: "Mr.",
                                                  FIRST_NAME: "Mickey",
                                                  LAST_NAME: "Jackson",
