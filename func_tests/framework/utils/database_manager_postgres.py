@@ -1,8 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
-from django.contrib.auth.models import User
 import psycopg2
-from registration.models import RegistrationProfile
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting, Organization
 
 try:
@@ -33,6 +31,8 @@ class DatabaseManager(object):
 
         Return activation code
         """
+        from registration.models import RegistrationProfile
+
         return RegistrationProfile.objects.get(user__email=email).activation_key
 
     def set_sms_telephone_number(self, telephone_number, email):
@@ -60,6 +60,7 @@ class DatabaseManager(object):
         'database_name' is the relative path of the database from mangrove/func_tests/framework/utils.
         This is optional field and default value is '../../../src/datawinners/mangrovedb'
         """
+        from django.contrib.auth.models import User
         user = User.objects.get(email = email)
         ngo_user_profile = NGOUserProfile.objects.get(user=user)
         org = Organization.objects.get(org_id = ngo_user_profile.org_id)

@@ -23,7 +23,7 @@ class RegistrationPage(Page):
     def register_with(self, registration_data):
         self.driver.find(AGREE_TERMS_CB).click()
         for key,value in registration_data.items():
-            if key in [ORGANIZATION_SECTOR, ORGANIZATION_COUNTRY]:
+            if key in [ORGANIZATION_SECTOR]:
                 self.driver.find_drop_down(by_css("select[name=%s]" % key)).set_selected(value)
             elif key in [PAY_MONTHLY, WIRE_TRANSFER]:
                 self.driver.find_radio_button(by_css("input[value=%s]" % key)).click()
