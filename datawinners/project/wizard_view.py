@@ -73,7 +73,7 @@ def create_project(request):
             project = Project(name=form.cleaned_data['name'], goals=form.cleaned_data['goals'],
                               project_type='survey', entity_type=form.cleaned_data['entity_type'],
                               activity_report=form.cleaned_data['activity_report'],
-                              state = request.POST['project_state'], devices=form.cleaned_data['devices'],language=form.cleaned_data['language'])
+                              state = request.POST['project_state'], devices=[u'sms', u'web', u'smartPhone'],language=form.cleaned_data['language'])
 
             if ngo_admin.reporter_id is not None:
                 project.data_senders.append(ngo_admin.reporter_id)
@@ -161,7 +161,7 @@ def reminders(request, project_id):
         organization = get_organization(request)
         from datawinners.project.views import  _format_reminders, create_reminder
         return render_to_response('project/reminders.html',
-                {'project': project, 
+                {'project': project,
                  'reminders':_format_reminders(reminders, project_id),
                  'in_trial_mode':organization.in_trial_mode,
                  'create_reminder_link' : reverse(create_reminder, args=[project_id]),
@@ -200,7 +200,7 @@ def reminder_settings(request, project_id):
             return render_to_response(html,
                     {'project_links': project_links,'project': project,
                      'form':form},context_instance=RequestContext(request))
-            
+
 def _reminder_info_about_project(project):
     data = {}
     deadline_information = project.reminder_and_deadline

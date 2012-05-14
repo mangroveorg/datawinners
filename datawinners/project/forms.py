@@ -71,8 +71,6 @@ class CreateProject(Form):
                       ('Child', _('Child')), ('Employee', _('Employee')), )
     LANGUAGES = (('en', 'English'), ('fr', 'Français'),('mg', 'Malagasy'))
 
-    DEVICE_CHOICES = (('sms', 'SMS'), ('web', _('WEB')))
-
     name = CharField(max_length=50,required=True, label=_("Name"))
     goals = CharField(max_length=300, widget=forms.Textarea, label=_('Description'), required=False)
     activity_report = ChoiceField(label=_("What kind of data do you want to collect?"),
@@ -81,8 +79,6 @@ class CreateProject(Form):
     language = ChoiceField(label=_("Choose your language for success and error messages to Data Senders"),
                            widget=forms.RadioSelect,
                            choices=LANGUAGES, initial='en')
-    devices = MultipleChoiceField(label=_('Device'), widget=forms.CheckboxSelectMultiple, choices=DEVICE_CHOICES,
-                                  initial=['sms', 'web'], required=False)
     entity_type = ChoiceField(required=False)
 
     def clean(self):

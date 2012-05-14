@@ -55,16 +55,6 @@
         {%  include 'entity/create_type.html' %}
 
     </li>
-    <li>
-        <div class="help">
-            {{ form.devices.label_tag }}
-        </div>
-        <img src="/media/images/help_icon.png" class="help_icon">
-        <div class="tooltip"><p>
-            {% trans "tooltip_devices" %}
-        </p></div>
-        {{ form.devices }}
-    </li>
 </ul>
     <div class="right_aligned_button create_project">
         <a href="/project/" class="cancel_project">{% trans "Cancel" %} </a>
