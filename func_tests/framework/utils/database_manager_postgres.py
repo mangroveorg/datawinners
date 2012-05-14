@@ -1,6 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
-import psycopg2
 from datawinners.accountmanagement.models import NGOUserProfile, OrganizationSetting, Organization
 
 try:

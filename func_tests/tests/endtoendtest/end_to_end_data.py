@@ -109,7 +109,7 @@ REGISTRATION_DATA_FOR_SUCCESSFUL_REGISTRATION = {ORGANIZATION_NAME: "Automation 
                                                  ORGANIZATION_ADDRESS_LINE: "Panchshil Tech Park, Near Don Bosco School, Yerwada",
                                                  ORGANIZATION_CITY: "Pune",
                                                  ORGANIZATION_STATE: "Maharashtra",
-                                                 ORGANIZATION_COUNTRY: "India",
+                                                 ORGANIZATION_COUNTRY: "IN",
                                                  ORGANIZATION_ZIPCODE: "411006",
                                                  ORGANIZATION_OFFICE_PHONE: "9876543210",
                                                  ORGANIZATION_WEBSITE: "http://ngo001.com",
