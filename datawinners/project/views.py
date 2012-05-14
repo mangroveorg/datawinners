@@ -630,8 +630,7 @@ def review_and_test(request, project_id=None):
         return render_to_response('project/review_and_test.html', {'project': project, 'fields': fields,
                                                                    'project_links': make_project_links(project,
                                                                        form_model.form_code),
-                                                                   'number_of_datasenders': number_of_registered_datasenders
-            ,
+                                                                   'number_of_datasenders': number_of_registered_datasenders,
                                                                    'number_of_subjects': number_of_registered_subjects,
                                                                    "is_reminder": is_reminder,
                                                                    "in_trial_mode": in_trial_mode,
