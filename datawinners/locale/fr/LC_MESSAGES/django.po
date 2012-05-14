@@ -1630,8 +1630,8 @@ msgid "Define the questions you want your Data Senders to answer."
 msgstr "Définissez les questions auxquelles vos expéditeurs doivent répondre."
 
 #: templates/project/questionnaire_wizard.html:70
-msgid "Questionnaire Code:"
-msgstr "Code Questionnaire"
+msgid "SMS Questionnaire Code:"
+msgstr "Code SMS Questionnaire"
 
 #: templates/project/create_project.html:118
 msgid "tooltip_question_code"

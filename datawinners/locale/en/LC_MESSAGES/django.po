@@ -1610,7 +1610,7 @@ msgid "Define the questions you want your Data Senders to answer."
 msgstr ""
 
 #: templates/project/questionnaire_wizard.html:70
-msgid "Questionnaire Code:"
+msgid "SMS Questionnaire Code:"
 msgstr ""
 
 #: templates/project/create_project.html:118
