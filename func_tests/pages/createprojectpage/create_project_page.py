@@ -55,7 +55,6 @@ class CreateProjectPage(Page):
         """
         self.type_project_name(project_data)
         self.type_project_description(project_data)
-        #self.select_project_type(project_data)
         light_box = self.select_report_type(project_data)
         comm_util = CommonUtilities(self.driver)
         if comm_util.is_element_present(TITLE_LABEL):
@@ -63,29 +62,7 @@ class CreateProjectPage(Page):
         self.set_subject(project_data)
         if comm_util.is_element_present(TITLE_LABEL):
             light_box.continue_change()
-        #self.select_devices(project_data)
         return self
-
-    def select_devices(self, project_data):
-        devices = fetch_(DEVICES, from_(project_data)).split(",")
-        comm_utils = CommonUtilities(self.driver)
-        # Selecting and Deselecting SMS checkbox for devices as per given option
-        if "sms" in devices:
-            if not(comm_utils.is_element_present(SMS_CB_CHECKED)):
-                self.driver.find(SMS_CB).click()
-        elif comm_utils.is_element_present(SMS_CB_CHECKED):
-            self.driver.find(SMS_CB).click()
-        #        if "smartphone" in devices:
-        #            if not(comm_utils.is_element_present(SMART_PHONE_CB_CHECKED)):
-        #                self.driver.find(SMART_PHONE_CB).toggle()
-        #        elif comm_utils.is_element_present(SMART_PHONE_CB_CHECKED):
-        #                self.driver.find(SMART_PHONE_CB).toggle()
-        #        #Selecting and Deselecting Web checkbox for devices as per given option
-        #        if "web" in devices:
-        #            if not(comm_utils.is_element_present(WEB_CB_CHECKED)):
-        #                self.driver.find(WEB_CB).toggle()
-        #        elif comm_utils.is_element_present(WEB_CB_CHECKED):
-        #                self.driver.find(WEB_CB).toggle()
 
     def save_and_create_project_successfully(self):
         self.driver.find(SAVE_AND_CREATE_BTN).click()
