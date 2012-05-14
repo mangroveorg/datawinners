@@ -61,6 +61,8 @@ class TestRegistrationPage(unittest.TestCase):
         self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
         registration_page = RegistrationPage(self.driver)
         registration_page.register_with(WITHOUT_ENTERING_REQUIRED_FIELDS)
+        print registration_page.get_error_message()
+        print WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE
         self.assertEquals(registration_page.get_error_message(),WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE)
 
     @attr('functional_test')
