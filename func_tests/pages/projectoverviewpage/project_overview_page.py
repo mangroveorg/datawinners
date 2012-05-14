@@ -43,3 +43,6 @@ class ProjectOverviewPage(Page):
     def navigate_send_message_tab(self):
         self.driver.find(SEND_MESSAGE_TAB).click()
         return BroadcastSmsPage(self.driver)
+
+    def open_web_questionnaire(self):
+        self.driver.find(by_css(".web_questionnaire")).click()

@@ -212,7 +212,7 @@ def project_overview(request, project_id=None):
     number_data_sender = len(project.get_data_senders(manager))
     number_records = submission_count(manager, form_model.form_code, None, None)
     number_reminders = Reminder.objects.filter(project_id=project.id).count()
-    links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id])}
+    links = {'registered_data_senders': reverse(registered_datasenders, args=[project_id]), 'web_questionnaire_list' : reverse(web_questionnaire, args=[project_id])}
     add_data_senders_to_see_on_map_msg = _(
         "Register Data Senders to see them on this map") if number_data_sender == 0 else ""
     add_subjects_to_see_on_map_msg = _(
@@ -234,7 +234,6 @@ def project_overview(request, project_id=None):
         'in_trial_mode': in_trial_mode,
         'questionnaire_code' : questionnaire_code
     }))
-
 
 @login_required(login_url='/login')
 @is_datasender

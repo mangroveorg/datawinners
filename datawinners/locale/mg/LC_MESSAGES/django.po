@@ -1206,6 +1206,7 @@ msgid "Test your Questionnaire by this SMS tester"
 msgstr "Testez votre Questionnaire avec ce simulateur d'envoi pas SMS"
 
 #: templates/project/finish_and_test.html:167
+#: templates/project/questionnaire_and_DS.html:23
 msgid "Web Questionnaire"
 msgstr "Questionnaire Web"
 
