@@ -4024,6 +4024,712 @@ and sent_date BETWEEN ? AND ?]]></xml-property>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Total Commodity Lost" id="23">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">riz_loss</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_loss</text-property>
+                    <text-property name="heading">riz_loss</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_loss</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_loss</text-property>
+                    <text-property name="heading">oil_loss</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_loss</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_loss</text-property>
+                    <text-property name="heading">csb_loss</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorghum_loss</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorghum_loss</text-property>
+                    <text-property name="heading">sorghum_loss</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">1</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_2</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">2</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">3</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">4</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_5</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">5</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_6</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">6</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_7</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">7</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_8</property>
+                    <property name="paramName">from date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">8</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_9</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">9</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_10</property>
+                    <property name="paramName">to date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">10</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_11</property>
+                    <property name="paramName">from date</property>
+                    <property name="dataType">date</property>
+                    <property name="position">11</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_12</property>
+                    <property name="paramName">to date</property>
+                    <property name="dataType">date</property>
+                    <property name="position">12</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_13</property>
+                    <property name="paramName">from date</property>
+                    <property name="dataType">date</property>
+                    <property name="position">13</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_14</property>
+                    <property name="paramName">to date</property>
+                    <property name="dataType">date</property>
+                    <property name="position">14</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">riz_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">oil_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">csb_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sorghum_loss</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">riz_loss</property>
+                    <property name="nativeName">riz_loss</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">oil_loss</property>
+                    <property name="nativeName">oil_loss</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">csb_loss</property>
+                    <property name="nativeName">csb_loss</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sorghum_loss</property>
+                    <property name="nativeName">sorghum_loss</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[(select 
+((coalesce(riz, 0) + coalesce(riz_received, 0) - coalesce(riz_sent, 0)) - coalesce(riz_ph_inv, 0)) + 
+(riz_received1 - riz_distributed1 - riz_sent1) +
+(riz_sent2 - riz_received2) as riz_loss,
+
+((coalesce(oil, 0) + coalesce(oil_received, 0) - coalesce(oil_sent, 0)) - coalesce(oil_ph_inv, 0)) +
+(oil_received1 - oil_distributed1 - oil_sent1) +
+(oil_sent2 - oil_received2) as oil_loss,
+
+((coalesce(csb, 0) + coalesce(csb_received, 0) - coalesce(csb_sent, 0)) - coalesce(csb_ph_inv, 0)) +
+(csb_received1 - csb_distributed1 - csb_sent1) +
+(csb_sent2 - csb_received2) as csb_loss,
+
+((coalesce(sorghum, 0) + coalesce(sorghum_received, 0) - coalesce(sorghum_sent, 0)) - coalesce(sorghum_ph_inv, 0)) +
+(sorghum_received1 - sorghum_distributed1 - sorghum_sent1) +
+(sorghum_sent2 - sorghum_received2) as sorghum_loss
+
+from 
+(select 
+SUM(CASE food_type WHEN 'RIZ' THEN good_net_weight	+ damaged_net_weight END) AS riz,
+SUM(CASE food_type WHEN 'HUILE' THEN good_net_weight + damaged_net_weight END) AS oil,
+SUM(CASE food_type WHEN 'CSB' THEN good_net_weight + damaged_net_weight END) AS csb,
+SUM(CASE food_type WHEN 'SORGHO' THEN good_net_weight + damaged_net_weight END) AS sorghum
+from crs_physicalinventorysheet
+where 
+physical_inventory_closing_date = ?) as a,
+
+(SELECT 
+   SUM(riz_received_)     as riz_received,
+   SUM(oil_received_)     as oil_received,
+   SUM(csb_received_)     as csb_received,
+   SUM(sorghum_received_) as sorghum_received
+FROM 
+   ((select 
+      SUM(CASE sent.food_type WHEN 'RIZ' THEN received.good_net_weight + received.damaged_net_weight END) AS riz_received_,
+      SUM(CASE sent.food_type WHEN 'HUILE' THEN received.good_net_weight + received.damaged_net_weight END) AS oil_received_,
+      SUM(CASE sent.food_type WHEN 'CSB' THEN received.good_net_weight + received.damaged_net_weight END) AS csb_received_,
+      SUM(CASE sent.food_type WHEN 'SORGHO' THEN received.good_net_weight + received.damaged_net_weight END) AS sorghum_received_
+    from crs_waybillreceived as received 
+    join 
+      crs_waybillsent as sent 
+    on received.waybill_code = sent.waybill_code
+    where received.transaction_type is not null
+      and received.received_date >= ?
+      and received.received_date <= ? ) UNION
+
+    (select 
+       SUM(CASE sent.food_type WHEN 'RIZ' THEN received.good_weight + received.damaged_weight END) AS riz_received_,
+       SUM(CASE sent.food_type WHEN 'HUILE' THEN received.good_weight + received.damaged_weight END) AS oil_received_,
+       SUM(CASE sent.food_type WHEN 'CSB' THEN received.good_weight + received.damaged_weight END) AS csb_received_,
+       SUM(CASE sent.food_type WHEN 'SORGHO' THEN received.good_weight + received.damaged_weight END) AS sorghum_received_
+     from crs_waybillreceivedport as received 
+     join 
+       crs_breakbulksent as sent 
+     on received.waybill_code = sent.waybill_code
+       and container_code is null
+     where
+       received.received_date >= ?
+       and received.received_date <= ? ) UNION
+
+    (select 
+      SUM(CASE bl.food_type WHEN 'RIZ' THEN received.good_weight + received.damaged_weight END) AS riz_received_,
+      SUM(CASE bl.food_type WHEN 'HUILE' THEN received.good_weight + received.damaged_weight END) AS oil_received_,
+      SUM(CASE bl.food_type WHEN 'CSB' THEN received.good_weight + received.damaged_weight END) AS csb_received_,
+      SUM(CASE bl.food_type WHEN 'SORGHO' THEN received.good_weight + received.damaged_weight END) AS sorghum_received_
+     from crs_waybillreceivedport as received 
+    join 
+      crs_containersent as sent 
+    on received.container_code = sent.container_code
+    inner join
+      crs_billoflading as bl
+    on sent.bill_of_lading=bl.bill_of_lading_code
+    where
+      received.received_date >= ?
+      and received.received_date <= ? )
+
+) as i) as b,
+
+(select 
+SUM(CASE food_type WHEN 'RIZ' THEN weight END) AS riz_sent,
+SUM(CASE food_type WHEN 'HUILE' THEN weight END) AS oil_sent,
+SUM(CASE food_type WHEN 'CSB' THEN weight END) AS csb_sent,
+SUM(CASE food_type WHEN 'SORGHO' THEN weight END) AS sorghum_sent
+from crs_waybillsent
+where warehouse_code is not null
+and sent_date >= ?
+and sent_date <= ? ) as c,
+
+(select 
+SUM(CASE upper(food_type) WHEN 'RIZ' THEN coalesce(good_net_weight, 0)	+ coalesce(damaged_net_weight, 0) END) AS riz_ph_inv,
+SUM(CASE upper(food_type) WHEN 'HUILE' THEN coalesce(good_net_weight, 0)	+ coalesce(damaged_net_weight, 0) END) AS oil_ph_inv,
+SUM(CASE upper(food_type) WHEN 'CSB' THEN coalesce(good_net_weight, 0)	+ coalesce(damaged_net_weight, 0) END) AS csb_ph_inv,
+SUM(CASE upper(food_type) WHEN 'SORGHO' THEN coalesce(good_net_weight, 0)	+ coalesce(damaged_net_weight, 0) END) AS sorghum_ph_inv
+from crs_physicalinventorysheet
+where 
+physical_inventory_closing_date = ?) as d,
+  
+(select
+   coalesce(SUM(CASE crs_waybillsent.food_type WHEN 'RIZ' THEN good_net_weight	+ damaged_net_weight END ), 0) AS riz_received1,
+   coalesce(SUM(CASE crs_waybillsent.food_type WHEN 'HUILE' THEN good_net_weight + damaged_net_weight END ), 0) AS oil_received1,
+   coalesce(SUM(CASE crs_waybillsent.food_type WHEN 'CSB' THEN good_net_weight + damaged_net_weight END ), 0) AS csb_received1,
+   coalesce(SUM(CASE crs_waybillsent.food_type WHEN 'SORGHO' THEN good_net_weight + damaged_net_weight END ), 0) AS sorghum_received1,
+
+   coalesce(SUM(rice), 0) AS riz_distributed1,
+   coalesce(SUM(oil), 0) AS oil_distributed1,
+   coalesce(SUM(csb), 0) AS csb_distributed1,
+   coalesce(SUM(sorghum), 0) AS sorghum_distributed1,
+
+   coalesce(SUM(CASE returned.food_type WHEN 'RIZ' THEN returned.weight END ), 0) AS riz_sent1,
+   coalesce(SUM(CASE returned.food_type WHEN 'HUILE' THEN returned.weight END ), 0) AS oil_sent1,
+   coalesce(SUM(CASE returned.food_type WHEN 'CSB' THEN returned.weight END ), 0) AS csb_sent1,
+   coalesce(SUM(CASE returned.food_type WHEN 'SORGHO' THEN returned.weight END ), 0) AS sorghum_sent1
+
+from crs_waybillreceived
+join
+crs_waybillsent
+on lower(crs_waybillreceived.waybill_code) = lower(crs_waybillsent.waybill_code)
+and crs_waybillsent.transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA')
+
+join crs_distribution d
+on lower(d.received_waybill_code)=lower(crs_waybillreceived.waybill_code)
+
+join crs_waybillsent returned
+on lower(returned.waybill_code)=lower(d.returned_waybill_code)
+where
+  received_date >= ?
+  and received_date <= ?
+) as e,
+
+(select
+coalesce(SUM(CASE food_type WHEN 'RIZ' THEN good_net_weight	+ damaged_net_weight END), 0) AS riz_received2,
+coalesce(SUM(CASE food_type WHEN 'HUILE' THEN good_net_weight + damaged_net_weight END), 0) AS oil_received2,
+coalesce(SUM(CASE food_type WHEN 'CSB' THEN good_net_weight + damaged_net_weight END), 0) AS csb_received2,
+coalesce(SUM(CASE food_type WHEN 'SORGHO' THEN good_net_weight + damaged_net_weight END), 0) AS sorghum_received2,
+
+coalesce(SUM(CASE food_type WHEN 'RIZ' THEN weight END), 0) AS riz_sent2,
+coalesce(SUM(CASE food_type WHEN 'HUILE' THEN weight END), 0) AS oil_sent2,
+coalesce(SUM(CASE food_type WHEN 'CSB' THEN weight END), 0) AS csb_sent2,
+coalesce(SUM(CASE food_type WHEN 'SORGHO' THEN weight END), 0) AS sorghum_sent2
+from crs_waybillreceived
+join
+crs_waybillsent
+on crs_waybillreceived.waybill_code = crs_waybillsent.waybill_code
+where
+received_date >= ?
+and received_date <= ?) as f
+
+)]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>5</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>6</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>7</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>8</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>9</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>10</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>riz_th_stock</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>riz_th_stock</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>riz_th_stock</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>oil_th_stock</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>oil_th_stock</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>oil_th_stock</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>csb_th_stock</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>csb_th_stock</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>csb_th_stock</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sorghum_th_stock</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>sorghum_th_stock</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sorghum_th_stock</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>riz_ph_inv</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>riz_ph_inv</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>riz_ph_inv</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>oil_ph_inv</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>oil_ph_inv</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>oil_ph_inv</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>csb_ph_inv</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>csb_ph_inv</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>csb_ph_inv</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sorghum_ph_inv</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>sorghum_ph_inv</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sorghum_ph_inv</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <styles>
         <style name="report" id="4">
