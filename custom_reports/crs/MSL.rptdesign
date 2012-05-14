@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <simple-property-list name="includeResource">
+        <value>properties/messages</value>
+        <value>properties/messages_fr_CA</value>
+    </simple-property-list>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">odaDriverClass</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaURL</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaUser</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaAutoCommit</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaIsolationMode</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaPassword</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaJndiName</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileName</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileStorePath</property>
+            <property name="id">7</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -8,6 +50,7 @@
     <parameters>
         <scalar-parameter name="CCC" id="9">
             <property name="valueType">static</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -15,21 +58,26 @@
             </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
             <property name="controlType">text-box</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
         <scalar-parameter name="pl_code" id="10">
-            <property name="valueType">static</property>
+            <property name="valueType">dynamic</property>
+            <property name="isRequired">true</property>
+            <property name="dataSetName">all_pl_code</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["d_pl_code"]</expression>
+            <expression name="sortByColumn">dataSetRow["d_pl_code"]</expression>
+            <property name="sortDirection">asc</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">%</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
-            <property name="controlType">text-box</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">false</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
@@ -631,7 +679,7 @@ join crs_billoflading as b
 on p.pl_code = b.pl_code
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
-and b.food_type = 'RIZ']]></xml-property>
+and upper(b.food_type) = 'RIZ']]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -876,6 +924,7 @@ and b.food_type = 'RIZ']]></xml-property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                     <property name="position">1</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -886,6 +935,7 @@ and b.food_type = 'RIZ']]></xml-property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                     <property name="position">2</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -967,13 +1017,13 @@ and b.food_type = 'RIZ']]></xml-property>
                     <property name="nativeDataType">8</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select csb_cost, bill_of_lading_code, net_weight as prev_quant_under_bl, weight, freight
+            <xml-property name="queryText"><![CDATA[select csb_cost, bill_of_lading_code, coalesce(net_weight, 0) as prev_quant_under_bl, weight, freight
 from crs_packinglist as p
 join crs_billoflading as b
 on p.pl_code = b.pl_code
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
-and b.food_type = 'CSB']]></xml-property>
+and upper(b.food_type) = 'CSB']]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -1273,7 +1323,7 @@ join crs_billoflading as b
 on p.pl_code = b.pl_code
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
-and b.food_type = 'HUILE']]></xml-property>
+and upper(b.food_type) = 'HUILE']]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -1723,6 +1773,403 @@ and b.food_type = 'SORGHO']]></xml-property>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="received_at_port" id="1830">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">riz_received</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">riz_received</text-property>
+                    <text-property name="heading">riz_received</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil_received</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil_received</text-property>
+                    <text-property name="heading">oil_received</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb_received</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb_received</text-property>
+                    <text-property name="heading">csb_received</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorghum_received</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorghum_received</text-property>
+                    <text-property name="heading">sorghum_received</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">pl_code1</property>
+                    <property name="paramName">pl_code</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">ccc1</property>
+                    <property name="paramName">CCC</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">pl_code</property>
+                    <property name="paramName">pl_code</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">ccc</property>
+                    <property name="paramName">CCC</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">4</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">riz_received</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">oil_received</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">csb_received</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sorghum_received</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">riz_received</property>
+                    <property name="nativeName">riz_received</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">oil_received</property>
+                    <property name="nativeName">oil_received</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">csb_received</property>
+                    <property name="nativeName">csb_received</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sorghum_received</property>
+                    <property name="nativeName">sorghum_received</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT
+   round(CAST(coalesce(SUM(CASE upper(food_type) WHEN 'RIZ' THEN total_received END), 0) as numeric), 2) AS riz_received,
+   round(CAST(coalesce(SUM(CASE upper(food_type) WHEN 'HUILE' THEN total_received END), 0) as numeric), 2) AS oil_received,
+   round(CAST(coalesce(SUM(CASE upper(food_type) WHEN 'CSB' THEN total_received END), 0) as numeric), 2) AS csb_received,
+   round(CAST(coalesce(SUM(CASE upper(food_type) WHEN 'SORGHO' THEN total_received END), 0) as numeric), 2) AS sorghum_received
+FROM (
+(select packing_list_code, ccc_number, SUM(rcv.damaged_weight+rcv.good_weight) as total_received, food_type
+from
+    (select 
+        crs_billoflading.ccc_number,
+        crs_billoflading.pl_code as packing_list_code, 
+        crs_breakbulksent.waybill_code,
+        crs_breakbulksent.food_type
+     from crs_billoflading
+     inner join
+        crs_breakbulksent
+     on lower(crs_billoflading.pl_code) = lower(crs_breakbulksent.pl_code)
+     and lower(crs_billoflading.food_type)=lower(crs_breakbulksent.food_type)
+    ) as A
+inner join
+    crs_waybillreceivedport as rcv
+on lower(A.waybill_code) = lower(rcv.waybill_code)
+
+where A.packing_list_code ILIKE ?
+and A.ccc_number ILIKE ?
+
+GROUP BY A.packing_list_code, A.ccc_number, A.food_type
+)
+UNION
+(select packing_list_code, ccc_number, SUM(rcv.damaged_weight+rcv.good_weight) as total_received, food_type
+from
+(select 
+    crs_billoflading.ccc_number,
+    crs_billoflading.pl_code as packing_list_code,
+    crs_containersent.container_code,
+    crs_billoflading.food_type
+from crs_billoflading 
+inner join
+    crs_containersent
+on lower(crs_billoflading.bill_of_lading_code) = lower(crs_containersent.bill_of_lading)) as A
+inner join
+    crs_waybillreceivedport as rcv
+on lower(A.container_code) = lower(rcv.container_code)
+
+where A.packing_list_code ILIKE ?
+and A.ccc_number ILIKE ?
+
+GROUP BY A.packing_list_code, A.ccc_number, A.food_type
+)) as t
+
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>riz_received</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>riz_received</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>riz_received</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>oil_received</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>oil_received</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>oil_received</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>csb_received</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>csb_received</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>csb_received</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sorghum_received</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>sorghum_received</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sorghum_received</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="all_pl_code" id="1835">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">d_pl_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">d_pl_code</text-property>
+                    <text-property name="heading">d_pl_code</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">d_pl_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">d_pl_code</property>
+                    <property name="nativeName">d_pl_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select DISTINCT(upper(pl_code)) as d_pl_code
+from crs_billoflading]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>d_pl_code</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>d_pl_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>d_pl_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <styles>
         <style name="report" id="4">
@@ -1757,15 +2204,665 @@ and b.food_type = 'SORGHO']]></xml-property>
             <property name="borderTopStyle">solid</property>
             <property name="borderTopWidth">1pt</property>
         </style>
+        <style name="header" id="1009">
+            <property name="backgroundColor">#000000</property>
+            <property name="fontSize">12px</property>
+            <property name="color">#FFFFFF</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="textAlign">center</property>
+        </style>
+        <style name="page" id="27">
+            <property name="backgroundImage">images/application_bg.gif</property>
+        </style>
+        <style name="report1" id="1010">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="with_border" id="872">
+            <property name="fontSize">12px</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="with_medium_border" id="1014">
+            <property name="fontSize">12px</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+        </style>
     </styles>
     <page-setup>
-        <simple-master-page name="Simple MasterPage" id="2">
-            <page-footer>
-                <text id="3">
-                    <property name="contentType">html</property>
-                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
-                </text>
-            </page-footer>
-        </simple-master-page>
+        <simple-master-page name="Simple MasterPage" id="2"/>
     </page-setup>
+    <body>
+        <grid id="873">
+            <property name="height">17.541666666666668in</property>
+            <property name="width">7.986111111111111in</property>
+            <column id="874">
+                <property name="width">7.986111111111111in</property>
+            </column>
+            <row id="875">
+                <property name="height">17.541666666666668in</property>
+                <cell id="876">
+                    <grid id="720">
+                        <property name="height">0.5734265734265734in</property>
+                        <property name="width">33.84722222222222in</property>
+                        <column id="721">
+                            <property name="width">33.84722222222222in</property>
+                        </column>
+                        <row id="722">
+                            <property name="height">0.5734265734265734in</property>
+                            <cell id="723">
+                                <property name="backgroundImage">images/header_app_bg.gif</property>
+                                <property name="backgroundImageType">embed</property>
+                                <image id="724">
+                                    <property name="borderBottomColor">#202020</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#202020</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#202020</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#202020</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="height">0.1360544217687075in</property>
+                                    <property name="width">0.9047619047619048in</property>
+                                    <structure name="toc"/>
+                                    <property name="source">embed</property>
+                                    <property name="imageName">datawinners_logo.png</property>
+                                    <list-property name="action">
+                                        <structure>
+                                            <property name="linkType">hyperlink</property>
+                                            <expression name="uri" type="constant">http://www.datawinners.com/dashboard/</expression>
+                                            <property name="targetWindow">_blank</property>
+                                        </structure>
+                                    </list-property>
+                                </image>
+                            </cell>
+                        </row>
+                    </grid>
+                    <grid id="877">
+                        <property name="width">7.930555555555555in</property>
+                        <column id="878">
+                            <property name="width">2.2083333333333335in</property>
+                        </column>
+                        <column id="1087">
+                            <property name="width">0.027777777777777776in</property>
+                        </column>
+                        <column id="879">
+                            <property name="width">1.4027777777777777in</property>
+                        </column>
+                        <column id="1045">
+                            <property name="width">0.027777777777777776in</property>
+                        </column>
+                        <column id="880">
+                            <property name="width">1.4027777777777777in</property>
+                        </column>
+                        <column id="1066">
+                            <property name="width">0.027777777777777776in</property>
+                        </column>
+                        <column id="881">
+                            <property name="width">1.4027777777777777in</property>
+                        </column>
+                        <column id="1108">
+                            <property name="width">0.027777777777777776in</property>
+                        </column>
+                        <column id="882">
+                            <property name="width">1.4027777777777777in</property>
+                        </column>
+                        <row id="1019">
+                            <cell id="1020">
+                                <label id="1778"/>
+                            </cell>
+                            <cell id="1067"/>
+                            <cell id="1021"/>
+                            <cell id="1025"/>
+                            <cell id="1022"/>
+                            <cell id="1046"/>
+                            <cell id="1023"/>
+                            <cell id="1088"/>
+                            <cell id="1024"/>
+                        </row>
+                        <row id="883">
+                            <cell id="884"/>
+                            <cell id="1068"/>
+                            <cell id="885">
+                                <property name="style">header</property>
+                                <label id="1015">
+                                    <text-property name="text" key="rice"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1026"/>
+                            <cell id="886">
+                                <property name="style">header</property>
+                                <label id="1016">
+                                    <text-property name="text" key="oil"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1047"/>
+                            <cell id="887">
+                                <property name="style">header</property>
+                                <label id="1017">
+                                    <text-property name="text" key="csb"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1089"/>
+                            <cell id="888">
+                                <property name="style">header</property>
+                                <label id="1018">
+                                    <text-property name="text" key="sorghum"></text-property>
+                                </label>
+                            </cell>
+                        </row>
+                        <row id="889">
+                            <cell id="890"/>
+                            <cell id="1069"/>
+                            <cell id="891"/>
+                            <cell id="1027"/>
+                            <cell id="892"/>
+                            <cell id="1048"/>
+                            <cell id="893"/>
+                            <cell id="1090"/>
+                            <cell id="894"/>
+                        </row>
+                        <row id="895">
+                            <cell id="896">
+                                <property name="style">with_border</property>
+                                <label id="1110">
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text" key="billoflading_code"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1070"/>
+                            <cell id="897">
+                                <property name="style">with_border</property>
+                                <data id="1838">
+                                    <property name="dataSet">Rice</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">bill_of_lading_code</property>
+                                            <text-property name="displayName">bill_of_lading_code</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["bill_of_lading_code"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">bill_of_lading_code</property>
+                                </data>
+                            </cell>
+                            <cell id="1028"/>
+                            <cell id="898">
+                                <property name="style">with_border</property>
+                                <data id="1837">
+                                    <property name="dataSet">OIL</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">bill_of_lading_code</property>
+                                            <text-property name="displayName">bill_of_lading_code</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["bill_of_lading_code"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">bill_of_lading_code</property>
+                                </data>
+                            </cell>
+                            <cell id="1049"/>
+                            <cell id="899">
+                                <property name="style">with_border</property>
+                                <data id="1836">
+                                    <property name="dataSet">CSB</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">bill_of_lading_code</property>
+                                            <text-property name="displayName">bill_of_lading_code</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["bill_of_lading_code"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">bill_of_lading_code</property>
+                                </data>
+                            </cell>
+                            <cell id="1091"/>
+                            <cell id="900">
+                                <property name="style">with_border</property>
+                                <data id="1839">
+                                    <property name="dataSet">Sorghum</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">bill_of_lading_code</property>
+                                            <text-property name="displayName">bill_of_lading_code</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["bill_of_lading_code"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">bill_of_lading_code</property>
+                                </data>
+                            </cell>
+                        </row>
+                        <row id="901">
+                            <cell id="902">
+                                <property name="style">with_border</property>
+                                <label id="1111">
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text" key="previous_quantity"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1071"/>
+                            <cell id="903">
+                                <property name="style">with_border</property>
+                                <data id="1843">
+                                    <property name="dataSet">Rice</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">prev_quant_under_bl</property>
+                                            <text-property name="displayName">prev_quant_under_bl</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["prev_quant_under_bl"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["riz_dif"] -= row["prev_quant_under_bl"];]]></method>
+                                    <property name="resultSetColumn">prev_quant_under_bl</property>
+                                </data>
+                            </cell>
+                            <cell id="1029"/>
+                            <cell id="904">
+                                <property name="style">with_border</property>
+                                <data id="1840">
+                                    <property name="dataSet">OIL</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">prev_quant_under_bl</property>
+                                            <text-property name="displayName">prev_quant_under_bl</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["prev_quant_under_bl"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["oil_dif"] -= row["prev_quant_under_bl"];]]></method>
+                                    <property name="resultSetColumn">prev_quant_under_bl</property>
+                                </data>
+                            </cell>
+                            <cell id="1050"/>
+                            <cell id="905">
+                                <property name="style">with_border</property>
+                                <data id="1841">
+                                    <property name="dataSet">CSB</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">prev_quant_under_bl</property>
+                                            <text-property name="displayName">prev_quant_under_bl</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["prev_quant_under_bl"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["csb_dif"] -= row["prev_quant_under_bl"];]]></method>
+                                    <property name="resultSetColumn">prev_quant_under_bl</property>
+                                </data>
+                            </cell>
+                            <cell id="1092"/>
+                            <cell id="906">
+                                <property name="style">with_border</property>
+                                <data id="1842">
+                                    <property name="dataSet">Sorghum</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">prev_quant_under_bl</property>
+                                            <text-property name="displayName">prev_quant_under_bl</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["prev_quant_under_bl"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["sorgho"] -= row["prev_quant_under_bl"];]]></method>
+                                    <property name="resultSetColumn">prev_quant_under_bl</property>
+                                </data>
+                            </cell>
+                        </row>
+                        <row id="1786">
+                            <cell id="1787">
+                                <property name="style">with_border</property>
+                                <label id="1806">
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text" key="quantity_really_received"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1788"/>
+                            <cell id="1789">
+                                <property name="style">with_border</property>
+                                <data id="1831">
+                                    <property name="dataSet">received_at_port</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">riz_received</property>
+                                            <text-property name="displayName">riz_received</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["riz_received"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["riz_dif"] += row["riz_received"];]]></method>
+                                    <property name="resultSetColumn">riz_received</property>
+                                </data>
+                            </cell>
+                            <cell id="1790"/>
+                            <cell id="1791">
+                                <property name="style">with_border</property>
+                                <data id="1832">
+                                    <property name="dataSet">received_at_port</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">oil_received</property>
+                                            <text-property name="displayName">oil_received</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["oil_received"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["oil_dif"] += row["oil_received"];]]></method>
+                                    <property name="resultSetColumn">oil_received</property>
+                                </data>
+                            </cell>
+                            <cell id="1792"/>
+                            <cell id="1793">
+                                <property name="style">with_border</property>
+                                <data id="1833">
+                                    <property name="dataSet">received_at_port</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">csb_received</property>
+                                            <text-property name="displayName">csb_received</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["csb_received"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["csb_dif"] += row["csb_received"];]]></method>
+                                    <property name="resultSetColumn">csb_received</property>
+                                </data>
+                            </cell>
+                            <cell id="1794"/>
+                            <cell id="1795">
+                                <property name="style">with_border</property>
+                                <data id="1834">
+                                    <property name="dataSet">received_at_port</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">sorghum_received</property>
+                                            <text-property name="displayName">sorghum_received</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["sorghum_received"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <method name="onCreate"><![CDATA[vars["sorgho"] += row["sorghum_received"];]]></method>
+                                    <property name="resultSetColumn">sorghum_received</property>
+                                </data>
+                            </cell>
+                        </row>
+                        <row id="1796">
+                            <cell id="1797">
+                                <property name="style">with_border</property>
+                                <label id="1807">
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text" key="difference"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1798"/>
+                            <cell id="1799">
+                                <property name="style">with_border</property>
+                                <label id="1844">
+                                    <method name="onCreate"><![CDATA[this.text = vars["riz_dif"];]]></method>
+                                </label>
+                            </cell>
+                            <cell id="1800"/>
+                            <cell id="1801">
+                                <property name="style">with_border</property>
+                                <label id="1845">
+                                    <method name="onCreate"><![CDATA[this.text = vars["oil_dif"];]]></method>
+                                </label>
+                            </cell>
+                            <cell id="1802"/>
+                            <cell id="1803">
+                                <property name="style">with_border</property>
+                                <label id="1846">
+                                    <method name="onCreate"><![CDATA[this.text = vars["csb_dif"];]]></method>
+                                </label>
+                            </cell>
+                            <cell id="1804"/>
+                            <cell id="1805">
+                                <property name="style">with_border</property>
+                                <label id="1847">
+                                    <method name="onCreate"><![CDATA[this.text = vars["sorgho_dif"];]]></method>
+                                </label>
+                            </cell>
+                        </row>
+                        <row id="1808">
+                            <cell id="1809">
+                                <property name="style">with_border</property>
+                                <label id="1818">
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text" key="value_per_metric_ton"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1810"/>
+                            <cell id="1811">
+                                <property name="style">with_border</property>
+                                <data id="1852">
+                                    <property name="dataSet">Rice</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">value per metric ton</property>
+                                            <text-property name="displayName">value per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["value per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">value per metric ton</property>
+                                </data>
+                            </cell>
+                            <cell id="1812"/>
+                            <cell id="1813">
+                                <property name="style">with_border</property>
+                                <data id="1850">
+                                    <property name="dataSet">OIL</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">value per metric ton</property>
+                                            <text-property name="displayName">value per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["value per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">value per metric ton</property>
+                                </data>
+                            </cell>
+                            <cell id="1814"/>
+                            <cell id="1815">
+                                <property name="style">with_border</property>
+                                <data id="1848">
+                                    <property name="dataSet">CSB</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">value per metric ton</property>
+                                            <text-property name="displayName">value per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["value per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">value per metric ton</property>
+                                </data>
+                            </cell>
+                            <cell id="1816"/>
+                            <cell id="1817">
+                                <property name="style">with_border</property>
+                                <data id="1854">
+                                    <property name="dataSet">Sorghum</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">value per metric ton</property>
+                                            <text-property name="displayName">value per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["value per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">value per metric ton</property>
+                                </data>
+                            </cell>
+                        </row>
+                        <row id="1819">
+                            <cell id="1820">
+                                <property name="style">with_border</property>
+                                <label id="1829">
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text" key="freight_per_metric_ton"></text-property>
+                                </label>
+                            </cell>
+                            <cell id="1821"/>
+                            <cell id="1822">
+                                <property name="style">with_border</property>
+                                <data id="1853">
+                                    <property name="dataSet">Rice</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">freight per metric ton</property>
+                                            <text-property name="displayName">freight per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["freight per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">freight per metric ton</property>
+                                </data>
+                            </cell>
+                            <cell id="1823"/>
+                            <cell id="1824">
+                                <property name="style">with_border</property>
+                                <data id="1851">
+                                    <property name="dataSet">OIL</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">freight per metric ton</property>
+                                            <text-property name="displayName">freight per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["freight per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">freight per metric ton</property>
+                                </data>
+                            </cell>
+                            <cell id="1825"/>
+                            <cell id="1826">
+                                <property name="style">with_border</property>
+                                <data id="1849">
+                                    <property name="dataSet">CSB</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">freight per metric ton</property>
+                                            <text-property name="displayName">freight per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["freight per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">freight per metric ton</property>
+                                </data>
+                            </cell>
+                            <cell id="1827"/>
+                            <cell id="1828">
+                                <property name="style">with_border</property>
+                                <data id="1855">
+                                    <property name="dataSet">Sorghum</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">freight per metric ton</property>
+                                            <text-property name="displayName">freight per metric ton</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["freight per metric ton"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">freight per metric ton</property>
+                                </data>
+                            </cell>
+                        </row>
+                        <row id="913">
+                            <cell id="914"/>
+                            <cell id="1073"/>
+                            <cell id="915"/>
+                            <cell id="1031"/>
+                            <cell id="916"/>
+                            <cell id="1052"/>
+                            <cell id="917"/>
+                            <cell id="1094"/>
+                            <cell id="918"/>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+        </grid>
+    </body>
+    <property name="pageVariables">
+        <variable-element name="riz_dif">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="oil_dif">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="csb_dif">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="sorgho_dif">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
+    <list-property name="images">
+        <structure>
+            <property name="name">datawinners_logo.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAIUAAAAUCAYAAAHU585MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFn
+                ZVJlYWR5ccllPAAABgxJREFUeNpi/P//PwOlgAmIHaAYZNp7IN6PJH8fiOcj8f9DMQwEgPlAlzj8RwUM
+                aLgAiY1NTQNAADFS2zsMUO8gO3k/Fm8oYHgL6JL5SE7bj+Y1ASzemI/uZYAAgoVJAY7w2I8njO5jkSMb
+                M0E9dQGIHaFBE4AlJgWQxCYAcQEQK2JR9x9LEP5Hwwxo6sHRARBAVIlgqGEHKEkg/5FCgAGLa9FBPxaf
+                H6DIC0hpApagCtDEYOngPZqYApQOQBJrQEqU65HiHpaOBJDU7kdOoOgW/sch9h4pgaInzv8EEiAM7Edz
+                xH9kR/QjKUK33AHqg/dIhr7Hog6fI/qxhBq85AEIwFoV0EAMwsBJQMJLQMIkTAISXsI7mIRJQQISkICE
+                LktKcumu8J/fkiWjBdYedwezr+tJX8grKfyzeRWOqK8TB0l5Uv6/vgjGaopdgWPMEJs5xW0AqJjvA/a/
+                OF6IT2bNNUPDrDV0vSDQUWMNtIP7VtCQ6H/DCAw7XozIbhx32CCEzgkuAXGA8nQnk3gjzD3Imrd3AbHm
+                u2tFyCViJpkUXwZAWYB23b8+BIZMDIvFX9Dr4nlGdKgvxq6FuK6Qxnv+MynyHzA6OwoYcSBzAkh1x9wp
+                ADFWdNQwDENJrwOEDTqCs0E2oJ2AMAHdoO4EhA3YIGzgYwK6QbpBsgFcek93rzo5Ntdw9U/lWJVlWX56
+                9lKVfalW31ygb2QXc3wo1jzR1lnuYPQd9R3R3HCvHViRPJHOT8hdxn8PmYHQ7UxUTey8Qy7ulovGdYf7
+                pTr/GhR7Ii9D5Io1KFRvZvAgEKA6nGXGl4Y4zY9xr+mM72LLk/1vjVupQFgAaQWCAUqCt6dq5FVdT5XP
+                YASzJB9K0tsqzi5FYCCdYJTwK6KYCsQVNTX0LLbpjDGN+m9EpftIIGqVKTVseuWTj3AKtqXn2Gi/1xmn
+                p8f9fEzoTU8UTUJHbByBQ1+Ql6g25QzQv5BcYU0PwMTdJKwzEb/AZDFUDxh/xGIth7a06JEeS5YAyBGv
+                DFWG7onm7OBrsVLlcID8Qd9b/D4ndkQccsa4ZED7T5h/Mub1EV3O2p1VPg9Ir1Gl0h5R20RKaIAjkkFd
+                hHPo1mYct7+0CvN7pP5TRO8VGy4bf9mcXwHKtRbbtoEYejEygLSBRlAmqD1B3Q3UCRpPYGUCNxPIncDu
+                BNIGdiaoNpA2UBHgMXglyJNkO2iLEBDgSPc/3iPfu7xmljGXb5Hp/fhbGd+IZZh0CzEtVqbH0R2DAX28
+                78IHs8WERS/gNMOFyaSFrQN58jXWAvwz4LGXBIsq6/X3SHDWU7K9Ch/QLKRYKVSolTPcObHjM+F3i0xh
+                Hwm4sgnWRiVwxk/4Hai9VpV97fPkBFFBiT36zJzxd+gnvTGM/59mqDRat4t93xns7KTeVUYer60mCYlZ
+                XIdvmtllDuvSY6+ofOHwg4Ik9jDCOWoiVB2RrpKUqZ3BT3ZYlw5jKqmtk6OaD6p8Re+WzriW9LujsXBf
+                wk9OVC73dMy5TpETy6tH6gTnCrE07iakvWJGvVw5F2uUVURLZXqezXSK4Nxk8hqJUxyc8qUxH9n8tVOn
+                Mm4QYmtTRshy0A7Bt6SXpvsregriNJcqcBtqr4Gw9WtCPnNGbrGkECa5xLNqnxnAGuWtsDQ29zn2MrFc
+                jnU8K57Kz0uEClrheI+2tljHCvNOvLksrow+BSWNFTq6JkFLkB8McIYCzCedwH6eyRkkQT6qScvfW6Jk
+                4UYqyS0smXEYN8a3xknGU+RSD+Qg/J8jfyhL9xMGWSlVpDFkqr3i85ewlIzkpACKOef0NnjW6uR4gokk
+                vMeZ/bynNST0tO8wrrOBDAfsZSYosxihjB0JNb3K7hOFGDsSS6aGj2+oVxin5ID2qhl0+InCwtGBeXm/
+                /MdQgg9DT0hp0edh4p1UwPoykutDn9O6vCFFH4FmoZZHg6p9waAFrh9R7ivaq1XnzP9LxESp1wBtUop5
+                OepJ+FhTHO0jJ+076j6N5C5b5+TEoPg80r/+LuJfOyIOtgqNU8x9SxcM0v5PgzrHxrXBU2Btl+QcvF9v
+                9hvKUuiK2sR9JgAAAABJRU5ErkJggg==
+            </property>
+        </structure>
+    </list-property>
 </report>
