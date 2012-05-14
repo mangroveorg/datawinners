@@ -154,7 +154,7 @@ WITHOUT_PREFERRED_PAYMENT = {ORGANIZATION_NAME: u"ÑGÓ 001",
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                                                  PAY_MONTHLY: PAY_MONTHLY}
 
-WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal / Zip Code This field is required.Country This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword (again) This field is required.Invoice Period Monthly: $ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 765 per month Save 10% by paying 6 months in advance This field is required."
+WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal / Zip Code This field is required.Country.*ISLANDS This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword (again) This field is required.Invoice Period Monthly: $ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 765 per month Save 10% by paying 6 months in advance This field is required."
 
 INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        ORGANIZATION_SECTOR: u"PublicHealth",
