@@ -1600,22 +1600,22 @@ order by tuples.food_type, tuples.transaction_type) as a]]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">total_riz</property>
-                    <expression name="expression">row["riz_good_begin"]+row["riz_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_good_begin"]+row["riz_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_oil</property>
-                    <expression name="expression">row["oil_good_begin"]+row["oil_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_good_begin"]+row["oil_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_csb</property>
-                    <expression name="expression">row["csb_good_begin"]+row["csb_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_good_begin"]+row["csb_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_sorgho</property>
-                    <expression name="expression">row["sorgho_good_begin"]+row["sorgho_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorgho_good_begin"]+row["sorgho_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -2294,22 +2294,22 @@ GROUP BY new_field) -1]]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">total_oil_received</property>
-                    <expression name="expression">row["oil_from_other_cs"]+row["oil_from_other_wh"]+row["oil_from_other_organization"]+row["oil_from_other_center"]+row["oil_from_other_site"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_from_other_cs"]+row["oil_from_other_wh"]+row["oil_from_other_organization"]+row["oil_from_other_center"]+row["oil_from_other_site"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_riz_received</property>
-                    <expression name="expression">row["riz_from_other_cs"]+row["riz_from_other_wh"]+row["riz_from_other_organization"]+row["riz_from_other_center"]+row["riz_from_other_site"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_from_other_cs"]+row["riz_from_other_wh"]+row["riz_from_other_organization"]+row["riz_from_other_center"]+row["riz_from_other_site"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_csb_received</property>
-                    <expression name="expression">row["csb_from_other_cs"]+row["csb_from_other_wh"]+row["csb_from_other_organization"]+row["csb_from_other_center"]+row["csb_from_other_site"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_from_other_cs"]+row["csb_from_other_wh"]+row["csb_from_other_organization"]+row["csb_from_other_center"]+row["csb_from_other_site"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_sorgho_received</property>
-                    <expression name="expression">row["sorgho_from_other_cs"]+row["sorgho_from_other_wh"]+row["sorgho_from_other_organization"]+row["sorgho_from_other_center"]+row["sorgho_from_other_site"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorgho_from_other_cs"]+row["sorgho_from_other_wh"]+row["sorgho_from_other_organization"]+row["sorgho_from_other_center"]+row["sorgho_from_other_site"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -2782,22 +2782,22 @@ WHERE received_date BETWEEN ? AND ?
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">total_riz_out</property>
-                    <expression name="expression">row["riz_to_other_cs"]+row["riz_to_wh"]+row["riz_to_org"]+row["riz_to_center_ps"]+row["riz_to_ips_partners"]+row["riz_to_dest"]+row["riz_to_sfm"]+row["riz_to_sfe"]+row["riz_to_ffa"]+row["riz_to_labtest"]+row["riz_to_vente"]+row["riz_to_others"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_to_other_cs"]+row["riz_to_wh"]+row["riz_to_org"]+row["riz_to_center_ps"]+row["riz_to_ips_partners"]+row["riz_to_dest"]+row["riz_to_sfm"]+row["riz_to_sfe"]+row["riz_to_ffa"]+row["riz_to_labtest"]+row["riz_to_vente"]+row["riz_to_others"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_oil_out</property>
-                    <expression name="expression">row["oil_to_other_cs"]+row["oil_to_wh"]+row["oil_to_org"]+row["oil_to_center_ps"]+row["oil_to_ips_partners"]+row["oil_to_dest"]+row["oil_to_sfm"]+row["oil_to_sfe"]+row["oil_to_ffa"]+row["oil_to_labtest"]+row["oil_to_vente"]+row["oil_to_others"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_to_other_cs"]+row["oil_to_wh"]+row["oil_to_org"]+row["oil_to_center_ps"]+row["oil_to_ips_partners"]+row["oil_to_dest"]+row["oil_to_sfm"]+row["oil_to_sfe"]+row["oil_to_ffa"]+row["oil_to_labtest"]+row["oil_to_vente"]+row["oil_to_others"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_csb_out</property>
-                    <expression name="expression">row["csb_to_other_cs"]+row["csb_to_wh"]+row["csb_to_org"]+row["csb_to_center_ps"]+row["csb_to_ips_partners"]+row["csb_to_dest"]+row["csb_to_sfm"]+row["csb_to_sfe"]+row["csb_to_ffa"]+row["csb_to_labtest"]+row["csb_to_vente"]+row["csb_to_others"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_to_other_cs"]+row["csb_to_wh"]+row["csb_to_org"]+row["csb_to_center_ps"]+row["csb_to_ips_partners"]+row["csb_to_dest"]+row["csb_to_sfm"]+row["csb_to_sfe"]+row["csb_to_ffa"]+row["csb_to_labtest"]+row["csb_to_vente"]+row["csb_to_others"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_sorgho_out</property>
-                    <expression name="expression">row["sorgho_to_other_cs"]+row["sorgho_to_wh"]+row["sorgho_to_org"]+row["sorgho_to_center_ps"]+row["sorgho_to_ips_partners"]+row["sorgho_to_dest"]+row["sorgho_to_sfm"]+row["sorgho_to_sfe"]+row["sorgho_to_ffa"]+row["sorgho_to_labtest"]+row["sorgho_to_vente"]+row["sorgho_to_others"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorgho_to_other_cs"]+row["sorgho_to_wh"]+row["sorgho_to_org"]+row["sorgho_to_center_ps"]+row["sorgho_to_ips_partners"]+row["sorgho_to_dest"]+row["sorgho_to_sfm"]+row["sorgho_to_sfe"]+row["sorgho_to_ffa"]+row["sorgho_to_labtest"]+row["sorgho_to_vente"]+row["sorgho_to_others"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -4299,22 +4299,22 @@ WHERE sent.sent_date BETWEEN ? AND ?
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">total_riz</property>
-                    <expression name="expression">row["riz_good_begin"]+row["riz_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_good_begin"]+row["riz_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_oil</property>
-                    <expression name="expression">row["oil_good_begin"]+row["oil_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_good_begin"]+row["oil_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_csb</property>
-                    <expression name="expression">row["csb_good_begin"]+row["csb_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_good_begin"]+row["csb_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_sorgho</property>
-                    <expression name="expression">row["sorgho_good_begin"]+row["sorgho_damaged_begin"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorgho_good_begin"]+row["sorgho_damaged_begin"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -4982,7 +4982,7 @@ and pl_code ilike ?]]></xml-property>
                                             <property name="dataType">float</property>
                                         </structure>
                                     </list-property>
-                                    <method name="onCreate"><![CDATA[vars["total_sorgho_available"] += vars["total_sorgho"];]]></method>
+                                    <method name="onCreate"><![CDATA[vars["total_sorgho_available"] += row["total_sorgho"];]]></method>
                                     <property name="resultSetColumn">total_sorgho</property>
                                 </data>
                             </cell>
@@ -6640,28 +6640,28 @@ and pl_code ilike ?]]></xml-property>
                             <cell id="1681">
                                 <property name="style">with_medium_border</property>
                                 <label id="1703">
-                                    <method name="onCreate"><![CDATA[this.text = vars["riz_theoritical_stock"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["riz_theoritical_stock"], 2);]]></method>
                                 </label>
                             </cell>
                             <cell id="1682"/>
                             <cell id="1683">
                                 <property name="style">with_medium_border</property>
                                 <label id="1704">
-                                    <method name="onCreate"><![CDATA[this.text = vars["oil_theoritical_stock"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["oil_theoritical_stock"], 2);]]></method>
                                 </label>
                             </cell>
                             <cell id="1684"/>
                             <cell id="1685">
                                 <property name="style">with_medium_border</property>
                                 <label id="1705">
-                                    <method name="onCreate"><![CDATA[this.text = vars["csb_theoritical_stock"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["csb_theoritical_stock"], 2);]]></method>
                                 </label>
                             </cell>
                             <cell id="1686"/>
                             <cell id="1687">
                                 <property name="style">with_medium_border</property>
                                 <label id="1706">
-                                    <method name="onCreate"><![CDATA[this.text = vars["sorgho_theoritical_stock"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["sorgho_theoritical_stock"], 2);]]></method>
                                 </label>
                             </cell>
                         </row>
@@ -6941,28 +6941,28 @@ and pl_code ilike ?]]></xml-property>
                             <cell id="1740">
                                 <property name="style">with_medium_border</property>
                                 <label id="1774">
-                                    <method name="onCreate"><![CDATA[this.text = vars["riz_ecart"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["riz_ecart"], 2);]]></method>
                                 </label>
                             </cell>
                             <cell id="1741"/>
                             <cell id="1742">
                                 <property name="style">with_medium_border</property>
                                 <label id="1775">
-                                    <method name="onCreate"><![CDATA[this.text = vars["oil_ecart"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["oil_ecart"], 2);]]></method>
                                 </label>
                             </cell>
                             <cell id="1743"/>
                             <cell id="1744">
                                 <property name="style">with_medium_border</property>
                                 <label id="1776">
-                                    <method name="onCreate"><![CDATA[this.text = vars["csb_ecart"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["csb_ecart"], 2);]]></method>
                                 </label>
                             </cell>
                             <cell id="1745"/>
                             <cell id="1746">
                                 <property name="style">with_medium_border</property>
                                 <label id="1777">
-                                    <method name="onCreate"><![CDATA[this.text = vars["sorgho_ecart"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["sorgho_ecart"], 2);]]></method>
                                 </label>
                             </cell>
                         </row>

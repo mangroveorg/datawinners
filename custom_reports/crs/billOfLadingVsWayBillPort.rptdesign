@@ -899,15 +899,15 @@ where A.packing_list_code LIKE ?]]></xml-property>
                 </structure>
                 <structure>
                     <property name="name">total_received</property>
-                    <expression name="expression">if('damaged_weight' in row){row['good_weight']+row['damaged_weight']}else{row["good_weight"]}</expression>
+                    <expression name="expression">if('damaged_weight' in row){BirtMath.round(row['good_weight']+row['damaged_weight'])}else{row["good_weight"]}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">excess_landed</property>
                     <expression name="expression">if(row['shipment_type']=='CONTAINER'){ 
-row['total_received']-row['weight_in_container']
+    BirtMath.round(row['total_received']-row['weight_in_container'], 2)
 }else{ 
-row['total_received']-row['gross_weight_bb']
+    BirtMath.round(row['total_received']-row['gross_weight_bb'], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
@@ -1719,6 +1719,7 @@ and t.issue_date <= ?]]></xml-property>
                         </row>
                     </grid>
                     <table id="1652">
+                        <property name="marginTop">10px</property>
                         <property name="dataSet">container and bb data set</property>
                         <list-property name="boundDataColumns">
                             <structure>

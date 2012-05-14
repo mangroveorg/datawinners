@@ -5,20 +5,6 @@
         <value>properties/messages</value>
         <value>properties/messages_fr_CA</value>
     </simple-property-list>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">12</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">12</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">12</property>
-        </structure>
-    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">fixed layout</property>
@@ -94,22 +80,22 @@
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">rice_loss</property>
-                    <expression name="expression">row["riz_sent"]-row["riz_received"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_sent"]-row["riz_received"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_loss</property>
-                    <expression name="expression">row["oil_sent"]-row["oil_received"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_sent"]-row["oil_received"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_loss</property>
-                    <expression name="expression">row["csb_sent"]-row["csb_received"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_sent"]-row["csb_received"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorghum_loss</property>
-                    <expression name="expression">row["sorghum_sent"]-row["sorghum_received"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorghum_sent"]-row["sorghum_received"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -190,42 +176,42 @@
                     <structure>
                         <property name="position">1</property>
                         <property name="name">riz_received</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">oil_received</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">csb_received</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">sorghum_received</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
                         <property name="name">riz_sent</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">6</property>
                         <property name="name">oil_sent</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">7</property>
                         <property name="name">csb_sent</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">8</property>
                         <property name="name">sorghum_sent</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">9</property>
@@ -255,70 +241,70 @@
                     <property name="position">1</property>
                     <property name="name">riz_received</property>
                     <property name="nativeName">riz_received</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">oil_received</property>
                     <property name="nativeName">oil_received</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">csb_received</property>
                     <property name="nativeName">csb_received</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">sorghum_received</property>
                     <property name="nativeName">sorghum_received</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
                     <property name="name">riz_sent</property>
                     <property name="nativeName">riz_sent</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">6</property>
                     <property name="name">oil_sent</property>
                     <property name="nativeName">oil_sent</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">7</property>
                     <property name="name">csb_sent</property>
                     <property name="nativeName">csb_sent</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">8</property>
                     <property name="name">sorghum_sent</property>
                     <property name="nativeName">sorghum_sent</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[(select * from   
 (select
-coalesce(SUM(CASE food_type WHEN 'RIZ' THEN good_net_weight	+ damaged_net_weight END), 0) AS riz_received,
-coalesce(SUM(CASE food_type WHEN 'HUILE' THEN good_net_weight + damaged_net_weight END), 0) AS oil_received,
-coalesce(SUM(CASE food_type WHEN 'CSB' THEN good_net_weight + damaged_net_weight END), 0) AS csb_received,
-coalesce(SUM(CASE food_type WHEN 'SORGHO' THEN good_net_weight + damaged_net_weight END), 0) AS sorghum_received,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'RIZ' THEN good_net_weight	+ damaged_net_weight END), 0) as numeric),2) AS riz_received,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'HUILE' THEN good_net_weight + damaged_net_weight END), 0) as numeric), 2) AS oil_received,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'CSB' THEN good_net_weight + damaged_net_weight END), 0) as numeric), 2) AS csb_received,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'SORGHO' THEN good_net_weight + damaged_net_weight END), 0) as numeric), 2) AS sorghum_received,
 
-coalesce(SUM(CASE food_type WHEN 'RIZ' THEN weight END), 0) AS riz_sent,
-coalesce(SUM(CASE food_type WHEN 'HUILE' THEN weight END), 0) AS oil_sent,
-coalesce(SUM(CASE food_type WHEN 'CSB' THEN weight END), 0) AS csb_sent,
-coalesce(SUM(CASE food_type WHEN 'SORGHO' THEN weight END), 0) AS sorghum_sent
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'RIZ' THEN weight END), 0) as numeric), 2) AS riz_sent,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'HUILE' THEN weight END), 0) as numeric), 2) AS oil_sent,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'CSB' THEN weight END), 0) as numeric), 2) AS csb_sent,
+    round(CAST(coalesce(SUM(CASE food_type WHEN 'SORGHO' THEN weight END), 0) as numeric), 2) AS sorghum_sent
 from crs_waybillreceived
 join
 crs_waybillsent
@@ -605,22 +591,22 @@ and received_date <= ?) as X);]]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">riz_loss_distribution</property>
-                    <expression name="expression">row["riz_received"]-row["riz_distributed"]-row["riz_sent"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_received"]-row["riz_distributed"]-row["riz_sent"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_loss_distribution</property>
-                    <expression name="expression">row["oil_received"]-row["oil_distributed"]-row["oil_sent"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_received"]-row["oil_distributed"]-row["oil_sent"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_loss_distribution</property>
-                    <expression name="expression">row["csb_received"]-row["csb_distributed"]-row["csb_sent"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_received"]-row["csb_distributed"]-row["csb_sent"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorgho_loss_distribution</property>
-                    <expression name="expression">row["sorghum_received"]-row["sorghum_distributed"]-row["sorghum_sent"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorghum_received"]-row["sorghum_distributed"]-row["sorghum_sent"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -1207,22 +1193,22 @@ where
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">riz_wh_loss</property>
-                    <expression name="expression">row["riz_th_stock"]-row["riz_ph_inv"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_th_stock"]-row["riz_ph_inv"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_wh_loss</property>
-                    <expression name="expression">row["oil_th_stock"]-row["oil_ph_inv"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_th_stock"]-row["oil_ph_inv"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_wh_loss</property>
-                    <expression name="expression">row["csb_th_stock"]-row["csb_ph_inv"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_th_stock"]-row["csb_ph_inv"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorgho_wh_loss</property>
-                    <expression name="expression">row["sorghum_th_stock"]-row["sorghum_ph_inv"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorghum_th_stock"]-row["sorghum_ph_inv"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -1305,26 +1291,10 @@ where
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">from_bb</property>
-                    <property name="paramName">from_date</property>
-                    <property name="dataType">date</property>
-                    <property name="position">4</property>
-                    <property name="isInput">true</property>
-                    <property name="isOutput">false</property>
-                </structure>
-                <structure>
-                    <property name="name">to_bb</property>
-                    <property name="paramName">to_date</property>
-                    <property name="dataType">date</property>
-                    <property name="position">5</property>
-                    <property name="isInput">true</property>
-                    <property name="isOutput">false</property>
-                </structure>
-                <structure>
                     <property name="name">from_container</property>
                     <property name="paramName">from_date</property>
                     <property name="dataType">date</property>
-                    <property name="position">6</property>
+                    <property name="position">4</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -1334,7 +1304,7 @@ where
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
-                    <property name="position">7</property>
+                    <property name="position">5</property>
                     <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
@@ -1345,7 +1315,7 @@ where
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
-                    <property name="position">8</property>
+                    <property name="position">6</property>
                     <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
@@ -1354,12 +1324,34 @@ where
                     <property name="name">to_container</property>
                     <property name="paramName">to_date</property>
                     <property name="dataType">date</property>
-                    <property name="position">9</property>
+                    <property name="position">7</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
                     <property name="name">param_5_1</property>
+                    <property name="paramName">to_date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">8</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">from_date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">9</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_5</property>
                     <property name="paramName">to_date</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
@@ -1375,22 +1367,22 @@ where
                     <structure>
                         <property name="position">1</property>
                         <property name="name">riz_th_stock</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">oil_th_stock</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">csb_th_stock</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">sorghum_th_stock</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
@@ -1440,29 +1432,29 @@ where
                     <property name="position">1</property>
                     <property name="name">riz_th_stock</property>
                     <property name="nativeName">riz_th_stock</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">oil_th_stock</property>
                     <property name="nativeName">oil_th_stock</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">csb_th_stock</property>
                     <property name="nativeName">csb_th_stock</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">sorghum_th_stock</property>
                     <property name="nativeName">sorghum_th_stock</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
@@ -1493,10 +1485,11 @@ where
                     <property name="nativeDataType">8</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[(select (coalesce(riz, 0) + coalesce(riz_received, 0) - coalesce(riz_sent, 0)) as riz_th_stock,
-(coalesce(oil, 0) + coalesce(oil_received, 0) - coalesce(oil_sent, 0)) as oil_th_stock,
-(coalesce(csb, 0) + coalesce(csb_received, 0) - coalesce(csb_sent, 0)) as csb_th_stock,
-(coalesce(sorghum, 0) + coalesce(sorghum_received, 0) - coalesce(sorghum_sent, 0)) as sorghum_th_stock,
+            <xml-property name="queryText"><![CDATA[(select 
+ROUND(CAST((coalesce(riz, 0) + coalesce(riz_received, 0) - coalesce(riz_sent, 0)) as numeric), 2) as riz_th_stock,
+ROUND(CAST((coalesce(oil, 0) + coalesce(oil_received, 0) - coalesce(oil_sent, 0)) as numeric), 2) as oil_th_stock,
+ROUND(CAST((coalesce(csb, 0) + coalesce(csb_received, 0) - coalesce(csb_sent, 0)) as numeric), 2) as csb_th_stock,
+ROUND(CAST((coalesce(sorghum, 0) + coalesce(sorghum_received, 0) - coalesce(sorghum_sent, 0)) as numeric), 2) as sorghum_th_stock,
 
 coalesce(riz_ph_inv, 0) as riz_ph_inv,
 coalesce(oil_ph_inv, 0) as oil_ph_inv,

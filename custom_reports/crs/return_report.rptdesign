@@ -148,42 +148,42 @@ default:
                 <structure>
                     <property name="name">total_received</property>
                     <expression name="expression">if(row["good_net_weight"] != null){
-row["good_net_weight"]+row["damaged_net_weight"]
+   BirtMath.round(row["good_net_weight"]+row["damaged_net_weight"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">quantity_lost_in_transport</property>
                     <expression name="expression">if(row["total_received"] != null){
-	row["weight"]-row["total_received"]
+	BirtMath.round(row["weight"]-row["total_received"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">quantity_not_distributed</property>
                     <expression name="expression">if("distributed" in row &amp;&amp; row["distributed"]!=null){
-	row["total_received"]-row["distributed"]
+	BirtMath.round(row["total_received"]-row["distributed"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">lost_in_distribution</property>
                     <expression name="expression">if(row["quantity_returned"] != null){
-	row["quantity_not_distributed"]-row["quantity_returned"]
+	BirtMath.round(row["quantity_not_distributed"]-row["quantity_returned"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">total_received_from_site</property>
                     <expression name="expression">if(row["quantity_damaged_returned"] != null){
-	row["quantity_good_returned"]+row["quantity_damaged_returned"]
+	BirtMath.round(row["quantity_good_returned"]+row["quantity_damaged_returned"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">quantity_lost_received_from_site</property>
                     <expression name="expression">if(row["total_received_from_site"] != null){
-	row["quantity_returned"]-row["total_received_from_site"]
+	BirtMath.round(row["quantity_returned"]-row["total_received_from_site"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
@@ -1235,6 +1235,18 @@ and wh_sent_date <= ?
                                 <property name="backgroundImage">images/header_app_bg.gif</property>
                                 <property name="backgroundImageType">embed</property>
                                 <image id="724">
+                                    <property name="borderBottomColor">#202020</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#202020</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#202020</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#202020</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
                                     <property name="height">20px</property>
                                     <property name="width">133px</property>
                                     <structure name="toc"/>
@@ -1252,6 +1264,7 @@ and wh_sent_date <= ?
                         </row>
                     </grid>
                     <table id="725">
+                        <property name="marginTop">10px</property>
                         <property name="width">23.694444444444443in</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
