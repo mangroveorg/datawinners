@@ -2,4 +2,4 @@
 
 PROJECT_NAME = u"clinic4 test project"
 
-PAGE_TITLE = "Web Submission"
+PREVIEW_TITLE = "Questionnaire Preview"

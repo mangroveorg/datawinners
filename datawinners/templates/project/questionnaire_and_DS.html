@@ -20,7 +20,10 @@
         {% endif %}
         <div class="line"></div>
         {% if 'web' in project.devices %}
-            <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire"> {% trans "Web Questionnaire" %}</a></li>
+            <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire preview"> {% trans "Web Questionnaire" %}</a></li>
+            <div class="questionnaire_preview">
+                {% trans "Generating the questionnaire preview." %}
+            </div>
         {% endif %}
         <div class="line"></div>
         {% if 'smartPhone' in project.devices %}

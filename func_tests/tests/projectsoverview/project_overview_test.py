@@ -4,7 +4,8 @@ from framework.base_test import BaseTest
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.projectsoverview.project_overview_data import PROJECT_NAME, PAGE_TITLE
+from tests.projectsoverview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE
+
 
 @attr('suit_1')
 class TestProjectOverview(BaseTest):
@@ -24,6 +25,5 @@ class TestProjectOverview(BaseTest):
         """
         all_project_page = self.prerequisites_of_project_overview()
         project_overview_page = all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
-        project_overview_page.open_web_questionnaire()
-        self.driver.wait_for_page_with_title(15, PAGE_TITLE)
-        self.assertEqual(self.driver.get_title(), PAGE_TITLE)
+        light_box = project_overview_page.open_web_questionnaire_preview()
+        self.assertEqual(light_box.get_title_of_light_box(), PREVIEW_TITLE)
