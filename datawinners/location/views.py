@@ -18,7 +18,7 @@ def places  (request):
     profile = user.get_profile()
     organization = Organization.objects.get(org_id = profile.org_id)
     query_string = request.GET.get('term')
-    country_name = ugettext(organization.country.name)
+    country_name = organization.country_name()
     location_group = get_location_groups_for_country(country=country_name, start_with=query_string)
     categories = map_location_groups_to_categories(location_group, country=country_name)
 

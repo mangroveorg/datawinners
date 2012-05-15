@@ -32,7 +32,7 @@
                         <li><label>{% trans "City" %}</label>{{ organization.city }}</li>
                         <li><label>{% trans "State / Province" %}</label>{{ organization.state }}</li>
                         <li><label>{% trans "Postal / Zip Code" %}</label>{{ organization.zipcode }}</li>
-                        <li><label>{% trans "Country" %}</label>{{ organization.country }}</li>
+                        <li><label>{% trans "Country" %}</label>{% trans organization.country %}</li>
                         <li><label>{% trans "Office Phone Number" %}</label>{{ organization.office_phone }}</li>
                         <li><label>{% trans "Website Url" %}</label>{{ organization.website }}</li>
                     </ul>

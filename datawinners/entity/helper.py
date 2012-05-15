@@ -177,7 +177,7 @@ def process_create_datasender_form(dbm, form, org_id, project):
 
         try:
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country),
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name()),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             message = get_success_msg_for_registration_using(response, "web")
             project_id = form.cleaned_data["project_id"]

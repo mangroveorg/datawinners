@@ -29,7 +29,7 @@ def get_organization(request):
     return Organization.objects.get(org_id=profile.org_id)
 
 def get_organization_country(request):
-    return get_organization(request).country
+    return get_organization(request).country_name()
 
 def convert_to_ordinal(number):
     if 10 < number < 14: return _('%dth') % number

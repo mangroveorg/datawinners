@@ -42,7 +42,7 @@ def make_user_as_a_datasender(manager, organization, current_user_name, mobile_n
     total_entity = get_entity_count_for_type(manager, [REPORTER])
     reporter_short_code = 'rep' + str(total_entity+1)
     entity = create_entity(dbm=manager, entity_type=REPORTER_ENTITY_TYPE, short_code=reporter_short_code,
-        location=[ugettext(organization.country.name)])
+        location=[organization.country_name()])
     mobile_number_type = get_or_create_data_dict(manager, name='Mobile Number Type', slug='mobile_number',
         primitive_type='string')
     name_type = get_or_create_data_dict(manager, name='Name', slug='name', primitive_type='string')

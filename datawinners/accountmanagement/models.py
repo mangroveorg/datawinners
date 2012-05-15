@@ -3,6 +3,7 @@ import datetime
 
 from django.conf import settings
 from django.db import models
+from django.utils.translation import ugettext
 from django_countries import CountryField
 from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT
 from datawinners.utils import generate_document_store_name
@@ -26,6 +27,9 @@ class Organization(models.Model):
     in_trial_mode = models.BooleanField(default=False)
     active_date = models.DateTimeField(blank=True, null=True)
     is_deactivate_email_sent = models.BooleanField(False)
+
+    def country_name(self):
+        return ugettext(self.country.name)
 
     def is_expired(self, current_time=None):
         if not self.in_trial_mode or self.active_date is None:
