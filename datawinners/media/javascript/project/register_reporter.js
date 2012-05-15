@@ -1,28 +1,74 @@
-$(document).ready(function() {
+DW.Device = function (deviceElement) {
+    this.deviceElement = deviceElement;
+    this.disable = function () {
+        $(this.deviceElement).attr("disabled", true);
+    };
+    this.enable = function () {
+        $(this.deviceElement).attr("disabled", false);
+    };
+    this.checked = function () {
+        $(this.deviceElement).attr("checked", "checked");
+    }
+};
+
+
+var sms_device = new DW.Device("#id_devices_0");
+
+DW.Email = function(emailFieldId, emailHelpTextId, visibilityFactor){
+    this.setVisibility = function() {
+        if($(visibilityFactor).is(":checked")) show();
+        else hide();
+    };
+
+    var hide = function(){
+        $(emailFieldId).hide();
+        $(emailHelpTextId).hide();
+    };
+
+    var show = function(){
+        $(emailFieldId).show();
+        $(emailHelpTextId).show();
+    };
+};
+
+var email = new DW.Email("#email_field", "#email_field_help_text", "#id_devices_1");
+
+$(document).ready(function () {
+    sms_device.disable();
+    email.setVisibility();
     $(document).ajaxStop($.unblockUI);
-    $("#id_register_button").unbind().live('click', function() {
+    $("#id_devices_1").unbind().live('click', function () {
+        email.setVisibility();
+    });
+    $("#id_register_button").unbind().live('click', function () {
         $.blockUI({
-            message: '<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
-            css: { width:'275px',top: '400px', left: '800px'}
+            message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
+            css:{ width:'275px', top:'400px', left:'800px'}
         });
         $.ajax({
-            type: 'POST',
-            url: sender_registration_link,
-            data: $("#registration_form").serialize(),
-            success:function(response) {
+            type:'POST',
+            url:sender_registration_link,
+            data:$("#registration_form").serialize(),
+            success:function (response) {
                 $("#add_data_sender_form").html(response);
                 $("#id_location").catcomplete({
-                    source: "/places"});
-            },
-            error: function(e) {
-                $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
-            }
+                    source:"/places"});
+                sms_device.checked();
+                sms_device.disable();
+                email.setVisibility();
 
+            },
+            error:function (e) {
+                $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");
+                sms_device.checked();
+                sms_device.disable();
+                email.setVisibility();
+            }
         });
     });
 
     $("#id_location").catcomplete({
-        source: "/places"
+        source:"/places"
     });
 
 });

@@ -4173,3 +4173,6 @@ msgstr "CSR Magasin"
 
 msgid "CSR Warehouse description"
 msgstr "Commodity Status Report – Au Niveau du Magasin"
+
+msgid "email_example"
+msgstr ""

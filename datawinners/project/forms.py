@@ -1,10 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import calendar
-from django.db.models.fields import TextField
 from django.forms import DecimalField
 
-from django.forms.fields import CharField, ChoiceField, MultipleChoiceField, BooleanField
-from django.core.exceptions import ValidationError
+from django.forms.fields import CharField, ChoiceField, BooleanField
 from django.forms.forms import Form
 from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django.forms.widgets import RadioFieldRenderer, RadioInput

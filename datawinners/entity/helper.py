@@ -145,7 +145,7 @@ def _get_data(form_data, country):
     data[mapper['telephone_number']] = form_data.get('telephone_number')
     data[mapper['location']] = get_country_appended_location(form_data.get('location'), country)
     data[mapper['geo_code']] = form_data.get('geo_code')
-    data[mapper['Name']] = form_data.get('first_name')
+    data[mapper['Name']] = form_data.get('name')
     data['form_code'] = REGISTRATION_FORM_CODE
     data[ENTITY_TYPE_FIELD_CODE] = REPORTER
     return data

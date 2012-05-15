@@ -1,8 +1,12 @@
-from django.forms import HiddenInput, forms
-from django.forms.fields import RegexField, CharField, FileField
+from django import forms
+from django.contrib.auth.models import User
+from django.forms import HiddenInput
+from django.forms.fields import RegexField, CharField, FileField, MultipleChoiceField, EmailField
+from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
+from registration.forms import RegistrationFormUniqueEmail
 from datawinners.entity.fields import PhoneNumberField
 import re
 
@@ -31,17 +35,25 @@ class SubjectForm(Form):
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
-    first_name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
+    name = RegexField(regex="[^0-9.,\s@#$%&*~]*", max_length=20,
         error_message=_("Please enter a valid value containing only letters a-z or A-Z or symbols '`- "),
         label=_("Name"))
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
     location = CharField(max_length=100, required=False, label=_("Enter location"))
     project_id = CharField(required=False, widget=HiddenInput())
+    DEVICE_CHOICES = (('sms', 'SMS'), ('web', _('WEB + SmartPhone')))
+    devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple, choices=DEVICE_CHOICES,
+        initial=['sms'], required=False)
+    email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
+        maxlength=75)),
+        label=_("Email address"),
+        error_messages={
+            'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
+        self.fields['name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
         self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number")
         self.fields['location'].widget.attrs['watermark'] = _("Enter region, district or commune")
         self.fields['geo_code'].widget.attrs['watermark'] = _("Enter lat and long eg: 19.3,42.37")
@@ -75,6 +87,7 @@ class ReporterRegistrationForm(Form):
             self.cleaned_data['geo_code'] = geo_code_string
 
     def clean(self):
+        self.convert_email_to_lowercase()
         location = self.cleaned_data.get("location")
         geo_code = self.cleaned_data.get("geo_code")
         if not (bool(location) or bool(geo_code)):
@@ -84,6 +97,32 @@ class ReporterRegistrationForm(Form):
         if bool(geo_code):
             self._geo_code_validations(geo_code)
         return self.cleaned_data
+
+    def clean_email(self):
+        """
+        Validate that the supplied email address is unique for the
+        site.
+
+        """
+        devices = self.cleaned_data.get('devices')
+        if not devices.__contains__('web'):
+            return
+
+        email = self.cleaned_data.get('email')
+        if is_empty(email):
+            msg = _('This field is required.')
+            self._errors['email'] = self.error_class([msg])
+            return
+
+        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+        return self.cleaned_data['email']
+
+    def convert_email_to_lowercase(self):
+        email = self.cleaned_data.get('email')
+        if email is not None:
+            self.cleaned_data['email'] = email.lower()
+
 
 
 class SubjectUploadForm(Form):
