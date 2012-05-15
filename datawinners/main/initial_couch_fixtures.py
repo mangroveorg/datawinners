@@ -205,7 +205,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
     project1.reminder_and_deadline = weekly_reminder_and_deadline
@@ -243,7 +243,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli002").delete()
         qid2 = form_model2.save()
     project2 = Project(name="Clinic2 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project2.qid = qid2
     project2.state = ProjectState.ACTIVE
     try:
@@ -261,7 +261,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli003").delete()
         qid3 = form_model3.save()
     project3 = Project(name="Clinic3 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project3.qid = qid3
     project3.state = ProjectState.TEST
     try:
@@ -279,7 +279,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli004").delete()
         qid4 = form_model4.save()
     project4 = Project(name="Clinic4 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project4.qid = qid4
     project4.state = ProjectState.TEST
     try:
@@ -297,7 +297,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli005").delete()
         qid5 = form_model5.save()
     project5 = Project(name="Clinic5 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project5.qid = qid5
     project5.state = ProjectState.TEST
     try:
@@ -315,7 +315,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli006").delete()
         qid6 = form_model6.save()
     project6 = Project(name="Clinic6 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project6.qid = qid6
     project6.state = ProjectState.TEST
     try:
@@ -333,7 +333,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli007").delete()
         qid7 = form_model7.save()
     project7 = Project(name="Clinic7 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project7.qid = qid7
     project7.state = ProjectState.TEST
     try:
@@ -380,7 +380,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli009").delete()
         qid = form_model10.save()
     project9 = Project(name="Clinic9 Reminder Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                       entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project9.qid = qid
     project9.state = ProjectState.ACTIVE
     project9.reminder_and_deadline = weekly_reminder_and_deadline
@@ -418,7 +418,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli010").delete()
         qid10 = form_model10.save()
     project10 = Project(name="Clinic DS W/O Submission (Following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project10.qid = qid10
     project10.state = ProjectState.ACTIVE
     project10.reminder_and_deadline = weekly_reminder_and_deadline
@@ -464,7 +464,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli011").delete()
         qid11 = form_model11.save()
     project11 = Project(name="Clinic All DS (Following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project11.qid = qid11
     project11.state = ProjectState.ACTIVE
     project11.reminder_and_deadline = weekly_reminder_and_deadline
@@ -510,7 +510,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli012").delete()
         qid12 = form_model12.save()
     project12 = Project(name="Clinic DS W/O Submission (That)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project12.qid = qid12
     project12.state = ProjectState.ACTIVE
     project12.reminder_and_deadline = weekly_reminder_and_deadline
@@ -557,7 +557,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli013").delete()
         qid13 = form_model13.save()
     project13 = Project(name="Clinic DS W/O Monthly Submission (Same)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project13.qid = qid13
     project13.state = ProjectState.ACTIVE
     project13.reminder_and_deadline = monthly_reminder_and_deadline
@@ -604,7 +604,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli014").delete()
         qid14 = form_model14.save()
     project14 = Project(name="Clinic DS W/O Monthly Submission (following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project14.qid = qid14
     project14.state = ProjectState.ACTIVE
     project14.reminder_and_deadline = monthly_reminder_and_deadline
@@ -650,7 +650,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli015").delete()
         qid15 = form_model15.save()
     project15 = Project(name="Clinic All DS Monthly Submission (following)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project15.qid = qid15
     project15.state = ProjectState.ACTIVE
     project15.reminder_and_deadline = monthly_reminder_and_deadline
@@ -696,7 +696,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli016").delete()
         qid16 = form_model16.save()
     project16 = Project(name="Clinic All DS Monthly Submission (that)", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project16.qid = qid16
     project16.state = ProjectState.ACTIVE
     project16.reminder_and_deadline = monthly_reminder_and_deadline
@@ -733,7 +733,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
         get_form_model_by_code(manager, "cli017").delete()
         qid17 = form_model17.save()
     project17 = Project(name="Clinic13 Test Project", goals="This project is for automation", project_type="survey",
-                       entity_type='clinic', devices=["sms", "web"], activity_report='yes', sender_group="close")
+                       entity_type='clinic', devices=["sms", "web", "smartPhone"], activity_report='yes', sender_group="close")
     project17.qid = qid17
     project17.state = ProjectState.TEST
     try:
@@ -1161,7 +1161,7 @@ def create_clinic_project_for_trial_account(CLINIC_ENTITY_TYPE, manager, trial_o
         get_form_model_by_code(manager, "cli001").delete()
         qid = form_model.save()
     project1 = Project(name="Clinic Test Project", goals="This project is for automation", project_type="survey",
-                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web"], activity_report='no', sender_group="close")
+                      entity_type=CLINIC_ENTITY_TYPE[-1], devices=["sms", "web", "smartPhone"], activity_report='no', sender_group="close")
     project1.qid = qid
     project1.state = ProjectState.ACTIVE
     project1.reminder_and_deadline = weekly_reminder_and_deadline
