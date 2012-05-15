@@ -2,7 +2,6 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from datawinners.main.initial_couch_fixtures import load_data, load_test_managers,  load_all_managers
-import mangrove
 from mangrove.datastore.database import _delete_db_and_remove_db_manager, get_db_manager
 from mangrove.bootstrap import initializer
 
