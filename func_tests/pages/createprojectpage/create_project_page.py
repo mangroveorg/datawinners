@@ -79,7 +79,7 @@ class CreateProjectPage(Page):
 
     def set_subject(self, project_data):
         subject = fetch_(SUBJECT, from_(project_data))
-        if len(subject) != 0:
+        if len(subject):
             self.driver.find_drop_down(SUBJECTS_DD).set_selected(subject)
         return self
 

@@ -1,3 +1,16 @@
+DW.devices = function (smsElement) {
+    this.smsElement = smsElement;
+};
+
+DW.devices.prototype = {
+    disableSMSElement:function () {
+        $(this.smsElement).attr("disabled", true);
+    },
+    enableSMSElement:function () {
+        $(this.smsElement).attr("disabled", false);
+    }
+};
+
 DW.questionnaire_section = function (questionnaire_form_element) {
     this.questionnaire_form_element = questionnaire_form_element;
 };
@@ -70,6 +83,7 @@ var basic_project_info = new DW.basic_project_info('#create_project_form');
 var questionnnaire_code = new DW.questionnaire_code("#questionnaire-code", "#questionnaire-code-error");
 var questionnaire_form = new DW.questionnaire_form('#question_form');
 var questionnaire_section = new DW.questionnaire_section("#questionnaire");
+var devices = new DW.devices("#id_devices_0");
 
 DW.post_project_data = function (state, function_to_construct_redirect_url_on_success) {
     var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
