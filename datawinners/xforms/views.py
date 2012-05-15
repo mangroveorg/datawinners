@@ -25,8 +25,8 @@ def restrict_request_country(f):
     return wrapper
 
 
+@csrf_exempt
 @httpdigest
-@restrict_request_country
 def formList(request):
     rows = get_all_project_for_user(request.user)
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
@@ -62,6 +62,7 @@ def submission(request):
     return response
 
 
+@csrf_exempt
 @httpdigest
 @restrict_request_country
 def xform(request, questionnaire_code=None):
