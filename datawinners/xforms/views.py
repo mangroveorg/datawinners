@@ -47,7 +47,7 @@ def submission(request):
         reporter_name = get_by_short_code(manager, reporter_id, ["reporter"]).data['name']['value']
         mangrove_request = Request(message=(request.FILES.get("xml_submission_file").read()),
             transportInfo=
-            TransportInfo(transport="xform",
+            TransportInfo(transport="smartPhone",
                 source=(reporter_id, reporter_name),
                 destination=""
             ))
