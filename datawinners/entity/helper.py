@@ -10,7 +10,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
     NAME_FIELD_CODE, LOCATION_TYPE_FIELD_NAME, LOCATION_TYPE_FIELD_CODE,\
     GEO_CODE, MOBILE_NUMBER_FIELD, MOBILE_NUMBER_FIELD_CODE,\
     SHORT_CODE_FIELD, REGISTRATION_FORM_CODE,\
-    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE
+    ENTITY_TYPE_FIELD_CODE, GEO_CODE_FIELD_NAME, SHORT_CODE, REPORTER
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
@@ -147,7 +147,7 @@ def _get_data(form_data, country):
     data[mapper['geo_code']] = form_data.get('geo_code')
     data[mapper['Name']] = form_data.get('first_name')
     data['form_code'] = REGISTRATION_FORM_CODE
-    data[ENTITY_TYPE_FIELD_CODE] = 'Reporter'
+    data[ENTITY_TYPE_FIELD_CODE] = REPORTER
     return data
 
 
