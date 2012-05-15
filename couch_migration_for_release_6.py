@@ -12,7 +12,7 @@ def migrate_01(managers):
             rows = manager.load_all_rows_in_view('all_projects')
             for row in rows:
                 document = row['value']
-                if 'web' in document['devices'] and 'smartPhone' not in document['devices']:
+                if 'smartPhone' not in document['devices']:
                     document['devices'] = ["sms", "web", "smartPhone"]
 
                     print ("Updating project %s devices to have smartPhone option") % (document['name'],)
