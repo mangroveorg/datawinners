@@ -1,3 +1,4 @@
+from django_countries.fields import Country
 from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from django.utils import unittest
@@ -14,7 +15,7 @@ class TestPostActivationEvents(unittest.TestCase):
         self.username = 'user_for_active@org.com'
         self.paid_user, _ = User.objects.get_or_create(username=self.username,email=self.username,password='1')
         self.paid_user.save()
-        self.paid_org = Organization(name='test_org_for_correct_active_date', sector='PublicHealth', address='add', city='city', country='country',
+        self.paid_org = Organization(name='test_org_for_correct_active_date', sector='PublicHealth', address='add', city='city', country=Country('MG'),
         zipcode='10000', active_date=None)
         self.paid_org.save()
         self.mobile_number = "1233"
@@ -25,7 +26,7 @@ class TestPostActivationEvents(unittest.TestCase):
         self.trial_user, _ = User.objects.get_or_create(username=self.trial_username,email=self.trial_username,password='1')
         self.trial_user.save()
 
-        self.trial_org = Organization(name='trial_org', sector='PublicHealth', address='add', city='city', country='country',
+        self.trial_org = Organization(name='trial_org', sector='PublicHealth', address='add', city='city', country=Country('MG'),
         zipcode='10000', active_date=None, in_trial_mode=True,org_id='test')
         self.trial_org.save()
 
