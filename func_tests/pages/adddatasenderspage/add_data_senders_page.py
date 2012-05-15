@@ -19,7 +19,7 @@ class AddDataSenderPage(Page):
 
         Return self
         """
-        self.driver.find_text_box(FIRST_NAME_TB).enter_text(
+        self.driver.find_text_box(NAME_TB).enter_text(
             fetch_(NAME, from_(registration_data)))
         self.driver.find_text_box(MOBILE_NUMBER_TB).enter_text(
             fetch_(MOBILE_NUMBER, from_(registration_data)))
