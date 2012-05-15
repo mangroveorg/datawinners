@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
+from django_countries.countries import COUNTRIES
 from datawinners.accountmanagement.post_activation_events import make_user_as_a_datasender
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER, CRS_ORG_ID
 
@@ -167,6 +168,7 @@ def settings(request):
     if request.method == 'GET':
         organization = get_organization(request)
         organization_form = OrganizationForm(instance=organization)
+
         return render_to_response("accountmanagement/account/org_settings.html",
                 {'organization_form': organization_form}, context_instance=RequestContext(request))
 

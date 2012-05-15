@@ -13,7 +13,7 @@ from datawinners.entity.fields import PhoneNumberField
 from mangrove.errors.MangroveException import AccountExpiredException
 from models import  Organization
 from django.contrib.auth.models import User
-from django_countries.countries import OFFICIAL_COUNTRIES
+from django_countries.countries import  COUNTRIES
 
 def get_organization_sectors():
     return (('', _('Please Select...')),
@@ -29,13 +29,11 @@ def get_organization_sectors():
 
 
 def get_country_list():
-    return (('', _('Please Select...')),) + tuple(sorted(OFFICIAL_COUNTRIES.items(), key=lambda (k, v): (v, k)))
-
+    return (('', _('Please Select...')),) + tuple(sorted(COUNTRIES, key=lambda (k, v): (v, k)))
 
 
 class OrganizationForm(ModelForm):
     required_css_class = 'required'
-
     name = forms.CharField(required=True, label=_('Organization name'))
     sector = forms.CharField(required=False, widget=(
         forms.Select(attrs={'class': 'width-200px'}, choices=get_organization_sectors())),
@@ -43,8 +41,8 @@ class OrganizationForm(ModelForm):
     address = forms.CharField(required=True, max_length=30, label=_('Address'))
     city = forms.CharField(max_length=30, required=True, label=_('City'))
     state = forms.CharField(max_length=30, required=False, label=_('State / Province'))
-    country = forms.CharField(max_length=30, required=True, widget=(
-        forms.TextInput(attrs={'disabled': 'disabled'})),
+    country = forms.CharField(required=True, widget=(
+        forms.Select(attrs={'class': 'width-200px', 'disabled':'disabled'}, choices=get_country_list())),
         label=_('Country'))
     zipcode = forms.CharField(max_length=30, required=True, label=_('Postal / Zip Code'))
     office_phone = PhoneNumberField(required=False, label=_("Office Phone Number"))
@@ -52,7 +50,7 @@ class OrganizationForm(ModelForm):
 
     class Meta:
         model = Organization
-        exclude = ('in_trial_mode', 'active_date', 'is_deactivate_email_sent', 'addressline2', )
+        exclude = ('in_trial_mode', 'active_date', 'is_deactivate_email_sent', 'addressline2')
 
 
     def update(self):

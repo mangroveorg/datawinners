@@ -3,6 +3,7 @@ import datetime
 
 from django.conf import settings
 from django.db import models
+from django_countries import CountryField
 from datawinners.tests.data import LIMIT_TRIAL_ORG_MESSAGE_COUNT
 from datawinners.utils import generate_document_store_name
 from datawinners.accountmanagement.organization_id_creator import OrganizationIdCreator
@@ -17,7 +18,7 @@ class Organization(models.Model):
     addressline2 = models.TextField(blank=True)
     city = models.TextField()
     state = models.TextField(blank=True)
-    country = models.TextField()
+    country = CountryField()
     zipcode = models.TextField()
     office_phone = models.TextField(blank=True)
     website = models.TextField(blank=True)

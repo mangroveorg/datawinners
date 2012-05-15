@@ -17,8 +17,8 @@ def restrict_request_country(f):
         request = args[0]
         user = request.user
         org = Organization.objects.get(org_id=user.get_profile().org_id)
-        country_name_by_ip = GeoIP().country_name_by_addr(request.META.get('REMOTE_ADDR'))
-        if country_name_by_ip is None or org.country.lower() == country_name_by_ip.lower():
+        country_code = GeoIP().country_code(request.META.get('REMOTE_ADDR'))
+        if country_code is None or org.country.code == country_code:
             return f(*args, **kw)
         return HttpResponse(status=401)
 
