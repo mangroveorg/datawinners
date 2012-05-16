@@ -27,6 +27,7 @@ def restrict_request_country(f):
 
 @csrf_exempt
 @httpdigest
+@restrict_request_country
 def formList(request):
     rows = get_all_project_for_user(request.user)
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
@@ -64,7 +65,6 @@ def submission(request):
 
 @csrf_exempt
 @httpdigest
-@restrict_request_country
 def xform(request, questionnaire_code=None):
     return HttpResponse(content=xform_for(get_database_manager(request.user), questionnaire_code),
         mimetype="text/xml")
