@@ -162,14 +162,14 @@ def process_create_datasender_form(dbm, form, org_id):
         if not unique(dbm, telephone_number):
             form._errors['telephone_number'] = form.error_class(
                 [(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
-            return message
+            return None,message
 
         organization = Organization.objects.get(org_id=org_id)
         if organization.in_trial_mode:
             if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
                 form._errors['telephone_number'] = form.error_class(
                     [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
-                return message
+                return None,message
             else:
                 add_data_sender_to_trial_organization(telephone_number, org_id)
 
