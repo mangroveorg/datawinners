@@ -126,10 +126,7 @@ def create_registration_form(manager, entity_name):
     return form_model
 
 
-def _associate_data_sender_to_project(dbm, project, project_id, response):
-    project = project.load(dbm.database, project_id)
-    project.data_senders.append(response.short_code)
-    project.save(dbm)
+
 
 
 def get_country_appended_location(location_hierarchy, country):
@@ -157,8 +154,9 @@ def add_data_sender_to_trial_organization(telephone_number, org_id):
     data_sender.save()
 
 
-def process_create_datasender_form(dbm, form, org_id, project):
+def process_create_datasender_form(dbm, form, org_id):
     message = None
+    data_sender_id = None
     if form.is_valid():
         telephone_number = form.cleaned_data["telephone_number"]
         if not unique(dbm, telephone_number):
@@ -179,14 +177,13 @@ def process_create_datasender_form(dbm, form, org_id, project):
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name()),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
+            data_sender_id = response.short_code
             message = get_success_msg_for_registration_using(response, "web")
-            project_id = form.cleaned_data["project_id"]
-            if not is_empty(project_id):
-                _associate_data_sender_to_project(dbm, project, project_id, response)
+
         except MangroveException as exception:
             message = exception.message
 
-    return message
+    return data_sender_id,message
 
 
 def question_code_generator():

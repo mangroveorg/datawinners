@@ -94,7 +94,7 @@ def create_datasender(request):
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
-        message = process_create_datasender_form(dbm, form, org_id, Project)
+        _,message = process_create_datasender_form(dbm, form, org_id)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
@@ -192,33 +192,39 @@ def _get_project_association(projects):
     return project_association
 
 
+def create_web_user(org_id, email_address, reporter_id, language_code):
+    errors = []
+    users = User.objects.filter(email=email_address)
+    if len(users) > 0:
+        errors.append("User with email %s already exists" % email_address)
+    if len(errors) > 0:
+        content = json.dumps({'success': False, 'errors': errors})
+    else:
+        user = User.objects.create_user(email_address, email_address, 'test123')
+        group = Group.objects.filter(name="Data Senders")[0]
+        user.groups.add(group)
+        user.save()
+        profile = NGOUserProfile(user=user, org_id=org_id, title="Mr", reporter_id=reporter_id)
+        profile.save()
+        reset_form = PasswordResetForm({"email": user.email})
+        reset_form.is_valid()
+        reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
+        content = json.dumps({'success': True, 'message': "Users has been created"})
+    return HttpResponse(content)
+
+
 @login_required(login_url='/login')
 @csrf_view_exempt
 @is_not_expired
 def create_web_users(request):
     org_id = request.user.get_profile().org_id
     if request.method == 'POST':
-        errors = []
-        post_data = json.loads(request.POST['post_data'])
-        for data in post_data:
-            users = User.objects.filter(email=data['email'])
-            if len(users) > 0:
-                errors.append("User with email %s already exists" % data['email'])
-        if len(errors) > 0:
-            return HttpResponse(json.dumps({'success': False, 'errors': errors}))
+        data = json.loads(request.POST['post_data'])[0]
+        email_address = data['email']
+        reporter_id = data['reporter_id']
+        language_code = request.LANGUAGE_CODE
 
-        for data in post_data:
-            user = User.objects.create_user(data['email'], data['email'], 'test123')
-            group = Group.objects.filter(name="Data Senders")[0]
-            user.groups.add(group)
-            user.save()
-            profile = NGOUserProfile(user=user, org_id=org_id, title="Mr", reporter_id=data['reporter_id'])
-            profile.save()
-            reset_form = PasswordResetForm({"email": user.email})
-            reset_form.is_valid()
-            reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
-
-        return HttpResponse(json.dumps({'success': True, 'message': "Users has been created"}))
+        return create_web_user(org_id, email_address, reporter_id, language_code)
 
 
 @csrf_view_exempt

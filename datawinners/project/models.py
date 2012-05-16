@@ -297,9 +297,13 @@ class Project(DocumentBase):
         form_model = dbm.get(self.qid, FormModel)
         return form_model
 
-    def delete_datasender(self, manager, entity_id):
+    def delete_datasender(self, dbm, entity_id):
         self.data_senders.remove(entity_id)
-        self.save(manager)
+        self.save(dbm)
+
+    def associate_data_sender_to_project(self, dbm, data_sender_code):
+        self.data_senders.append(data_sender_code)
+        self.save(dbm)
 
 
 def get_all_projects(dbm, data_sender_id=None):
@@ -315,3 +319,4 @@ def count_projects(dbm, include_voided_projects=True):
         rows = dbm.load_all_rows_in_view('count_projects', reduce=True, group_level=1, key=False)
 
     return rows[0]['value'] if not is_empty(rows) else 0
+
