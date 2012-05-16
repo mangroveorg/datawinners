@@ -1626,6 +1626,7 @@ msgstr "Enter a combination of 3-6 letters and/or numbers (or both). Your Data S
 "Your questionnaire code will appear on the printed version of your questionnaire."
 
 #: templates/project/questionnaire_wizard.html:117
+#: templates/project/create_project.html:142
 msgid "SMS Preview"
 msgstr ""
 

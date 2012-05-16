@@ -1647,6 +1647,7 @@ msgstr "Entrez une combinaison de 3-6 lettres et/ou de chiffres (ou les deux). V
 "sur la version imprimée de votre questionnaire."
 
 #: templates/project/questionnaire_wizard.html:117
+#: templates/project/create_project.html:142
 msgid "SMS Preview"
 msgstr "Aperçu du SMS"
 

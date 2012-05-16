@@ -1494,6 +1494,7 @@ msgid "SMS Questionnaire Code:"
 msgstr "Code SMS Questionnaire"
 
 #: templates/project/questionnaire_wizard.html:117
+#: templates/project/create_project.html:142
 msgid "SMS Preview"
 msgstr "Aperçu du SMS"
 
