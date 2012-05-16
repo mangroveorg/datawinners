@@ -14,7 +14,7 @@ DW.Device = function (deviceElement) {
 
 var sms_device = new DW.Device("#id_devices_0");
 
-DW.Email = function(emailFieldId, emailHelpTextId, visibilityFactor){
+DW.Email = function(emailFieldId, emailHelpTextId, userCreationInfoLabelId, visibilityFactor){
     this.setVisibility = function() {
         if($(visibilityFactor).is(":checked")) show();
         else hide();
@@ -23,15 +23,17 @@ DW.Email = function(emailFieldId, emailHelpTextId, visibilityFactor){
     var hide = function(){
         $(emailFieldId).hide();
         $(emailHelpTextId).hide();
+        $(userCreationInfoLabelId).hide();
     };
 
     var show = function(){
         $(emailFieldId).show();
         $(emailHelpTextId).show();
+        $(userCreationInfoLabelId).show();
     };
 };
 
-var email = new DW.Email("#email_field", "#email_field_help_text", "#id_devices_1");
+var email = new DW.Email("#email_field", "#email_field_help_text", "#user_creation_info", "#id_devices_1");
 
 $(document).ready(function () {
     sms_device.disable();

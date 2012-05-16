@@ -16,61 +16,66 @@
   <fieldset>
       {% csrf_token %}
       <ul>
-            <li class="{{ form.name.css_classes }} form-row-10px">
-                {{ form.name.label_tag }}
-                {{ form.name }}
-                {{ form.name.errors }}
-            </li>
-            <li class="{{ form.devices.css_classes }} horizontal_list form-row-10px">
-                {{ form.devices.label_tag }}
-                {{ form.devices }}
-                {{ form.devices.errors }}
-            </li>
-            <li class="{{ form.telephone_number.css_classes }} form-row-10px">
-                {{ form.telephone_number.label_tag }}
-                {{ form.telephone_number }}
-                {{ form.telephone_number.errors }}
-            </li>
-            <li class="margin_top_null margin_left_20" style="margin-left: 170px;">
-                <p class="italic_grey clear-left">
-                    {% trans "phone_number_example" %}
-                </p>
-            </li>
-            <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
-                {{ form.email.label_tag }}
-                {{ form.email }}
-                {{ form.email.errors }}
-            </li>
-            <li class="margin_top_null margin_left_20" style="margin-left: 170px;" id="email_field_help_text">
-                <p class="italic_grey clear-left">
+          <li class="{{ form.name.css_classes }} form-row-10px">
+              {{ form.name.label_tag }}
+              {{ form.name }}
+              {{ form.name.errors }}
+          </li>
+          <li class="{{ form.devices.css_classes }} horizontal_list form-row-10px">
+              {{ form.devices.label_tag }}
+              {{ form.devices }}
+              {{ form.devices.errors }}
+          </li>
+          <li id="user_creation_info" class="margin_top_null margin_left_20" style="margin-left: 170px;">
+              <p class="italic_grey clear-left">
+                  {% trans "user_creation_info" %}
+              </p>
+          </li>
+          <li class="{{ form.telephone_number.css_classes }} form-row-10px">
+              {{ form.telephone_number.label_tag }}
+              {{ form.telephone_number }}
+              {{ form.telephone_number.errors }}
+          </li>
+          <li class="margin_top_null margin_left_20" style="margin-left: 170px;">
+              <p class="italic_grey clear-left">
+                  {% trans "phone_number_example" %}
+              </p>
+          </li>
+          <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
+              {{ form.email.label_tag }}
+              {{ form.email }}
+              {{ form.email.errors }}
+          </li>
+          <li class="margin_top_null margin_left_20" style="margin-left: 170px;" id="email_field_help_text">
+              <p class="italic_grey clear-left">
                   {% trans "email_example" %}
-                </p>
-            </li>
-            <li class="{{ form.location.css_classes }} form-row-10px">
-                <label>{% trans "Location" %}</label>
-                <ul class="location_section">
-                    <li>
-                        {{ form.location.label_tag }}
-                        {{ form.location }}
-                        <div>{{ form.location.errors }}</div>
-                    </li>
-                    <li>
-                        <label>{% trans "or" %}</label>
-                    </li>
-                    <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                        {{ form.geo_code.label_tag }}
-                        {{ form.geo_code }}
-                        <div>{{ form.geo_code.errors }}</div>
-                    </li>
-                    <li>
-                        {{ form.project_id.as_hidden }}
-                    </li>
-                </ul>
-            </li>
-            <li class="button_block">
-                <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
-                <input type="button" id="id_register_button" value="{% trans 'Register' %}" class="button margin_top_20"/>
-            </li>
-        </ul>
-    </fieldset>
+              </p>
+          </li>
+          <li class="{{ form.location.css_classes }} form-row-10px">
+              <label>{% trans "Location" %}</label>
+              <ul class="location_section">
+                  <li>
+                      {{ form.location.label_tag }}
+                      {{ form.location }}
+                      <div>{{ form.location.errors }}</div>
+                  </li>
+                  <li>
+                      <label>{% trans "or" %}</label>
+                  </li>
+                  <li class="{{ form.geo_code.css_classes }} form-row-10px">
+                      {{ form.geo_code.label_tag }}
+                      {{ form.geo_code }}
+                      <div>{{ form.geo_code.errors }}</div>
+                  </li>
+                  <li>
+                      {{ form.project_id.as_hidden }}
+                  </li>
+              </ul>
+          </li>
+          <li class="button_block">
+              <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
+              <input type="button" id="id_register_button" value="{% trans 'Register' %}" class="button margin_top_20"/>
+          </li>
+      </ul>
+  </fieldset>
 </form>

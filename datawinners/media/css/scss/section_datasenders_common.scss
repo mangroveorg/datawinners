@@ -10,3 +10,15 @@
 #message{
     clear:both;
 }
+
+
+.horizontal_list{
+  ul{list-style: none;}
+  ul li{
+      display: inline-block;
+      padding-right: 5px;
+  }
+  ul li input{
+    margin-top: 9px;
+  }
+}

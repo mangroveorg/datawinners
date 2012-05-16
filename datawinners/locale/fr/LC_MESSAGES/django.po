@@ -4177,3 +4177,6 @@ msgstr "Commodity Status Report – Au Niveau du Magasin"
 
 msgid "email_example"
 msgstr "Entrez l’adresse e-mail de la personne à qui donner un accès Web et Smartphone"
+
+msgid "user_creation_info"
+msgstr "Cette personne recevra un e-mail comportant les instructions"

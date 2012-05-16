@@ -6,3 +6,11 @@
 
 #message {
   clear: both; }
+
+.horizontal_list ul {
+  list-style: none; }
+.horizontal_list ul li {
+  display: inline-block;
+  padding-right: 5px; }
+.horizontal_list ul li input {
+  margin-top: 9px; }

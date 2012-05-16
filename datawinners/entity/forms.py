@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import HiddenInput
 from django.forms.fields import RegexField, CharField, FileField, MultipleChoiceField, EmailField
 from django.forms.widgets import CheckboxSelectMultiple, TextInput
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
@@ -42,7 +43,8 @@ class ReporterRegistrationForm(Form):
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
     location = CharField(max_length=100, required=False, label=_("Enter location"))
     project_id = CharField(required=False, widget=HiddenInput())
-    DEVICE_CHOICES = (('sms', 'SMS'), ('web', _('WEB + SmartPhone')))
+
+    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> SMS')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> Web + <img src="/media/images/smart_phone.png" />SmartPhone')))
     devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple, choices=DEVICE_CHOICES,
         initial=['sms'], required=False)
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
