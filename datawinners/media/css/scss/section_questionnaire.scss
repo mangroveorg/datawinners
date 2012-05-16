@@ -110,7 +110,7 @@
                     }
                 }
                 .question{
-                    width:1200px;
+                    width:auto;
                 }
                 .add_link{
                     display:block;
@@ -129,9 +129,16 @@
                         background-position:0px 3px !important;
                     }
                 }
-                #char-count-span{
+                .sms-preview{
                     border-top:1px solid #ccc;
-                    paddin-top:40px;
+                    padding:14px 0 5px 0;
+                    label{
+                      font-size:16px;
+                      float:none;
+                    }
+                    #char-count-span{
+                      paddin-top:40px;
+                    }
                 }
             }
         }

@@ -16,8 +16,8 @@
     min-height: 550px;
     background: #FFFFFF;
     border: 1px solid #cccccc;
-    overflow: auto;
-    padding: 25px; }
+    padding: 25px;
+    overflow: auto; }
   #container_content .wizard_content, #container_wizard .wizard_content {
     margin-top: 50px;
     padding: 0px; }
@@ -27,7 +27,7 @@
       margin: 10px;
       background: url(/media/images/wizard_bg.gif) repeat-x top left; }
     #container_content .wizard_content .content_wrapper, #container_wizard .wizard_content .content_wrapper {
-      padding: 20px 40px 20px 40px; }
+      padding: 20px 10px 20px 40px; }
   #container_content #page_title, #container_wizard #page_title {
     min-height: 40px;
     padding: 15px 0 0px 0;
