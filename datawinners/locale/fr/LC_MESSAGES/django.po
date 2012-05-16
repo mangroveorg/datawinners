@@ -4176,4 +4176,4 @@ msgid "CSR Warehouse description"
 msgstr "Commodity Status Report – Au Niveau du Magasin"
 
 msgid "email_example"
-msgstr ""
+msgstr "Entrez l’adresse e-mail de la personne à qui donner un accès Web et Smartphone"
