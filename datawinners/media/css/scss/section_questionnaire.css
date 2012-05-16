@@ -105,6 +105,8 @@
         float: none; }
       .wizard_content .content_wrapper .questionnare_content #question-detail-panel .sms-preview #char-count-span {
         paddin-top: 40px; }
+        .wizard_content .content_wrapper .questionnare_content #question-detail-panel .sms-preview #char-count-span #char-count span {
+          font-weight: bold; }
 
 #questions-panel {
   background: #f2f2f2 url("/media/images/questions_bg.gif") repeat-y top right;

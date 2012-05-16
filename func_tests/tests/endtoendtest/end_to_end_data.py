@@ -183,12 +183,12 @@ QUESTIONNAIRE_DATA = {QUESTIONNAIRE_CODE: "WPS01", GEN_RANDOM: False,
                                CHOICE: ["Aquificae", "Bacteroids", "Chlorobia"],
                                ALLOWED_CHOICE: MULTIPLE_ANSWERS},
                               {QUESTION: u"Geo points of Well", CODE: u"q10", TYPE: GEO}],
-                      CHARACTER_REMAINING: "82 / 160 characters used",
+                      CHARACTER_REMAINING: "82 / 160 characters used (1 SMS)",
                       PAGE_TITLE: "Data Senders"}
 
 NEW_QUESTIONNAIRE_DATA = {QUESTIONS: [{QUESTION: "Water Level", CODE: "q3", TYPE: NUMBER, MIN: "100", MAX: "1000"},
         {QUESTION: "What is water point name?", CODE: "q11", TYPE: WORD, LIMIT: LIMITED, MAX: ""}],
-                          CHARACTER_REMAINING: "83 / 160 characters used",
+                          CHARACTER_REMAINING: "83 / 160 characters used (1 SMS)",
                           PAGE_TITLE: "Data Senders"}
 
 VALID_DATA_REVIEW_AND_TEST = {PROJECT_PROFILE: {PROJECT_NAME: "waterpoint morondava",
