@@ -5741,7 +5741,7 @@ and pl_code ilike ?]]></xml-property>
                                 <property name="style">with_border</property>
                                 <label id="1122">
                                     <property name="textAlign">right</property>
-                                    <text-property name="text" key="received_from_other_crs_warehouse"></text-property>
+                                    <text-property name="text" key="transfer_to_other_crs_warehouse"></text-property>
                                 </label>
                             </cell>
                             <cell id="1083"/>

@@ -1329,8 +1329,8 @@ where
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">param_5_1</property>
-                    <property name="paramName">to_date</property>
+                    <property name="name">param_4</property>
+                    <property name="paramName">from_date</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
@@ -1340,8 +1340,8 @@ where
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">param_4</property>
-                    <property name="paramName">from_date</property>
+                    <property name="name">param_5_1</property>
+                    <property name="paramName">to_date</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
