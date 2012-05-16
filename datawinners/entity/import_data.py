@@ -1,32 +1,27 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import code
 from collections import OrderedDict
 from copy import copy
-from mangrove.datastore.documents import attributes, FormModelDocument
+from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
-from mangrove.transport.submissions import Submission
 import os
 from django.conf import settings
 from datawinners.location.LocationTree import get_location_tree
-from datawinners.main.utils import get_database_manager, include_of_type, exclude_of_type
+from datawinners.main.utils import  include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
-from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, MultipleReportersForANumberException
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import NAME_FIELD, MOBILE_NUMBER_FIELD, DESCRIPTION_FIELD, REPORTER, get_form_model_by_code, get_form_model_by_entity_type, FormModel
+from mangrove.form_model.form_model import    REPORTER, get_form_model_by_code, get_form_model_by_entity_type
 from mangrove.transport.player.parser import CsvParser, XlsOrderedParser, XlsParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
-from mangrove.utils.types import sequence_to_str, is_string, is_sequence
+from mangrove.utils.types import   is_sequence
 from mangrove.datastore import entity
 from mangrove.transport.facade import RegistrationWorkFlow, GeneralWorkFlow, ActivityReportWorkFlow
-from mangrove.transport import reporter
 from django.utils.translation import ugettext as _, ugettext_lazy, ugettext
 
-#TODO This class has been moved because it was not possible to do internationalization with Mangrove swallowing exceptions
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_organization_from_manager
 from mangrove.contrib.registration_validators import case_insensitive_lookup
 from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
 from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
