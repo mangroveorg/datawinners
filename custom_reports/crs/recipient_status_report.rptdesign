@@ -453,7 +453,7 @@
             <xml-property name="queryText"><![CDATA[select sum(no_of_recipients) as no_of_recipients , sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
 from crs_bav
 where
-bav_type = 'CPS'
+bav_type = 'FFA'
 and bav_date BETWEEN ? AND ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
@@ -3221,7 +3221,7 @@ and received_date BETWEEN ? and ?]]></xml-property>
             </list-property>
             <list-property name="parameters">
                 <structure>
-                    <property name="name">begin_periode</property>
+                    <property name="name">param_1</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
@@ -3232,7 +3232,7 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">end_periode</property>
+                    <property name="name">param_2</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
@@ -3312,7 +3312,7 @@ and received_date BETWEEN ? and ?]]></xml-property>
             <xml-property name="queryText"><![CDATA[select sum(no_of_recipients) as no_of_recipients , sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
 from crs_bav
 where
-bav_type = 'FFA'
+bav_type = 'CPS'
 and bav_date BETWEEN ? AND ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
