@@ -1,4 +1,3 @@
-import json
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -45,11 +44,13 @@ def submission(request):
     manager = get_database_manager(request_user)
     player = XFormPlayer(manager)
     try:
+        reporter_id = request_user.get_profile().reporter_id
+        reporter_name = get_by_short_code(manager, reporter_id, ["reporter"]).data['name']['value']
         mangrove_request = Request(message=(request.FILES.get("xml_submission_file").read()),
             transportInfo=
             TransportInfo(transport="smartPhone",
-                source=request_user.email,
-                destination=''
+                source=(reporter_id, reporter_name),
+                destination=""
             ))
         response = player.accept(mangrove_request)
         if response.errors:
@@ -65,6 +66,5 @@ def submission(request):
 @csrf_exempt
 @httpdigest
 def xform(request, questionnaire_code=None):
-    form = xform_for(get_database_manager(request.user), questionnaire_code).format(reporter_id = request.user.get_profile().reporter_id)
-    return HttpResponse(content= form,
+    return HttpResponse(content=xform_for(get_database_manager(request.user), questionnaire_code),
         mimetype="text/xml")
