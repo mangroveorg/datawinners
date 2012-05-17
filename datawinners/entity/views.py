@@ -98,7 +98,7 @@ def create_datasender(request):
         email_id = request.POST['email']
 
         if not is_empty(email_id) and request.POST.__contains__('devices') and request.POST['devices']=='web':
-            create_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
+            create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
 
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
@@ -197,39 +197,44 @@ def _get_project_association(projects):
     return project_association
 
 
-def create_web_user(org_id, email_address, reporter_id, language_code):
+def __create_web_users(org_id, reporter_details, language_code):
+    duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
     errors = []
-    users = User.objects.filter(email=email_address)
-    if len(users) > 0:
-        errors.append("User with email %s already exists" % email_address)
-    if len(errors) > 0:
+    if len(duplicate_email_ids) > 0:
+        for duplicate_email in duplicate_email_ids:
+            errors.append("User with email %s already exists" % duplicate_email['email'])
         content = json.dumps({'success': False, 'errors': errors})
     else:
-        user = User.objects.create_user(email_address, email_address, 'test123')
-        group = Group.objects.filter(name="Data Senders")[0]
-        user.groups.add(group)
-        user.save()
-        profile = NGOUserProfile(user=user, org_id=org_id, title="Mr", reporter_id=reporter_id)
-        profile.save()
-        reset_form = PasswordResetForm({"email": user.email})
-        reset_form.is_valid()
-        reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
+        for reporter in reporter_details:
+            duplicate_email = User.objects.create_user(reporter['email'], reporter['email'], 'test123')
+            group = Group.objects.filter(name="Data Senders")[0]
+            duplicate_email.groups.add(group)
+            duplicate_email.save()
+            profile = NGOUserProfile(user=duplicate_email, org_id=org_id, title="Mr",
+                reporter_id=reporter['reporter_id'])
+            profile.save()
+            reset_form = PasswordResetForm({"email": duplicate_email.email})
+            reset_form.is_valid()
+            reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
         content = json.dumps({'success': True, 'message': "Users has been created"})
-    return HttpResponse(content)
+    return content
+
+
+def create_single_web_user(org_id, email_address, reporter_id, language_code):
+    """Create single web user from My Data Senders page"""
+    return HttpResponse(__create_web_users(org_id, {'email':email_address,'reporter_id':reporter_id}, language_code))
 
 
 @login_required(login_url='/login')
 @csrf_view_exempt
 @is_not_expired
-def create_web_users(request):
+def create_multiple_web_users(request):
+    """Create multiple web users from All Data Senders page"""
     org_id = request.user.get_profile().org_id
     if request.method == 'POST':
-        data = json.loads(request.POST['post_data'])[0]
-        email_address = data['email']
-        reporter_id = data['reporter_id']
-        language_code = request.LANGUAGE_CODE
-
-        return create_web_user(org_id, email_address, reporter_id, language_code)
+        post_data = json.loads(request.POST['post_data'])
+        content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
+        return HttpResponse(content)
 
 
 @csrf_view_exempt

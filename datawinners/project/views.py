@@ -50,7 +50,7 @@ from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
 from datawinners.accountmanagement.models import Organization, OrganizationSetting
 from datawinners.entity.forms import ReporterRegistrationForm
-from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders, save_questionnaire as subject_save_questionnaire, create_web_user
+from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders, save_questionnaire as subject_save_questionnaire, create_single_web_user
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
@@ -1019,7 +1019,7 @@ def create_datasender(request, project_id=None):
             project.associate_data_sender_to_project(manager, reporter_id)
         email_id = request.POST['email']
         if not is_empty(email_id) and request.POST.__contains__('devices') and request.POST['devices']=='web':
-            create_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
+            create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
