@@ -1,3 +1,10 @@
+.location_section li {
+  float: none;
+  margin-bottom: 20px; }
+.location_section label {
+  display: block;
+  float: none; }
+
 .button_block input {
   float: none;
   margin-top: 10px; }
