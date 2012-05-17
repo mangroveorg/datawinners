@@ -6,6 +6,8 @@ NAME = "name"
 MOBILE_NUMBER = "mobile_number"
 COMMUNE = "commune"
 GPS = "gps"
+WEB_CHANNEL = False
+EMAIL_ADDRESS = ""
 SUCCESS_MSG = "message"
 ERROR_MSG = "message"
 
@@ -18,6 +20,13 @@ BLANK_FIELDS = {NAME: "",
 VALID_DATA = {NAME: "Mickey Duck",
               MOBILE_NUMBER: "9876-543-2101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+              GPS: "-21.7622088847 48.0690991394",
+              SUCCESS_MSG: "Registration successful. ID is: rep"}
+
+VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
+              MOBILE_NUMBER: "9876-543-2102",
+              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+              EMAIL_ADDRESS: "mickey1@duck.com",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 

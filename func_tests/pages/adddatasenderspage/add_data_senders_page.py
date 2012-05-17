@@ -9,6 +9,10 @@ class AddDataSenderPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
+    def add_web_user(self, registration_data):
+        self.driver.find(WEB_CB).click()
+        self.driver.find_text_box(EMAIL_TB).enter_text(fetch_(EMAIL_ADDRESS, from_(registration_data)))
+
     def add_data_sender_with(self, registration_data):
         """
         Function to enter and submit the data on add data sender page
