@@ -4,7 +4,7 @@ DW.charCount = function() {
     var constraints_len = 0;
     var delimiter_len = 1;
     var sms_number = 1;
-    var sms_number_text = " (1 SMS)";
+    var sms_number_text = "(1 SMS)";
     var i = 0;
     for (i; i < questionnaireViewModel.questions().length; i=i+1) {
         var current_question = questionnaireViewModel.questions()[i];
@@ -44,9 +44,9 @@ DW.charCount = function() {
         $("#char-count").css("color", "red");
         max_len = max_len+160;
         sms_number = sms_number + 1;
-        sms_number_text = "(" + sms_number + " sms required)";
+        sms_number_text = "(" + sms_number + " SMS)";
     }
-    $('#char-count').html("<span>"+(current_len) + '</span> / ' + max_len + ' ' + gettext('characters used') + sms_number_text);
+    $('#char-count').html("<span>"+(current_len) + '</span> / ' + max_len + ' ' + gettext('characters used') + " " + sms_number_text);
 
 };
 
