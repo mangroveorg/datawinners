@@ -42,9 +42,9 @@ DW.charCount = function() {
     }
     if (current_len > max_len) {
         $("#char-count").css("color", "red");
-        max_len = max_len+160;
-        sms_number = sms_number + 1;
-        sms_number_text = "(" + sms_number + " SMS)";
+        var number_of_sms = Math.ceil(current_len/max_len);
+        max_len = max_len * number_of_sms;
+        sms_number_text = "(" + number_of_sms + " SMS)";
     }
     $('#char-count').html("<span>"+(current_len) + '</span> / ' + max_len + ' ' + gettext('characters used') + " " + sms_number_text);
 
