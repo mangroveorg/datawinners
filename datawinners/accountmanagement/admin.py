@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from forms import forms
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import OrganizationSetting, SMSC, PaymentDetails, MessageTracker, Organization, NGOUserProfile, OutgoingNumberSetting
@@ -89,7 +90,7 @@ class OrganizationAdmin(DatawinnerAdmin):
         return self._get_full_name(admin_user)
 
     def complete_address(self, obj):
-        complete_address = [obj.address, obj.addressline2, obj.city, obj.zipcode, obj.state, obj.country]
+        complete_address = [obj.address, obj.addressline2, obj.city, obj.zipcode, obj.state, obj.country_name()]
         return ", ".join([element for element in complete_address if is_not_empty(element)])
 
     def _get_full_name(self,user):
@@ -119,6 +120,52 @@ class NetworkAdmin(admin.ModelAdmin):
     def country_name(self,obj):
         return ' ,'.join([country.country_name for country in obj.country.all()])
 
+class UserAdminForm(forms.ModelForm):
+    class Meta:
+        model = User
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if 'email' in cleaned_data:
+            username = cleaned_data.get('email').strip()
+            if not len(username):
+                raise forms.ValidationError("This email address is required")
+            existing_users_with_username = User.objects.filter(username=username)
+            if existing_users_with_username.count() > 0 and existing_users_with_username[0] != self.instance:
+                raise forms.ValidationError("This email address is already in use. Please supply a different email address")
+            cleaned_data['email'] = username
+        return cleaned_data
+
+class NgoUserAdmin(DatawinnerAdmin):
+    list_display = ('organization_name', 'country', 'organization_id','admin_name','admin_email')
+    fields = ('email', )
+    form = UserAdminForm
+
+    def organization_name(self, obj):
+        profile = obj.get_profile()
+        return Organization.objects.get(org_id=profile.org_id).name
+
+    def country(self, obj):
+        return (Organization.objects.get(org_id=obj.get_profile().org_id)).country_name()
+
+    def organization_id(self, obj):
+        return obj.get_profile().org_id
+
+    def admin_name(self, obj):
+        return obj.first_name + ' ' + obj.last_name
+
+    def admin_email(self, obj):
+        return obj.email
+
+    def queryset(self, request):
+        qs = super(NgoUserAdmin, self).queryset(request)
+        return qs.filter(groups = Group.objects.filter(name="NGO Admins"))
+
+    def save_model(self, request, obj, form, change):
+        username = form.cleaned_data['email']
+        obj.username = username
+        obj.email = username
+        obj.save()
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
@@ -130,3 +177,4 @@ admin.site.register(MessageTracker, MessageTrackerAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Network, NetworkAdmin)
+admin.site.register(User, NgoUserAdmin)
