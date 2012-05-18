@@ -18,6 +18,11 @@ $(document).ready(function() {
             $("#dateErrorDiv").show();
             time_range[0] = "";
             time_range[1] = "";
+            return {'time_range':time_range, 'aggregationArray': aggregationArray};
+        }
+        if (time_range.length == 1){
+            time_range[1] = time_range[0];
+            return {'time_range':time_range, 'aggregationArray': aggregationArray};
         }
         return {'time_range':time_range, 'aggregationArray': aggregationArray};
     };
