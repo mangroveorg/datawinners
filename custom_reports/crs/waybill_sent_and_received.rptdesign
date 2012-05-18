@@ -167,7 +167,7 @@
                 <structure>
                     <property name="name">total_net_weight</property>
                     <expression name="expression">if(row["receiver_name"]!=null){
-	BirtMath.round(row["good_net_weight"]+row["damaged_net_weight"])
+	BirtMath.round(row["good_net_weight"]+row["damaged_net_weight"], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>

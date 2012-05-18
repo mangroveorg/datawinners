@@ -7,40 +7,40 @@
     </simple-property-list>
     <list-property name="propertyBindings">
         <structure>
-            <property name="name">odaDriverClass</property>
-            <property name="id">7</property>
+            <property name="name">queryText</property>
+            <property name="id">17</property>
         </structure>
         <structure>
-            <property name="name">odaURL</property>
-            <property name="id">7</property>
+            <property name="name">queryTimeOut</property>
+            <property name="id">17</property>
         </structure>
         <structure>
-            <property name="name">odaUser</property>
-            <property name="id">7</property>
+            <property name="name">rowFetchSize</property>
+            <property name="id">17</property>
         </structure>
         <structure>
-            <property name="name">odaAutoCommit</property>
-            <property name="id">7</property>
+            <property name="name">queryText</property>
+            <property name="id">15</property>
         </structure>
         <structure>
-            <property name="name">odaIsolationMode</property>
-            <property name="id">7</property>
+            <property name="name">queryTimeOut</property>
+            <property name="id">15</property>
         </structure>
         <structure>
-            <property name="name">odaPassword</property>
-            <property name="id">7</property>
+            <property name="name">rowFetchSize</property>
+            <property name="id">15</property>
         </structure>
         <structure>
-            <property name="name">odaJndiName</property>
-            <property name="id">7</property>
+            <property name="name">queryText</property>
+            <property name="id">14</property>
         </structure>
         <structure>
-            <property name="name">OdaConnProfileName</property>
-            <property name="id">7</property>
+            <property name="name">queryTimeOut</property>
+            <property name="id">14</property>
         </structure>
         <structure>
-            <property name="name">OdaConnProfileStorePath</property>
-            <property name="id">7</property>
+            <property name="name">rowFetchSize</property>
+            <property name="id">14</property>
         </structure>
     </list-property>
     <property name="units">in</property>
@@ -217,42 +217,44 @@
             </list-property>
             <xml-property name="queryText"><![CDATA[(
 select 
-riz+riz1 as rice_received,
-oil+oil1 as oil_received,
-csb+csb1 as csb_received,
-sorghum+sorghum1 as sorghum_received
+	riz+riz1 as rice_received,
+	oil+oil1 as oil_received,
+	csb+csb1 as csb_received,
+	sorghum+sorghum1 as sorghum_received
 from 
-(
-select 
-SUM(CASE q.f WHEN 'RIZ' THEN good_weight + damaged_weight END) AS riz1,
-SUM(CASE q.f WHEN 'HUILE' THEN good_weight + damaged_weight END) AS oil1,
-SUM(CASE q.f WHEN 'CSB' THEN good_weight + damaged_weight END) AS csb1,
-SUM(CASE q.f WHEN 'SORGHO' THEN good_weight + damaged_weight END) AS sorghum1
-from 
-crs_waybillreceivedport 
-join 
-(select a.waybill_code as w, a.food_type as f from crs_breakbulksent as a 
-join crs_billoflading as b 
-on a.pl_code = b.pl_code and a.food_type = b.food_type
-where b.pl_code ilike ?) as q
-on waybill_code = q.w
-) as X, 
+	(
+	 select 
+		SUM(CASE q.f WHEN 'RIZ' THEN good_weight + damaged_weight END) AS riz1,
+		SUM(CASE q.f WHEN 'HUILE' THEN good_weight + damaged_weight END) AS oil1,
+		SUM(CASE q.f WHEN 'CSB' THEN good_weight + damaged_weight END) AS csb1,
+		SUM(CASE q.f WHEN 'SORGHO' THEN good_weight + damaged_weight END) AS sorghum1
+	 from 
+		crs_waybillreceivedport 
+	 join 
+		(select a.waybill_code as w, a.food_type as f from crs_breakbulksent as a 
+		 join crs_billoflading as b 
+		 on lower(a.pl_code) = lower(b.pl_code) and lower(a.food_type) = lower(b.food_type)
+		 where b.pl_code ilike ?
+		) as q
+		on lower(waybill_code) = lower(q.w)
+	) as X, 
 
-(
-select
-SUM(CASE p.f WHEN 'RIZ' THEN good_weight + damaged_weight END) AS riz,
-SUM(CASE p.f WHEN 'HUILE' THEN good_weight + damaged_weight END) AS oil,
-SUM(CASE p.f WHEN 'CSB' THEN good_weight + damaged_weight END) AS csb,
-SUM(CASE p.f WHEN 'SORGHO' THEN good_weight + damaged_weight END) AS sorghum
-from 
-crs_waybillreceivedport
-join
-(select a.container_code as c, b.food_type as f from crs_containersent as a 
-join crs_billoflading as b 
-on a.bill_of_lading = b.bill_of_lading_code
-where b.pl_code ilike ?) as p
-on container_code = p.c
-) as Y
+	(
+	 select
+		SUM(CASE p.f WHEN 'RIZ' THEN good_weight + damaged_weight END) AS riz,
+		SUM(CASE p.f WHEN 'HUILE' THEN good_weight + damaged_weight END) AS oil,
+		SUM(CASE p.f WHEN 'CSB' THEN good_weight + damaged_weight END) AS csb,
+		SUM(CASE p.f WHEN 'SORGHO' THEN good_weight + damaged_weight END) AS sorghum
+	 from 
+		crs_waybillreceivedport
+	 join
+		(select a.container_code as c, b.food_type as f from crs_containersent as a 
+		 join crs_billoflading as b 
+		 on lower(a.bill_of_lading) = lower(b.bill_of_lading_code)
+		 where b.pl_code ilike ?
+		) as p
+		on lower(container_code) = lower(p.c)
+	) as Y
 )]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
@@ -530,15 +532,16 @@ on container_code = p.c
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Rice" id="14">
+            <property name="nullsOrdering">nulls lowest</property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">value per metric ton</property>
-                    <expression name="expression">row["rice_cost"]/(row["prev_quant_under_bl"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["rice_cost"]/(row["prev_quant_under_bl"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">freight per metric ton</property>
-                    <expression name="expression">row["freight"]/(row["weight"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["freight"]/(row["weight"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -676,7 +679,7 @@ on container_code = p.c
             <xml-property name="queryText"><![CDATA[select rice_cost, bill_of_lading_code, net_weight as prev_quant_under_bl, weight, freight
 from crs_packinglist as p
 join crs_billoflading as b
-on p.pl_code = b.pl_code
+on lower(p.pl_code) = lower(b.pl_code)
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
 and upper(b.food_type) = 'RIZ']]></xml-property>
@@ -875,12 +878,12 @@ and upper(b.food_type) = 'RIZ']]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">value per metric ton</property>
-                    <expression name="expression">row["csb_cost"]/(row["prev_quant_under_bl"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["csb_cost"]/(row["prev_quant_under_bl"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">freight per metric ton</property>
-                    <expression name="expression">row["freight"]/(row["weight"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["freight"]/(row["weight"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -1020,7 +1023,7 @@ and upper(b.food_type) = 'RIZ']]></xml-property>
             <xml-property name="queryText"><![CDATA[select csb_cost, bill_of_lading_code, coalesce(net_weight, 0) as prev_quant_under_bl, weight, freight
 from crs_packinglist as p
 join crs_billoflading as b
-on p.pl_code = b.pl_code
+on lower(p.pl_code) = lower(b.pl_code)
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
 and upper(b.food_type) = 'CSB']]></xml-property>
@@ -1177,12 +1180,12 @@ and upper(b.food_type) = 'CSB']]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">value per metric ton</property>
-                    <expression name="expression">row["oil_cost"]/(row["prev_quant_under_bl"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["oil_cost"]/(row["prev_quant_under_bl"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">freight per metric ton</property>
-                    <expression name="expression">row["freight"]/(row["weight"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["freight"]/(row["weight"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -1320,7 +1323,7 @@ and upper(b.food_type) = 'CSB']]></xml-property>
             <xml-property name="queryText"><![CDATA[select oil_cost, bill_of_lading_code, net_weight as prev_quant_under_bl, weight, freight
 from crs_packinglist as p
 join crs_billoflading as b
-on p.pl_code = b.pl_code
+on lower(p.pl_code) = lower(b.pl_code)
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
 and upper(b.food_type) = 'HUILE']]></xml-property>
@@ -1477,12 +1480,12 @@ and upper(b.food_type) = 'HUILE']]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">value per metric ton</property>
-                    <expression name="expression">row["sorghum_cost"]/(row["prev_quant_under_bl"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["sorghum_cost"]/(row["prev_quant_under_bl"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">freight per metric ton</property>
-                    <expression name="expression">row["freight"]/(row["weight"]/1000)</expression>
+                    <expression name="expression">BirtMath.round(row["freight"]/(row["weight"]/1000), 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -1620,7 +1623,7 @@ and upper(b.food_type) = 'HUILE']]></xml-property>
             <xml-property name="queryText"><![CDATA[select sorghum_cost, bill_of_lading_code, net_weight as prev_quant_under_bl, weight, freight
 from crs_packinglist as p
 join crs_billoflading as b
-on p.pl_code = b.pl_code
+on lower(p.pl_code) = lower(b.pl_code)
 where p.pl_code ilike ?
 and b.ccc_number ilike ?
 and b.food_type = 'SORGHO']]></xml-property>
@@ -2530,7 +2533,7 @@ from crs_billoflading]]></xml-property>
                                             <property name="dataType">float</property>
                                         </structure>
                                     </list-property>
-                                    <method name="onCreate"><![CDATA[vars["sorgho"] -= row["prev_quant_under_bl"];]]></method>
+                                    <method name="onCreate"><![CDATA[vars["sorgho_dif"] -= row["prev_quant_under_bl"];]]></method>
                                     <property name="resultSetColumn">prev_quant_under_bl</property>
                                 </data>
                             </cell>
@@ -2607,7 +2610,7 @@ from crs_billoflading]]></xml-property>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                     </list-property>
-                                    <method name="onCreate"><![CDATA[vars["sorgho"] += row["sorghum_received"];]]></method>
+                                    <method name="onCreate"><![CDATA[vars["sorgho_dif"] += row["sorghum_received"];]]></method>
                                     <property name="resultSetColumn">sorghum_received</property>
                                 </data>
                             </cell>

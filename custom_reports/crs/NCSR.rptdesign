@@ -7,7 +7,7 @@
     </simple-property-list>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
-    <property name="layoutPreference">fixed layout</property>
+    <property name="layoutPreference">auto layout</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">147</property>
     <parameters>
@@ -190,7 +190,7 @@ SUM(CASE food_type WHEN 'HUILE' THEN weight END) AS oil_in_transit,
 SUM(CASE food_type WHEN 'CSB' THEN weight END) AS csb_in_transit,
 SUM(CASE food_type WHEN 'SORGHO' THEN weight END) AS sorghum_in_transit
 from crs_waybillsent 
-where waybill_code not in (select waybill_code from crs_waybillreceived where received_date <= ?)
+where lower(waybill_code) not in (select lower(waybill_code) from crs_waybillreceived where received_date <= ?)
 and transaction_type in ('Transfert aux autres CS', 'Transfert aux magasins de CRS', 'Transfert aux Centres PS', 
 'Transfert aux Partenaires IPs', 'Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA' )
 and sent_date <= ?]]></xml-property>
@@ -858,22 +858,22 @@ physical_inventory_closing_date = ?]]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">riz_org_cs</property>
-                    <expression name="expression">row["riz_received_from_other_org"]+row["riz_received_from_other_cs"]</expression>
+                    <expression name="expression">BirtMath.round(row["riz_received_from_other_org"]+row["riz_received_from_other_cs"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_org_cs</property>
-                    <expression name="expression">row["oil_received_from_other_org"]+row["oil_received_from_other_cs"]</expression>
+                    <expression name="expression">BirtMath.round(row["oil_received_from_other_org"]+row["oil_received_from_other_cs"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_org_cs</property>
-                    <expression name="expression">row["csb_received_from_other_org"]+row["csb_received_from_other_cs"]</expression>
+                    <expression name="expression">BirtMath.round(row["csb_received_from_other_org"]+row["csb_received_from_other_cs"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorgho_org_cs</property>
-                    <expression name="expression">row["sorghum_received_from_other_org"]+row["sorghum_received_from_other_cs"]</expression>
+                    <expression name="expression">BirtMath.round(row["sorghum_received_from_other_org"]+row["sorghum_received_from_other_cs"], 2)</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -2984,12 +2984,9 @@ from
 	SUM(CASE WHEN upper(food_type)='HUILE' AND transaction_type='Autres' THEN weight	 ELSE 0 END) AS oil_to_others,
 	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type='Autres' THEN weight	 ELSE 0 END) AS csb_to_others,
 	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type='Autres' THEN  weight	 ELSE 0 END) AS sorgho_to_others
-
-
+	
 	FROM crs_waybillsent
 	
-	
-
 WHERE sent_date BETWEEN ? AND ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
@@ -3983,7 +3980,7 @@ physical_inventory_closing_date = ?]]></xml-property>
 	SUM(CASE WHEN upper(food_type)='CSB' AND transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA') THEN weight	 ELSE 0 END) AS csb_to_site_in_transit,
 	SUM(CASE WHEN upper(food_type)='SORGHO' AND transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA') THEN  weight	 ELSE 0 END) AS sorgho_to_site_in_transit	
 from crs_waybillsent
-where waybill_code not in (select waybill_code from crs_waybillreceived where received_date BETWEEN ? AND ?)
+where lower(waybill_code) not in (select lower(waybill_code) from crs_waybillreceived where received_date BETWEEN ? AND ?)
 and sent_date BETWEEN ? AND ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
@@ -4578,7 +4575,7 @@ and sent_date BETWEEN ? AND ?]]></xml-property>
 		    from crs_waybillreceived as received 
 		    join 
 		      crs_waybillsent as sent 
-		    on received.waybill_code = sent.waybill_code
+		    on lower(received.waybill_code) = lower(sent.waybill_code)
 		    where received.transaction_type is not null
 	        and received.received_date >= ?
 	        and received.received_date <= ? ) UNION
@@ -4591,7 +4588,7 @@ and sent_date BETWEEN ? AND ?]]></xml-property>
 		     from crs_waybillreceivedport as received 
 		     join 
 		       crs_breakbulksent as sent 
-		     on received.waybill_code = sent.waybill_code
+		     on lower(received.waybill_code) = lower(sent.waybill_code)
 		       and container_code is null
 		     where
 		       received.received_date >= ?
@@ -4605,10 +4602,10 @@ and sent_date BETWEEN ? AND ?]]></xml-property>
 		    from crs_waybillreceivedport as received 
 		    join 
 		      crs_containersent as sent 
-		    on received.container_code = sent.container_code
+		    on lower(received.container_code) = lower(sent.container_code)
 		    inner join
 		      crs_billoflading as bl
-			  on sent.bill_of_lading=bl.bill_of_lading_code
+			  on lower(sent.bill_of_lading)=lower(bl.bill_of_lading_code)
 		    where
 		      received.received_date >= ?
 		      and received.received_date <= ? )
@@ -4680,7 +4677,7 @@ and sent_date BETWEEN ? AND ?]]></xml-property>
 	from crs_waybillreceived
 	join
 		crs_waybillsent
-	on crs_waybillreceived.waybill_code = crs_waybillsent.waybill_code
+	on lower(crs_waybillreceived.waybill_code) = lower(crs_waybillsent.waybill_code)
 	where
 		received_date >= ?
 		and received_date <= ?) as f

@@ -5,6 +5,20 @@
         <value>properties/messages</value>
         <value>properties/messages_fr_CA</value>
     </simple-property-list>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">10</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">10</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">10</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">fixed layout</property>
@@ -77,6 +91,7 @@
     </data-sources>
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="loss during transport" id="10">
+            <property name="nullsOrdering">nulls lowest</property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">rice_loss</property>
@@ -308,7 +323,7 @@
 from crs_waybillreceived
 join
 crs_waybillsent
-on crs_waybillreceived.waybill_code = crs_waybillsent.waybill_code
+on lower(crs_waybillreceived.waybill_code) = lower(crs_waybillsent.waybill_code)
 where
 received_date >= ?
 and received_date <= ?) as X);]]></xml-property>
@@ -1291,26 +1306,26 @@ where
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">from_container</property>
+                    <property name="name">param_4_1</property>
                     <property name="paramName">from_date</property>
-                    <property name="dataType">date</property>
-                    <property name="position">4</property>
-                    <property name="isInput">true</property>
-                    <property name="isOutput">false</property>
-                </structure>
-                <structure>
-                    <property name="name">param</property>
-                    <property name="paramName">to_date</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
-                    <property name="position">5</property>
+                    <property name="position">4</property>
                     <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">param_4_1</property>
+                    <property name="name">to_container</property>
+                    <property name="paramName">to_date</property>
+                    <property name="dataType">date</property>
+                    <property name="position">5</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4_2</property>
                     <property name="paramName">from_date</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
@@ -1321,10 +1336,13 @@ where
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">to_container</property>
+                    <property name="name">param_5_1</property>
                     <property name="paramName">to_date</property>
+                    <property name="nativeName"></property>
                     <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
                     <property name="position">7</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -1335,12 +1353,11 @@ where
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                     <property name="position">8</property>
-                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
-                    <property name="name">param_5_1</property>
+                    <property name="name">param_5_2</property>
                     <property name="paramName">to_date</property>
                     <property name="nativeName"></property>
                     <property name="dataType">date</property>
@@ -1520,7 +1537,7 @@ FROM
     from crs_waybillreceived as received 
     join 
       crs_waybillsent as sent 
-    on received.waybill_code = sent.waybill_code
+    on lower(received.waybill_code) = lower(sent.waybill_code)
     where received.transaction_type is not null
       and received.received_date >= ?
       and received.received_date <= ? ) UNION
@@ -1533,7 +1550,7 @@ FROM
      from crs_waybillreceivedport as received 
      join 
        crs_breakbulksent as sent 
-     on received.waybill_code = sent.waybill_code
+     on lower(received.waybill_code) = lower(sent.waybill_code)
        and container_code is null
      where
        received.received_date >= ?
@@ -1547,10 +1564,10 @@ FROM
      from crs_waybillreceivedport as received 
     join 
       crs_containersent as sent 
-    on received.container_code = sent.container_code
+    on lower(received.container_code) = lower(sent.container_code)
     inner join
       crs_billoflading as bl
-    on sent.bill_of_lading=bl.bill_of_lading_code
+    on lower(sent.bill_of_lading)=lower(bl.bill_of_lading_code)
     where
       received.received_date >= ?
       and received.received_date <= ? )
