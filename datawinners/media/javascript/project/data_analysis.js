@@ -10,7 +10,7 @@ $(document).ready(function() {
         var time_range = $("#dateRangePicker").val().split("/");
         if (time_range[0] == "" || time_range[0] == "Click to select a date range") {
             time_range[0] = '01-01-1996';
-            time_range[1] = Date.parse('today').toString('dd-MM-yyyy');
+            time_range[1] = '31-12-6000';
             return {'time_range':time_range, 'aggregationArray': aggregationArray};
         }
         if (time_range[0] != "Click to select a date range" && Date.parse(time_range[0]) == null) {
