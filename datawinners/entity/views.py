@@ -222,7 +222,7 @@ def __create_web_users(org_id, reporter_details, language_code):
 
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
-    return HttpResponse(__create_web_users(org_id, {'email':email_address,'reporter_id':reporter_id}, language_code))
+    return HttpResponse(__create_web_users(org_id,[{'email':email_address,'reporter_id':reporter_id}], language_code))
 
 
 @login_required(login_url='/login')
