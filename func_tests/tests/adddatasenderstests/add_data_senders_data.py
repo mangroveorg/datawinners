@@ -26,7 +26,7 @@ VALID_DATA = {NAME: "Mickey Duck",
 VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
               MOBILE_NUMBER: "9876-544-2103",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              EMAIL_ADDRESS: "mickey1@duck12.com",
+              EMAIL_ADDRESS: "mickey",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 VALID_DATA_WITHOUT_EMAIL = {NAME: "Mickey Duck",

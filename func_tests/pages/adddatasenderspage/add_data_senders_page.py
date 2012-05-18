@@ -1,4 +1,5 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from framework.utils.common_utils import generateId
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.adddatasenderspage.add_data_senders_locator import *
@@ -11,7 +12,9 @@ class AddDataSenderPage(Page):
 
     def add_web_user(self, registration_data):
         self.driver.find(WEB_CB).click()
-        self.driver.find_text_box(EMAIL_TB).enter_text(fetch_(EMAIL_ADDRESS, from_(registration_data)))
+        email_address_prefix = fetch_(EMAIL_ADDRESS, from_(registration_data))
+        generated_email_address = email_address_prefix + generateId() + "@abc.com"
+        self.driver.find_text_box(EMAIL_TB).enter_text(generated_email_address)
 
     def add_data_sender_with(self, registration_data):
         """
