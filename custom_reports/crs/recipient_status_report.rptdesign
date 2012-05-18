@@ -3548,7 +3548,7 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                 </structure>
                 <structure>
                     <property name="columnName">sorghum</property>
-                    <property name="analysis">measure</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="displayName">sorghum</text-property>
                     <text-property name="heading">sorghum</text-property>
                 </structure>
@@ -3595,7 +3595,7 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">string</property>
                     </structure>
                 </list-property>
             </structure>
@@ -3626,14 +3626,14 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <property name="position">4</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
-from crs_distribution
-where distribution_type = 'CPS'
-and distribution_date BETWEEN ? AND ?]]></xml-property>
+            <xml-property name="queryText"><![CDATA[select sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, null as sorghum
+from crs_distributionatcps
+where
+received_date BETWEEN ? AND ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
