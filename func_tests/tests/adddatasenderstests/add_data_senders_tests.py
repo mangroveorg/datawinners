@@ -58,8 +58,8 @@ class TestAddDataSender(unittest.TestCase):
         details e.g. first name, last name, telephone number and commune
         """
         add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(VALID_DATA_WITH_EMAIL)
         add_data_sender_page.add_web_user(VALID_DATA_WITH_EMAIL)
+        add_data_sender_page.add_data_sender_with(VALID_DATA_WITH_EMAIL)
 
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
