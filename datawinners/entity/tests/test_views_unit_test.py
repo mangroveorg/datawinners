@@ -7,12 +7,13 @@ from django.utils.http import int_to_base36
 from mock import  Mock, patch
 from entity.views import send_activation_email_for_data_sender
 from django.core import mail
+from tests.test_email_utils import set_email_settings
 
 
 class TestView(TestCase):
 
     def test_should_send_correct_email(self):
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+        set_email_settings()
         site = Site(domain='test', name='test_site')
         user = Mock(spec=User)
         user.email = 'test@mail.com'

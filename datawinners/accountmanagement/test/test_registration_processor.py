@@ -10,6 +10,7 @@ from django.contrib.sites.models import Site
 from django.conf import settings
 from mangrove.utils.types import is_not_empty
 from django.core import mail
+from tests.test_email_utils import set_email_settings
 
 class TestRegistrationProcessor(unittest.TestCase):
     def prepare_organization(self):
@@ -28,7 +29,7 @@ class TestRegistrationProcessor(unittest.TestCase):
         self.trial_organization.save()
 
     def setUp(self):
-        settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+        set_email_settings()
         User.objects.filter(username = 'paid_account@mail.com').delete()
         User.objects.filter(username = 'trial_account@mail.com').delete()
         Organization.objects.filter(name='test_org_for_paid_account').delete()
