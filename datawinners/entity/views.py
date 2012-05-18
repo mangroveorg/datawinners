@@ -95,9 +95,8 @@ def create_datasender(request):
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
         reporter_id,message = process_create_datasender_form(dbm, form, org_id)
-        email_id = request.POST['email']
-
-        if not is_empty(email_id) and request.POST.__contains__('devices') and request.POST['devices']=='web':
+        if len(form.errors) == 0 and form.requires_web_access():
+            email_id = request.POST['email']
             create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
 
         if message is not None:

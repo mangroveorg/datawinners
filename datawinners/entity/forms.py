@@ -106,8 +106,7 @@ class ReporterRegistrationForm(Form):
         site.
 
         """
-        devices = self.cleaned_data.get('devices')
-        if not devices.__contains__('web'):
+        if not self.requires_web_access():
             return
 
         email = self.cleaned_data.get('email')
@@ -125,6 +124,9 @@ class ReporterRegistrationForm(Form):
         if email is not None:
             self.cleaned_data['email'] = email.lower()
 
+    def requires_web_access(self):
+        devices = self.cleaned_data.get('devices')
+        return devices.__contains__('web')
 
 
 class SubjectUploadForm(Form):

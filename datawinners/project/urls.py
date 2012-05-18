@@ -7,7 +7,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, \
     manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
     delete_reminder, sent_reminders, broadcast_message, review_and_test, \
-    edit_subject, create_datasender
+    edit_subject, create_datasender_and_webuser
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 
 js_info_dict = {
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
         (r'^project/questionnaire/(?P<project_id>.+?)/$', questionnaire),
         url(r'^project/register_subjects/(?P<project_id>.+?)/$', web_questionnaire, {'subject': True}, name="subject_questionnaire"),
         url(r'^project/testquestionnaire/(?P<project_id>.+?)/$', web_questionnaire, name="web_questionnaire"),
-        (r'^project/register_datasenders/(?P<project_id>.+?)/$', create_datasender),
+        (r'^project/register_datasenders/(?P<project_id>.+?)/$', create_datasender_and_webuser),
         (r'^project/preview/questionnaire/(?P<project_id>.+?)/$', questionnaire_preview),
         (r'^project/preview/subject_registration_form/preview/(?P<project_id>.+?)/$', subject_registration_form_preview),
         (r'^project/preview/sender_registration_form/preview/(?P<project_id>.+?)/$', sender_registration_form_preview),
@@ -34,7 +34,7 @@ urlpatterns = patterns('',
         (r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>.+?)/$', project_data),
         (r'^project/subjects/(?P<project_id>.+?)/$', subjects),
         (r'^project/registered_subjects/(?P<project_id>.+?)/$', registered_subjects),
-        (r'^project/datasenders/(?P<project_id>.+?)/$', create_datasender),
+        (r'^project/datasenders/(?P<project_id>.+?)/$', create_datasender_and_webuser),
         (r'^project/registered_datasenders/(?P<project_id>.+?)/$', registered_datasenders),
         (r'^project/create_reminder/(?P<project_id>.+?)/$', create_reminder),
         (r'^project/get_reminder/(?P<project_id>.+?)/$', get_reminder),

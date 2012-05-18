@@ -116,7 +116,7 @@ def make_subject_links(project):
 def make_data_sender_links(project):
     project_id = project.id
     datasender_links = {'datasenders_link': reverse(all_datasenders),
-                        'register_datasenders_link': reverse(create_datasender, args=[project_id]),
+                        'register_datasenders_link': reverse(create_datasender_and_webuser, args=[project_id]),
                         'registered_datasenders_link': reverse(registered_datasenders, args=[project_id])}
     return datasender_links
 
@@ -998,7 +998,7 @@ def edit_subject(request, project_id=None):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-def create_datasender(request, project_id=None):
+def create_datasender_and_webuser(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     in_trial_mode = _in_trial_mode(request)
@@ -1016,8 +1016,8 @@ def create_datasender(request, project_id=None):
         reporter_id,message = process_create_datasender_form(manager, form, org_id)
         if len(form.errors) == 0:
             project.associate_data_sender_to_project(manager, reporter_id)
-            email_id = request.POST['email']
-            if not is_empty(email_id) :
+            if form.requires_web_access() :
+                email_id = request.POST['email']
                 create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
