@@ -2,6 +2,10 @@
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import RequestSite, Site
+from django.core.mail.message import EmailMessage
+from django.template.loader import render_to_string
 from django.utils import translation
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
@@ -10,6 +14,7 @@ from django.http import HttpResponse, HttpResponseRedirect,\
     HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
@@ -44,6 +49,7 @@ from datawinners.entity.helper import get_country_appended_location, add_importe
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from django.contrib import messages
+import settings
 
 COUNTRY = ',MADAGASCAR'
 
@@ -205,14 +211,14 @@ def __create_web_users(org_id, reporter_details, language_code):
         content = json.dumps({'success': False, 'errors': errors})
     else:
         for reporter in reporter_details:
-            duplicate_email = User.objects.create_user(reporter['email'], reporter['email'], 'test123')
+            user = User.objects.create_user(reporter['email'], reporter['email'], 'test123')
             group = Group.objects.filter(name="Data Senders")[0]
-            duplicate_email.groups.add(group)
-            duplicate_email.save()
-            profile = NGOUserProfile(user=duplicate_email, org_id=org_id, title="Mr",
-                reporter_id=reporter['reporter_id'])
+            user.groups.add(group)
+            user.save()
+            profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
+                                     reporter_id=reporter['reporter_id'])
             profile.save()
-            reset_form = PasswordResetForm({"email": duplicate_email.email})
+            reset_form = PasswordResetForm({"email": user.email})
             reset_form.is_valid()
             reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
         content = json.dumps({'success': True, 'message': "Users has been created"})
@@ -222,6 +228,22 @@ def __create_web_users(org_id, reporter_details, language_code):
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
     return HttpResponse(__create_web_users(org_id,[{'email':email_address,'reporter_id':reporter_id}], language_code))
+
+
+def send_activation_email_for_data_sender(site, user, language_code):
+    ctx_dict = {
+        'domain': site.domain,
+        'uid': int_to_base36(user.id),
+        'username': user.first_name,
+        'token': default_token_generator.make_token(user),
+        'protocol': 'http',
+        }
+    subject = render_to_string('email/activation_email_subject_for_data_sender_account_'+language_code+'.txt')
+    subject = ''.join(subject.splitlines())
+    message = render_to_string('email/activation_email_for_data_sender_account_'+language_code+'.html', ctx_dict)
+    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
+    email.content_subtype = "html"
+    email.send()
 
 
 @login_required(login_url='/login')
