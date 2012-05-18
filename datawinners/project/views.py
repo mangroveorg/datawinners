@@ -1014,12 +1014,11 @@ def create_datasender(request, project_id=None):
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
         reporter_id,message = process_create_datasender_form(manager, form, org_id)
-        project_id = form.cleaned_data["project_id"]
-        if not is_empty(project_id):
+        if len(form.errors) == 0:
             project.associate_data_sender_to_project(manager, reporter_id)
-        email_id = request.POST['email']
-        if not is_empty(email_id) and request.POST.__contains__('devices') and request.POST['devices']=='web':
-            create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
+            email_id = request.POST['email']
+            if not is_empty(email_id) :
+                create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',

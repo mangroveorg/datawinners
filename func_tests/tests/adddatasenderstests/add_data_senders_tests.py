@@ -64,6 +64,19 @@ class TestAddDataSender(unittest.TestCase):
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
 
+    @attr('functional_test', 'smoke')
+    def test_addition_of_data_sender_without_email_address(self):
+        """
+        Function to test the successful Addition of DataSender with given
+        details e.g. first name, last name, telephone number and commune
+        """
+        add_data_sender_page = self.page
+        add_data_sender_page.add_web_user(VALID_DATA_WITHOUT_EMAIL)
+        add_data_sender_page.add_data_sender_with(VALID_DATA_WITHOUT_EMAIL)
+
+        self.assertRegexpMatches(add_data_sender_page.get_error_message(),
+                                 fetch_(ERROR_MSG, from_(VALID_DATA_WITHOUT_EMAIL)))
+
     @attr('functional_test')
     def test_addition_of_data_sender_without_entering_data(self):
         """

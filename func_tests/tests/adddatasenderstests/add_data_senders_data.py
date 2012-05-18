@@ -24,11 +24,17 @@ VALID_DATA = {NAME: "Mickey Duck",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
 VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
-              MOBILE_NUMBER: "9876-543-2102",
+              MOBILE_NUMBER: "9876-544-2102",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
-              EMAIL_ADDRESS: "mickey1@duck.com",
+              EMAIL_ADDRESS: "mickey1@duck12.com",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
+VALID_DATA_WITHOUT_EMAIL = {NAME: "Mickey Duck",
+              MOBILE_NUMBER: "9876-544-2102",
+              COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
+              EMAIL_ADDRESS: "",
+              GPS: "-21.7622088847 48.0690991394",
+              ERROR_MSG: "Email address This field is required."}
 
 EXISTING_DATA = {NAME: "Mickey Mouse",
                  MOBILE_NUMBER: "123-4567-890",
