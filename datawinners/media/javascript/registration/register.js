@@ -54,12 +54,4 @@ $(document).ready(function() {
         return false;
     });
 
-    $("#id_organization_country").autocomplete({
-        source: function(req, response) {
-	        var re = $.ui.autocomplete.escapeRegex(req.term);
-	        var matcher = new RegExp( "^" + re, "i" );
-	        response($.grep(countryList, function(item){return matcher.test(item); }) );
-        }
-    });
-
 });

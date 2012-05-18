@@ -1,9 +1,7 @@
-import json
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django_digest.decorators import httpdigest
-from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport import Request
 from mangrove.transport.facade import TransportInfo
 from mangrove.transport.player.player import XFormPlayer
