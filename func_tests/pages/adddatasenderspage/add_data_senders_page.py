@@ -10,8 +10,10 @@ class AddDataSenderPage(Page):
     def __init__(self, driver):
         Page.__init__(self, driver)
 
-    def add_web_user(self, registration_data):
+    def select_web_device(self):
         self.driver.find(WEB_CB).click()
+
+    def enter_email(self, registration_data):
         email_address_prefix = fetch_(EMAIL_ADDRESS, from_(registration_data))
         generated_email_address = email_address_prefix + generateId() + "@abc.com"
         self.driver.find_text_box(EMAIL_TB).enter_text(generated_email_address)

@@ -58,7 +58,8 @@ class TestAddDataSender(unittest.TestCase):
         details e.g. first name, last name, telephone number and commune
         """
         add_data_sender_page = self.page
-        add_data_sender_page.add_web_user(VALID_DATA_WITH_EMAIL)
+        add_data_sender_page.select_web_device()
+        add_data_sender_page.enter_email(VALID_DATA_WITH_EMAIL)
         add_data_sender_page.add_data_sender_with(VALID_DATA_WITH_EMAIL)
 
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
@@ -71,7 +72,7 @@ class TestAddDataSender(unittest.TestCase):
         details e.g. first name, last name, telephone number and commune
         """
         add_data_sender_page = self.page
-        add_data_sender_page.add_web_user(VALID_DATA_WITHOUT_EMAIL)
+        add_data_sender_page.select_web_device()
         add_data_sender_page.add_data_sender_with(VALID_DATA_WITHOUT_EMAIL)
 
         self.assertRegexpMatches(add_data_sender_page.get_error_message(),
