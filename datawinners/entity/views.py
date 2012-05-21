@@ -3,6 +3,7 @@ from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import  get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils import translation
@@ -202,7 +203,13 @@ def _get_project_association(projects):
     return project_association
 
 
-def __create_web_users(org_id, reporter_details, language_code):
+def send_reset_password_email(user, language_code):
+    reset_form = PasswordResetForm({"email": user.email})
+    reset_form.is_valid()
+    reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
+
+
+def __create_web_users(org_id, reporter_details, language_code, is_create_data_sender=True):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
     errors = []
     dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
@@ -221,9 +228,9 @@ def __create_web_users(org_id, reporter_details, language_code):
             profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
                                      reporter_id=reporter['reporter_id'])
             profile.save()
-            reset_form = PasswordResetForm({"email": user.email})
-            reset_form.is_valid()
-            reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
+
+            send_reset_password_email(user, language_code) if is_create_data_sender else send_activation_email_for_data_sender(user, language_code)
+
         content = json.dumps({'success': True, 'message': "Users has been created"})
     return content
 
@@ -233,7 +240,8 @@ def create_single_web_user(org_id, email_address, reporter_id, language_code):
     return HttpResponse(__create_web_users(org_id,[{'email':email_address,'reporter_id':reporter_id}], language_code))
 
 
-def send_activation_email_for_data_sender(site, user, language_code):
+def send_activation_email_for_data_sender(user, language_code, request = None):
+    site = get_current_site(request)
     ctx_dict = {
         'domain': site.domain,
         'uid': int_to_base36(user.id),
@@ -257,7 +265,7 @@ def create_multiple_web_users(request):
     org_id = request.user.get_profile().org_id
     if request.method == 'POST':
         post_data = json.loads(request.POST['post_data'])
-        content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
+        content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE, False)
         return HttpResponse(content)
 
 
