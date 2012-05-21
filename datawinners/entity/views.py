@@ -3,7 +3,6 @@ from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import RequestSite, Site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils import translation
@@ -20,7 +19,7 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for
+from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password,\
     is_not_expired
 from datawinners.entity.helper import create_registration_form, process_create_datasender_form,\
@@ -36,7 +35,7 @@ from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -44,12 +43,13 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import\
     WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country
+from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, get_database_manager_for_org
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from django.contrib import messages
-import settings
+from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
+from mangrove.datastore.entity import get_by_short_code
 
 COUNTRY = ',MADAGASCAR'
 
@@ -205,15 +205,18 @@ def _get_project_association(projects):
 def __create_web_users(org_id, reporter_details, language_code):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
     errors = []
+    dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
     if len(duplicate_email_ids) > 0:
         for duplicate_email in duplicate_email_ids:
             errors.append("User with email %s already exists" % duplicate_email['email'])
         content = json.dumps({'success': False, 'errors': errors})
     else:
         for reporter in reporter_details:
+            reporter_entity = get_by_short_code(dbm, reporter['reporter_id'], [REPORTER])
             user = User.objects.create_user(reporter['email'], reporter['email'], 'test123')
             group = Group.objects.filter(name="Data Senders")[0]
             user.groups.add(group)
+            user.first_name = reporter_entity.value(NAME_FIELD)
             user.save()
             profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
                                      reporter_id=reporter['reporter_id'])
@@ -241,7 +244,7 @@ def send_activation_email_for_data_sender(site, user, language_code):
     subject = render_to_string('email/activation_email_subject_for_data_sender_account_'+language_code+'.txt')
     subject = ''.join(subject.splitlines())
     message = render_to_string('email/activation_email_for_data_sender_account_'+language_code+'.html', ctx_dict)
-    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [user.email], [settings.HNI_SUPPORT_EMAIL_ID])
+    email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
 

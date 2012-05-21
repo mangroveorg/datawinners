@@ -1,7 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import datetime
 from django.conf import settings
-from django.utils.translation import ugettext
 from datawinners.accountmanagement.models import Organization, OrganizationSetting, DataSenderOnTrialAccount
 from mangrove.datastore.database import get_db_manager
 from mangrove.transport.reporter import REPORTER_ENTITY_TYPE
