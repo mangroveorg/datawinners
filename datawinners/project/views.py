@@ -811,23 +811,24 @@ def _get_response(template, form_code, project, questionnaire_form, request, dis
 def web_questionnaire(request, project_id=None, subject=False):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
+    project_form_model = FormModel.get(manager, project.qid)
     if subject:
         template = 'project/register_subject.html'
         form_model = _get_subject_form_model(manager, project.entity_type)
     else:
         template = 'project/web_questionnaire.html'
-        form_model = FormModel.get(manager, project.qid)
+        form_model = project_form_model
     QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
         form_model=form_model).create()
     disable_link_class = "disable_link" if request.user.get_profile().reporter else ""
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
+        return _get_response(template, project_form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(template, form_model.form_code, project, questionnaire_form, request,
+            return _get_response(template, project_form_model.form_code, project, questionnaire_form, request,
                 disable_link_class)
 
         success_message = None
@@ -846,7 +847,7 @@ def web_questionnaire(request, project_id=None, subject=False):
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
-                return _get_response(template, form_model.form_code, project, questionnaire_form, request,
+                return _get_response(template, project_form_model.form_code, project, questionnaire_form, request,
                     disable_link_class)
 
         except DataObjectNotFound as exception:
