@@ -245,7 +245,7 @@ def send_activation_email_for_data_sender(user, language_code, request = None):
     ctx_dict = {
         'domain': site.domain,
         'uid': int_to_base36(user.id),
-        'username': user.first_name,
+        'user': user,
         'token': default_token_generator.make_token(user),
         'protocol': 'http',
         }

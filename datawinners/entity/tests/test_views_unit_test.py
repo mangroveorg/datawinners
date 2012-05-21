@@ -79,7 +79,7 @@ class TestView(TestCase):
             ctx_dict = {
                 'domain': site.domain,
                 'uid': int_to_base36(user.id),
-                'username': user.first_name,
+                'user': user,
                 'token': "token",
                 'protocol': 'http',
                 }
@@ -108,7 +108,7 @@ class TestView(TestCase):
             ctx_dict = {
                 'domain': site.domain,
                 'uid': int_to_base36(user.id),
-                'username': user.first_name,
+                'user': user,
                 'token': "token",
                 'protocol': 'http',
                 }
