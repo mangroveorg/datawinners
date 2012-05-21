@@ -59,14 +59,14 @@
                   <li>
                       {{ form.location.label_tag }}
                       {{ form.location }}
+                      {{ form.location.errors }}
                   <li class="italic_grey" style="margin-top:-10px; margin-bottom: 5px">
                       {% trans "location_name_example" %}
                   </li>
                   <li class="{{ form.geo_code.css_classes }} form-row-10px">
                       <div><label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label> <a href="http://itouchmap.com/latlong.html" style="float:right;" target="_blank">Find GPS coordinates</a></div>
                         {{ form.geo_code }}
-
-                      <div>{{ form.geo_code.errors }}</div>
+                        {{ form.geo_code.errors }}
 
                   </li>
                   <li class="italic_grey" style="margin-top:-10px; margin-bottom: 5px ;width: 350px;">
