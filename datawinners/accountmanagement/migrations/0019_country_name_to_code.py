@@ -1,19 +1,26 @@
 # encoding: utf-8
 from django_countries.countries import  COUNTRIES
 from south.v2 import DataMigration
-class Migration(DataMigration):
 
+class Migration(DataMigration):
     def forwards(self, orm):
+        countries_from_db = {'madagasikara': 'MG', 'mada': 'MG', 'mad': 'MG', 'united states of america': 'US',
+                             'tanzania': 'TZ', 'ind': 'IN', 'usa': 'US'}
+
         for org in orm.Organization.objects.all():
-            for key,value in COUNTRIES :
-                if value.lower() == org.country.code.lower():
+            for key, value in COUNTRIES:
+                country_code_lower = org.country.code.lower()
+                if value.lower() == country_code_lower:
                     org.country = key
+                    org.save()
+                elif country_code_lower in countries_from_db:
+                    org.country = countries_from_db.get(country_code_lower)
                     org.save()
 
 
     def backwards(self, orm):
         for org in orm.Organization.objects.all():
-            for key,value in COUNTRIES :
+            for key, value in COUNTRIES:
                 if key.lower() == org.country.code.lower():
                     org.country = value
                     org.save()
@@ -23,14 +30,16 @@ class Migration(DataMigration):
         'accountmanagement.datasenderontrialaccount': {
             'Meta': {'object_name': 'DataSenderOnTrialAccount'},
             'mobile_number': ('django.db.models.fields.TextField', [], {'unique': 'True', 'primary_key': 'True'}),
-            'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"})
+            'organization': (
+                'django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"})
         },
         'accountmanagement.messagetracker': {
             'Meta': {'object_name': 'MessageTracker'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'incoming_sms_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'month': ('django.db.models.fields.DateField', [], {}),
-            'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"}),
+            'organization': (
+                'django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"}),
             'outgoing_sms_count': ('django.db.models.fields.IntegerField', [], {'default': '0'})
         },
         'accountmanagement.ngouserprofile': {
@@ -63,21 +72,26 @@ class Migration(DataMigration):
             'Meta': {'object_name': 'OrganizationSetting'},
             'document_store': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']", 'unique': 'True'}),
-            'outgoing_number': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.OutgoingNumberSetting']", 'null': 'True'}),
+            'organization': ('django.db.models.fields.related.ForeignKey', [],
+                                 {'to': "orm['accountmanagement.Organization']", 'unique': 'True'}),
+            'outgoing_number': ('django.db.models.fields.related.ForeignKey', [],
+                                    {'to': "orm['accountmanagement.OutgoingNumberSetting']", 'null': 'True'}),
             'sms_tel_number': ('django.db.models.fields.TextField', [], {'unique': 'True', 'null': 'True'})
         },
         'accountmanagement.outgoingnumbersetting': {
             'Meta': {'object_name': 'OutgoingNumberSetting'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'phone_number': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'}),
-            'smsc': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.SMSC']", 'null': 'True'})
+            'smsc': (
+                'django.db.models.fields.related.ForeignKey', [],
+                    {'to': "orm['accountmanagement.SMSC']", 'null': 'True'})
         },
         'accountmanagement.paymentdetails': {
             'Meta': {'object_name': 'PaymentDetails'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'invoice_period': ('django.db.models.fields.TextField', [], {}),
-            'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"}),
+            'organization': (
+                'django.db.models.fields.related.ForeignKey', [], {'to': "orm['accountmanagement.Organization']"}),
             'preferred_payment': ('django.db.models.fields.TextField', [], {})
         },
         'accountmanagement.smsc': {
@@ -89,12 +103,15 @@ class Migration(DataMigration):
             'Meta': {'object_name': 'Group'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [],
+                                {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
         },
         'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
+            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')",
+                     'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
             'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
+            'content_type': (
+                'django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
@@ -103,7 +120,8 @@ class Migration(DataMigration):
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [],
+                           {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -111,11 +129,13 @@ class Migration(DataMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [],
+                                     {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)",
+                     'object_name': 'ContentType', 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
