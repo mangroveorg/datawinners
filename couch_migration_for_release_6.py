@@ -12,11 +12,10 @@ def migrate_01(managers):
             rows = manager.load_all_rows_in_view('all_projects')
             for row in rows:
                 document = row['value']
-                if 'smartPhone' not in document['devices']:
-                    document['devices'] = ["sms", "web", "smartPhone"]
+                document['devices'] = ["sms", "web", "smartPhone"]
 
-                    print ("Updating project %s devices to have smartPhone option") % (document['name'],)
-                    manager.database.save(document)
+                print ("Updating project %s devices to have smartPhone option") % (document['name'],)
+                manager.database.save(document)
 
         except Exception as e:
             failed_managers.append((manager, e.message))
