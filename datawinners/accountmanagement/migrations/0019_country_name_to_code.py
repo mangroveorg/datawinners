@@ -5,7 +5,6 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         for org in orm.Organization.objects.all():
-            print org.country.code
             for key,value in COUNTRIES :
                 if value.lower() == org.country.code.lower():
                     org.country = key

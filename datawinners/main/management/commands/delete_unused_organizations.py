@@ -12,7 +12,7 @@ class Command(BaseCommand):
         work_sheet = work_book.sheets()[0]
         organization_names = work_sheet.col_values(0)
         org_id_set = set()
-        for org_name in organization_names[59:176]:
+        for org_name in organization_names[59:179]:
             for org in Organization.objects.filter(name=org_name):
                 if org.org_id not in ['MNV941502','SLX364903']:
                     org_id_set.add(org.org_id)
