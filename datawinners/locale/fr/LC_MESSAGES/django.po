@@ -171,7 +171,7 @@ msgstr "Veuillez saisir un numéro de téléphone."
 
 #: entity/forms.py:25
 msgid "GPS: Enter Lat Long"
-msgstr "GPS : Entrez Lat Long"
+msgstr "GPS Coordinates"
 
 #: entity/forms.py:26
 msgid "Enter location"
@@ -4180,3 +4180,6 @@ msgstr "Entrez l’adresse e-mail de la personne à qui donner un accès Web et 
 
 msgid "user_creation_info"
 msgstr "Cette personne recevra un e-mail comportant les instructions"
+
+msgid "location_name_example"
+msgstr "Answer must be a location name. Example: Nairobi"

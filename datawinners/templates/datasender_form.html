@@ -21,52 +21,58 @@
               {{ form.name }}
               {{ form.name.errors }}
           </li>
-          <li class="{{ form.devices.css_classes }} horizontal_list form-row-10px">
-              {{ form.devices.label_tag }}
-              {{ form.devices }}
-              {{ form.devices.errors }}
-          </li>
-          <li id="user_creation_info" class="margin_top_null margin_left_20" style="margin-left: 170px;">
-              <p class="italic_grey clear-left">
-                  {% trans "user_creation_info" %}
-              </p>
+          <li class="{{ form.devices.css_classes }} horizontal_list">
+              <ul>
+                  <li class="device_label">
+                      {{ form.devices.label_tag }}
+                      {{ form.devices }}
+                      {{ form.devices.errors }}
+                  </li>
+                  <li class="italic_grey clear-left instruction_text">
+                    {% trans "user_creation_info" %}
+                  </li>
+              </ul>
+              <br/>
           </li>
           <li class="{{ form.telephone_number.css_classes }} form-row-10px">
               {{ form.telephone_number.label_tag }}
               {{ form.telephone_number }}
               {{ form.telephone_number.errors }}
           </li>
-          <li class="margin_top_null margin_left_20" style="margin-left: 170px;">
-              <p class="italic_grey clear-left">
+          <li class="margin_top_null margin_left_20 italic_grey clear-left instruction_text">
                   {% trans "phone_number_example" %}
-              </p>
           </li>
           <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
               {{ form.email.label_tag }}
               {{ form.email }}
               {{ form.email.errors }}
           </li>
-          <li class="margin_top_null margin_left_20" style="margin-left: 170px;" id="email_field_help_text">
-              <p class="italic_grey clear-left">
+          <li class="margin_top_null margin_left_20 italic_grey clear-left instruction_text" id="email_field_help_text">
                   {% trans "email_example" %}
-              </p>
           </li>
           <li class="{{ form.location.css_classes }} form-row-10px">
               <label>{% trans "Location" %}</label>
               <ul class="location_section">
+                  <li class="italic_grey" style="margin-bottom: 5px">
+                      {% trans "location_example" %}
+                  </li>
                   <li>
                       {{ form.location.label_tag }}
                       {{ form.location }}
-                      <div>{{ form.location.errors }}</div>
-                  </li>
-                  <li>
-                      <label>{% trans "or" %}</label>
+                  <li class="italic_grey" style="margin-top:-10px; margin-bottom: 5px">
+                      {% trans "location_name_example" %}
                   </li>
                   <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                      {{ form.geo_code.label_tag }}
-                      {{ form.geo_code }}
+                      <div><label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label> <a href="http://itouchmap.com/latlong.html" style="float:right;" target="_blank">Find GPS coordinates</a></div>
+                        {{ form.geo_code }}
+
                       <div>{{ form.geo_code.errors }}</div>
+
                   </li>
+                  <li class="italic_grey" style="margin-top:-10px; margin-bottom: 5px ;width: 350px;">
+                      {% trans "location_coordinate_example" %}
+                  </li>
+
                   <li>
                       {{ form.project_id.as_hidden }}
                   </li>

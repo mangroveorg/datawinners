@@ -6,6 +6,8 @@
   label{
     display:block;
     float:none;
+    font-size: 14px;
+    font-weight: bold;
   }
 }
 
@@ -32,4 +34,16 @@
   ul li input{
     margin-top: 9px;
   }
+  li.device_label > label{
+      display: block;
+      float: left;
+      font-size: 14px;
+      font-weight: bold;
+      width: 170px;
+  }
+
 }
+li.instruction_text{
+      margin-left: 170px;
+      margin-top: -10px;
+  }
