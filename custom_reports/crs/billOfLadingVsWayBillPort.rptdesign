@@ -145,9 +145,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">org.postgresql.Driver</property>
-            <property name="odaURL">jdbc:postgresql:datawinners</property>
-            <property name="odaUser">herihaja</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">aGVyaQ==</encrypted-property>
+            <property name="odaURL">jdbc:postgresql:geodjango</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
             <property name="odaJndiName">java:comp/env/jdbc/postgres</property>
             <property name="OdaConnProfileName">CRS_conn_profile</property>
             <property name="OdaConnProfileStorePath">crs_conn_profile</property>
@@ -865,18 +865,32 @@ where A.packing_list_code LIKE ?]]></xml-property>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
-                    <property name="name">excess_landed</property>
+                    <property name="name">sent_date</property>
+                    <expression name="expression">if(row["sent_date_"]){row["sent_date_"]}</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">ecart_sent_received</property>
                     <expression name="expression">if(row['shipment_type']=='CONTAINER'){ 
-    BirtMath.round(row['total_received']-row['weight_in_container'], 2)
+    BirtMath.round(row['weight_in_container']-row['total_received'], 2)
 }else{ 
-    BirtMath.round(row['total_received']-row['weight_bb'], 2)
+    BirtMath.round(row['weight_bb']-row['total_received'], 2)
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
-                    <property name="name">sent_date</property>
-                    <expression name="expression">if(row["sent_date_"]){row["sent_date_"]}</expression>
-                    <property name="dataType">date</property>
+                    <property name="name">net_weight_bb</property>
+                    <expression name="expression">if(row['shipment_type']=='BREAK BULK'){ 
+	row["net_weight"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">net_weight_container</property>
+                    <expression name="expression">if(row['shipment_type']=='CONTAINER'){ 
+	row["net_weight"]
+}</expression>
+                    <property name="dataType">float</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
@@ -1229,13 +1243,23 @@ where A.packing_list_code LIKE ?]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">30</property>
-                        <property name="name">excess_landed</property>
-                        <property name="dataType">float</property>
+                        <property name="name">sent_date</property>
+                        <property name="dataType">date</property>
                     </structure>
                     <structure>
                         <property name="position">31</property>
-                        <property name="name">sent_date</property>
-                        <property name="dataType">date</property>
+                        <property name="name">ecart_sent_received</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">net_weight_bb</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">net_weight_container</property>
+                        <property name="dataType">float</property>
                     </structure>
                 </list-property>
             </structure>
@@ -1792,8 +1816,9 @@ and t.issue_date <= ?]]></xml-property>
                             <structure>
                                 <property name="name">excess_landed</property>
                                 <text-property name="displayName">excess_landed</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["excess_landed"]</expression>
+                                <expression name="expression" type="javascript">dataSetRow["net_weight"]-row["total_total_received"]</expression>
                                 <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">Total</property>
@@ -1833,18 +1858,6 @@ and t.issue_date <= ?]]></xml-property>
                                     <structure>
                                         <property name="name">Expression</property>
                                         <expression name="value" type="javascript">row["total_received"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">total_excess_landed</property>
-                                <property name="dataType">float</property>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["excess_landed"]</expression>
                                     </structure>
                                 </list-property>
                                 <property name="allowExport">true</property>
@@ -1910,7 +1923,7 @@ and t.issue_date <= ?]]></xml-property>
                                 <list-property name="arguments">
                                     <structure>
                                         <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["excess_landed"]</expression>
+                                        <expression name="value" type="javascript">row["ecart"]</expression>
                                     </structure>
                                 </list-property>
                                 <property name="allowExport">true</property>
@@ -1945,6 +1958,87 @@ and t.issue_date <= ?]]></xml-property>
                                 </list-property>
                                 <property name="allowExport">true</property>
                             </structure>
+                            <structure>
+                                <property name="name">net_weight</property>
+                                <text-property name="displayName">net_weight</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_weight"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sum_excess_landed</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>byShipment</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["sum_excess_landed_by_billoflading"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ecart_sent_received</property>
+                                <text-property name="displayName">ecart_sent_received</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ecart_sent_received"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Aggregation_1</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>byShipment</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["excess_landed"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">subtotal_excess_landed</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>byShipment</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">FIRST</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["excess_landed"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sum_all_excess_landed</property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["subtotal_excess_landed"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_weight_bb</property>
+                                <text-property name="displayName">net_weight_bb</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_weight_bb"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_weight_container</property>
+                                <text-property name="displayName">net_weight_container</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_weight_container"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
                         </list-property>
                         <column id="1707"/>
                         <column id="1708"/>
@@ -1963,10 +2057,10 @@ and t.issue_date <= ?]]></xml-property>
                         <column id="1721"/>
                         <column id="1722"/>
                         <column id="1723">
-                            <property name="width">1.6944444444444444in</property>
+                            <property name="width">1.9583333333333333in</property>
                         </column>
                         <column id="2163">
-                            <property name="width">0.8472222222222222in</property>
+                            <property name="width">1.0138888888888888in</property>
                         </column>
                         <header>
                             <row id="1804">
@@ -2008,7 +2102,7 @@ and t.issue_date <= ?]]></xml-property>
                                     <property name="rowSpan">2</property>
                                     <property name="style">rowspan2</property>
                                     <label id="1871">
-                                        <text-property name="text" key="excess_landed_per_container"></text-property>
+                                        <text-property name="text" key="ecart"></text-property>
                                     </label>
                                 </cell>
                                 <cell id="2158">
@@ -2016,7 +2110,7 @@ and t.issue_date <= ?]]></xml-property>
                                     <property name="rowSpan">2</property>
                                     <property name="style">rowspan2</property>
                                     <label id="2164">
-                                        <text-property name="text" key="ecart_per_billoflading"></text-property>
+                                        <text-property name="text" key="excess_landed1"></text-property>
                                     </label>
                                 </cell>
                             </row>
@@ -2043,13 +2137,13 @@ and t.issue_date <= ?]]></xml-property>
                                 <cell id="1658">
                                     <property name="style">with_border</property>
                                     <label id="1880">
-                                        <text-property name="text" key="gross_weight_bb"></text-property>
+                                        <text-property name="text" key="net_weight_bb"></text-property>
                                     </label>
                                 </cell>
                                 <cell id="1659">
                                     <property name="style">with_border</property>
                                     <label id="1882">
-                                        <text-property name="text" key="gross_weight_container"></text-property>
+                                        <text-property name="text" key="net_weight_container"></text-property>
                                     </label>
                                 </cell>
                                 <cell id="1660">
@@ -2168,9 +2262,6 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderRightStyle">solid</property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
-                                        <data id="2362">
-                                            <property name="resultSetColumn">sum_excesslanded_by_shipment</property>
-                                        </data>
                                     </cell>
                                     <cell id="2360">
                                         <property name="style">subtotal2</property>
@@ -2182,8 +2273,8 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderRightStyle">solid</property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
-                                        <data id="2384">
-                                            <property name="resultSetColumn">sum_ecart</property>
+                                        <data id="2399">
+                                            <property name="resultSetColumn">subtotal_excess_landed</property>
                                         </data>
                                     </cell>
                                 </row>
@@ -2243,9 +2334,6 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderRightStyle">solid</property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
-                                        <data id="2382">
-                                            <property name="resultSetColumn">sum_excess_landed_by_billoflading</property>
-                                        </data>
                                     </cell>
                                     <cell id="2161">
                                         <property name="style">subtotal</property>
@@ -2257,8 +2345,8 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderRightStyle">solid</property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
-                                        <data id="2166">
-                                            <property name="resultSetColumn">ecart</property>
+                                        <data id="2391">
+                                            <property name="resultSetColumn">excess_landed</property>
                                         </data>
                                     </cell>
                                 </row>
@@ -2292,14 +2380,14 @@ and t.issue_date <= ?]]></xml-property>
                                 </cell>
                                 <cell id="1676">
                                     <property name="style">with_border</property>
-                                    <data id="1959">
-                                        <property name="resultSetColumn">gross_weight_bb</property>
+                                    <data id="2401">
+                                        <property name="resultSetColumn">net_weight_bb</property>
                                     </data>
                                 </cell>
                                 <cell id="1677">
                                     <property name="style">with_border</property>
-                                    <data id="1961">
-                                        <property name="resultSetColumn">gross_weight_container</property>
+                                    <data id="2402">
+                                        <property name="resultSetColumn">net_weight_container</property>
                                     </data>
                                 </cell>
                                 <cell id="1678">
@@ -2364,8 +2452,8 @@ and t.issue_date <= ?]]></xml-property>
                                 </cell>
                                 <cell id="1688">
                                     <property name="style">with_border</property>
-                                    <data id="1976">
-                                        <property name="resultSetColumn">excess_landed</property>
+                                    <data id="2398">
+                                        <property name="resultSetColumn">ecart_sent_received</property>
                                     </data>
                                 </cell>
                                 <cell id="2160">
@@ -2386,12 +2474,12 @@ and t.issue_date <= ?]]></xml-property>
                                 </cell>
                                 <cell id="1706">
                                     <property name="style">with_border</property>
-                                    <data id="1977">
-                                        <property name="resultSetColumn">Total</property>
-                                    </data>
                                 </cell>
                                 <cell id="2162">
                                     <property name="style">with_border</property>
+                                    <data id="2400">
+                                        <property name="resultSetColumn">sum_all_excess_landed</property>
+                                    </data>
                                 </cell>
                             </row>
                         </footer>

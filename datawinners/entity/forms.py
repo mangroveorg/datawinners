@@ -41,12 +41,13 @@ class ReporterRegistrationForm(Form):
         label=_("Name"))
     telephone_number = PhoneNumberField(required=True, label=_("Mobile Number"))
     geo_code = CharField(max_length=30, required=False, label=_("GPS: Enter Lat Long"))
-    location = CharField(max_length=100, required=False, label=_("Enter location"))
+
+    location = CharField(max_length=100, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
-    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> SMS')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> Web + <img src="/media/images/smart_phone.png" />SmartPhone')))
-    devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple, choices=DEVICE_CHOICES,
-        initial=['sms'], required=False)
+    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span> + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>')))
+    devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple(), choices=DEVICE_CHOICES,
+        initial=['sms'], required=False,)
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
         maxlength=75)),
         label=_("Email address"),
@@ -55,10 +56,10 @@ class ReporterRegistrationForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
-        self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number")
-        self.fields['location'].widget.attrs['watermark'] = _("Enter region, district or commune")
-        self.fields['geo_code'].widget.attrs['watermark'] = _("Enter lat and long eg: 19.3,42.37")
+#        self.fields['name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
+#        self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number")
+#        self.fields['location'].widget.attrs['watermark'] = _("Enter region, district or commune")
+#        self.fields['geo_code'].widget.attrs['watermark'] = _("Enter lat and long eg: 19.3,42.37")
 
     def _is_int(self, s):
         try:

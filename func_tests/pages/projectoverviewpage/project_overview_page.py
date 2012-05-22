@@ -44,6 +44,6 @@ class ProjectOverviewPage(Page):
         self.driver.find(SEND_MESSAGE_TAB).click()
         return BroadcastSmsPage(self.driver)
 
-    def open_web_questionnaire_preview(self):
-        self.driver.find(by_css(".web_questionnaire")).click()
+    def open_sms_questionnaire_preview(self):
+        self.driver.find(by_css(".sms_questionnaire")).click()
         return LightBox(self.driver)

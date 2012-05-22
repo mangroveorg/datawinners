@@ -1212,7 +1212,7 @@ msgstr "Questionnaire Web"
 
 #: templates/project/questionnaire_and_DS.html:30
 msgid "SmartPhone"
-msgstr "SmartPhone"
+msgstr "Smartphone"
 
 #: templates/project/finish_and_test.html:169
 msgid "Preview and print your questionnaire"
@@ -1689,6 +1689,7 @@ msgid "Activate Project"
 msgstr "Activer un projet"
 
 #: templates/project/tab_navigation.html:26
+#: templates/project/review_and_test.html:160
 msgid "Test SMS Questionnaire"
 msgstr "Testez le Questionnaire SMS"
 

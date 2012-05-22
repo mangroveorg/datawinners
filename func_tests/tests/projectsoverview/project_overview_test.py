@@ -19,11 +19,11 @@ class TestProjectOverview(BaseTest):
         return global_navigation.navigate_to_view_all_project_page()
 
     @attr('functional_test', 'smoke')
-    def test_project_overview_web_questionnaire(self):
+    def test_project_overview_sms_questionnaire(self):
         """
         Function to test the project overview web questionnaire
         """
         all_project_page = self.prerequisites_of_project_overview()
         project_overview_page = all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
-        light_box = project_overview_page.open_web_questionnaire_preview()
+        light_box = project_overview_page.open_sms_questionnaire_preview()
         self.assertEqual(light_box.get_title_of_light_box(), PREVIEW_TITLE)

@@ -163,7 +163,7 @@ msgstr ""
 
 #: entity/forms.py:25
 msgid "GPS: Enter Lat Long"
-msgstr ""
+msgstr "GPS Coordinates"
 
 #: entity/forms.py:26
 msgid "Enter location"
@@ -1237,7 +1237,7 @@ msgstr ""
 
 #: templates/project/questionnaire_and_DS.html:30
 msgid "SmartPhone"
-msgstr ""
+msgstr "Smartphone"
 
 #: templates/project/finish_and_test.html:169
 msgid "Preview and print your questionnaire"
@@ -1885,6 +1885,7 @@ msgid "Activate Project"
 msgstr ""
 
 #: templates/project/tab_navigation.html:26
+#: templates/project/review_and_test.html:160
 msgid "Test SMS Questionnaire"
 msgstr ""
 
@@ -4135,3 +4136,12 @@ msgstr "Enter this person's Email address to give Web and Smartphone access"
 
 msgid "user_creation_info"
 msgstr "This person will receive an email with instructions"
+
+msgid "location_example"
+msgstr "Enter either a location name or the GPS coordinates."
+
+msgid "location_name_example"
+msgstr "Answer must be a location name. Example: Nairobi"
+
+msgid "location_coordinate_example"
+msgstr "Answer must be GPS coordinates in the following format(latitude,longitude): xx.xx,yy.yy. Example: -18.13,27.65"

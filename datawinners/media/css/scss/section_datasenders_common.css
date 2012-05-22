@@ -3,7 +3,10 @@
   margin-bottom: 20px; }
 .location_section label {
   display: block;
-  float: none; }
+  float: none;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 .button_block input {
   float: none;
@@ -21,3 +24,13 @@
   padding-right: 5px; }
 .horizontal_list ul li input {
   margin-top: 9px; }
+.horizontal_list li.device_label > label {
+  display: block;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  width: 170px; }
+
+li.instruction_text {
+  margin-left: 170px;
+  margin-top: -10px; }
