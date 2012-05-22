@@ -1,12 +1,11 @@
 .location_section li {
   float: none;
-  margin-bottom: 20px; }
+  margin-bottom: 15px; }
 .location_section label {
   display: block;
   float: none;
-    font-size: 14px;
-    font-weight: bold;
-}
+  font-size: 14px;
+  font-weight: bold; }
 
 .button_block input {
   float: none;
@@ -32,5 +31,5 @@
   width: 170px; }
 
 li.instruction_text {
-  margin-left: 170px;
-  margin-top: -10px; }
+  margin-top: -15px;
+  width: 350px; }

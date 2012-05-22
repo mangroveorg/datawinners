@@ -28,7 +28,7 @@
                       {{ form.devices }}
                       {{ form.devices.errors }}
                   </li>
-                  <li id="user_creation_info" class="italic_grey clear-left instruction_text">
+                  <li id="user_creation_info" class="italic_grey clear-left margin_left_170 instruction_text">
                     {% trans "user_creation_info" %}
                   </li>
               </ul>
@@ -39,7 +39,7 @@
               {{ form.telephone_number }}
               {{ form.telephone_number.errors }}
           </li>
-          <li class="margin_top_null margin_left_20 italic_grey clear-left instruction_text">
+          <li class="margin_top_null margin_left_170 italic_grey clear-left instruction_text">
                   {% trans "phone_number_example" %}
           </li>
           <li class="{{ form.email.css_classes }} form-row-10px" id="email_field">
@@ -47,7 +47,7 @@
               {{ form.email }}
               {{ form.email.errors }}
           </li>
-          <li class="margin_top_null margin_left_20 italic_grey clear-left instruction_text" id="email_field_help_text">
+          <li class="margin_top_null margin_left_170 italic_grey clear-left instruction_text" id="email_field_help_text">
                   {% trans "email_example" %}
           </li>
           <li class="{{ form.location.css_classes }} form-row-10px">
@@ -60,7 +60,7 @@
                       {{ form.location.label_tag }}
                       {{ form.location }}
                       {{ form.location.errors }}
-                  <li class="italic_grey" style="margin-top:-10px; margin-bottom: 5px">
+                  <li class="italic_grey margin_bottom_5 instruction_text">
                       {% trans "location_name_example" %}
                   </li>
                   <li class="{{ form.geo_code.css_classes }} form-row-10px">
@@ -69,7 +69,7 @@
                         {{ form.geo_code.errors }}
 
                   </li>
-                  <li class="italic_grey" style="margin-top:-10px; margin-bottom: 5px ;width: 350px;">
+                  <li class="italic_grey margin_bottom_5 instruction_text">
                       {% trans "location_coordinate_example" %}
                   </li>
 
