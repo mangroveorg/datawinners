@@ -1890,6 +1890,7 @@ msgid "Activate Project"
 msgstr "Activer un projet"
 
 #: templates/project/tab_navigation.html:26
+#: templates/project/review_and_test.html:160
 msgid "Test SMS Questionnaire"
 msgstr "Tester le Questionnaire SMS"
 
