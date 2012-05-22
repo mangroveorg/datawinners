@@ -1223,6 +1223,8 @@ msgstr ""
 
 #: templates/project/finish_and_test.html:162
 #: templates/project/finish_and_test.html:164
+#: templates/project/finish_and_test.html:165
+#: templates/project/review_and_test.html:158
 msgid "SMS Questionnaire"
 msgstr ""
 
