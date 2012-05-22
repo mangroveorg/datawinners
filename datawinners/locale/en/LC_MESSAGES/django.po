@@ -1237,7 +1237,7 @@ msgstr ""
 
 #: templates/project/questionnaire_and_DS.html:30
 msgid "SmartPhone"
-msgstr ""
+msgstr "Smartphone"
 
 #: templates/project/finish_and_test.html:169
 msgid "Preview and print your questionnaire"

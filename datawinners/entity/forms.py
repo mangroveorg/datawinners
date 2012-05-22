@@ -45,7 +45,7 @@ class ReporterRegistrationForm(Form):
     location = CharField(max_length=100, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
-    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span> + <img src="/media/images/smart_phone.png" /><span>SmartPhone</span>')))
+    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span> + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>')))
     devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple(), choices=DEVICE_CHOICES,
         initial=['sms'], required=False,)
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},
