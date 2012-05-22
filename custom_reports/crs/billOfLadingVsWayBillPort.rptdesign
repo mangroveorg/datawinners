@@ -878,6 +878,20 @@ where A.packing_list_code LIKE ?]]></xml-property>
 }</expression>
                     <property name="dataType">float</property>
                 </structure>
+                <structure>
+                    <property name="name">net_weight_bb</property>
+                    <expression name="expression">if(row['shipment_type']=='BREAK BULK'){ 
+	row["net_weight"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">net_weight_container</property>
+                    <expression name="expression">if(row['shipment_type']=='CONTAINER'){ 
+	row["net_weight"]
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -1235,6 +1249,16 @@ where A.packing_list_code LIKE ?]]></xml-property>
                     <structure>
                         <property name="position">31</property>
                         <property name="name">ecart_sent_received</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">net_weight_bb</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">net_weight_container</property>
                         <property name="dataType">float</property>
                     </structure>
                 </list-property>
@@ -2003,6 +2027,18 @@ and t.issue_date <= ?]]></xml-property>
                                 </list-property>
                                 <property name="allowExport">true</property>
                             </structure>
+                            <structure>
+                                <property name="name">net_weight_bb</property>
+                                <text-property name="displayName">net_weight_bb</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_weight_bb"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">net_weight_container</property>
+                                <text-property name="displayName">net_weight_container</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["net_weight_container"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
                         </list-property>
                         <column id="1707"/>
                         <column id="1708"/>
@@ -2344,14 +2380,14 @@ and t.issue_date <= ?]]></xml-property>
                                 </cell>
                                 <cell id="1676">
                                     <property name="style">with_border</property>
-                                    <data id="2386">
-                                        <property name="resultSetColumn">net_weight</property>
+                                    <data id="2401">
+                                        <property name="resultSetColumn">net_weight_bb</property>
                                     </data>
                                 </cell>
                                 <cell id="1677">
                                     <property name="style">with_border</property>
-                                    <data id="2387">
-                                        <property name="resultSetColumn">net_weight</property>
+                                    <data id="2402">
+                                        <property name="resultSetColumn">net_weight_container</property>
                                     </data>
                                 </cell>
                                 <cell id="1678">
