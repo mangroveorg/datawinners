@@ -73,6 +73,7 @@
             {% for title in labels %}
                 <th>{% trans title %}</th>
             {% endfor %}
+            <th>{% trans "Email" %}</th>
         </tr>
         </thead>
         <tbody id="tbody" class="datasenders_list">
@@ -84,6 +85,7 @@
                 <td>{{ data.location}}</td>
                 <td>{{ data.geo_code }}</td>
                 <td>{{ data.mobile_number }}</td>
+                <td>{{ data.email }}</td>
             </tr>
         {% endfor %}
         </tbody>

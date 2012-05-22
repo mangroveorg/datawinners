@@ -48,7 +48,7 @@ from datawinners.messageprovider.message_handler import get_exception_message_fo
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
-from datawinners.accountmanagement.models import Organization, OrganizationSetting
+from datawinners.accountmanagement.models import Organization, OrganizationSetting, NGOUserProfile
 from datawinners.entity.forms import ReporterRegistrationForm
 from datawinners.entity.views import import_subjects_from_project_wizard, all_datasenders, save_questionnaire as subject_save_questionnaire, create_single_web_user
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
@@ -697,6 +697,15 @@ def registered_datasenders(request, project_id=None):
                 labels.append(_("What is the Data Sender's mobile number?"))
         in_trial_mode = _in_trial_mode(request)
         senders = project.get_data_senders(manager)
+        for sender in senders:
+            if sender["short_code"] == "test":
+                index = senders.index(sender)
+                del senders[index]
+                continue
+            org_id = NGOUserProfile.objects.get(user=request.user).org_id
+            user_profile = NGOUserProfile.objects.filter(reporter_id=sender['short_code'], org_id=org_id)
+            sender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
+
         return render_to_response('project/registered_datasenders.html',
                 {'project': project, 'project_links': project_links, 'all_data': (
                 senders), "labels": labels,
