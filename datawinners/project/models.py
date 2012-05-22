@@ -9,7 +9,7 @@ from datawinners.scheduler.deadline import Deadline, Month, Week
 from mangrove.datastore.database import  DatabaseManager, DataObject
 from mangrove.datastore.documents import DocumentBase, TZAwareDateTimeField
 from mangrove.errors.MangroveException import DataObjectAlreadyExists
-from mangrove.form_model.form_model import FormModel
+from mangrove.form_model.form_model import FormModel, REPORTER
 from mangrove.transport.reporter import get_reporters_who_submitted_data_for_frequency_period
 from mangrove.utils.types import  is_string, is_empty
 from django.db import models
@@ -188,7 +188,7 @@ class Project(DocumentBase):
         return self.activity_report == "yes"
 
     def get_data_senders(self, dbm):
-        all_data, fields, label = load_all_subjects_of_type(dbm)
+        all_data, fields, label = load_all_subjects_of_type(dbm, type=REPORTER)
         return [dict(zip(fields, data["cols"])) for data in all_data if data['short_code'] in self.data_senders]
 
     def _get_data_senders_ids_who_made_submission_for(self, dbm, deadline_date):

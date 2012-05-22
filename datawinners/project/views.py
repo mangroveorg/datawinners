@@ -696,9 +696,10 @@ def registered_datasenders(request, project_id=None):
             else:
                 labels.append(_("What is the Data Sender's mobile number?"))
         in_trial_mode = _in_trial_mode(request)
+        senders = project.get_data_senders(manager)
         return render_to_response('project/registered_datasenders.html',
                 {'project': project, 'project_links': project_links, 'all_data': (
-                helper.get_project_data_senders(manager, project)), "labels": labels,
+                senders), "labels": labels,
                  'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
             context_instance=RequestContext(request))
     if request.method == 'POST':

@@ -72,12 +72,14 @@
         </tr>
         </thead>
         <tbody id="tbody">
-        {% for row in all_data %}
+        {% for data in all_data %}
             <tr>
-                <td><input type="checkbox" value="{{ row.short_code }}"/>
-                    {% for col in row.cols %}
-                        <td>{{ col }}</td>
-                    {% endfor %}
+                <td><input type="checkbox" value="{{ data.short_code }}"/>
+                <td>{{ data.name }}</td>
+                <td>{{ data.short_code }}</td>
+                <td>{{ data.location}}</td>
+                <td>{{ data.geo_code }}</td>
+                <td>{{ data.mobile_number }}</td>
             </tr>
         {% endfor %}
         </tbody>
