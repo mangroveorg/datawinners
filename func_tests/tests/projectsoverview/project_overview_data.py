@@ -2,4 +2,4 @@
 
 PROJECT_NAME = u"clinic4 test project"
 
-PREVIEW_TITLE = "Questionnaire Preview"
+PREVIEW_TITLE = "SMS Questionnaire"
