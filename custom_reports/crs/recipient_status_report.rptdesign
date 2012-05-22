@@ -194,6 +194,9 @@
                     <property name="isRequired">true</property>
                     <property name="dataType">string</property>
                     <property name="distinct">true</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">2000</value>
+                    </simple-property-list>
                     <list-property name="selectionList"/>
                     <property name="paramType">simple</property>
                     <property name="controlType">text-box</property>
@@ -210,8 +213,18 @@
                 <scalar-parameter name="end_month" id="1395">
                     <text-property name="promptText" key="month"></text-property>
                     <property name="valueType">static</property>
+                    <property name="isRequired">true</property>
                     <property name="dataType">string</property>
                     <property name="distinct">true</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="javascript">
+                        	val = new Date(new Date().getFullYear(), new Date().getMonth()).getMonth().toString();
+  							if(val.length==1){
+     							val = '0'+val;
+     						}
+                        	params["end_month"] = val;
+                        </value>
+                    </simple-property-list>
                     <list-property name="selectionList">
                         <structure>
                             <property name="value">01</property>
@@ -286,8 +299,11 @@
                     <text-property name="promptText" key="year"></text-property>
                     <property name="valueType">static</property>
                     <property name="isRequired">true</property>
-                    <property name="dataType">string</property>
+                    <property name="dataType">integer</property>
                     <property name="distinct">true</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="javascript">new Date(new Date().getFullYear(), new Date().getMonth()).getFullYear()</value>
+                    </simple-property-list>
                     <list-property name="selectionList"/>
                     <property name="paramType">simple</property>
                     <property name="controlType">text-box</property>

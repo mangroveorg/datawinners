@@ -49,6 +49,7 @@
     <property name="imageDPI">147</property>
     <parameters>
         <scalar-parameter name="CCC" id="9">
+            <text-property name="promptText" key="ccc_label"></text-property>
             <property name="valueType">static</property>
             <property name="isRequired">true</property>
             <property name="dataType">string</property>
@@ -65,6 +66,7 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="pl_code" id="10">
+            <text-property name="promptText" key="pl_code_label"></text-property>
             <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
             <property name="dataSetName">all_pl_code</property>
