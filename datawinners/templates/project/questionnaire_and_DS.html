@@ -14,16 +14,13 @@
     <ul>
         <li><b>{{ number_of_questions }}</b> {% trans "Questions" %}</li>
         <div class="line"></div>
-        <li><img src="/media/images/mini_mobile.png" /><a href="#" class="sms_questionnaire sms_tester"> {% trans "SMS Questionnaire" %}</a></li>
-        {% if project.state != 'Test' %}
-            {% include 'project/sms_tester_form.html' %}
-        {% endif %}
+        <li><img src="/media/images/mini_mobile.png" /><a href="#" class="sms_questionnaire preview"> {% trans "SMS Questionnaire" %}</a></li>
+        <div class="questionnaire_preview">
+            {% trans "Generating the questionnaire preview." %}
+        </div>
         <div class="line"></div>
         {% if 'web' in project.devices %}
-            <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire preview"> {% trans "Web Questionnaire" %}</a></li>
-            <div class="questionnaire_preview">
-                {% trans "Generating the questionnaire preview." %}
-            </div>
+            <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire"> {% trans "Web Questionnaire" %}</a></li>
         {% endif %}
         <div class="line"></div>
         {% if 'smartPhone' in project.devices %}
