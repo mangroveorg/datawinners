@@ -2,7 +2,7 @@ $(document).ready(function() {
     
     function updateIds() {
         var allIds = [];
-        $('#all_data_senders :checked').each(function() {
+        $('.datasenders_list :checked').each(function() {
             allIds.push($(this).val());
         });
         return allIds;
@@ -62,7 +62,7 @@ $(document).ready(function() {
 
     function populate_dialog_box_for_web_users() {
         var data_sender_details = [];
-        $('#all_data_senders :checked').each(function() {
+        $('.datasenders_list :checked').each(function() {
             var row = $(this).parent().parent();
             var data_sender = {};
             data_sender.short_name = $($(row).children()[2]).html();

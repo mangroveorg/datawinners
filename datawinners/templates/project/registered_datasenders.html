@@ -21,6 +21,7 @@
 
 {% block page_js %}
     {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/datasenders/index.js"></script>
     <script type="text/javascript" src="/media/javascript/project/my_datasenders_reload_tables.js"></script>
     <script type="text/javascript" src="/media/javascript/file_uploader/fileuploader.js"></script>
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
@@ -56,10 +57,13 @@
         </ul>
     {% endif %}
 
+    {% include 'entity/all_data_senders/web_submission_access_block.html' %}
+
     <label class="float_left">{% trans "Actions:" %} </label>
     <select id='action' class="margin_bottom_20">
         <option value="">--</option>
         <option value="disassociate">{% trans "Dis-Associate" %}</option>
+        <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
         <option value="delete">{% trans "Delete" %}</option>
     </select>
     <table id='associated_data_senders' class="styled_table">
@@ -71,7 +75,7 @@
             {% endfor %}
         </tr>
         </thead>
-        <tbody id="tbody">
+        <tbody id="tbody" class="datasenders_list">
         {% for data in all_data %}
             <tr>
                 <td><input type="checkbox" value="{{ data.short_code }}"/>

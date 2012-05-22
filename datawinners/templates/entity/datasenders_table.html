@@ -9,7 +9,7 @@
             <th>{% trans "Projects" %}</th>
             <th>{% trans "Email" %}</th>
         </thead>
-        <tbody id='all_data_senders'>
+        <tbody id='all_data_senders' class="datasenders_list">
         {% for row in all_data %}
             <tr>
                 <td><input type="checkbox" id="{{ row.short_code }}" value="{{ row.short_code }}"/></td>
