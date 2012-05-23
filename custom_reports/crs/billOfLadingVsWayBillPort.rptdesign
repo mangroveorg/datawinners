@@ -5,6 +5,20 @@
         <value>properties/messages</value>
         <value>properties/messages_fr_CA</value>
     </simple-property-list>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">1651</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">1651</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">1651</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
@@ -1914,21 +1928,6 @@ and t.issue_date <= ?]]></xml-property>
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
-                                <property name="name">sum_excess_landed_by_billoflading</property>
-                                <property name="dataType">float</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>bybilloflading</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["ecart"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
                                 <property name="name">total_total_received</property>
                                 <property name="dataType">float</property>
                                 <simple-property-list name="aggregateOn">
@@ -1965,67 +1964,10 @@ and t.issue_date <= ?]]></xml-property>
                                 <property name="dataType">float</property>
                             </structure>
                             <structure>
-                                <property name="name">sum_excess_landed</property>
-                                <property name="dataType">float</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>byShipment</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["sum_excess_landed_by_billoflading"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
                                 <property name="name">ecart_sent_received</property>
                                 <text-property name="displayName">ecart_sent_received</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["ecart_sent_received"]</expression>
                                 <property name="dataType">float</property>
-                            </structure>
-                            <structure>
-                                <property name="name">Aggregation_1</property>
-                                <property name="dataType">float</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>byShipment</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["excess_landed"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">subtotal_excess_landed</property>
-                                <property name="dataType">float</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>byShipment</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">FIRST</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["excess_landed"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">sum_all_excess_landed</property>
-                                <property name="dataType">float</property>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">row["subtotal_excess_landed"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
                             </structure>
                             <structure>
                                 <property name="name">net_weight_bb</property>
@@ -2038,6 +1980,12 @@ and t.issue_date <= ?]]></xml-property>
                                 <text-property name="displayName">net_weight_container</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["net_weight_container"]</expression>
                                 <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">sum_excess_landed</property>
+                                <expression name="expression" type="javascript">row["sum_excesslanded_by_shipment"]</expression>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                         </list-property>
                         <column id="1707"/>
@@ -2273,9 +2221,9 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderRightStyle">solid</property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
-                                        <data id="2399">
-                                            <property name="resultSetColumn">subtotal_excess_landed</property>
-                                        </data>
+                                        <label id="2406">
+                                            <method name="onCreate"><![CDATA[if(row["shipment_type"]=="break bulk"){ this.text = vars["excess_landed_bb"] }else{this.text = vars["excess_landed_cont"];}]]></method>
+                                        </label>
                                     </cell>
                                 </row>
                             </footer>
@@ -2346,6 +2294,7 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
                                         <data id="2391">
+                                            <method name="onCreate"><![CDATA[if(row["shipment_type"]=="break bulk"){ vars["excess_landed_bb"] += row["excess_landed"];}else{vars["excess_landed_cont"] += row["excess_landed"];}]]></method>
                                             <property name="resultSetColumn">excess_landed</property>
                                         </data>
                                     </cell>
@@ -2477,9 +2426,9 @@ and t.issue_date <= ?]]></xml-property>
                                 </cell>
                                 <cell id="2162">
                                     <property name="style">with_border</property>
-                                    <data id="2400">
-                                        <property name="resultSetColumn">sum_all_excess_landed</property>
-                                    </data>
+                                    <label id="2407">
+                                        <method name="onCreate"><![CDATA[this.text = vars["excess_landed_bb"] + vars["excess_landed_cont"];]]></method>
+                                    </label>
                                 </cell>
                             </row>
                         </footer>
@@ -2488,6 +2437,16 @@ and t.issue_date <= ?]]></xml-property>
             </row>
         </grid>
     </body>
+    <property name="pageVariables">
+        <variable-element name="excess_landed_bb">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="excess_landed_cont">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
     <list-property name="images">
         <structure>
             <property name="name">datawinners_logo.png</property>
