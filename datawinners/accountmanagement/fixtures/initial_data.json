@@ -217,6 +217,17 @@
         }
     },
     {
+        "pk": 8,
+        "model": "accountmanagement.ngouserprofile",
+        "fields": {
+            "mobile_phone": "874827212",
+            "title": "Mr",
+            "org_id": "SLX364903",
+            "reporter_id": "rep9",
+            "user": 9
+        }
+    },
+    {
         "pk": 1,
         "model": "accountmanagement.organizationsetting",
         "fields": {
@@ -454,6 +465,26 @@
             "password": "sha1$f35a1$9f18cb50116b6613db42dbec1f7dea4a491dcf13",
             "email": "chinatwu4@gmail.com",
             "date_joined": "2020-10-17 04:46:57"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.user",
+        "fields": {
+            "username": "datasender@test.com",
+            "first_name": "DataSender",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-05-20 07:00:14",
+            "groups": [
+                4
+            ],
+            "user_permissions": [],
+            "password": "sha1$9cdd3$e4a2d0813edc94ab013c359f0f59d5224899dbfb",
+            "email": "datasender@test.com",
+            "date_joined": "2012-05-20 07:00:14"
         }
     },
     {
