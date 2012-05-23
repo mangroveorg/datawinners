@@ -278,7 +278,6 @@ def create_multiple_web_users(request):
 def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = get_all_projects(manager)
-    grant_web_access = False
     fields, old_labels, codes = get_entity_type_fields(manager)
     labels = []
     for label in old_labels:
@@ -286,6 +285,7 @@ def all_datasenders(request):
             labels.append(_(label.replace('subject', 'Data Sender')))
         else:
             labels.append(_("What is the Data Sender's mobile number?"))
+    grant_web_access = False
     if request.method == 'GET' and int(request.GET.get('web', '0')):
         grant_web_access = True
     if request.method == 'POST':

@@ -687,6 +687,9 @@ def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
     profile = request.user.get_profile()
     project, project_links = _get_project_and_project_link(manager, project_id)
+    grant_web_access = False
+    if request.method == 'GET' and int(request.GET.get('web', '0')):
+        grant_web_access = True
     if request.method == 'GET':
         fields, old_labels, codes = get_entity_type_fields(manager)
         labels = []
@@ -705,10 +708,11 @@ def registered_datasenders(request, project_id=None):
             org_id = NGOUserProfile.objects.get(user=request.user).org_id
             user_profile = NGOUserProfile.objects.filter(reporter_id=sender['short_code'], org_id=org_id)
             sender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
+            sender['project'] = project.name
 
         return render_to_response('project/registered_datasenders.html',
                 {'project': project, 'project_links': project_links, 'all_data': (
-                senders), "labels": labels,
+                senders), 'grant_web_access': grant_web_access, "labels": labels,
                  'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
             context_instance=RequestContext(request))
     if request.method == 'POST':

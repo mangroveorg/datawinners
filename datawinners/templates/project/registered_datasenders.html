@@ -31,6 +31,11 @@
 {% endblock %}
 
 {% block content %}
+    {% if grant_web_access %}
+        <div id="flash-message" class="success-message-box">
+            {% trans "Access to Web Submission has been given to your DataSenders" %}
+        </div>
+    {% endif %}
     <div>
         <div class="grid_8 alpha">
             <h2>{% trans "My Data Senders" %}</h2>
@@ -85,6 +90,7 @@
                 <td>{{ data.location}}</td>
                 <td>{{ data.geo_code }}</td>
                 <td>{{ data.mobile_number }}</td>
+                <td style="display: none">{{ data.project }}</td>
                 <td>{{ data.email }}</td>
             </tr>
         {% endfor %}
