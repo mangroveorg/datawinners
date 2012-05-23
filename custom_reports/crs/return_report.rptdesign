@@ -1216,12 +1216,13 @@ and wh_sent_date <= ?
         <grid id="13">
             <property name="fontSize">14pt</property>
             <property name="verticalAlign">bottom</property>
-            <property name="height">10.678in</property>
+            <property name="height">3.3333333333333335in</property>
             <property name="width">23.791666666666668in</property>
             <column id="14">
                 <property name="width">23.791666666666668in</property>
             </column>
             <row id="15">
+                <property name="height">3.3333333333333335in</property>
                 <cell id="16">
                     <grid id="720">
                         <property name="height">0.5734265734265734in</property>
@@ -1255,15 +1256,41 @@ and wh_sent_date <= ?
                                     <list-property name="action">
                                         <structure>
                                             <property name="linkType">hyperlink</property>
-                                            <expression name="uri" type="constant">http://localhost:8000/dashboard</expression>
+                                            <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/dashboard/"</expression>
                                             <property name="targetWindow">_blank</property>
                                         </structure>
                                     </list-property>
                                 </image>
+                                <label id="944">
+                                    <property name="fontFamily">"Webdings"</property>
+                                    <property name="fontSize">10pt</property>
+                                    <property name="color">#FEE172</property>
+                                    <property name="marginTop">10px</property>
+                                    <property name="marginLeft">5pt</property>
+                                    <property name="paddingTop">7px</property>
+                                    <text-property name="text" key="back_link"></text-property>
+                                    <list-property name="action">
+                                        <structure>
+                                            <property name="linkType">hyperlink</property>
+                                            <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/alldata/reports/"</expression>
+                                            <property name="targetWindow">_blank</property>
+                                        </structure>
+                                    </list-property>
+                                </label>
                             </cell>
                         </row>
                     </grid>
+                    <label id="945">
+                        <property name="fontSize">10pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="paddingTop">5px</property>
+                        <property name="paddingBottom">5px</property>
+                        <property name="textAlign">center</property>
+                        <property name="width">2272px</property>
+                        <text-property name="text" key="return_report"></text-property>
+                    </label>
                     <table id="725">
+                        <property name="fontSize">10pt</property>
                         <property name="marginTop">10px</property>
                         <property name="width">23.694444444444443in</property>
                         <property name="dataSet">Data Set</property>

@@ -4667,14 +4667,37 @@ and pl_code ilike ?]]></xml-property>
                                     <list-property name="action">
                                         <structure>
                                             <property name="linkType">hyperlink</property>
-                                            <expression name="uri" type="constant">http://www.datawinners.com/dashboard/</expression>
+                                            <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/dashboard/"</expression>
                                             <property name="targetWindow">_blank</property>
                                         </structure>
                                     </list-property>
                                 </image>
+                                <label id="768">
+                                    <property name="fontFamily">"Webdings"</property>
+                                    <property name="color">#FEE172</property>
+                                    <property name="marginTop">10px</property>
+                                    <property name="marginLeft">5pt</property>
+                                    <property name="paddingTop">7px</property>
+                                    <text-property name="text" key="back_link"></text-property>
+                                    <list-property name="action">
+                                        <structure>
+                                            <property name="linkType">hyperlink</property>
+                                            <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/alldata/reports/"</expression>
+                                            <property name="targetWindow">_blank</property>
+                                        </structure>
+                                    </list-property>
+                                </label>
                             </cell>
                         </row>
                     </grid>
+                    <label id="763">
+                        <property name="fontSize">14px</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="paddingTop">5px</property>
+                        <property name="paddingBottom">5px</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text" key="wcsr"></text-property>
+                    </label>
                     <grid id="877">
                         <property name="width">7.930555555555555in</property>
                         <column id="878">
