@@ -27,6 +27,9 @@ TRIAL_CREDENTIALS_FOUR = {USERNAME: "chinatwu4@gmail.com",
                      PASSWORD: "chinatwu",
                      WELCOME_MESSAGE: "Welcome Trial Organisation Owner!"}
 
+DATA_SENDER_CREDENTIALS = {USERNAME: "datasender@test.com",
+                           PASSWORD: "111111"}
+
 # invalid format email id
 INVALID_EMAIL_ID_FORMAT = {USERNAME: "com.invalid@mail",
                            PASSWORD: "nogo123",
@@ -58,4 +61,3 @@ BLANK_CREDENTIALS = {USERNAME: "",
 EXPIRED_TRIAL_ACCOUNT = {USERNAME: "chinatwu@gmail.com",
                      PASSWORD: "chinatwu",
                      ERROR_MESSAGE: "Your 30 Day Test Drive is expired"}
-

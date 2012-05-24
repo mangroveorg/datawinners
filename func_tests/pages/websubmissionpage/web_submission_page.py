@@ -38,3 +38,6 @@ class WebSubmissionPage(Page):
 
     def type_text(self, data):
         self.driver.find_text_box(by_css("input#id_%s" % data[QCODE])).enter_text(data[ANSWER])
+
+    def get_title(self):
+        return self.driver.get_title()
