@@ -6,5 +6,7 @@ QUESTIONS_WITH_ERRORS = by_xpath("//div[@class='answer']//ul[@class='errorlist']
 
 TRIAL_WEB_LIMIT_REACHED_WARNING_BOX = by_xpath("//div[@class='warning-message-box']//p[normalize-space(text())]")
 
+SECTION_TITLE = by_css(".section_title")
+
 def get_by_css_name(element_type, element_name):
     return by_css(element_type+"[name="+element_name+"]")

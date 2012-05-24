@@ -2,6 +2,7 @@ from framework.base_test import BaseTest
 from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
+from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 
 class DataSenderTest(BaseTest):
@@ -12,6 +13,7 @@ class DataSenderTest(BaseTest):
         login_page.login_with(DATA_SENDER_CREDENTIALS)
         data_sender_page = DataSenderPage(self.driver)
         web_submission_page = data_sender_page.send_in_data()
-        self.assertEqual(web_submission_page.get_title(), "Data Submission")
+        self.assertEquals(web_submission_page.get_title(), PAGE_TITLE)
+        self.assertEquals(web_submission_page.get_section_title(), SECTION_TITLE)
 
 

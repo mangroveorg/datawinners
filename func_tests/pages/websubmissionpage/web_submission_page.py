@@ -41,3 +41,6 @@ class WebSubmissionPage(Page):
 
     def get_title(self):
         return self.driver.get_title()
+
+    def get_section_title(self):
+        return self.driver.find(SECTION_TITLE).text
