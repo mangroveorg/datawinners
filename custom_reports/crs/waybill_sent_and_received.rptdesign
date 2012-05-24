@@ -163,29 +163,6 @@
     <data-sets>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Data Set" id="9">
             <property name="nullsOrdering">nulls lowest</property>
-            <list-property name="computedColumns">
-                <structure>
-                    <property name="name">total_net_weight</property>
-                    <expression name="expression">if(row["receiver_name"]!=null){
-	BirtMath.round(row["good_net_weight"]+row["damaged_net_weight"], 2)
-}</expression>
-                    <property name="dataType">float</property>
-                </structure>
-                <structure>
-                    <property name="name">Ecart</property>
-                    <expression name="expression">if(row["receiver_name"]!=null){
-	BirtMath.round(row["total_net_weight"]-row["weight"], 2)
-}</expression>
-                    <property name="dataType">float</property>
-                </structure>
-                <structure>
-                    <property name="name">in_transit</property>
-                    <expression name="expression">if(row["receiver_name"]==null){
-	row["weight"]
-}</expression>
-                    <property name="dataType">float</property>
-                </structure>
-            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">pl_code</property>
@@ -276,6 +253,24 @@
                     <property name="analysis">measure</property>
                     <text-property name="displayName">damaged_net_weight</text-property>
                     <text-property name="heading">damaged_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">total</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">total</text-property>
+                    <text-property name="heading">total</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">diff</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">diff</text-property>
+                    <text-property name="heading">diff</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">in_transit</text-property>
+                    <text-property name="heading">in_transit</text-property>
                 </structure>
             </list-property>
             <list-property name="filter"/>
@@ -420,12 +415,12 @@
                     </structure>
                     <structure>
                         <property name="position">16</property>
-                        <property name="name">total_net_weight</property>
+                        <property name="name">total</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">17</property>
-                        <property name="name">Ecart</property>
+                        <property name="name">diff</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
@@ -542,8 +537,36 @@
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">total</property>
+                    <property name="nativeName">total</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">diff</property>
+                    <property name="nativeName">diff</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">in_transit</property>
+                    <property name="nativeName">in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.warehouse_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code as recv_site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv ON lower(sent.pl_code)=lower(recv.pl_code) and lower(sent.waybill_code)=lower(recv.waybill_code)
+            <xml-property name="queryText"><![CDATA[select sent.pl_code,sent.waybill_code,to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,sent.sender_name, sent.transaction_type,sent.warehouse_code,sent.truck_id as sent_truck_id, sent.food_type,sent.weight, recv.site_code as recv_site_code,recv.receiver_name,to_char(recv.received_date, 'dd Mon yyyy') as received_date,recv.truck_id as recv_truck_id, recv.good_net_weight,recv.damaged_net_weight,
+recv.good_net_weight+recv.damaged_net_weight as total, 
+(recv.good_net_weight+recv.damaged_net_weight) - sent.weight as diff, 
+(CASE sent.waybill_code WHEN recv.waybill_code THEN 0 ELSE sent.weight END) as in_transit 
+
+from crs_waybillsent as sent LEFT JOIN crs_waybillreceived as recv 
+ON lower(sent.pl_code)=lower(recv.pl_code) and lower(sent.waybill_code)=lower(recv.waybill_code)
+
 WHERE sent.transaction_type is not null
 and sent.pl_code ilike ?
 and sent.waybill_code ilike ?
@@ -1151,63 +1174,6 @@ from crs_waybillsent]]></xml-property>
                                 <property name="allowExport">true</property>
                             </structure>
                             <structure>
-                                <property name="name">total_net_weight</property>
-                                <text-property name="displayName">total_net_weight</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["total_net_weight"]</expression>
-                                <property name="dataType">float</property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">Ecart</property>
-                                <text-property name="displayName">Ecart</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["Ecart"]</expression>
-                                <property name="dataType">float</property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">Aggregation</property>
-                                <property name="dataType">float</property>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">dataSetRow["Ecart"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">Aggregation_1</property>
-                                <property name="dataType">float</property>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">vars["in_transit"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">in_transit</property>
-                                <text-property name="displayName">in_transit</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["in_transit"]</expression>
-                                <property name="dataType">float</property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
-                                <property name="name">total_in_transit</property>
-                                <property name="dataType">float</property>
-                                <property name="aggregateFunction">SUM</property>
-                                <list-property name="arguments">
-                                    <structure>
-                                        <property name="name">Expression</property>
-                                        <expression name="value" type="javascript">dataSetRow["in_transit"]</expression>
-                                    </structure>
-                                </list-property>
-                                <property name="allowExport">true</property>
-                            </structure>
-                            <structure>
                                 <property name="name">warehouse_code</property>
                                 <text-property name="displayName">warehouse_code</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["warehouse_code"]</expression>
@@ -1218,6 +1184,63 @@ from crs_waybillsent]]></xml-property>
                                 <text-property name="displayName">recv_site_code</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["recv_site_code"]</expression>
                                 <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">total</property>
+                                <text-property name="displayName">total</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">diff</property>
+                                <text-property name="displayName">diff</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["diff"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">in_transit</property>
+                                <text-property name="displayName">in_transit</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["in_transit"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Aggregation</property>
+                                <text-property name="displayName">total_ecart</text-property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">dataSetRow["diff"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Aggregation_1</property>
+                                <text-property name="displayName">total_ecart</text-property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">dataSetRow["diff"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">Aggregation_2</property>
+                                <text-property name="displayName">total_in_transit</text-property>
+                                <property name="dataType">float</property>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">dataSetRow["in_transit"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
                             </structure>
                         </list-property>
                         <structure name="toc"/>
@@ -1582,8 +1605,8 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="382">
-                                        <property name="resultSetColumn">total_net_weight</property>
+                                    <data id="769">
+                                        <property name="resultSetColumn">total</property>
                                     </data>
                                 </cell>
                                 <cell id="383">
@@ -1591,19 +1614,16 @@ from crs_waybillsent]]></xml-property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="384">
-                                        <property name="resultSetColumn">Ecart</property>
+                                    <data id="770">
+                                        <property name="resultSetColumn">diff</property>
                                     </data>
                                 </cell>
                                 <cell id="576">
-                                    <method name="onCreate"><![CDATA[if(row["receiver_name"]!=""){
-	in_transit=row["weight"]
-}]]></method>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderLeftStyle">solid</property>
                                     <property name="borderRightStyle">solid</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <data id="709">
+                                    <data id="771">
                                         <property name="resultSetColumn">in_transit</property>
                                     </data>
                                 </cell>
@@ -1632,13 +1652,13 @@ from crs_waybillsent]]></xml-property>
                                     </label>
                                 </cell>
                                 <cell id="569">
-                                    <data id="571">
-                                        <property name="resultSetColumn">Aggregation</property>
+                                    <data id="772">
+                                        <property name="resultSetColumn">Aggregation_1</property>
                                     </data>
                                 </cell>
                                 <cell id="577">
-                                    <data id="710">
-                                        <property name="resultSetColumn">total_in_transit</property>
+                                    <data id="773">
+                                        <property name="resultSetColumn">Aggregation_2</property>
                                     </data>
                                 </cell>
                             </row>
