@@ -5151,7 +5151,7 @@ and pl_code ilike ?]]></xml-property>
                                             <property name="dataType">float</property>
                                         </structure>
                                     </list-property>
-                                    <method name="onCreate"><![CDATA[vars["total_riz_received"] += row["riz_from_site"];]]></method>
+                                    <method name="onCreate"><![CDATA[vars["total_riz_received"] += row["riz_from_port"];]]></method>
                                     <property name="resultSetColumn">riz_from_port</property>
                                 </data>
                             </cell>
@@ -5185,6 +5185,7 @@ and pl_code ilike ?]]></xml-property>
                                             <property name="dataType">float</property>
                                         </structure>
                                     </list-property>
+                                    <method name="onCreate"><![CDATA[vars["total_csb_received"] += row["csb_from_port"];]]></method>
                                     <property name="resultSetColumn">csb_from_port</property>
                                 </data>
                             </cell>

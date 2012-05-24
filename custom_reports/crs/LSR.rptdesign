@@ -95,22 +95,22 @@
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">rice_loss</property>
-                    <expression name="expression">BirtMath.round(row["riz_sent"]-row["riz_received"], 2)</expression>
+                    <expression name="expression">if(row["riz_sent"]-row["riz_received"] >0){BirtMath.round(row["riz_sent"]-row["riz_received"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_loss</property>
-                    <expression name="expression">BirtMath.round(row["oil_sent"]-row["oil_received"], 2)</expression>
+                    <expression name="expression">if(row["oil_sent"]-row["oil_received"] >0){BirtMath.round(row["oil_sent"]-row["oil_received"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_loss</property>
-                    <expression name="expression">BirtMath.round(row["csb_sent"]-row["csb_received"], 2)</expression>
+                    <expression name="expression">if(row["csb_sent"]-row["csb_received"] >0){BirtMath.round(row["csb_sent"]-row["csb_received"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorghum_loss</property>
-                    <expression name="expression">BirtMath.round(row["sorghum_sent"]-row["sorghum_received"], 2)</expression>
+                    <expression name="expression">if(row["sorghum_sent"]-row["sorghum_received"] >0){BirtMath.round(row["sorghum_sent"]-row["sorghum_received"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
