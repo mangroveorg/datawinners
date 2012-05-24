@@ -1,0 +1,56 @@
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
+from framework.utils.common_utils import by_xpath
+from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.page import Page
+from pages.projectdatasenderspage.project_data_senders_locator import *
+from tests.projectdatasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
+
+
+class ProjectDataSendersPage(Page):
+    def __init__(self, driver):
+        Page.__init__(self, driver)
+
+    def navigate_to_add_a_data_sender_page(self):
+        """
+        Function to navigate to add a data sender page of the website
+
+        Return create project page
+         """
+        self.driver.find(ADD_A_DATA_SENDER_LINK).click()
+        return AddDataSenderPage(self.driver)
+
+
+    def select_a_data_sender_by_id(self, data_sender_id):
+        """
+        Function to select a data sender on all data sender page
+         """
+        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_UID_XPATH % data_sender_id)).click()
+
+    def select_a_data_sender_by_mobile_number(self, mobile_number):
+        """
+        Function to select a data sender on all data sender page
+         """
+        self.driver.find(by_xpath(DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH % mobile_number)).click()
+
+    def get_data_sender_email_by_id(self, data_sender_id):
+        """
+        Function to select a data sender on all data sender page
+         """
+        email_element = self.driver.find(by_xpath(DATA_SENDER_EMAIL_BY_UID_XPATH % data_sender_id))
+        return email_element.text
+
+    def give_web_access(self, email_id):
+        """
+        Function to select give web access action, and then submit the email address
+        """
+        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(GIVE_WEB_ACCESS)
+        email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
+        email_text_box.enter_text(email_id)
+        self.driver.find(GIVE_ACCESS_LINK).click()
+
+    def get_data_sender_email_by_mobile_number(self, mobile_number):
+        """
+       Function to select a data sender on all data sender page
+        """
+        email_element = self.driver.find(by_xpath(DATA_SENDER_EMAIL_BY_MOBILE_NUMBER_XPATH % mobile_number))
+        return email_element.text

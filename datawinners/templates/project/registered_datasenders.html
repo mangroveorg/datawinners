@@ -41,7 +41,7 @@
             <h2>{% trans "My Data Senders" %}</h2>
         </div>
         <div class="grid_8 float_right omega text_align_right">
-            <a href="{{ project_links.register_datasenders_link }}">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
+            <a href="{{ project_links.register_datasenders_link }}" class="register_data_sender">{% trans "Register a Data Sender" %}</a> &nbsp;|&nbsp;
             <a href="javascript:void(0);" id="import-datasenders">{% trans "Import a list" %}</a>
         </div>
         <div class="clear-both"></div>
@@ -84,7 +84,7 @@
         <tbody id="tbody" class="datasenders_list">
         {% for data in all_data %}
             <tr>
-                <td><input type="checkbox" value="{{ data.short_code }}"/>
+                <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"/>
                 <td>{{ data.name }}</td>
                 <td>{{ data.short_code }}</td>
                 <td>{{ data.location}}</td>
