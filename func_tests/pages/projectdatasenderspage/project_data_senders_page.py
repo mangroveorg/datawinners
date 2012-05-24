@@ -39,11 +39,14 @@ class ProjectDataSendersPage(Page):
         email_element = self.driver.find(by_xpath(DATA_SENDER_EMAIL_BY_UID_XPATH % data_sender_id))
         return email_element.text
 
+    def select_web_access_action(self):
+        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(GIVE_WEB_ACCESS)
+
     def give_web_access(self, email_id):
         """
         Function to select give web access action, and then submit the email address
         """
-        self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(GIVE_WEB_ACCESS)
+        self.select_web_access_action()
         email_text_box = self.driver.find_text_box(WEB_USER_BLOCK_EMAIL)
         email_text_box.enter_text(email_id)
         self.driver.find(GIVE_ACCESS_LINK).click()
@@ -54,3 +57,6 @@ class ProjectDataSendersPage(Page):
         """
         email_element = self.driver.find(by_xpath(DATA_SENDER_EMAIL_BY_MOBILE_NUMBER_XPATH % mobile_number))
         return email_element.text
+
+    def get_error_message(self):
+        return self.driver.find(ERROR_MESSAGE_LABEL).text

@@ -23,7 +23,7 @@ class ProjectDataSenders(BaseTest):
     @attr('functional_test', 'smoke')
     def test_successfully_giving_web_access_to_newly_registered_data_sender(self):
         """
-        Function to test the successful editing of project with given details e.g. project name and subject
+        Function to test giving web access to newly registered data sender
         """
         data_sender_mobile_number = VALID_DATA_FOR_ADDING_DATASENDER.get(MOBILE_NUMBER)
 
@@ -48,3 +48,20 @@ class ProjectDataSenders(BaseTest):
         assigned_email = project_datasenders_page.get_data_sender_email_by_mobile_number(data_sender_mobile_number)
 
         self.assertEqual(unique_email, assigned_email)
+
+
+    @attr('functional_test', 'smoke')
+    def test_show_error_while_giving_web_access_without_selecting_data_sender(self):
+        """
+        Function to show error while trying to give web access without selecting data sender
+        """
+
+        all_project_page = self.all_projects_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page(
+            fetch_(PROJECT_NAME, from_(VALID_DATA)))
+        project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
+
+        project_datasenders_page.select_web_access_action()
+
+        self.assertEqual(ERROR_MSG_FOR_GIVING_WEB_ACCESS_WITHOUT_SELECTING_DATA_SENDER
+            , project_datasenders_page.get_error_message())
