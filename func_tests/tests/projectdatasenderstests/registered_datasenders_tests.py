@@ -46,8 +46,11 @@ class ProjectDataSenders(BaseTest):
         self.driver.wait_until_modal_dismissed(10)
 
         assigned_email = project_datasenders_page.get_data_sender_email_by_mobile_number(data_sender_mobile_number)
-
         self.assertEqual(unique_email, assigned_email)
+
+        account_page = project_datasenders_page.navigate_to_account_page()
+        account_page.select_user_tab()
+        self.assertTrue(account_page.is_user_present(unique_email))
 
 
     @attr('functional_test', 'smoke')

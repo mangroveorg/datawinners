@@ -11,7 +11,7 @@
                     <span class="welcome">{% trans "Welcome" %} {{ user.first_name }}! </span>
                     <span><a href="{% url accountmanagement.views.edit_user %}" class="{{ disable_link_class }}">{% trans "Your Profile" %}</a></span>
                     {% if user.groups.all.0.name == 'NGO Admins' %}
-                        <span><a href="{% url accountmanagement.views.settings %}" class="{{ disable_link_class }}">{% trans "wizard_account" %}</a></span>
+                        <span><a href="{% url accountmanagement.views.settings %}" class="{{ disable_link_class }} account">{% trans "wizard_account" %}</a></span>
                     {% endif %}
                     <span>  <a href="{% url datawinners.home.views.switch_language "fr" %}">Fran&ccedil;ais</a> </span>
                     <span>  <a href="{% url datawinners.home.views.switch_language "en" %}">English</a> </span>

@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from framework.utils.common_utils import by_xpath
+from pages.accountpage.account_page import AccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.page import Page
 from pages.projectdatasenderspage.project_data_senders_locator import *
@@ -19,6 +20,12 @@ class ProjectDataSendersPage(Page):
         self.driver.find(ADD_A_DATA_SENDER_LINK).click()
         return AddDataSenderPage(self.driver)
 
+    def navigate_to_account_page(self):
+        """
+        Function to navigate to account page
+        """
+        self.driver.find(ACCOUNT_LINK).click()
+        return AccountPage(self.driver)
 
     def select_a_data_sender_by_id(self, data_sender_id):
         """
