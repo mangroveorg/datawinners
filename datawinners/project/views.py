@@ -812,10 +812,25 @@ def _make_form_context(questionnaire_form, project, form_code, disable_link_clas
 
 def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
     form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
-    subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
-    form_context.update({'subject': subject, 'add_link': add_link(project), "entity_type": project.entity_type})
+    subject = get_entity_type_infos(project.entity_type, manager = get_database_manager(request.user))
+
+    form_context.update({'subject': subject,
+                         'add_link': add_link(project),
+                         "entity_type": project.entity_type})
+
     return render_to_response(template, form_context,
-        context_instance=RequestContext(request))
+                              context_instance = RequestContext(request))
+
+
+def get_form_model_and_template(manager, project, is_data_sender, subject):
+    form_model = FormModel.get(manager, project.qid)
+    template = 'project/data_submission.html' if is_data_sender else "project/web_questionnaire.html"
+
+    if subject:
+        template = 'project/register_subject.html'
+        form_model = _get_subject_form_model(manager, project.entity_type)
+
+    return form_model, template
 
 
 @login_required(login_url='/login')
@@ -825,24 +840,24 @@ def _get_response(template, form_code, project, questionnaire_form, request, dis
 def web_questionnaire(request, project_id=None, subject=False):
     manager = get_database_manager(request.user)
     project = Project.load(manager.database, project_id)
-    project_form_model = FormModel.get(manager, project.qid)
-    if subject:
-        template = 'project/register_subject.html'
-        form_model = _get_subject_form_model(manager, project.entity_type)
-    else:
-        template = 'project/web_questionnaire.html'
-        form_model = project_form_model
+
+    is_data_sender = request.user.get_profile().reporter
+
+    form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
+
     QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
-        form_model=form_model).create()
-    disable_link_class = "disable_link" if request.user.get_profile().reporter else ""
+                                                    form_model = form_model).create()
+
+    disable_link_class = "disable_link" if is_data_sender else ""
+
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(template, project_form_model.form_code, project, questionnaire_form, request, disable_link_class)
+        return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(template, project_form_model.form_code, project, questionnaire_form, request,
+            return _get_response(template, form_model.form_code, project, questionnaire_form, request,
                 disable_link_class)
 
         success_message = None
@@ -861,7 +876,7 @@ def web_questionnaire(request, project_id=None, subject=False):
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
-                return _get_response(template, project_form_model.form_code, project, questionnaire_form, request,
+                return _get_response(template, form_model.form_code, project, questionnaire_form, request,
                     disable_link_class)
 
         except DataObjectNotFound as exception:

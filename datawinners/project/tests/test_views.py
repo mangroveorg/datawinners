@@ -1,11 +1,17 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
 import unittest
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from mock import Mock
+from mangrove.datastore.database import DatabaseManager
+from mangrove.form_model.form_model import FormModel
+from mock import Mock, patch
+from accountmanagement.models import NGOUserProfile
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
+from project.models import ProjectState
+from project.views import get_form_model_and_template
 
 class TestProjectViews(unittest.TestCase):
     def test_should_return_reminders_in_the_required_format(self):
@@ -74,4 +80,47 @@ class TestProjectViews(unittest.TestCase):
         self.assertEqual(reverse(create_datasender_and_webuser, args=[project.id]), link.url)
         self.assertEqual('Add a datasender', link.text)
 
-  
+    def test_should_get_correct_template_for_non_data_sender(self):
+        request = Mock()
+        request.user = Mock(spec = User)
+        manager = Mock(spec = DatabaseManager)
+        manager.database = dict()
+        project = Project(project_type = "survey", entity_type = "clinic", state = ProjectState.ACTIVE)
+
+        with patch.object(FormModel, "get") as get_form_model:
+            get_form_model.return_value = {}
+            is_data_sender = False
+            subject = False
+            form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
+            self.assertEquals(template, "project/web_questionnaire.html")
+
+    def test_should_get_correct_template_for_data_sender(self):
+        request = Mock()
+        request.user = Mock(spec = User)
+        manager = Mock(spec = DatabaseManager)
+        manager.database = dict()
+        project = Project(project_type = "survey", entity_type = "clinic", state = ProjectState.ACTIVE)
+
+        with patch.object(FormModel, "get") as get_form_model:
+            get_form_model.return_value = {}
+            is_data_sender = True
+            subject = False
+            form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
+            self.assertEquals(template, "project/data_submission.html")
+
+    def test_should_get_correct_template_for_subject_questionnaire(self):
+        request = Mock()
+        request.user = Mock(spec = User)
+        manager = Mock(spec = DatabaseManager)
+        manager.database = dict()
+        project = Project(project_type = "survey", entity_type = "clinic", state = ProjectState.ACTIVE)
+
+        with patch.object(FormModel, "get") as get_form_model:
+            get_form_model.return_value = {}
+            with patch("project.views.get_form_model_by_entity_type") as get_subject_form:
+                get_subject_form.return_value = {}
+                is_data_sender = False
+                subject = True
+                form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
+                self.assertEquals(template, "project/register_subject.html")
+

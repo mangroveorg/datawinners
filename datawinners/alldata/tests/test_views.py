@@ -25,7 +25,6 @@ class TestViews(TestCase):
         questionnaire = Mock()
         questionnaire.form_code = "q01"
 
-
         with patch("datawinners.project.models.Project.load") as get_project:
             get_project.return_value = project
             with patch.object(DatabaseManager, "get") as db_manager:
