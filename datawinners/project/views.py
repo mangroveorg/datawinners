@@ -805,23 +805,28 @@ def _create_submission_request(form_model, request):
 
 
 def _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class):
-    return {'questionnaire_form': questionnaire_form, 'project': project,
+    return {'questionnaire_form': questionnaire_form,
+            'project': project,
             'project_links': make_project_links(project, form_code),
             'hide_link_class': hide_link_class,
             'disable_link_class': disable_link_class,
             }
 
 
-def _get_response(template, form_code, project, questionnaire_form, request, hide_link_class, disable_link_class):
+def _get_subject_info(manager, project):
+    subject = get_entity_type_infos(project.entity_type, manager = manager)
+    subject_info = {'subject': subject,
+                    'add_link': add_link(project),
+                    "entity_type": project.entity_type}
+    return subject_info
+
+
+def _get_form_context(form_code, project, questionnaire_form, manager, hide_link_class, disable_link_class):
+
     form_context = _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class)
-    subject = get_entity_type_infos(project.entity_type, manager = get_database_manager(request.user))
+    form_context.update(_get_subject_info(manager, project))
 
-    form_context.update({'subject': subject,
-                         'add_link': add_link(project),
-                         "entity_type": project.entity_type})
-
-    return render_to_response(template, form_context,
-                              context_instance = RequestContext(request))
+    return form_context
 
 
 def get_form_model_and_template(manager, project, is_data_sender, subject):
@@ -854,14 +859,18 @@ def web_questionnaire(request, project_id=None, subject=False):
 
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(template, form_model.form_code, project, questionnaire_form,
-                             request, hide_link_class, disable_link_class)
+        form_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+                                         manager, hide_link_class, disable_link_class)
+        return render_to_response(template, form_context,
+                                  context_instance = RequestContext(request))
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(template, form_model.form_code, project, questionnaire_form,
-                                 request, hide_link_class, disable_link_class)
+            form_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+                                             manager, hide_link_class, disable_link_class)
+            return render_to_response(template, form_context,
+                                      context_instance = RequestContext(request))
 
         success_message = None
         error_message = None
@@ -879,8 +888,11 @@ def web_questionnaire(request, project_id=None, subject=False):
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
-                return _get_response(template, form_model.form_code, project, questionnaire_form,
-                                     request, hide_link_class, disable_link_class)
+
+                form_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+                                                 manager, hide_link_class, disable_link_class)
+                return render_to_response(template, form_context,
+                                          context_instance = RequestContext(request))
 
         except DataObjectNotFound as exception:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
@@ -889,13 +901,13 @@ def web_questionnaire(request, project_id=None, subject=False):
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
-        _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, hide_link_class, disable_link_class)
-        _project_context.update(
-                {'success_message': success_message, 'error_message': error_message, 'add_link': add_link(project),
-                 "subject": subject, "entity_type": project.entity_type})
+        _project_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+                                             manager, hide_link_class, disable_link_class)
+
+        _project_context.update({'success_message': success_message, 'error_message': error_message})
+
         return render_to_response(template, _project_context,
-            context_instance=RequestContext(request))
+                                  context_instance = RequestContext(request))
 
 
 def get_example_sms(fields):
