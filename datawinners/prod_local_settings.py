@@ -38,6 +38,7 @@ COUCH_DB_SERVER = "http://178.79.185.35:5984"
 LOG_FOLDER = '/var/log/datawinners'
 LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
+XFORM_LOG_FILE_NAME = "datawinners_xform.log"
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -58,6 +59,12 @@ LOGGING = {
             'filename': os.path.join( LOG_FOLDER, REMINDER_LOG_FILE_NAME),
             'mode': 'a', #append+create
         },
+        'xform-log-file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': os.path.join( LOG_FOLDER, XFORM_LOG_FILE_NAME),
+            'mode': 'a', #append+create
+        },
     },
     'loggers': {
         'django': {
@@ -73,6 +80,11 @@ LOGGING = {
         'datawinners.reminders': {
             'level':'INFO',
             'handlers':['reminder-log-file'],
+            'propagate': True,
+        },
+        'datawinners.xform': {
+            'level':'INFO',
+            'handlers':['xform-log-file'],
             'propagate': True,
         },
         'datawinners.scheduler': {
