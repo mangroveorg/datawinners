@@ -1,0 +1,123 @@
+{% load i18n %}
+{% load field_tags %}
+{% if success_message %}
+    <div class="success-message-box">{{ success_message }}</div>
+{% endif %}
+{% if error_message %}
+    <div class="message-box">{{ error_message }}</div>
+{% endif %}
+
+{% if 0 %}
+    <div class="warning-message-box">
+        <p> {% trans "You have used up your 10 Web submissions for the trial account. Sign up for a monthly subscription to continue sending in data to your projects." %} </p>
+        <a href="/en/pricing/" class="trial_web_learn_more">{% trans "Learn More" %}</a><a
+            href="{% url datawinners.accountmanagement.views.upgrade %}"
+            class="trial_web_limit_button">{% trans "Subscribe Now" %}</a>
+    </div>
+{% endif %}
+
+{% if questionnaire_form.non_fielderrors %}
+    <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
+{% endif %}
+{% for field in questionnaire_form %}
+    {% if field.is_hidden and field.name == 'entity_question_code' %}
+        <input id='code' type="hidden" value="{{ field.label }}"/>
+    {% endif %}
+{% endfor %}
+<form method="POST">
+    {% csrf_token %}
+    {% for field in questionnaire_form %}
+        {% if field.is_hidden %}
+            <div class="answer">
+                {% if field|field_type == 'ChoiceField' %}
+                    <span class="single_select_question" wmwrap="true">
+                            {{ field }}
+                        </span>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+
+                <ul class="errorlist">
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <li>
+                                {{ error }}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <ol class="que_width">
+        {% for field in questionnaire_form %}
+            {% if not field.is_hidden %}
+                <li>
+                    <h6>
+                        {{ field.label }}
+                        {% if field.name == questionnaire_form.short_code_question_code %}
+
+                            <span id="tooltip1" style="position:absolute;">
+                                <img src="/media/images/help_icon.png" class="help_icon">
+                                <div class="tooltip">
+                                    <p>
+                                        {% if 'yes' in project.activity_report %}
+                                            {% trans "tooltip_questionnaire_form_data_sender_entity_question" %}
+                                        {% else %}
+                                            {% trans "tooltip_questionnaire_form_subject_entity_question" %}
+                                        {% endif %}
+                                    </p></div>
+                            </span>
+                        {% endif %}
+                    </h6>
+                    <input id='code1' type="hidden" value="{{ field.name }}"/>
+
+                    <p id="ins_{{ field.name }}" class="instructions italic">
+                        {{ field.help_text }}
+                    </p>
+
+                    <div class="answer">
+                        {% if field|field_type == 'ChoiceField' %}
+                            <span class="single_select_question" wmwrap="true">
+                                    {{ field }}
+                                </span>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+
+                        <ul class="errorlist">
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <li>
+                                        {{ error }}
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                        <div class="clear-left"></div>
+                    </div>
+                    <div id="add_link" class="clear-left padding_top_20" style="display:none">
+                        <p class="instructions italic">
+                            {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }}
+                                yet.{% endblocktrans %}
+                        </p>
+                        <a id="datasenders_edit_link" href="{{add_link.url}}">
+                            {{ add_link.text }}
+                        </a>
+                    </div>
+                    {% if field.name == questionnaire_form.short_code_question_code %}
+                        <script type="text/javascript">
+                            if ($(".subject_field option").size() == 0) {
+                                $("#add_link").show();
+                                $("#id_{{ field.name }}").hide();
+                                $("#ins_{{ field.name }}").hide();
+                            }
+                        </script>
+
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+    <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+</form>

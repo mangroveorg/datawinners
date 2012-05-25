@@ -1,5 +1,6 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
+{% load field_tags %}
 {% block page_title %}{% trans "Data Submission" %}{% endblock %}
 
 {% block section_title %}
@@ -8,4 +9,6 @@
 
 {% block content %}
     <h3 class="project_name">{{ project.name }}</h3>
+    <p class="instructions italic">{% trans "Fill out the following Questionnaire and click on Submit" %}</p>
+    {% include 'project/web_questionnaire_questions.html' %}
 {% endblock %}
