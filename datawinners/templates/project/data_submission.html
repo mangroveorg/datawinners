@@ -2,11 +2,10 @@
 {% load i18n %}
 {% block page_title %}{% trans "Data Submission" %}{% endblock %}
 
-
-
 {% block section_title %}
-    <div id="page_title">
-        <h2 class="section_title">{% trans "Data Submission" %}</h2>
-    </div>
+    <h2 class="section_title">{% trans "Data Submission" %}</h2>
 {% endblock %}
 
+{% block content %}
+    <h3 class="project_name">{{ project.name }}</h3>
+{% endblock %}

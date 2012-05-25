@@ -8,5 +8,7 @@ TRIAL_WEB_LIMIT_REACHED_WARNING_BOX = by_xpath("//div[@class='warning-message-bo
 
 SECTION_TITLE = by_css(".section_title")
 
+PROJECT = by_css(".project_name")
+
 def get_by_css_name(element_type, element_name):
     return by_css(element_type+"[name="+element_name+"]")
