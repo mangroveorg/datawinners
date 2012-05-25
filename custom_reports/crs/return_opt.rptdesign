@@ -1,0 +1,2769 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 3.7.2.v20120213 Build &lt;3.7.2.v20120214-1408></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <scalar-parameter name="waybill_code" id="9">
+            <text-property name="helpText">Put % if you do not want to filter</text-property>
+            <text-property name="promptText">Waybill code</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="site_code" id="10">
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataSetName">All_fields</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["recv_site_code"]</expression>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">true</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="from_date" id="11">
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">new Date(2001,01,01)</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Custom</property>
+                <property name="pattern">dd/MM/yyyy</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="to_date" id="12">
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="javascript">new Date()</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="CRS_conn_profile" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql:geodjango</property>
+            <property name="odaUser">postgres</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
+            <property name="odaJndiName">java:comp/env/jdbc/postgres</property>
+            <property name="OdaConnProfileName">CRS_conn_profile</property>
+            <property name="OdaConnProfileStorePath">crs_conn_profile</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All_fields" id="8">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">sent_wh</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_wh</text-property>
+                    <text-property name="heading">sent_wh</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sent_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_date</text-property>
+                    <text-property name="heading">sent_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">wh_sent_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">wh_sent_date</text-property>
+                    <text-property name="heading">wh_sent_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">food_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <text-property name="heading">food_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">weight</text-property>
+                    <text-property name="heading">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">transaction_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">transaction_type</text-property>
+                    <text-property name="heading">transaction_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">warehouse_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">warehouse_code</text-property>
+                    <text-property name="heading">warehouse_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sent_receiver_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">sent_receiver_code</text-property>
+                    <text-property name="heading">sent_receiver_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_date</text-property>
+                    <text-property name="heading">received_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">good_net_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">good_net_weight</text-property>
+                    <text-property name="heading">good_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">recv_site_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">recv_site_code</text-property>
+                    <text-property name="heading">recv_site_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">damaged_net_weight</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">damaged_net_weight</text-property>
+                    <text-property name="heading">damaged_net_weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">total_received_from_site</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">total_received_from_site</text-property>
+                    <text-property name="heading">total_received_from_site</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">total_received</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">total_received</text-property>
+                    <text-property name="heading">total_received</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">id</text-property>
+                    <text-property name="heading">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">site_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">site_code</text-property>
+                    <text-property name="heading">site_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">distribution_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">distribution_date</text-property>
+                    <text-property name="heading">distribution_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_waybill_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_waybill_code</text-property>
+                    <text-property name="heading">received_waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">returned_waybill_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">returned_waybill_code</text-property>
+                    <text-property name="heading">returned_waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">oil</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">oil</text-property>
+                    <text-property name="heading">oil</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">csb</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">csb</text-property>
+                    <text-property name="heading">csb</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sorghum</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">sorghum</text-property>
+                    <text-property name="heading">sorghum</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">rice</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">rice</text-property>
+                    <text-property name="heading">rice</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">distribution_type</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">distribution_type</text-property>
+                    <text-property name="heading">distribution_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">data_record_id</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">data_record_id</text-property>
+                    <text-property name="heading">data_record_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">distributed</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">distributed</text-property>
+                    <text-property name="heading">distributed</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">site_return_waybill_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">site_return_waybill_code</text-property>
+                    <text-property name="heading">site_return_waybill_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">date_of_return</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">date_of_return</text-property>
+                    <text-property name="heading">date_of_return</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_returned</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_returned</text-property>
+                    <text-property name="heading">quantity_returned</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_damaged_returned</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_damaged_returned</text-property>
+                    <text-property name="heading">quantity_damaged_returned</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_good_returned</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_good_returned</text-property>
+                    <text-property name="heading">quantity_good_returned</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">received_return_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">received_return_date</text-property>
+                    <text-property name="heading">received_return_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">receiver_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">receiver_code</text-property>
+                    <text-property name="heading">receiver_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">return_sender_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">return_sender_code</text-property>
+                    <text-property name="heading">return_sender_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_lost_in_transport</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_lost_in_transport</text-property>
+                    <text-property name="heading">quantity_lost_in_transport</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_not_distributed</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_not_distributed</text-property>
+                    <text-property name="heading">quantity_not_distributed</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">lost_in_distribution</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">lost_in_distribution</text-property>
+                    <text-property name="heading">lost_in_distribution</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">quantity_lost_received_from_site</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">quantity_lost_received_from_site</text-property>
+                    <text-property name="heading">quantity_lost_received_from_site</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">in_transit</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">in_transit</text-property>
+                    <text-property name="heading">in_transit</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">bl_original</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">bl_original</text-property>
+                    <text-property name="heading">bl_original</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">code_mag_receiver</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">code_mag_receiver</text-property>
+                    <text-property name="heading">code_mag_receiver</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">code_bl_return_received</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">code_bl_return_received</text-property>
+                    <text-property name="heading">code_bl_return_received</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">waybill_code</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_2</property>
+                    <property name="paramName">site_code</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">from_date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">to_date</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                    <property name="position">4</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">sent_wh</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">sent_date</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">wh_sent_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">food_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">transaction_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">warehouse_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">sent_receiver_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">received_date</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">good_net_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">recv_site_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">damaged_net_weight</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">total_received_from_site</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">total_received</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">site_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">distribution_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">received_waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">returned_waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">oil</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">csb</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">sorghum</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">rice</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">distribution_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">data_record_id</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">distributed</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">site_return_waybill_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">28</property>
+                        <property name="name">date_of_return</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">29</property>
+                        <property name="name">quantity_returned</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">30</property>
+                        <property name="name">quantity_damaged_returned</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">31</property>
+                        <property name="name">quantity_good_returned</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">received_return_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">receiver_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">34</property>
+                        <property name="name">return_sender_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">35</property>
+                        <property name="name">quantity_lost_in_transport</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">36</property>
+                        <property name="name">quantity_not_distributed</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">37</property>
+                        <property name="name">lost_in_distribution</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">38</property>
+                        <property name="name">quantity_lost_received_from_site</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">39</property>
+                        <property name="name">in_transit</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">40</property>
+                        <property name="name">bl_original</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">41</property>
+                        <property name="name">code_mag_receiver</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">42</property>
+                        <property name="name">code_bl_return_received</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">CRS_conn_profile</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">sent_wh</property>
+                    <property name="nativeName">sent_wh</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">sent_date</property>
+                    <property name="nativeName">sent_date</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">wh_sent_date</property>
+                    <property name="nativeName">wh_sent_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">food_type</property>
+                    <property name="nativeName">food_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">weight</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">transaction_type</property>
+                    <property name="nativeName">transaction_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">warehouse_code</property>
+                    <property name="nativeName">warehouse_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">sent_receiver_code</property>
+                    <property name="nativeName">sent_receiver_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">received_date</property>
+                    <property name="nativeName">received_date</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">good_net_weight</property>
+                    <property name="nativeName">good_net_weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">recv_site_code</property>
+                    <property name="nativeName">recv_site_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">damaged_net_weight</property>
+                    <property name="nativeName">damaged_net_weight</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">total_received_from_site</property>
+                    <property name="nativeName">total_received_from_site</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">total_received</property>
+                    <property name="nativeName">total_received</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">site_code</property>
+                    <property name="nativeName">site_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">distribution_date</property>
+                    <property name="nativeName">distribution_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">received_waybill_code</property>
+                    <property name="nativeName">received_waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">returned_waybill_code</property>
+                    <property name="nativeName">returned_waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">oil</property>
+                    <property name="nativeName">oil</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">csb</property>
+                    <property name="nativeName">csb</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">sorghum</property>
+                    <property name="nativeName">sorghum</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">rice</property>
+                    <property name="nativeName">rice</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">distribution_type</property>
+                    <property name="nativeName">distribution_type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">data_record_id</property>
+                    <property name="nativeName">data_record_id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">distributed</property>
+                    <property name="nativeName">distributed</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">site_return_waybill_code</property>
+                    <property name="nativeName">site_return_waybill_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">28</property>
+                    <property name="name">date_of_return</property>
+                    <property name="nativeName">date_of_return</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">29</property>
+                    <property name="name">quantity_returned</property>
+                    <property name="nativeName">quantity_returned</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">30</property>
+                    <property name="name">quantity_damaged_returned</property>
+                    <property name="nativeName">quantity_damaged_returned</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">31</property>
+                    <property name="name">quantity_good_returned</property>
+                    <property name="nativeName">quantity_good_returned</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">32</property>
+                    <property name="name">received_return_date</property>
+                    <property name="nativeName">received_return_date</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">33</property>
+                    <property name="name">receiver_code</property>
+                    <property name="nativeName">receiver_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">34</property>
+                    <property name="name">return_sender_code</property>
+                    <property name="nativeName">return_sender_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">35</property>
+                    <property name="name">quantity_lost_in_transport</property>
+                    <property name="nativeName">quantity_lost_in_transport</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">36</property>
+                    <property name="name">quantity_not_distributed</property>
+                    <property name="nativeName">quantity_not_distributed</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">37</property>
+                    <property name="name">lost_in_distribution</property>
+                    <property name="nativeName">lost_in_distribution</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">38</property>
+                    <property name="name">quantity_lost_received_from_site</property>
+                    <property name="nativeName">quantity_lost_received_from_site</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">39</property>
+                    <property name="name">in_transit</property>
+                    <property name="nativeName">in_transit</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">40</property>
+                    <property name="name">bl_original</property>
+                    <property name="nativeName">bl_original</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">41</property>
+                    <property name="name">code_mag_receiver</property>
+                    <property name="nativeName">code_mag_receiver</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">42</property>
+                    <property name="name">code_bl_return_received</property>
+                    <property name="nativeName">code_bl_return_received</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select *, 
+
+round(cast ((weight - total_received) as numeric),2) as quantity_lost_in_transport,
+round(cast ((total_received - distributed) as numeric),2) as quantity_not_distributed,
+round(cast ((total_received - distributed - quantity_returned) as numeric),2) as lost_in_distribution,
+round(cast ((quantity_returned - total_received_from_site) as numeric),2) as quantity_lost_received_from_site,
+CASE received_date WHEN null THEN weight ELSE CASE received_return_date WHEN null THEN quantity_returned END END as in_transit,
+CASE date_of_return WHEN null THEN '' ELSE sent_wh END as bl_original,
+CASE received_return_date WHEN null THEN '' ELSE warehouse_code END as code_mag_receiver,
+CASE received_return_date WHEN null THEN '' ELSE returned_waybill_code END as code_bl_return_received
+
+
+ 
+from 
+(select recv_site_join.*, crs_distribution.*,
+CASE upper(recv_site_join.food_type) 
+WHEN 'SORGHO' THEN crs_distribution.sorghum 
+WHEN 'HUILE' THEN crs_distribution.oil 
+WHEN 'CSB' THEN crs_distribution.csb 
+WHEN 'RIZ' THEN crs_distribution.rice 
+END as distributed
+
+ from (select sent.waybill_code as sent_wh,
+to_char(sent.sent_date, 'dd Mon yyyy') as sent_date,
+sent.sent_date as wh_sent_date,
+sent.food_type,
+sent.weight, 
+sent.transaction_type,
+sent.warehouse_code,
+sent.receiver_code as sent_receiver_code,
+
+to_char(recv.received_date, 'dd Mon yyyy') as received_date,
+recv.good_net_weight,
+recv.site_code as recv_site_code,
+recv.damaged_net_weight,
+round(cast ((recv.good_net_weight + recv.damaged_net_weight) as numeric),2) as total_received_from_site,
+
+
+round(cast ((recv.good_net_weight+ recv.damaged_net_weight) as numeric),2) as total_received
+
+from 
+crs_waybillsent as sent 
+left JOIN 
+crs_waybillreceived as recv ON lower(sent.waybill_code)=lower(recv.waybill_code) 
+where sent.transaction_type in ('Livraisons pour SFM', 'Livraisons pour SFE', 'Livraisons pour FFA')) as recv_site_join
+left join 
+crs_distribution on lower(recv_site_join.sent_wh)=lower(crs_distribution.received_waybill_code)) as a
+
+left join
+
+(
+select return_sent.waybill_code as site_return_waybill_code, 
+return_sent.sent_date as date_of_return, 
+return_sent.weight as quantity_returned,
+return_recv.damaged_net_weight as quantity_damaged_returned,
+return_recv.good_net_weight as quantity_good_returned,
+return_recv.received_date as received_return_date, 
+return_sent.receiver_code, return_sent.warehouse_code as return_sender_code
+ from
+crs_waybillsent as return_sent
+full join
+crs_waybillreceived as return_recv
+ON lower(return_sent.waybill_code)=lower(return_recv.waybill_code)
+) as b
+
+ON lower(a.returned_waybill_code)=lower(site_return_waybill_code)
+
+where sent_wh ilike ?
+and sent_receiver_code ilike ?
+and wh_sent_date >= ?
+and wh_sent_date <= ? 
+
+
+
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_wh</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_wh</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_wh</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_date</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>wh_sent_date</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>13</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>wh_sent_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>wh_sent_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>13</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>food_type</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>food_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>food_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>weight</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>transaction_type</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>transaction_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>transaction_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>warehouse_code</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>warehouse_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>warehouse_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sent_receiver_code</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sent_receiver_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sent_receiver_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>received_date</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>received_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>received_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>good_net_weight</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>good_net_weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>good_net_weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>recv_site_code</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>recv_site_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>recv_site_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>damaged_net_weight</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>damaged_net_weight</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>damaged_net_weight</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>total_received_from_site</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>total_received_from_site</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>total_received_from_site</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>total_received</design:name>
+              <design:position>14</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>total_received</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>total_received</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>15</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>site_code</design:name>
+              <design:position>16</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>site_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>site_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>distribution_date</design:name>
+              <design:position>17</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>13</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>distribution_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>distribution_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>13</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>received_waybill_code</design:name>
+              <design:position>18</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>received_waybill_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>received_waybill_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>returned_waybill_code</design:name>
+              <design:position>19</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>returned_waybill_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>returned_waybill_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>oil</design:name>
+              <design:position>20</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>oil</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>oil</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>csb</design:name>
+              <design:position>21</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>csb</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>csb</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>sorghum</design:name>
+              <design:position>22</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>sorghum</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>sorghum</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>rice</design:name>
+              <design:position>23</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>rice</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>rice</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>distribution_type</design:name>
+              <design:position>24</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>distribution_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>distribution_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>data_record_id</design:name>
+              <design:position>25</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>data_record_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>data_record_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>distributed</design:name>
+              <design:position>26</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>distributed</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>distributed</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>site_return_waybill_code</design:name>
+              <design:position>27</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>site_return_waybill_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>site_return_waybill_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>date_of_return</design:name>
+              <design:position>28</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>13</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>date_of_return</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>date_of_return</design:label>
+            <design:formattingHints>
+              <design:displaySize>13</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>quantity_returned</design:name>
+              <design:position>29</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>quantity_returned</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>quantity_returned</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>quantity_damaged_returned</design:name>
+              <design:position>30</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>quantity_damaged_returned</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>quantity_damaged_returned</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>quantity_good_returned</design:name>
+              <design:position>31</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>quantity_good_returned</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>quantity_good_returned</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>received_return_date</design:name>
+              <design:position>32</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>13</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>received_return_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>received_return_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>13</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>receiver_code</design:name>
+              <design:position>33</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>receiver_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>receiver_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>return_sender_code</design:name>
+              <design:position>34</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>return_sender_code</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>return_sender_code</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>quantity_lost_in_transport</design:name>
+              <design:position>35</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>quantity_lost_in_transport</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>quantity_lost_in_transport</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>quantity_not_distributed</design:name>
+              <design:position>36</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>quantity_not_distributed</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>quantity_not_distributed</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>lost_in_distribution</design:name>
+              <design:position>37</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>lost_in_distribution</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>lost_in_distribution</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>quantity_lost_received_from_site</design:name>
+              <design:position>38</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>2</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>quantity_lost_received_from_site</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>quantity_lost_received_from_site</design:label>
+            <design:formattingHints>
+              <design:displaySize>131089</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>in_transit</design:name>
+              <design:position>39</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>17</design:precision>
+            <design:scale>17</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>in_transit</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>in_transit</design:label>
+            <design:formattingHints>
+              <design:displaySize>24</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>bl_original</design:name>
+              <design:position>40</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>bl_original</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>bl_original</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>code_mag_receiver</design:name>
+              <design:position>41</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>code_mag_receiver</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>code_mag_receiver</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>code_bl_return_received</design:name>
+              <design:position>42</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2147483647</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Unknown</design:nullability>
+            <design:uiHints>
+              <design:displayName>code_bl_return_received</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>code_bl_return_received</design:label>
+            <design:formattingHints>
+              <design:displaySize>2147483647</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="29">
+            <property name="dataSet">All_fields</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">sent_wh</property>
+                    <text-property name="displayName">sent_wh</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["sent_wh"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">sent_date</property>
+                    <text-property name="displayName">sent_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["sent_date"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">wh_sent_date</property>
+                    <text-property name="displayName">wh_sent_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["wh_sent_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">food_type</property>
+                    <text-property name="displayName">food_type</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["food_type"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">weight</property>
+                    <text-property name="displayName">weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">transaction_type</property>
+                    <text-property name="displayName">transaction_type</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["transaction_type"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">warehouse_code</property>
+                    <text-property name="displayName">warehouse_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["warehouse_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">sent_receiver_code</property>
+                    <text-property name="displayName">sent_receiver_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["sent_receiver_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">received_date</property>
+                    <text-property name="displayName">received_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["received_date"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">good_net_weight</property>
+                    <text-property name="displayName">good_net_weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["good_net_weight"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">recv_site_code</property>
+                    <text-property name="displayName">recv_site_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["recv_site_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">damaged_net_weight</property>
+                    <text-property name="displayName">damaged_net_weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["damaged_net_weight"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">total_received_from_site</property>
+                    <text-property name="displayName">total_received_from_site</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total_received_from_site"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">total_received</property>
+                    <text-property name="displayName">total_received</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total_received"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">site_code</property>
+                    <text-property name="displayName">site_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["site_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">distribution_date</property>
+                    <text-property name="displayName">distribution_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["distribution_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">received_waybill_code</property>
+                    <text-property name="displayName">received_waybill_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["received_waybill_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">returned_waybill_code</property>
+                    <text-property name="displayName">returned_waybill_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["returned_waybill_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">oil</property>
+                    <text-property name="displayName">oil</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["oil"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">csb</property>
+                    <text-property name="displayName">csb</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["csb"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">sorghum</property>
+                    <text-property name="displayName">sorghum</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["sorghum"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">rice</property>
+                    <text-property name="displayName">rice</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["rice"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">distribution_type</property>
+                    <text-property name="displayName">distribution_type</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["distribution_type"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">data_record_id</property>
+                    <text-property name="displayName">data_record_id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["data_record_id"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">distributed</property>
+                    <text-property name="displayName">distributed</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["distributed"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">site_return_waybill_code</property>
+                    <text-property name="displayName">site_return_waybill_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["site_return_waybill_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">date_of_return</property>
+                    <text-property name="displayName">date_of_return</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["date_of_return"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_returned</property>
+                    <text-property name="displayName">quantity_returned</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["quantity_returned"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_damaged_returned</property>
+                    <text-property name="displayName">quantity_damaged_returned</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["quantity_damaged_returned"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_good_returned</property>
+                    <text-property name="displayName">quantity_good_returned</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["quantity_good_returned"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">received_return_date</property>
+                    <text-property name="displayName">received_return_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["received_return_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">receiver_code</property>
+                    <text-property name="displayName">receiver_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["receiver_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">return_sender_code</property>
+                    <text-property name="displayName">return_sender_code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["return_sender_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_lost_in_transport</property>
+                    <text-property name="displayName">quantity_lost_in_transport</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["quantity_lost_in_transport"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_not_distributed</property>
+                    <text-property name="displayName">quantity_not_distributed</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["quantity_not_distributed"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">lost_in_distribution</property>
+                    <text-property name="displayName">lost_in_distribution</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["lost_in_distribution"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_lost_received_from_site</property>
+                    <text-property name="displayName">quantity_lost_received_from_site</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["quantity_lost_received_from_site"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">in_transit</property>
+                    <text-property name="displayName">in_transit</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["in_transit"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">bl_original</property>
+                    <text-property name="displayName">bl_original</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["bl_original"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">code_mag_receiver</property>
+                    <text-property name="displayName">code_mag_receiver</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["code_mag_receiver"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">code_bl_return_received</property>
+                    <text-property name="displayName">code_bl_return_received</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["code_bl_return_received"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="243"/>
+            <column id="244"/>
+            <column id="245"/>
+            <column id="246"/>
+            <column id="247"/>
+            <column id="248"/>
+            <column id="249"/>
+            <column id="250"/>
+            <column id="251"/>
+            <column id="252"/>
+            <column id="253"/>
+            <column id="254"/>
+            <column id="255"/>
+            <column id="256"/>
+            <column id="257"/>
+            <column id="258"/>
+            <column id="259"/>
+            <column id="260"/>
+            <column id="261"/>
+            <column id="262"/>
+            <column id="263"/>
+            <column id="264"/>
+            <column id="265"/>
+            <column id="266"/>
+            <column id="267"/>
+            <column id="268"/>
+            <column id="269"/>
+            <column id="270"/>
+            <column id="271"/>
+            <column id="272"/>
+            <column id="273"/>
+            <column id="274"/>
+            <column id="275"/>
+            <column id="276"/>
+            <column id="277"/>
+            <column id="278"/>
+            <column id="279"/>
+            <column id="280"/>
+            <column id="281"/>
+            <column id="282"/>
+            <column id="283"/>
+            <column id="284"/>
+            <header>
+                <row id="30">
+                    <cell id="31">
+                        <label id="32">
+                            <text-property name="text">sent_wh</text-property>
+                        </label>
+                    </cell>
+                    <cell id="33">
+                        <label id="34">
+                            <text-property name="text">sent_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="35">
+                        <label id="36">
+                            <text-property name="text">wh_sent_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="37">
+                        <label id="38">
+                            <text-property name="text">food_type</text-property>
+                        </label>
+                    </cell>
+                    <cell id="39">
+                        <label id="40">
+                            <text-property name="text">weight</text-property>
+                        </label>
+                    </cell>
+                    <cell id="41">
+                        <label id="42">
+                            <text-property name="text">transaction_type</text-property>
+                        </label>
+                    </cell>
+                    <cell id="43">
+                        <label id="44">
+                            <text-property name="text">warehouse_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="45">
+                        <label id="46">
+                            <text-property name="text">sent_receiver_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="47">
+                        <label id="48">
+                            <text-property name="text">received_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="49">
+                        <label id="50">
+                            <text-property name="text">good_net_weight</text-property>
+                        </label>
+                    </cell>
+                    <cell id="51">
+                        <label id="52">
+                            <text-property name="text">recv_site_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="53">
+                        <label id="54">
+                            <text-property name="text">damaged_net_weight</text-property>
+                        </label>
+                    </cell>
+                    <cell id="55">
+                        <label id="56">
+                            <text-property name="text">total_received_from_site</text-property>
+                        </label>
+                    </cell>
+                    <cell id="57">
+                        <label id="58">
+                            <text-property name="text">total_received</text-property>
+                        </label>
+                    </cell>
+                    <cell id="59">
+                        <label id="60">
+                            <text-property name="text">id</text-property>
+                        </label>
+                    </cell>
+                    <cell id="61">
+                        <label id="62">
+                            <text-property name="text">site_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="63">
+                        <label id="64">
+                            <text-property name="text">distribution_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="65">
+                        <label id="66">
+                            <text-property name="text">received_waybill_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="67">
+                        <label id="68">
+                            <text-property name="text">returned_waybill_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="69">
+                        <label id="70">
+                            <text-property name="text">oil</text-property>
+                        </label>
+                    </cell>
+                    <cell id="71">
+                        <label id="72">
+                            <text-property name="text">csb</text-property>
+                        </label>
+                    </cell>
+                    <cell id="73">
+                        <label id="74">
+                            <text-property name="text">sorghum</text-property>
+                        </label>
+                    </cell>
+                    <cell id="75">
+                        <label id="76">
+                            <text-property name="text">rice</text-property>
+                        </label>
+                    </cell>
+                    <cell id="77">
+                        <label id="78">
+                            <text-property name="text">distribution_type</text-property>
+                        </label>
+                    </cell>
+                    <cell id="79">
+                        <label id="80">
+                            <text-property name="text">data_record_id</text-property>
+                        </label>
+                    </cell>
+                    <cell id="81">
+                        <label id="82">
+                            <text-property name="text">distributed</text-property>
+                        </label>
+                    </cell>
+                    <cell id="83">
+                        <label id="84">
+                            <text-property name="text">site_return_waybill_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="85">
+                        <label id="86">
+                            <text-property name="text">date_of_return</text-property>
+                        </label>
+                    </cell>
+                    <cell id="87">
+                        <label id="88">
+                            <text-property name="text">quantity_returned</text-property>
+                        </label>
+                    </cell>
+                    <cell id="89">
+                        <label id="90">
+                            <text-property name="text">quantity_damaged_returned</text-property>
+                        </label>
+                    </cell>
+                    <cell id="91">
+                        <label id="92">
+                            <text-property name="text">quantity_good_returned</text-property>
+                        </label>
+                    </cell>
+                    <cell id="93">
+                        <label id="94">
+                            <text-property name="text">received_return_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="95">
+                        <label id="96">
+                            <text-property name="text">receiver_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="97">
+                        <label id="98">
+                            <text-property name="text">return_sender_code</text-property>
+                        </label>
+                    </cell>
+                    <cell id="99">
+                        <label id="100">
+                            <text-property name="text">quantity_lost_in_transport</text-property>
+                        </label>
+                    </cell>
+                    <cell id="101">
+                        <label id="102">
+                            <text-property name="text">quantity_not_distributed</text-property>
+                        </label>
+                    </cell>
+                    <cell id="103">
+                        <label id="104">
+                            <text-property name="text">lost_in_distribution</text-property>
+                        </label>
+                    </cell>
+                    <cell id="105">
+                        <label id="106">
+                            <text-property name="text">quantity_lost_received_from_site</text-property>
+                        </label>
+                    </cell>
+                    <cell id="107">
+                        <label id="108">
+                            <text-property name="text">in_transit</text-property>
+                        </label>
+                    </cell>
+                    <cell id="109">
+                        <label id="110">
+                            <text-property name="text">bl_original</text-property>
+                        </label>
+                    </cell>
+                    <cell id="111">
+                        <label id="112">
+                            <text-property name="text">code_mag_receiver</text-property>
+                        </label>
+                    </cell>
+                    <cell id="113">
+                        <label id="114">
+                            <text-property name="text">code_bl_return_received</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="115">
+                    <cell id="116">
+                        <data id="117">
+                            <property name="resultSetColumn">sent_wh</property>
+                        </data>
+                    </cell>
+                    <cell id="118">
+                        <data id="119">
+                            <property name="resultSetColumn">sent_date</property>
+                        </data>
+                    </cell>
+                    <cell id="120">
+                        <data id="121">
+                            <property name="resultSetColumn">wh_sent_date</property>
+                        </data>
+                    </cell>
+                    <cell id="122">
+                        <data id="123">
+                            <property name="resultSetColumn">food_type</property>
+                        </data>
+                    </cell>
+                    <cell id="124">
+                        <data id="125">
+                            <property name="resultSetColumn">weight</property>
+                        </data>
+                    </cell>
+                    <cell id="126">
+                        <data id="127">
+                            <property name="resultSetColumn">transaction_type</property>
+                        </data>
+                    </cell>
+                    <cell id="128">
+                        <data id="129">
+                            <property name="resultSetColumn">warehouse_code</property>
+                        </data>
+                    </cell>
+                    <cell id="130">
+                        <data id="131">
+                            <property name="resultSetColumn">sent_receiver_code</property>
+                        </data>
+                    </cell>
+                    <cell id="132">
+                        <data id="133">
+                            <property name="resultSetColumn">received_date</property>
+                        </data>
+                    </cell>
+                    <cell id="134">
+                        <data id="135">
+                            <property name="resultSetColumn">good_net_weight</property>
+                        </data>
+                    </cell>
+                    <cell id="136">
+                        <data id="137">
+                            <property name="resultSetColumn">recv_site_code</property>
+                        </data>
+                    </cell>
+                    <cell id="138">
+                        <data id="139">
+                            <property name="resultSetColumn">damaged_net_weight</property>
+                        </data>
+                    </cell>
+                    <cell id="140">
+                        <data id="141">
+                            <property name="resultSetColumn">total_received_from_site</property>
+                        </data>
+                    </cell>
+                    <cell id="142">
+                        <data id="143">
+                            <property name="resultSetColumn">total_received</property>
+                        </data>
+                    </cell>
+                    <cell id="144">
+                        <data id="145">
+                            <property name="resultSetColumn">id</property>
+                        </data>
+                    </cell>
+                    <cell id="146">
+                        <data id="147">
+                            <property name="resultSetColumn">site_code</property>
+                        </data>
+                    </cell>
+                    <cell id="148">
+                        <data id="149">
+                            <property name="resultSetColumn">distribution_date</property>
+                        </data>
+                    </cell>
+                    <cell id="150">
+                        <data id="151">
+                            <property name="resultSetColumn">received_waybill_code</property>
+                        </data>
+                    </cell>
+                    <cell id="152">
+                        <data id="153">
+                            <property name="resultSetColumn">returned_waybill_code</property>
+                        </data>
+                    </cell>
+                    <cell id="154">
+                        <data id="155">
+                            <property name="resultSetColumn">oil</property>
+                        </data>
+                    </cell>
+                    <cell id="156">
+                        <data id="157">
+                            <property name="resultSetColumn">csb</property>
+                        </data>
+                    </cell>
+                    <cell id="158">
+                        <data id="159">
+                            <property name="resultSetColumn">sorghum</property>
+                        </data>
+                    </cell>
+                    <cell id="160">
+                        <data id="161">
+                            <property name="resultSetColumn">rice</property>
+                        </data>
+                    </cell>
+                    <cell id="162">
+                        <data id="163">
+                            <property name="resultSetColumn">distribution_type</property>
+                        </data>
+                    </cell>
+                    <cell id="164">
+                        <data id="165">
+                            <property name="resultSetColumn">data_record_id</property>
+                        </data>
+                    </cell>
+                    <cell id="166">
+                        <data id="167">
+                            <property name="resultSetColumn">distributed</property>
+                        </data>
+                    </cell>
+                    <cell id="168">
+                        <data id="169">
+                            <property name="resultSetColumn">site_return_waybill_code</property>
+                        </data>
+                    </cell>
+                    <cell id="170">
+                        <data id="171">
+                            <property name="resultSetColumn">date_of_return</property>
+                        </data>
+                    </cell>
+                    <cell id="172">
+                        <data id="173">
+                            <property name="resultSetColumn">quantity_returned</property>
+                        </data>
+                    </cell>
+                    <cell id="174">
+                        <data id="175">
+                            <property name="resultSetColumn">quantity_damaged_returned</property>
+                        </data>
+                    </cell>
+                    <cell id="176">
+                        <data id="177">
+                            <property name="resultSetColumn">quantity_good_returned</property>
+                        </data>
+                    </cell>
+                    <cell id="178">
+                        <data id="179">
+                            <property name="resultSetColumn">received_return_date</property>
+                        </data>
+                    </cell>
+                    <cell id="180">
+                        <data id="181">
+                            <property name="resultSetColumn">receiver_code</property>
+                        </data>
+                    </cell>
+                    <cell id="182">
+                        <data id="183">
+                            <property name="resultSetColumn">return_sender_code</property>
+                        </data>
+                    </cell>
+                    <cell id="184">
+                        <data id="185">
+                            <property name="resultSetColumn">quantity_lost_in_transport</property>
+                        </data>
+                    </cell>
+                    <cell id="186">
+                        <data id="187">
+                            <property name="resultSetColumn">quantity_not_distributed</property>
+                        </data>
+                    </cell>
+                    <cell id="188">
+                        <data id="189">
+                            <property name="resultSetColumn">lost_in_distribution</property>
+                        </data>
+                    </cell>
+                    <cell id="190">
+                        <data id="191">
+                            <property name="resultSetColumn">quantity_lost_received_from_site</property>
+                        </data>
+                    </cell>
+                    <cell id="192">
+                        <data id="193">
+                            <property name="resultSetColumn">in_transit</property>
+                        </data>
+                    </cell>
+                    <cell id="194">
+                        <data id="195">
+                            <property name="resultSetColumn">bl_original</property>
+                        </data>
+                    </cell>
+                    <cell id="196">
+                        <data id="197">
+                            <property name="resultSetColumn">code_mag_receiver</property>
+                        </data>
+                    </cell>
+                    <cell id="198">
+                        <data id="199">
+                            <property name="resultSetColumn">code_bl_return_received</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="200">
+                    <cell id="201"/>
+                    <cell id="202"/>
+                    <cell id="203"/>
+                    <cell id="204"/>
+                    <cell id="205"/>
+                    <cell id="206"/>
+                    <cell id="207"/>
+                    <cell id="208"/>
+                    <cell id="209"/>
+                    <cell id="210"/>
+                    <cell id="211"/>
+                    <cell id="212"/>
+                    <cell id="213"/>
+                    <cell id="214"/>
+                    <cell id="215"/>
+                    <cell id="216"/>
+                    <cell id="217"/>
+                    <cell id="218"/>
+                    <cell id="219"/>
+                    <cell id="220"/>
+                    <cell id="221"/>
+                    <cell id="222"/>
+                    <cell id="223"/>
+                    <cell id="224"/>
+                    <cell id="225"/>
+                    <cell id="226"/>
+                    <cell id="227"/>
+                    <cell id="228"/>
+                    <cell id="229"/>
+                    <cell id="230"/>
+                    <cell id="231"/>
+                    <cell id="232"/>
+                    <cell id="233"/>
+                    <cell id="234"/>
+                    <cell id="235"/>
+                    <cell id="236"/>
+                    <cell id="237"/>
+                    <cell id="238"/>
+                    <cell id="239"/>
+                    <cell id="240"/>
+                    <cell id="241"/>
+                    <cell id="242"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>
