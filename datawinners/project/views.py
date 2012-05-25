@@ -16,6 +16,7 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_datasender_form, add_imported_data_sender_to_trial_organization
 from datawinners.entity import import_data as import_module
@@ -803,15 +804,16 @@ def _create_submission_request(form_model, request):
     return submission_request
 
 
-def _make_form_context(questionnaire_form, project, form_code, disable_link_class):
+def _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class):
     return {'questionnaire_form': questionnaire_form, 'project': project,
             'project_links': make_project_links(project, form_code),
+            'hide_link_class': hide_link_class,
             'disable_link_class': disable_link_class,
             }
 
 
-def _get_response(template, form_code, project, questionnaire_form, request, disable_link_class):
-    form_context = _make_form_context(questionnaire_form, project, form_code, disable_link_class)
+def _get_response(template, form_code, project, questionnaire_form, request, hide_link_class, disable_link_class):
+    form_context = _make_form_context(questionnaire_form, project, form_code, hide_link_class, disable_link_class)
     subject = get_entity_type_infos(project.entity_type, manager = get_database_manager(request.user))
 
     form_context.update({'subject': subject,
@@ -848,17 +850,18 @@ def web_questionnaire(request, project_id=None, subject=False):
     QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
                                                     form_model = form_model).create()
 
-    disable_link_class = "disable_link" if is_data_sender else ""
+    disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
 
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(template, form_model.form_code, project, questionnaire_form, request, disable_link_class)
+        return _get_response(template, form_model.form_code, project, questionnaire_form,
+                             request, hide_link_class, disable_link_class)
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(template, form_model.form_code, project, questionnaire_form, request,
-                disable_link_class)
+            return _get_response(template, form_model.form_code, project, questionnaire_form,
+                                 request, hide_link_class, disable_link_class)
 
         success_message = None
         error_message = None
@@ -876,8 +879,8 @@ def web_questionnaire(request, project_id=None, subject=False):
                 questionnaire_form = QuestionnaireForm()
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
-                return _get_response(template, form_model.form_code, project, questionnaire_form, request,
-                    disable_link_class)
+                return _get_response(template, form_model.form_code, project, questionnaire_form,
+                                     request, hide_link_class, disable_link_class)
 
         except DataObjectNotFound as exception:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
@@ -887,7 +890,7 @@ def web_questionnaire(request, project_id=None, subject=False):
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
         subject = get_entity_type_infos(project.entity_type, manager=get_database_manager(request.user))
-        _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, disable_link_class)
+        _project_context = _make_form_context(questionnaire_form, project, form_model.form_code, hide_link_class, disable_link_class)
         _project_context.update(
                 {'success_message': success_message, 'error_message': error_message, 'add_link': add_link(project),
                  "subject": subject, "entity_type": project.entity_type})
