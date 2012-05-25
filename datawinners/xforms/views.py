@@ -22,7 +22,7 @@ def restrict_request_country(f):
         try :
             country_code = GeoIP().country_code(request.META.get('REMOTE_ADDR'))
         except Exception as e:
-            logger.exception("Error resolving country from IP : %s"%e)
+            logger.exception("Error resolving country from IP : \n%s"%e)
             raise
         if country_code is None or org.country.code == country_code:
             return f(*args, **kw)
@@ -39,6 +39,11 @@ def formList(request):
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
     return HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
+
+
+def get_errors(errors):
+    return '\n'.join(['{0} : {1}'.format(key,val) for key, val in errors.items()])
+
 
 
 @csrf_exempt
@@ -58,10 +63,10 @@ def submission(request):
             ))
         response = player.accept(mangrove_request)
         if response.errors:
-            logger.error("Error in submission : %s" % '\n'.join(response.errors))
+            logger.error("Error in submission : \n%s" % get_errors(response.errors))
             return HttpResponseBadRequest()
     except Exception as e:
-        logger.exception("Exception in submission : %s" % e)
+        logger.exception("Exception in submission : \n%s" % e)
         return HttpResponseBadRequest()
 
     response = HttpResponse(status=201)
