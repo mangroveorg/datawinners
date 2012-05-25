@@ -35,8 +35,7 @@ function unit_test {
 function function_test {
 	echo "running function test" && \
 	cp datawinners/local_settings_example.py func_tests/resources/local_settings.py && \
-	cd datawinners
-	python manage.py migrate && \
+	restore_database && \
 	python manage.py recreatedb && \
 	cd ../func_tests && \
 	nosetests
@@ -45,9 +44,7 @@ function function_test {
 function restore_database {
 	echo "recreating database" && \
 	dropdb geodjango && \
-	createdb geodjango && \
-    psql -d geodjango -f '/usr/local/share/postgis/postgis.sql' && \
-	psql -d geodjango -f '/usr/local/share/postgis/spatial_ref_sys.sql' && \
+	createdb -T template_postgis geodjango && \
 	cd datawinners && \
 	python manage.py syncdb && \
 	python manage.py migrate && \
