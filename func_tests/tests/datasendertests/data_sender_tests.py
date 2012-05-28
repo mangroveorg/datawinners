@@ -37,11 +37,15 @@ class DataSenderTest(BaseTest):
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
 
-    def test_should_stay_on_data_submission_page_when_user_give_up_cancel(self):
+    def test_cancel_data_submission(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
         web_submission_page.fill_questionnaire_with(VALID_ANSWERS)
         warning_dialog = web_submission_page.cancel_submission()
         warning_dialog.cancel()
         web_submission_page = WebSubmissionPage(self.driver)
-        self.assertEquals(web_submission_page.get_title(), PAGE_TITLE)
+        self.assertEquals(web_submission_page.get_project_name(), fetch_(PROJECT_NAME, from_(DEFAULT_ORG_DATA)))
+        warning_dialog = web_submission_page.cancel_submission()
+        warning_dialog.confirm()
+        data_sender_page = DataSenderPage(self.driver)
+        self.assertIsNotNone(data_sender_page.get_project_list())

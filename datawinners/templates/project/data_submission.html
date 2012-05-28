@@ -1,6 +1,11 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
 {% load field_tags %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/project/data_submission_warning.js"></script>
+{% endblock %}
 {% block page_title %}{% trans "Data Submission" %}{% endblock %}
 
 {% block section_title %}
@@ -11,5 +16,5 @@
     <a href="{{ back_to_project_link }}" class="back-to-project-list"> « {% trans "Back to Project List" %}</a>
     <h3 class="project_name">{{ project.name }}</h3>
     <p class="instructions italic">{% trans "Fill out the following Questionnaire and click on Submit" %}</p>
-    {% include 'project/web_questionnaire_questions.html' %}
+    {% include 'project/data_submission_questionnaire.html' %}
 {% endblock %}
