@@ -191,6 +191,10 @@ msgstr "%(day)s d'october pour le rapport d'octobre"
 msgid "Warning !!"
 msgstr "Attention !!"
 
+#: media/javascript/project/data_submission_warning.js:16
+msgid "Warning"
+msgstr "Attention"
+
 #: media/javascript/project/questionnaire_charcount.js:52
 msgid "characters used"
 msgstr "caractères utilisés"

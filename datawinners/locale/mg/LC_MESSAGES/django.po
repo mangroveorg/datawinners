@@ -477,6 +477,10 @@ msgstr ""
 msgid "Previous Step:"
 msgstr "Etape précédente :"
 
+#: templates/layout_application.html: 56
+msgid "Send in your data via:"
+msgstr ""
+
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
 msgid "Dashboard"
@@ -737,6 +741,18 @@ msgstr "Tous les enregistrements"
 #: templates/alldata/index.html:40
 msgid "Web Submissions"
 msgstr "Envois Web"
+
+#: templates/project/data_submission.html: 26
+msgid "Back to Project List"
+msgstr ""
+
+#: templates/project/data_submission.html: 29
+msgid "Fill out the following Questionnaire and click on Submit."
+msgstr ""
+
+#: templates/project/data_submission_questionnaire.html: 8
+msgid "All your entered data will be lost. Are you sure you want to cancel?"
+msgstr ""
 
 #: templates/dashboard/home.html:31
 msgid "help_project_creation"

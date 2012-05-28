@@ -197,6 +197,10 @@ msgstr ""
 msgid "Warning !!"
 msgstr ""
 
+#: media/javascript/project/data_submission_warning.js:16
+msgid "Warning"
+msgstr ""
+
 #: media/javascript/project/questionnaire_charcount.js:52
 msgid "characters used"
 msgstr ""

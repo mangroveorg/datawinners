@@ -518,6 +518,10 @@ msgstr ""
 "<li>Notre Service de Consultance</li></ul></p>"
 "<p>Voir notre <a href='/en/pricing/' target=\"_blank\">Page des Tarifications</a></p>"
 
+#: templates/layout_application.html: 56
+msgid "Send in your data via:"
+msgstr "Soumettez vos données via:"
+
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
 msgid "Dashboard"
@@ -775,6 +779,18 @@ msgstr "Tous les enregistrements"
 #: templates/alldata/index.html:40
 msgid "Web Submissions"
 msgstr "Envois Web"
+
+#: templates/project/data_submission.html: 26
+msgid "Back to Project List"
+msgstr "Retourner à la Liste de Projet"
+
+#: templates/project/data_submission.html: 29
+msgid "Fill out the following Questionnaire and click on Submit."
+msgstr "Remplissez le QuesHonnaire suivant et cliquez sur «Soumettre»."
+
+#: templates/project/data_submission_questionnaire.html: 8
+msgid "All your entered data will be lost. Are you sure you want to cancel?"
+msgstr "Toutes vos données seront perdues. Etes-vous sûr de vouloir annuler?"
 
 #: templates/dashboard/home.html:31
 msgid "help_project_creation"
@@ -3280,6 +3296,7 @@ msgstr "Remplissez le modèle avec les informations sur ovs expéditeurs"
 msgid "Send in data"
 msgstr "Envoyer des données"
 
+#: templates/project/data_submission.html: 15, 18
 msgid "Data Submission"
 msgstr "Présentation des données"
 

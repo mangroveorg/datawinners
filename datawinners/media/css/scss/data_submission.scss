@@ -1,9 +1,12 @@
 .device-navigation {
   margin-bottom: 30px;
   border-bottom: 3px solid #4F4F4F;
-  font-size: 20px;
+  span {
+    font-size: 17px;
+  }
   a {
     display: inline-block;
+    font-size: 18px;
   }
   .active {
     color: white;

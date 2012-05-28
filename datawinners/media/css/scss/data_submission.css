@@ -1,9 +1,11 @@
 .device-navigation {
   margin-bottom: 30px;
-  border-bottom: 3px solid #4F4F4F;
-  font-size: 20px; }
+  border-bottom: 3px solid #4F4F4F; }
+  .device-navigation span {
+    font-size: 17px; }
   .device-navigation a {
-    display: inline-block; }
+    display: inline-block;
+    font-size: 18px; }
   .device-navigation .active {
     color: white; }
   .device-navigation .active.web {

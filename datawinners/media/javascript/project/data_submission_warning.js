@@ -13,7 +13,7 @@ DW.data_submission = {
 
     init_warning_dialog:function () {
         $("#cancel_submission_warning_message").dialog({
-            title:gettext("Warning !!"),
+            title:gettext("Warning"),
             modal:true,
             autoOpen:false,
             height:180,
