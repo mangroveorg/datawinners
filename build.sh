@@ -46,7 +46,7 @@ function restore_database {
 	dropdb geodjango && \
 	createdb -T template_postgis geodjango && \
 	cd datawinners && \
-	python manage.py syncdb && \
+	python manage.py syncdb --noinput && \
 	python manage.py migrate && \
 	python manage.py loadshapes
 }
