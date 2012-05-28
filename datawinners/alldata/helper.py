@@ -22,7 +22,7 @@ def get_page_heading(user):
 
 
 def link(report_name,language):
-    locale = '__locale=fr_CA' if language == 'fr' else ''
+    locale = '&__locale=fr_CA' if language == 'fr' else ''
     return '/birt-viewer/frameset?__report=crs/'+ report_name + '.rptdesign' + locale
 
 
