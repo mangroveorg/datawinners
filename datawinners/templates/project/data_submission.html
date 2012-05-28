@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+    <a href="{{ back_to_project_link }}" class="back-to-project-list"> « {% trans "Back to Project List" %}</a>
     <h3 class="project_name">{{ project.name }}</h3>
     <p class="instructions italic">{% trans "Fill out the following Questionnaire and click on Submit" %}</p>
     {% include 'project/web_questionnaire_questions.html' %}

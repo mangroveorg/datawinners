@@ -810,6 +810,7 @@ def _make_form_context(questionnaire_form, project, form_code, hide_link_class, 
             'project_links': make_project_links(project, form_code),
             'hide_link_class': hide_link_class,
             'disable_link_class': disable_link_class,
+            'back_to_project_link': reverse("alldata_index"),
             }
 
 

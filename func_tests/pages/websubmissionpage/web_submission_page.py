@@ -3,6 +3,7 @@ from pages.page import Page
 from pages.websubmissionpage.web_submission_locator import *
 from tests.websubmissiontests.web_submission_data import *
 
+
 class WebSubmissionPage(Page):
 
     def __init__(self, driver):
@@ -47,3 +48,6 @@ class WebSubmissionPage(Page):
 
     def get_project_name(self):
         return self.driver.find(PROJECT).text
+
+    def go_back_to_project_list(self):
+        self.driver.find(BACK_TO_PROJECT_LINK).click()
