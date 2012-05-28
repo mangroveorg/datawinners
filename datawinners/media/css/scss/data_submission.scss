@@ -1,0 +1,41 @@
+.device-navigation {
+  border-bottom: 3px solid #4F4F4F;
+  font-size: 20px;
+  a {
+    display: inline-block;
+  }
+  .active {
+    color: white;
+  }
+  .active.web {
+    background: url("/media/images/mini_computer_white.png") no-repeat 5px #4F4F4F;
+    padding: 0 10px 0 40px;
+  }
+  .active.smartphone {
+    background: url("/media/images/smart_phone_white.png") no-repeat 5px #4F4F4F;
+    padding: 0 10px 0 40px;
+  }
+  .inactive.web {
+    background: url("/media/images/mini_computer.png") no-repeat 5px;
+    padding: 0 10px 0 40px;
+  }
+  .inactive.smartphone {
+    background: url("/media/images/smart_phone.png") no-repeat 5px;
+    padding: 0 10px 0 40px;
+  }
+}
+
+.back-to-project-list {
+  display: inline-block;
+  margin: 15px 0;
+}
+
+.questionnaire-header {
+  margin-bottom: 20px;
+}
+
+.action-section {
+  float: right;
+  margin-right: 300px;
+}
+
