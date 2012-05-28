@@ -106,7 +106,7 @@ def failed_submissions(request):
 @is_not_expired
 @is_allowed_to_view_reports
 def reports(request):
-    report_list = get_reports_list(get_organization(request).org_id)
+    report_list = get_reports_list(get_organization(request).org_id,request.session['django_language'])
     response = render_to_response('alldata/reports_page.html',
             {'reports': report_list, 'page_heading': "All Data", 'project_links': get_crs_project_links()},
                                   context_instance = RequestContext(request))

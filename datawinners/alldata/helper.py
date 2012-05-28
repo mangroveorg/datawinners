@@ -21,20 +21,21 @@ def get_page_heading(user):
     return "All Data"
 
 
-def link(report_name):
-    return '/birt-viewer/frameset?__report=crs/'+ report_name + '.rptdesign'
+def link(report_name,language):
+    locale = '__locale=fr_CA' if language == 'fr' else ''
+    return '/birt-viewer/frameset?__report=crs/'+ report_name + '.rptdesign' + locale
 
 
-def get_reports_list(org_id):
+def get_reports_list(org_id,language):
     if org_id == CRS_ORG_ID:
         return [
-                {'link' : link('waybill_sent_and_received'),'name': _('Way Bill Sent vs Received Report'), 'desc': _('Way bill sent vs received description')},
-                {'link' : link('CSR'),'name': _('CSR'), 'desc': _('Wharehouse Commodity Status Report')},
-                {'link' : link('LSR'),'name': _('LSR'), 'desc': _('LSR description')},
-                {'link' : link('MSL'),'name': _('MSL'), 'desc': _('MSL description')},
-                {'link' : link('NCSR'),'name': _('CSR National'), 'desc': _('National Commodity Status Report')},
-                {'link' : link('recipient_status_report'),'name': _('Recipient Status Report'), 'desc': _('Recipient Status Report description')},
-                {'link' : link('return_report'),'name': _('Return Report'), 'desc': _('Return Report description')},
-                {'link' : link('billOfLadingVsWayBillPort'),'name': _('Bill Of Lading vs Way Bill Port'), 'desc': _('Bill Of Lading vs Way Bill Port description')},
+                {'link' : link('waybill_sent_and_received', language),'name': _('Way Bill Sent vs Received Report'), 'desc': _('Way bill sent vs received description')},
+                {'link' : link('CSR', language),'name': _('CSR'), 'desc': _('Wharehouse Commodity Status Report')},
+                {'link' : link('LSR', language),'name': _('LSR'), 'desc': _('LSR description')},
+                {'link' : link('MSL', language),'name': _('MSL'), 'desc': _('MSL description')},
+                {'link' : link('NCSR', language),'name': _('CSR National'), 'desc': _('National Commodity Status Report')},
+                {'link' : link('recipient_status_report', language),'name': _('Recipient Status Report'), 'desc': _('Recipient Status Report description')},
+                {'link' : link('return_report', language),'name': _('Return Report'), 'desc': _('Return Report description')},
+                {'link' : link('billOfLadingVsWayBillPort', language),'name': _('Bill Of Lading vs Way Bill Port'), 'desc': _('Bill Of Lading vs Way Bill Port description')},
         ]
     return  []
