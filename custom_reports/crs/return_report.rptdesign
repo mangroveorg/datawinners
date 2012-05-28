@@ -299,6 +299,12 @@
                     <text-property name="heading">quantity_good_returned</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">site_code_return</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">site_code_return</text-property>
+                    <text-property name="heading">site_code_return</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">received_return_date</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">received_return_date</text-property>
@@ -373,6 +379,7 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                     <property name="position">1</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -383,6 +390,7 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                     <property name="position">2</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -393,6 +401,7 @@
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                     <property name="position">3</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -403,6 +412,7 @@
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                     <property name="position">4</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -566,56 +576,61 @@
                     </structure>
                     <structure>
                         <property name="position">32</property>
+                        <property name="name">site_code_return</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
                         <property name="name">received_return_date</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">33</property>
+                        <property name="position">34</property>
                         <property name="name">receiver_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">34</property>
+                        <property name="position">35</property>
                         <property name="name">return_sender_code</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">35</property>
+                        <property name="position">36</property>
                         <property name="name">quantity_lost_in_transport</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">36</property>
+                        <property name="position">37</property>
                         <property name="name">quantity_not_distributed</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">37</property>
+                        <property name="position">38</property>
                         <property name="name">lost_in_distribution</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">38</property>
+                        <property name="position">39</property>
                         <property name="name">quantity_lost_received_from_site</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">39</property>
+                        <property name="position">40</property>
                         <property name="name">in_transit</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">40</property>
+                        <property name="position">41</property>
                         <property name="name">bl_original</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">41</property>
+                        <property name="position">42</property>
                         <property name="name">code_mag_receiver</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">42</property>
+                        <property name="position">43</property>
                         <property name="name">code_bl_return_received</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -842,76 +857,83 @@
                 </structure>
                 <structure>
                     <property name="position">32</property>
+                    <property name="name">site_code_return</property>
+                    <property name="nativeName">site_code_return</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">33</property>
                     <property name="name">received_return_date</property>
                     <property name="nativeName">received_return_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">33</property>
+                    <property name="position">34</property>
                     <property name="name">receiver_code</property>
                     <property name="nativeName">receiver_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">34</property>
+                    <property name="position">35</property>
                     <property name="name">return_sender_code</property>
                     <property name="nativeName">return_sender_code</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">35</property>
+                    <property name="position">36</property>
                     <property name="name">quantity_lost_in_transport</property>
                     <property name="nativeName">quantity_lost_in_transport</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
-                    <property name="position">36</property>
+                    <property name="position">37</property>
                     <property name="name">quantity_not_distributed</property>
                     <property name="nativeName">quantity_not_distributed</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
-                    <property name="position">37</property>
+                    <property name="position">38</property>
                     <property name="name">lost_in_distribution</property>
                     <property name="nativeName">lost_in_distribution</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
-                    <property name="position">38</property>
+                    <property name="position">39</property>
                     <property name="name">quantity_lost_received_from_site</property>
                     <property name="nativeName">quantity_lost_received_from_site</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
-                    <property name="position">39</property>
+                    <property name="position">40</property>
                     <property name="name">in_transit</property>
                     <property name="nativeName">in_transit</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">40</property>
+                    <property name="position">41</property>
                     <property name="name">bl_original</property>
                     <property name="nativeName">bl_original</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">41</property>
+                    <property name="position">42</property>
                     <property name="name">code_mag_receiver</property>
                     <property name="nativeName">code_mag_receiver</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">42</property>
+                    <property name="position">43</property>
                     <property name="name">code_bl_return_received</property>
                     <property name="nativeName">code_bl_return_received</property>
                     <property name="dataType">string</property>
@@ -925,8 +947,8 @@ round(cast ((total_received - distributed) as numeric),2) as quantity_not_distri
 round(cast ((total_received - distributed - quantity_returned) as numeric),2) as lost_in_distribution,
 round(cast ((quantity_returned - total_received_from_site) as numeric),2) as quantity_lost_received_from_site,
 CASE received_date WHEN null THEN weight ELSE CASE received_return_date WHEN null THEN quantity_returned END END as in_transit,
-CASE date_of_return WHEN null THEN '' ELSE sent_wh END as bl_original,
-CASE received_return_date WHEN null THEN '' ELSE warehouse_code END as code_mag_receiver,
+a.received_waybill_code as bl_original,
+b.site_code_return as code_mag_receiver,
 CASE received_return_date WHEN null THEN '' ELSE returned_waybill_code END as code_bl_return_received
 
 
@@ -974,6 +996,7 @@ return_sent.sent_date as date_of_return,
 return_sent.weight as quantity_returned,
 return_recv.damaged_net_weight as quantity_damaged_returned,
 return_recv.good_net_weight as quantity_good_returned,
+return_recv.site_code as site_code_return,
 return_recv.received_date as received_return_date, 
 return_sent.receiver_code, return_sent.warehouse_code as return_sender_code
  from
