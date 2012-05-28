@@ -23,6 +23,7 @@ from mangrove.transport import Channel
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password,\
     is_not_expired
+from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_datasender_form,\
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
     delete_datasender_users_if_any
@@ -101,10 +102,11 @@ def create_datasender(request):
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
-        reporter_id,message = process_create_datasender_form(dbm, form, org_id)
+        reporter_id, message = process_create_datasender_form(dbm, form, org_id)
         if len(form.errors) == 0 and form.requires_web_access():
             email_id = request.POST['email']
-            create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
+            create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
+                language_code=request.LANGUAGE_CODE)
 
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
@@ -226,10 +228,11 @@ def __create_web_users(org_id, reporter_details, language_code, is_create_data_s
             user.first_name = reporter_entity.value(NAME_FIELD)
             user.save()
             profile = NGOUserProfile(user=user, org_id=org_id, title="Mr",
-                                     reporter_id=reporter['reporter_id'])
+                reporter_id=reporter['reporter_id'])
             profile.save()
 
-            send_reset_password_email(user, language_code) if is_create_data_sender else send_activation_email_for_data_sender(user, language_code)
+            send_reset_password_email(user,
+                language_code) if is_create_data_sender else send_activation_email_for_data_sender(user, language_code)
 
         content = json.dumps({'success': True, 'message': "Users has been created"})
     return content
@@ -237,10 +240,11 @@ def __create_web_users(org_id, reporter_details, language_code, is_create_data_s
 
 def create_single_web_user(org_id, email_address, reporter_id, language_code):
     """Create single web user from My Data Senders page"""
-    return HttpResponse(__create_web_users(org_id,[{'email':email_address,'reporter_id':reporter_id}], language_code))
+    return HttpResponse(
+        __create_web_users(org_id, [{'email': email_address, 'reporter_id': reporter_id}], language_code))
 
 
-def send_activation_email_for_data_sender(user, language_code, request = None):
+def send_activation_email_for_data_sender(user, language_code, request=None):
     site = get_current_site(request)
     ctx_dict = {
         'domain': site.domain,
@@ -249,9 +253,9 @@ def send_activation_email_for_data_sender(user, language_code, request = None):
         'token': default_token_generator.make_token(user),
         'protocol': 'http',
         }
-    subject = render_to_string('email/activation_email_subject_for_data_sender_account_'+language_code+'.txt')
+    subject = render_to_string('email/activation_email_subject_for_data_sender_account_' + language_code + '.txt')
     subject = ''.join(subject.splitlines())
-    message = render_to_string('email/activation_email_for_data_sender_account_'+language_code+'.html', ctx_dict)
+    message = render_to_string('email/activation_email_for_data_sender_account_' + language_code + '.html', ctx_dict)
     email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()
@@ -405,6 +409,7 @@ def create_subject(request, entity_type=None):
                 LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
                 create_request(questionnaire_form, request.user.username))
             if response.success:
+                ReportRouter().route(get_organization(request).org_id, response)
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                     response.short_code,)
                 questionnaire_form = QuestionnaireForm()

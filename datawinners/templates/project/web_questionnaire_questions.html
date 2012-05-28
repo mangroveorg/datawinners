@@ -119,5 +119,8 @@
             {% endif %}
         {% endfor %}
     </ol>
-    <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+    <div class="action-section">
+        {% block cancel_block %}{% endblock %}
+        <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+    </div>
 </form>

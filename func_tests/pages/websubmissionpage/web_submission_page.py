@@ -1,7 +1,10 @@
 from framework.utils.data_fetcher import from_, fetch_
+from pages.lightbox.light_box_page import LightBox
 from pages.page import Page
+from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
 from tests.websubmissiontests.web_submission_data import *
+
 
 class WebSubmissionPage(Page):
 
@@ -47,3 +50,10 @@ class WebSubmissionPage(Page):
 
     def get_project_name(self):
         return self.driver.find(PROJECT).text
+
+    def go_back_to_project_list(self):
+        self.driver.find(BACK_TO_PROJECT_LINK).click()
+
+    def cancel_submission(self):
+        self.driver.find(by_css("#cancel")).click()
+        return WarningDialog(self.driver)

@@ -1,0 +1,31 @@
+.device-navigation {
+  margin-bottom: 30px;
+  border-bottom: 3px solid #4F4F4F;
+  font-size: 20px; }
+  .device-navigation a {
+    display: inline-block; }
+  .device-navigation .active {
+    color: white; }
+  .device-navigation .active.web {
+    background: url("/media/images/mini_computer_white.png") no-repeat 5px #4f4f4f;
+    padding: 0 10px 0 40px; }
+  .device-navigation .active.smartphone {
+    background: url("/media/images/smart_phone_white.png") no-repeat 5px #4f4f4f;
+    padding: 0 10px 0 40px; }
+  .device-navigation .inactive.web {
+    background: url("/media/images/mini_computer.png") no-repeat 5px;
+    padding: 0 10px 0 40px; }
+  .device-navigation .inactive.smartphone {
+    background: url("/media/images/smart_phone.png") no-repeat 5px;
+    padding: 0 10px 0 40px; }
+
+.back-to-project-list {
+  display: inline-block;
+  margin: -15px 0 15px 0; }
+
+.questionnaire-header {
+  margin-bottom: 20px; }
+
+.action-section {
+  float: right;
+  margin-right: 300px; }

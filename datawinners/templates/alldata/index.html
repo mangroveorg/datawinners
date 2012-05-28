@@ -1,10 +1,13 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
+{% load user_tags %}
+
 {% block page_title %}{% trans page_heading %}{% endblock %}
 s
 {% block section_title %}{% trans page_heading %}
     <span class="title_links">
-        <a href="/allfailedsubmissions" class="{{ hide_link_class }} {{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
+        <a href="/allfailedsubmissions"
+           class="{{ hide_link_class }} {{ disable_link_class }} float_right">{% trans "View all failed submissions" %}</a>
     </span>
 {% endblock %}
 
@@ -16,22 +19,28 @@ s
     <link href="/media/css/scss/section_alldata.css" rel="stylesheet"/>
 {% endblock %}
 
+{% block page_css %}
+    <link href="/media/css/scss/data_submission.css" rel="stylesheet"/>
+{% endblock %}
+
 {% block body %}
     {% activetab "tab_nav" "projects" %}
     {{ block.super }}
 {% endblock %}
 
-
 {% block navigation %}
-{% if is_crs_user %}
-{% include 'alldata/tab_navigation.html' %}
-{% endif %}
+    {% if is_crs_user %}
+        {% include 'alldata/tab_navigation.html' %}
+    {% endif %}
 {% endblock %}
-
-
 
 {% load i18n %}
 {% block content %}
+    {% block device_navigation %}
+        {% if user|is_datasender %}
+            {{ block.super }}
+        {% endif %}
+    {% endblock %}
     <div>
         <table class="styled_table">
             <thead>
@@ -41,20 +50,25 @@ s
             </thead>
             {% for project in projects %}
                 <tr>
-                    <td><a href="{{ project.link }}" class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
+                    <td><a href="{{ project.link }}"
+                           class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
                     <td class="{{ hide_link_class }}">{{ project.created }}</td>
                     <td>
                         <span class="report_links">
                         <span class="{{ hide_link_class }}">
                             <span class="disable_link"> {% trans "Summary" %} </span>
-                            |<a href="{{ project.analysis }}"class="{{ project.disabled }} {{ disable_link_class }}{{ hide_link_class }}">{% trans "Analysis" %}</a>
-                            |<a href="{{ project.log }}" class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
+                            |<a href="{{ project.analysis }}"
+                                class="{{ project.disabled }} {{ disable_link_class }}{{ hide_link_class }}">{% trans "Analysis" %}</a>
+                            |<a href="{{ project.log }}"
+                                class="{{ project.disabled}} {{ disable_link_class}}">{% trans "All Data Records" %}</a>
                             |
                         </span>
-                            <a href="{{ project.web_submission_link }}" class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
-                        {%if project.create_subjects_link%}
-                            |<a href="{{ project.create_subjects_link}}">{% trans "Register a " %}{{ project.entity_type}}</a>
-                        {% endif %}
+                            <a href="{{ project.web_submission_link }}"
+                               class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
+                            {% if project.create_subjects_link %}
+                                |<a href="{{ project.create_subjects_link}}">
+                                {% trans "Register a " %}{{ project.entity_type }}</a>
+                            {% endif %}
                         </span>
                     </td>
                 </tr>

@@ -1,11 +1,14 @@
 {% extends 'layout_master.html' %}
+{% load i18n %}
+{% load field_tags %}
+
 {% block layout_scss %}
     {% include 'application_scss.html' %}
 {% endblock %}
 
 {% block page_css %}
     {{ block.super }}
-    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link href="/media/css/plugins/jqueryUI/jquery-ui-1.8.13.custom.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -16,12 +19,12 @@
 
 {% block body %}
     {% block header %}
-    <div id="container_header_application">
-        <div class="container_24" id="header_application">
-            {% include 'header_wizard.html' %}
-            {% include 'main_navigation.html' %}
+        <div id="container_header_application">
+            <div class="container_24" id="header_application">
+                {% include 'header_wizard.html' %}
+                {% include 'main_navigation.html' %}
+            </div>
         </div>
-    </div>
 
     {% endblock %}
 
@@ -46,4 +49,12 @@
             </div>
         </div>
     {% endblock %}
+{% endblock %}
+
+{% block device_navigation %}
+    <div class="device-navigation">
+        <span>{% trans "Send in your data via:" %}</span>
+        <a class="active web">{% trans "Web" %}</a>
+        <a class="inactive smartphone">{% trans "Smartphone" %}</a>
+    </div>
 {% endblock %}
