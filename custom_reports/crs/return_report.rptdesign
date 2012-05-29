@@ -16,7 +16,7 @@
             <text-property name="helpText" key="filter_help_text">Put % if you do not want to filter</text-property>
             <text-property name="promptText" key="waybill_code">Waybill code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -32,6 +32,7 @@
         <scalar-parameter name="site_code" id="10">
             <text-property name="promptText" key="code_of_site"></text-property>
             <property name="valueType">dynamic</property>
+            <property name="isRequired">false</property>
             <property name="dataSetName">SIte code</property>
             <expression name="valueExpr" type="javascript">dataSetRow["upper"]</expression>
             <property name="dataType">string</property>
@@ -51,6 +52,7 @@
         <scalar-parameter name="from_date" id="11">
             <text-property name="promptText" key="label_from_date"></text-property>
             <property name="valueType">static</property>
+            <property name="isRequired">false</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -67,6 +69,7 @@
         <scalar-parameter name="to_date" id="12">
             <text-property name="promptText" key="label_to_date"></text-property>
             <property name="valueType">static</property>
+            <property name="isRequired">false</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">

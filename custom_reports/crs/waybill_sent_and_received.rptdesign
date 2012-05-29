@@ -16,7 +16,7 @@
             <text-property name="helpText" key="filter_help_text">Put % if you do not want to filter</text-property>
             <text-property name="promptText" key="pl_code">Packing List code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -35,7 +35,7 @@
             <text-property name="helpText" key="filter_help_text">Put % if you do not want to filter</text-property>
             <text-property name="promptText" key="waybill_code">Way bill code</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -53,7 +53,7 @@
             <text-property name="helpText" key="filter_help_text"></text-property>
             <text-property name="promptText" key="food_type">Food Type</text-property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataSetName">Food Type</property>
             <expression name="valueExpr" type="javascript">dataSetRow["upper"]</expression>
             <expression name="labelExpr" type="javascript">dataSetRow["upper"]</expression>
@@ -77,7 +77,7 @@
                 <scalar-parameter name="from" id="731">
                     <text-property name="promptText" key="label_from_date"></text-property>
                     <property name="valueType">static</property>
-                    <property name="isRequired">true</property>
+                    <property name="isRequired">false</property>
                     <property name="dataType">date</property>
                     <property name="distinct">true</property>
                     <simple-property-list name="defaultValue">
@@ -94,7 +94,7 @@
                 <scalar-parameter name="to" id="732">
                     <text-property name="promptText" key="label_to_date"></text-property>
                     <property name="valueType">static</property>
-                    <property name="isRequired">true</property>
+                    <property name="isRequired">false</property>
                     <property name="dataType">date</property>
                     <property name="distinct">true</property>
                     <simple-property-list name="defaultValue">
@@ -114,7 +114,7 @@
             <text-property name="helpText" key="filter_help_text"></text-property>
             <text-property name="promptText" key="transaction_type"></text-property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">true</property>
+            <property name="isRequired">false</property>
             <property name="dataSetName">Type_of_transaction</property>
             <expression name="valueExpr" type="javascript">dataSetRow["upper"]</expression>
             <expression name="labelExpr" type="javascript">dataSetRow["upper"]</expression>
