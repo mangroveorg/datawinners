@@ -922,7 +922,8 @@ msgstr ""
 
 #: templates/entity/all_datasenders.html:115
 msgid "Give Web Submission Access"
-msgstr "Give Web & Smartphone Access"
+msgstr "Give Web Access"
+#msgstr "Give Web & Smartphone Access"
 
 #: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"

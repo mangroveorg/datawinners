@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
 from registration.forms import RegistrationFormUniqueEmail
+from datawinners import settings
 from datawinners.entity.fields import PhoneNumberField
 import re
 
@@ -33,6 +34,11 @@ class SubjectForm(Form):
     mobileNumber = CharField(max_length=30, required=False, label=_("Mobile Number"))
 
 
+def smartphone_icon():
+    if settings.SMARTPHONE_ENABLED:
+        return ' + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>'
+    return ""
+
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
 
@@ -45,7 +51,7 @@ class ReporterRegistrationForm(Form):
     location = CharField(max_length=100, required=False, label=_("Name"))
     project_id = CharField(required=False, widget=HiddenInput())
 
-    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span> + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>')))
+    DEVICE_CHOICES = (('sms', mark_safe('<img src="/media/images/mini_mobile.png" /> <span>SMS</span>')), ('web', mark_safe('<img src="/media/images/mini_computer.png" /> <span>Web</span>' + smartphone_icon())))
     devices = MultipleChoiceField(label=_('Device'), widget=CheckboxSelectMultiple(), choices=DEVICE_CHOICES,
         initial=['sms'], required=False,)
     email = EmailField(required=False, widget=TextInput(attrs=dict({'class': 'required'},

@@ -933,7 +933,8 @@ msgstr "Retirer d'un projet"
 
 #: templates/entity/all_datasenders.html:115
 msgid "Give Web Submission Access"
-msgstr "Donnez un accès Web et Smartphone"
+msgstr "Donnez un accès Web"
+#msgstr "Donnez un accès Web et Smartphone"
 
 #: templates/entity/all_subjects.html:11
 msgid "Add subjects one-by-one using the online registration form"

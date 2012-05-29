@@ -515,7 +515,8 @@ msgid "The reminders has been saved"
 msgstr "Le message de rappèl a été enregistré"
 
 msgid "Give Web Submission Access"
-msgstr "Donnez un accès Web et Smartphone"
+msgstr "Donnez un accès Web"
+#msgstr "Donnez un accès Web et Smartphone"
 
 msgid "Emails are mandatory"
 msgstr "Les emails sont obligatoires"
