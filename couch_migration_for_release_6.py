@@ -6,6 +6,28 @@ from mangrove.datastore.database import get_db_manager
 from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import OrganizationSetting
 from datawinners.main.initial_couch_fixtures import load_all_managers
+from datetime import datetime
+from mangrove.form_model.field import DateField
+
+map_fun_form_model_with_date_field_docs = """
+function(doc) {
+    if(doc.document_type=='FormModel' && doc.is_registration_model){
+        for (field in doc.json_fields) {
+            if (doc.json_fields[field].type == 'date') {
+                emit(doc, null);
+		        break;
+            }
+        }
+    }
+}"""
+
+map_fun_data_records_on_a_form_model = """
+function (doc) {
+    if (doc.document_type == 'DataRecord') {
+        emit(doc.submission['form_code'], doc);
+    }
+}"""
+
 
 managers = load_all_managers()
 
@@ -44,6 +66,30 @@ def migrate_01(managers):
                 print ("Updating project %s devices to have smartPhone option") % (document['name'],)
                 manager.database.save(document)
 
+        except Exception as e:
+            failed_managers.append((manager, e.message))
+
+    for manager in managers:
+        try:
+            print manager.database
+            print manager
+            print "migrating date fields"
+            form_model_rows = manager.database.query(map_fun_form_model_with_date_field_docs)
+            for form_model_row in form_model_rows:
+                fields= form_model_row.key['json_fields']
+                for field in fields:
+                    if field['type'] == 'date':
+                        field_name = field['name']
+                        date_format = field['date_format']
+                        form_code = form_model_row.key['form_code']
+                        data_records = manager.database.query(map_fun_data_records_on_a_form_model, key=form_code)
+                        for data in data_records :
+                            document = data.value
+                            value = document['data'][field_name]['value']
+                            if not isinstance(value, datetime):
+                                document['data'][field_name]['value'] = datetime.strptime(value,
+                                    DateField.DATE_DICTIONARY.get(date_format))
+                                manager.database.save(document)
         except Exception as e:
             failed_managers.append((manager, e.message))
 
