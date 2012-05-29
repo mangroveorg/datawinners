@@ -51,7 +51,7 @@
         <scalar-parameter name="CCC" id="9">
             <text-property name="promptText" key="ccc_label"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -68,7 +68,7 @@
         <scalar-parameter name="pl_code" id="10">
             <text-property name="promptText" key="pl_code_label"></text-property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">all_pl_code</property>
             <expression name="valueExpr" type="javascript">dataSetRow["d_pl_code"]</expression>
             <expression name="sortByColumn">dataSetRow["d_pl_code"]</expression>

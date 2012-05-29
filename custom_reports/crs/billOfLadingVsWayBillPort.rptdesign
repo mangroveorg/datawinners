@@ -29,7 +29,6 @@
             <text-property name="helpText" key="filter_help_text"></text-property>
             <text-property name="promptText" key="packing_list_code"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -46,7 +45,7 @@
             <text-property name="helpText" key="filter_help_text"></text-property>
             <text-property name="promptText" key="code_billoflading"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -63,7 +62,7 @@
         <scalar-parameter name="type_billoflading" id="1982">
             <text-property name="promptText" key="type_billoflading"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -93,7 +92,7 @@
             <text-property name="helpText" key="filter_help_text"></text-property>
             <text-property name="promptText" key="waybill_received_code"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -109,7 +108,7 @@
         <scalar-parameter name="from" id="1999">
             <text-property name="promptText" key="label_from_date"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -126,7 +125,7 @@
         <scalar-parameter name="to" id="2000">
             <text-property name="promptText" key="label_to_date"></text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">

@@ -14,7 +14,6 @@
         <scalar-parameter name="warehouse_code" id="11">
             <text-property name="promptText">WH_code</text-property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
             <property name="dataSetName">warehouse_codes</property>
             <expression name="valueExpr" type="javascript">dataSetRow["store_house_code"]</expression>
             <expression name="labelExpr" type="javascript">dataSetRow["store_house_code"]</expression>
@@ -37,7 +36,6 @@
         <scalar-parameter name="packing_list" id="12">
             <text-property name="promptText">Packing List</text-property>
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
@@ -53,16 +51,13 @@
         <scalar-parameter name="from" id="13">
             <text-property name="promptText" key="inventory_begining"></text-property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">physical_inv_from_date</property>
             <expression name="valueExpr" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
             <expression name="sortByColumn">dataSetRow["physical_inventory_closing_date"]</expression>
             <property name="sortDirection">asc</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2001-06-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">list-box</property>
@@ -76,16 +71,13 @@
         <scalar-parameter name="to" id="14">
             <text-property name="promptText" key="inventory_end"></text-property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">physical_inv_to_date</property>
             <expression name="valueExpr" type="javascript">dataSetRow["physical_inventory_closing_date"]</expression>
             <expression name="sortByColumn">dataSetRow["physical_inventory_closing_date"]</expression>
             <property name="sortDirection">asc</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2012-12-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">list-box</property>
