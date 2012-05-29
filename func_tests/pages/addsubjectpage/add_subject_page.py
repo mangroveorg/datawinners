@@ -4,7 +4,7 @@ from framework.utils.common_utils import generateId, CommonUtilities
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.addsubjectpage.add_subject_locator import *
-from pages.websubmissionpage.web_submission_locator import SECTION_TITLE
+from pages.websubmissionpage.web_submission_locator import SECTION_TITLE, BACK_TO_PROJECT_LINK
 from tests.addsubjecttests.add_subject_data import *
 
 
@@ -115,3 +115,5 @@ class AddSubjectPage(Page):
     def get_subject_type(self):
         return self.driver.find(SUBJECT_TYPE).text
 
+    def go_back_to_project_list(self):
+        self.driver.find(BACK_TO_PROJECT_LINK).click()

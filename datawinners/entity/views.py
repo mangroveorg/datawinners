@@ -374,15 +374,12 @@ def import_subjects_from_project_wizard(request):
              'error_message': error_message,
              'failure_imports': failure_imports}))
 
-
 def _make_form_context(questionnaire_form, entity_type):
-    return {'questionnaire_form': questionnaire_form, 'entity_type': entity_type, 'back_to_project_link': reverse("alldata_index"), 'entity': entity_type}
-
-
-def _get_response(request, questionnaire_form, entity_type):
-    return render_to_response('entity/web_questionnaire.html',
-        _make_form_context(questionnaire_form, entity_type),
-        context_instance=RequestContext(request))
+    return {'questionnaire_form': questionnaire_form,
+            'entity_type': entity_type,
+            'back_to_project_link': reverse("alldata_index"),
+            'smart_phone_instruction_link': reverse("smart_phone_instruction"),
+            }
 
 def get_template(user):
     return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'

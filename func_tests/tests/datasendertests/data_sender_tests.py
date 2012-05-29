@@ -31,7 +31,7 @@ class DataSenderTest(BaseTest):
         self.submission_data(web_submission_page)
         self.assertEqual(web_submission_page.get_errors(),[])
 
-    def test_go_back_to_project_list(self):
+    def test_go_back_to_project_list_from_data_submission_page(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
         web_submission_page.go_back_to_project_list()
@@ -62,4 +62,10 @@ class DataSenderTest(BaseTest):
         message = fetch_(SUCCESS_MSG, from_(VALID_DATA))
         self.assertRegexpMatches(add_subject_page.get_flash_message(), message)
 
-    
+
+    def test_go_back_to_project_list_from_register_subject_page(self):
+        data_sender_page = self.go_to_data_sender_page()
+        add_subject_page = data_sender_page.register_subject()
+        add_subject_page.go_back_to_project_list()
+        data_sender_page = DataSenderPage(self.driver)
+        self.assertIsNotNone(data_sender_page.get_project_list())
