@@ -59,5 +59,5 @@ class AddDataSenderPage(Page):
         Return success message
         """
         error_message = ""
-        locator = self.driver.find(FLASH_MESSAGE_LABEL)
+        locator = self.driver.wait_for_element(20, FLASH_MESSAGE_LABEL, want_visible=True)
         return locator.text

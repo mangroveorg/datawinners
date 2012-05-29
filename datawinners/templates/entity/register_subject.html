@@ -1,0 +1,11 @@
+{% extends 'layout_datasender.html' %}
+{% load i18n %}
+{% load field_tags %}
+
+{% block questionnaire %}
+    <div class="questionnaire-header">
+        <h3 class="subject-type">{%trans "Add a new" %} {{ entity_type }}</h3>
+        <p class="instructions italic">{% trans "Fill out the following Registration form and click on Register." %}</p>
+    </div>
+    {% include 'entity/ds_subject_questionnaire.html' %}
+{% endblock %}

@@ -1,5 +1,4 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import time
 import unittest
 from nose.plugins.attrib import attr
 from framework.base_test import setup_driver, teardown_driver
@@ -158,21 +157,3 @@ class TestAllDataSender(unittest.TestCase):
         self.send_sms(VALID_SMS, sms_tester_page)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_SMS)))
         self.login()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

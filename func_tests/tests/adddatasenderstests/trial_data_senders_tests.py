@@ -1,10 +1,7 @@
-import time
 from framework.base_test import BaseTest
 from framework.utils.couch_http_wrapper import CouchHttpWrapper
-from framework.utils.data_fetcher import fetch_, from_
 from framework.utils.database_manager_postgres import DatabaseManager
 from pages.addsubjecttypepage.add_subject_type_page import AddSubjectTypePage
-from pages.loginpage.login_page import LoginPage
 from tests.endtoendtest.end_to_end_data import VALID_DATA_FOR_DATA_SENDER1, VALID_DATA_FOR_PROJECT, VALID_SUBJECT_TYPE2, QUESTIONS, CODE, QUESTION, QUESTIONNAIRE_CODE, DEFAULT_QUESTION, GEN_RANDOM, TYPE, NUMBER, MIN, MAX, ENTITY_TYPE, DATE, DATE_FORMAT, DD_MM_YYYY, CHARACTER_REMAINING, PAGE_TITLE
 from tests.registrationtests.registration_data import REGISTRATION_PASSWORD
 from tests.registrationtests.trial_registration_tests import register_and_get_email_for_trial

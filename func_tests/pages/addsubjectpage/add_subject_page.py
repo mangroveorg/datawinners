@@ -4,6 +4,7 @@ from framework.utils.common_utils import generateId, CommonUtilities
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.addsubjectpage.add_subject_locator import *
+from pages.websubmissionpage.web_submission_locator import SECTION_TITLE
 from tests.addsubjecttests.add_subject_data import *
 
 
@@ -104,3 +105,13 @@ class AddSubjectPage(Page):
         Return message
         """
         return self.driver.find_drop_down(ENTITY_TYPE_DD).get_selected()
+
+    def get_title(self):
+        return self.driver.get_title()
+
+    def get_section_title(self):
+        return self.driver.find(SECTION_TITLE).text
+
+    def get_subject_type(self):
+        return self.driver.find(SUBJECT_TYPE).text
+
