@@ -384,6 +384,8 @@ def _get_response(request, questionnaire_form, entity_type):
         _make_form_context(questionnaire_form, entity_type),
         context_instance=RequestContext(request))
 
+def get_template(user):
+    return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -391,14 +393,23 @@ def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     QuestionnaireForm = WebQuestionnaireFormCreater(None, form_model=form_model).create()
+
+    web_questionnaire_template = get_template(request.user)
+
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        return _get_response(request, questionnaire_form, entity_type)
+        form_context = _make_form_context(questionnaire_form, entity_type)
+        return render_to_response(web_questionnaire_template,
+                                  form_context,
+                                  context_instance=RequestContext(request))
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            return _get_response(request, questionnaire_form, entity_type)
+            form_context = _make_form_context(questionnaire_form, entity_type)
+            return render_to_response(web_questionnaire_template,
+                                      form_context,
+                                      context_instance=RequestContext(request))
 
         success_message = None
         error_message = None
@@ -417,7 +428,10 @@ def create_subject(request, entity_type=None):
                 from datawinners.project.helper import errors_to_list
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
-                return _get_response(request, questionnaire_form, entity_type)
+                form_context = _make_form_context(questionnaire_form, entity_type)
+                return render_to_response(web_questionnaire_template,
+                                          form_context,
+                                          context_instance=RequestContext(request))
 
         except DataObjectNotFound:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
@@ -429,7 +443,8 @@ def create_subject(request, entity_type=None):
 
         subject_context = _make_form_context(questionnaire_form, entity_type)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
-        return render_to_response('entity/web_questionnaire.html', subject_context,
+
+        return render_to_response(web_questionnaire_template, subject_context,
             context_instance=RequestContext(request))
 
 

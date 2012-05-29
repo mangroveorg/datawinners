@@ -15,3 +15,7 @@ class DataSenderPage(Page):
 
     def get_project_list(self):
         return self.driver.find(PROJECT_LIST)
+
+    def register_subject(self):
+        self.driver.find(REGISTER_SUBJECT).click()
+        return AddSubjectPage(self.driver)

@@ -4,7 +4,7 @@ from pages.datasenderpage.data_sender_page import DataSenderPage
 from pages.loginpage.login_page import LoginPage
 from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
-from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE
+from tests.datasendertests.data_sender_data import PAGE_TITLE, SECTION_TITLE, SUBJECT_TYPE
 from tests.logintests.login_data import DATA_SENDER_CREDENTIALS
 from tests.websubmissiontests.web_submission_data import DEFAULT_ORG_DATA, PROJECT_NAME, VALID_ANSWERS
 
@@ -49,3 +49,10 @@ class DataSenderTest(BaseTest):
         warning_dialog.confirm()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
+
+    def test_register_subject(self):
+        data_sender_page = self.go_to_data_sender_page()
+        add_subject_page = data_sender_page.register_subject()
+        self.assertEquals(add_subject_page.get_title(), PAGE_TITLE)
+        self.assertEquals(add_subject_page.get_section_title(), SECTION_TITLE)
+        self.assertEquals(add_subject_page.get_subject_type(), SUBJECT_TYPE)

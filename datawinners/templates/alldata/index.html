@@ -50,8 +50,7 @@ s
             </thead>
             {% for project in projects %}
                 <tr>
-                    <td><a href="{{ project.link }}"
-                           class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
+                    <td><a href="{{ project.link }}" class='project-id-class {{ disable_link_class }}'>{{ project.name }}</a></td>
                     <td class="{{ hide_link_class }}">{{ project.created }}</td>
                     <td>
                         <span class="report_links">
@@ -64,9 +63,9 @@ s
                             |
                         </span>
                             <a href="{{ project.web_submission_link }}"
-                               class="{{ project.disabled }} {{ project.web_submission_link_disabled }}">{% trans "Send in data" %}</a>
+                               class="{{ project.disabled }} {{ project.web_submission_link_disabled }} send-in-data-link">{% trans "Send in data" %}</a>
                             {% if project.create_subjects_link %}
-                                |<a href="{{ project.create_subjects_link}}">
+                                |<a href="{{ project.create_subjects_link}}" class="register-subject-link">
                                 {% trans "Register a " %}{{ project.entity_type }}</a>
                             {% endif %}
                         </span>
