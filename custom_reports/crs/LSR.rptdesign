@@ -606,22 +606,22 @@ and received_date <= ?) as X);]]></xml-property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">riz_loss_distribution</property>
-                    <expression name="expression">BirtMath.round(row["riz_received"]-row["riz_distributed"]-row["riz_sent"], 2)</expression>
+                    <expression name="expression">if(row["riz_received"]>(row["riz_distributed"]+row["riz_sent"])){BirtMath.round(row["riz_received"]-row["riz_distributed"]-row["riz_sent"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_loss_distribution</property>
-                    <expression name="expression">BirtMath.round(row["oil_received"]-row["oil_distributed"]-row["oil_sent"], 2)</expression>
+                    <expression name="expression">if(row["oil_received"]>(row["oil_distributed"]+row["oil_sent"])){BirtMath.round(row["oil_received"]-row["oil_distributed"]-row["oil_sent"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_loss_distribution</property>
-                    <expression name="expression">BirtMath.round(row["csb_received"]-row["csb_distributed"]-row["csb_sent"], 2)</expression>
+                    <expression name="expression">if(row["csb_received"]>(row["csb_distributed"]+row["csb_sent"])){BirtMath.round(row["csb_received"]-row["csb_distributed"]-row["csb_sent"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorgho_loss_distribution</property>
-                    <expression name="expression">BirtMath.round(row["sorghum_received"]-row["sorghum_distributed"]-row["sorghum_sent"], 2)</expression>
+                    <expression name="expression">if(row["sorghum_received"]>(row["sorghum_distributed"]+row["sorghum_sent"])){BirtMath.round(row["sorghum_received"]-row["sorghum_distributed"]-row["sorghum_sent"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -1208,22 +1208,22 @@ where
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">riz_wh_loss</property>
-                    <expression name="expression">BirtMath.round(row["riz_th_stock"]-row["riz_ph_inv"], 2)</expression>
+                    <expression name="expression">if(row["riz_th_stock"]>row["riz_ph_inv"]){BirtMath.round(row["riz_th_stock"]-row["riz_ph_inv"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">oil_wh_loss</property>
-                    <expression name="expression">BirtMath.round(row["oil_th_stock"]-row["oil_ph_inv"], 2)</expression>
+                    <expression name="expression">if(row["oil_th_stock"]>row["oil_ph_inv"]){BirtMath.round(row["oil_th_stock"]-row["oil_ph_inv"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">csb_wh_loss</property>
-                    <expression name="expression">BirtMath.round(row["csb_th_stock"]-row["csb_ph_inv"], 2)</expression>
+                    <expression name="expression">if(row["csb_th_stock"]>row["csb_ph_inv"]){BirtMath.round(row["csb_th_stock"]-row["csb_ph_inv"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
                 <structure>
                     <property name="name">sorgho_wh_loss</property>
-                    <expression name="expression">BirtMath.round(row["sorghum_th_stock"]-row["sorghum_ph_inv"], 2)</expression>
+                    <expression name="expression">if(row["sorghum_th_stock"]>row["sorghum_ph_inv"]){BirtMath.round(row["sorghum_th_stock"]-row["sorghum_ph_inv"], 2)}else{0}</expression>
                     <property name="dataType">float</property>
                 </structure>
             </list-property>
@@ -2046,7 +2046,7 @@ GROUP BY new_field) -1]]></xml-property>
                                         <structure>
                                             <property name="linkType">hyperlink</property>
                                             <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/alldata/reports/"</expression>
-                                            <property name="targetWindow">_blank</property>
+                                            <property name="targetWindow">_self</property>
                                         </structure>
                                     </list-property>
                                 </label>

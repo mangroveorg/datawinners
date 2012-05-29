@@ -4683,7 +4683,7 @@ and pl_code ilike ?]]></xml-property>
                                         <structure>
                                             <property name="linkType">hyperlink</property>
                                             <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/alldata/reports/"</expression>
-                                            <property name="targetWindow">_blank</property>
+                                            <property name="targetWindow">_self</property>
                                         </structure>
                                     </list-property>
                                 </label>

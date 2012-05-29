@@ -2206,7 +2206,7 @@ from crs_waybillreceived;]]></xml-property>
                                         <structure>
                                             <property name="linkType">hyperlink</property>
                                             <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/alldata/reports/"</expression>
-                                            <property name="targetWindow">_blank</property>
+                                            <property name="targetWindow">_self</property>
                                         </structure>
                                     </list-property>
                                 </label>
@@ -2533,7 +2533,7 @@ from crs_waybillreceived;]]></xml-property>
                             <property name="width">1.4861111111111112in</property>
                         </column>
                         <column id="815">
-                            <property name="width">0.7916666666666666in</property>
+                            <property name="width">1.7361111111111112in</property>
                         </column>
                         <column id="816">
                             <property name="width">0.875in</property>
@@ -2703,6 +2703,7 @@ from crs_waybillreceived;]]></xml-property>
                                     </label>
                                 </cell>
                                 <cell id="842">
+                                    <property name="width">50px</property>
                                     <property name="style">with_border</property>
                                     <label id="885">
                                         <text-property name="text" key="transaction_type">Type de transaction</text-property>
