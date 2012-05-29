@@ -1,5 +1,3 @@
-from framework.utils.data_fetcher import from_, fetch_
-from pages.lightbox.light_box_page import LightBox
 from pages.page import Page
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
