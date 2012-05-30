@@ -2147,7 +2147,7 @@ and t.issue_date <= ?]]></xml-property>
                             <structure>
                                 <property name="name">excess_landed</property>
                                 <text-property name="displayName">excess_landed</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["net_weight"]-row["total_total_received"]</expression>
+                                <expression name="expression" type="javascript">BirtMath.round(dataSetRow["net_weight"]-row["total_total_received"], 2)</expression>
                                 <property name="dataType">float</property>
                                 <property name="allowExport">true</property>
                             </structure>
@@ -2539,7 +2539,7 @@ and t.issue_date <= ?]]></xml-property>
                                         <property name="borderTopColor">#000000</property>
                                         <property name="borderTopStyle">solid</property>
                                         <label id="2406">
-                                            <method name="onCreate"><![CDATA[if(row["shipment_type"]=="break bulk"){ this.text = vars["excess_landed_bb"] }else{this.text = vars["excess_landed_cont"];}]]></method>
+                                            <method name="onCreate"><![CDATA[if(row["shipment_type"]=="break bulk"){ this.text = BirtMath.round(vars["excess_landed_bb"], 2) }else{this.text = BirtMath.round(vars["excess_landed_cont"], 2);}]]></method>
                                         </label>
                                     </cell>
                                 </row>
@@ -2744,7 +2744,7 @@ and t.issue_date <= ?]]></xml-property>
                                 <cell id="2162">
                                     <property name="style">with_border</property>
                                     <label id="2407">
-                                        <method name="onCreate"><![CDATA[this.text = vars["excess_landed_bb"] + vars["excess_landed_cont"];]]></method>
+                                        <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["excess_landed_bb"] + vars["excess_landed_cont"], 2);]]></method>
                                     </label>
                                 </cell>
                             </row>
