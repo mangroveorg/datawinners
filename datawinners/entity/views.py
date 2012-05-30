@@ -376,7 +376,7 @@ def import_subjects_from_project_wizard(request):
 
 
 def _make_form_context(questionnaire_form, entity_type):
-    return {'questionnaire_form': questionnaire_form, 'entity_type': entity_type, 'back_to_project_link': reverse("alldata_index"),}
+    return {'questionnaire_form': questionnaire_form, 'entity_type': entity_type, 'back_to_project_link': reverse("alldata_index"), 'entity': entity_type}
 
 
 def _get_response(request, questionnaire_form, entity_type):
