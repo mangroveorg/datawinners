@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^alldata/$', index, name = "alldata_index"),
     (r'^alldata/reports/$', reports),
     (r'^allfailedsubmissions$', failed_submissions),
-    (r'^smartphoneinstruction$', smart_phone_instruction),
+    url(r'^smartphoneinstruction$', smart_phone_instruction, name = "smart_phone_instruction"),
 )

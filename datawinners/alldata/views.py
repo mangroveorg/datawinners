@@ -81,6 +81,8 @@ def projects_index(request):
 def index(request):
     disable_link_class, hide_link_class, page_heading, project_list = projects_index(request)
     organization_id = get_organization(request).org_id
+    smart_phone_instruction_link = reverse("smart_phone_instruction")
+
     if organization_id == CRS_ORG_ID and not request.user.get_profile().reporter:
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
@@ -89,7 +91,7 @@ def index(request):
     else:
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
-                 'hide_link_class': hide_link_class, 'is_crs_user': False},
+                 'hide_link_class': hide_link_class, 'is_crs_user': False, "smart_phone_instruction_link": smart_phone_instruction_link},
                                   context_instance = RequestContext(request))
 
 
@@ -117,4 +119,6 @@ def reports(request):
 @login_required(login_url = '/login')
 @is_not_expired
 def smart_phone_instruction(request):
-    return HttpResponse()
+    return render_to_response("alldata/smart_phone_instruction.html",
+                              {},
+                              context_instance = RequestContext(request))
