@@ -1,5 +1,6 @@
 from __builtin__ import dict
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
@@ -112,3 +113,8 @@ def reports(request):
                                   context_instance = RequestContext(request))
     response.set_cookie('crs_session_id', request.COOKIES['sessionid'])
     return response
+
+@login_required(login_url = '/login')
+@is_not_expired
+def smart_phone_instruction(request):
+    return HttpResponse()

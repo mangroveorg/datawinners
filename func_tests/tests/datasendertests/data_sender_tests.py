@@ -82,3 +82,6 @@ class DataSenderTest(BaseTest):
         web_submission_page.navigate_to_project_list()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
+        smart_phone_instruction_page = data_sender_page.navigate_to_smart_phone_instruction()
+        self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
+
