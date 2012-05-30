@@ -4152,7 +4152,8 @@ msgid "CSR Warehouse description"
 msgstr "Commodity Status Report – Warehouse Level"
 
 msgid "email_example"
-msgstr "Enter this person's Email address to give Web and Smartphone access"
+msgstr "Enter this person's Email address to give Web access"
+#msgstr "Enter this person's Email address to give Web and Smartphone access"
 
 msgid "user_creation_info"
 msgstr "This person will receive an email with instructions"
