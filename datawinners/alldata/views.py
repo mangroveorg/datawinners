@@ -80,7 +80,7 @@ def projects_index(request):
 def index(request):
     disable_link_class, hide_link_class, page_heading, project_list = projects_index(request)
     organization_id = get_organization(request).org_id
-    if organization_id == CRS_ORG_ID:
+    if organization_id == CRS_ORG_ID and not request.user.get_profile().reporter:
         return render_to_response('alldata/index.html',
                 {'projects': project_list, 'page_heading': page_heading, 'disable_link_class': disable_link_class,
                  'hide_link_class': hide_link_class, 'is_crs_user': True, 'project_links': get_crs_project_links()},

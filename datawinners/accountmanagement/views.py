@@ -116,7 +116,7 @@ def is_allowed_to_view_reports(f, redirect_to = '/alldata'):
         request = args[0]
         user = request.user
         profile = user.get_profile()
-        if CRS_ORG_ID != profile.org_id:
+        if CRS_ORG_ID != profile.org_id and profile.reporter:
             return HttpResponseRedirect(redirect_to)
         return f(*args, **kw)
 
