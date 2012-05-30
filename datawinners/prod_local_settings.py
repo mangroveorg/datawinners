@@ -34,6 +34,7 @@ VUMI_USER = "airtel_mada"
 VUMI_PASSWORD = "airtel_mada"
 
 COUCH_DB_SERVER = "http://178.79.185.35:5984"
+CRS_ORG_ID = 'JHW14178'
 
 LOG_FOLDER = '/var/log/datawinners'
 LOG_FILE_NAME = "datawinners.log"
