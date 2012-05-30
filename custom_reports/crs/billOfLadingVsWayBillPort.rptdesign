@@ -1314,6 +1314,12 @@ and t.issue_date <= ?]]></xml-property>
                                 <property name="dataType">float</property>
                                 <property name="allowExport">true</property>
                             </structure>
+                            <structure>
+                                <property name="name">rounded_subtotal_received</property>
+                                <expression name="expression" type="javascript">BirtMath.round(row["total_total_received"],2)</expression>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
+                            </structure>
                         </list-property>
                         <column id="1707"/>
                         <column id="1708"/>
@@ -1596,7 +1602,7 @@ and t.issue_date <= ?]]></xml-property>
                                     <cell id="2153">
                                         <property name="style">subtotal</property>
                                         <data id="2383">
-                                            <property name="resultSetColumn">total_total_received</property>
+                                            <property name="resultSetColumn">rounded_subtotal_received</property>
                                         </data>
                                     </cell>
                                     <cell id="2154">
