@@ -1,5 +1,11 @@
 {% extends "layout_datasender.html" %}
+{% load i18n %}
 {% load dw_tabs %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet"/>
+{% endblock %}
 
 {% block content %}
     {% block device_navigation %}
@@ -8,5 +14,6 @@
     {% endblock %}
 
     <div class="smart-phone-instruction">
+        {% include "alldata/smart_phone_instruction_en.html" %}
     </div>
 {% endblock %}

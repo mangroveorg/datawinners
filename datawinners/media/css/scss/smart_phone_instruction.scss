@@ -1,0 +1,47 @@
+.smart-phone-instruction {
+  padding: 0 10px;
+  font-size: 16px;
+  span {
+    font-weight: bold;
+  }
+  .declaration {
+    margin-bottom: 20px;
+  }
+  .instruction {
+    margin-bottom: 20px;
+    .phone {
+      float: left;
+      width: 25%;
+      img {
+        width: 100%;
+      }
+    }
+    .steps {
+      float: right;
+      width: 70%;
+    }
+    ul > li {
+      list-style-type: UPPER-ROMAN;
+      margin-bottom: 30px;
+    }
+
+    ul ol {
+      padding-left: 20px;
+      padding-top: 5px;
+    }
+    ol > li {
+      list-style-type: decimal;
+      img {
+        width: 30px;
+      }
+    }
+    .dw-app-icon {
+      background: url("/media/images/dw_app_icon.png") no-repeat -18px -10px;
+      padding-left: 55px;
+      padding-top: 12px;
+      span {
+        display: block;
+      }
+    }
+  }
+}
