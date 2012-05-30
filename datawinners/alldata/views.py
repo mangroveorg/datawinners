@@ -119,11 +119,14 @@ def reports(request):
 @is_not_expired
 def smart_phone_instruction(request):
     language_code = request.LANGUAGE_CODE
-
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
 
+    disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
+
     context = {'back_to_project_link': reverse("alldata_index"),
-             "instruction_template": instruction_template}
+             "instruction_template": instruction_template,
+             "disable_link_class": disable_link_class,
+             "hide_link_class": hide_link_class}
 
     return render_to_response("alldata/smart_phone_instruction.html", context,
                               context_instance = RequestContext(request))
