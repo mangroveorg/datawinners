@@ -2150,7 +2150,7 @@ from crs_waybillreceived;]]></xml-property>
             <property name="fontSize">14pt</property>
             <property name="verticalAlign">bottom</property>
             <property name="height">3.3333333333333335in</property>
-            <property name="width">23.791666666666668in</property>
+            <property name="width">25.32in</property>
             <column id="14">
                 <property name="width">23.791666666666668in</property>
             </column>
@@ -2159,7 +2159,7 @@ from crs_waybillreceived;]]></xml-property>
                 <cell id="16">
                     <grid id="720">
                         <property name="height">0.5734265734265734in</property>
-                        <property name="width">33.84722222222222in</property>
+                        <property name="width">23.7in</property>
                         <column id="721">
                             <property name="width">33.84722222222222in</property>
                         </column>
@@ -2195,7 +2195,6 @@ from crs_waybillreceived;]]></xml-property>
                                     </list-property>
                                 </image>
                                 <label id="944">
-                                    
                                     <property name="fontSize">10pt</property>
                                     <property name="color">#FEE172</property>
                                     <property name="marginTop">10px</property>
