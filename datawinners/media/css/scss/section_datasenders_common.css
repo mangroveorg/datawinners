@@ -1,6 +1,6 @@
 .location_section li {
   float: none;
-  margin-bottom: 15px; }
+  margin-bottom: 10px; }
 .location_section label {
   display: block;
   float: none;
@@ -29,10 +29,8 @@
   font-size: 14px;
   font-weight: bold;
   width: 170px; }
-
 .horizontal_list li.device_label ul li:last-child {
-  padding-right: 40px;
- }
+  padding-right: 50px; }
 
 li.instruction_text {
   margin-top: -15px;

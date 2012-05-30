@@ -34,14 +34,18 @@
   ul li input{
     margin-top: 9px;
   }
-  li.device_label > label{
+  li.device_label{
+    > label{
       display: block;
       float: left;
       font-size: 14px;
       font-weight: bold;
       width: 170px;
+    }
+    ul li:last-child{
+      padding-right: 50px;
+    }
   }
-
 }
 li.instruction_text{
       margin-top: -15px;
