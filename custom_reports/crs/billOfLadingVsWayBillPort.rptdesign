@@ -1718,7 +1718,6 @@ and t.issue_date <= ?]]></xml-property>
                                     </list-property>
                                 </image>
                                 <label id="768">
-                                    <property name="fontFamily">"Webdings"</property>
                                     <property name="color">#FEE172</property>
                                     <property name="marginTop">10px</property>
                                     <property name="marginLeft">5pt</property>

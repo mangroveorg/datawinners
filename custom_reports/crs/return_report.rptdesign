@@ -2195,7 +2195,7 @@ from crs_waybillreceived;]]></xml-property>
                                     </list-property>
                                 </image>
                                 <label id="944">
-                                    <property name="fontFamily">"Webdings"</property>
+                                    
                                     <property name="fontSize">10pt</property>
                                     <property name="color">#FEE172</property>
                                     <property name="marginTop">10px</property>
