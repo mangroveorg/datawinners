@@ -23,7 +23,7 @@
             <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire"> {% trans "Web Questionnaire" %}</a></li>
         {% endif %}
         <div class="line"></div>
-        {% if 'smartPhone' in project.devices %}
+        {% if SMARTPHONE_ENABLED and 'smartPhone' in project.devices %}
             <li><img src="/media/images/smart_phone.png"/> {% trans "SmartPhone" %}</li>
         {% endif %}
     </ul>

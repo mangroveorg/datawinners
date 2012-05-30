@@ -52,9 +52,11 @@
 {% endblock %}
 
 {% block device_navigation %}
-    <div class="device-navigation">
-        <span>{% trans "Send in your data via:" %}</span>
-        <a class="active web">{% trans "Web" %}</a>
-        <a class="inactive smartphone">{% trans "Smartphone" %}</a>
-    </div>
+    {% if SMARTPHONE_ENABLED %}
+        <div class="device-navigation">
+            <span>{% trans "Send in your data via:" %}</span>
+            <a class="active web">{% trans "Web" %}</a>
+            <a class="inactive smartphone">{% trans "Smartphone" %}</a>
+        </div>
+    {% endif %}
 {% endblock %}
