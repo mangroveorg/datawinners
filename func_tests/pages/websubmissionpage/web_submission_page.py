@@ -1,4 +1,7 @@
+from pages.datasenderpage.data_sender_locator import SMARTPHONE_NAV
 from pages.page import Page
+from pages.smartphoneinstructionpage.smart_phone_instruction_locator import SMART_PHONE_INSTRUCTION
+from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
 from tests.websubmissiontests.web_submission_data import *
@@ -58,3 +61,7 @@ class WebSubmissionPage(Page):
 
     def navigate_to_project_list(self):
         self.driver.find(WEB_NAVIGATION).click()
+
+    def navigate_to_smart_phone_instruction(self):
+        self.driver.find(SMARTPHONE_NAV).click()
+        return SmartPhoneInstructionPage(self.driver)

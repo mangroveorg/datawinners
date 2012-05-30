@@ -816,6 +816,7 @@ def _make_form_context(questionnaire_form, project, form_code, hide_link_class, 
             'hide_link_class': hide_link_class,
             'disable_link_class': disable_link_class,
             'back_to_project_link': reverse("alldata_index"),
+            'smart_phone_instruction_link': reverse("smart_phone_instruction"),
             }
 
 

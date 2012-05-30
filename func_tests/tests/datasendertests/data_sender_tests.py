@@ -82,8 +82,21 @@ class DataSenderTest(BaseTest):
         web_submission_page.navigate_to_project_list()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
+
         smart_phone_instruction_page = data_sender_page.navigate_to_smart_phone_instruction()
         self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
+
         smart_phone_instruction_page.navigate_to_project_list()
         self.assertIsNotNone(data_sender_page.get_project_list())
+
+        web_submission_page = data_sender_page.send_in_data()
+        smart_phone_instruction_page = web_submission_page.navigate_to_smart_phone_instruction()
+        self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
+
+        smart_phone_instruction_page.navigate_to_project_list()
+        data_sender_page = DataSenderPage(self.driver)
+        add_subject_page = data_sender_page.register_subject()
+        smart_phone_instruction_page = add_subject_page.navigate_to_smart_phone_instruction()
+        self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
+
 
