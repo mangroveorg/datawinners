@@ -2007,9 +2007,7 @@ and t.issue_date <= ?]]></xml-property>
                                     <property name="imageName">datawinners_logo.png</property>
                                     <list-property name="action">
                                         <structure>
-                                            <property name="linkType">hyperlink</property>
-                                            <expression name="uri" type="javascript">"http://"+reportContext.getHttpServletRequest().getServerName()+(reportContext.getHttpServletRequest().getServerPort()=="80"?"":":"+reportContext.getHttpServletRequest().getServerPort())+"/dashboard/"</expression>
-                                            <property name="targetWindow">_blank</property>
+                                            <property name="linkType">none</property>
                                         </structure>
                                     </list-property>
                                 </image>
