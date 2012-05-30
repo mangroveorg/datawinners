@@ -1,3 +1,4 @@
+from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.datasenderpage.data_sender_page import DataSenderPage
@@ -22,6 +23,7 @@ class DataSenderTest(BaseTest):
         data_sender_page = DataSenderPage(self.driver)
         return data_sender_page
 
+    @attr("functional_test")
     def test_send_in_data_to_a_project(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
@@ -31,6 +33,7 @@ class DataSenderTest(BaseTest):
         self.submission_data(web_submission_page)
         self.assertEqual(web_submission_page.get_errors(),[])
 
+    @attr("functional_test")
     def test_go_back_to_project_list_from_data_submission_page(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
@@ -38,6 +41,7 @@ class DataSenderTest(BaseTest):
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
 
+    @attr("functional_test")
     def test_cancel_data_submission(self):
         data_sender_page = self.go_to_data_sender_page()
         web_submission_page = data_sender_page.send_in_data()
@@ -51,6 +55,7 @@ class DataSenderTest(BaseTest):
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
 
+    @attr("functional_test")
     def test_register_subject(self):
         data_sender_page = self.go_to_data_sender_page()
         add_subject_page = data_sender_page.register_subject()
@@ -62,7 +67,7 @@ class DataSenderTest(BaseTest):
         message = fetch_(SUCCESS_MSG, from_(VALID_DATA))
         self.assertRegexpMatches(add_subject_page.get_flash_message(), message)
 
-
+    @attr("functional_test")
     def test_go_back_to_project_list_from_register_subject_page(self):
         data_sender_page = self.go_to_data_sender_page()
         add_subject_page = data_sender_page.register_subject()
