@@ -1,6 +1,5 @@
 from __builtin__ import dict
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse
@@ -9,7 +8,7 @@ from datawinners.alldata.helper import get_all_project_for_user, get_visibility_
 from datawinners.settings import CRS_ORG_ID
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import ProjectState, Project
-from datawinners.project.views import project_overview, project_data, project_results, web_questionnaire
+from datawinners.project.views import project_overview, project_data, project_results
 from mangrove.form_model.form_model import FormModel
 from datawinners.submission.models import DatawinnerLog
 from datawinners.utils import get_organization
@@ -120,5 +119,5 @@ def reports(request):
 @is_not_expired
 def smart_phone_instruction(request):
     return render_to_response("alldata/smart_phone_instruction.html",
-                              {},
+                              {'back_to_project_link': reverse("alldata_index"),},
                               context_instance = RequestContext(request))

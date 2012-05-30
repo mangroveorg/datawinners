@@ -1,6 +1,12 @@
 {% extends "layout_datasender.html" %}
+{% load dw_tabs %}
 
 {% block content %}
+    {% block device_navigation %}
+        {% activetab "device_tab_nav" "smartphone" %}
+        {{ block.super }}
+    {% endblock %}
+
     <div class="smart-phone-instruction">
     </div>
 {% endblock %}

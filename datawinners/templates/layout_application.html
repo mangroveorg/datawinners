@@ -56,10 +56,12 @@
     {% if SMARTPHONE_ENABLED %}
         <div class="device-navigation">
             <span>{% trans "Send in your data via:" %}</span>
-            <a class="{% ifactivetab 'device_tab_nav' 'web' %}active{% else %}inactive{% endifactivetab %} web" href="{{ back_to_project_link }}">
+            <a class="{% ifactivetab 'device_tab_nav' 'web' %}active{% else %}inactive{% endifactivetab %} web"
+               href="{{ back_to_project_link }}">
                 {% trans "Web" %}
             </a>
-            <a class="{% ifactivetab 'device_tab_nav' 'smartphone' %}active{% else %}inactive{% endifactivetab %} smartphone">
+            <a class="{% ifactivetab 'device_tab_nav' 'smartphone' %}active{% else %}inactive{% endifactivetab %} smartphone"
+               href="{{ smart_phone_instruction_link }}">
                 {% trans "Smartphone" %}
             </a>
         </div>
