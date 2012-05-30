@@ -118,6 +118,12 @@ def reports(request):
 @login_required(login_url = '/login')
 @is_not_expired
 def smart_phone_instruction(request):
-    return render_to_response("alldata/smart_phone_instruction.html",
-                              {'back_to_project_link': reverse("alldata_index"),},
+    language_code = request.LANGUAGE_CODE
+
+    instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
+
+    context = {'back_to_project_link': reverse("alldata_index"),
+             "instruction_template": instruction_template}
+
+    return render_to_response("alldata/smart_phone_instruction.html", context,
                               context_instance = RequestContext(request))
