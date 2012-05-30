@@ -30,6 +30,10 @@
   font-weight: bold;
   width: 170px; }
 
+.horizontal_list li.device_label ul li:last-child {
+  padding-right: 40px;
+ }
+
 li.instruction_text {
   margin-top: -15px;
   width: 350px; }
