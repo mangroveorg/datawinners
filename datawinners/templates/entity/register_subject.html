@@ -1,6 +1,12 @@
 {% extends 'layout_datasender.html' %}
 {% load i18n %}
 {% load field_tags %}
+{% load dw_tabs %}
+
+{% block device_navigation %}
+    {% activetab "device_tab_nav" "web" %}
+    {{ block.super }}
+{% endblock %}
 
 {% block questionnaire %}
     <div class="questionnaire-header">

@@ -53,5 +53,8 @@ class WebSubmissionPage(Page):
         self.driver.find(BACK_TO_PROJECT_LINK).click()
 
     def cancel_submission(self):
-        self.driver.find(by_css("#cancel")).click()
+        self.driver.find(CANCEL).click()
         return WarningDialog(self.driver)
+
+    def navigate_to_project_list(self):
+        self.driver.find(WEB_NAVIGATION).click()

@@ -1,6 +1,7 @@
 {% extends 'layout_master.html' %}
 {% load i18n %}
 {% load field_tags %}
+{% load dw_tabs %}
 
 {% block layout_scss %}
     {% include 'application_scss.html' %}
@@ -55,8 +56,12 @@
     {% if SMARTPHONE_ENABLED %}
         <div class="device-navigation">
             <span>{% trans "Send in your data via:" %}</span>
-            <a class="active web">{% trans "Web" %}</a>
-            <a class="inactive smartphone">{% trans "Smartphone" %}</a>
+            <a class="{% ifactivetab 'device_tab_nav' 'web' %}active{% else %}inactive{% endifactivetab %} web" href="{{ back_to_project_link }}">
+                {% trans "Web" %}
+            </a>
+            <a class="{% ifactivetab 'device_tab_nav' 'smartphone' %}active{% else %}inactive{% endifactivetab %} smartphone">
+                {% trans "Smartphone" %}
+            </a>
         </div>
     {% endif %}
 {% endblock %}

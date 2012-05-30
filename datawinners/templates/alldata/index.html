@@ -38,6 +38,7 @@ s
 {% block content %}
     {% block device_navigation %}
         {% if user|is_datasender %}
+            {% activetab "device_tab_nav" "web" %}
             {{ block.super }}
         {% endif %}
     {% endblock %}

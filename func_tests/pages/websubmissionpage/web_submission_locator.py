@@ -12,5 +12,6 @@ PROJECT = by_css(".project_name")
 
 BACK_TO_PROJECT_LINK = by_css(".back-to-project-list")
 
-def get_by_css_name(element_type, element_name):
-    return by_css(element_type+"[name="+element_name+"]")
+WEB_NAVIGATION = by_css(".device-navigation .web")
+
+CANCEL = by_css("#cancel")

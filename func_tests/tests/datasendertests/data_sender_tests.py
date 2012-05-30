@@ -74,3 +74,11 @@ class DataSenderTest(BaseTest):
         add_subject_page.go_back_to_project_list()
         data_sender_page = DataSenderPage(self.driver)
         self.assertIsNotNone(data_sender_page.get_project_list())
+
+    @attr("functional_test")
+    def test_navigation_via_navigate_bar(self):
+        data_sender_page = self.go_to_data_sender_page()
+        web_submission_page = data_sender_page.send_in_data()
+        web_submission_page.navigate_to_project_list()
+        data_sender_page = DataSenderPage(self.driver)
+        self.assertIsNotNone(data_sender_page.get_project_list())
