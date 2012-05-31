@@ -5,7 +5,8 @@
     font-size: 17px; }
   .device-navigation a {
     display: inline-block;
-    font-size: 18px; }
+    font-size: 18px;
+    text-decoration: none; }
   .device-navigation .active {
     color: white; }
   .device-navigation .active.web {
@@ -31,3 +32,6 @@
 .action-section {
   float: right;
   margin-right: 300px; }
+
+#cancel_submission_warning_message a {
+  text-decoration: none; }

@@ -29,7 +29,7 @@ DW.data_submission = {
     },
 
     bind_cancel_link_in_dialog:function () {
-        $(".cancel_link").bind('click', function() {
+        $(".cancel_button").bind('click', function() {
             $("#cancel_submission_warning_message").dialog("close");
         })
     },
