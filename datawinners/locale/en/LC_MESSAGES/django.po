@@ -776,6 +776,10 @@ msgstr ""
 msgid "Fill out the following Questionnaire and click on Submit."
 msgstr ""
 
+#: templates/entity/register_subject.html: 14
+msgid "Fill out the following Registration form and click on Register."
+msgstr ""
+
 #: templates/project/data_submission_questionnaire.html: 8
 msgid "All your entered data will be lost. Are you sure you want to cancel?"
 msgstr ""
