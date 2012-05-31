@@ -1757,14 +1757,14 @@ and a.received_date <= ? ]]></xml-property>
             </list-property>
             <xml-property name="queryText"><![CDATA[(
 select 
-    (cont_riz_sent+riz_sent_bb)-(riz+riz1) as rice_excess_landed,
-    (cont_oil_sent+oil_sent_bb)-(oil+oil1) as oil_excess_landed,
-    (cont_csb_sent+csb_sent_bb)-(csb+csb1) as csb_excess_landed,
-    (cont_sorghum_sent+sorghum_sent_bb)-(sorghum+sorghum1) as sorghum_excess_landed,
-    riz+riz1 as rice_received_from_port,
-    oil+oil1 as oil_received_from_port,
-    csb+csb1 as csb_received_from_port,
-    sorghum+sorghum1 as sorghum_received_from_port
+    ( coalesce(cont_riz_sent,0) + coalesce(riz_sent_bb,0)) - ( coalesce(riz,0) + coalesce(riz1,0) ) as rice_excess_landed,
+    ( coalesce(cont_oil_sent,0) + coalesce(oil_sent_bb,0)- coalesce(oil,0) - coalesce(oil1,0)) as oil_excess_landed,
+    ( coalesce(cont_csb_sent,0) + coalesce(csb_sent_bb,0)-coalesce(csb,0) - coalesce(csb1,0)) as csb_excess_landed,
+    ( coalesce(cont_sorghum_sent,0) + coalesce(sorghum_sent_bb,0)- coalesce(sorghum,0)- coalesce(sorghum1,0) ) as sorghum_excess_landed,
+    coalesce(riz,0) + coalesce(riz1,0) as rice_received_from_port,
+    coalesce(oil,0) + coalesce(oil1,0) as oil_received_from_port,
+    coalesce(csb,0) + coalesce(csb1,0) as csb_received_from_port,
+    coalesce(sorghum,0) + coalesce(sorghum1,0) as sorghum_received_from_port
 from 
 (
     select 
