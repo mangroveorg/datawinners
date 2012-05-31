@@ -99,4 +99,10 @@ class DataSenderTest(BaseTest):
         smart_phone_instruction_page = add_subject_page.navigate_to_smart_phone_instruction()
         self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
 
-
+    @attr("functional_test")
+    def test_go_back_to_project_list_directly_when_user_cancel_submission_without_fill_out_form(self):
+        data_sender_page = self.go_to_data_sender_page()
+        web_submission_page = data_sender_page.send_in_data()
+        web_submission_page.cancel_submission()
+        data_sender_page = DataSenderPage(self.driver)
+        self.assertIsNotNone(data_sender_page.get_project_list())
