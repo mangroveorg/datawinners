@@ -4170,3 +4170,6 @@ msgstr "Answer must be a location name. Example: Nairobi"
 
 msgid "location_coordinate_example"
 msgstr "Answer must be GPS coordinates in the following format(latitude,longitude): xx.xx,yy.yy. Example: -18.13,27.65"
+
+msgid "Reports"
+msgstr ""

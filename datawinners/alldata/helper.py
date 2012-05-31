@@ -30,7 +30,7 @@ def get_reports_list(org_id,language):
     if org_id == CRS_ORG_ID:
         return [
                 {'link' : link('waybill_sent_and_received', language),'name': _('Way Bill Sent vs Received Report'), 'desc': _('Way bill sent vs received description')},
-                {'link' : link('CSR', language),'name': _('CSR'), 'desc': _('Wharehouse Commodity Status Report')},
+                {'link' : link('CSR', language),'name': _('CSR'), 'desc': _('Warehouse Commodity Status Report')},
                 {'link' : link('LSR', language),'name': _('LSR'), 'desc': _('LSR description')},
                 {'link' : link('MSL', language),'name': _('MSL'), 'desc': _('MSL description')},
                 {'link' : link('NCSR', language),'name': _('CSR National'), 'desc': _('National Commodity Status Report')},

@@ -4215,3 +4215,6 @@ msgstr "Entrez un nom de lieu ou les coordonnées GPS."
 
 msgid "location_coordinate_example"
 msgstr "Réponse doit être coordonnées GPS dans le format suivant (latitude, longitude): xx, xx, yy.yy. Exemple: -18.13,27.65"
+
+msgid "Reports"
+msgstr "Rapports"
