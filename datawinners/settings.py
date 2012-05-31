@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'datawinners.countrytotrialnumbermapping',
     'django_nose',
     'django_digest',
+    'datawinners.custom_reports.crs',
     )
 
 WAYBILL_SENT_QUESTIONNAIRE_CODE = 'way1'
