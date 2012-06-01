@@ -38,7 +38,8 @@ function function_test {
 	restore_database && \
 	python manage.py recreatedb && \
 	cd ../func_tests && \
-	nosetests
+	nosetests && \
+	killall Google\ Chrome
 }
 
 function restore_database {
