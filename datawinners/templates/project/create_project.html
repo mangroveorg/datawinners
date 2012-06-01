@@ -74,6 +74,7 @@
                         <a href="#" class="delete_link"
                            data-bind="click: function() {if($('#question_form').valid()){ DW.removeQuestionCheckForSubmission(question); DW.smsPreview();} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);$('#question_form').valid();} }">{% trans "Delete" %}</a>
                     </div>
+
                     <span class="selected_question_arrow"
                           data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
                 </li>

@@ -17,8 +17,9 @@
 
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnarie_active.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_js %}
@@ -56,11 +57,15 @@
             <ol>
 
                 {% templatetag openvariable %}each(i,question) questions{% templatetag closevariable %}
-                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); } ">
+                <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()}  ">
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
+
                     <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion(question);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
                     </div>
+
+                    <span class="selected_question_arrow"
+                        data-bind="css:{inline:question == questionnaireViewModel.selectedQuestion()}"></span>
                 </li>
                 {% templatetag openvariable %}/each{% templatetag closevariable %}
             </ol>
@@ -104,7 +109,7 @@
 
                     <div id="question-detail-panel">
                         <div id="not_wizard">
-                                {% include 'project/question_detail_panel.html' %}
+                            {% include 'project/question_detail_panel.html' %}
                         </div>
                         <div class="grid_1 alpha text_align_right">
                             <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;">

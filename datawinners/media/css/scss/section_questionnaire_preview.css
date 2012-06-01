@@ -39,7 +39,7 @@
     .questionnaire_title li p, .questionnaire_title li h5 {
       float: left; }
     .questionnaire_title li p, .questionnaire_title li h5 {
-      margin: -5px 0  0 10px; }
+      margin: -5px 0 0 10px; }
     .questionnaire_title li p.content {
       margin-left: 10px; }
 
@@ -67,3 +67,61 @@ p.instructions {
   margin-top: 5px;
   font-size: 12px !important;
   position: absolute; }
+
+.content.grid_23 {
+  border: 1px solid #CCC !important;
+  margin-top: 0; }
+
+.questionnare_content {
+  border-bottom: 1px solid #cccccc;
+  border-top: 1px solid #cccccc;
+  min-height: 500px;
+  margin-bottom: 20px;
+  padding-right: 17px; }
+  .questionnare_content #question-detail-panel {
+    padding-left: 20px;
+    margin: 20px 0;
+    width: 575px;
+    float: left;
+    min-height: 720px; }
+    .questionnare_content #question-detail-panel #question_title {
+      font-size: 18px;
+      font-weight: bold;
+      height: 30px;
+      width: 565px; }
+    .questionnare_content #question-detail-panel #code {
+      width: 100px; }
+    .questionnare_content #question-detail-panel ul li {
+      margin: 20px 0; }
+      .questionnare_content #question-detail-panel ul li label {
+        font-size: 16px;
+        float: none; }
+      .questionnare_content #question-detail-panel ul li label.error {
+        font-size: 14px;
+        font-weight: normal;
+        width: auto;
+        margin-left: 10px; }
+    .questionnare_content #question-detail-panel .question {
+      width: auto; }
+    .questionnare_content #question-detail-panel .add_link {
+      display: block; }
+    .questionnare_content #question-detail-panel .question_type {
+      padding-top: 14px;
+      border-top: 1px solid #ccc; }
+    .questionnare_content #question-detail-panel .alpha_list {
+      margin-left: 30px; }
+      .questionnare_content #question-detail-panel .alpha_list input {
+        float: none; }
+      .questionnare_content #question-detail-panel .alpha_list .error_arrow {
+        float: none !important;
+        background-position: 0px 3px !important; }
+    .questionnare_content #question-detail-panel .sms-preview {
+      border-top: 1px solid #ccc;
+      padding: 14px 0 5px 0; }
+      .questionnare_content #question-detail-panel .sms-preview label {
+        font-size: 16px;
+        float: none; }
+      .questionnare_content #question-detail-panel .sms-preview #char-count-span {
+        paddin-top: 40px; }
+        .questionnare_content #question-detail-panel .sms-preview #char-count-span #char-count span {
+          font-weight: bold; }

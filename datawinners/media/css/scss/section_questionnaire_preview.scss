@@ -94,3 +94,81 @@ p.instructions{
     font-size : 12px !important;
     position: absolute;
 }
+
+.content {
+  &.grid_23 {
+    border: 1px solid #CCC !important;
+    margin-top: 0;
+  }
+}
+
+.questionnare_content{
+  border-bottom:1px solid #cccccc;
+  border-top:1px solid #cccccc;
+  min-height:500px;
+  margin-bottom:20px;
+  padding-right:17px;
+  #question-detail-panel{
+    padding-left:20px;
+    margin:20px 0;
+    width:575px;
+    float:left;
+    min-height:720px;
+    #question_title{
+      font-size:18px;
+      font-weight:bold;
+      height:30px;
+      width:565px;
+    }
+    #code{
+      width:100px;
+    }
+    ul li{
+      margin: 20px 0;
+      label{
+        font-size:16px;
+        float:none;
+      }
+      label.error{
+        font-size:14px;
+        font-weight:normal;
+        width:auto;
+        margin-left:10px;
+      }
+    }
+    .question{
+      width:auto;
+    }
+    .add_link{
+      display:block;
+    }
+    .question_type{
+      padding-top:14px;
+      border-top:1px solid #ccc;
+    }
+    .alpha_list{
+      margin-left:30px;
+      input{
+        float:none;
+      }
+      .error_arrow{
+        float:none !important;
+        background-position:0px 3px !important;
+      }
+    }
+    .sms-preview{
+      border-top:1px solid #ccc;
+      padding:14px 0 5px 0;
+      label{
+        font-size:16px;
+        float:none;
+      }
+      #char-count-span{
+        paddin-top:40px;
+        #char-count span{
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
