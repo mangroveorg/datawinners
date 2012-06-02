@@ -12,7 +12,7 @@
     <property name="imageDPI">147</property>
     <parameters>
         <scalar-parameter name="warehouse_code" id="11">
-            <text-property name="promptText">WH_code</text-property>
+            <text-property name="promptText" key="wh_code">WH_code</text-property>
             <property name="valueType">dynamic</property>
             <property name="dataSetName">warehouse_codes</property>
             <expression name="valueExpr" type="javascript">dataSetRow["store_house_code"]</expression>

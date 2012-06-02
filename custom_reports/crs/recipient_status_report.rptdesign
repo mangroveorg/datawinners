@@ -32,18 +32,6 @@
         </structure>
         <structure>
             <property name="name">queryText</property>
-            <property name="id">1416</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">1416</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">1416</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
             <property name="id">1438</property>
         </structure>
         <structure>
@@ -56,18 +44,6 @@
         </structure>
         <structure>
             <property name="name">queryText</property>
-            <property name="id">1441</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">1441</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">1441</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
             <property name="id">1448</property>
         </structure>
         <structure>
@@ -77,18 +53,6 @@
         <structure>
             <property name="name">rowFetchSize</property>
             <property name="id">1448</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">1451</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">1451</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">1451</property>
         </structure>
         <structure>
             <property name="name">queryText</property>
@@ -116,7 +80,8 @@
                 <scalar-parameter name="begin_month" id="1393">
                     <text-property name="promptText" key="month"></text-property>
                     <property name="valueType">static</property>
-                    <property name="dataType">string</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataType">integer</property>
                     <property name="distinct">true</property>
                     <list-property name="selectionList">
                         <structure>
@@ -192,7 +157,7 @@
                     <text-property name="promptText" key="year"></text-property>
                     <property name="valueType">static</property>
                     <property name="isRequired">true</property>
-                    <property name="dataType">string</property>
+                    <property name="dataType">integer</property>
                     <property name="distinct">true</property>
                     <simple-property-list name="defaultValue">
                         <value type="constant">2000</value>
@@ -214,7 +179,7 @@
                     <text-property name="promptText" key="month"></text-property>
                     <property name="valueType">static</property>
                     <property name="isRequired">true</property>
-                    <property name="dataType">string</property>
+                    <property name="dataType">integer</property>
                     <property name="distinct">true</property>
                     <simple-property-list name="defaultValue">
                         <value type="javascript">
@@ -379,22 +344,41 @@
             <list-property name="parameters">
                 <structure>
                     <property name="name">param_1</property>
+                    <property name="paramName">begin_year</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">1</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["begin_year"].value,params["begin_month"].value)</expression>
-                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
                     <property name="name">param_2</property>
+                    <property name="paramName">begin_month</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">2</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["end_year"].value, params["end_month"].value, 0)</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">end_year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">end_month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">4</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -409,22 +393,22 @@
                     <structure>
                         <property name="position">2</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -435,42 +419,49 @@
                     <property name="name">no_of_recipients</property>
                     <property name="nativeName">no_of_recipients</property>
                     <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(no_of_recipients) as no_of_recipients , sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+   round(CAST(sum(no_of_recipients) as numeric), 2) as no_of_recipients , 
+   round(CAST(sum(rice) as numeric), 2) as rice, 
+   round(CAST(sum(oil) as numeric), 2) as oil, 
+   round(CAST(sum(csb) as numeric), 2) as csb, 
+   round(CAST(sum(sorghum) as numeric), 2) as sorghum
 from crs_bav
 where
 bav_type = 'FFA'
-and bav_date BETWEEN ? AND ?]]></xml-property>
+and bav_date BETWEEN 
+Date(TEXTCAT(CAST(CAST(? as integer)- CASE when ? >6 then 0 else 1 end as text), CAST('-07-01' as text))) AND
+    Date(TEXTCAT(CAST(?+ CASE when ?>6 then 1 else 0 end as text), CAST('-06-30' as text)))]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -483,7 +474,7 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>1</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -498,7 +489,37 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>2</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -965,22 +986,22 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <structure>
                         <property name="position">1</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -990,32 +1011,36 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <property name="position">1</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+	round(CAST(sum(rice) as numeric), 2) as rice, 
+	round(CAST(sum(oil) as numeric), 2) as oil, 
+	round(CAST(sum(csb) as numeric), 2) as csb, 
+	round(CAST(sum(sorghum) as numeric), 2) as sorghum
 from crs_distribution
 where distribution_type = 'FFA'
 and distribution_date BETWEEN ? AND ?]]></xml-property>
@@ -1327,22 +1352,22 @@ and distribution_date BETWEEN ? AND ?]]></xml-property>
                     <structure>
                         <property name="position">1</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -1352,32 +1377,36 @@ and distribution_date BETWEEN ? AND ?]]></xml-property>
                     <property name="position">1</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+	round(CAST(sum(rice) as numeric), 2) as rice, 
+	round(CAST(sum(oil) as numeric), 2) as oil, 
+	round(CAST(sum(csb) as numeric), 2) as csb, 
+	round(CAST(sum(sorghum) as numeric), 2) as sorghum
 from crs_distribution
 where distribution_type = 'SFM'
 and distribution_date BETWEEN ? AND ?]]></xml-property>
@@ -1672,22 +1701,41 @@ and distribution_date BETWEEN ? AND ?]]></xml-property>
             <list-property name="parameters">
                 <structure>
                     <property name="name">param_1</property>
+                    <property name="paramName">begin_year</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">1</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["begin_year"].value,params["begin_month"].value)</expression>
-                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
                     <property name="name">param_2</property>
+                    <property name="paramName">begin_month</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">2</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["end_year"].value, params["end_month"].value, 0)</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">end_year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">end_month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">4</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -1702,22 +1750,22 @@ and distribution_date BETWEEN ? AND ?]]></xml-property>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -1728,42 +1776,49 @@ and distribution_date BETWEEN ? AND ?]]></xml-property>
                     <property name="name">no_of_recipients</property>
                     <property name="nativeName">no_of_recipients</property>
                     <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(no_of_recipients) as no_of_recipients , sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+   round(CAST(sum(no_of_recipients) as numeric), 2) as no_of_recipients , 
+   round(CAST(sum(rice) as numeric), 2) as rice, 
+   round(CAST(sum(oil) as numeric), 2) as oil, 
+   round(CAST(sum(csb) as numeric), 2) as csb, 
+   round(CAST(sum(sorghum) as numeric), 2) as sorghum
 from crs_bav
 where
 bav_type = 'SFM'
-and bav_date BETWEEN ? AND ?]]></xml-property>
+and bav_date BETWEEN 
+Date(TEXTCAT(CAST(CAST(? as integer)- CASE when ? >6 then 0 else 1 end as text), CAST('-07-01' as text))) AND
+    Date(TEXTCAT(CAST(?+ CASE when ?>6 then 1 else 0 end as text), CAST('-06-30' as text)))]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -1776,7 +1831,7 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>1</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -1791,7 +1846,37 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>2</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -2307,22 +2392,41 @@ and received_date BETWEEN ? and ?]]></xml-property>
             <list-property name="parameters">
                 <structure>
                     <property name="name">param_1</property>
+                    <property name="paramName">begin_year</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">1</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["begin_year"].value,params["begin_month"].value)</expression>
-                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
                     <property name="name">param_2</property>
+                    <property name="paramName">begin_month</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">2</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["end_year"].value, params["end_month"].value, 0)</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">end_year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">end_month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">4</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -2337,22 +2441,22 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -2363,42 +2467,49 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <property name="name">no_of_recipients</property>
                     <property name="nativeName">no_of_recipients</property>
                     <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(no_of_recipients) as no_of_recipients , sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+   round(CAST(sum(no_of_recipients) as numeric), 2) as no_of_recipients , 
+   round(CAST(sum(rice) as numeric), 2) as rice, 
+   round(CAST(sum(oil) as numeric), 2) as oil, 
+   round(CAST(sum(csb) as numeric), 2) as csb, 
+   round(CAST(sum(sorghum) as numeric), 2) as sorghum
 from crs_bav
 where
 bav_type = 'SFE'
-and bav_date BETWEEN ? AND ?]]></xml-property>
+and bav_date BETWEEN 
+Date(TEXTCAT(CAST(CAST(? as integer)- CASE when ? >6 then 0 else 1 end as text), CAST('-07-01' as text))) AND
+    Date(TEXTCAT(CAST(?+ CASE when ?>6 then 1 else 0 end as text), CAST('-06-30' as text)))]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -2411,7 +2522,7 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>1</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -2426,7 +2537,37 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>2</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -2665,22 +2806,22 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <structure>
                         <property name="position">1</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -2690,32 +2831,36 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <property name="position">1</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+	round(CAST(sum(rice) as numeric), 2) as rice, 
+	round(CAST(sum(oil) as numeric), 2) as oil, 
+	round(CAST(sum(csb) as numeric), 2) as csb, 
+	round(CAST(sum(sorghum) as numeric), 2) as sorghum
 from crs_distribution
 where distribution_type = 'SFE'
 and distribution_date BETWEEN ? AND ?]]></xml-property>
@@ -3238,22 +3383,45 @@ and received_date BETWEEN ? and ?]]></xml-property>
             <list-property name="parameters">
                 <structure>
                     <property name="name">param_1</property>
+                    <property name="paramName">begin_year</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">1</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["begin_year"].value,params["begin_month"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
                     <property name="name">param_2</property>
+                    <property name="paramName">begin_month</property>
                     <property name="nativeName"></property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                     <property name="position">2</property>
-                    <expression name="defaultValue" type="javascript">new Date(params["end_year"].value, params["end_month"].value, 0)</expression>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_3</property>
+                    <property name="paramName">end_year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">3</property>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_4</property>
+                    <property name="paramName">end_month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                    <property name="position">4</property>
+                    <property name="isOptional">false</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -3268,22 +3436,22 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
                         <property name="name">sorghum</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
@@ -3294,42 +3462,49 @@ and received_date BETWEEN ? and ?]]></xml-property>
                     <property name="name">no_of_recipients</property>
                     <property name="nativeName">no_of_recipients</property>
                     <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
                     <property name="name">sorghum</property>
                     <property name="nativeName">sorghum</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(no_of_recipients) as no_of_recipients , sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, sum(sorghum) as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+   round(CAST(sum(no_of_recipients) as numeric), 2) as no_of_recipients , 
+   round(CAST(sum(rice) as numeric), 2) as rice, 
+   round(CAST(sum(oil) as numeric), 2) as oil, 
+   round(CAST(sum(csb) as numeric), 2) as csb, 
+   round(CAST(sum(sorghum) as numeric), 3) as sorghum
 from crs_bav
 where
 bav_type = 'CPS'
-and bav_date BETWEEN ? AND ?]]></xml-property>
+and bav_date BETWEEN 
+    Date(TEXTCAT(CAST(CAST(? as integer)- CASE when ? >6 then 0 else 1 end as text), CAST('-07-01' as text))) AND
+    Date(TEXTCAT(CAST(?+ CASE when ?>6 then 1 else 0 end as text), CAST('-06-30' as text)))]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -3342,7 +3517,7 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>1</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -3357,7 +3532,37 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
             <design:name></design:name>
             <design:position>2</design:position>
           </design:identifier>
-          <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>3</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>4</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
           <design:scale>0</design:scale>
           <design:nullability>Unknown</design:nullability>
@@ -3596,17 +3801,17 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <structure>
                         <property name="position">1</property>
                         <property name="name">rice</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
                         <property name="name">oil</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">csb</property>
-                        <property name="dataType">float</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
@@ -3621,22 +3826,22 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <property name="position">1</property>
                     <property name="name">rice</property>
                     <property name="nativeName">rice</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">oil</property>
                     <property name="nativeName">oil</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">csb</property>
                     <property name="nativeName">csb</property>
-                    <property name="dataType">float</property>
-                    <property name="nativeDataType">8</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
@@ -3646,7 +3851,11 @@ and bav_date BETWEEN ? AND ?]]></xml-property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select sum(rice) as rice, sum(oil) as oil, sum(csb) as csb, null as sorghum
+            <xml-property name="queryText"><![CDATA[select 
+	round(CAST(sum(rice) as numeric), 2) as rice, 
+	round(CAST(sum(oil) as numeric), 2) as oil, 
+	round(CAST(sum(csb) as numeric), 2) as csb, 
+	null as sorghum
 from crs_distributionatcps
 where
 received_date BETWEEN ? AND ?]]></xml-property>
