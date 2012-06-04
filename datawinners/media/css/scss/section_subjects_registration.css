@@ -13,9 +13,7 @@
     #questionnaire .questionnaire_code h5 {
       margin-bottom: 10px; }
     #questionnaire .questionnaire_code li > label {
-      display: inline;
-      margin-left: 30px;
-      margin-right: -30px; }
+      display: inline; }
   #questionnaire .questionnare_content {
     min-height: 500px;
     margin: 20px 0;
