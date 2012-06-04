@@ -179,3 +179,7 @@
 
 #questionnaire-code {
   float: none; }
+
+.save-button {
+  float: right;
+  margin-right: 50px; }

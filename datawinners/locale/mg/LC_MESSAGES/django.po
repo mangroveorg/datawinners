@@ -1487,6 +1487,10 @@ msgstr "Code Questionnaire :"
 msgid "Add another Question"
 msgstr "Ajouter une question"
 
+#: templates/project/questionnaire.html:116
+msgid "Save"
+msgstr ""
+
 #: templates/project/questionnaire_preview.html:8
 msgid "Print"
 msgstr "Imprimer"

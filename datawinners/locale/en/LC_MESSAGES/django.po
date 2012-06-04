@@ -1606,6 +1606,10 @@ msgstr ""
 msgid "Add another Question"
 msgstr ""
 
+#: templates/project/questionnaire.html:116
+msgid "Save"
+msgstr ""
+
 #: templates/project/create_project.html:114
 msgid "tooltip_question_sms"
 msgstr "Use this running count to determine the maximum number of characters a Data Sender will have to enter to "
