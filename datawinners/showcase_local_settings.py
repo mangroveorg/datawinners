@@ -32,8 +32,6 @@ EMAIL_HOST_USER = 'test.datawinners@gmail.com'
 EMAIL_HOST_PASSWORD = 'd@t@winners'
 EMAIL_PORT = 587
 
-SMARTPHONE_ENABLED = True
-
 LOG_FOLDER = '/home/mangrover/'
 LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
@@ -117,3 +115,5 @@ INSTALLED_APPS = (
     'django_nose',
     'django_digest',
     )
+
+SMARTPHONE_ENABLED = True
