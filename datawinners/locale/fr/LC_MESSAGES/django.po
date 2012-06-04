@@ -1627,7 +1627,7 @@ msgstr "Ajouter une question"
 
 #: templates/project/questionnaire.html:116
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: templates/project/create_project.html:114
 msgid "tooltip_question_sms"
