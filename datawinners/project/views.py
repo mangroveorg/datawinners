@@ -16,7 +16,7 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from alldata.helper import get_visibility_settings_for
+from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_datasender_form, add_imported_data_sender_to_trial_organization
 from datawinners.entity import import_data as import_module
@@ -1092,3 +1092,6 @@ def add_link(project):
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
         url = make_subject_links(project)['register_subjects_link']
         return add_link_named_tuple(url=url, text=text)
+
+def edit_datasender(request, project_id, reporter_id):
+    return HttpResponseRedirect(reverse(registered_datasenders,args=[project_id]))

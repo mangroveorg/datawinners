@@ -97,7 +97,7 @@ $(document).ready(function() {
             populate_dialog_box_for_web_users();
             return false;
         }else if(action=="delete"){
-            openEntityWarningDialogBox(allIds, "reporter", this)
+            warnThenDeleteDialogBox(allIds, "reporter", this)
         }
         else{
             $("#all_project_block").dialog("open");

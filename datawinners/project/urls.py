@@ -7,7 +7,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, \
     manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
     delete_reminder, sent_reminders, broadcast_message, review_and_test, \
-    edit_subject, create_datasender_and_webuser
+    edit_subject, create_datasender_and_webuser, edit_datasender
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 
 js_info_dict = {
@@ -35,6 +35,7 @@ urlpatterns = patterns('',
         (r'^project/subjects/(?P<project_id>.+?)/$', subjects),
         (r'^project/registered_subjects/(?P<project_id>.+?)/$', registered_subjects),
         (r'^project/datasenders/(?P<project_id>.+?)/$', create_datasender_and_webuser),
+        (r'^project/edit_datasender/(?P<project_id>.+?)/(?P<reporter_id>.+?)/$', edit_datasender),
         (r'^project/registered_datasenders/(?P<project_id>.+?)/$', registered_datasenders),
         (r'^project/create_reminder/(?P<project_id>.+?)/$', create_reminder),
         (r'^project/get_reminder/(?P<project_id>.+?)/$', get_reminder),

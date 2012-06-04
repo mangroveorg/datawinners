@@ -41,14 +41,14 @@ $(document).ready(function () {
             $(this).val("--");
             return;
         }
-        openEntityWarningDialogBox(allIds, entity_type, this);
+        warnThenDeleteDialogBox(allIds, entity_type, this);
     });
 
 
 
 });
 
-function openEntityWarningDialogBox(allIds, entity_type, action_element) {
+function warnThenDeleteDialogBox(allIds, entity_type, action_element) {
     $("#delete_entity_block").data("allIds", allIds);
     $("#delete_entity_block").data("entity_type", entity_type);
     $("#delete_entity_block").data("action_element", action_element);
