@@ -26,7 +26,7 @@
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_view_model.js"></script>
     <script type="text/javascript" src="/media/javascript/jquery.sprintf.js"></script>
-    <script type="text/javascript" src="/media/javascript/project/questionnaire_charcount.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/new_questionnaire_charcount.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
     <script type="text/javascript" src="/media/javascript/project/sms_preview.js"></script>
     <script type="text/javascript">
@@ -110,16 +110,7 @@
                     <div id="question-detail-panel">
                         <div id="not_wizard">
                             {% include 'project/question_detail_panel.html' %}
-                        </div>
-                        <div class="grid_1 alpha text_align_right">
-                            <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-1px;">
-                            <div class="tooltip"><p>
-                                {% trans "tooltip_question_sms" %}
-                            </p></div>
-                        </div>
-                        <div class="grid_12 alpha omega">
-                            <div id='char-count'>
-                            </div>
+                            {% include 'project/sms_preview.html' %}
                         </div>
                         <div class="margin_top_10 float_left">
                             <input id="submit-button" type="submit" class="button" value="{% trans 'Submit' %}" />

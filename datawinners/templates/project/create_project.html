@@ -137,22 +137,7 @@
 
                         <div id="question-detail-panel">
                             {% include 'project/question_detail_panel.html' %}
-                            
-
-                            <div class="grid_13 alpha omega sms-preview">
-                                <label>{% trans "SMS Preview" %}</label>
-                                <div id='char-count-span'>
-                                    <span id='char-count'></span>
-                                    <img src="/media/images/help_icon.png" class="help_icon">
-                                    <div class="tooltip">
-                                        <p>{% trans "tooltip_question_sms" %}</p>
-                                    </div>
-                                </div>
-                                <div class="mobile">
-                                    <textarea name="message" cols="30" rows="4" id="sms_preview" readonly="true"></textarea>
-                                </div>
-                            </div>
-
+                            {% include 'project/sms_preview.html' %}
                         </div>
                     </div>
                 </div>
