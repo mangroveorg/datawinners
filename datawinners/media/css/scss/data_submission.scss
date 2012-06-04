@@ -17,7 +17,7 @@
     background: -moz-linear-gradient(top,  #525252,  #262626) !important;  //for firefox 3.6+
     .web {
       color: white;
-      background: url("/media/images/computer_white_small.png") no-repeat 5px;
+      background: url("/media/images/computer_white.png") no-repeat 5px;
       @extend .device-navigation-bg-padding;
     }
     .smartphone {
@@ -30,7 +30,7 @@
   .inactive {
     display: inline-block;
     .web {
-      background: url("/media/images/computer_black_small.png") no-repeat 5px;
+      background: url("/media/images/computer_black.png") no-repeat 5px;
       @extend .device-navigation-bg-padding;
     }
     .smartphone {
