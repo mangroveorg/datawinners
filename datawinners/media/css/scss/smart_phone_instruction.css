@@ -16,7 +16,7 @@
       float: right;
       width: 70%; }
     .smart-phone-instruction .instruction ul > li {
-      list-style-type: UPPER-ROMAN;
+      list-style-type: decimal;
       margin-bottom: 30px; }
     .smart-phone-instruction .instruction ul ol {
       padding-left: 20px;

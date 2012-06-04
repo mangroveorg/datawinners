@@ -789,7 +789,7 @@ msgid "Fill out the following Questionnaire and click on Submit."
 msgstr "Remplissez le Questionnaire suivant et cliquez sur «Soumettre»."
 
 #: templates/entity/register_subject.html: 14
-msgid "Fill out the following Registration form and click on Register."
+msgid "Fill out the following Registration Form and click on Register."
 msgstr "Remplissez le Formulaire d’Enregistrement suivant et cliquez sur «S'enregistrer»."
 
 #: templates/project/data_submission_questionnaire.html: 8

@@ -777,7 +777,7 @@ msgid "Fill out the following Questionnaire and click on Submit."
 msgstr ""
 
 #: templates/entity/register_subject.html: 14
-msgid "Fill out the following Registration form and click on Register."
+msgid "Fill out the following Registration Form and click on Register."
 msgstr ""
 
 #: templates/project/data_submission_questionnaire.html: 8
