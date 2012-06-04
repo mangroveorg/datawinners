@@ -4174,3 +4174,6 @@ msgstr "Answer must be GPS coordinates in the following format(latitude,longitud
 
 msgid "Reports"
 msgstr ""
+
+msgid "You are editing the Data Senderʼs Details"
+msgstr ""

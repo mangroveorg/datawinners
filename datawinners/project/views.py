@@ -16,6 +16,8 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from mangrove.datastore.entity import get_by_short_code
+from mangrove.form_model.location import LOCATION_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import process_create_datasender_form, add_imported_data_sender_to_trial_organization
@@ -30,7 +32,7 @@ from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
@@ -1094,4 +1096,8 @@ def add_link(project):
         return add_link_named_tuple(url=url, text=text)
 
 def edit_datasender(request, project_id, reporter_id):
-    return HttpResponseRedirect(reverse(registered_datasenders,args=[project_id]))
+    manager = get_database_manager(request.user)
+    reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+    form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
+            'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : reporter_entity.value(LOCATION_TYPE_FIELD_NAME),'geo_code' : reporter_entity.value(GEO_CODE_FIELD_NAME)})
+    return render_to_response('project/edit_datasender.html',{'form' : form},context_instance = RequestContext(request))
