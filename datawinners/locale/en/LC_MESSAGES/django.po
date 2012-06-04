@@ -3262,7 +3262,7 @@ msgstr ""
 msgid "Data Submission"
 msgstr ""
 
-msgid "Register a "
+msgid "Register a new "
 msgstr ""
 
 msgid "Project"

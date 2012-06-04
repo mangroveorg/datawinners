@@ -3,4 +3,4 @@ PAGE_TITLE = "Data Submission"
 
 SECTION_TITLE = "Data Submission"
 
-SUBJECT_TYPE = "Add a new clinic"
+SUBJECT_TYPE = "Register a new clinic"
