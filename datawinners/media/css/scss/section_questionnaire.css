@@ -29,7 +29,7 @@
     width: 127px !important;
     font-size: 12px;
     padding: 0 !important;
-    border: 1px solid #cccccc  !important;
+    border: 1px solid #cccccc !important;
     overflow: hidden; }
 
 /*The content styles for wizard based pages*/
@@ -179,6 +179,14 @@
 
 #questionnaire-code {
   float: none; }
+
+.questionnaire_code li label {
+  width: auto;
+  float: none;
+  font-weight: normal;
+  display: inline; }
+.questionnaire_code li span {
+  font-weight: bold; }
 
 .save-button {
   float: right;
