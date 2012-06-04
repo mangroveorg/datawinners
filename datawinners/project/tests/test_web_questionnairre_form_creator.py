@@ -1,7 +1,7 @@
 import unittest
 import django
 from django.core.exceptions import ValidationError
-from django.forms.fields import CharField, MultipleChoiceField, ChoiceField
+from django.forms.fields import CharField, MultipleChoiceField, ChoiceField, RegexField
 from mangrove.datastore.datadict import DataDictType
 from mangrove.form_model.field import TextField, SelectField, field_attributes, HierarchyField, TelephoneNumberField, IntegerField
 from mangrove.datastore.database import DatabaseManager
@@ -313,3 +313,15 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
     def _get_form_model(self, is_registration_form=False):
         return FormModel(dbm=self.dbm, form_code=self.form_code, name="abc", fields=[],
             is_registration_model=is_registration_form, entity_type=["entity_type"])
+
+    def test_should_create_regex_field_for_short_code_question_if_registration(self):
+        form_model = self._get_form_model(True)
+
+        is_required = True
+        form_model.add_field(self._get_text_field(is_required, False))
+        with patch.object(WebQuestionnaireFormCreater, '_get_short_code_question_code') as get_short_code_qestion_code:
+            get_short_code_qestion_code.return_value = {u'short_code_question_code': self.text_field_code}
+            questionnaire_form_class = WebQuestionnaireFormCreater(None, form_model=form_model).create()
+
+            web_text_field = questionnaire_form_class().fields[self.text_field_code]
+            self.assertEqual(RegexField, type(web_text_field))

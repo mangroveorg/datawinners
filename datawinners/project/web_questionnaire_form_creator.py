@@ -104,7 +104,8 @@ class WebQuestionnaireFormCreater(object):
             properties.update(self._get_entity_type_hidden_field())
             properties.update(self._get_short_code_question_code())
             properties.update(
-                {field.code: self._get_django_field(field, language) for field in self.form_model.fields})
+                {field.code: self._get_django_field(field, language) for field in self.form_model.fields[:-1]})
+            properties.update(self._get_short_code_django_field(self.form_model.fields[-1], language))
         else:
             subject_question = self.form_model.entity_question
             if subject_question is not None:
@@ -156,6 +157,12 @@ class WebQuestionnaireFormCreater(object):
         char_field.widget.attrs['style'] = 'padding-top: 7px;'
         self._create_field_type_class(char_field, field)
         return char_field
+
+    def _get_short_code_django_field(self, field, language):
+        django_field = forms.RegexField("^[a-zA-Z0-9]+$", label=field.label[language], initial=field.value, required=field.is_required(),
+            help_text=field.instruction, error_message=_("Only letters and numbers are valid"))
+        self._create_field_type_class(django_field, field)
+        return {field.code: django_field}
 
     def _create_select_field(self, field, language):
         if field.single_select_flag:

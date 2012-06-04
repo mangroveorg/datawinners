@@ -53,7 +53,7 @@
                         <div class="answer">
                             {{ field }}
                             <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
-                                {% trans "Let us generate an ID for you" %}
+                            <span>{% trans "Let us generate an ID for you" %}</span>
                             {% if field.errors %}
                                 <ul class="errorlist">
                                     {% for error in field.errors %}
