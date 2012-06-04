@@ -17,7 +17,7 @@ DW.data_submission = {
             title:gettext("Warning"),
             modal:true,
             autoOpen:false,
-            height:180,
+            height:130,
             width:400,
             closeText:'hide'
         });
