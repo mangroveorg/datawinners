@@ -1,10 +1,8 @@
 .device-navigation {
   margin-bottom: 30px;
-  border-bottom: 3px solid #3d3d3d; }
-  .device-navigation span {
-    font-size: 16px; }
+  border-bottom: 3px solid #3d3d3d;
+  font-size: 15px; }
   .device-navigation a {
-    font-size: 18px;
     text-decoration: none; }
   .device-navigation .active, .device-navigation .inactive:hover {
     padding-top: 5px;

@@ -1,6 +1,6 @@
 .smart-phone-instruction {
   padding: 0 10px;
-  font-size: 16px;
+  font-size: 13px;
   span {
     font-weight: bold;
   }
@@ -11,7 +11,8 @@
     margin-bottom: 20px;
     .phone {
       float: left;
-      width: 25%;
+      width: 23%;
+      margin-left: 20px;
       img {
         width: 100%;
       }
@@ -19,6 +20,7 @@
     .steps {
       float: right;
       width: 70%;
+      margin-top: 20px;
     }
     ul > li {
       list-style-type: decimal;
@@ -32,13 +34,14 @@
     ol > li {
       list-style-type: decimal;
       img {
-        width: 30px;
+        width: 23px;
       }
     }
     .dw-app-icon {
-      background: url("/media/images/dw_app_icon.png") no-repeat -18px -10px;
+      background: url("/media/images/dw_app_icon.png") no-repeat -18px -12px;
       padding-left: 55px;
       padding-top: 12px;
+      height: 50px;
       span {
         display: block;
       }

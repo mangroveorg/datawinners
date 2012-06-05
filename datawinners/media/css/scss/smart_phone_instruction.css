@@ -1,6 +1,6 @@
 .smart-phone-instruction {
   padding: 0 10px;
-  font-size: 16px; }
+  font-size: 13px; }
   .smart-phone-instruction span {
     font-weight: bold; }
   .smart-phone-instruction .declaration {
@@ -9,12 +9,14 @@
     margin-bottom: 20px; }
     .smart-phone-instruction .instruction .phone {
       float: left;
-      width: 25%; }
+      width: 23%;
+      margin-left: 20px; }
       .smart-phone-instruction .instruction .phone img {
         width: 100%; }
     .smart-phone-instruction .instruction .steps {
       float: right;
-      width: 70%; }
+      width: 70%;
+      margin-top: 20px; }
     .smart-phone-instruction .instruction ul > li {
       list-style-type: decimal;
       margin-bottom: 30px; }
@@ -24,10 +26,11 @@
     .smart-phone-instruction .instruction ol > li {
       list-style-type: decimal; }
       .smart-phone-instruction .instruction ol > li img {
-        width: 30px; }
+        width: 23px; }
     .smart-phone-instruction .instruction .dw-app-icon {
-      background: url("/media/images/dw_app_icon.png") no-repeat -18px -10px;
+      background: url("/media/images/dw_app_icon.png") no-repeat -18px -12px;
       padding-left: 55px;
-      padding-top: 12px; }
+      padding-top: 12px;
+      height: 50px; }
       .smart-phone-instruction .instruction .dw-app-icon span {
         display: block; }
