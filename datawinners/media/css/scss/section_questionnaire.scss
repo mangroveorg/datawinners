@@ -57,9 +57,42 @@
     .define_project {
 
     }
+    .preview-navigation{
+      float: right;
+      margin: 31px 10px 0 0;
+      span {
+        float: left;
+        margin-right: 6px;
+      }
+      div {
+        float: left;
+        margin-left: 10px;
+      }
+      div:hover {
+        cursor: pointer;
+      }
+      a {
+        text-decoration: none;
+      }
+      .navigation-sms-preview {
+        background: url("/media/images/feature_phone_black.png") no-repeat;
+        padding-left: 14px;
+      }
+      .navigation-smart-phone-preview {
+        background: url("/media/images/smart_phone_black.png") no-repeat;
+        padding-left: 15px;
+      }
+      .navigation-web-preview {
+        background: url("/media/images/computer_black.png") no-repeat;
+        padding-left: 22px;
+      }
+    }
     .questionnaire_code {
+      float: left;
       li {
         padding: 5px 0 5px 30px !important;
+        margin: 0;
+        margin-top: 20px;
         #questionnaire-code-error {
           background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
           float: none !important;

@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block page_title %} {% trans "Create Project" %}{% endblock %}
 {% block section_title %}
-    <h2 class="project_title">{{ project.name }}</h2>
+    <h2 class="project_title" xmlns="http://www.w3.org/1999/html">{{ project.name }}</h2>
     <a href="/project/" class="cancel_project">{% trans "Cancel" %}</a>
 {% endblock %}
 
@@ -107,21 +107,28 @@
         <form id="question_form">
             {% csrf_token %}
             <fieldset>
-                <ul class="questionnaire_code">
-                    <li>
-                        <label>{% trans "SMS Questionnaire Code:" %}</label>
-                        <input id='project-id' type='hidden' value="{{ project.id }}"/>
-                        <input id='project-state' type='hidden' value="{{ project.state }}"/>
-                        <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>
-                        <input id='questionnaire-code' value="{{ questionnaire_code }}"/>
-                        <span id="questionnaire-code-error"></span>
-                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
-                        <div class="tooltip"><p>
-                            {% trans "tooltip_question_code" %}
-                        </p></div>
-                    </li>
-                </ul>
-
+                <div>
+                    <ul class="questionnaire_code">
+                        <li>
+                            <label>{% trans "SMS Questionnaire Code:" %}</label>
+                            <input id='project-id' type='hidden' value="{{ project.id }}"/>
+                            <input id='project-state' type='hidden' value="{{ project.state }}"/>
+                            <input id='saved-questionnaire-code' type='hidden' value="{{ questionnaire_code }}"/>
+                            <input id='questionnaire-code' value="{{ questionnaire_code }}"/>
+                            <span id="questionnaire-code-error"></span>
+                            <img src="/media/images/help_icon.png" class="help_icon" style="margin-bottom: 10px;">
+                            <div class="tooltip"><p>
+                                {% trans "tooltip_question_code" %}
+                            </p></div>
+                        </li>
+                    </ul>
+                    <div class="preview-navigation">
+                        <span>{% trans "Preview: " %}</span>
+                        <div class="navigation-sms-preview"><a>{% trans "SMS" %}</a></div>
+                        <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
+                        <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
+                    </div>
+                </div>
                 <div class="questionnare_content grid_23 alpha omega">
                     <div>
                         <div id="questions-panel" class="grid_8 alpha">

@@ -45,3 +45,11 @@ class TestCreateProject(BaseTest):
         create_project_page.continue_create_project()
         self.assertEqual(create_project_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(BLANK_FIELDS)))
+
+    @attr('functional_test')
+    def test_sms_preview_of_questionnaire_when_create_project(self):
+        create_project_page = self.prerequisites_of_create_project()
+        create_project_page.create_project_with(VALID_DATA)
+        create_project_page.continue_create_project()
+        create_project_page.sms_questionnaire_preview()
+        self.assertIsNotNone(create_project_page.sms_questionnaire())

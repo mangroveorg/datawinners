@@ -183,3 +183,9 @@ class CreateProjectPage(Page):
             project_details[SUBJECT] = ""
         #project_details[DEVICES] = self.get_devices()
         return project_details
+
+    def sms_questionnaire_preview(self):
+        self.driver.find(by_css(".navigation-sms-preview")).click()
+
+    def sms_questionnaire(self):
+        self.driver.find(by_css("#questionnaire_preview .questionnaire_title"))

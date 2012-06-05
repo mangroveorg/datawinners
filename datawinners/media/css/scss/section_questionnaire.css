@@ -41,14 +41,40 @@
   border-color: #CCCCCC; }
 .wizard_content .content_wrapper .questionnaire_code h5 {
   margin-bottom: 10px; }
-.wizard_content .content_wrapper .questionnaire_code li {
-  padding: 5px 0 5px 30px !important; }
-  .wizard_content .content_wrapper .questionnaire_code li #questionnaire-code-error {
-    background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
-    float: none !important; }
-  .wizard_content .content_wrapper .questionnaire_code li label {
-    display: inline;
-    width: 140px; }
+.wizard_content .content_wrapper .preview-navigation {
+  float: right;
+  margin: 31px 10px 0 0; }
+  .wizard_content .content_wrapper .preview-navigation span {
+    float: left;
+    margin-right: 6px; }
+  .wizard_content .content_wrapper .preview-navigation div {
+    float: left;
+    margin-left: 10px; }
+  .wizard_content .content_wrapper .preview-navigation div:hover {
+    cursor: pointer; }
+  .wizard_content .content_wrapper .preview-navigation a {
+    text-decoration: none; }
+  .wizard_content .content_wrapper .preview-navigation .navigation-sms-preview {
+    background: url("/media/images/feature_phone_black.png") no-repeat;
+    padding-left: 14px; }
+  .wizard_content .content_wrapper .preview-navigation .navigation-smart-phone-preview {
+    background: url("/media/images/smart_phone_black.png") no-repeat;
+    padding-left: 15px; }
+  .wizard_content .content_wrapper .preview-navigation .navigation-web-preview {
+    background: url("/media/images/computer_black.png") no-repeat;
+    padding-left: 22px; }
+.wizard_content .content_wrapper .questionnaire_code {
+  float: left; }
+  .wizard_content .content_wrapper .questionnaire_code li {
+    padding: 5px 0 5px 30px !important;
+    margin: 0;
+    margin-top: 20px; }
+    .wizard_content .content_wrapper .questionnaire_code li #questionnaire-code-error {
+      background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
+      float: none !important; }
+    .wizard_content .content_wrapper .questionnaire_code li label {
+      display: inline;
+      width: 140px; }
 .wizard_content .content_wrapper .questionnare_header {
   border: 1px solid #a3c7ef;
   height: 50px;
