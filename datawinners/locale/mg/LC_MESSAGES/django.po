@@ -478,7 +478,7 @@ msgid "Previous Step:"
 msgstr "Etape précédente :"
 
 #: templates/layout_application.html: 56
-msgid "Send in your data via:"
+msgid "Send in your data using:"
 msgstr ""
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3

@@ -55,7 +55,7 @@
 {% block device_navigation %}
     {% if SMARTPHONE_ENABLED %}
         <div class="device-navigation">
-            <span>{% trans "Send in your data via:" %}</span>
+            <span>{% trans "Send in your data using:" %}</span>
 
             <div class="{% ifactivetab 'device_tab_nav' 'web' %}active{% else %}inactive{% endifactivetab %} web-nav">
                 <a class="web" href="{{ back_to_project_link }}">

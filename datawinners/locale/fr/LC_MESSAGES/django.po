@@ -519,7 +519,7 @@ msgstr ""
 "<p>Voir notre <a href='/en/pricing/' target=\"_blank\">Page des Tarifications</a></p>"
 
 #: templates/layout_application.html: 56
-msgid "Send in your data via:"
+msgid "Send in your data using:"
 msgstr "Soumettez vos données via:"
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
