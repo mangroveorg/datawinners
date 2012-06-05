@@ -520,7 +520,7 @@ msgstr ""
 
 #: templates/layout_application.html: 56
 msgid "Send in your data using:"
-msgstr "Soumettez vos données via:"
+msgstr "Envoyez vos données via:"
 
 #: templates/main_navigation.html:10 templates/dashboard/home.html:3
 #: templates/dashboard/home.html.py:4
