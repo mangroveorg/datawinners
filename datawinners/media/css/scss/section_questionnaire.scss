@@ -87,6 +87,23 @@
         padding-left: 22px;
       }
     }
+    #questionnaire_preview_instruction {
+      background: white;
+      display: none;
+      position: absolute;
+      z-index: 1002;
+      top: 555px;
+      box-shadow: 5px 5px 5px #CCC;
+      width: 960px;
+      margin-left: -20px;
+      border: 1px solid #CCC;
+      padding-bottom: 30px;
+      #close_preview {
+        float: right;
+        margin-right: 50px;
+      }
+    }
+
     .questionnaire_code {
       float: left;
       li {

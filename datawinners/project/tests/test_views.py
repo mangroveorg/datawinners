@@ -12,6 +12,7 @@ from datawinners.project.views import _format_reminders, subject_registration_fo
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.views import get_form_model_and_template
+from project.wizard_view import get_preview_and_instruction_links
 
 class TestProjectViews(unittest.TestCase):
     def test_should_return_reminders_in_the_required_format(self):
@@ -124,3 +125,9 @@ class TestProjectViews(unittest.TestCase):
                 form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
                 self.assertEquals(template, "project/register_subject.html")
 
+
+    def test_should_get_preview_and_instruction_links(self):
+        with patch("project.wizard_view.reverse") as reverse:
+            reverse.return_value = "/project/sms_preview"
+            links = get_preview_and_instruction_links()
+            self.assertEqual(links["sms_preview"], "/project/sms_preview")

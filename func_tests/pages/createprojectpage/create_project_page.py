@@ -188,4 +188,4 @@ class CreateProjectPage(Page):
         self.driver.find(by_css(".navigation-sms-preview")).click()
 
     def sms_questionnaire(self):
-        self.driver.find(by_css("#questionnaire_preview .questionnaire_title"))
+        return self.driver.find(by_css("#questionnaire_preview_instruction #questionnaire_preview"))

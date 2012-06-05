@@ -9,6 +9,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     delete_reminder, sent_reminders, broadcast_message, review_and_test, \
     edit_subject, create_datasender_and_webuser, edit_datasender
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
+from project.wizard_view import sms_preview
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -53,4 +54,5 @@ urlpatterns = patterns('',
         (r'^project/datarecords/filter$', submissions),
         (r'^project/finish/(?P<project_id>.+?)/$', review_and_test),
         (r'^project/edit_subjects/(?P<project_id>.+?)/$', edit_subject),
+        url(r'^project/sms_preview$', sms_preview, name="sms_preview"),
 )

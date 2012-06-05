@@ -21,6 +21,7 @@
         var subject_report_questions = $.parseJSON({{subject_report_questions|safe}});
         var activity_report_questions = $.parseJSON({{activity_report_questions|safe}});
         var existing_questions = $.parseJSON({{existing_questions|safe}});
+        var sms_preview_link = "{{ preview_links.sms_preview }}";
     </script>
     <script type="text/javascript" src="/media/javascript/csrf_token_handler.js"></script>
     <script type="text/javascript" src="/media/javascript/project/subject_warning_dialog_module.js"></script>
@@ -31,6 +32,7 @@
     <script type="text/javascript" src="/media/javascript/entity/questionnaire_helper.js"></script>
     <script type="text/javascript" src="/media/javascript/project/questionnaire_wizard_submit_redirect.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/create_type.js"></script>
+    <script type="text/javascript" src="/media/javascript/project/questionnaire_instruction_and_preview.js"></script>
     <script type="text/javascript">
         var is_edit = {{ is_edit }};
     </script>
@@ -107,7 +109,7 @@
         <form id="question_form">
             {% csrf_token %}
             <fieldset>
-                <div>
+                <div class="questionnaire_form_header">
                     <ul class="questionnaire_code">
                         <li>
                             <label>{% trans "SMS Questionnaire Code:" %}</label>
@@ -127,6 +129,10 @@
                         <div class="navigation-sms-preview"><a>{% trans "SMS" %}</a></div>
                         <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
                         <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
+                    </div>
+                    <div id="questionnaire_preview_instruction">
+                        <div id="questionnaire_content"></div>
+                        <a id="close_preview">[X]{% trans "Close Window" %}</a>
                     </div>
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">

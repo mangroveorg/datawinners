@@ -31,5 +31,10 @@ class TestProject(TestCase):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
         project_id = 'fe84831af56111e0aa085c260a236744'
         response = self.client.get('project/questionnaire',{'project_id' : project_id})
-        self.assertEquals(response.status_code,200)
+        self.assertEquals(response.status_code, 200)
 
+
+    def test_should_render_sms_preview_if_logged_in(self):
+        self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
+        response = self.client.post('/project/sms_preview')
+        self.assertEqual(response.status_code, 200)

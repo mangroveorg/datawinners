@@ -48,6 +48,19 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
 @login_required(login_url='/login')
 @csrf_exempt
 @is_not_expired
+def sms_preview(request):
+    return render_to_response("project/sms_instruction_preview.html")
+
+
+def get_preview_and_instruction_links():
+    links = {
+        'sms_preview': reverse("sms_preview")
+    }
+    return links
+
+@login_required(login_url='/login')
+@csrf_exempt
+@is_not_expired
 def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
@@ -63,6 +76,7 @@ def create_project(request):
         return render_to_response('project/create_project.html',
                 {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
+                 'preview_links': get_preview_and_instruction_links(),
                  'existing_questions': repr(activity_report_questions), 'project': project_summary,
                  'questionnaire_code': helper.generate_questionnaire_code(manager), 'is_edit': 'false', 'post_url': reverse(create_project)},context_instance=RequestContext(request))
 

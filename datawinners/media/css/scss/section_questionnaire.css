@@ -63,6 +63,20 @@
   .wizard_content .content_wrapper .preview-navigation .navigation-web-preview {
     background: url("/media/images/computer_black.png") no-repeat;
     padding-left: 22px; }
+.wizard_content .content_wrapper #questionnaire_preview_instruction {
+  background: white;
+  display: none;
+  position: absolute;
+  z-index: 1002;
+  top: 555px;
+  box-shadow: 5px 5px 5px #CCC;
+  width: 960px;
+  margin-left: -20px;
+  border: 1px solid #CCC;
+  padding-bottom: 30px; }
+  .wizard_content .content_wrapper #questionnaire_preview_instruction #close_preview {
+    float: right;
+    margin-right: 50px; }
 .wizard_content .content_wrapper .questionnaire_code {
   float: left; }
   .wizard_content .content_wrapper .questionnaire_code li {
