@@ -58,8 +58,7 @@
   width: 200px !important; }
 
 #question-detail-panel > div span {
-  margin-bottom: 20px;
-  display: block; }
+  margin-bottom: 20px; }
 
 /* jQuery UI Stylings */
 .ui-widget-overlay {
