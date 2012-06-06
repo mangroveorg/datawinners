@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
-from accountmanagement.models import NGOUserProfile
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
@@ -137,7 +136,9 @@ class TestProjectViews(unittest.TestCase):
         questions = {}
         manager = {}
         project = {"name": "project_name", "entity_type":"clinic", "language":"en"}
-        form_model = {}
+        form_model = Mock()
+        form_model.fields = [{}]
+        form_model.form_code = "form code"
         project_form = Mock()
         project_form.cleaned_data = {
             "name":"project_name", "entity_type":"clinic", "language":"en"
@@ -146,6 +147,8 @@ class TestProjectViews(unittest.TestCase):
         post = {"questionnaire-code": "q01",
                 "question-set": "",
                 "profile_form": '{"name":"project_name", "entity_type":"clinic", "language":"en"}'}
+
+
 
         with patch("project.preview_views.get_all_entity_types") as entities:
             entities.return_value = {}
@@ -161,6 +164,15 @@ class TestProjectViews(unittest.TestCase):
                             self.assertEquals(preview_context['questionnaire_code'], 'q01')
                             self.assertEquals(preview_context['questions'], questions)
                             self.assertEquals(preview_context['project'], project)
+                            self.assertEquals(preview_context['example_sms'], "form code answer1")
 
-    
+
+    def test_should_get_question_list(self):
+        form_model = Mock()
+        form_model.fields = [{}]
+
+        with patch("project.preview_views.get_preview_for_field") as preview_of_field:
+            preview_of_field.return_value = {"description": "description"}
+            questions = get_questions(form_model)
+            self.assertEquals(questions[0]["description"], "description")
 

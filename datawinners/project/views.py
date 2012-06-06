@@ -668,7 +668,7 @@ def subjects(request, project_id=None):
              'questions': questions,
              'questionnaire_code': reg_form.form_code,
              'example_sms': example_sms,
-             'org_number': _get_organization_telephone_number(request),
+             'org_number': get_organization_telephone_number(request),
              'current_language': translation.get_language(),
              'subject': subject},
         context_instance=RequestContext(request))
@@ -775,7 +775,7 @@ def datasenders(request, project_id=None):
              'questions': questions,
              'questionnaire_code': reg_form.form_code,
              'example_sms': example_sms,
-             'org_number': _get_organization_telephone_number(request),
+             'org_number': get_organization_telephone_number(request),
              'current_language': translation.get_language()},
         context_instance=RequestContext(request))
 
@@ -947,7 +947,7 @@ def questionnaire_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request)},
+                 'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
             context_instance=RequestContext(request))
 
 
@@ -991,7 +991,7 @@ def subject_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                  'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request)},
+                 'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
             context_instance=RequestContext(request))
 
 
@@ -1009,11 +1009,11 @@ def sender_registration_form_preview(request, project_id=None):
         return render_to_response('project/questionnaire_preview.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  'project': project, 'project_links': project_links,
-                 'example_sms': example_sms, 'org_number': _get_organization_telephone_number(request)},
+                 'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
             context_instance=RequestContext(request))
 
 
-def _get_organization_telephone_number(request):
+def get_organization_telephone_number(request):
     organization_settings = utils.get_organization_settings_from_request(request)
     return organization_settings.get_organisation_sms_number()[0]
 

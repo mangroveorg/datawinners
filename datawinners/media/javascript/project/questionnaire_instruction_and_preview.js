@@ -19,7 +19,8 @@ DW.instruction_and_preview = {
         var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
         return {'questionnaire-code':$('#questionnaire-code').val(),
             'question-set':questionnaire_data,
-            'profile_form':basic_project_info.values()};
+            'profile_form':basic_project_info.values(),
+            'project_state':"Test"};
     },
 
     load_preview_content: function(preview_link, post_data) {
