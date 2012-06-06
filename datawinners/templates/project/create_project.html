@@ -41,6 +41,7 @@
 {% block page_scss %}
     <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
 {% endblock %}
 
 {% block wizard %}
@@ -130,10 +131,7 @@
                         <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
                         <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
                     </div>
-                    <div id="questionnaire_preview_instruction">
-                        <div id="questionnaire_content"></div>
-                        <a id="close_preview">[X]{% trans "Close Window" %}</a>
-                    </div>
+
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">
                     <div>
@@ -195,5 +193,8 @@
             <div class="clear-both"></div>
         </div>
     </div>
-
+    <div id="questionnaire_preview_instruction">
+        <div id="questionnaire_content"></div>
+        <a id="close_preview">[X]{% trans "Close Window" %}</a>
+    </div>
 {% endblock %}
