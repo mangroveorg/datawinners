@@ -10,4 +10,4 @@ class SmsQuestionnairePreviewPage(Page):
         return self.driver.find(QUESTIONNAIRE_PREVIEW)
 
     def get_project_name(self):
-        return self.driver.find(PROJECT_NAME)
+        return self.driver.find(PROJECT_NAME).text

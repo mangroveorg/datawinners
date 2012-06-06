@@ -48,6 +48,4 @@ def sms_preview(request):
     context = {'org_number': get_organization_telephone_number(request)}
     context.update(get_sms_preview_context(manager, request.POST))
 
-    return render_to_response("project/sms_instruction_preview.html", {}, context_instance=RequestContext(request))
-
-
+    return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))

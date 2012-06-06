@@ -53,4 +53,4 @@ class TestCreateProject(BaseTest):
         create_project_page.continue_create_project()
         sms_questionnaire_preview_page = create_project_page.sms_questionnaire_preview()
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
-        self.assertEquals(sms_questionnaire_preview_page.get_project_name(), fetch_(PROJECT_NAME, from_(VALID_DATA)))
+        self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(), "^Project: %s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))

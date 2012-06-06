@@ -1,3 +1,7 @@
-<div id="questionnaire_preview">
+{% load i18n %}
+{% load field_tags %}
+{% load questionnaire_preview_tags %}
 
+<div id="questionnaire_preview">
+    {% include "project/sms_questionnaire_preview.html" %}
 </div>
