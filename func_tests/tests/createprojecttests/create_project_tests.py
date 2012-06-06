@@ -51,5 +51,6 @@ class TestCreateProject(BaseTest):
         create_project_page = self.prerequisites_of_create_project()
         create_project_page.create_project_with(VALID_DATA)
         create_project_page.continue_create_project()
-        create_project_page.sms_questionnaire_preview()
-        self.assertIsNotNone(create_project_page.sms_questionnaire())
+        sms_questionnaire_preview_page = create_project_page.sms_questionnaire_preview()
+        self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
+        self.assertEquals(sms_questionnaire_preview_page.get_project_name(), fetch_(PROJECT_NAME, from_(VALID_DATA)))

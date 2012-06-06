@@ -6,6 +6,7 @@ from framework.utils.data_fetcher import *
 from pages.createprojectpage.create_project_locator import *
 from pages.projectoverviewpage.project_overview_locator import PROJECT_STATUS_LABEL
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
+from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
 from tests.createprojecttests.create_project_data import *
 from pages.page import Page
 from framework.utils.common_utils import generateId, CommonUtilities
@@ -186,6 +187,4 @@ class CreateProjectPage(Page):
 
     def sms_questionnaire_preview(self):
         self.driver.find(by_css(".navigation-sms-preview")).click()
-
-    def sms_questionnaire(self):
-        return self.driver.find(by_css("#questionnaire_preview_instruction #questionnaire_preview"))
+        return SmsQuestionnairePreviewPage(self.driver)
