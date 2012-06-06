@@ -109,7 +109,7 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
         error_messages={
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
     password1 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
-        label=_("Password"))
+        label=_("Password"), min_length=6)
     password2 = forms.CharField(required=True, widget=forms.PasswordInput(render_value=False),
         label=_("Password (again)"))
 
@@ -139,6 +139,10 @@ class MinimalRegistrationForm(RegistrationFormUniqueEmail):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 msg = _("The two password fields didn't match.")
                 self._errors['password1'] = self.error_class([msg])
+            else:
+                if self.cleaned_data['password1'] != self.cleaned_data['password1'].strip():
+                    msg = _("There should not be any space at the beginning and the end of the password.")
+                    self._errors['password1'] = self.error_class([msg])
         return self.cleaned_data
 
     def convert_email_to_lowercase(self):

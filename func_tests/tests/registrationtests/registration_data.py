@@ -174,3 +174,24 @@ INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
 
 INVALID_WEBSITE_URL_ERROR_MESSAGE= u"Office Phone Number optional Please enter a valid phone number.Website optional Enter a valid URL. Example: www.organization.comInvoice Period Monthly: $ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 765 per month Save 10% by paying 6 months in advance This field is required."
+
+BEGIN_END_SPACED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
+                      ORGANIZATION_SECTOR: u"PublicHealth",
+                      ORGANIZATION_ADDRESS: u"Address Line One",
+                      ORGANIZATION_CITY: u"Pune",
+                      ORGANIZATION_STATE: u"Maharashtra",
+                      ORGANIZATION_COUNTRY: u"IN",
+                      ORGANIZATION_ZIPCODE: u"411028",
+                      ORGANIZATION_OFFICE_PHONE: u"(01)23456789",
+                      ORGANIZATION_WEBSITE: u"http://ngo001.com",
+                      TITLE: u"Mr",
+                      FIRST_NAME: u"No",
+                      LAST_NAME: u"Go",
+                      EMAIL: u"valid@email.com",
+                      ADMIN_MOBILE_NUMBER: "(91)678646792-67",
+                      REGISTRATION_PASSWORD: u" password ",
+                      REGISTRATION_CONFIRM_PASSWORD: u" password ",
+                      PAY_MONTHLY: PAY_MONTHLY,
+                      WIRE_TRANSFER: WIRE_TRANSFER}
+
+BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE = u"Password There should not be any space at the beginning and the end of the password. Example: Minimum of 6 characters in length"

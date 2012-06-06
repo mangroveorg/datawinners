@@ -15,7 +15,7 @@ class TestFullRegistrationForm(unittest.TestCase):
                      'last_name': 'b',
                      'email': uppercase_email_id,
                      'mobile_phone':'+261 33 333 33',
-                     'password1': 'a', 'password2': 'a', 'organization_name': 'ad',
+                     'password1': 'abcdef', 'password2': 'abcdef', 'organization_name': 'ad',
                      'organization_address': 'asa', 'organization_city': 'aaa', 'organization_country': 'aa',
                      'organization_zipcode': 'asd', 'organization_sector': 'Other', 'invoice_period':'pay_monthly'
         }
@@ -57,8 +57,8 @@ class TestMinimalRegistrationForm(unittest.TestCase):
         base_form = {'first_name': 'a',
                      'last_name': 'b',
                      'email': 'A@b.com',
-                     'password1': 'a',
-                     'password2': 'b',
+                     'password1': 'abcdef',
+                     'password2': 'abcdef',
                      'mobile_phone':'1234567',
                      'organization_name': 'ad',
                      'organization_city': 'aaa',
@@ -67,6 +67,29 @@ class TestMinimalRegistrationForm(unittest.TestCase):
                      'invoice_period':'pay_monthly'
         }
         form = MinimalRegistrationForm(base_form)
+        with patch.object(MinimalRegistrationForm, 'clean_mobile_phone') as get_mobile_phone:
+            with patch.object(MinimalRegistrationForm, 'clean_username') as get_clean_username:
+                error_message = 'Test message'
+                get_clean_username.return_value = None
+                get_mobile_phone.side_effect = ValidationError(error_message)
+                self.assertFalse(form.is_valid())
+                self.assertEqual([error_message], form.errors['mobile_phone'])
+
+    def test_should_raise_error_password_contain_space_at_the_end_or_at_the_beginning(self):
+        base_form = {'first_name': 'a',
+                     'last_name': 'b',
+                     'email': 'A@b.com',
+                     'password1': ' pwd1 ',
+                     'password2': ' pwd1 ',
+                     'mobile_phone':'1234567',
+                     'organization_name': 'ad',
+                     'organization_city': 'aaa',
+                     'organization_country': 'aa',
+                     'organization_sector': 'Other',
+                     'invoice_period':'pay_monthly'
+        }
+        form = MinimalRegistrationForm(base_form)
+
         with patch.object(MinimalRegistrationForm, 'clean_mobile_phone') as get_mobile_phone:
             with patch.object(MinimalRegistrationForm, 'clean_username') as get_clean_username:
                 error_message = 'Test message'

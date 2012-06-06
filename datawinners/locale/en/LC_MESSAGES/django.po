@@ -4181,3 +4181,6 @@ msgstr ""
 
 msgid "You are editing the Data Senderʼs Details"
 msgstr ""
+
+msgid "There should not be any space at the beginning and the end of the password."
+msgstr ""

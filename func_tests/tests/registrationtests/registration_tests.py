@@ -108,3 +108,10 @@ class TestRegistrationPage(unittest.TestCase):
         registration_page = RegistrationPage(self.driver)
         registration_confirmation_page, email = registration_page.successful_registration_with(WITHOUT_PREFERRED_PAYMENT)
         self.assertEquals(registration_confirmation_page.registration_success_message(), REGISTRATION_SUCCESS_MESSAGE)
+
+    @attr('functional_test')
+    def test_register_ngo_with_begin_end_spaced_password(self):
+        self.driver.go_to(DATA_WINNER_REGISTER_PAGE)
+        registration_page = RegistrationPage(self.driver)
+        registration_page.register_with(BEGIN_END_SPACED_PASSWORD)
+        self.assertEquals(BEGIN_END_SPACED_PASSWORD_ERROR_MESSAGE, registration_page.get_error_message())
