@@ -1,3 +1,4 @@
+import json
 from unittest.case import SkipTest
 from django.test import TestCase
 from django.test import Client
@@ -33,8 +34,11 @@ class TestProject(TestCase):
         response = self.client.get('project/questionnaire',{'project_id' : project_id})
         self.assertEquals(response.status_code, 200)
 
-
+    @SkipTest
     def test_should_render_sms_preview_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
-        response = self.client.post('/project/sms_preview')
+        response = self.client.post('/project/sms_preview', {"questionnaire-code": "q01",
+                                                            "question-set": "",
+                                                            "profile_form": json.dumps({"name":"project_name", "entity_type":"clinic", "language":"en"}),
+                                                            'project_state': "Test"})
         self.assertEqual(response.status_code, 200)
