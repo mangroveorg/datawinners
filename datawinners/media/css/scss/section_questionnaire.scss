@@ -59,14 +59,15 @@
     }
     .preview-navigation{
       float: right;
-      margin: 31px 10px 0 0;
+      margin: 26px 10px 0 0;
       span {
         float: left;
         margin-right: 6px;
+        padding: 4px 0;
       }
       div {
         float: left;
-        margin-left: 10px;
+        margin-right: 3px;
       }
       div:hover {
         cursor: pointer;
@@ -75,16 +76,30 @@
         text-decoration: none;
       }
       .navigation-sms-preview {
-        background: url("/media/images/feature_phone_black.png") no-repeat;
-        padding-left: 14px;
+        background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
+        padding: 4px 4px 0 20px;
       }
       .navigation-smart-phone-preview {
-        background: url("/media/images/smart_phone_black.png") no-repeat;
-        padding-left: 15px;
+        background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
+        padding: 4px 4px 0 20px;
       }
       .navigation-web-preview {
-        background: url("/media/images/computer_black.png") no-repeat;
-        padding-left: 22px;
+        background: url("/media/images/computer_black.png") no-repeat 4px 4px;
+        padding: 4px 4px 0 30px;
+      }
+      .shadow-background {
+        border: 1px solid #CCC;
+        box-shadow: 3px 0 3px #CCC;
+        height: 40px;
+        a {
+          color: black;
+        }
+        a:hover {
+          cursor: auto;
+        }
+      }
+      .shadow-background:hover {
+        cursor: auto;
       }
     }
     #questionnaire_preview_instruction {

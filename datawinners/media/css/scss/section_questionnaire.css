@@ -43,26 +43,37 @@
   margin-bottom: 10px; }
 .wizard_content .content_wrapper .preview-navigation {
   float: right;
-  margin: 31px 10px 0 0; }
+  margin: 26px 10px 0 0; }
   .wizard_content .content_wrapper .preview-navigation span {
     float: left;
-    margin-right: 6px; }
+    margin-right: 6px;
+    padding: 4px 0; }
   .wizard_content .content_wrapper .preview-navigation div {
     float: left;
-    margin-left: 10px; }
+    margin-right: 3px; }
   .wizard_content .content_wrapper .preview-navigation div:hover {
     cursor: pointer; }
   .wizard_content .content_wrapper .preview-navigation a {
     text-decoration: none; }
   .wizard_content .content_wrapper .preview-navigation .navigation-sms-preview {
-    background: url("/media/images/feature_phone_black.png") no-repeat;
-    padding-left: 14px; }
+    background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
+    padding: 4px 4px 0 20px; }
   .wizard_content .content_wrapper .preview-navigation .navigation-smart-phone-preview {
-    background: url("/media/images/smart_phone_black.png") no-repeat;
-    padding-left: 15px; }
+    background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
+    padding: 4px 4px 0 20px; }
   .wizard_content .content_wrapper .preview-navigation .navigation-web-preview {
-    background: url("/media/images/computer_black.png") no-repeat;
-    padding-left: 22px; }
+    background: url("/media/images/computer_black.png") no-repeat 4px 4px;
+    padding: 4px 4px 0 30px; }
+  .wizard_content .content_wrapper .preview-navigation .shadow-background {
+    border: 1px solid #CCC;
+    box-shadow: 3px 0 3px #CCC;
+    height: 40px; }
+    .wizard_content .content_wrapper .preview-navigation .shadow-background a {
+      color: black; }
+    .wizard_content .content_wrapper .preview-navigation .shadow-background a:hover {
+      cursor: auto; }
+  .wizard_content .content_wrapper .preview-navigation .shadow-background:hover {
+    cursor: auto; }
 .wizard_content .content_wrapper #questionnaire_preview_instruction {
   background: white;
   display: none;

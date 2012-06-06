@@ -25,8 +25,9 @@ DW.instruction_and_preview = {
 
     load_preview_content: function(preview_link, post_data) {
         $.post(preview_link, post_data, function(response_data){
-            $("#questionnaire_content").html(response_data)
+            $("#questionnaire_content").html(response_data);
             $("#questionnaire_preview_instruction").show();
+            $(".navigation-sms-preview").addClass("shadow-background");
         }, 'html')
     }
 
