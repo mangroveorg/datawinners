@@ -3,5 +3,19 @@
 {% load questionnaire_preview_tags %}
 
 <div id="questionnaire_preview" class="ui-widget">
-    {% include "project/sms_questionnaire_preview.html" %}
+    <div class="sms-instruction">
+        <h5>{% trans "Collect Data via SMS" %}</h5>
+
+        <p>{% trans "Your Data Senders can use their own mobile phone to send in data." %}</p>
+        <h6>{% trans "How it Works" %}</h6>
+
+        <p>{% trans "sms instruction" %}</p>
+    </div>
+    <div class="clearfix">
+        <div class="preview-header clearfix">
+            <h6 class="sms-questionnaire-title">{% trans "SMS Questionnaire " %}</h6>
+            <a href="#" class="printBtn">{% trans "Print" %}</a>
+        </div>
+        {% include "project/sms_questionnaire_preview.html" %}
+    </div>
 </div>

@@ -34,7 +34,23 @@
 #questionnaire_content {
   #questionnaire_preview {
     color: #222;
-    padding: 10px 20px;
+    .sms-questionnaire {
+      margin: 10px 10px;
+      padding: 20px;
+      border: 1px solid #CCC;
+    }
+    .sms-instruction {
+      margin-left: 10px;
+    }
+    .preview-header {
+      margin: 0 10px;
+      .sms-questionnaire-title {
+        float: left;
+      }
+      .printBtn {
+        float: right;
+      }
+    }
   }
 }
 #que_code{

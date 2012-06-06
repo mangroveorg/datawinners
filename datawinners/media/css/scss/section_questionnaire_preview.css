@@ -22,8 +22,19 @@
     float: left; }
 
 #questionnaire_content #questionnaire_preview {
-  color: #222;
-  padding: 10px 20px; }
+  color: #222; }
+  #questionnaire_content #questionnaire_preview .sms-questionnaire {
+    margin: 10px 10px;
+    padding: 20px;
+    border: 1px solid #CCC; }
+  #questionnaire_content #questionnaire_preview .sms-instruction {
+    margin-left: 10px; }
+  #questionnaire_content #questionnaire_preview .preview-header {
+    margin: 0 10px; }
+    #questionnaire_content #questionnaire_preview .preview-header .sms-questionnaire-title {
+      float: left; }
+    #questionnaire_content #questionnaire_preview .preview-header .printBtn {
+      float: right; }
 
 #que_code li {
   list-style-type: decimal;
