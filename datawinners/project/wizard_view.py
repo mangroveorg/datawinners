@@ -46,7 +46,6 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
 
 
 @login_required(login_url='/login')
-@csrf_exempt
 @is_not_expired
 def sms_preview(request):
     return render_to_response("project/sms_instruction_preview.html")

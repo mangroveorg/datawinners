@@ -108,6 +108,10 @@ DW.post_project_data = function (state, function_to_construct_redirect_url_on_su
     });
 };
 
+DW.questionnaire_form_validate = function(){
+    return questionnnaire_code.processValidation() && questionnaire_form.processValidation();
+};
+
 $(document).ready(function () {
     DW.subject_warning_dialog_module.init();
 
@@ -161,7 +165,7 @@ $(document).ready(function () {
     });
 
     $('#save_and_create').click(function () {
-        if (questionnnaire_code.processValidation() && questionnaire_form.processValidation()) {
+        if (DW.questionnaire_form_validate()) {
             $.blockUI({ message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>', css:{ width:'275px'}});
             DW.post_project_data('Test', function (response) {
                 return '/project/overview/' + response.project_id;
@@ -171,7 +175,7 @@ $(document).ready(function () {
     });
 
     $('#save_as_draft').click(function () {
-        if (questionnnaire_code.processValidation() && questionnaire_form.processValidation()) {
+        if (DW.questionnaire_form_validate()) {
             DW.post_project_data('Inactive', function (response) {
                 return '/project/';
             });
