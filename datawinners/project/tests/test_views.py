@@ -11,6 +11,7 @@ from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
+from project.preview_views import get_sms_preview_context, get_questions
 from project.views import get_form_model_and_template
 from project.wizard_view import get_preview_and_instruction_links
 
@@ -131,3 +132,35 @@ class TestProjectViews(unittest.TestCase):
             reverse.return_value = "/project/sms_preview"
             links = get_preview_and_instruction_links()
             self.assertEqual(links["sms_preview"], "/project/sms_preview")
+
+    def test_should_get_correct_context_for_sms_preview(self):
+        questions = {}
+        manager = {}
+        project = {"name": "project_name", "entity_type":"clinic", "language":"en"}
+        form_model = {}
+        project_form = Mock()
+        project_form.cleaned_data = {
+            "name":"project_name", "entity_type":"clinic", "language":"en"
+        }
+
+        post = {"questionnaire-code": "q01",
+                "question-set": "",
+                "profile_form": '{"name":"project_name", "entity_type":"clinic", "language":"en"}'}
+
+        with patch("project.preview_views.get_all_entity_types") as entities:
+            entities.return_value = {}
+            with patch("project.preview_views.remove_reporter") as removed_entities:
+                removed_entities.return_value = {}
+                with patch("project.preview_views.CreateProject") as create_project:
+                    create_project.return_value = project_form
+                    with patch("project.preview_views.create_questionnaire") as questionnaire:
+                        questionnaire.return_value = form_model
+                        with patch("project.preview_views.get_questions") as get_questions:
+                            get_questions.return_value = questions
+                            preview_context = get_sms_preview_context(manager, post)
+                            self.assertEquals(preview_context['questionnaire_code'], 'q01')
+                            self.assertEquals(preview_context['questions'], questions)
+                            self.assertEquals(preview_context['project'], project)
+
+    
+

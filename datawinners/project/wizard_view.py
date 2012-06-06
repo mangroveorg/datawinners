@@ -28,7 +28,8 @@ def create_questionnaire(post, manager, entity_type, name, language):
     questionnaire_code = post['questionnaire-code'].lower()
     json_string = post['question-set']
     question_set = json.loads(json_string)
-    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey', state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
+    form_model = FormModel(manager, entity_type=entity_type, name=name, type='survey',
+                           state=post['project_state'], fields=[], form_code=questionnaire_code, language=language)
     QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
     return form_model
 
@@ -43,12 +44,6 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
     QuestionnaireBuilder(questionnaire, manager).update_questionnaire_with_questions(question_set)
     questionnaire.deactivate() if post['project_state'] == ProjectState.INACTIVE else questionnaire.set_test_mode()
     return questionnaire
-
-
-@login_required(login_url='/login')
-@is_not_expired
-def sms_preview(request):
-    return render_to_response("project/sms_instruction_preview.html")
 
 
 def get_preview_and_instruction_links():
@@ -92,7 +87,9 @@ def create_project(request):
                 project.data_senders.append(ngo_admin.reporter_id)
 
             try:
-                questionnaire = create_questionnaire(post=request.POST, manager=manager, entity_type=form.cleaned_data['entity_type'], name=form.cleaned_data['name'], language=form.cleaned_data['language'])
+                questionnaire = create_questionnaire(post=request.POST, manager=manager,
+                                                     entity_type=form.cleaned_data['entity_type'],
+                                                     name=form.cleaned_data['name'], language=form.cleaned_data['language'])
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
                 return HttpResponse(json.dumps({'success': False ,'error_message': _(ex.message), 'error_in_project_section': False}))
 
