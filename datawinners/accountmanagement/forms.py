@@ -227,7 +227,14 @@ class ResetPasswordForm(PasswordResetForm):
 
 
 class PasswordSetForm(SetPasswordForm):
+    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, min_length=6)
     required_css_class = 'required'
+
+    def clean_new_password1(self):
+        cleaned_pwd = self.cleaned_data.get("new_password1")
+        if cleaned_pwd != cleaned_pwd.strip():
+            raise forms.ValidationError(_("There should not be any space at the beginning and the end of the password."))
+        return cleaned_pwd.strip()
 
 
 class UpgradeForm(forms.Form):
