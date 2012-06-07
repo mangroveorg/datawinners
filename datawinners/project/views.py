@@ -1103,7 +1103,7 @@ def edit_datasender(request, project_id, reporter_id):
 
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
-                'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : reporter_entity.value(LOCATION_TYPE_FIELD_NAME),'geo_code' : reporter_entity.value(GEO_CODE_FIELD_NAME)})
+                'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)),'geo_code' : ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME))})
         return render_to_response('project/edit_datasender.html',{'form' : form},context_instance = RequestContext(request))
 
     if request.method == 'POST':
