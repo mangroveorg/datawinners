@@ -58,6 +58,7 @@
 
     }
     .preview-navigation{
+      position: relative;
       float: right;
       margin-top: 26px;
       span {
@@ -88,9 +89,13 @@
         padding: 4px 4px 0 30px;
       }
       .shadow-background {
+        position: relative;
+        z-index: 1003;
+        background-color: white;
         border: 1px solid #CCC;
-        box-shadow: 3px 0 3px #CCC;
-        height: 40px;
+        box-shadow: 3px 0 5px -3px #CCC;
+        border-bottom: none;
+        height: 33px;
         a {
           color: black;
         }
@@ -107,7 +112,7 @@
       display: none;
       position: absolute;
       z-index: 1002;
-      top: 555px;
+      top: 558px;
       box-shadow: 5px 5px 5px #CCC;
       width: 960px;
       margin-left: -20px;
@@ -135,13 +140,9 @@
         }
       }
     }
-    .questionnare_header {
-      border: 1px solid #a3c7ef;
-      height: 50px;
-      margin: 0 0 20px 30px;
-      padding: 10px;
-      width: 850px;
-      background-color: #e9f6ff;
+    .questionnaire_form_header {
+      border-bottom: 3px solid black;
+      height: 58px;
     }
     .questionnare_content {
       border-bottom: 1px solid #cccccc;

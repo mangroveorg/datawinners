@@ -22,6 +22,7 @@
     float: left; }
 
 #questionnaire_content #questionnaire_preview {
+  margin-right: 10px;
   color: #222;
   padding-top: 20px; }
   #questionnaire_content #questionnaire_preview .sms-questionnaire {
@@ -30,6 +31,8 @@
     border: 1px solid #CCC; }
   #questionnaire_content #questionnaire_preview .sms-instruction {
     margin-left: 10px; }
+    #questionnaire_content #questionnaire_preview .sms-instruction > div {
+      padding-bottom: 15px; }
   #questionnaire_content #questionnaire_preview .preview-header {
     margin: 0 10px; }
     #questionnaire_content #questionnaire_preview .preview-header .sms-questionnaire-title {

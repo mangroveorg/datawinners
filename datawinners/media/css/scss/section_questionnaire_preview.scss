@@ -33,6 +33,7 @@
 }
 #questionnaire_content {
   #questionnaire_preview {
+    margin-right: 10px;
     color: #222;
     padding-top: 20px;
     .sms-questionnaire {
@@ -42,6 +43,9 @@
     }
     .sms-instruction {
       margin-left: 10px;
+      > div {
+        padding-bottom: 15px;
+      }
     }
     .preview-header {
       margin: 0 10px;

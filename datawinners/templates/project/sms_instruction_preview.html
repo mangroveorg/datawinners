@@ -4,12 +4,14 @@
 
 <div id="questionnaire_preview" class="ui-widget">
     <div class="sms-instruction">
-        <h5>{% trans "Collect Data via SMS" %}</h5>
-
-        <p>{% trans "Your Data Senders can use their own mobile phone to send in data." %}</p>
-
-        <p class="bold">{% trans "How it Works" %}</p>
-        <p>{% trans "sms instruction" %}</p>
+        <div class="instruction-header">
+            <h5>{% trans "Collect Data via SMS" %}</h5>
+            <p>{% trans "Your Data Senders can use their own mobile phone to send in data." %}</p>
+        </div>
+        <div class="instruction-content">
+            <p class="bold">{% trans "How it Works" %}</p>
+            <p>{% trans "sms instruction" %}</p>
+        </div>
     </div>
     <div class="clearfix">
         <div class="preview-header clearfix">

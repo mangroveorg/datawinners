@@ -42,6 +42,7 @@
 .wizard_content .content_wrapper .questionnaire_code h5 {
   margin-bottom: 10px; }
 .wizard_content .content_wrapper .preview-navigation {
+  position: relative;
   float: right;
   margin-top: 26px; }
   .wizard_content .content_wrapper .preview-navigation span {
@@ -65,9 +66,13 @@
     background: url("/media/images/computer_black.png") no-repeat 4px 4px;
     padding: 4px 4px 0 30px; }
   .wizard_content .content_wrapper .preview-navigation .shadow-background {
+    position: relative;
+    z-index: 1003;
+    background-color: white;
     border: 1px solid #CCC;
-    box-shadow: 3px 0 3px #CCC;
-    height: 40px; }
+    box-shadow: 3px 0 5px -3px #cccccc;
+    border-bottom: none;
+    height: 33px; }
     .wizard_content .content_wrapper .preview-navigation .shadow-background a {
       color: black; }
     .wizard_content .content_wrapper .preview-navigation .shadow-background a:hover {
@@ -79,7 +84,7 @@
   display: none;
   position: absolute;
   z-index: 1002;
-  top: 555px;
+  top: 558px;
   box-shadow: 5px 5px 5px #CCC;
   width: 960px;
   margin-left: -20px;
@@ -100,13 +105,9 @@
     .wizard_content .content_wrapper .questionnaire_code li label {
       display: inline;
       width: 140px; }
-.wizard_content .content_wrapper .questionnare_header {
-  border: 1px solid #a3c7ef;
-  height: 50px;
-  margin: 0 0 20px 30px;
-  padding: 10px;
-  width: 850px;
-  background-color: #e9f6ff; }
+.wizard_content .content_wrapper .questionnaire_form_header {
+  border-bottom: 3px solid black;
+  height: 58px; }
 .wizard_content .content_wrapper .questionnare_content {
   border-bottom: 1px solid #cccccc;
   border-top: 1px solid #cccccc;
