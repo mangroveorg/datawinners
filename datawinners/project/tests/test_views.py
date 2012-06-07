@@ -8,10 +8,10 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, add_link, all_datasenders
+from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
-from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context
+from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link
 from project.views import get_form_model_and_template
 from project.wizard_view import get_preview_and_instruction_links
 
@@ -195,7 +195,11 @@ class TestProjectViews(unittest.TestCase):
         manager = {}
         form_model = {}
         form = Mock()
-        post = {'profile_form': '{"activity_report": "yes"}'}
+        form.cleaned_data = {
+            "name": "project_name", "entity_type": "clinic", "language": "en", "goals": "goals", "activity_report": "yes",
+        }
+        post = {'profile_form': '{"activity_report": "yes" }',
+                'project_state': 'Test'}
         web_questionnaire_form_creater = Mock()
         QuestionnaireForm = type('QuestionnaireForm', (Form, ), {"short_code_question_code": "eid"})
         with patch("project.preview_views.get_questionnaire_form_model_and_form") as questionnaire_form_model_and_form:
@@ -206,8 +210,22 @@ class TestProjectViews(unittest.TestCase):
                     web_questionnaire_form_creater.return_value = web_questionnaire_form_creater
                     with patch.object(web_questionnaire_form_creater, "create") as create_form:
                         create_form.return_value = QuestionnaireForm
-                        web_preview_context = get_web_preview_context(manager, post)
-                        project = web_preview_context['project']
-                        self.assertEquals(project['activity_report'], "yes")
-                        questionnaire_form = web_preview_context['questionnaire_form']
-                        self.assertEquals(questionnaire_form.short_code_question_code, "eid")
+                        with patch("project.preview_views.add_link") as add_link:
+                            add_link.return_value = {'text': 'Add a datasender'}
+                            web_preview_context = get_web_preview_context(manager, post)
+                            project = web_preview_context['project']
+                            self.assertEquals(project['activity_report'], "yes")
+                            questionnaire_form = web_preview_context['questionnaire_form']
+                            self.assertEquals(questionnaire_form.short_code_question_code, "eid")
+                            self.assertEquals(web_preview_context['add_link']['text'], 'Add a datasender')
+
+    def test_should_get_correct_add_link_for_project(self):
+        project = Mock(spec=Project)
+        project.entity_type = "reporter"
+        project.id = "pid"
+        with patch("project.preview_views.reverse") as reverse:
+            reverse.return_value = "/project/register_datasenders/pid"
+            add_link_dict = add_link(project)
+            print add_link_dict['text']
+            self.assertEquals(add_link_dict['text'], 'Add a datasender')
+            self.assertEquals(add_link_dict['url'], "/project/register_datasenders/pid")

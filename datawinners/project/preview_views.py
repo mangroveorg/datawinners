@@ -1,15 +1,18 @@
+from collections import namedtuple
 import json
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore.entity_type import get_all_entity_types
+from mangrove.form_model.form_model import REPORTER
 from accountmanagement.views import is_not_expired
 from main.utils import get_database_manager
-from project import helper
 from project.forms import CreateProject
 from project.helper import remove_reporter, get_preview_for_field, hide_entity_question
-from project.views import get_example_sms, get_organization_telephone_number
+from project.models import Project
+from project.views import get_example_sms, get_organization_telephone_number, create_datasender_and_webuser
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 from project.wizard_view import create_questionnaire
 
@@ -59,19 +62,33 @@ def sms_preview(request):
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
 
+def add_link(project):
+    if project.entity_type == REPORTER:
+        text = _("Add a datasender")
+        return {'url': '#', 'text': text}
+    else:
+        text = _("Register a %(subject)s") % {'subject': project.entity_type}
+        return {'url': '#', 'text': text}
+
 def get_web_preview_context(manager, post):
-    project = json.loads(post['profile_form'])
-    form_model, form = get_questionnaire_form_model_and_form(manager, project, post)
+    project_info = json.loads(post['profile_form'])
+    form_model, form = get_questionnaire_form_model_and_form(manager, project_info, post)
     if form.is_valid():
+        project = Project(name=form.cleaned_data['name'], goals=form.cleaned_data['goals'],
+            project_type='survey', entity_type=form.cleaned_data['entity_type'],
+            activity_report=form.cleaned_data['activity_report'],
+            state = post['project_state'], devices=[u'sms', u'web', u'smartPhone'],language=form.cleaned_data['language'])
+
         QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
             form_model = form_model).create()
         questionnaire_form = QuestionnaireForm()
-        context = {'project': project,
-                   'questionnaire_form': questionnaire_form}
+        context = {'project': project_info,
+                   'questionnaire_form': questionnaire_form,
+                    'add_link': add_link(project),}
         return context;
     return {}
 
 @login_required(login_url='/login')
 @is_not_expired
 def web_preview(request):
-    return render_to_response("project/web_instruction_preview.html", {})
+    return render_to_response("project/web_instruction_preview.html", get_web_preview_context(get_database_manager(request.user),request.POST), context_instance=RequestContext(request))
