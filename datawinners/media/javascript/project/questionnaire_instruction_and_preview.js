@@ -20,17 +20,18 @@ DW.instruction_and_preview.prototype = {
                          'question-set':JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2),
                          'profile_form':basic_project_info.values(),
                          'project_state':"Test"};
-        
+
+        var that = this;
         $.post(this.preview_url, post_data, function (response_data) {
             $("#questionnaire_content").html(response_data);
             $("#questionnaire_preview_instruction").show();
-            $(this.preview_navigation_item).addClass("shadow-background");
+            $(that.preview_navigation_item).addClass("shadow-background");
         }, 'html');
     }
 };
 
 DW.instruction_and_preview.bind_cancel_button = function() {
-    $("#close_preview").live('click', function() {
+    $(".close_preview").live('click', function() {
         $("#questionnaire_content").html("");
         $("#questionnaire_preview_instruction").hide();
         $(".shadow-background").removeClass("shadow-background");

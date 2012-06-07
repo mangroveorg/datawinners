@@ -17,7 +17,7 @@ class SmsQuestionnairePreviewPage(Page):
         return self.driver.find(SMS_INSTRUCTION)
 
     def close_preview(self):
-        return self.driver.find(by_css("#close_preview")).click()
+        return self.driver.find(by_css(".close_preview")).click()
 
     def sms_questionnaire_exist(self):
         return self.driver.is_element_present(QUESTIONNAIRE_PREVIEW)
