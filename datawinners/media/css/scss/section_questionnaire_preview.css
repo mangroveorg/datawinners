@@ -37,11 +37,6 @@
     #questionnaire_content #questionnaire_preview .preview-header .printBtn {
       float: right; }
 
-#que_code li {
-  list-style-type: decimal;
-  float: left;
-  clear: both; }
-
 #print_page a {
   color: #0070ac;
   outline: none; }
