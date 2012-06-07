@@ -24,16 +24,21 @@ def get_questions(form_model):
 
     return questions
 
-def get_sms_preview_context(manager, post):
+
+def get_questionnaire_form_model_and_form(manager, project_info, post):
     entity_list = get_all_entity_types(manager)
     entity_list = remove_reporter(entity_list)
-
-    project_info = json.loads(post['profile_form'])
     form = CreateProject(entity_list, data=project_info)
     if form.is_valid():
-        form_model = create_questionnaire(post, manager, entity_type = form.cleaned_data['entity_type'],
-                                      name=form.cleaned_data['name'], language=form.cleaned_data['language'])
+        return create_questionnaire(post, manager, entity_type=form.cleaned_data['entity_type'],
+            name=form.cleaned_data['name'], language=form.cleaned_data['language']), form
+    return None, form
 
+def get_sms_preview_context(manager, post):
+    project_info = json.loads(post['profile_form'])
+
+    form_model, form = get_questionnaire_form_model_and_form(manager, project_info, post)
+    if form.is_valid():
         example_sms = "%s" % (form_model.form_code)
         example_sms += get_example_sms(form_model.fields)
 
@@ -55,4 +60,4 @@ def sms_preview(request):
 @login_required(login_url='/login')
 @is_not_expired
 def web_preview(request):
-    return HttpResponse()
+    return render_to_response("project/web_instruction_preview.html", {})
