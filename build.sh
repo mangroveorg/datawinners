@@ -39,7 +39,7 @@ function function_test {
 	python manage.py recreatedb && \
 	cd ../func_tests && \
 	nosetests && \
-	killall Google\ Chrome
+	killall -9 chromedriver
 }
 
 function restore_database {
