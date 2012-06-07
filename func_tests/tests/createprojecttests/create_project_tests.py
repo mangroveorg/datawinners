@@ -55,6 +55,8 @@ class TestCreateProject(BaseTest):
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
         self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(), "^Project: %s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
+        sms_questionnaire_preview_page.close_preview()
+        self.assertFalse(sms_questionnaire_preview_page.sms_questionnaire_exist())
 
     @attr('functional_test')
     def test_web_preview_of_questionnaire_when_create_project(self):

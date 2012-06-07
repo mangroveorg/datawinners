@@ -1,7 +1,7 @@
 DW.instruction_and_preview = function (preview_url, preview_navigation_item) {
     this.preview_url = preview_url;
     this.preview_navigation_item = preview_navigation_item;
-}
+};
 
 DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item:function () {
@@ -15,7 +15,6 @@ DW.instruction_and_preview.prototype = {
             }(that.load_preview_content);
         });
     },
-
 
     load_preview_content:function () {
         var post_data = {'questionnaire-code':$('#questionnaire-code').val(),
@@ -31,11 +30,21 @@ DW.instruction_and_preview.prototype = {
                 },
                 'html');
     }
-}
+};
+
+DW.instruction_and_preview.bind_cancel_button = function() {
+    $("#close_preview").live('click', function() {
+        $("#questionnaire_content").html("");
+        $("#questionnaire_preview_instruction").hide();
+        $(".shadow-background").removeClass("shadow-background");
+    });
+};
+
 
 $(function () {
     var sms_preview = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
     sms_preview.bind_preview_navigation_item();
     var web_preview = new DW.instruction_and_preview(web_preview_link, '.navigation-web-preview');
     web_preview.bind_preview_navigation_item();
+    DW.instruction_and_preview.bind_cancel_button();
 });
