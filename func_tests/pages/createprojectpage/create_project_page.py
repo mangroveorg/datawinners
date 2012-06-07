@@ -7,6 +7,7 @@ from pages.createprojectpage.create_project_locator import *
 from pages.projectoverviewpage.project_overview_locator import PROJECT_STATUS_LABEL
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
+from pages.webquestionnairepreivewpage.web_questionnaire_preivew_page import WebQuestionnairePreviewPage
 from tests.createprojecttests.create_project_data import *
 from pages.page import Page
 from framework.utils.common_utils import generateId, CommonUtilities
@@ -186,5 +187,9 @@ class CreateProjectPage(Page):
         return project_details
 
     def sms_questionnaire_preview(self):
-        self.driver.find(by_css(".navigation-sms-preview")).click()
+        self.driver.find(SMS_PREVIEW).click()
         return SmsQuestionnairePreviewPage(self.driver)
+
+    def web_questionnaire_preview(self):
+        self.driver.find(WEB_PREVIEW).click()
+        return WebQuestionnairePreviewPage(self.driver)
