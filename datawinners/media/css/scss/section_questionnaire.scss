@@ -59,7 +59,7 @@
     }
     .preview-navigation{
       float: right;
-      margin: 26px 10px 0 0;
+      margin-top: 26px;
       span {
         float: left;
         margin-right: 6px;
@@ -122,7 +122,7 @@
     .questionnaire_code {
       float: left;
       li {
-        padding: 5px 0 5px 30px !important;
+        padding: 5px 0 !important;
         margin: 0;
         margin-top: 20px;
         #questionnaire-code-error {

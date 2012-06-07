@@ -43,7 +43,7 @@
   margin-bottom: 10px; }
 .wizard_content .content_wrapper .preview-navigation {
   float: right;
-  margin: 26px 10px 0 0; }
+  margin-top: 26px; }
   .wizard_content .content_wrapper .preview-navigation span {
     float: left;
     margin-right: 6px;
@@ -91,7 +91,7 @@
 .wizard_content .content_wrapper .questionnaire_code {
   float: left; }
   .wizard_content .content_wrapper .questionnaire_code li {
-    padding: 5px 0 5px 30px !important;
+    padding: 5px 0 !important;
     margin: 0;
     margin-top: 20px; }
     .wizard_content .content_wrapper .questionnaire_code li #questionnaire-code-error {
