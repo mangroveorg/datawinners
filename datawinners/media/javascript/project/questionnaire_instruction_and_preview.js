@@ -7,11 +7,9 @@ DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item:function () {
         var that = this;
         $(this.preview_navigation_item).live('click', function () {
-            return function(load_preview) {
-                if (DW.questionnaire_form_validate()) {
-                    load_preview.apply(that);
-                }
-            }(that.load_preview_content);
+            if (DW.questionnaire_form_validate()) {
+                that.load_preview_content();
+            }
         });
     },
 
@@ -25,6 +23,7 @@ DW.instruction_and_preview.prototype = {
         $.post(this.preview_url, post_data, function (response_data) {
             $("#questionnaire_content").html(response_data);
             $("#questionnaire_preview_instruction").show();
+            $(".shadow-background").removeClass("shadow-background");
             $(that.preview_navigation_item).addClass("shadow-background");
         }, 'html');
     }
