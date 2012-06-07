@@ -170,9 +170,22 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_question_list(self):
         form_model = Mock()
         form_model.fields = [{}]
+        form_model.entity_defaults_to_reporter.return_value = False
 
         with patch("project.preview_views.get_preview_for_field") as preview_of_field:
             preview_of_field.return_value = {"description": "description"}
             questions = get_questions(form_model)
             self.assertEquals(questions[0]["description"], "description")
+
+    def test_should_get_question_list_when_entity_is_reporter(self):
+        form_model = Mock()
+        form_model.fields = [{}]
+        form_model.entity_defaults_to_reporter.return_value = True
+
+        with patch("project.preview_views.get_preview_for_field") as preview_of_field:
+            preview_of_field.return_value = {"description": "description"}
+            with patch("project.preview_views.hide_entity_question") as hide_entity_question:
+                hide_entity_question.return_value = {"description": "description"}
+                questions = get_questions(form_model)
+                self.assertEquals(len(questions), 1)
 

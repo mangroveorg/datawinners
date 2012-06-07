@@ -7,14 +7,15 @@ from accountmanagement.views import is_not_expired
 from main.utils import get_database_manager
 from project import helper
 from project.forms import CreateProject
-from project.helper import remove_reporter, get_preview_for_field
+from project.helper import remove_reporter, get_preview_for_field, hide_entity_question
 from project.views import get_example_sms, get_organization_telephone_number
 from project.wizard_view import create_questionnaire
 
 
 def get_questions(form_model):
     fields = form_model.fields
-
+    if form_model.entity_defaults_to_reporter():
+        fields = hide_entity_question(form_model.fields)
     questions = []
     for field in fields:
         question = get_preview_for_field(field)
