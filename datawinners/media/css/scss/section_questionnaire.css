@@ -86,7 +86,9 @@
   position: absolute;
   z-index: 1002;
   top: 558px;
-  box-shadow: 5px 5px 5px #CCC;
+  box-shadow: 5px 5px 5px #cccccc, -5px 5px 5px #cccccc;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f2f2f2));
+  background: -moz-linear-gradient(top, white, #f2f2f2);
   width: 927px;
   border: 1px solid #CCC;
   padding-bottom: 30px; }

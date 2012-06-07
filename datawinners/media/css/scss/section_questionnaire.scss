@@ -114,7 +114,9 @@
       position: absolute;
       z-index: 1002;
       top: 558px;
-      box-shadow: 5px 5px 5px #CCC;
+      box-shadow: 5px 5px 5px #CCC, -5px 5px 5px #CCC;
+      background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F2F2F2));
+      background: -moz-linear-gradient(top,  white,  #F2F2F2);
       width: 927px;
       border: 1px solid #CCC;
       padding-bottom: 30px;

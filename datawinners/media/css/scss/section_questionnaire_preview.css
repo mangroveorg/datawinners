@@ -28,7 +28,8 @@
   #questionnaire_content #questionnaire_preview .sms-questionnaire {
     margin: 10px 10px;
     padding: 20px;
-    border: 1px solid #CCBF97; }
+    border: 1px solid #CCC;
+    background-color: white; }
   #questionnaire_content #questionnaire_preview .sms-instruction {
     margin-left: 10px; }
     #questionnaire_content #questionnaire_preview .sms-instruction > div {

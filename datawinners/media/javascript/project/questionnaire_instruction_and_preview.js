@@ -7,8 +7,7 @@ DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item:function () {
         var that = this;
         $(this.preview_navigation_item).live('click', function () {
-
-            return function(load_preview){
+            return function(load_preview) {
                 if (DW.questionnaire_form_validate()) {
                     load_preview.apply(that);
                 }
@@ -21,14 +20,12 @@ DW.instruction_and_preview.prototype = {
                          'question-set':JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2),
                          'profile_form':basic_project_info.values(),
                          'project_state':"Test"};
-        $.post(this.preview_url,
-               post_data,
-               function (response_data) {
-                    $("#questionnaire_content").html(response_data);
-                    $("#questionnaire_preview_instruction").show();
-                    $(this.preview_navigation_item).addClass("shadow-background");
-                },
-                'html');
+        
+        $.post(this.preview_url, post_data, function (response_data) {
+            $("#questionnaire_content").html(response_data);
+            $("#questionnaire_preview_instruction").show();
+            $(this.preview_navigation_item).addClass("shadow-background");
+        }, 'html');
     }
 };
 
@@ -39,7 +36,6 @@ DW.instruction_and_preview.bind_cancel_button = function() {
         $(".shadow-background").removeClass("shadow-background");
     });
 };
-
 
 $(function () {
     var sms_preview = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
