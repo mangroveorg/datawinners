@@ -101,7 +101,7 @@
                             {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }}
                                 yet.{% endblocktrans %}
                         </p>
-                        <a id="datasenders_edit_link" href="{{add_link.url}}">
+                        <a id="datasenders_edit_link" href="{{add_link.url}}" {% if add_link.url == '#' %} class="inactive_link" {% endif %}>
                             {{ add_link.text }}
                         </a>
                     </div>

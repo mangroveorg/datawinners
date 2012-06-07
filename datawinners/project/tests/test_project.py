@@ -44,5 +44,8 @@ class TestProject(TestCase):
 
     def test_should_render_web_preview_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
-        response = self.client.post('/project/web_preview')
+        response = self.client.post('/project/web_preview', {"questionnaire-code": "q01",
+                                                             "question-set": '{}',
+                                                             "profile_form": '{"name":"project_name", "entity_type":"clinic", "language":"en"}',
+                                                             'project_state': "Test"})
         self.assertEqual(response.status_code, 200)

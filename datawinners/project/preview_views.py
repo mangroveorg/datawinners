@@ -62,7 +62,7 @@ def sms_preview(request):
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
 
-def add_link(project):
+def add_link_context(project):
     if project.entity_type == REPORTER:
         text = _("Add a datasender")
         return {'url': '#', 'text': text}
@@ -84,7 +84,7 @@ def get_web_preview_context(manager, post):
         questionnaire_form = QuestionnaireForm()
         context = {'project': project_info,
                    'questionnaire_form': questionnaire_form,
-                    'add_link': add_link(project),}
+                    'add_link': add_link_context(project),}
         return context;
     return {}
 

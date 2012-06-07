@@ -30,6 +30,9 @@
         float:left;
     }
  }
+ .inactive_link {
+   pointer-events: none;
+ }
 }
 #questionnaire_content {
   #questionnaire_preview {

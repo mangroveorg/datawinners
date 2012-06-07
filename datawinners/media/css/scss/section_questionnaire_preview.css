@@ -20,6 +20,8 @@
   #questionnaire_preview .questionnaire_preview div {
     width: 100%;
     float: left; }
+  #questionnaire_preview .inactive_link {
+    pointer-events: none; }
 
 #questionnaire_content #questionnaire_preview {
   margin-right: 10px;
