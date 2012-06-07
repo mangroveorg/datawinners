@@ -1596,25 +1596,30 @@ msgstr "Projet - Questionnaire"
 
 #: templates/project/sms_instruction_preview.html: 8
 msgid "Collect Data via SMS"
-msgstr ""
+msgstr "Collecter des Données via SMS"
 
 #: templates/project/sms_instruction_preview.html: 9
 msgid "Your Data Senders can use their own mobile phone to send in data."
-msgstr ""
+msgstr "Vos Expéditeurs de Données utilisent leur téléphone mobile pour soumettre des données par SMS."
 
 #: templates/project/sms_instruction_preview.html: 12
 msgid "How it Works"
-msgstr ""
+msgstr "Comment ça Marche"
 
 #: templates/project/sms_instruction_preview.html: 13
 msgid "sms instruction"
-msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
-"for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
-"Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
+msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Données enregistrés. "
+"Ensuite, ils remplissent les réponses à chaque question sur le Questionnaire papier. "
+"Par la suite, vos Expéditeurs de Données suivent le format de « l’Exemple de Réponse SMS » sur"
+"le Questionnaire pour taper leur SMS sur le téléphone et l'envoyer en un seul SMS."
 
 #: templates/project/create_project.html: 198
 msgid "Close Window"
-msgstr ""
+msgstr "Fermer la Fenêtre "
+
+#: templates/project/create_project.html: 129
+msgid "Preview"
+msgstr "Aperçu "
 
 #: templates/project/questionnaire.html:68
 msgid "Review the question by clicking on each"

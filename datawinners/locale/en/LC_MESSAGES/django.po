@@ -1597,6 +1597,10 @@ msgstr "Print out the SMS Questionnaire and give it to your registered Data Send
 msgid "Close Window"
 msgstr ""
 
+#: templates/project/create_project.html: 129
+msgid "Preview"
+msgstr ""
+
 #: templates/project/questionnaire.html:68
 msgid "Review the question by clicking on each"
 msgstr ""
