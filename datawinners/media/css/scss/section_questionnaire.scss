@@ -69,6 +69,7 @@
       div {
         float: left;
         margin-right: 3px;
+        border: 1px solid white;
       }
       div:hover {
         cursor: pointer;
@@ -114,8 +115,7 @@
       z-index: 1002;
       top: 558px;
       box-shadow: 5px 5px 5px #CCC;
-      width: 960px;
-      margin-left: -20px;
+      width: 927px;
       border: 1px solid #CCC;
       padding-bottom: 30px;
       #close_preview {
