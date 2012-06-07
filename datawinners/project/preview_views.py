@@ -10,6 +10,7 @@ from project import helper
 from project.forms import CreateProject
 from project.helper import remove_reporter, get_preview_for_field, hide_entity_question
 from project.views import get_example_sms, get_organization_telephone_number
+from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 from project.wizard_view import create_questionnaire
 
 
@@ -56,6 +57,19 @@ def sms_preview(request):
     context.update(get_sms_preview_context(manager, request.POST))
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
+
+
+def get_web_preview_context(manager, post):
+    project = json.loads(post['profile_form'])
+    form_model, form = get_questionnaire_form_model_and_form(manager, project, post)
+    if form.is_valid():
+        QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
+            form_model = form_model).create()
+        questionnaire_form = QuestionnaireForm()
+        context = {'project': project,
+                   'questionnaire_form': questionnaire_form}
+        return context;
+    return {}
 
 @login_required(login_url='/login')
 @is_not_expired
