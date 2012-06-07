@@ -11,10 +11,18 @@
            </div>
       {% endif %}
   </div>
-  <h6 class="section_description">{% trans "You are editing the Data Senderʼs Details" %}</h6>  <br>
-  <form id="registration_form" class="" action="" method="POST">
-  <fieldset>
+   <form id="registration_form" class="" action="" method="POST">
+       <div style="clear: both; padding-bottom: 5px;margin-bottom: 5px">
+           <h6 class="section_description" style="float: left">{% trans "You are editing the Data Senderʼs Details" %}</h6>
+           <div class="button_block" style="float: right">
+               <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
+               <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}" class="button margin_top_20"/>
+           </div>
+       </div>
+
+       <fieldset>
       {% csrf_token %}
+
       <ul>
           <li class="{{ form.name.css_classes }} form-row-10px">
               {{ form.name.label_tag }}

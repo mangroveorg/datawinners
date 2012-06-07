@@ -3,8 +3,8 @@ import time
 import unittest
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
-from framework.base_test import BaseTest, setup_driver, teardown_driver
 from framework.utils.data_fetcher import fetch_, from_
+from framework.base_test import BaseTest, setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS

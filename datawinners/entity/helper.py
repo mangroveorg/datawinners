@@ -134,10 +134,10 @@ def get_country_appended_location(location_hierarchy, country):
     return ','.join(location_hierarchy) + ',' + country  if location_hierarchy is not None else None
 
 
-def _get_data(form_data, country):
+def _get_data(form_data, country,reporter_id=None):
     #TODO need to refactor this code. The master dictionary should be maintained by the registration form model
     mapper = {'telephone_number': MOBILE_NUMBER_FIELD_CODE, 'geo_code': GEO_CODE, 'Name': NAME_FIELD_CODE,
-              'location': LOCATION_TYPE_FIELD_CODE}
+              'location': LOCATION_TYPE_FIELD_CODE, 'short_code':SHORT_CODE_FIELD}
     data = dict()
     data[mapper['telephone_number']] = form_data.get('telephone_number')
     data[mapper['location']] = get_country_appended_location(form_data.get('location'), country)
@@ -145,6 +145,7 @@ def _get_data(form_data, country):
     data[mapper['Name']] = form_data.get('name')
     data['form_code'] = REGISTRATION_FORM_CODE
     data[ENTITY_TYPE_FIELD_CODE] = REPORTER
+    data['s'] = reporter_id
     return data
 
 

@@ -20,7 +20,7 @@ from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
-from alldata.helper import get_visibility_settings_for
+from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password,\
     is_not_expired
