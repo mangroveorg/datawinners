@@ -128,9 +128,10 @@ class TestProjectViews(unittest.TestCase):
 
     def test_should_get_preview_and_instruction_links(self):
         with patch("project.wizard_view.reverse") as reverse:
-            reverse.return_value = "/project/sms_preview"
+            reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
             links = get_preview_and_instruction_links()
             self.assertEqual(links["sms_preview"], "/project/sms_preview")
+            self.assertEqual(links["web_preview"], "/project/web_preview")
 
     def test_should_get_correct_context_for_sms_preview(self):
         questions = {}

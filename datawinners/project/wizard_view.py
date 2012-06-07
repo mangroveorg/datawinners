@@ -48,7 +48,8 @@ def update_questionnaire(questionnaire, post, entity_type, name, manager, langua
 
 def get_preview_and_instruction_links():
     links = {
-        'sms_preview': reverse("sms_preview")
+        'sms_preview': reverse("sms_preview"),
+        'web_preview': reverse("web_preview"),
     }
     return links
 

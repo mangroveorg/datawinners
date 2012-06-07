@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore.entity_type import get_all_entity_types
@@ -50,3 +51,8 @@ def sms_preview(request):
     context.update(get_sms_preview_context(manager, request.POST))
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_not_expired
+def web_preview(request):
+    return HttpResponse()
