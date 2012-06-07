@@ -1107,19 +1107,18 @@ def edit_datasender(request, project_id, reporter_id):
         return render_to_response('project/edit_datasender.html',{'form' : form},context_instance = RequestContext(request))
 
     if request.method == 'POST':
+        form = ReporterRegistrationForm(request.POST)
         try:
-            form = ReporterRegistrationForm(request.POST)
             form.is_valid()
             org_id = request.user.get_profile().org_id
             organization = Organization.objects.get(org_id=org_id)
             web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
-                transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
+                transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
             message = get_success_msg_for_registration_using(response, "web")
 
         except MangroveException as exception:
             message = exception.message
         project = Project.load(manager.database, project_id)
-        reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
 
         return render_to_response('project/edit_datasender.html',{'form':form,'message':message,'project_links': make_data_sender_links(project,reporter_id)},context_instance=RequestContext(request))
