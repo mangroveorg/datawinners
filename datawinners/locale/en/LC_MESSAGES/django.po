@@ -1592,7 +1592,7 @@ msgstr ""
 msgid "sms instruction"
 msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
 "for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
-"Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
+" Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
 
 #: templates/project/web_instruction_preview.html: 7
 msgid "Collect Data via Web"
