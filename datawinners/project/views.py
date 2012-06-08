@@ -74,7 +74,7 @@ DATE_TYPE_OPTIONS = ["Latest"]
 GEO_TYPE_OPTIONS = ["Latest"]
 TEXT_TYPE_OPTIONS = ["Latest", "Most Frequent"]
 
-def make_project_links(project, questionnaire_code):
+def make_project_links(project, questionnaire_code, reporter_id=None):
     project_id = project.id
     project_links = {'overview_link': reverse(project_overview, args=[project_id]),
                      'activate_project_link': reverse(activate_project, args=[project_id]),
@@ -90,7 +90,7 @@ def make_project_links(project, questionnaire_code):
         project_links['reminders_link'] = reverse(reminder_settings, args=[project_id])
 
         project_links.update(make_subject_links(project))
-        project_links.update(make_data_sender_links(project))
+        project_links.update(make_data_sender_links(project, reporter_id))
 
         project_links['sender_registration_preview_link'] = reverse(sender_registration_form_preview, args=[project_id])
         project_links['sent_reminders_link'] = reverse(sent_reminders, args=[project_id])
@@ -648,10 +648,10 @@ def review_and_test(request, project_id=None):
             context_instance=RequestContext(request))
 
 
-def _get_project_and_project_link(manager, project_id):
+def _get_project_and_project_link(manager, project_id, reporter_id=None):
     project = Project.load(manager.database, project_id)
     questionnaire = FormModel.get(manager, project.qid)
-    project_links = make_project_links(project, questionnaire.form_code)
+    project_links = make_project_links(project, questionnaire.form_code, reporter_id)
     return project, project_links
 
 
@@ -695,7 +695,6 @@ def registered_subjects(request, project_id=None):
 @is_not_expired
 def registered_datasenders(request, project_id=None):
     manager = get_database_manager(request.user)
-    profile = request.user.get_profile()
     project, project_links = _get_project_and_project_link(manager, project_id)
     grant_web_access = False
     if request.method == 'GET' and int(request.GET.get('web', '0')):
@@ -906,6 +905,7 @@ def web_questionnaire(request, project_id=None, subject=False):
                                           context_instance = RequestContext(request))
 
         except DataObjectNotFound as exception:
+            logger.exception(exception)
             message = exception_messages.get(DataObjectNotFound).get(WEB)
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
         except Exception as exception:
@@ -1100,11 +1100,12 @@ def add_link(project):
 def edit_datasender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
     reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+    project, links = _get_project_and_project_link(manager, project_id, reporter_id)
 
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
                 'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)),'geo_code' : ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME))})
-        return render_to_response('project/edit_datasender.html',{'form' : form},context_instance = RequestContext(request))
+        return render_to_response('project/edit_datasender.html',{'project' : project,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
 
     if request.method == 'POST':
         form = ReporterRegistrationForm(request.POST)
@@ -1119,6 +1120,5 @@ def edit_datasender(request, project_id, reporter_id):
 
         except MangroveException as exception:
             message = exception.message
-        project = Project.load(manager.database, project_id)
 
-        return render_to_response('project/edit_datasender.html',{'form':form,'message':message,'project_links': make_data_sender_links(project,reporter_id)},context_instance=RequestContext(request))
+        return render_to_response('edit_datasender_form.html',{'project' : project,'form':form,'message':message,'project_links': links, 'in_trial_mode' : _in_trial_mode(request)},context_instance=RequestContext(request))
