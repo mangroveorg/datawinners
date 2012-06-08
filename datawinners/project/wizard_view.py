@@ -131,6 +131,7 @@ def edit_project(request, project_id=None):
         return render_to_response('project/create_project.html',
                                   {'form':form,"activity_report_questions": repr(activity_report_questions),
                  'subject_report_questions':repr(subject_report_questions),
+                 'preview_links': get_preview_and_instruction_links(),
                  'existing_questions': repr(existing_questions), 'questionnaire_code': questionnaire.form_code,
                  'project':project, 'is_edit': 'true', 'post_url':reverse(edit_project, args=[project_id])},
                                   context_instance=RequestContext(request))
