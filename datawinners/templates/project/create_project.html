@@ -132,7 +132,11 @@
                         <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
                         <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
                     </div>
-
+                    <div id="questionnaire_preview_instruction">
+                        <a class="close_preview">{% trans "Close Window" %}</a>
+                        <div id="questionnaire_content"></div>
+                        <a class="close_preview">{% trans "Close Window" %}</a>
+                    </div>
                 </div>
                 <div class="questionnare_content grid_23 alpha omega">
                     <div>
@@ -193,10 +197,5 @@
             </div>
             <div class="clear-both"></div>
         </div>
-    </div>
-    <div id="questionnaire_preview_instruction">
-        <a class="close_preview">{% trans "Close Window" %}</a>
-        <div id="questionnaire_content"></div>
-        <a class="close_preview">{% trans "Close Window" %}</a>
     </div>
 {% endblock %}
