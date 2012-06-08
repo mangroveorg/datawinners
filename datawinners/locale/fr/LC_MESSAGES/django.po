@@ -1615,19 +1615,19 @@ msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Donn
 
 #: templates/project/web_instruction_preview.html: 7
 msgid "Collect Data via Web"
-msgstr ""
+msgstr "Collecter des Données via le Web"
 
 #: templates/project/web_instruction_preview.html: 11
 msgid "Your Data Senders can use any computer to send in data online."
-msgstr ""
+msgstr "Vos Expéditeurs de Données peuvent utiliser n’importe quel ordinateur pour soumettre des données en ligne."
 
 #: templates/project/web_instruction_preview.html: 15
 msgid "Give your Data Senders Web access when you register them on the "
-msgstr ""
+msgstr "Donnez à vos  Expéditeurs de Données un accès Internet quand vous les enregistrez sur la page "
 
 #: templates/project/web_instruction_preview.html: 17
 msgid " page. Then your Data Senders can log in to ﬁll out the Questionnaire online."
-msgstr ""
+msgstr ". Par la suite, vos Expéditeurs de Données peuvent se connecter pour remplir le Questionnaire en ligne."
 
 #: templates/project/web_questionnaire_preview.html: 8
 msgid "Why canʼt I submit?"
