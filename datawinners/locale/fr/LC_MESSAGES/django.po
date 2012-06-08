@@ -1629,6 +1629,14 @@ msgstr ""
 msgid " page. Then your Data Senders can log in to ﬁll out the Questionnaire online."
 msgstr ""
 
+#: templates/project/web_questionnaire_preview.html: 8
+msgid "Why canʼt I submit?"
+msgstr ""
+
+#: templates/project/web_questionnaire_preview.html: 11
+msgid 'This is only a preview. To send in data, Go to the "Data" tab, then to "Web Submission".'
+msgstr ""
+
 #: templates/project/create_project.html: 198
 msgid "Close Window"
 msgstr "Fermer la Fenêtre "

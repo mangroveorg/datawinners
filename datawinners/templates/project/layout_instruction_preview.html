@@ -2,19 +2,11 @@
 
 <div id="questionnaire_preview" class="ui-widget">
     <div class="sms-instruction">
-        <div class="instruction-header">
-            <h5>{% block collect_data_via_block %}{% endblock %}</h5>
-            <p>{% block collection_data_via_instruction_block %}{% endblock %}</p>
-        </div>
-        <div class="instruction-content">
-            <p class="bold">{% block how_it_works_block %}{% trans "How it Works" %}{% endblock %}</p>
-            <p>{% block instruction_block %}{% endblock %}</p>
-        </div>
+        {% block instruction %}
+        {% endblock %}
     </div>
     <div class="clearfix">
-        <div class="preview-header clearfix">
-            {% block preview_header_block %}{% endblock %}
-        </div>
-        {% block questionnaire_preview_block %}{% endblock %}
+        {% block questionnaire_preview %}
+        {% endblock %}
     </div>
 </div>

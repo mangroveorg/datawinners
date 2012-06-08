@@ -23,6 +23,19 @@ DW.instruction_and_preview.prototype = {
         $.post(this.preview_url, post_data, function (response_data) {
             $("#questionnaire_content").html(response_data);
             $("#questionnaire_preview_instruction").show();
+            $("#questionnaire_preview_instruction .help_icon").tooltip({
+                position: "top right",
+                relative: true,
+                opacity:0.8,
+                events: {
+                    def:     "mouseover,mouseout",
+                    input:   "focus,blur",
+                    widget:  "focus mouseover,blur mouseout",
+                    tooltip: "click,click"
+                }
+
+            }).dynamic({ bottom: { direction: 'down', bounce: true } });
+
             $(".shadow-background").removeClass("shadow-background");
             $(that.preview_navigation_item).addClass("shadow-background");
         }, 'html');

@@ -101,7 +101,7 @@
                             {% blocktrans with subject.entity as subject %}You have not registered a {{ subject }}
                                 yet.{% endblocktrans %}
                         </p>
-                        <a id="datasenders_edit_link" href="{{add_link.url}}" {% if add_link.url == '#' %} class="inactive_link" {% endif %}>
+                        <a id="datasenders_edit_link" href="{{add_link.url}}" {% if add_link.url == '#' %} class="inactive_link ui-state-disabled" {% endif %}>
                             {{ add_link.text }}
                         </a>
                     </div>
@@ -120,7 +120,9 @@
         {% endfor %}
     </ol>
     <div class="action-section">
-        {% block cancel_block %}{% endblock %}
-        <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+        {% block action_section_block %}
+            {% block cancel_block %}{% endblock %}
+            <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
+        {% endblock %}
     </div>
 </form>
