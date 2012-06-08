@@ -1,5 +1,5 @@
 body {
-  font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif; }
+  font: 13px/1.5 "Helvetica", Arial, "Liberation Sans", FreeSans, sans-serif; }
 
 ul li {
   list-style-type: none;
@@ -70,6 +70,15 @@ body .ui-dialog {
     overflow: visible !important; }
     body .ui-dialog .ui-dialog-content ol li {
       page-break-inside: avoid; }
+body .sms-questionnaire {
+  display: block !important;
+  position: absolute;
+  left: 0px !important;
+  top: 0px !important;
+  width: 100% !important;
+  overflow: visible !important;
+  border: none !important;
+  margin: none !important; }
 
 @-moz-document url-prefix() {
   .questionnaire_preview ol li {

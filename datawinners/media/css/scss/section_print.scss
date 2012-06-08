@@ -102,6 +102,16 @@ body{
             }
         }
     }
+    .sms-questionnaire {
+        display: block !important;
+        position: absolute;
+        left:0px !important;
+        top:0px !important;
+        width:100% !important;
+        overflow:visible !important;
+        border: none !important;
+        margin: none !important;
+    }
 }
 @-moz-document url-prefix() { .questionnaire_preview ol li { float:none !important; } }
 .ui-widget-content{
