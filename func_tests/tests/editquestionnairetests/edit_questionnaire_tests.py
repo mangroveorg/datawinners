@@ -23,6 +23,15 @@ class TestEditQuestionnaire(BaseTest):
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
         return CreateQuestionnairePage(self.driver)
+    def prerequisites_of_questionnaire_tab(self):
+        self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
+        login_page = LoginPage(self.driver)
+        global_navigation = login_page.do_successful_login_with(VALID_CREDENTIALS)
+
+        # going on all project page
+        all_project_page = global_navigation.navigate_to_view_all_project_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page("Clinic test project")
+        return project_overview_page.navigate_to_questionnaire_tab()
 
     @attr('functional_test', 'smoke')
     def test_successful_questionnaire_editing(self):
@@ -41,3 +50,9 @@ class TestEditQuestionnaire(BaseTest):
         self.assertEqual(questions[3], create_questionnaire_page.get_list_of_choices_type_question())
         create_questionnaire_page.select_question_link(6)
         self.assertEqual(questions[4], create_questionnaire_page.get_list_of_choices_type_question())
+
+    @attr('functional_test')
+    def test_sms_preview_of_questionnaire_on_the_questionnaire_tab(self):
+        questionnaire_tab_page = self.prerequisites_of_questionnaire_tab()
+        sms_questionnaire_preview_page = questionnaire_tab_page.sms_questionnaire_preview()
+        self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())

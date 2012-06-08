@@ -5,6 +5,7 @@ from pages.lightbox.light_box_page import LightBox
 from pages.projectdatasenderspage.project_data_senders_page import ProjectDataSendersPage
 from pages.projectoverviewpage.project_overview_locator import *
 from pages.page import Page
+from pages.questionnairetabpage.questionnaire_tab_page import QuestionnaireTabPage
 from pages.reminderpage.all_reminder_page import AllReminderPage
 from pages.smstesterlightbox.sms_tester_light_box_page import SMSTesterLightBoxPage
 
@@ -52,3 +53,7 @@ class ProjectOverviewPage(Page):
     def open_sms_questionnaire_preview(self):
         self.driver.find(by_css(".sms_questionnaire")).click()
         return LightBox(self.driver)
+
+    def navigate_to_questionnaire_tab(self):
+        self.driver.find(QUESTIONNAIRE_TAB).click()
+        return QuestionnaireTabPage(self.driver)
