@@ -4,4 +4,4 @@ QUESTIONNAIRE_PREVIEW = by_css("#questionnaire_preview_instruction #questionnair
 
 PROJECT_NAME = by_css("#questionnaire_preview_instruction .project-name")
 
-SMS_INSTRUCTION = by_css("#questionnaire_preview_instruction .sms-instruction")
+INSTRUCTION = by_css("#questionnaire_preview_instruction .sms-instruction")

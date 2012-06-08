@@ -65,3 +65,4 @@ class TestCreateProject(BaseTest):
         create_project_page.continue_create_project()
         web_questionnaire_preview_page = create_project_page.web_questionnaire_preview()
         self.assertIsNotNone(web_questionnaire_preview_page.web_questionnaire())
+        self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())

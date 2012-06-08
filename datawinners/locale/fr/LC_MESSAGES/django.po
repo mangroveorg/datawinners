@@ -1613,6 +1613,22 @@ msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Donn
 "Par la suite, vos Expéditeurs de Données suivent le format de « l’Exemple de Réponse SMS » sur"
 "le Questionnaire pour taper leur SMS sur le téléphone et l'envoyer en un seul SMS."
 
+#: templates/project/web_instruction_preview.html: 7
+msgid "Collect Data via Web"
+msgstr ""
+
+#: templates/project/web_instruction_preview.html: 11
+msgid "Your Data Senders can use any computer to send in data online."
+msgstr ""
+
+#: templates/project/web_instruction_preview.html: 15
+msgid "Give your Data Senders Web access when you register them on the "
+msgstr ""
+
+#: templates/project/web_instruction_preview.html: 17
+msgid " page. Then your Data Senders can log in to ﬁll out the Questionnaire online."
+msgstr ""
+
 #: templates/project/create_project.html: 198
 msgid "Close Window"
 msgstr "Fermer la Fenêtre "
@@ -3076,6 +3092,7 @@ msgstr "Vous avez déjà activé votre compte. S'il vous plaît, <a href=\"/logi
 msgid "My Subjects"
 msgstr "Mes sujets"
 
+#: templates/project/web_instruction_preview.html: 16
 msgid "My Data Senders"
 msgstr "Mes expéditeurs"
 

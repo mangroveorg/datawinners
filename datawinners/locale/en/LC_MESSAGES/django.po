@@ -1255,6 +1255,7 @@ msgstr ""
 
 #: templates/project/finish_and_test.html:167
 #: templates/project/questionnaire_and_DS.html:23
+#: templates/project/web_instruction_preview.html: 21
 msgid "Web Questionnaire"
 msgstr ""
 
@@ -1575,7 +1576,7 @@ msgstr ""
 msgid "Project - Questionnaire"
 msgstr ""
 
-#: templates/project/sms_instruction_preview.html: 8
+#: templates/project/sms_instruction_preview.html: 7
 msgid "Collect Data via SMS"
 msgstr ""
 
@@ -1592,6 +1593,22 @@ msgid "sms instruction"
 msgstr "Print out the SMS Questionnaire and give it to your registered Data Senders. Then they ﬁll in the answer"
 "for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
 "Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
+
+#: templates/project/web_instruction_preview.html: 7
+msgid "Collect Data via Web"
+msgstr ""
+
+#: templates/project/web_instruction_preview.html: 11
+msgid "Your Data Senders can use any computer to send in data online."
+msgstr ""
+
+#: templates/project/web_instruction_preview.html: 15
+msgid "Give your Data Senders Web access when you register them on the "
+msgstr ""
+
+#: templates/project/web_instruction_preview.html: 17
+msgid " page. Then your Data Senders can log in to ﬁll out the Questionnaire online."
+msgstr ""
 
 #: templates/project/create_project.html: 198
 msgid "Close Window"
@@ -3036,6 +3053,7 @@ msgstr "You have already activated your account. Please <a href=\"/login\">sign 
 msgid "My Subjects"
 msgstr ""
 
+#: templates/project/web_instruction_preview.html: 16
 msgid "My Data Senders"
 msgstr ""
 

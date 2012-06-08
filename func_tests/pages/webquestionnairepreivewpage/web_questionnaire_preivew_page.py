@@ -1,6 +1,5 @@
-from framework.utils.common_utils import by_css
 from pages.page import Page
-from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import QUESTIONNAIRE_PREVIEW
+from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import QUESTIONNAIRE_PREVIEW, INSTRUCTION
 
 class WebQuestionnairePreviewPage(Page):
     def __init__(self, driver):
@@ -8,3 +7,6 @@ class WebQuestionnairePreviewPage(Page):
 
     def web_questionnaire(self):
         return self.driver.find(QUESTIONNAIRE_PREVIEW)
+
+    def get_web_instruction(self):
+        return self.driver.find(INSTRUCTION)

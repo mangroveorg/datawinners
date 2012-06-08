@@ -1,3 +1,26 @@
-<div id="questionnaire_preview">
+{% extends "project/layout_instruction_preview.html" %}
+{% load i18n %}
+{% load field_tags %}
+{% load questionnaire_preview_tags %}
+
+{% block collect_data_via_block %}
+    {% trans "Collect Data via Web" %}
+{% endblock %}
+
+{% block collection_data_via_instruction_block %}
+    {% trans "Your Data Senders can use any computer to send in data online." %}
+{% endblock %}
+
+{% block instruction_block %}
+    {% trans "Give your Data Senders Web access when you register them on the " %}
+    <a>{% trans "My Data Senders" %}</a>
+    {% trans " page. Then your Data Senders can log in to ﬁll out the Questionnaire online." %}
+{% endblock %}
+
+{% block preview_header_block %}
+    <h6 class="sms-questionnaire-title">{% trans "Web Questionnaire" %} </h6>
+{% endblock %}
+
+{% block questionnaire_preview_block %}
     {% include "project/web_questionnaire_questions.html" %}
-</div>
+{% endblock %}

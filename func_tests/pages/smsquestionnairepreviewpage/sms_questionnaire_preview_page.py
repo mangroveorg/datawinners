@@ -1,6 +1,6 @@
 from framework.utils.common_utils import by_css
 from pages.page import Page
-from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import QUESTIONNAIRE_PREVIEW, PROJECT_NAME, SMS_INSTRUCTION
+from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_locator import QUESTIONNAIRE_PREVIEW, PROJECT_NAME, INSTRUCTION
 
 
 class SmsQuestionnairePreviewPage(Page):
@@ -14,7 +14,7 @@ class SmsQuestionnairePreviewPage(Page):
         return self.driver.find(PROJECT_NAME).text
 
     def get_sms_instruction(self):
-        return self.driver.find(SMS_INSTRUCTION)
+        return self.driver.find(INSTRUCTION)
 
     def close_preview(self):
         return self.driver.find(by_css(".close_preview")).click()
