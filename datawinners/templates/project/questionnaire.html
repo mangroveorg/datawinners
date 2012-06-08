@@ -71,8 +71,15 @@
             </ol>
         </div>
     </script>
-
-    <div class="preview_block"><a class="preview" href="#"> {% trans "Preview Questionnaire" %} </a></div>
+    <div>
+        <div class="grid_8 alpha">
+            <h2>{% trans "Questionnaire" %}</h2>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+    <div class="help_accordion">
+        {% trans "View and edit your Questionnaire." %}
+    </div>
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
