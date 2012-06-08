@@ -1615,7 +1615,24 @@ msgid "Why canʼt I submit?"
 msgstr ""
 
 #: templates/project/web_questionnaire_preview.html: 11
-msgid 'This is only a preview. To send in data, Go to the "Data" tab, then to "Web Submission".'
+msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
+msgstr ""
+
+#: templates/alldata/smart_phone_instruction.html: 18
+msgid "Use your Android Smartphone to send in data. Follow the instructions or download our tutorial"
+msgstr ""
+
+#: templates/alldata/smart_phone_instruction.html: 19
+#: templates/alldata/smart_phone_instruction.html: 24
+msgid "Collect Data using a Smartphone"
+msgstr ""
+
+#: templates/alldata/smart_phone_instruction.html: 23
+msgid "Tutorial"
+msgstr ""
+
+#: templates/alldata/smart_phone_instruction.html: 24
+msgid "(PDF, X pages, X.X MB)"
 msgstr ""
 
 #: templates/project/create_project.html: 198
