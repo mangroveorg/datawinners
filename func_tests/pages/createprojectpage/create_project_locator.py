@@ -44,4 +44,5 @@ QUESTIONNAIRE_ABOUT_MSG_LABEL = by_css("li>label[for='id_activity_report_0']~ul.
 
 SMS_PREVIEW = by_css(".navigation-sms-preview")
 WEB_PREVIEW = by_css(".navigation-web-preview")
+SMART_PHONE_PREVIEW = by_css(".navigation-smart-phone-preview")
 

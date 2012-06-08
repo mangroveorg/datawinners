@@ -66,3 +66,11 @@ class TestCreateProject(BaseTest):
         web_questionnaire_preview_page = create_project_page.web_questionnaire_preview()
         self.assertIsNotNone(web_questionnaire_preview_page.web_questionnaire())
         self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())
+
+    @attr('functional_test')
+    def test_smart_phone_preview_of_questionnaire_when_create_project(self):
+        create_project_page = self.prerequisites_of_create_project()
+        create_project_page.create_project_with(VALID_DATA)
+        create_project_page.continue_create_project()
+        smart_phone_instruction_page = create_project_page.smart_phone_preview()
+        self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())

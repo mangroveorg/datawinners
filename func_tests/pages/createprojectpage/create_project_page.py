@@ -6,6 +6,7 @@ from framework.utils.data_fetcher import *
 from pages.createprojectpage.create_project_locator import *
 from pages.projectoverviewpage.project_overview_locator import PROJECT_STATUS_LABEL
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
+from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
 from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
 from pages.webquestionnairepreivewpage.web_questionnaire_preivew_page import WebQuestionnairePreviewPage
 from tests.createprojecttests.create_project_data import *
@@ -193,3 +194,7 @@ class CreateProjectPage(Page):
     def web_questionnaire_preview(self):
         self.driver.find(WEB_PREVIEW).click()
         return WebQuestionnairePreviewPage(self.driver)
+
+    def smart_phone_preview(self):
+        self.driver.find(SMART_PHONE_PREVIEW).click()
+        return SmartPhoneInstructionPage(self.driver)

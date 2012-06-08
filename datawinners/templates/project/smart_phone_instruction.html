@@ -1,0 +1,21 @@
+{% extends "project/layout_instruction_preview.html" %}
+{% load i18n %}
+
+{% block instruction %}
+    <div class="instruction-header">
+        <h5>{% trans "Collect Data via Smartphone" %}</h5>
+        <p>{% trans "Your Data Senders can use any Android Smartphone to send in data." %}</p>
+    </div>
+    <div class="instruction-content">
+        <p class="bold">{% trans "How it Works" %}</p>
+        <p>
+            {% trans "Give your Data Senders Smartphone access when you register them on the " %}
+            <a>{% trans "My Data Senders" %}</a>
+            {% trans " page. Then your Data Senders can log in and fill out the Questionnaire using their Android Smartphone." %}
+        </p>
+    </div>
+    <div class="smart-phone-instruction">
+        <p class="bold">{% trans "View your Questionnaire on your Smartphone" %}</p>
+        {% include "alldata/smart_phone_instruction_en.html" %}
+    </div>
+{% endblock %}

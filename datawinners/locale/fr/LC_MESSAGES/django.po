@@ -1626,7 +1626,7 @@ msgid "Give your Data Senders Web access when you register them on the "
 msgstr "Donnez à vos  Expéditeurs de Données un accès Internet quand vous les enregistrez sur la page "
 
 #: templates/project/web_instruction_preview.html: 17
-msgid " page. Then your Data Senders can log in to ﬁll out the Questionnaire online."
+msgid " page. Then your Data Senders can log in to fill out the Questionnaire online."
 msgstr ". Par la suite, vos Expéditeurs de Données peuvent se connecter pour remplir le Questionnaire en ligne."
 
 #: templates/project/web_questionnaire_preview.html: 8

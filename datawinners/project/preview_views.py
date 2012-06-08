@@ -1,8 +1,7 @@
-from collections import namedtuple
 import json
+from atom.http_core import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from mangrove.datastore.entity_type import get_all_entity_types
@@ -12,7 +11,7 @@ from main.utils import get_database_manager
 from project.forms import CreateProject
 from project.helper import remove_reporter, get_preview_for_field, hide_entity_question
 from project.models import Project
-from project.views import get_example_sms, get_organization_telephone_number, create_datasender_and_webuser
+from project.views import get_example_sms, get_organization_telephone_number
 from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
 from project.wizard_view import create_questionnaire
 
@@ -85,10 +84,18 @@ def get_web_preview_context(manager, post):
         context = {'project': project_info,
                    'questionnaire_form': questionnaire_form,
                     'add_link': add_link_context(project),}
-        return context;
+        return context
     return {}
 
 @login_required(login_url='/login')
 @is_not_expired
 def web_preview(request):
-    return render_to_response("project/web_instruction_preview.html", get_web_preview_context(get_database_manager(request.user),request.POST), context_instance=RequestContext(request))
+    return render_to_response("project/web_instruction_preview.html",
+                              get_web_preview_context(get_database_manager(request.user),request.POST),
+                              context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_not_expired
+def smart_phone_preview(request):
+    return render_to_response("project/smart_phone_instruction.html", context_instance=RequestContext(request))
+

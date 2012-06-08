@@ -71,6 +71,8 @@ $(function () {
     sms_preview.bind_preview_navigation_item();
     var web_preview = new DW.instruction_and_preview(web_preview_link, '.navigation-web-preview');
     web_preview.bind_preview_navigation_item();
+    var web_preview = new DW.instruction_and_preview(smart_phone_preview_link, '.navigation-smart-phone-preview');
+    web_preview.bind_preview_navigation_item();
     DW.instruction_and_preview.bind_cancel_button();
     DW.instruction_and_preview.bind_print_button();
 });

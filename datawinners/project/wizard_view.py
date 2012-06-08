@@ -50,6 +50,7 @@ def get_preview_and_instruction_links():
     links = {
         'sms_preview': reverse("sms_preview"),
         'web_preview': reverse("web_preview"),
+        'smart_phone_preview': reverse("smart_phone_preview"),
     }
     return links
 

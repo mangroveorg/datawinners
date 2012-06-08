@@ -1607,7 +1607,7 @@ msgid "Give your Data Senders Web access when you register them on the "
 msgstr ""
 
 #: templates/project/web_instruction_preview.html: 17
-msgid " page. Then your Data Senders can log in to ﬁll out the Questionnaire online."
+msgid " page. Then your Data Senders can log in to fill out the Questionnaire online."
 msgstr ""
 
 #: templates/project/web_questionnaire_preview.html: 8
