@@ -28,7 +28,7 @@
   color: #222;
   padding-top: 20px; }
   #questionnaire_content #questionnaire_preview .sms-questionnaire {
-    margin: 10px 10px;
+    margin: 0 10px 10px 10px;
     padding: 20px;
     border: 1px solid #CCC;
     background-color: white; }
@@ -38,10 +38,9 @@
       padding-bottom: 15px; }
   #questionnaire_content #questionnaire_preview .preview-header {
     margin: 0 10px; }
-    #questionnaire_content #questionnaire_preview .preview-header .sms-questionnaire-title {
-      float: left; }
     #questionnaire_content #questionnaire_preview .preview-header .printBtn {
-      float: right; }
+      float: right;
+      text-decoration: none; }
   #questionnaire_content #questionnaire_preview .web-questionnaire {
     margin: 10px 10px;
     padding: 20px;
