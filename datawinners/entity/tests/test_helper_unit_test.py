@@ -1,7 +1,7 @@
 from unittest.case import TestCase
 from mock import Mock, patch
 from datawinners.entity.helper import delete_datasender_from_project, \
-    add_imported_data_sender_to_trial_organization,add_data_sender_to_trial_organization
+    add_imported_data_sender_to_trial_organization,add_data_sender_to_trial_organization, get_country_appended_location
 from datawinners.project.models import Project
 from datawinners.accountmanagement.models import DataSenderOnTrialAccount, Organization
 from django.contrib.auth.models import User
@@ -43,6 +43,14 @@ class TestHelper(TestCase):
                     for key,mobile_number in enumerate(ds_mobile_numbers)]
                 add_imported_data_sender_to_trial_organization(request, ['rep0', 'rep1'], all_data_senders)
                 self.assertEqual(add_ds_to_trial.call_count,2)
+
+    def test_should_append_country_in_case_location_hierarchy_does_not_have_it(self):
+        country_appended_location = get_country_appended_location('Pune', 'India')
+        self.assertEqual('Pune,India', country_appended_location)
+
+    def test_should_not_append_country_in_case_location_hierarchy_already_has_it(self):
+        country_appended_location = get_country_appended_location('Pune , India', 'India')
+        self.assertEqual('Pune,India', country_appended_location)
 
     def tearDown(self):
         self.all_projects_patch.stop()
