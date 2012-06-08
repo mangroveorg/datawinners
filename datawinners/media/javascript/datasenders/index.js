@@ -99,6 +99,15 @@ $(document).ready(function() {
         }else if(action=="delete"){
             warnThenDeleteDialogBox(allIds, "reporter", this)
         }
+        else if(action=="edit"){
+            if(allIds.length > 1){
+                $('<div class="message-box" id="error">' + gettext("Please select only 1 data sender") + '</div>').insertAfter($(this));
+                $(this).val('');
+            }
+            else{
+                location.href = '/entity/datasender/edit' + '/' + allIds[0] + '/';
+            }
+        }
         else{
             $("#all_project_block").dialog("open");
         }

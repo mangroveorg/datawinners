@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from mangrove.form_model.field import field_to_json
+from mangrove.form_model.location import LOCATION_TYPE_FIELD_NAME
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
@@ -27,7 +28,7 @@ from datawinners.accountmanagement.views import is_datasender, is_new_user, _get
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_datasender_form,\
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
-    delete_datasender_users_if_any
+    delete_datasender_users_if_any, _get_data
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -38,7 +39,7 @@ from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, MOBILE_NUMBER_FIELD
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -95,9 +96,10 @@ def submit(request):
 @login_required(login_url='/login')
 @is_not_expired
 def create_datasender(request):
+    create_datasender = True
     if request.method == 'GET':
         form = ReporterRegistrationForm()
-        return render_to_response('entity/create_datasender.html', {'form': form},
+        return render_to_response('entity/create_or_edit_datasender.html', {'form': form,'create_datasender' : create_datasender},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
@@ -115,6 +117,38 @@ def create_datasender(request):
                 {'form': form, 'message': message},
             context_instance=RequestContext(request))
 
+@login_required(login_url='/login')
+@is_not_expired
+def edit_datasender(request,reporter_id):
+    create_datasender = False
+    manager = get_database_manager(request.user)
+    reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+
+    if request.method == 'GET':
+        name = reporter_entity.value(NAME_FIELD)
+        phone_number = reporter_entity.value(MOBILE_NUMBER_FIELD)
+        location = ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)) if reporter_entity.value(LOCATION_TYPE_FIELD_NAME) is not None else None
+        geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
+        form = ReporterRegistrationForm(initial={'name' : name,
+                                                 'telephone_number' : phone_number,'location' : location,'geo_code' : geo_code})
+        return render_to_response('entity/create_or_edit_datasender.html',{'reporter_id' : reporter_id,'form' : form,'create_datasender' : create_datasender },context_instance = RequestContext(request))
+
+    if request.method == 'POST':
+        form = ReporterRegistrationForm(request.POST)
+        try:
+            form.is_valid()
+            org_id = request.user.get_profile().org_id
+            organization = Organization.objects.get(org_id=org_id)
+            web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
+                transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
+            if response.success:
+                message = _("Your changes have been saved.")
+
+        except MangroveException as exception:
+            message = exception.message
+
+        return render_to_response('edit_datasender_form.html',{'form':form,'message':message},context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @is_not_expired

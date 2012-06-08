@@ -12,9 +12,16 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
+    {% if create_datasender %}
     <script type="text/javascript">
         var sender_registration_link = "/entity/datasender/create";
     </script>
+    {% else %}
+        <script type="text/javascript">
+            var sender_registration_link = "/entity/datasender/edit/{{ reporter_id }}/";
+        </script>
+
+    {%  endif %}
     <script type="text/javascript" src="/media/javascript/common/location_auto_suggest_widget.js"></script>
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
 {% endblock %}
@@ -39,7 +46,11 @@
 
 {% block content %}
    <div id="add_data_sender_form" class="">
-    {% include "datasender_form.html" %}
+  {% if create_datasender %}
+      {% include "datasender_form.html" %}
+  {% else %}
+      {% include "edit_datasender_form.html" %}
+   {% endif %}
    </div>
     {% include "star_indication.html" %}
 {% endblock %}
