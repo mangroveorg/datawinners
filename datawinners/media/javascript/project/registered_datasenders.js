@@ -8,6 +8,17 @@ $(document).ready(function() {
         });
     }
 
+    $("input[type='checkbox']").each(function() {
+        $(this).change(function(){
+            var selected_count = $('#tbody :checked').length;
+            if (selected_count > 1){
+                $("select option[value='edit']").attr('disabled', 'disabled')
+            }
+            else{
+                $("select option[value='edit']").removeAttr('disabled');
+            }
+        })
+    });
 
     $('#action').change(function(){
         updateIds();

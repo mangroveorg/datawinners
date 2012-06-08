@@ -1105,7 +1105,7 @@ def edit_datasender(request, project_id, reporter_id):
     if request.method == 'GET':
         form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
                 'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)),'geo_code' : ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME))})
-        return render_to_response('project/edit_datasender.html',{'project' : project,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
+        return render_to_response('project/edit_datasender.html',{'project' : project,'reporter_id' : reporter_id,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
 
     if request.method == 'POST':
         form = ReporterRegistrationForm(request.POST)
@@ -1116,7 +1116,8 @@ def edit_datasender(request, project_id, reporter_id):
             web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
-            message = get_success_msg_for_registration_using(response, "web")
+            if response.success:
+                message = _("Your changes have been saved.")
 
         except MangroveException as exception:
             message = exception.message

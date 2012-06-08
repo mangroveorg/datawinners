@@ -6,9 +6,9 @@
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
    <form id="registration_form" class="" action="" method="POST">
        <div style="clear: both; padding-bottom: 5px;margin-bottom: 5px">
-           <h6 class="section_description" style="float: left">{% trans "You are editing the Data Senderʼs Details" %}</h6>
+           <label>{% trans "You are editing the Data Senderʼs Details" %}</label>
            <div class="button_block" style="float: right">
-               <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>
+               <a href="{{ project_links.datasenders_link }}" class="cancel_link">{% trans "Cancel" %}</a>
                <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}" class="button margin_top_20"/>
            </div>
        </div>
@@ -30,8 +30,9 @@
               {{ form.name }}
               {{ form.name.errors }}
           </li>
-          <li>
-              {{ form.reporter_id }}
+          <li class="{{ form.name.css_classes }} form-row-10px">
+              <label >ID</label>
+              {{ reporter_id }}
           </li>
           <li class="{{ form.telephone_number.css_classes }} form-row-10px">
               {{ form.telephone_number.label_tag }}
