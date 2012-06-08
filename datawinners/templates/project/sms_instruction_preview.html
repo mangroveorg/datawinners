@@ -1,23 +1,25 @@
+{% extends "project/layout_instruction_preview.html" %}
 {% load i18n %}
 {% load field_tags %}
 {% load questionnaire_preview_tags %}
 
-<div id="questionnaire_preview" class="ui-widget">
-    <div class="sms-instruction">
-        <div class="instruction-header">
-            <h5>{% trans "Collect Data via SMS" %}</h5>
-            <p>{% trans "Your Data Senders can use their own mobile phone to send in data." %}</p>
-        </div>
-        <div class="instruction-content">
-            <p class="bold">{% trans "How it Works" %}</p>
-            <p>{% trans "sms instruction" %}</p>
-        </div>
-    </div>
-    <div class="clearfix">
-        <div class="preview-header clearfix">
-            <h6 class="sms-questionnaire-title">{% trans "SMS Questionnaire" %} </h6>
-            <a href="#" class="printBtn">{% trans "Print" %}</a>
-        </div>
-        {% include "project/sms_questionnaire_preview.html" %}
-    </div>
-</div>
+{% block collect_data_via_block %}
+    {% trans "Collect Data via SMS" %}
+{% endblock %}
+
+{% block collection_data_via_instruction_block %}
+    {% trans "Your Data Senders can use their own mobile phone to send in data." %}
+{% endblock %}
+
+{% block instruction_block %}
+    {% trans "sms instruction" %}
+{% endblock %}
+
+{% block preview_header_block %}
+    <h6 class="sms-questionnaire-title">{% trans "SMS Questionnaire" %} </h6>
+    <a href="#" class="printBtn">{% trans "Print" %}</a>
+{% endblock %}
+
+{% block questionnaire_preview_block %}
+    {% include "project/sms_questionnaire_preview.html" %}
+{% endblock %}
