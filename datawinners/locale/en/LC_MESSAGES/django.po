@@ -1607,7 +1607,7 @@ msgid "Give your Data Senders Web access when you register them on the "
 msgstr ""
 
 #: templates/project/web_instruction_preview.html: 17
-msgid " page. Then your Data Senders can log in to fill out the Questionnaire online."
+msgid "page. Then your Data Senders can log in to fill out the Questionnaire online."
 msgstr ""
 
 #: templates/project/web_questionnaire_preview.html: 8
@@ -1618,12 +1618,35 @@ msgstr ""
 msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
 msgstr ""
 
+#: templates/project/web_instruction_preview.html: 16
+#: templates/project/smart_phone_instruction_preview.html: 13
+msgid "My Data Senders page"
+msgstr "My Data Senders"
+
+#: templates/project/smart_phone_instruction_preview.html: 6
+msgid "Collect Data via Smartphone"
+msgstr ""
+
+#: templates/project/smart_phone_instruction_preview.html: 7
+msgid "Your Data Senders can use any Android Smartphone to send in data."
+msgstr ""
+
+#: templates/project/smart_phone_instruction_preview.html: 12
+msgid "Give your Data Senders Smartphone access when you register them on the "
+msgstr ""
+
+#: templates/project/smart_phone_instruction_preview.html: 14
+msgid "page. Then your Data Senders can log in and fill out the Questionnaire using their Android Smartphone."
+msgstr ""
+
 #: templates/alldata/smart_phone_instruction.html: 18
+#: templates/project/smart_phone_instruction_preview.html: 19
 msgid "Use your Android Smartphone to send in data. Follow the instructions or download our tutorial"
 msgstr ""
 
 #: templates/alldata/smart_phone_instruction.html: 19
 #: templates/alldata/smart_phone_instruction.html: 24
+#: templates/project/smart_phone_instruction_preview.html: 20
 msgid "Collect Data using a Smartphone"
 msgstr ""
 
@@ -3078,7 +3101,6 @@ msgstr "You have already activated your account. Please <a href=\"/login\">sign 
 msgid "My Subjects"
 msgstr ""
 
-#: templates/project/web_instruction_preview.html: 16
 msgid "My Data Senders"
 msgstr ""
 

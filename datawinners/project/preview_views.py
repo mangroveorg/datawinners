@@ -97,5 +97,5 @@ def web_preview(request):
 @login_required(login_url='/login')
 @is_not_expired
 def smart_phone_preview(request):
-    return render_to_response("project/smart_phone_instruction.html", context_instance=RequestContext(request))
+    return render_to_response("project/smart_phone_instruction_preview.html", context_instance=RequestContext(request))
 
