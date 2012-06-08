@@ -7,9 +7,13 @@ DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item:function () {
         var that = this;
         $(this.preview_navigation_item).live('click', function () {
-            if (DW.questionnaire_form_validate()) {
-                that.load_preview_content();
+            if ($("#questionnaire_preview_instruction").css("display") == "none") {
+                if (DW.questionnaire_form_validate()) {
+                    that.load_preview_content();
+                }
             }
+            else
+                that.load_preview_content();
         });
     },
 
