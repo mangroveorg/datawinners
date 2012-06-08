@@ -254,3 +254,58 @@
 .save-button {
   float: right;
   margin-right: 50px; }
+
+#container_content .questionnaire_form_header {
+  border-bottom: 3px solid black;
+  height: 58px; }
+  #container_content .questionnaire_form_header .questionnaire_code {
+    float: left; }
+    #container_content .questionnaire_form_header .questionnaire_code li {
+      padding: 5px 0 !important;
+      margin: 0;
+      margin-top: 20px; }
+      #container_content .questionnaire_form_header .questionnaire_code li #questionnaire-code-error {
+        background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
+        float: none !important; }
+      #container_content .questionnaire_form_header .questionnaire_code li label {
+        display: inline;
+        width: 140px; }
+  #container_content .questionnaire_form_header .preview-navigation {
+    position: relative;
+    float: right;
+    margin-top: 26px; }
+    #container_content .questionnaire_form_header .preview-navigation span {
+      float: left;
+      margin-right: 6px;
+      padding: 4px 0; }
+    #container_content .questionnaire_form_header .preview-navigation div {
+      float: left;
+      margin-right: 3px;
+      border: 1px solid white; }
+    #container_content .questionnaire_form_header .preview-navigation div:hover {
+      cursor: pointer; }
+    #container_content .questionnaire_form_header .preview-navigation a {
+      text-decoration: none; }
+    #container_content .questionnaire_form_header .preview-navigation .navigation-sms-preview {
+      background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
+      padding: 4px 4px 0 20px; }
+    #container_content .questionnaire_form_header .preview-navigation .navigation-smart-phone-preview {
+      background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
+      padding: 4px 4px 0 20px; }
+    #container_content .questionnaire_form_header .preview-navigation .navigation-web-preview {
+      background: url("/media/images/computer_black.png") no-repeat 4px 4px;
+      padding: 4px 4px 0 30px; }
+    #container_content .questionnaire_form_header .preview-navigation .shadow-background {
+      position: relative;
+      z-index: 1003;
+      background-color: white;
+      border: 1px solid #CCC;
+      box-shadow: 3px 0 5px -3px #cccccc;
+      border-bottom: none;
+      height: 33px; }
+      #container_content .questionnaire_form_header .preview-navigation .shadow-background a {
+        color: black; }
+      #container_content .questionnaire_form_header .preview-navigation .shadow-background a:hover {
+        cursor: auto; }
+    #container_content .questionnaire_form_header .preview-navigation .shadow-background:hover {
+      cursor: auto; }

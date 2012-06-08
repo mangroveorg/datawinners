@@ -342,3 +342,77 @@
   float: right;
   margin-right: 50px;
 }
+
+#container_content {
+  .questionnaire_form_header {
+    border-bottom: 3px solid black;
+    height: 58px;
+    .questionnaire_code {
+      float: left;
+      li {
+        padding: 5px 0 !important;
+        margin: 0;
+        margin-top: 20px;
+        #questionnaire-code-error {
+          background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
+          float: none !important;
+        }
+        label {
+          display: inline;
+          width: 140px;
+        }
+      }
+    }
+    .preview-navigation{
+      position: relative;
+      float: right;
+      margin-top: 26px;
+      span {
+        float: left;
+        margin-right: 6px;
+        padding: 4px 0;
+      }
+      div {
+        float: left;
+        margin-right: 3px;
+        border: 1px solid white;
+      }
+      div:hover {
+        cursor: pointer;
+      }
+      a {
+        text-decoration: none;
+      }
+      .navigation-sms-preview {
+        background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
+        padding: 4px 4px 0 20px;
+      }
+      .navigation-smart-phone-preview {
+        background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
+        padding: 4px 4px 0 20px;
+      }
+      .navigation-web-preview {
+        background: url("/media/images/computer_black.png") no-repeat 4px 4px;
+        padding: 4px 4px 0 30px;
+      }
+      .shadow-background {
+        position: relative;
+        z-index: 1003;
+        background-color: white;
+        border: 1px solid #CCC;
+        box-shadow: 3px 0 5px -3px #CCC;
+        border-bottom: none;
+        height: 33px;
+        a {
+          color: black;
+        }
+        a:hover {
+          cursor: auto;
+        }
+      }
+      .shadow-background:hover {
+        cursor: auto;
+      }
+    }
+  }
+}

@@ -76,23 +76,33 @@
     <form id="question_form">
     {% csrf_token %}
         <fieldset>
-            <ul class="questionnaire_code">
-                <li>
-                    <label>{% trans "SMS Questionnaire Code:" %}</label>
-                    <input id='project-id' type='hidden' value="{{ project.id }}"/>
-                    <input id='questionnaire-code' class='required' type="hidden" disabled="disabled" value="{{ questionnaire_code }}"/>
-                    <span>{{ questionnaire_code }}</span>
-                    <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
-                    <div class="tooltip"><p>
-                        <strong>{% trans "What is this?" %}</strong><br />
-                        {% trans "q_tooltip_questionnaire_code" %}
-                        <br /><br />
-                        <strong>{% trans "What do I need to do?" %}</strong><br />
-                        {% trans "r_tooltip_questionnaire_code" %}
-                    </p></div>
-                    <span id="questionnaire-code-error"></span>
-                </li>
-            </ul>
+            <div class="questionnaire_form_header clearfix">
+                <ul class="questionnaire_code">
+                    <li>
+                        <label>{% trans "SMS Questionnaire Code:" %}</label>
+                        <input id='project-id' type='hidden' value="{{ project.id }}"/>
+                        <input id='questionnaire-code' class='required' type="hidden" disabled="disabled" value="{{ questionnaire_code }}"/>
+                        <span>{{ questionnaire_code }}</span>
+                        <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
+                        <div class="tooltip"><p>
+                            <strong>{% trans "What is this?" %}</strong><br />
+                            {% trans "q_tooltip_questionnaire_code" %}
+                            <br /><br />
+                            <strong>{% trans "What do I need to do?" %}</strong><br />
+                            {% trans "r_tooltip_questionnaire_code" %}
+                        </p></div>
+                        <span id="questionnaire-code-error"></span>
+                    </li>
+                </ul>
+                <div class="preview-navigation">
+                    <span>{% trans "Preview" %}: </span>
+                    <div class="navigation-sms-preview"><a>{% trans "SMS" %}</a></div>
+                    <div class="navigation-smart-phone-preview"><a>{% trans "Smartphone" %}</a></div>
+                    <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
+                </div>
+
+            </div>
+
             <div class="questionnare_content grid_23 alpha omega">
                 <div id="message-label" class="none">
                 </div>
