@@ -130,8 +130,9 @@ def create_registration_form(manager, entity_name):
 
 
 def get_country_appended_location(location_hierarchy, country):
-    location_hierarchy = location_hierarchy.split(',')
-    return ','.join(location_hierarchy) + ',' + country  if location_hierarchy is not None else None
+    location_hierarchy_split = location_hierarchy.split(',')
+    country_already_appended = (location_hierarchy_split[len(location_hierarchy_split)-1].strip() == country)
+    return location_hierarchy  if location_hierarchy is None or country_already_appended else ','.join(location_hierarchy_split) + ',' + country
 
 
 def _get_data(form_data, country,reporter_id=None):
