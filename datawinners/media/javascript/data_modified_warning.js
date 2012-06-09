@@ -50,7 +50,7 @@ DW.data_submission = {
     },
 
     bind_cancel_link_in_dialog:function () {
-        $(".no_button").bind('click', function () {
+        $("#cancel_submission_warning_message .no_button").bind('click', function () {
             $("#cancel_submission_warning_message").dialog("close");
         })
     },

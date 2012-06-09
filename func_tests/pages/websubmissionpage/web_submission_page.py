@@ -1,6 +1,5 @@
 from pages.datasenderpage.data_sender_locator import SMARTPHONE_NAV
 from pages.page import Page
-from pages.smartphoneinstructionpage.smart_phone_instruction_locator import SMART_PHONE_INSTRUCTION
 from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
 from pages.warningdialog.warning_dialog_page import WarningDialog
 from pages.websubmissionpage.web_submission_locator import *
