@@ -123,6 +123,7 @@ def edit_datasender(request,reporter_id):
     create_datasender = False
     manager = get_database_manager(request.user)
     reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+    entity_links = {'back_link': reverse(all_datasenders)}
 
     if request.method == 'GET':
         name = reporter_entity.value(NAME_FIELD)
@@ -131,7 +132,8 @@ def edit_datasender(request,reporter_id):
         geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
         form = ReporterRegistrationForm(initial={'name' : name,
                                                  'telephone_number' : phone_number,'location' : location,'geo_code' : geo_code})
-        return render_to_response('entity/create_or_edit_datasender.html',{'reporter_id' : reporter_id,'form' : form,'create_datasender' : create_datasender },context_instance = RequestContext(request))
+        return render_to_response('entity/create_or_edit_datasender.html',{'reporter_id' : reporter_id,'form' : form, 'entity_links' : entity_links
+            ,'create_datasender' : create_datasender },context_instance = RequestContext(request))
 
     if request.method == 'POST':
         form = ReporterRegistrationForm(request.POST)
@@ -148,7 +150,7 @@ def edit_datasender(request,reporter_id):
         except MangroveException as exception:
             message = exception.message
 
-        return render_to_response('edit_datasender_form.html',{'form':form,'message':message},context_instance=RequestContext(request))
+        return render_to_response('edit_datasender_form.html',{'form':form,'message':message, 'entity_links':entity_links},context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 @is_not_expired

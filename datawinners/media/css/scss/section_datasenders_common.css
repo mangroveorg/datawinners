@@ -32,6 +32,14 @@
 .horizontal_list li.device_label ul li:last-child {
   padding-right: 50px; }
 
+div.form_header {
+  margin-bottom: 5px; }
+  div.form_header li label {
+    width: auto;
+    padding-top: 10px; }
+  div.form_header li:last-child {
+    float: right; }
+
 li.instruction_text {
   margin-top: -15px;
   width: 350px; }
