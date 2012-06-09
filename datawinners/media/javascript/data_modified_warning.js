@@ -35,34 +35,34 @@ DW.data_submission = {
             if (that.is_form_changed())
                 $("#cancel_submission_warning_message").dialog("open");
             else
-                that.go_to_project_list();
+                that.go_to_back_list();
         });
     },
 
     is_form_changed:function () {
-        var is_change = false;
+        var is_changed = false;
         $('form :input').each(function () {
             if ($(this).data("initialValue") !== $(this).val()) {
-                is_change = true;
+                is_changed = true;
             }
         });
-        return is_change;
+        return is_changed;
     },
 
     bind_cancel_link_in_dialog:function () {
-        $(".cancel_button").bind('click', function () {
+        $(".no_button").bind('click', function () {
             $("#cancel_submission_warning_message").dialog("close");
         })
     },
 
     bind_confirm_link_in_dialog:function () {
         var that = this;
-        $("#confirm").bind('click', function () {
-            that.go_to_project_list();
+        $("#cancel_submission_warning_message .yes_button").bind('click', function () {
+            that.go_to_back_list();
         })
     },
 
-    go_to_project_list:function () {
-        window.location.href = $(".back-to-project-list").attr("href");
+    go_to_back_list:function () {
+        window.location.href = $(".back-to-list").attr("href");
     }
 };

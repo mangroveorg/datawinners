@@ -10,7 +10,7 @@ SECTION_TITLE = by_css(".section_title")
 
 PROJECT = by_css(".project_name")
 
-BACK_TO_PROJECT_LINK = by_css(".back-to-project-list")
+BACK_TO_PROJECT_LINK = by_css(".back-to-list")
 
 WEB_NAVIGATION = by_css(".device-navigation .web")
 

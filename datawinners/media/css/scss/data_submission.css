@@ -28,7 +28,7 @@
 .web-device-navigation-bg-padding, .device-navigation .active .web, .device-navigation .inactive:hover .web, .device-navigation .inactive .web {
   padding: 4px 10px 0 28px; }
 
-.back-to-project-list {
+.back-to-list {
   display: inline-block;
   margin: -15px 0 15px 0; }
 

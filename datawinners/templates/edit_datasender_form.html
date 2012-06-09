@@ -8,7 +8,9 @@
        <div style="clear: both; padding-bottom: 5px;margin-bottom: 5px">
            <label>{% trans "You are editing the Data Senderʼs Details" %}</label>
            <div class="button_block" style="float: right">
-               <a href="{{ project_links.datasenders_link }}" class="cancel_link">{% trans "Cancel" %}</a>
+               {% block cancel_block %}
+                   {% include "warning_section.html" %}
+               {% endblock %}
                <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}" class="button margin_top_20"/>
            </div>
        </div>

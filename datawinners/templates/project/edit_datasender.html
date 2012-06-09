@@ -36,6 +36,7 @@
     <script type="text/javascript" src="/media/javascript/project/register_reporter.js"></script>
     <script type="text/javascript" src="/media/javascript/project/datasenders_registration_questionnaire_preview.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
 
 {% endblock %}
 
@@ -67,7 +68,7 @@
         <div class="clear-right"></div>
     </div>
     <div >
-        <a href="{{ project_links.registered_datasenders_link }}" class="cancel_link">{% trans "Back to DataSender List" %}</a>
+        <a href="{{ project_links.registered_datasenders_link }}" class="back-to-list">{% trans "Back to DataSender List" %}</a>
     </div>
     <div id="datasender_details">
         <div id="add_data_sender_form">

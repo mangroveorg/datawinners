@@ -197,7 +197,7 @@ msgstr ""
 msgid "Warning !!"
 msgstr ""
 
-#: media/javascript/project/data_submission_warning.js:16
+#: media/javascript/data_modified_warning.js:16
 msgid "Warning"
 msgstr ""
 

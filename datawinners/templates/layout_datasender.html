@@ -9,7 +9,7 @@
 
 {% block page_js %}
     {{ block.super }}
-    <script type="text/javascript" src="/media/javascript/project/data_submission_warning.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_modified_warning.js"></script>
 {% endblock %}
 
 {% block page_title %}{% trans "Data Submission" %}{% endblock %}
@@ -23,7 +23,7 @@
         {{ block.super }}
     {% endblock %}
     <div class="questionnaire-content">
-        <a href="{{ back_to_project_link }}" class="back-to-project-list"> « {% trans "Back to Project List" %}</a>
+        <a href="{{ back_to_project_link }}" class="back-to-list"> « {% trans "Back to Project List" %}</a>
         {% block questionnaire %}
         {% endblock %}
     </div>
