@@ -55,11 +55,10 @@ class TestProject(TestCase):
         response = self.client.post('/project/smart_phone_preview')
         self.assertEqual(response.status_code, 200)
 
-    @SkipTest
     def test_should_render_questionnaire_sms_preview_if_logged_in(self):
         self.client.login(username = 'tester150411@gmail.com', password = 'tester150411')
         response = self.client.post('/project/questionnaire_sms_preview', {"questionnaire-code": "q01",
                                                                            "question-set": '{}',
-                                                                           "project_id": 'b58fa88ab36111e1883a3c07546a3e37',
+                                                                           "project_id": 'fe84831af56111e0aa085c260a236744',
                                                                            'project_state': "Test"})
         self.assertEqual(response.status_code, 200)
