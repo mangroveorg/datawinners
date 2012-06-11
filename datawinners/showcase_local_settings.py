@@ -35,6 +35,8 @@ EMAIL_PORT = 587
 LOG_FOLDER = '/home/mangrover/'
 LOG_FILE_NAME = "datawinners.log"
 REMINDER_LOG_FILE_NAME = "datawinners_reminders.log"
+XFORM_LOG_FILE_NAME = "datawinners_xform.log"
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -53,6 +55,12 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.WatchedFileHandler',
             'filename': os.path.join( LOG_FOLDER, REMINDER_LOG_FILE_NAME),
+            'mode': 'a', #append+create
+        },
+        'xform-log-file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': os.path.join( LOG_FOLDER, XFORM_LOG_FILE_NAME),
             'mode': 'a', #append+create
         },
     },
@@ -80,6 +88,11 @@ LOGGING = {
         'django.request': {
             'handlers': ['mail_admins','log-file'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'datawinners.xform': {
+            'level': 'INFO',
+            'handlers': ['xform-log-file'],
             'propagate': True,
         },
     }
