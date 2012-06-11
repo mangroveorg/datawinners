@@ -53,9 +53,9 @@
       border: 1px solid #D5B071 !important;
       -moz-border-radius: 3px;
       -webkit-border-radius: 3px;
-      background: #FFD857;
+      background: #F8EDB8;
       background: -webkit-gradient(linear, left top, left bottom, from(#f8edb8), to(#fde8a0));
-      background: -moz-linear-gradient(top, #f7f5f0, #f5f4f0);
+      background: -moz-linear-gradient(top, #f8edb8, #fde8a0);
       color: #C29870 !important;
       font-family: "Arial";
       font-weight: bold;
