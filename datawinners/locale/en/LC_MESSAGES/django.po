@@ -933,6 +933,10 @@ msgstr "Give Web Access"
 msgid "All Data Senders"
 msgstr ""
 
+#: templates/entity/create_or_edit_datasender.html:118
+msgid "Back to DataSender List"
+msgstr ""
+
 #: templates/entity/all_subjects.html:11
 msgid "Add subjects one-by-one using the online registration form"
 msgstr ""

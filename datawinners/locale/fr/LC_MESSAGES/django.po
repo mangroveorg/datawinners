@@ -138,6 +138,11 @@ msgstr "Expéditeurs de données"
 msgid "All Data Senders"
 msgstr "Tous les Expéditeurs"
 
+#: templates/entity/create_or_edit_datasender.html:118
+msgid "Back to DataSender List"
+msgstr "Retourner à la Liste des Expéditeurs de Données"
+
+
 #: dashboard/views.py:90 templates/main_navigation.html:19
 #: templates/step_wizard.html:32 templates/entity/all_subjects.html:3
 #: templates/entity/all_subjects.html:5
@@ -369,6 +374,9 @@ msgstr "Envoyer des rappels uniquement aux expéditeurs qui n’ont pas encore s
 #: templates/project/tab_navigation.html:38
 msgid "Cancel"
 msgstr "Annuler"
+
+msgid "Cancel Editing"
+msgstr "Annuler le modfications"
 
 #: templates/datasender_form.html:52 templates/subject_form.html:62
 #: templates/entity/create_type.html:6
@@ -4316,7 +4324,7 @@ msgid "Reports"
 msgstr "Rapports"
 
 msgid "You are editing the Data Senderʼs Details"
-msgstr ""
+msgstr "Vous êtes en train de modifier les détails sur votre Expéditeur de Données"
 
 msgid "There should not be any space at the beginning and the end of the password."
 msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."

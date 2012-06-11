@@ -1,7 +1,19 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
-{% block page_title %} {% trans "Add A Data Sender" %} {% endblock %}
-{% block section_title %} {% trans "Add A Data Sender" %} {% endblock %}
+{% block page_title %}
+    {% if create_datasender %}
+        {% trans "Add A Data Sender" %}
+    {% else %}
+        {% trans "Edit A Data Sender" %}
+    {% endif %}
+{% endblock %}
+{% block section_title %}
+    {% if create_datasender %}
+        {% trans "Add A Data Sender" %}
+    {% else %}
+        {% trans "Edit A Data Sender" %}
+    {% endif %}
+{% endblock %}
 
 {% load dw_tabs %}
 {% block body %}
