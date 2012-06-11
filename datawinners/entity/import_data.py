@@ -25,6 +25,7 @@ from datawinners.submission.location import LocationBridge
 from mangrove.contrib.registration_validators import case_insensitive_lookup
 from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
 from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
+from datawinners.utils import get_organization
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
@@ -243,8 +244,13 @@ def _handle_uploaded_file(file_name, file, manager, form_code=None):
 
 
 def _get_imported_entities(responses):
-    imported_entities = {response.short_code: response.entity_type[0] for response in responses if response.success}
-    return imported_entities
+    short_codes = dict()
+    datarecords_id = []
+    for response in responses:
+        if response.success:
+            short_codes.update({response.short_code: response.entity_type[0]})
+            datarecords_id.append(response.datarecord_id)
+    return {"short_codes":short_codes, "datarecords_id": datarecords_id }
 
 
 def _get_failed_responses(responses):
@@ -266,6 +272,12 @@ def import_data(request, manager):
         form_code = request.GET.get("form_code", None)
         responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
+        if form_code is not None and len(imported_entities.get("datarecords_id")) and \
+           settings.CRS_ORG_ID==get_organization(request).org_id:
+            from django.core.management import call_command
+            datarecords_id = imported_entities.get("datarecords_id")
+            call_command('crs_datamigration', form_code, *datarecords_id)
+        imported_entities = imported_entities.get("short_codes")
         successful_imports = len(imported_entities)
         total = len(responses)
         failures = _get_failed_responses(responses)

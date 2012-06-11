@@ -27,12 +27,27 @@ class Command(BaseCommand):
                               settings.NO_OF_RECIPIENT_CPS_CODE, settings.NO_OF_RECIPIENT_FFA_CODE,
                               settings.NO_OF_RECIPIENT_SFE_CODE, settings.NO_OF_RECIPIENT_SFM_CODE,
                               settings.BREAK_BULK_SENT_QUESTIONNAIRE_CODE ]
+        try:
+           form_code = list(args)[0]
+           if form_code in crs_questionnaires:
+               crs_questionnaires = [form_code]
+        except KeyError:
+            pass
+
+        try:
+            datarecords_id = list(args)[1:]
+            if not len(datarecords_id):
+                datarecords_id = None
+        except KeyError:
+            datarecords_id = None
+
         handler = CRSCustomReportHandler()
         for questionnaire_code in crs_questionnaires:
             print 'getting the questionnaire'
             questionnaire= get_form_model_by_code(crs_database_manager, questionnaire_code)
             print 'migrations for %s' % questionnaire_code
-            submissions = self._load_submissions_for(questionnaire_code, crs_database_manager)
+            submissions = self._load_submissions_for(questionnaire_code, crs_database_manager,
+                datarecords_id=datarecords_id)
             print 'adding to sql'
             for submission in submissions:
                 data_record = submission.data_record
@@ -50,13 +65,15 @@ class Command(BaseCommand):
                     print e.message
             print 'finished adding to sql for questionnaire %s' % questionnaire_code
 
-    def _load_submissions_for(self, questionnaire_code, crs_database_manager):
+    def _load_submissions_for(self, questionnaire_code, crs_database_manager, datarecords_id=None):
         startkey = [questionnaire_code]
         endkey = [questionnaire_code, {}]
         print 'loading submissions for %s' % questionnaire_code
         rows = crs_database_manager.view.submissionlog(reduce=False, startkey=startkey, endkey=endkey)
         return [Submission.new_from_doc(dbm=crs_database_manager,
-            doc = Submission.__document_class__.wrap(row['value'])) for row in rows if row['value']['status'] == True]
+            doc = Submission.__document_class__.wrap(row['value']))
+            for row in rows if row['value']['status'] == True and
+            (datarecords_id is None or row["value"]["data_record_id"] in datarecords_id)]
 
     def _get_value_from_data_record(self, data_record, question):
         for key in data_record.data.keys():

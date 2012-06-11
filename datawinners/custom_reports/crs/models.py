@@ -2,6 +2,9 @@ from django.db import models
 from mangrove.utils.types import is_empty
 
 def crs_model_creator(data_record_id, submission_data, model, question_mapping=None, defaults=None):
+    exists = model.objects.filter(data_record_id=data_record_id)
+    if not is_empty(exists):
+        return
     if not question_mapping: question_mapping = {}
     data_record = {'data_record_id': data_record_id}
     if not defaults: defaults = data_record
