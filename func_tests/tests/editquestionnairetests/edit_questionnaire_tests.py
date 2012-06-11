@@ -73,4 +73,4 @@ class TestEditQuestionnaire(BaseTest):
         preview_navigation_page = PreviewNavigationPage(self.driver)
         web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
         
-        self.assertIsNotNone(web_questionnaire_preview_page.sms_questionnaire())
+        self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())

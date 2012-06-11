@@ -27,26 +27,35 @@ def get_questions(form_model):
 
     return questions
 
+
 def get_questionnaire_form_model_and_form(manager, project_info, post):
     entity_list = get_all_entity_types(manager)
     entity_list = remove_reporter(entity_list)
     form = CreateProject(entity_list, data=project_info)
     if form.is_valid():
         return create_questionnaire(post, manager, entity_type=form.cleaned_data['entity_type'],
-            name=form.cleaned_data['name'], language=form.cleaned_data['language']), form
+                                    name=form.cleaned_data['name'], language=form.cleaned_data['language']), form
     return None, form
 
+<<<<<<< HEAD
 def get_sms_preview_context(manager, post, project_info):
+=======
+
+def get_sms_preview_context(manager, post):
+    project_info = json.loads(post['profile_form'])
+
+>>>>>>> Fu Ying | #1217 add web preview for questionnaire tab page
     form_model, form = get_questionnaire_form_model_and_form(manager, project_info, post)
     if form.is_valid():
         example_sms = "%s" % (form_model.form_code)
         example_sms += get_example_sms(form_model.fields)
 
         return {"questionnaire_code": post["questionnaire-code"],
-                   "questions": get_questions(form_model),
-                   "project": project_info,
-                   "example_sms": example_sms}
+                "questions": get_questions(form_model),
+                "project": project_info,
+                "example_sms": example_sms}
     return {}
+
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -67,30 +76,35 @@ def add_link_context(project):
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
         return {'url': '#', 'text': text}
 
-def get_web_preview_context(manager, post):
-    project_info = json.loads(post['profile_form'])
+
+def get_web_preview_context(manager, post, project_info):
     form_model, form = get_questionnaire_form_model_and_form(manager, project_info, post)
     if form.is_valid():
         project = Project(name=form.cleaned_data['name'], goals=form.cleaned_data['goals'],
-            project_type='survey', entity_type=form.cleaned_data['entity_type'],
-            activity_report=form.cleaned_data['activity_report'],
-            state = post['project_state'], devices=[u'sms', u'web', u'smartPhone'],language=form.cleaned_data['language'])
+                          project_type='survey', entity_type=form.cleaned_data['entity_type'],
+                          activity_report=form.cleaned_data['activity_report'],
+                          state=post['project_state'], devices=[u'sms', u'web', u'smartPhone'],
+                          language=form.cleaned_data['language'])
 
         QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
-            form_model = form_model).create()
+                                                        form_model=form_model).create()
         questionnaire_form = QuestionnaireForm()
-        context = {'project': project_info,
-                   'questionnaire_form': questionnaire_form,
-                    'add_link': add_link_context(project),}
-        return context
+        return {'project': project_info,
+                'questionnaire_form': questionnaire_form,
+                'add_link': add_link_context(project), }
     return {}
+
 
 @login_required(login_url='/login')
 @is_not_expired
 def web_preview(request):
+    project_info = json.loads(request.POST['profile_form'])
+    manager = get_database_manager(request.user)
+
     return render_to_response("project/web_instruction_preview.html",
-                              get_web_preview_context(get_database_manager(request.user),request.POST),
+                              get_web_preview_context(manager, request.POST, project_info),
                               context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -99,8 +113,9 @@ def smart_phone_preview(request):
     instruction_template = "alldata/smart_phone_instruction_" + language_code + ".html"
 
     return render_to_response("project/smart_phone_instruction_preview.html",
-                              {"instruction_template": instruction_template},
+            {"instruction_template": instruction_template},
                               context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -112,7 +127,13 @@ def questionnaire_sms_preview(request):
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
+
 @login_required(login_url='/login')
 @is_not_expired
 def questionnaire_web_preview(request):
-    return HttpResponse()
+    manager = get_database_manager(request.user)
+    project_info = Project.load(manager.database, request.POST["project_id"])
+
+    return render_to_response("project/web_instruction_preview.html",
+                              get_web_preview_context(manager, request.POST, project_info),
+                              context_instance=RequestContext(request))
