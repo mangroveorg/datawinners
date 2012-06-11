@@ -37,14 +37,7 @@ def get_questionnaire_form_model_and_form(manager, project_info, post):
                                     name=form.cleaned_data['name'], language=form.cleaned_data['language']), form
     return None, form
 
-<<<<<<< HEAD
 def get_sms_preview_context(manager, post, project_info):
-=======
-
-def get_sms_preview_context(manager, post):
-    project_info = json.loads(post['profile_form'])
-
->>>>>>> Fu Ying | #1217 add web preview for questionnaire tab page
     form_model, form = get_questionnaire_form_model_and_form(manager, project_info, post)
     if form.is_valid():
         example_sms = "%s" % (form_model.form_code)
