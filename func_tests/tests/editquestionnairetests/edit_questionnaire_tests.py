@@ -56,3 +56,8 @@ class TestEditQuestionnaire(BaseTest):
         questionnaire_tab_page = self.prerequisites_of_questionnaire_tab()
         sms_questionnaire_preview_page = questionnaire_tab_page.sms_questionnaire_preview()
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
+        self.assertEqual(sms_questionnaire_preview_page.get_project_name(), "Project: %s" % "clinic test project")
+        self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
+        sms_questionnaire_preview_page.close_preview()
+        self.assertFalse(sms_questionnaire_preview_page.sms_questionnaire_exist())
+

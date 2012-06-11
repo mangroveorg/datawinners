@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 
 from datawinners.project.views import  save_questionnaire, index, project_overview,\
-    project_results, project_data, datasenders, export_data, export_log, activate_project,\
+    project_results, project_data, export_data, export_log, activate_project,\
     subjects, registered_subjects, registered_datasenders, questionnaire, questionnaire_preview,\
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, \
     manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \

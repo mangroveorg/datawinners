@@ -37,9 +37,7 @@ def get_questionnaire_form_model_and_form(manager, project_info, post):
             name=form.cleaned_data['name'], language=form.cleaned_data['language']), form
     return None, form
 
-def get_sms_preview_context(manager, post):
-    project_info = json.loads(post['profile_form'])
-
+def get_sms_preview_context(manager, post, project_info):
     form_model, form = get_questionnaire_form_model_and_form(manager, project_info, post)
     if form.is_valid():
         example_sms = "%s" % (form_model.form_code)
@@ -56,7 +54,8 @@ def get_sms_preview_context(manager, post):
 def sms_preview(request):
     manager = get_database_manager(request.user)
     context = {'org_number': get_organization_telephone_number(request)}
-    context.update(get_sms_preview_context(manager, request.POST))
+    project_info = json.loads(request.POST['profile_form'])
+    context.update(get_sms_preview_context(manager, request.POST, project_info))
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
 
@@ -107,4 +106,9 @@ def smart_phone_preview(request):
 @login_required(login_url='/login')
 @is_not_expired
 def questionnaire_sms_preview(request):
-    return render_to_response("project/sms_instruction_preview.html", {}, context_instance=RequestContext(request))
+    manager = get_database_manager(request.user)
+    context = {'org_number': get_organization_telephone_number(request)}
+    project_info = Project.load(manager.database, request.POST['project_id'])
+    context.update(get_sms_preview_context(manager, request.POST, project_info))
+
+    return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
