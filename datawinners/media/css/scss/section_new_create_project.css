@@ -199,3 +199,8 @@ fieldset {
   top: 48px !important; }
 #report_type_fr .individual_report_example {
   top: 92px !important; }
+
+#container_content {
+  overflow: visible; }
+  #container_content .content {
+    overflow: visible; }

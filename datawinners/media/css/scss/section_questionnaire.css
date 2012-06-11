@@ -41,84 +41,16 @@
   border-color: #CCCCCC; }
 .wizard_content .content_wrapper .questionnaire_code h5 {
   margin-bottom: 10px; }
-.wizard_content .content_wrapper .preview-navigation {
-  position: relative;
-  float: right;
-  margin-top: 26px; }
-  .wizard_content .content_wrapper .preview-navigation span {
-    float: left;
-    margin-right: 6px;
-    padding: 4px 0; }
-  .wizard_content .content_wrapper .preview-navigation div {
-    float: left;
-    margin-right: 3px;
-    border: 1px solid white; }
-  .wizard_content .content_wrapper .preview-navigation div:hover {
-    cursor: pointer; }
-  .wizard_content .content_wrapper .preview-navigation a {
-    text-decoration: none; }
-  .wizard_content .content_wrapper .preview-navigation .navigation-sms-preview {
-    background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
-    padding: 4px 4px 0 20px; }
-  .wizard_content .content_wrapper .preview-navigation .navigation-smart-phone-preview {
-    background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
-    padding: 4px 4px 0 20px; }
-  .wizard_content .content_wrapper .preview-navigation .navigation-web-preview {
-    background: url("/media/images/computer_black.png") no-repeat 4px 4px;
-    padding: 4px 4px 0 30px; }
-  .wizard_content .content_wrapper .preview-navigation .shadow-background {
-    position: relative;
-    z-index: 1003;
-    background-color: white;
-    border: 1px solid #CCC;
-    box-shadow: 3px 0 5px -3px #cccccc;
-    border-bottom: none;
-    height: 33px; }
-    .wizard_content .content_wrapper .preview-navigation .shadow-background a {
-      color: black; }
-    .wizard_content .content_wrapper .preview-navigation .shadow-background a:hover {
-      cursor: auto; }
-  .wizard_content .content_wrapper .preview-navigation .shadow-background:hover {
-    cursor: auto; }
-.wizard_content .content_wrapper #questionnaire_preview_instruction {
-  font-size: 13px;
-  background: white;
-  display: none;
-  position: absolute;
-  z-index: 1002;
-  top: 63px;
-  box-shadow: 2px 3px 8px #cccccc, -2px 2px 8px #cccccc;
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f2f2f2));
-  background: -moz-linear-gradient(top, white, #f2f2f2);
-  width: 927px;
-  border: 1px solid #CCC;
-  padding-bottom: 20px; }
-  .wizard_content .content_wrapper #questionnaire_preview_instruction .close_preview {
-    float: right;
-    margin-right: 20px;
-    text-decoration: none;
-    margin-top: 10px;
-    padding-left: 20px;
-    background: url("/media/images/close_button.png") no-repeat 0; }
-  .wizard_content .content_wrapper #questionnaire_preview_instruction ul li {
-    margin: 0;
-    padding: 0; }
-.wizard_content .content_wrapper .questionnaire_code {
-  float: left; }
-  .wizard_content .content_wrapper .questionnaire_code li {
-    padding: 5px 0 !important;
-    margin: 0;
-    margin-top: 20px; }
-    .wizard_content .content_wrapper .questionnaire_code li #questionnaire-code-error {
-      background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
-      float: none !important; }
-    .wizard_content .content_wrapper .questionnaire_code li label {
-      display: inline;
-      width: 140px; }
-.wizard_content .content_wrapper .questionnaire_form_header {
-  border-bottom: 3px solid black;
-  height: 58px;
-  position: relative; }
+.wizard_content .content_wrapper .questionnaire_code li {
+  padding: 5px 0 !important;
+  margin: 0;
+  margin-top: 20px; }
+  .wizard_content .content_wrapper .questionnaire_code li #questionnaire-code-error {
+    background: url(/media/images/arrow_error.png) no-repeat left 3px !important;
+    float: none !important; }
+  .wizard_content .content_wrapper .questionnaire_code li label {
+    display: inline;
+    width: 140px; }
 .wizard_content .content_wrapper .questionnare_content {
   border-bottom: 1px solid #cccccc;
   border-top: 1px solid #cccccc;
@@ -243,13 +175,16 @@
 #questionnaire-code {
   float: none; }
 
-.questionnaire_code li label {
-  width: auto;
-  float: none;
-  font-weight: normal;
-  display: inline; }
-.questionnaire_code li span {
-  font-weight: bold; }
+.questionnaire_code li {
+  height: 31px;
+  line-height: 31px; }
+  .questionnaire_code li label {
+    width: auto;
+    float: none;
+    font-weight: normal;
+    display: inline; }
+  .questionnaire_code li span {
+    font-weight: bold; }
 
 .save-button {
   float: right;

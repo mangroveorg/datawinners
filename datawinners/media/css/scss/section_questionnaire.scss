@@ -57,88 +57,7 @@
     .define_project {
 
     }
-    .preview-navigation{
-      position: relative;
-      float: right;
-      margin-top: 26px;
-      span {
-        float: left;
-        margin-right: 6px;
-        padding: 4px 0;
-      }
-      div {
-        float: left;
-        margin-right: 3px;
-        border: 1px solid white;
-      }
-      div:hover {
-        cursor: pointer;
-      }
-      a {
-        text-decoration: none;
-      }
-      .navigation-sms-preview {
-        background: url("/media/images/feature_phone_black.png") no-repeat 4px 4px;
-        padding: 4px 4px 0 20px;
-      }
-      .navigation-smart-phone-preview {
-        background: url("/media/images/smart_phone_black.png") no-repeat 4px 4px;
-        padding: 4px 4px 0 20px;
-      }
-      .navigation-web-preview {
-        background: url("/media/images/computer_black.png") no-repeat 4px 4px;
-        padding: 4px 4px 0 30px;
-      }
-      .shadow-background {
-        position: relative;
-        z-index: 1003;
-        background-color: white;
-        border: 1px solid #CCC;
-        box-shadow: 3px 0 5px -3px #CCC;
-        border-bottom: none;
-        height: 33px;
-        a {
-          color: black;
-        }
-        a:hover {
-          cursor: auto;
-        }
-      }
-      .shadow-background:hover {
-        cursor: auto;
-      }
-    }
-    #questionnaire_preview_instruction {
-      font-size: 13px;
-      background: white;
-      display: none;
-      position: absolute;
-      z-index: 1002;
-      top: 63px;
-      box-shadow: 2px 3px 8px #CCC, -2px 2px 8px #CCC;
-      background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F2F2F2));
-      background: -moz-linear-gradient(top,  white,  #F2F2F2);
-      width: 927px;
-      border: 1px solid #CCC;
-      padding-bottom: 20px;
-      .close_preview {
-        float: right;
-        margin-right: 20px;
-        text-decoration: none;
-        margin-top: 10px;
-        padding-left: 20px;
-        background: url('/media/images/close_button.png') no-repeat 0;
-      }
-      ul {
-        li {
-            margin: 0;
-            padding: 0;
-        }
-      }
-    }
-
     .questionnaire_code {
-      float: left;
       li {
         padding: 5px 0 !important;
         margin: 0;
@@ -152,11 +71,6 @@
           width: 140px;
         }
       }
-    }
-    .questionnaire_form_header {
-      border-bottom: 3px solid black;
-      height: 58px;
-      position: relative;
     }
     .questionnare_content {
       border-bottom: 1px solid #cccccc;
@@ -326,6 +240,8 @@
 
 .questionnaire_code {
   li {
+    height: 31px;
+    line-height: 31px;
     label {
       width: auto;
       float: none;

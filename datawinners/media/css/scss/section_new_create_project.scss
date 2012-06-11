@@ -266,3 +266,10 @@ padding-left: 20px;
         top: 92px !important;
     }
 }
+
+#container_content {
+    overflow: visible;
+    .content {
+        overflow: visible;
+    }
+}
