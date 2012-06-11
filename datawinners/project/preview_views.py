@@ -27,7 +27,6 @@ def get_questions(form_model):
 
     return questions
 
-
 def get_questionnaire_form_model_and_form(manager, project_info, post):
     entity_list = get_all_entity_types(manager)
     entity_list = remove_reporter(entity_list)

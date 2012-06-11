@@ -201,15 +201,14 @@ class TestProjectViews(unittest.TestCase):
         }
         post = {'profile_form': '{"activity_report": "yes" }',
                 'project_state': 'Test'}
-        web_questionnaire_form_creater = Mock()
         QuestionnaireForm = type('QuestionnaireForm', (Form, ), {"short_code_question_code": "eid"})
         with patch("project.preview_views.get_questionnaire_form_model_and_form") as questionnaire_form_model_and_form:
             questionnaire_form_model_and_form.return_value = form_model, form
             with patch.object(form, 'isValid') as is_valid:
                 is_valid.return_value = True
-                with patch("project.preview_views.WebQuestionnaireFormCreater") as web_questionnaire_form_creater:
-                    web_questionnaire_form_creater.return_value = web_questionnaire_form_creater
-                    with patch.object(web_questionnaire_form_creater, "create") as create_form:
+                with patch("project.preview_views.WebQuestionnaireFormCreater") as web_questionnaire_form_creator:
+                    web_questionnaire_form_creator.return_value = web_questionnaire_form_creator
+                    with patch.object(web_questionnaire_form_creator, "create") as create_form:
                         create_form.return_value = QuestionnaireForm
                         with patch("project.preview_views.add_link_context") as add_link:
                             add_link.return_value = {'text': 'Add a datasender'}
