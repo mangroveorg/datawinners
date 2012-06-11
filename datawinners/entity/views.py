@@ -233,6 +233,8 @@ def delete_entity(request):
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
+def edit_subject(request):
+    pass
 
 def _get_project_association(projects):
     project_association = defaultdict(list)

@@ -64,9 +64,12 @@
         </ul>
     {% endif %}
 
+    <input type='hidden' id='entity_type' value="{{ project.entity_type }}" />
+
     <select class="margin_bottom_10 action">
         <option value="" selected="selected">--</option>
-        <option value="{{ project.entity_type }}">{% trans "Delete" %}</option>
+        <option value="Delete">{% trans "Delete" %}</option>
+        <option value="Edit">{% trans "Edit" %}</option>
     </select>
     <table class="styled_table">
         <thead>
