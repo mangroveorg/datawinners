@@ -38,7 +38,9 @@ def formList(request):
     rows = get_all_project_for_user(request.user)
     form_tuples = [(row['value']['name'], row['value']['qid']) for row in rows]
     xform_base_url = request.build_absolute_uri('/xforms')
-    return HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
+    response = HttpResponse(content=list_all_forms(form_tuples, xform_base_url), mimetype="text/xml")
+    response['X-OpenRosa-Version'] = '1.0'
+    return response
 
 
 def get_errors(errors):
