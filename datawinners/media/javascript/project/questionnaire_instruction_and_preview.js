@@ -40,9 +40,9 @@ DW.instruction_and_preview.prototype = {
     post_callback: function(){}
 };
 
-DW.web_instruction_and_preview_wizard = function () {};
-DW.web_instruction_and_preview_wizard.prototype = new DW.instruction_and_preview(web_preview_link, '.navigation-web-preview');
-DW.web_instruction_and_preview_wizard.prototype.post_callback = function () {
+DW.web_instruction_and_preview = function () {};
+DW.web_instruction_and_preview.prototype = new DW.instruction_and_preview(web_preview_link, '.navigation-web-preview');
+DW.web_instruction_and_preview.prototype.post_callback = function () {
     $("#questionnaire_preview_instruction .help_icon").tooltip({
         position:"top right",
         relative:true,
@@ -62,7 +62,6 @@ DW.smart_phone_instruction_and_preview.prototype = new DW.instruction_and_previe
 DW.smart_phone_instruction_and_preview.prototype.get_post_data = function () {
     return {};
 };
-
 
 DW.instruction_and_preview.bind_cancel_button = function() {
     $(".close_preview").live('click', function() {
@@ -85,12 +84,6 @@ DW.instruction_and_preview.bind_print_button = function() {
 };
 
 $(function () {
-    var sms_preview = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
-    sms_preview.bind_preview_navigation_item();
-    var web_preview = new DW.web_instruction_and_preview_wizard();
-    web_preview.bind_preview_navigation_item();
-    var web_preview = new DW.smart_phone_instruction_and_preview();
-    web_preview.bind_preview_navigation_item();
     DW.instruction_and_preview.bind_cancel_button();
     DW.instruction_and_preview.bind_print_button();
 });
