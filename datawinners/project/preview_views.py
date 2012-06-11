@@ -107,4 +107,4 @@ def smart_phone_preview(request):
 @login_required(login_url='/login')
 @is_not_expired
 def questionnaire_sms_preview(request):
-    return HttpResponse()
+    return render_to_response("project/sms_instruction_preview.html", {}, context_instance=RequestContext(request))
