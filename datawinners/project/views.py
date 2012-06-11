@@ -781,7 +781,8 @@ def datasenders(request, project_id=None):
         context_instance=RequestContext(request))
 
 def get_preview_and_instruction_links_for_questionnaire():
-    return {'sms_preview': reverse("questionnaire_sms_preview")}
+    return {'sms_preview': reverse("questionnaire_sms_preview"),
+            'smart_phone_preview': reverse("smart_phone_preview"),}
 
 @login_required(login_url='/login')
 @is_not_expired

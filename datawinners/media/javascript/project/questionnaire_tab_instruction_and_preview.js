@@ -10,6 +10,11 @@ DW.sms_instruction_and_preview = function () {};
 DW.sms_instruction_and_preview.prototype = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
 DW.sms_instruction_and_preview.prototype.get_post_data = DW.questionnaire_tab_get_post_data;
 
+
+DW.questionnaire_form_validate = function(){
+    return $('#question_form').valid();
+};
+
 $(function(){
     var sms_preview = new DW.sms_instruction_and_preview();
     sms_preview.bind_preview_navigation_item();

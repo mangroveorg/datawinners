@@ -233,3 +233,4 @@ class TestProjectViews(unittest.TestCase):
             reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
             links = get_preview_and_instruction_links_for_questionnaire()
             self.assertEqual(links["sms_preview"], "/project/questionnaire_sms_preview")
+            self.assertEqual(links["smart_phone_preview"], "/project/smart_phone_preview")

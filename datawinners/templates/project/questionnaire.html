@@ -20,6 +20,7 @@
     <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_questionnaire.css" rel="stylesheet"/>
     <link href="/media/css/scss/section_new_create_project.css" rel="stylesheet"/>
+    <link href="/media/css/scss/smart_phone_instruction.css" rel="stylesheet" />
 {% endblock %}
 
 {% block page_js %}
@@ -113,6 +114,11 @@
                     <div class="navigation-web-preview"><a>{% trans "Web" %}</a></div>
                 </div>
 
+                <div id="questionnaire_preview_instruction">
+                    <a class="close_preview">{% trans "Close Window" %}</a>
+                    <div id="questionnaire_content"></div>
+                    <a class="close_preview">{% trans "Close Window" %}</a>
+                </div>
             </div>
 
             <div class="questionnare_content grid_23 alpha omega">
