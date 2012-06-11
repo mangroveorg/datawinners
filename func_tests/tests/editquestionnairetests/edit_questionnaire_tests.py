@@ -74,3 +74,11 @@ class TestEditQuestionnaire(BaseTest):
         web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
         
         self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())
+
+    @attr('functional_test')
+    def test_smart_phone_preview_of_questionnaire_on_the_questionnaire_tab(self):
+        self.prerequisites_of_questionnaire_tab()
+        preview_navigation_page = PreviewNavigationPage(self.driver)
+        smart_phone_preview_page = preview_navigation_page.smart_phone_preview()
+
+        self.assertIsNotNone(smart_phone_preview_page.get_smart_phone_instruction())
