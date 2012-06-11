@@ -12,7 +12,7 @@ from datawinners.project.views import _format_reminders, subject_registration_fo
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
-from project.views import get_form_model_and_template
+from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire
 from project.wizard_view import get_preview_and_instruction_links
 
 class TestProjectViews(unittest.TestCase):
@@ -133,6 +133,7 @@ class TestProjectViews(unittest.TestCase):
             links = get_preview_and_instruction_links()
             self.assertEqual(links["sms_preview"], "/project/sms_preview")
             self.assertEqual(links["web_preview"], "/project/web_preview")
+            self.assertEqual(links["smart_phone_preview"], "/project/smart_phone_preview")
 
     def test_should_get_correct_context_for_sms_preview(self):
         questions = {}
@@ -226,3 +227,11 @@ class TestProjectViews(unittest.TestCase):
         add_link_dict = add_link_context(project)
         self.assertEquals(add_link_dict['text'], 'Add a datasender')
         self.assertEquals(add_link_dict['url'], "#")
+
+    def test_should_get_correct_instruction_and_preview_links_for_questionnaire(self):
+        with patch("project.views.reverse") as reverse:
+            reverse.side_effect = lambda *args, **kw: "/project/%s" % args[0]
+            links = get_preview_and_instruction_links_for_questionnaire()
+            self.assertEqual(links["sms_preview"], "/project/questionnaire_sms_preview")
+            self.assertEqual(links["web_preview"], "/project/questionnaire_web_preview")
+            self.assertEqual(links["smart_phone_preview"], "/project/smart_phone_preview")

@@ -780,6 +780,10 @@ def datasenders(request, project_id=None):
              'current_language': translation.get_language()},
         context_instance=RequestContext(request))
 
+def get_preview_and_instruction_links_for_questionnaire():
+    return {'sms_preview': reverse("questionnaire_sms_preview"),
+            'web_preview': reverse("questionnaire_web_preview"),
+            'smart_phone_preview': reverse("smart_phone_preview"),}
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -795,8 +799,12 @@ def questionnaire(request, project_id=None):
         project_links = make_project_links(project, form_model.form_code)
         in_trial_mode = _in_trial_mode(request)
         return render_to_response('project/questionnaire.html',
-                {"existing_questions": repr(existing_questions), 'questionnaire_code': form_model.form_code,
-                 'project': project, 'project_links': project_links, 'in_trial_mode': in_trial_mode},
+                {"existing_questions": repr(existing_questions),
+                 'questionnaire_code': form_model.form_code,
+                 'project': project,
+                 'project_links': project_links,
+                 'in_trial_mode': in_trial_mode,
+                 'preview_links': get_preview_and_instruction_links_for_questionnaire()},
             context_instance=RequestContext(request))
 
 
