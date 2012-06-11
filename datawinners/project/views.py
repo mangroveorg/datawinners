@@ -782,6 +782,7 @@ def datasenders(request, project_id=None):
 
 def get_preview_and_instruction_links_for_questionnaire():
     return {'sms_preview': reverse("questionnaire_sms_preview"),
+            'web_preview': reverse("questionnaire_web_preview"),
             'smart_phone_preview': reverse("smart_phone_preview"),}
 
 @login_required(login_url='/login')

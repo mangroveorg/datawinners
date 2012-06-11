@@ -112,3 +112,8 @@ def questionnaire_sms_preview(request):
     context.update(get_sms_preview_context(manager, request.POST, project_info))
 
     return render_to_response("project/sms_instruction_preview.html", context, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+@is_not_expired
+def questionnaire_web_preview(request):
+    return HttpResponse()
