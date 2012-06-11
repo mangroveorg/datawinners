@@ -9,7 +9,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     delete_reminder, sent_reminders, broadcast_message, review_and_test, \
     edit_subject, create_datasender_and_webuser, edit_datasender
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
-from project.preview_views import sms_preview, web_preview, smart_phone_preview
+from project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -57,4 +57,5 @@ urlpatterns = patterns('',
         url(r'^project/sms_preview$', sms_preview, name="sms_preview"),
         url(r'^project/web_preview$', web_preview, name="web_preview"),
         url(r'^project/smart_phone_preview$', smart_phone_preview, name="smart_phone_preview"),
+        url(r'^project/questionnaire_sms_preview$', questionnaire_sms_preview, name="questionnaire_sms_preview"),
 )

@@ -1,6 +1,6 @@
 import json
-from atom.http_core import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -104,3 +104,7 @@ def smart_phone_preview(request):
                               {"instruction_template": instruction_template},
                               context_instance=RequestContext(request))
 
+@login_required(login_url='/login')
+@is_not_expired
+def questionnaire_sms_preview(request):
+    return HttpResponse()
