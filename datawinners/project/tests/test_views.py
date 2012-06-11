@@ -11,7 +11,7 @@ from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
 from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
-from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context, get_questionnaire_sms_preview_context
+from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
 from project.views import get_form_model_and_template, get_preview_and_instruction_links_for_questionnaire
 from project.wizard_view import get_preview_and_instruction_links
 
