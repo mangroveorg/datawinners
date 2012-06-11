@@ -4,6 +4,7 @@ from framework.base_test import BaseTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
+from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.createprojecttests.create_project_data import *
@@ -51,10 +52,14 @@ class TestCreateProject(BaseTest):
         create_project_page = self.prerequisites_of_create_project()
         create_project_page.create_project_with(VALID_DATA)
         create_project_page.continue_create_project()
-        sms_questionnaire_preview_page = create_project_page.sms_questionnaire_preview()
+
+        preview_navigation_page = PreviewNavigationPage(self.driver)
+        sms_questionnaire_preview_page = preview_navigation_page.sms_questionnaire_preview()
+
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
         self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(), "^Project: %s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
+        
         sms_questionnaire_preview_page.close_preview()
         self.assertFalse(sms_questionnaire_preview_page.sms_questionnaire_exist())
 
@@ -63,7 +68,10 @@ class TestCreateProject(BaseTest):
         create_project_page = self.prerequisites_of_create_project()
         create_project_page.create_project_with(VALID_DATA)
         create_project_page.continue_create_project()
-        web_questionnaire_preview_page = create_project_page.web_questionnaire_preview()
+
+        preview_navigation_page = PreviewNavigationPage(self.driver)
+        web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
+        
         self.assertIsNotNone(web_questionnaire_preview_page.web_questionnaire())
         self.assertIsNotNone(web_questionnaire_preview_page.get_web_instruction())
 
@@ -72,5 +80,7 @@ class TestCreateProject(BaseTest):
         create_project_page = self.prerequisites_of_create_project()
         create_project_page.create_project_with(VALID_DATA)
         create_project_page.continue_create_project()
-        smart_phone_instruction_page = create_project_page.smart_phone_preview()
+
+        preview_navigation_page = PreviewNavigationPage(self.driver)
+        smart_phone_instruction_page = preview_navigation_page.smart_phone_preview()
         self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())

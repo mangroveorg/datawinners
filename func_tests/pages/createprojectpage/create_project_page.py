@@ -4,11 +4,7 @@ from pages.lightbox.light_box_locator import TITLE_LABEL
 from pages.lightbox.light_box_page import LightBox
 from framework.utils.data_fetcher import *
 from pages.createprojectpage.create_project_locator import *
-from pages.projectoverviewpage.project_overview_locator import PROJECT_STATUS_LABEL
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from pages.smartphoneinstructionpage.smart_phone_instruction_page import SmartPhoneInstructionPage
-from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
-from pages.webquestionnairepreivewpage.web_questionnaire_preivew_page import WebQuestionnairePreviewPage
 from tests.createprojecttests.create_project_data import *
 from pages.page import Page
 from framework.utils.common_utils import generateId, CommonUtilities
@@ -186,15 +182,3 @@ class CreateProjectPage(Page):
             project_details[SUBJECT] = ""
         #project_details[DEVICES] = self.get_devices()
         return project_details
-
-    def sms_questionnaire_preview(self):
-        self.driver.find(SMS_PREVIEW).click()
-        return SmsQuestionnairePreviewPage(self.driver)
-
-    def web_questionnaire_preview(self):
-        self.driver.find(WEB_PREVIEW).click()
-        return WebQuestionnairePreviewPage(self.driver)
-
-    def smart_phone_preview(self):
-        self.driver.find(SMART_PHONE_PREVIEW).click()
-        return SmartPhoneInstructionPage(self.driver)

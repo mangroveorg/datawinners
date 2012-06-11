@@ -41,8 +41,3 @@ CONTINUE_BTN = by_css("input#continue_project")
 PROJECT_NAME_ERROR_MSG_LABEL = by_css("label.error[for='id_name']")
 PROJECT_TYPE_ERROR_MSG_LABEL = by_css("li>label[for='id_project_type_0']~ul.errorlist>li")
 QUESTIONNAIRE_ABOUT_MSG_LABEL = by_css("li>label[for='id_activity_report_0']~ul.errorlist>li")
-
-SMS_PREVIEW = by_css(".navigation-sms-preview")
-WEB_PREVIEW = by_css(".navigation-web-preview")
-SMART_PHONE_PREVIEW = by_css(".navigation-smart-phone-preview")
-

@@ -4,6 +4,7 @@ from framework.base_test import BaseTest
 from framework.utils.data_fetcher import fetch_, from_
 from pages.createquestionnairepage.create_questionnaire_page import CreateQuestionnairePage
 from pages.loginpage.login_page import LoginPage
+from pages.previewnavigationpage.preview_navigation_page import PreviewNavigationPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.editquestionnairetests.edit_questionnaire_data import *
@@ -23,6 +24,7 @@ class TestEditQuestionnaire(BaseTest):
         edit_project_page = project_overview_page.navigate_to_edit_project_page()
         edit_project_page.continue_create_project()
         return CreateQuestionnairePage(self.driver)
+
     def prerequisites_of_questionnaire_tab(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
@@ -53,11 +55,22 @@ class TestEditQuestionnaire(BaseTest):
 
     @attr('functional_test')
     def test_sms_preview_of_questionnaire_on_the_questionnaire_tab(self):
-        questionnaire_tab_page = self.prerequisites_of_questionnaire_tab()
-        sms_questionnaire_preview_page = questionnaire_tab_page.sms_questionnaire_preview()
+        self.prerequisites_of_questionnaire_tab()
+        preview_navigation_page = PreviewNavigationPage(self.driver)
+        sms_questionnaire_preview_page = preview_navigation_page.sms_questionnaire_preview()
+
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
         self.assertEqual(sms_questionnaire_preview_page.get_project_name(), "Project: %s" % "clinic test project")
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
+        
         sms_questionnaire_preview_page.close_preview()
         self.assertFalse(sms_questionnaire_preview_page.sms_questionnaire_exist())
 
+
+    @attr('functional_test')
+    def test_web_preview_of_questionnaire_on_the_questionnaire_tab(self):
+        self.prerequisites_of_questionnaire_tab()
+        preview_navigation_page = PreviewNavigationPage(self.driver)
+        web_questionnaire_preview_page = preview_navigation_page.web_questionnaire_preview()
+        
+        self.assertIsNotNone(web_questionnaire_preview_page.sms_questionnaire())
