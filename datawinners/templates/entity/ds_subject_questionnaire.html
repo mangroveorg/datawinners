@@ -1,6 +1,7 @@
 {% extends "entity/subject_questionnaire.html" %}
+{% load i18n %}
 
-<a id="cancel">{% trans "Cancel" %}</a>
 {% block cancel_block %}
+    <a id="cancel">{% trans "Cancel" %}</a>
     {% include "warning_section.html" %}
 {% endblock %}

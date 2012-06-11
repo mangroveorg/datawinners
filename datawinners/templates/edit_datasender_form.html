@@ -12,8 +12,8 @@
             </li>
             <li>
                 <div class="button_block">
-                    <a id="cancel">{% trans "Cancel Editing" %}</a>
                     {% block cancel_block %}
+                        <a id="cancel">{% trans "Cancel Editing" %}</a>
                         {% include "warning_section.html" %}
                     {% endblock %}
                     <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"
