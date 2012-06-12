@@ -293,13 +293,13 @@ def broadcast_message(data_senders, message, organization_tel_number, other_numb
 
     return sms_sent
 
-def create_request(questionnaire_form, username):
+def create_request(questionnaire_form, username,is_update=None):
     return Request(message=questionnaire_form.cleaned_data,
         transportInfo=
         TransportInfo(transport="web",
             source=username,
             destination=""
-        ))
+        ),is_update=is_update)
 
 
 def _translate_messages(error_dict, fields):

@@ -18,6 +18,7 @@ from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
+from gdata.apps import organization
 from mangrove.form_model.field import field_to_json
 from mangrove.form_model.location import LOCATION_TYPE_FIELD_NAME
 from mangrove.transport import Channel
@@ -39,13 +40,12 @@ from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, MOBILE_NUMBER_FIELD
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, MOBILE_NUMBER_FIELD, SHORT_CODE_FIELD
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
-from datawinners.project.web_questionnaire_form_creator import\
-    WebQuestionnaireFormCreater
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, get_database_manager_for_org
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
@@ -238,8 +238,6 @@ def delete_entity(request):
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
-def edit_subject(request):
-    pass
 
 def _get_project_association(projects):
     project_association = defaultdict(list)
@@ -430,11 +428,83 @@ def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide
 def get_template(user):
     return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
 
+def edit_subject(request,entity_type,entity_id):
+    manager = get_database_manager(request.user)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    subject = get_by_short_code(manager,entity_id,[entity_type.lower()])
+    for field in form_model.fields:
+        if field.name == LOCATION_TYPE_FIELD_NAME:
+            field.value = ','.join(subject.location_path)
+        elif field.name == GEO_CODE_FIELD_NAME:
+            field.value = ','.join(map(str,subject.geometry['coordinates']))
+        elif field.name == SHORT_CODE_FIELD:
+            field.value = subject.short_code
+        else:
+            field.value = subject.data[field.name]['value']
+
+
+
+    QuestionnaireForm = WebQuestionnaireFormCreater(None, form_model=form_model).create()
+    web_questionnaire_template = get_template(request.user)
+    disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
+    if request.method == 'GET':
+        questionnaire_form = QuestionnaireForm()
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+        return render_to_response(web_questionnaire_template,
+            form_context,
+            context_instance=RequestContext(request))
+    if request.method == 'POST':
+        questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=request.POST)
+        if not questionnaire_form.is_valid():
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+            return render_to_response(web_questionnaire_template,
+                form_context,
+                context_instance=RequestContext(request))
+
+        success_message = None
+        error_message = None
+        try:
+            from datawinners.project.helper import create_request
+
+            response = WebPlayer(manager,
+                LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
+                create_request(questionnaire_form, request.user.username,is_update=True))
+
+            if response.success:
+                success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
+                    response.short_code,)
+                questionnaire_form = QuestionnaireForm()
+            else:
+                from datawinners.project.helper import errors_to_list
+
+                questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
+                form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+                return render_to_response(web_questionnaire_template,
+                    form_context,
+                    context_instance=RequestContext(request))
+
+        except DataObjectNotFound:
+            message = exception_messages.get(DataObjectNotFound).get(WEB)
+            error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
+        except DataObjectAlreadyExists as exception:
+            error_message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
+        except Exception as exception:
+            error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
+
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+        subject_context.update({'success_message': success_message, 'error_message': error_message})
+
+        return render_to_response(web_questionnaire_template, subject_context,
+            context_instance=RequestContext(request))
+
+
+
 @login_required(login_url='/login')
 @is_not_expired
 def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+
     QuestionnaireForm = WebQuestionnaireFormCreater(None, form_model=form_model).create()
 
     web_questionnaire_template = get_template(request.user)

@@ -184,7 +184,7 @@ class WebQuestionnaireFormCreater(object):
         return {u't': forms.CharField(widget=HiddenInput, initial=self.form_model.entity_type[0])}
 
     def _create_phone_number_field(self, field, language):
-        telephone_number_field = PhoneNumberField(label=field.label[language], required=field.is_required(),
+        telephone_number_field = PhoneNumberField(label=field.label[language],initial=field.value, required=field.is_required(),
             help_text=field.instruction)
         telephone_number_field.widget.attrs["watermark"] = get_text_field_constraint_text(field)
         telephone_number_field.widget.attrs['style'] = 'padding-top: 7px;'
@@ -194,7 +194,7 @@ class WebQuestionnaireFormCreater(object):
         return telephone_number_field
 
     def _create_integer_field(self, field, language):
-        integer_field = django.forms.fields.FloatField(label=field.label[language], required=field.is_required(),
+        integer_field = django.forms.fields.FloatField(label=field.label[language],initial=field.value, required=field.is_required(),
             error_messages={'invalid': _('Enter a valid integer')})
         integer_field.widget.attrs["watermark"] = get_integer_field_constraint_text(field)
         integer_field.widget.attrs['style'] = 'padding-top: 7px;'
