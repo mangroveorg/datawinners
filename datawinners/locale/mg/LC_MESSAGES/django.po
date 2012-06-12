@@ -1465,6 +1465,10 @@ msgstr "Instructions"
 msgid "Question Number"
 msgstr "Numéro de la question"
 
+#: templates/project/questionnaire.html: 87
+msgid "View and edit your Questionnaire."
+msgstr ""
+
 #: templates/project/questionnaire.html:4
 #: templates/project/questionnaire_preview.html:3
 msgid "Project - Questionnaire"

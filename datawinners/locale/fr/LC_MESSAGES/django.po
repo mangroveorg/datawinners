@@ -1597,6 +1597,10 @@ msgstr "Ces instructions expliquent les critères que vous définissez pour rép
 msgid "Question Number"
 msgstr "Numéro de la question"
 
+#: templates/project/questionnaire.html: 87
+msgid "View and edit your Questionnaire."
+msgstr "Voir et modifier votre questionnaire."
+
 #: templates/project/questionnaire.html:4
 #: templates/project/questionnaire_preview.html:3
 msgid "Project - Questionnaire"
