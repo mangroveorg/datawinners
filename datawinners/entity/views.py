@@ -137,18 +137,19 @@ def edit_datasender(request,reporter_id):
 
     if request.method == 'POST':
         form = ReporterRegistrationForm(request.POST)
-        try:
-            form.is_valid()
-            org_id = request.user.get_profile().org_id
-            organization = Organization.objects.get(org_id=org_id)
-            web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
-                transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
-            if response.success:
-                message = _("Your changes have been saved.")
+        message = None
+        if form.is_valid():
+            try:
+                org_id = request.user.get_profile().org_id
+                organization = Organization.objects.get(org_id=org_id)
+                web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+                response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
+                    transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
+                if response.success:
+                    message = _("Your changes have been saved.")
 
-        except MangroveException as exception:
-            message = exception.message
+            except MangroveException as exception:
+                message = exception.message
 
         return render_to_response('edit_datasender_form.html',{'form':form,'message':message, 'entity_links':entity_links},context_instance=RequestContext(request))
 
