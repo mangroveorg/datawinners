@@ -1,5 +1,5 @@
 from django.test.testcases import TestCase
-from datawinners.entity.fields import PhoneNumberField, EMPTY_VALUES
+from datawinners.entity.fields import PhoneNumberField
 from datawinners.tests.backport import assertFieldOutput
 
 

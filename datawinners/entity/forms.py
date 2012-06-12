@@ -7,7 +7,6 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
 from mangrove.utils.types import is_empty
-from registration.forms import RegistrationFormUniqueEmail
 from datawinners import settings
 from datawinners.entity.fields import PhoneNumberField
 import re
@@ -91,7 +90,7 @@ class ReporterRegistrationForm(Form):
         geo_code_string = b.strip()
         geo_code_string = (' ').join(geo_code_string.split())
         if not is_empty(geo_code_string):
-            lat_long = re.split("[ ,]", geo_code_string)
+            lat_long = filter(None, re.split("[ ,]", geo_code_string))
             self._geo_code_format_validations(lat_long, msg)
             self.cleaned_data['geo_code'] = geo_code_string
 
