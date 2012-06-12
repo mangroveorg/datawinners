@@ -1090,6 +1090,36 @@ def create_datasender_and_webuser(request, project_id=None):
             context_instance=RequestContext(request))
 
 
+def edit_datasender(request, project_id, reporter_id):
+    manager = get_database_manager(request.user)
+    reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+    project, links = _get_project_and_project_link(manager, project_id, reporter_id)
+
+    if request.method == 'GET':
+        location = ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)) if reporter_entity.value(LOCATION_TYPE_FIELD_NAME) is not None else None
+        geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
+        form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
+                                                 'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : location,'geo_code' : geo_code})
+        return render_to_response('project/edit_datasender.html',{'project' : project,'reporter_id' : reporter_id,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
+
+    if request.method == 'POST':
+        form = ReporterRegistrationForm(request.POST)
+        message = None
+        if form.is_valid():
+            try:
+                org_id = request.user.get_profile().org_id
+                organization = Organization.objects.get(org_id=org_id)
+                web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+                response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
+                    transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
+                if response.success:
+                    message = _("Your changes have been saved.")
+
+            except MangroveException as exception:
+                message = exception.message
+
+        return render_to_response('edit_datasender_form.html',{'project' : project,'form':form,'message':message,'project_links': links, 'in_trial_mode' : _in_trial_mode(request)},context_instance=RequestContext(request))
+
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
 
@@ -1104,32 +1134,3 @@ def add_link(project):
         text = _("Register a %(subject)s") % {'subject': project.entity_type}
         url = make_subject_links(project)['register_subjects_link']
         return add_link_named_tuple(url=url, text=text)
-
-def edit_datasender(request, project_id, reporter_id):
-    manager = get_database_manager(request.user)
-    reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
-    project, links = _get_project_and_project_link(manager, project_id, reporter_id)
-
-    if request.method == 'GET':
-        location = ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)) if reporter_entity.value(LOCATION_TYPE_FIELD_NAME) is not None else None
-        geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
-        form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
-                'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : location,'geo_code' : geo_code})
-        return render_to_response('project/edit_datasender.html',{'project' : project,'reporter_id' : reporter_id,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
-
-    if request.method == 'POST':
-        form = ReporterRegistrationForm(request.POST)
-        try:
-            form.is_valid()
-            org_id = request.user.get_profile().org_id
-            organization = Organization.objects.get(org_id=org_id)
-            web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
-                transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
-            if response.success:
-                message = _("Your changes have been saved.")
-
-        except MangroveException as exception:
-            message = exception.message
-
-        return render_to_response('edit_datasender_form.html',{'project' : project,'form':form,'message':message,'project_links': links, 'in_trial_mode' : _in_trial_mode(request)},context_instance=RequestContext(request))

@@ -70,10 +70,10 @@
                         {% trans "location_name_example" %}
                     </li>
                     <li class="{{ form.geo_code.css_classes }} form-row-10px">
-                        <div><label for="id_{{ form.geo_code.name }}"
-                                    style="float: left;">{{ form.geo_code.label }}</label> <a
-                                href="http://itouchmap.com/latlong.html" style="float:right;" target="_blank">Find GPS
-                            coordinates</a></div>
+                        <div style="display: table">
+                            <label for="id_{{ form.geo_code.name }}" style="float: left;">{{ form.geo_code.label  }}</label>
+                            <a href="http://itouchmap.com/latlong.html" style="padding-left: 109px;" target="_blank">Find GPS coordinates</a>
+                        </div>
                         {{ form.geo_code }}
                         {{ form.geo_code.errors }}
 
