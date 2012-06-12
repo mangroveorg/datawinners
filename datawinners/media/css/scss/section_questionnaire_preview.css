@@ -32,9 +32,9 @@
     padding: 20px;
     border: 1px solid #CCC;
     background-color: white; }
-  #questionnaire_content #questionnaire_preview .sms-instruction {
+  #questionnaire_content #questionnaire_preview .preview-instruction {
     margin-left: 10px; }
-    #questionnaire_content #questionnaire_preview .sms-instruction > div {
+    #questionnaire_content #questionnaire_preview .preview-instruction > div {
       padding-bottom: 15px; }
   #questionnaire_content #questionnaire_preview .preview-header {
     margin: 0 10px; }
