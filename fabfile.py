@@ -1,9 +1,9 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from fabric.api import run, env
+from fabric.api import run, env, sudo
 from fabric.context_managers import cd, settings
 import os
-import sys
+from datetime import date
 
 PROJECT_DIR = os.path.dirname(__file__)
 
@@ -153,5 +153,80 @@ def local():
     env.hosts = ["127.0.0.1"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
+def production():
+    env.user = "mangrover"
+    env.hosts = ["178.79.185.34"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
+
+def test2():
+    env.user = "ashwini"
+    env.hosts = ["10.12.6.29"]
+    env.key_filename = ["/home/akshaysn/.ssh/id_rsa"]
+    env.warn_only = True
+
 def anonymous():
     run("uname -a")
+
+def checkout_mangrove_to_production(code_dir, virtual_env):
+    if run("cd %s && ls | grep mangrove" % code_dir).failed:
+        run('cd %s && git clone git://github.com/mangroveorg/mangrove.git' % code_dir)
+    mangrove_dir = code_dir + '/mangrove'
+    with cd(mangrove_dir):
+        run("git reset --hard HEAD")
+        run("git checkout develop")
+        run("git pull origin develop")
+        mangrove_branch = str(date.today()).replace('-', '')
+        if run("git branch -a|grep %s" % mangrove_branch).succeeded:
+            run("git branch -D %s" % mangrove_branch)
+        run("git checkout -b %s $MANGROVE_COMMIT_SHA" % mangrove_branch)
+        run("git checkout .")
+        activate_and_run(virtual_env, "pip install -r requirements.pip")
+        activate_and_run(virtual_env, "python setup.py develop")
+
+def check_out_datawinners_code_for_production(code_dir, virtual_env):
+    if run("cd %s && ls | grep datawinners" % code_dir).failed:
+        run('cd %s && git clone git://github.com/mangroveorg/datawinners.git' % code_dir)
+    datawinners_dir = code_dir + '/datawinners'
+    with cd(datawinners_dir):
+        run("git reset --hard HEAD")
+        run("git checkout develop")
+        run("git pull origin develop")
+        datawinner_branch = str(date.today()).replace('-', '')
+        if run("git branch -a|grep %s" % datawinner_branch).succeeded:
+            run("git branch -D %s" % datawinner_branch)
+        run("git checkout -b %s $DATAWINNER_COMMIT_SHA" % datawinner_branch)
+        run("git checkout .")
+        activate_and_run(virtual_env, "pip install -r requirements.pip")
+
+def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, virtual_env, couch_migration_file=None):
+    run('sudo /etc/init.d/nginx stop')
+    run('sudo /etc/init.d/uwsgi stop')
+
+    set_mangrove_commit_sha('develop', mangrove_build_number)
+    set_datawinner_commit_sha(datawinner_build_number)
+
+    checkout_mangrove_to_production(code_dir, virtual_env)
+    check_out_datawinners_code_for_production(code_dir, virtual_env)
+
+    datawinners_dir = code_dir + '/datawinners/datawinners'
+    with cd(datawinners_dir):
+        run("cp prod_local_settings.py local_settings.py")
+        activate_and_run(virtual_env, "python manage.py migrate")
+        activate_and_run(virtual_env, "python manage.py compilemessages")
+        activate_and_run(virtual_env, "python manage.py syncviews syncall")
+
+    if couch_migration_file is not None:
+        with cd('%s/datawinners' % code_dir):
+            activate_and_run(virtual_env, "python %s" % couch_migration_file)
+
+    if run('cd mangrove').succeeded:
+        run('rm -rf mangrove')
+    run('ln -s %s/mangrove/ mangrove' % code_dir)
+
+    if run('cd datawinners').succeeded:
+        run('rm -rf datawinners')
+    run('ln -s %s/datawinners/ datawinners' % code_dir)
+
+    run('sudo /etc/init.d/nginx start')
+    run('sudo /etc/init.d/uwsgi start')
