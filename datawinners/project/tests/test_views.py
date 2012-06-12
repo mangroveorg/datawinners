@@ -203,30 +203,25 @@ class TestProjectViews(unittest.TestCase):
     def test_should_get_correct_context_for_web_preview(self):
         manager = {}
         form_model = {}
-        form = Mock()
-        form.cleaned_data = {"name": "project_name", "entity_type": "clinic",
-                             "language": "en", "goals": "goals", "activity_report": "yes",}
 
-        project_info = {"activity_report": "yes" }
+        project_info = {"name":"project_name", "goals":"des", "entity_type":"clinic", "activity_report":"yes", "language":"en"}
         post = {'project_state': 'Test'}
         QuestionnaireForm = type('QuestionnaireForm', (Form, ), {"short_code_question_code": "eid"})
         
-        with patch("project.preview_views.get_questionnaire_form_model_and_form") as questionnaire_form_model_and_form:
-            questionnaire_form_model_and_form.return_value = form_model, form
-            with patch.object(form, 'isValid') as is_valid:
-                is_valid.return_value = True
-                with patch("project.preview_views.WebQuestionnaireFormCreater") as web_questionnaire_form_creator:
-                    web_questionnaire_form_creator.return_value = web_questionnaire_form_creator
-                    with patch.object(web_questionnaire_form_creator, "create") as create_form:
-                        create_form.return_value = QuestionnaireForm
-                        with patch("project.preview_views.add_link_context") as add_link:
-                            add_link.return_value = {'text': 'Add a datasender'}
-                            web_preview_context = get_web_preview_context(manager, post, project_info)
-                            project = web_preview_context['project']
-                            self.assertEquals(project['activity_report'], "yes")
-                            questionnaire_form = web_preview_context['questionnaire_form']
-                            self.assertEquals(questionnaire_form.short_code_question_code, "eid")
-                            self.assertEquals(web_preview_context['add_link']['text'], 'Add a datasender')
+        with patch("project.preview_views.get_questionnaire_form_model") as questionnaire_form_model:
+            questionnaire_form_model.return_value = form_model
+            with patch("project.preview_views.WebQuestionnaireFormCreater") as web_questionnaire_form_creator:
+                web_questionnaire_form_creator.return_value = web_questionnaire_form_creator
+                with patch.object(web_questionnaire_form_creator, "create") as create_form:
+                    create_form.return_value = QuestionnaireForm
+                    with patch("project.preview_views.add_link_context") as add_link:
+                        add_link.return_value = {'text': 'Add a datasender'}
+                        web_preview_context = get_web_preview_context(manager, post, project_info)
+                        project = web_preview_context['project']
+                        self.assertEquals(project['activity_report'], "yes")
+                        questionnaire_form = web_preview_context['questionnaire_form']
+                        self.assertEquals(questionnaire_form.short_code_question_code, "eid")
+                        self.assertEquals(web_preview_context['add_link']['text'], 'Add a datasender')
 
     def test_should_get_correct_instruction_and_preview_links_for_questionnaire(self):
         with patch("project.views.reverse") as reverse:

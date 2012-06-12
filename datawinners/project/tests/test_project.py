@@ -45,7 +45,7 @@ class TestProject(TestCase):
         self.client.login(username='tester150411@gmail.com', password='tester150411')
         response = self.client.post('/project/web_preview', {"questionnaire-code": "q01",
                                                              "question-set": '{}',
-                                                             "profile_form": '{"name":"project_name", "entity_type":"clinic", "language":"en"}',
+                                                             "profile_form": '{"name":"project_name", "goals":"des", "entity_type":"clinic", "activity_report":"no", "language":"en"}',
                                                              'project_state': "Test"})
         self.assertEqual(response.status_code, 200)
 
