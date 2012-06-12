@@ -934,7 +934,7 @@ msgid "All Data Senders"
 msgstr ""
 
 #: templates/entity/create_or_edit_datasender.html:118
-msgid "Back to DataSender List"
+msgid "Back to Data Sender List"
 msgstr ""
 
 #: templates/entity/all_subjects.html:11
