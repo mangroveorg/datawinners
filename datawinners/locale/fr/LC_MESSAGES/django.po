@@ -1639,11 +1639,11 @@ msgstr "Par la suite, vos Expéditeurs de Données peuvent se connecter pour rem
 
 #: templates/project/web_questionnaire_preview.html: 8
 msgid "Why canʼt I submit?"
-msgstr ""
+msgstr "Pourquoi est-ce je ne peux pas soumettre des données ?"
 
 #: templates/project/web_questionnaire_preview.html: 11
 msgid "This is only a preview. To send in data, Go to the \"Data\" tab, then to \"Web Submission\"."
-msgstr ""
+msgstr "Ceci n’est qu’un aperçu. Pour soumettre des données, Cliquez sur l’onglet « Données », et ensuite sur « Soumission Web »."
 
 #: templates/project/web_instruction_preview.html: 16
 #: templates/project/smart_phone_instruction_preview.html: 13
