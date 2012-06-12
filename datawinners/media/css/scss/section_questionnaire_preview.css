@@ -46,31 +46,35 @@
     padding: 20px;
     border: 1px solid #CCC;
     background-color: white; }
-    #questionnaire_content #questionnaire_preview .web-questionnaire .action-section {
-      float: right;
-      padding-right: 300px; }
-    #questionnaire_content #questionnaire_preview .web-questionnaire .disable-button {
-      border: 1px solid #D5B071 !important;
-      -moz-border-radius: 3px;
-      -webkit-border-radius: 3px;
-      background: #F8EDB8;
-      background: -webkit-gradient(linear, left top, left bottom, from(#f8edb8), to(#fde8a0));
-      background: -moz-linear-gradient(top, #f8edb8, #fde8a0);
-      color: #C29870 !important;
-      font-family: "Arial";
-      font-weight: bold;
-      padding: 6px 23px 5px 22px;
-      cursor: pointer;
-      cursor: hand; }
-    #questionnaire_content #questionnaire_preview .web-questionnaire .can-not-submit {
-      margin-top: 5px;
-      margin-left: 30px; }
-    #questionnaire_content #questionnaire_preview .web-questionnaire .can-not-submit-link {
-      color: #066B06;
-      text-decoration: none;
-      font-size: 12px; }
-    #questionnaire_content #questionnaire_preview .web-questionnaire .can-not-submit-link:hover {
-      color: #066B06; }
+    #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section {
+      float: right; }
+      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .action-section {
+        float: right;
+        padding-right: 300px; }
+      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .disable-button {
+        border: 1px solid #D5B071 !important;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        background: #F8EDB8;
+        background: -webkit-gradient(linear, left top, left bottom, from(#f8edb8), to(#fde8a0));
+        background: -moz-linear-gradient(top, #f8edb8, #fde8a0);
+        color: #C29870 !important;
+        font-family: "Arial";
+        font-weight: bold;
+        padding: 6px 23px 5px 22px;
+        cursor: pointer;
+        cursor: hand; }
+      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .can-not-submit {
+        margin-top: 5px;
+        margin-left: 30px;
+        float: right;
+        padding-right: 300px; }
+      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .can-not-submit-link {
+        color: #066B06;
+        text-decoration: none;
+        font-size: 12px; }
+      #questionnaire_content #questionnaire_preview .web-questionnaire .web-preview-action-section .can-not-submit-link:hover {
+        color: #066B06; }
 
 #print_page a {
   color: #0070ac;

@@ -2,13 +2,17 @@
 {% load i18n %}
 
 {% block action_section_block %}
-    <a href="#" class="inactive_link ui-state-disabled">{% trans 'Cancel' %}</a>
-    <button class="disable-button" disabled="disabled">{% trans "Submit" %}</button>
-    <div class="can-not-submit">
-        <a class="can-not-submit-link help_icon">{% trans "Why canʼt I submit?" %}</a>
-        <div class="tooltip" style="visibility: visible; position: absolute; top: 15px; left: 15.4444580078125px; opacity: 0.8; display: none; ">
-            <p>
-                {% trans 'This is only a preview. To send in data, Go to the "Data" tab, then to "Web Submission".' %}
-            </p></div>
+    <div class="web-preview-action-section">
+        <div class="action-section">
+            <a href="#" class="inactive_link ui-state-disabled">{% trans 'Cancel' %}</a>
+            <button class="disable-button" disabled="disabled">{% trans "Submit" %}</button>
+        </div>
+        <div class="can-not-submit">
+            <a class="can-not-submit-link help_icon">{% trans "Why canʼt I submit?" %}</a>
+            <div class="tooltip" style="visibility: visible; position: absolute; top: 15px; left: 15.4444580078125px; opacity: 0.8; display: none; ">
+                <p>
+                    {% trans 'This is only a preview. To send in data, Go to the "Data" tab, then to "Web Submission".' %}
+                </p></div>
+        </div>
     </div>
 {% endblock %}

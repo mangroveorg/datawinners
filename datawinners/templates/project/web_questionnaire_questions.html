@@ -119,10 +119,10 @@
             {% endif %}
         {% endfor %}
     </ol>
+    {% block action_section_block %}
     <div class="action-section">
-        {% block action_section_block %}
             {% block cancel_block %}{% endblock %}
             <input id="submit " type="submit" class="button" value="{% trans 'Submit' %}"/>
-        {% endblock %}
     </div>
+    {% endblock %}
 </form>
