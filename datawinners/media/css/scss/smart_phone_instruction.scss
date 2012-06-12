@@ -23,7 +23,7 @@
       margin-top: 20px;
     }
     ul > li {
-      list-style-type: decimal;
+      list-style: decimal inside none;
       margin-bottom: 30px;
     }
 
@@ -32,7 +32,7 @@
       padding-top: 5px;
     }
     ol > li {
-      list-style-type: decimal;
+      list-style: decimal inside none;
       img {
         width: 23px;
       }

@@ -18,13 +18,13 @@
       width: 70%;
       margin-top: 20px; }
     .smart-phone-instruction .instruction ul > li {
-      list-style-type: decimal;
+      list-style: decimal inside none;
       margin-bottom: 30px; }
     .smart-phone-instruction .instruction ul ol {
       padding-left: 20px;
       padding-top: 5px; }
     .smart-phone-instruction .instruction ol > li {
-      list-style-type: decimal; }
+      list-style: decimal inside none; }
       .smart-phone-instruction .instruction ol > li img {
         width: 23px; }
     .smart-phone-instruction .instruction .dw-app-icon {
