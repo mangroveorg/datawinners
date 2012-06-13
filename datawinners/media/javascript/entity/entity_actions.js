@@ -32,33 +32,34 @@ $(document).ready(function () {
         return false;
     });
 
-    $('.action').change(function() {
+    $('.action').change(function () {
         $('#error').hide();
         var allIds = getEntityIdsToBeDeleted(this);
         var entity_type = getEntityType(this);
-        var action = $(this).val();
-        if (allIds.length == 0){
+        var action = getActionValue(this);
+        if (allIds.length == 0) {
             $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($(this));
             $(this).val("--");
             return;
         }
+        if (action == 'edit') {
+            if (allIds.length > 1) {
+                $('<div class="message-box" id="error">' + gettext('Please select only 1 subject') + '</div>').insertAfter($(this));
+                $(this).val("--");
+                return;
+            }
+            else {
+                location.href = '/entity/subject/edit' + '/' + entity_type + '/' + allIds[0] + '/';
+            }
 
-      if(action == 'delete'){
-          warnThenDeleteDialogBox(allIds, entity_type, this);
-      }
-      else if(action=='edit'){
-          if (allIds.length > 1){
-              $('<div class="message-box" id="error">' + gettext('Please select only 1 subject') + '</div>').insertAfter($(this));
-              $(this).val("--");
-              return;
-          }
-          else{
-              location.href = '/entity/subject/edit' + '/' + $('#entity_type').val() + '/' + allIds[0] + '/';
-          }
-
-      }
+        }
+        else if(action==""){
+            return;
+        }
+        else{
+            warnThenDeleteDialogBox(allIds, entity_type, this);
+        }
     });
-
 
 
 });

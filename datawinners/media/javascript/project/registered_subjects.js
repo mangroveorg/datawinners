@@ -10,3 +10,7 @@ function getEntityIdsToBeDeleted(action_element) {
 function getEntityType(action_element){
     return $('#entity_type').val();
 }
+
+function getActionValue(action_element){
+    return $(action_element).val();
+}
