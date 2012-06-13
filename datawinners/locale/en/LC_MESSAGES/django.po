@@ -1176,7 +1176,7 @@ msgid "Project Description:"
 msgstr ""
 
 #: templates/project/finish_and_test.html:71
-msgid "Devices:"
+msgid "Devices"
 msgstr ""
 
 #: templates/project/finish_and_test.html:75
