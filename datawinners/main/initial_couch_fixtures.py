@@ -229,7 +229,7 @@ def create_clinic_projects(CLINIC_ENTITY_TYPE, manager):
     reminder.save()
 
     # Associate datasenders/reporters with project 1
-    project1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9"])
+    project1.data_senders.extend(["rep5", "rep6", "rep1", "rep8", "rep9", "rep3"])
     project1.save(manager)
 
     form_model2 = FormModel(manager, name="AIDS", label="Aids form_model",

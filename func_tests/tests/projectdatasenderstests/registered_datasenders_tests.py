@@ -5,6 +5,7 @@ from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
+from tests.alldatasendertests.all_data_sender_data import DATA_SENDER_ID_WITH_WEB_ACCESS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projectdatasenderstests.registered_datasenders_data import *
 
@@ -68,3 +69,13 @@ class ProjectDataSenders(BaseTest):
 
         self.assertEqual(ERROR_MSG_FOR_GIVING_WEB_ACCESS_WITHOUT_SELECTING_DATA_SENDER
             , project_datasenders_page.get_error_message())
+
+    @attr('functional_test')
+    def test_registered_data_sender_devices(self):
+        all_project_page = self.all_projects_page()
+        project_overview_page = all_project_page.navigate_to_project_overview_page(
+            fetch_(PROJECT_NAME, from_(VALID_DATA)))
+        project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
+
+        devices = project_datasenders_page.get_devices_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS)
+        self.assertEquals(devices, "SMS,Web,Smartphone")

@@ -2,6 +2,7 @@
 from framework.utils.common_utils import by_xpath
 from pages.accountpage.account_page import AccountPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
+from pages.alldatasenderspage.all_data_senders_locator import DATA_SENDER_DEVICES
 from pages.page import Page
 from pages.projectdatasenderspage.project_data_senders_locator import *
 from tests.projectdatasenderstests.registered_datasenders_data import GIVE_WEB_ACCESS
@@ -67,3 +68,6 @@ class ProjectDataSendersPage(Page):
 
     def get_error_message(self):
         return self.driver.find(ERROR_MESSAGE_LABEL).text
+
+    def get_devices_by_id(self, data_sender_id):
+        return self.driver.find(by_xpath(DATA_SENDER_DEVICES % data_sender_id)).text

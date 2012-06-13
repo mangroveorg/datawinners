@@ -62,4 +62,4 @@ VALID_DATA = {NAME: "ReRegistered",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
 
-DATA_SENDER_ID_WITH_WEB_ACCESS = "rep13"
+DATA_SENDER_ID_WITH_WEB_ACCESS = "rep3"
