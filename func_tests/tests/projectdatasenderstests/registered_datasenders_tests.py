@@ -5,7 +5,7 @@ from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
-from tests.alldatasendertests.all_data_sender_data import DATA_SENDER_ID_WITH_WEB_ACCESS
+from tests.alldatasendertests.all_data_sender_data import DATA_SENDER_ID_WITH_WEB_ACCESS, DATA_SENDER_ID_WITHOUT_WEB_ACCESS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projectdatasenderstests.registered_datasenders_data import *
 
@@ -79,3 +79,6 @@ class ProjectDataSenders(BaseTest):
 
         devices = project_datasenders_page.get_devices_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS)
         self.assertEquals(devices, "SMS,Web,Smartphone")
+
+        devices = project_datasenders_page.get_devices_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS)
+        self.assertEquals(devices, "SMS")

@@ -163,3 +163,7 @@ class TestAllDataSender(unittest.TestCase):
         all_data_senders_page = self.page
         devices = all_data_senders_page.get_devices_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS)
         self.assertEquals(devices, "SMS,Web,Smartphone")
+
+        devices = all_data_senders_page.get_devices_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS)
+        self.assertEquals(devices, "SMS")
+
