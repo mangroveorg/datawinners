@@ -716,7 +716,14 @@ def registered_datasenders(request, project_id=None):
                 continue
             org_id = NGOUserProfile.objects.get(user=request.user).org_id
             user_profile = NGOUserProfile.objects.filter(reporter_id=sender['short_code'], org_id=org_id)
-            sender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
+
+            if len(user_profile) > 0:
+                sender['email'] = user_profile[0].user.email
+                sender['devices'] = "SMS,Web,Smartphone"
+            else:
+                sender['email'] = "--"
+                sender['devices'] = "SMS"
+
             sender['project'] = project.name
 
         return render_to_response('project/registered_datasenders.html',

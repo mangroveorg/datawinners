@@ -80,6 +80,7 @@
                 <th>{% trans title %}</th>
             {% endfor %}
             <th>{% trans "Email" %}</th>
+            <th>{% trans "Devices" %}</th>
         </tr>
         </thead>
         <tbody id="tbody" class="datasenders_list">
@@ -93,6 +94,7 @@
                 <td>{{ data.mobile_number }}</td>
                 <td style="display: none">{{ data.project }}</td>
                 <td>{{ data.email }}</td>
+                <td>{{ data.devices }}</td>
             </tr>
         {% endfor %}
         </tbody>
