@@ -8,6 +8,7 @@
             {% endfor %}
             <th>{% trans "Projects" %}</th>
             <th>{% trans "Email" %}</th>
+            <th>{%  trans "Devices" %}</th>
         </thead>
         <tbody id='all_data_senders' class="datasenders_list">
         {% for row in all_data %}
@@ -18,6 +19,7 @@
                 {% endfor %}
                 <td>{{ row.projects }}</td>
                 <td>{{ row.email }}</td>
+                <td>{{ row.devices }}</td>
             </tr>
         {% endfor %}
         </tbody>

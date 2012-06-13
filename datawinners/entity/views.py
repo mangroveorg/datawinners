@@ -571,11 +571,20 @@ def _get_all_datasenders(manager, projects, user):
             index = all_data_senders.index(datasender)
             del all_data_senders[index]
             continue
+
         org_id = NGOUserProfile.objects.get(user=user).org_id
         user_profile = NGOUserProfile.objects.filter(reporter_id=datasender['short_code'], org_id=org_id)
-        datasender['email'] = user_profile[0].user.email if len(user_profile) > 0 else "--"
+
+        if len(user_profile) > 0:
+            datasender['email'] = user_profile[0].user.email
+            datasender['devices'] = "SMS,Web,Smartphone"
+        else:
+            datasender['email'] = "--"
+            datasender['devices'] = "SMS"
+
         association = project_association.get(datasender['short_code'])
         datasender['projects'] = ' ,'.join(association) if association is not None else '--'
+
     return all_data_senders
 
 
