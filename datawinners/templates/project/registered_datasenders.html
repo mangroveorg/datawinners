@@ -16,6 +16,7 @@
 {% block page_scss %}
     {{ block.super }}
     <link href="/media/css/scss/section_subjects.css" rel="stylesheet"/>
+    <link href="/media/css/scss/section_all_datasenders.css" rel="stylesheet"/>
     <link href="/media/javascript/file_uploader/fileuploader.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -72,33 +73,35 @@
         <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
         <option value="delete">{% trans "Delete" %}</option>
     </select>
-    <table id='associated_data_senders' class="styled_table">
-        <thead>
-        <tr>
-            <th>{% trans "Select" %}</th>
-            {% for title in labels %}
-                <th>{% trans title %}</th>
-            {% endfor %}
-            <th>{% trans "Email" %}</th>
-            <th>{% trans "Devices" %}</th>
-        </tr>
-        </thead>
-        <tbody id="tbody" class="datasenders_list">
-        {% for data in all_data %}
+    <div class="data-sender-table-wrapper">
+        <table id='associated_data_senders' class="styled_table">
+            <thead>
             <tr>
-                <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"/>
-                <td>{{ data.name }}</td>
-                <td>{{ data.short_code }}</td>
-                <td>{{ data.location}}</td>
-                <td>{{ data.geo_code }}</td>
-                <td>{{ data.mobile_number }}</td>
-                <td style="display: none">{{ data.project }}</td>
-                <td>{{ data.email }}</td>
-                <td>{{ data.devices }}</td>
+                <th>{% trans "Select" %}</th>
+                {% for title in labels %}
+                    <th>{% trans title %}</th>
+                {% endfor %}
+                <th>{% trans "Email" %}</th>
+                <th>{% trans "Devices" %}</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="tbody" class="datasenders_list">
+            {% for data in all_data %}
+                <tr>
+                    <td><input id="{{ data.short_code }}" type="checkbox" value="{{ data.short_code }}"/>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.short_code }}</td>
+                    <td>{{ data.location }}</td>
+                    <td>{{ data.geo_code }}</td>
+                    <td>{{ data.mobile_number }}</td>
+                    <td style="display: none">{{ data.project }}</td>
+                    <td>{{ data.email }}</td>
+                    <td>{{ data.devices }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <div id="delete_entity_block">
         <p class="warning_message">{% trans "data sender delete error text" %}</p>
         <a href="" class="button"

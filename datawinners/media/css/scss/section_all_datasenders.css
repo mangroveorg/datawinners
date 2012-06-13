@@ -6,3 +6,6 @@
   #delete_entity_block a .cancel_link {
     padding-left: 5px !important;
     padding-top: 7px !important; }
+
+.data-sender-table-wrapper {
+  overflow-x: scroll; }

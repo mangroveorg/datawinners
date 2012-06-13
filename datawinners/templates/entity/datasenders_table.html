@@ -1,5 +1,6 @@
 {% load i18n %}
 {% if all_data|length > 0 %}
+    <div class="data-sender-table-wrapper">
     <table id='subject_table' class="styled_table">
         <thead>
             <th>&nbsp;</th>
@@ -24,6 +25,7 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
 {% else %}
     <strong>"No datasenders registered"</strong><br/>
 {% endif %}
