@@ -157,3 +157,9 @@ class TestAllDataSender(unittest.TestCase):
         self.send_sms(VALID_SMS, sms_tester_page)
         self.assertEqual(sms_tester_page.get_response_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_SMS)))
         self.login()
+
+    @attr('functional_test')
+    def test_data_sender_devices(self):
+        all_data_senders_page = self.page
+        devices = all_data_senders_page.get_devices_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS)
+        self.assertEquals(devices, "SMS,Web,Smartphone")

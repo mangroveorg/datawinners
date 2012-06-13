@@ -24,6 +24,7 @@ PROJECT_CB_XPATH = "//div[contains(@class,'ui-dialog') and contains(@style, 'blo
 ACTION_DROP_DOWN = by_css("select#action")
 PROJECT_NAME_LABEL_XPATH = "//tr/td/input[@id='%s']/../../td[7]"
 UID_LABEL_BY_MOBILE_XPATH = "//tr/td[7][text()='%s']/../td[2]"
+DATA_SENDER_DEVICES = "//tr/td/input[@id='%s']/../../td[9]"
 
 CANCEL_LINK = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[@id='cancel_link']")
 CONFIRM_BUTTON = by_xpath("//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/a[text()='Confirm']")

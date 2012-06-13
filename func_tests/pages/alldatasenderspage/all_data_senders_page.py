@@ -120,3 +120,6 @@ class AllDataSendersPage(Page):
     def check_links(self):
         self.driver.is_element_present(IMPORT_LINK)
         self.driver.is_element_present(ADD_A_DATA_SENDER_LINK)
+
+    def get_devices_by_id(self, data_sender_id):
+        return self.driver.find(by_xpath(DATA_SENDER_DEVICES % data_sender_id)).text
