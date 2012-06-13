@@ -36,7 +36,7 @@ $(document).ready(function () {
         $('#error').hide();
         var allIds = getEntityIdsToBeDeleted(this);
         var entity_type = getEntityType(this);
-        var action = $(this).val()
+        var action = $(this).val();
         if (allIds.length == 0){
             $('<div class="message-box" id="error">' + gettext('Please select atleast 1 subject') + '</div>').insertAfter($(this));
             $(this).val("--");

@@ -61,5 +61,5 @@ function getEntityIdsToBeDeleted(action_element) {
 }
 
 function getEntityType(action_element){
-    return $('#entity_type').val();
+    return $(action_element).val().split('-')[0];
 }

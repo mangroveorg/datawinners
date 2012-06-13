@@ -8,5 +8,5 @@ function getEntityIdsToBeDeleted(action_element) {
 }
 
 function getEntityType(action_element){
-    return $(action_element).val();
+    return $('#entity_type').val();
 }
