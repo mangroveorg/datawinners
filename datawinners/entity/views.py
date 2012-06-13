@@ -416,13 +416,14 @@ def import_subjects_from_project_wizard(request):
              'error_message': error_message,
              'failure_imports': failure_imports}))
 
-def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class):
+def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
             "hide_link_class": hide_link_class,
             'back_to_project_link': reverse("alldata_index"),
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
+            'is_update' : is_update
             }
 
 def get_template(user):
@@ -449,14 +450,14 @@ def edit_subject(request,entity_type,entity_id):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
         return render_to_response(web_questionnaire_template,
             form_context,
             context_instance=RequestContext(request))
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
             return render_to_response(web_questionnaire_template,
                 form_context,
                 context_instance=RequestContext(request))
@@ -478,7 +479,8 @@ def edit_subject(request,entity_type,entity_id):
                 from datawinners.project.helper import errors_to_list
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
-                form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+                form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
+                    True)
                 return render_to_response(web_questionnaire_template,
                     form_context,
                     context_instance=RequestContext(request))
@@ -491,7 +493,7 @@ def edit_subject(request,entity_type,entity_id):
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,

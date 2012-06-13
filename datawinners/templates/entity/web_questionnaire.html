@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block page_title %}{% trans "Subjects" %}{% endblock %}
 
-{% block section_title %}{% trans "Add a new" %} {{ entity_type|capfirst }}
+{% block section_title %}{% if is_update %}{% trans "Edit a" %}{% else %}{% trans "Add a new" %}{% endif %} {{ entity_type|capfirst }}
 {% endblock %}
 
 {% load dw_tabs %}

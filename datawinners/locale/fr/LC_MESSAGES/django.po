@@ -4332,3 +4332,6 @@ msgstr "Vous êtes en train de modifier les détails sur votre Expéditeur de
 
 msgid "There should not be any space at the beginning and the end of the password."
 msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."
+
+msgid "Edit a"
+msgstr ""
