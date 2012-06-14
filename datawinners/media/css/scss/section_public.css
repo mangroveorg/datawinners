@@ -485,20 +485,36 @@ body {
   text-align: left;
   position: relative; }
   #pricing .container_plan .plan {
-    width: 250px;
-    height: 348px;
+    width: 301px;
+    height: 425px;
     text-align: center;
     background: #fff2b8 url("/media/images/dw_pricing_bg.gif") repeat-x;
     border: 1px solid #e5daa4; }
     #pricing .container_plan .plan h2 {
       font-size: 22px !important; }
     #pricing .container_plan .plan ul {
-      margin: 10px 15px;
+      margin: 5px 10px;
       padding: 0 10px;
       text-align: left; }
       #pricing .container_plan .plan ul li {
         list-style-type: disc; }
     #pricing .container_plan .plan small {
+      font-size: 10px; }
+  #pricing .container_plan .plan_fr {
+    width: 310px;
+    height: 440px;
+    text-align: center;
+    background: #fff2b8 url("/media/images/dw_pricing_bg.gif") repeat-x;
+    border: 1px solid #e5daa4; }
+    #pricing .container_plan .plan_fr h2 {
+      font-size: 22px !important; }
+    #pricing .container_plan .plan_fr ul {
+      margin: 5px 10px;
+      padding: 0 10px;
+      text-align: left; }
+      #pricing .container_plan .plan_fr ul li {
+        list-style-type: disc; }
+    #pricing .container_plan .plan_fr small {
       font-size: 10px; }
   #pricing .container_plan .badge {
     position: absolute;

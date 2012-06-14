@@ -51,5 +51,9 @@ $(document).ready(function() {
         swapContent(n);
     });
 
+    $('#backToSummaryReport').click(function(){
+       swapContent(1);
+    });
+    
     swapContent(1);
 });

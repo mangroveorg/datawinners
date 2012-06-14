@@ -605,8 +605,8 @@ body{
         text-align:left;
         position:relative;
         .plan{
-            width:250px;
-            height:348px;
+            width:301px;
+            height:425px;
             text-align:center;
             background:#fff2b8 url('/media/images/dw_pricing_bg.gif') repeat-x;
             border:1px solid #e5daa4;
@@ -614,7 +614,7 @@ body{
                 font-size:22px !important;
             }
             ul{
-                margin:10px 15px;
+                margin:5px 10px;
                 padding:0 10px;
                 text-align:left;
                 li{
@@ -625,9 +625,29 @@ body{
                 font-size:10px;
             }
         }
+        .plan_fr{
+          width:310px;
+          height:440px;
+          text-align:center;
+          background:#fff2b8 url('/media/images/dw_pricing_bg.gif') repeat-x;
+          border:1px solid #e5daa4;
+          h2{
+            font-size:22px !important;
+          }
+          ul{
+            margin:5px 10px;
+            padding:0 10px;
+            text-align:left;
+            li{
+              list-style-type:disc;
+            }
+          }
+          small{
+            font-size:10px;
+          }
+        }
         .badge{
-            position:absolute;
-            right:0;
+            position:absolute;            right:0;
             top:0;
             width:80px;
             height:80px;
