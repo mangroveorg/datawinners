@@ -84,7 +84,14 @@
                     <th>{% trans title %}</th>
                 {% endfor %}
                 <th>{% trans "Email" %}</th>
-                <th>{% trans "Devices" %}</th>
+                <th colspan="3">
+                    {% trans "Devices" %}
+                    <div class="clearfix device-icons">
+                        <div class="sms-icon"><img src="/media/images/feature_phone_white.png" alt="SMS"></div>
+                        <div class="web-icon"><img src="/media/images/computer_white.png" alt="Web"></div>
+                        <div class="smartphone-icon"><img src="/media/images/smart_phone_white.png" alt="Smartphone"></div>
+                    </div>
+                </th>
             </tr>
             </thead>
             <tbody id="tbody" class="datasenders_list">
@@ -98,7 +105,17 @@
                     <td>{{ data.mobile_number }}</td>
                     <td style="display: none">{{ data.project }}</td>
                     <td>{{ data.email }}</td>
-                    <td>{{ data.devices }}</td>
+                    <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
+                    <td class="device-icon">
+                        {% if "Web" in data.devices %}
+                            <img src="/media/images/right_icon.png" alt="Yes">
+                        {% endif %}
+                    </td>
+                    <td class="device-icon">
+                        {% if "Smartphone" in data.devices %}
+                            <img src="/media/images/right_icon.png" alt="Yes">
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

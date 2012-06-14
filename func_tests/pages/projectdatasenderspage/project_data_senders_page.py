@@ -69,5 +69,11 @@ class ProjectDataSendersPage(Page):
     def get_error_message(self):
         return self.driver.find(ERROR_MESSAGE_LABEL).text
 
-    def get_devices_by_id(self, data_sender_id):
-        return self.driver.find(by_xpath(DATA_SENDER_DEVICES % data_sender_id)).text
+    def check_sms_device_by_id(self, data_sender_id):
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
+
+    def check_web_device_by_id(self, data_sender_id):
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 10)))
+
+    def check_smart_phone_device_by_id(self, data_sender_id):
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 11)))

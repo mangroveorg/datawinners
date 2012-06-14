@@ -77,8 +77,10 @@ class ProjectDataSenders(BaseTest):
             fetch_(PROJECT_NAME, from_(VALID_DATA)))
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
 
-        devices = project_datasenders_page.get_devices_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS)
-        self.assertEquals(devices, "SMS,Web,Smartphone")
+        self.assertTrue(project_datasenders_page.check_sms_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
+        self.assertTrue(project_datasenders_page.check_web_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
+        self.assertTrue(project_datasenders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
 
-        devices = project_datasenders_page.get_devices_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS)
-        self.assertEquals(devices, "SMS")
+        self.assertTrue(project_datasenders_page.check_sms_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
+        self.assertFalse(project_datasenders_page.check_web_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
+        self.assertFalse(project_datasenders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
