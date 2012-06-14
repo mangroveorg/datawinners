@@ -1,5 +1,6 @@
 import logging
-from django.http import HttpResponse, HttpResponseBadRequest
+import xml
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django_digest.decorators import httpdigest
@@ -47,6 +48,13 @@ def get_errors(errors):
     return '\n'.join(['{0} : {1}'.format(key,val) for key, val in errors.items()])
 
 
+def __authorized_to_make_submission_on_requested_form(request_user, submission_file):
+    rows = get_all_project_for_user(request_user)
+    questionnaire_ids = [(row['value']['qid']) for row in rows]
+    dom = xml.dom.minidom.parseString(submission_file)
+    requested_qid = dom.getElementsByTagName('data')[0].getAttribute('id')
+    return requested_qid in questionnaire_ids
+
 
 @csrf_exempt
 @require_http_methods(['POST'])
@@ -54,10 +62,15 @@ def get_errors(errors):
 @restrict_request_country
 def submission(request):
     request_user = request.user
+    submission_file = request.FILES.get("xml_submission_file").read()
+
+    if not __authorized_to_make_submission_on_requested_form(request_user, submission_file) :
+        return HttpResponse(status=401)
+
     manager = get_database_manager(request_user)
     player = XFormPlayer(manager)
     try:
-        mangrove_request = Request(message=(request.FILES.get("xml_submission_file").read()),
+        mangrove_request = Request(message=submission_file,
             transportInfo=
             TransportInfo(transport="smartPhone",
                 source=request_user.email,
@@ -81,5 +94,4 @@ def submission(request):
 def xform(request, questionnaire_code=None):
     request_user = request.user
     form = xform_for(get_database_manager(request_user), questionnaire_code, request_user.get_profile().reporter_id)
-    return HttpResponse(content= form,
-        mimetype="text/xml")
+    return HttpResponse(content= form, mimetype="text/xml")
