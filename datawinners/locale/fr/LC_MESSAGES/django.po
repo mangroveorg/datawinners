@@ -1321,6 +1321,9 @@ msgstr "Actions"
 msgid "Delete"
 msgstr "Supprimer"
 
+msgid "Edit"
+msgstr "Modifier"
+
 #: templates/project/index.html:47 templates/project/index.html.py:56
 #: templates/project/tab_navigation.html:39
 msgid "Activate"
@@ -4333,11 +4336,13 @@ msgid "You are editing the Data Senderʼs Details"
 msgstr "Vous êtes en train de modifier les détails sur votre Expéditeur de Données"
 
 msgid "Your changes have been saved."
-msgstr ""
+msgstr "Vos changements ont été enregistrés"
 
 
 msgid "There should not be any space at the beginning and the end of the password."
 msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."
 
 msgid "Edit a"
-msgstr ""
+msgstr "Modifier un(e)"
+msgid "Edit A Data Sender"
+msgstr "Modifier un Expéditeur de Données"

@@ -4286,6 +4286,8 @@ msgid "Your changes have been saved."
 msgstr ""
 msgid "Edit a"
 msgstr ""
+msgid "Edit A Data Sender"
+msgstr ""
 
 msgid "There should not be any space at the beginning and the end of the password."
 msgstr ""
