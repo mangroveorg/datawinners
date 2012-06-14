@@ -22,10 +22,11 @@
     .devices .device-icons .smartphone-icon {
       margin: 0 -4px 0 5px; }
 
-.device-icon {
-  width: 15px; }
-  .device-icon img {
-    padding-top: 3px; }
+.device-icon img {
+  padding-top: 3px; }
+.device-icon span {
+  width: 15px;
+  display: block; }
 
 div.tooltip {
   background: url(/media/images/help_arrow_right.png) no-repeat 340px bottom;

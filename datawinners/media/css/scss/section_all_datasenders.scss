@@ -34,9 +34,12 @@
 }
 
 .device-icon {
-  width: 15px;
   img {
     padding-top: 3px;
+  }
+  span {
+    width: 15px;
+    display: block;
   }
 }
 
