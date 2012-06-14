@@ -4278,6 +4278,8 @@ msgstr ""
 
 msgid "You are editing the Data Senderʼs Details"
 msgstr ""
+msgid "Your changes have been saved."
+msgstr ""
 msgid "Edit a"
 msgstr ""
 

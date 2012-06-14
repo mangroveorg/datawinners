@@ -4328,6 +4328,10 @@ msgstr "Rapports"
 msgid "You are editing the Data Senderʼs Details"
 msgstr "Vous êtes en train de modifier les détails sur votre Expéditeur de Données"
 
+msgid "Your changes have been saved."
+msgstr ""
+
+
 msgid "There should not be any space at the beginning and the end of the password."
 msgstr "Il ne doit pas y avoir d'espace au début et à la fin du mot de passe."
 

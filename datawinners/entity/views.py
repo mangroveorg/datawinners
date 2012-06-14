@@ -10,7 +10,7 @@ from django.utils import translation
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect,\
-    HttpResponseServerError
+    HttpResponseServerError, QueryDict
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.http import int_to_base36
@@ -449,7 +449,9 @@ def edit_subject(request,entity_type,entity_id):
             form_context,
             context_instance=RequestContext(request))
     if request.method == 'POST':
-        questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=request.POST)
+        post_data = QueryDict(request.raw_post_data, mutable=True)
+        post_data[QuestionnaireForm.short_code_question_code] = subject.short_code
+        questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=post_data)
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
             return render_to_response(web_questionnaire_template,
@@ -466,9 +468,8 @@ def edit_subject(request,entity_type,entity_id):
                 create_request(questionnaire_form, request.user.username,is_update=True))
 
             if response.success:
-                success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
-                    response.short_code,)
-                questionnaire_form = QuestionnaireForm()
+                success_message = _("Your changes have been saved.")
+                questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=post_data)
             else:
                 from datawinners.project.helper import errors_to_list
 
