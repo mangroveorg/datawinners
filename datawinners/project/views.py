@@ -1125,7 +1125,7 @@ def edit_datasender(request, project_id, reporter_id):
             except MangroveException as exception:
                 message = exception.message
 
-        return render_to_response('edit_datasender_form.html',{'project' : project,'form':form,'message':message,'project_links': links, 'in_trial_mode' : _in_trial_mode(request)},context_instance=RequestContext(request))
+        return render_to_response('edit_datasender_form.html',{'project' : project,'form':form,'reporter_id' : reporter_id,'message':message,'project_links': links, 'in_trial_mode' : _in_trial_mode(request)},context_instance=RequestContext(request))
 
 def _in_trial_mode(request):
     return utils.get_organization(request).in_trial_mode
