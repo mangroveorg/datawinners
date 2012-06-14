@@ -28,6 +28,7 @@
     <script type="text/javascript" src="/media/javascript/project/registered_datasenders.js"></script>
     <script type="text/javascript" src="/media/javascript/datasenders/import.js"></script>
     <script type="text/javascript" src="/media/javascript/entity/entity_actions.js"></script>
+    <script type="text/javascript" src="/media/javascript/datasenders/device_tool_tips.js"></script>
 
 {% endblock %}
 
@@ -86,11 +87,7 @@
                 <th>{% trans "Email" %}</th>
                 <th class="devices" colspan="3">
                     {% trans "Devices" %}
-                    <div class="clearfix device-icons">
-                        <div class="sms-icon"><img src="/media/images/feature_phone_white.png" alt="SMS"></div>
-                        <div class="web-icon"><img src="/media/images/computer_white.png" alt="Web"></div>
-                        <div class="smartphone-icon"><img src="/media/images/smart_phone_white.png" alt="Smartphone"></div>
-                    </div>
+                    {% include "alldata/device_icons.html" %}
                 </th>
             </tr>
             </thead>
