@@ -7,7 +7,6 @@ from django.contrib.sites.models import  get_current_site
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
 from django.utils import translation
-from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect,\
@@ -24,8 +23,7 @@ from mangrove.form_model.location import LOCATION_TYPE_FIELD_NAME
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
-from datawinners.accountmanagement.views import is_datasender, is_new_user, _get_email_template_name_for_reset_password,\
-    is_not_expired
+from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_datasender_form,\
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
@@ -47,13 +45,15 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, get_database_manager_for_org
+from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
+    get_database_manager_for_org, send_reset_password_email,  _get_email_template_name_for_reset_password
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
 from django.contrib import messages
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from mangrove.datastore.entity import get_by_short_code
+from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
 
 COUNTRY = ',MADAGASCAR'
 
@@ -191,7 +191,8 @@ def create_type(request):
 def all_subjects(request):
     manager = get_database_manager(request.user)
     if request.method == 'POST':
-        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager)
+        error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
+            default_parser=XlsOrderedParser)
         subjects_data = import_module.load_all_subjects(manager)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
@@ -245,13 +246,6 @@ def _get_project_association(projects):
         for datasender in project['value']['data_senders']:
             project_association[datasender].append(project['value']['name'])
     return project_association
-
-
-def send_reset_password_email(user, language_code):
-    reset_form = PasswordResetForm({"email": user.email})
-    reset_form.is_valid()
-    reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
-
 
 def __create_web_users(org_id, reporter_details, language_code, is_create_data_sender=True):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
@@ -336,7 +330,7 @@ def all_datasenders(request):
         grant_web_access = True
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
-            manager)
+            manager, default_parser=XlsDatasenderParser)
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_datasenders,
@@ -661,7 +655,8 @@ def export_subject(request):
         if data['short_code'] in entity_list or len(entity_list) == 0:
             raw_data.append(data['cols'])
     wb = get_excel_sheet(raw_data, entity_type)
-    codes.insert(0, "form_code")
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
+    codes.insert(0, form_model.form_code)
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
     wb.save(response)
@@ -678,9 +673,10 @@ def export_template(request, entity_type=None):
     fields, labels, codes = import_module.get_entity_type_fields(manager, entity_type)
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="%s.xls"' % (entity_type,)
+    form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
 
     wb = get_excel_sheet([labels], entity_type)
-    codes.insert(0, "form_code")
+    codes.insert(0, form_model.form_code)
     ws = workbook_add_sheet(wb, [codes], "codes")
     ws.visibility = 1
     try:
