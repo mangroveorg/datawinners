@@ -57,10 +57,14 @@ def __authorized_to_make_submission_on_requested_form(request_user, submission_f
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
 @httpdigest
 @restrict_request_country
 def submission(request):
+    if request.method == 'GET':
+        response = HttpResponse(status=204)
+        response['Location'] = request.build_absolute_uri('/submission')
+        return response
+
     request_user = request.user
     submission_file = request.FILES.get("xml_submission_file").read()
 
