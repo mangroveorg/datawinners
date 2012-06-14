@@ -15,3 +15,23 @@
 .data-sender-table-wrapper {
     overflow-x: scroll;
 }
+
+.device-icons {
+  position: relative;
+  bottom: -42px;
+  margin-left: -4px;
+  div {
+    float: left;
+  }
+  .web-icon {
+    margin: 0 4px 0 8px ;
+  }
+  .smartphone-icon {
+    margin: 0 -4px 0 5px ;
+  }
+}
+
+.device-icon {
+  padding-top: 10px;
+  width: 10px;
+}

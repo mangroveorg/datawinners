@@ -161,9 +161,10 @@ class TestAllDataSender(unittest.TestCase):
     @attr('functional_test')
     def test_data_sender_devices(self):
         all_data_senders_page = self.page
-        devices = all_data_senders_page.get_devices_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS)
-        self.assertEquals(devices, "SMS,Web,Smartphone")
+        self.assertTrue(all_data_senders_page.check_sms_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
+        self.assertTrue(all_data_senders_page.check_web_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
+        self.assertTrue(all_data_senders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITH_WEB_ACCESS))
 
-        devices = all_data_senders_page.get_devices_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS)
-        self.assertEquals(devices, "SMS")
-
+        self.assertTrue(all_data_senders_page.check_sms_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
+        self.assertFalse(all_data_senders_page.check_web_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))
+        self.assertFalse(all_data_senders_page.check_smart_phone_device_by_id(DATA_SENDER_ID_WITHOUT_WEB_ACCESS))

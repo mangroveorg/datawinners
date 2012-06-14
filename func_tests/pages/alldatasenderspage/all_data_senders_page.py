@@ -121,5 +121,11 @@ class AllDataSendersPage(Page):
         self.driver.is_element_present(IMPORT_LINK)
         self.driver.is_element_present(ADD_A_DATA_SENDER_LINK)
 
-    def get_devices_by_id(self, data_sender_id):
-        return self.driver.find(by_xpath(DATA_SENDER_DEVICES % data_sender_id)).text
+    def check_sms_device_by_id(self, data_sender_id):
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 9)))
+
+    def check_web_device_by_id(self, data_sender_id):
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 10)))
+
+    def check_smart_phone_device_by_id(self, data_sender_id):
+        return self.driver.is_element_present(by_xpath(DATA_SENDER_DEVICES % (data_sender_id, 11)))
