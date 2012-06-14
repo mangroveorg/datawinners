@@ -10,16 +10,18 @@
 .data-sender-table-wrapper {
   overflow-x: scroll; }
 
-.device-icons {
-  position: relative;
-  bottom: -42px;
-  margin-left: -4px; }
-  .device-icons div {
-    float: left; }
-  .device-icons .web-icon {
-    margin: 0 4px 0 8px; }
-  .device-icons .smartphone-icon {
-    margin: 0 -4px 0 5px; }
+.devices {
+  position: relative; }
+  .devices .device-icons {
+    position: absolute;
+    bottom: 5px;
+    margin-left: -4px; }
+    .devices .device-icons div {
+      float: left; }
+    .devices .device-icons .web-icon {
+      margin: 0 4px 0 8px; }
+    .devices .device-icons .smartphone-icon {
+      margin: 0 -4px 0 5px; }
 
 .device-icon {
   padding-top: 10px;
