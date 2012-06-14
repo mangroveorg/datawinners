@@ -34,8 +34,10 @@
 }
 
 .device-icon {
-  padding-top: 10px;
   width: 15px;
+  img {
+    padding-top: 3px;
+  }
 }
 
 div.tooltip {

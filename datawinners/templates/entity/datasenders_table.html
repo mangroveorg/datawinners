@@ -23,15 +23,19 @@
                 {% endfor %}
                 <td>{{ row.projects }}</td>
                 <td>{{ row.email }}</td>
-                <td><img src="/media/images/right_icon.png" alt="Yes"></td>
-                <td>
+                <td class="device-icon"><img src="/media/images/right_icon.png" alt="Yes"></td>
+                <td class="device-icon">
                     {% if "Web" in row.devices %}
                         <img src="/media/images/right_icon.png" alt="Yes">
+                    {% else %}
+                        --
                     {% endif %}
                 </td>
-                <td>
+                <td class="device-icon">
                     {% if "Smartphone" in row.devices %}
                         <img src="/media/images/right_icon.png" alt="Yes">
+                    {% else %}
+                        --
                     {% endif %}
                 </td>
             </tr>
