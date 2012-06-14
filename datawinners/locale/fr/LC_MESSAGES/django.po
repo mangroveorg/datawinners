@@ -138,6 +138,18 @@ msgstr "Expéditeurs de données"
 msgid "All Data Senders"
 msgstr "Tous les Expéditeurs"
 
+#: templates/alldata/device_icons.html: 8
+msgid "Data Senders use their mobile phone to send in data via SMS."
+msgstr "Les Expéditeurs de Données utilisent leur téléphone mobile pour soumettre des données par SMS."
+
+#: templates/alldata/device_icons.html: 15
+msgid "Data Senders use any Computer to send in data via Web."
+msgstr "Les Expéditeurs de Données utilisent leur Smartphone Android pour soumettre des données."
+
+#: templates/alldata/device_icons.html: 24
+msgid "Data Senders use their Android Smartphone to send in data."
+msgstr "Les Expéditeurs de Données utilisent n’importe quel ordinateur pour soumettre des données par Internet."
+
 #: templates/entity/create_or_edit_datasender.html:118
 msgid "Back to Data Sender List"
 msgstr "Retourner à la Liste des Expéditeurs de Données"

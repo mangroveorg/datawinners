@@ -913,6 +913,18 @@ msgstr "Autoriser l'accès à l'envoi web"
 msgid "All Data Senders"
 msgstr "Tous les Envoyeurs"
 
+#: templates/alldata/device_icons.html: 8
+msgid "Data Senders use their mobile phone to send in data via SMS."
+msgstr ""
+
+#: templates/alldata/device_icons.html: 15
+msgid "Data Senders use any Computer to send in data via Web."
+msgstr ""
+
+#: templates/alldata/device_icons.html: 24
+msgid "Data Senders use their Android Smartphone to send in data."
+msgstr ""
+
 #: templates/entity/all_subjects.html:7
 msgid "Add a subject"
 msgstr "Ajouter un sujet"
