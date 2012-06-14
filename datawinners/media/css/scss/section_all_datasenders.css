@@ -14,15 +14,19 @@
   position: relative; }
   .devices .device-icons {
     position: absolute;
-    bottom: 5px;
-    margin-left: -4px; }
-    .devices .device-icons div {
+    bottom: 5px; }
+    .devices .device-icons > div {
       float: left; }
     .devices .device-icons .web-icon {
-      margin: 0 4px 0 8px; }
+      margin: 0 4px 0 10px; }
     .devices .device-icons .smartphone-icon {
       margin: 0 -4px 0 5px; }
 
 .device-icon {
   padding-top: 10px;
-  width: 10px; }
+  width: 15px; }
+
+div.tooltip {
+  background: url(/media/images/help_arrow_right.png) no-repeat 340px bottom;
+  padding-left: 0 !important;
+  padding-right: 10px; }
