@@ -507,8 +507,7 @@ msgid "The reminders has been saved"
 msgstr ""
 
 msgid "Give Web Submission Access"
-msgstr "Give Web Access"
-#msgstr "Give Web & Smartphone Access"
+msgstr "Give Web & Smartphone Access"
 
 msgid "Emails are mandatory"
 msgstr ""

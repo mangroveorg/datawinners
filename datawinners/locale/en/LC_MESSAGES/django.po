@@ -926,8 +926,7 @@ msgstr ""
 
 #: templates/entity/all_datasenders.html:115
 msgid "Give Web Submission Access"
-msgstr "Give Web Access"
-#msgstr "Give Web & Smartphone Access"
+msgstr "Give Web & Smartphone Access"
 
 #: templates/entity/all_datasenders.html:118
 msgid "All Data Senders"
@@ -4260,8 +4259,7 @@ msgid "CSR Warehouse description"
 msgstr "Commodity Status Report – Warehouse Level"
 
 msgid "email_example"
-msgstr "Enter this person's Email address to give Web access"
-#msgstr "Enter this person's Email address to give Web and Smartphone access"
+msgstr "Enter this person's Email address to give Web and Smartphone access"
 
 msgid "user_creation_info"
 msgstr "This person will receive an email with instructions"
