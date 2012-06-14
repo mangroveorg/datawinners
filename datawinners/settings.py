@@ -26,7 +26,7 @@ VUMI_USER = "vumi"
 VUMI_PASSWORD = "vumi"
 REFRESH_RATE = None
 USE_NEW_VUMI = False
-SMARTPHONE_ENABLED = False
+SMARTPHONE_ENABLED = True
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
