@@ -60,16 +60,18 @@ def __authorized_to_make_submission_on_requested_form(request_user, submission_f
 @httpdigest
 @restrict_request_country
 def submission(request):
-    if request.method == 'GET':
+    if request.method != 'POST':
         response = HttpResponse(status=204)
-        response['Location'] = request.build_absolute_uri('/submission')
+        response['Location'] = request.build_absolute_uri()
         return response
 
     request_user = request.user
     submission_file = request.FILES.get("xml_submission_file").read()
 
     if not __authorized_to_make_submission_on_requested_form(request_user, submission_file) :
-        return HttpResponse(status=401)
+        response = HttpResponse(status=403)
+        return response
+
 
     manager = get_database_manager(request_user)
     player = XFormPlayer(manager)
