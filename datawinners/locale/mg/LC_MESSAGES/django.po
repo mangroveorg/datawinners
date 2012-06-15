@@ -1548,7 +1548,7 @@ msgstr ""
 #: templates/alldata/smart_phone_instruction.html: 19
 #: templates/alldata/smart_phone_instruction.html: 24
 #: templates/project/smart_phone_instruction_preview.html: 20
-msgid "Collect Data using a Smartphone"
+msgid "Install DataWinners on your Smartphone"
 msgstr ""
 
 #: templates/alldata/smart_phone_instruction.html: 23

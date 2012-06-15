@@ -1677,8 +1677,8 @@ msgstr "Utilisez votre Smartphone Android pour soumettre des données. Suivez le
 #: templates/alldata/smart_phone_instruction.html: 19
 #: templates/alldata/smart_phone_instruction.html: 24
 #: templates/project/smart_phone_instruction_preview.html: 20
-msgid "Collect Data using a Smartphone"
-msgstr "Collecter des données à lʼaide dʼun Smartphone"
+msgid "Install DataWinners on your Smartphone"
+msgstr "Télécharger DataWinners sur votre Smartphone"
 
 #: templates/alldata/smart_phone_instruction.html: 23
 msgid "Tutorial"

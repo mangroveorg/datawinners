@@ -36,3 +36,5 @@
       height: 50px; }
       .smart-phone-instruction .instruction .dw-app-icon span {
         display: block; }
+  .smart-phone-instruction .tutorial ul li {
+    list-style: disc inside; }
