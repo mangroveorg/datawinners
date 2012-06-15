@@ -81,4 +81,4 @@ def send_reset_password_email(user, language_code):
     reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
 
 def _get_email_template_name_for_reset_password(language):
-    return 'registration/password_reset_email_' + unicode(language) + '.html'
+    return 'registration/password_reset_email_' + language + '.html'
