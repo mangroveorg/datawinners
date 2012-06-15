@@ -45,15 +45,6 @@
       padding: 20px;
       border: 1px solid #CCC;
       background-color: white;
-      .instructions {
-        width: 68%;
-        float: left;
-      }
-      .displayText {
-        float: right;
-        width: 30%;
-        margin-top: -15px;
-      }
     }
     .preview-instruction {
       margin-left: 10px;
@@ -141,6 +132,27 @@
 p.instructions {
   font-style: italic;
   font-size: 12px;
+}
+
+.sms-questionnaire {
+  .instructions {
+    margin-right: 250px;
+  }
+  .displayText {
+    height: 30px;
+    float: right;
+    width: 250px;
+    margin-top: -35px;
+  }
+  .olpreview > li {
+    padding: 10px 0;
+  }
+  .sms-answer {
+    width: 100%;
+    height: 60px;
+    border: 1px solid #CCC;
+    margin: 5px 0;
+  }
 }
 
 .olpreview {
