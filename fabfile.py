@@ -14,6 +14,10 @@ ENVIRONMENT_CONFIGURATIONS = {
     "production": "prod_local_settings.py"
 }
 
+ENVIRONMENT_VES = {
+    "showcase": "/home/mangrover/awe_ve",
+    "production": "/home/mangrover/ve"
+}
 
 def git_clone_datawinners_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
@@ -195,7 +199,7 @@ def check_out_datawinners_code_for_production(code_dir, virtual_env):
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
-def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, virtual_env, environment = 'showcase',
+def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase',
                       couch_migration_file=None):
     stop_servers()
     set_mangrove_commit_sha('develop', mangrove_build_number)
@@ -204,6 +208,7 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
     if run('cd %s' % code_dir).failed:
         run('mkdir %s' % code_dir)
 
+    virtual_env = ENVIRONMENT_VES[environment]
     checkout_mangrove_to_production(code_dir, virtual_env)
     check_out_datawinners_code_for_production(code_dir, virtual_env)
 
