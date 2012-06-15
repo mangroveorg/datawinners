@@ -1675,6 +1675,10 @@ msgid "Use your Android Smartphone to send in data. Follow the instructions or d
 msgstr "Utilisez votre Smartphone Android pour soumettre des données. Suivez les instructions ou téléchargez notre tutoriel"
 
 #: templates/alldata/smart_phone_instruction.html: 19
+msgid "/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.en.pdf"
+msgstr "/media/files/DataWinners_InstallDataWinnersOnYourSmartphone.fr.pdf"
+
+#: templates/alldata/smart_phone_instruction.html: 19
 #: templates/alldata/smart_phone_instruction.html: 24
 #: templates/project/smart_phone_instruction_preview.html: 20
 msgid "Install DataWinners on your Smartphone"
@@ -1685,8 +1689,8 @@ msgid "Tutorial"
 msgstr "Tutoriel"
 
 #: templates/alldata/smart_phone_instruction.html: 24
-msgid "(PDF, X pages, X.X MB)"
-msgstr "(PDF, X pages, X.X Mo)"
+msgid "(PDF, 3 pages, 0.6 MB)"
+msgstr "(PDF, 3 pages, 0.7 Mo)"
 
 #: templates/project/create_project.html: 198
 msgid "Close Window"
