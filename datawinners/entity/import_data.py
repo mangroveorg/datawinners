@@ -11,9 +11,8 @@ from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
 from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
-from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
-    NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
-from mangrove.transport.player.parser import CsvParser, XlsParser, XlsDatasenderParser
+from mangrove.form_model.form_model import    REPORTER, get_form_model_by_code, get_form_model_by_entity_type
+from mangrove.transport.player.parser import CsvParser, XlsOrderedParser, XlsParser
 from mangrove.transport import Channel, TransportInfo, Response
 from mangrove.transport.player.player import Player
 from mangrove.utils.types import   is_sequence
@@ -27,9 +26,6 @@ from mangrove.contrib.registration_validators import case_insensitive_lookup
 from datawinners.accountmanagement.helper import get_all_registered_phone_numbers_on_trial_account
 from mangrove.form_model.form_model import ENTITY_TYPE_FIELD_CODE, MOBILE_NUMBER_FIELD_CODE
 from datawinners.utils import get_organization
-from django.contrib.auth.models import User, Group
-from datawinners.accountmanagement.models import NGOUserProfile
-from datawinners.utils import send_reset_password_email
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
@@ -38,18 +34,13 @@ class FilePlayer(Player):
         self.channel_name = channel_name
 
     @classmethod
-    def build(cls, manager, extension, location_tree, default_parser=None):
-        channels = dict({".xls":Channel.XLS,".csv":Channel.CSV})
-        try:
-            channel = channels[extension]
-        except KeyError:
-            raise InvalidFileFormatException()
-        if default_parser is not None:
-            parser = default_parser()
-        elif extension == '.csv':
+    def build(cls, manager, extension, location_tree, form_code=None):
+        if extension == '.csv':
             parser = CsvParser()
+            channel = Channel.CSV
         elif extension == '.xls':
-            parser = XlsParser()
+            parser = XlsParser() if form_code is None else XlsOrderedParser(form_code)
+            channel = Channel.XLS
         else:
             raise InvalidFileFormatException()
         return FilePlayer(manager, parser, channel, location_tree=LocationBridge(get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
@@ -69,11 +60,7 @@ class FilePlayer(Player):
         from datawinners.utils import get_organization_from_manager
         organization = get_organization_from_manager(self.dbm)
         registered_phone_numbers = get_all_registered_phone_numbers_on_trial_account() \
-            if organization.in_trial_mode else get_datasenders_mobile(self.dbm)
-        if type(self.parser) == XlsDatasenderParser:
-            registered_emails = User.objects.values_list('email', flat=True)
-        else:
-            registered_emails = []
+            if organization.in_trial_mode else []
         submissions = self.parser.parse(file_contents)
         for (form_code, values) in submissions:
             transport_info = TransportInfo(transport=self.channel_name, source=self.channel_name, destination="")
@@ -84,26 +71,7 @@ class FilePlayer(Player):
                     phone_number = case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE)
                     if phone_number in registered_phone_numbers:
                         raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
-
-                    email = case_insensitive_lookup(values, "email")
-                    if email:
-                        if email in registered_emails:
-                            raise DataObjectAlreadyExists(_("User"), _("email address"), email)
-
-                        response = self.submit(form_model, values, submission, [])
-                        user = User.objects.create_user(email, email, 'password')
-                        group = Group.objects.filter(name="Data Senders")[0]
-                        user.groups.add(group)
-                        user.first_name = case_insensitive_lookup(response.processed_data, NAME_FIELD_CODE)
-                        user.save()
-                        profile = NGOUserProfile(user=user, org_id=organization.org_id, title="Mr",
-                            reporter_id=case_insensitive_lookup(response.processed_data, SHORT_CODE))
-                        profile.save()
-                        send_reset_password_email(user,ugettext_lazy("en"))
-                    else:
-                        response = self.submit(form_model, values, submission, [])
-                else:
-                    response = self.submit(form_model, values, submission, [])
+                response = self.submit(form_model, values, submission, [])
                 if not response.success:
                     response.errors = dict(error=response.errors, row=values)
                 responses.append(response)
@@ -268,9 +236,9 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REP
     return load_subject_registration_data(manager, filter_entities, type)
 
 
-def _handle_uploaded_file(file_name, file, manager, default_parser=None):
+def _handle_uploaded_file(file_name, file, manager, form_code=None):
     base_name, extension = os.path.splitext(file_name)
-    player = FilePlayer.build(manager, extension, get_location_tree(), default_parser=default_parser)
+    player = FilePlayer.build(manager, extension, get_location_tree(), form_code)
     response = player.accept(file)
     return response
 
@@ -293,7 +261,7 @@ def _get_success_status(successful_imports, total):
     return True if total == successful_imports else False
 
 
-def import_data(request, manager, default_parser=None):
+def import_data(request, manager):
     response_message = ''
     error_message = None
     failure_imports = None
@@ -302,7 +270,7 @@ def import_data(request, manager, default_parser=None):
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
         form_code = request.GET.get("form_code", None)
-        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, default_parser=default_parser)
+        responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, form_code=form_code)
         imported_entities = _get_imported_entities(responses)
         if form_code is not None and len(imported_entities.get("datarecords_id")) and \
            settings.CRS_ORG_ID==get_organization(request).org_id:
@@ -371,8 +339,3 @@ def _get_field_default_value(key, entity):
     if key == 'short_code':
         return entity.short_code
     return None
-
-def get_datasenders_mobile(manager):
-    all_data_senders, fields, labels = load_all_subjects_of_type(manager)
-    index = fields.index(MOBILE_NUMBER_FIELD)
-    return [ds["cols"][index] for ds in all_data_senders]

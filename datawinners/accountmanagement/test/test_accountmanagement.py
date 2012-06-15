@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-from datawinners.utils import _get_email_template_name_for_reset_password
+from datawinners.accountmanagement.views import _get_email_template_name_for_reset_password
 from datawinners.tests.data import DEFAULT_TEST_USER, DEFAULT_TEST_PASSWORD
 
 class TestAccountManagement(TestCase):
