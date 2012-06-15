@@ -135,8 +135,16 @@ p.instructions {
 }
 
 .sms-questionnaire {
+  .instructions-container {
+    margin-right: 255px;
+  }
   .instructions {
-    margin-right: 250px;
+    background-color: white;
+  }
+  .dash {
+    width: 100%;
+    border-bottom: 2px dotted #CCC;
+    margin-top: -10px;
   }
   .displayText {
     height: 30px;

@@ -97,8 +97,14 @@ p.instructions {
   font-style: italic;
   font-size: 12px; }
 
+.sms-questionnaire .instructions-container {
+  margin-right: 255px; }
 .sms-questionnaire .instructions {
-  margin-right: 250px; }
+  background-color: white; }
+.sms-questionnaire .dash {
+  width: 100%;
+  border-bottom: 2px dotted #CCC;
+  margin-top: -10px; }
 .sms-questionnaire .displayText {
   height: 30px;
   float: right;

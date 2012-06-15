@@ -29,9 +29,13 @@
                             </div>
                             {% if  question.instruction %}
                                 <div class="clearfix">
-                                    <div class="instructions italic">
-                                        {% trans question.instruction %}
+                                    <div class="instructions-container">
+                                        <span class="instructions italic">
+                                            {% trans question.instruction %}
+                                        </span>
+                                        <div class="dash"></div>
                                     </div>
+
                                     <input class="displayText"  disabled="disabled" type="text">
                                 </div>
                             {% endif %}
