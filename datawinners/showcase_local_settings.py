@@ -100,35 +100,6 @@ LOGGING = {
 
 CRS_ORG_ID = 'BIF126513'
 
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.gis',
-    'datawinners.accountmanagement',
-    'registration',
-    'django.contrib.admin',
-    'compressor',
-    'datawinners',
-    'datawinners.main',
-    'datawinners.project',
-    'datawinners.dashboard',
-    'datawinners.location',
-    'datawinners.entity',
-    'datawinners.submission',
-    'django_extensions',
-    'django.contrib.flatpages',
-    'south',
-    'datawinners.home',
-    'datawinners.countrytotrialnumbermapping',
-    'datawinners.custom_reports.crs',
-    'django_nose',
-    'django_digest',
-    )
-
 SMARTPHONE_ENABLED = True
 EDIT_DATA_SENDERS_ENABLED = False
 EDIT_SUBJECT_ENABLED = False
