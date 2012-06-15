@@ -45,6 +45,15 @@
       padding: 20px;
       border: 1px solid #CCC;
       background-color: white;
+      .instructions {
+        width: 68%;
+        float: left;
+      }
+      .displayText {
+        float: right;
+        width: 30%;
+        margin-top: -15px;
+      }
     }
     .preview-instruction {
       margin-left: 10px;

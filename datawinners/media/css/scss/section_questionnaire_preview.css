@@ -32,6 +32,13 @@
     padding: 20px;
     border: 1px solid #CCC;
     background-color: white; }
+    #questionnaire_content #questionnaire_preview .sms-questionnaire .instructions {
+      width: 68%;
+      float: left; }
+    #questionnaire_content #questionnaire_preview .sms-questionnaire .displayText {
+      float: right;
+      width: 30%;
+      margin-top: -15px; }
   #questionnaire_content #questionnaire_preview .preview-instruction {
     margin-left: 10px; }
     #questionnaire_content #questionnaire_preview .preview-instruction > div {

@@ -1,0 +1,60 @@
+{% load i18n %}
+{% load questionnaire_preview_tags %}
+
+<div class="sms-questionnaire">
+    <h4 class="project-name padding_bottom_10">{{ project.name }}</h4>
+    <ol>
+        <li>
+            <h5>{% trans "Answer the questions" %}</h5>
+            <div>
+                <ol class="olpreview">
+                    {% for question in questions %}
+                        <li>
+                            <h6>{{ question.description }}</h6>
+                            <div class="answer">
+                                {% if question.type == "select1" %}
+                                    <ol class="multiple_select">
+                                        {% for option in question.constraints %}
+                                            <li><label>{{ option }}</label></li>
+                                        {% endfor %}
+                                    </ol>
+                                {% endif %}
+                                {% if question.type == "select" %}
+                                    <ol class="multiple_select">
+                                        {% for option in question.constraints %}
+                                            <li><label>{{ option }}</label></li>
+                                        {% endfor %}
+                                    </ol>
+                                {% endif %}
+                            </div>
+                            {% if  question.instruction %}
+                                <div class="clearfix">
+                                    <div class="instructions italic">
+                                        {% trans question.instruction %}
+                                    </div>
+                                    <input class="displayText"  disabled="disabled" type="text">
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </li>
+        <li>
+            <h5>{% trans "Prepare your SMS" %}</h5>
+            <div>
+                {% trans "Enter all your answers in the following ﬁeld. Use a space to separate the answers." %}
+                <div class="sms-answer"></div>
+                {% trans "Example SMS Answer:" %}<span class="italic">{{ example_sms }}</span>
+            </div>
+        </li>
+        <li>
+            <h5>{% trans "Send your answers via SMS" %}</h5>
+            <div>{% trans "Send your SMS to the telephone number: " %}{{ org_number|format_organization_number }}</div>
+        </li>
+        <li>
+            <h5>{% trans "Wait for our reply SMS" %}</h5>
+            <div>{% trans "You will receive an SMS to conﬁrm your sent in SMS or to tell you what went wrong." %}</div>
+        </li>
+    </ol>
+</div>
