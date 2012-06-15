@@ -15,7 +15,7 @@ ENVIRONMENT_CONFIGURATIONS = {
 }
 
 ENVIRONMENT_VES = {
-    "showcase": "/home/mangrover/awe_ve",
+    "showcase": "/home/mangrover/ve",
     "production": "/home/mangrover/ve"
 }
 
