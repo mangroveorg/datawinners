@@ -69,7 +69,9 @@
     <select class="margin_bottom_10 action">
         <option value="" selected="selected">--</option>
         <option value="delete">{% trans "Delete" %}</option>
+        {% if EDIT_SUBJECT_ENABLED %}
         <option value="edit">{% trans "Edit" %}</option>
+        {% endif %}
     </select>
     <table class="styled_table">
         <thead>

@@ -26,7 +26,9 @@
         <select class="margin_bottom_10 action">
             <option value="" selected="selected">--</option>
             <option value="{{ subject.entity }}-{{ subject.code }}-delete">{% trans "Delete"%}</option>
+            {% if EDIT_SUBJECT_ENABLED %}
             <option value="{{ subject.entity }}-{{ subject.code }}-edit">{% trans "Edit"%}</option>
+            {% endif %}
         </select>
         {% if subject.data|length > 0 %}
             <table class="styled_table" id="{{ subject.entity }}-table">
