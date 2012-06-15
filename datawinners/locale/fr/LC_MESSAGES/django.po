@@ -1690,7 +1690,7 @@ msgstr "Tutoriel"
 
 #: templates/alldata/smart_phone_instruction.html: 24
 msgid "(PDF, 3 pages, 0.6 MB)"
-msgstr "(PDF, 3 pages, 0.7 Mo)"
+msgstr "(PDF, 3 pages, 0.6 Mo)"
 
 #: templates/project/create_project.html: 198
 msgid "Close Window"
