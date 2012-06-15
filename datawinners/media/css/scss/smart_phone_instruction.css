@@ -15,8 +15,7 @@
         width: 100%; }
     .smart-phone-instruction .instruction .steps {
       float: right;
-      width: 70%;
-      margin-top: 20px; }
+      width: 70%; }
     .smart-phone-instruction .instruction ul > li {
       list-style-type: decimal;
       overflow: visible;
