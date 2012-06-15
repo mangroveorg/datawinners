@@ -177,7 +177,7 @@ def checkout_mangrove_to_production(code_dir, virtual_env):
         run("git checkout develop")
         run("git pull origin develop")
         mangrove_branch = str(date.today()).replace('-', '')
-        if run("git branch -a|grep %s" % mangrove_branch).succeeded:
+        if not run("git branch -a|grep %s" % mangrove_branch).failed:
             run("git branch -D %s" % mangrove_branch)
         run("git checkout -b %s $MANGROVE_COMMIT_SHA" % mangrove_branch)
         run("git checkout .")
@@ -193,7 +193,7 @@ def check_out_datawinners_code_for_production(code_dir, virtual_env):
         run("git checkout develop")
         run("git pull origin develop")
         datawinner_branch = str(date.today()).replace('-', '')
-        if run("git branch -a|grep %s" % datawinner_branch).succeeded:
+        if not run("git branch -a|grep %s" % datawinner_branch).failed:
             run("git branch -D %s" % datawinner_branch)
         run("git checkout -b %s $DATAWINNER_COMMIT_SHA" % datawinner_branch)
         run("git checkout .")
@@ -223,11 +223,11 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
         with cd('%s/datawinners' % code_dir):
             activate_and_run(virtual_env, "python %s" % couch_migration_file)
 
-    if run('cd mangrove').succeeded:
+    if not run('cd mangrove').failed:
         run('rm mangrove')
     run('ln -s %s/mangrove/ mangrove' % code_dir)
 
-    if run('cd datawinners').succeeded:
+    if not run('cd datawinners').failed:
         run('rm datawinners')
     run('ln -s %s/datawinners/ datawinners' % code_dir)
 
