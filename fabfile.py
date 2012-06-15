@@ -6,6 +6,13 @@ import os
 from datetime import date
 
 PROJECT_DIR = os.path.dirname(__file__)
+ENVIRONMENT_CONFIGURATIONS = {
+    "showcase": "showcase_local_settings.py",
+    "test": "test_local_settings.py",
+    "master": "showcase_local_settings.py",
+    "beta": "local_settings.py",
+    "production": "prod_local_settings.py"
+}
 
 
 def git_clone_datawinners_if_not_present(code_dir):
@@ -58,13 +65,13 @@ def restart_servers():
 
 
 def stop_servers():
-    run("sudo service uwsgi stop, pty=False")
-    run("sudo service nginx stop, pty=False")
+    run("sudo /etc/init.d/nginx stop")
+    run("sudo /etc/init.d/uwsgi stop")
 
 
 def start_servers():
-    run("sudo service uwsgi start, pty=False")
-    run("sudo service nginx start, pty=False")
+    run("sudo /etc/init.d/uwsgi start")
+    run("sudo /etc/init.d/nginx start")
 
 
 def set_mangrove_commit_sha(branch, mangrove_build_number):
@@ -115,12 +122,6 @@ def deploy(mangrove_build_number, datawinner_build_number, home_dir, virtual_env
     set_mangrove_commit_sha(branch, mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
 
-    ENVIRONMENT_CONFIGURATIONS = {
-        "showcase": "showcase_local_settings.py",
-        "test": "test_local_settings.py",
-        "master": "showcase_local_settings.py",
-        "beta": "local_settings.py"
-    }
 
     mangrove_code_dir = home_dir + '/mangrove'
     datawinners_code_dir = home_dir + '/datawinners'
@@ -147,23 +148,18 @@ def showcase():
     env.user = "mangrover"
     env.hosts = ["178.79.161.90"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
 
 def local():
     env.user = "mangrover"
     env.hosts = ["127.0.0.1"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
-def production():
-    env.user = "mangrover"
-    env.hosts = ["178.79.185.34"]
-    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
-    env.warn_only = True
-
-def test2():
-    env.user = "ashwini"
-    env.hosts = ["10.12.6.29"]
-    env.key_filename = ["/home/akshaysn/.ssh/id_rsa"]
-    env.warn_only = True
+#def production():
+#    env.user = "mangrover"
+#    env.hosts = ["178.79.185.34"]
+#    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+#    env.warn_only = True
 
 def anonymous():
     run("uname -a")
@@ -199,19 +195,21 @@ def check_out_datawinners_code_for_production(code_dir, virtual_env):
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
-def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, virtual_env, couch_migration_file=None):
-    run('sudo /etc/init.d/nginx stop')
-    run('sudo /etc/init.d/uwsgi stop')
-
+def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, virtual_env, environment = 'showcase',
+                      couch_migration_file=None):
+    stop_servers()
     set_mangrove_commit_sha('develop', mangrove_build_number)
     set_datawinner_commit_sha(datawinner_build_number)
+
+    if run('cd %s' % code_dir).failed:
+        run('mkdir %s' % code_dir)
 
     checkout_mangrove_to_production(code_dir, virtual_env)
     check_out_datawinners_code_for_production(code_dir, virtual_env)
 
     datawinners_dir = code_dir + '/datawinners/datawinners'
     with cd(datawinners_dir):
-        run("cp prod_local_settings.py local_settings.py")
+        run("cp %s local_settings.py" % ENVIRONMENT_CONFIGURATIONS[environment])
         activate_and_run(virtual_env, "python manage.py migrate")
         activate_and_run(virtual_env, "python manage.py compilemessages")
         activate_and_run(virtual_env, "python manage.py syncviews syncall")
@@ -221,12 +219,11 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
             activate_and_run(virtual_env, "python %s" % couch_migration_file)
 
     if run('cd mangrove').succeeded:
-        run('rm -rf mangrove')
+        run('rm mangrove')
     run('ln -s %s/mangrove/ mangrove' % code_dir)
 
     if run('cd datawinners').succeeded:
-        run('rm -rf datawinners')
+        run('rm datawinners')
     run('ln -s %s/datawinners/ datawinners' % code_dir)
 
-    run('sudo /etc/init.d/nginx start')
-    run('sudo /etc/init.d/uwsgi start')
+    start_servers()
