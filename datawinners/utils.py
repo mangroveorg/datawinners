@@ -5,6 +5,7 @@ from datetime import datetime
 from mangrove.datastore.database import get_db_manager
 from django.utils.translation import ugettext_lazy as _
 from datawinners import settings
+from django.contrib.auth.forms import PasswordResetForm
 
 VAR = "HNI"
 def get_excel_sheet(raw_data, sheet_name):
@@ -73,3 +74,11 @@ def get_organization_from_manager(manager):
     setting = OrganizationSetting.objects.get(document_store=manager.database_name)
     organization = Organization.objects.get(org_id=setting.organization_id)
     return organization
+
+def send_reset_password_email(user, language_code):
+    reset_form = PasswordResetForm({"email": user.email})
+    reset_form.is_valid()
+    reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
+
+def _get_email_template_name_for_reset_password(language):
+    return 'registration/password_reset_email_' + language + '.html'

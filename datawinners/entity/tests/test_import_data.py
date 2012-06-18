@@ -11,7 +11,7 @@ from mangrove.datastore.entity import create_entity
 from mangrove.datastore.entity_type import define_type
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD, NAME_FIELD
 from mangrove.transport.player.player import SMSPlayer
-from mangrove.transport.player.parser import CsvParser
+from mangrove.transport.player.parser import CsvParser, XlsDatasenderParser
 from mangrove.transport.facade import Channel
 from mangrove.transport import TransportInfo, Request
 from mangrove.transport.submissions import Submission
@@ -22,6 +22,7 @@ from datawinners.entity.helper import create_registration_form
 from datawinners.submission.location import LocationBridge
 from datawinners.accountmanagement.models import Organization
 from mock import Mock, patch
+from django.contrib.auth.models import UserManager
 
 class TestImportData(MangroveTestCase):
     def setUp(self):
@@ -292,3 +293,21 @@ class TestFilePlayer(MangroveTestCase):
                 
         self.assertFalse(responses[0].success)
         self.assertEqual(responses[0].errors['error'],"Data Sender with Mobile Number = 1234567890 already exists.")
+
+    def test_should_not_import_datasender_when_email_is_not_unique_or_mobile_is_not_unique(self):
+        organization = Mock(spec=Organization)
+        with patch("datawinners.utils.get_organization_from_manager") as get_organization_from_dbm_mock:
+            get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
+            with patch.object(XlsDatasenderParser, "parse") as parse_mock:
+                parse_mock.return_value = [
+                    ("reg", {u"email": u'', u'g': u'-18.13,27.65', u'l': u'Nairobi',u'm': u'1234567890', u'n': u'Thierry Rakoto', u't': 'reporter'}),
+                    ("reg", {u"email": u'test@mail.com', u'g': u'-18.13,27.65', u'l': u'Nairobi',u'm': u'033333333', u'n': u'Thierry Rakoto', u't': 'reporter'})
+                ]
+                with patch.object(UserManager, "values_list") as get_ds_mobile:
+                    get_ds_mobile.return_value = ["test@mail.com"]
+                    file_player = FilePlayer(self.manager,XlsDatasenderParser(), Channel.XLS, LocationBridge(DummyLocationTree(),dummy_get_location_hierarchy))
+                    responses = file_player.accept(None)
+        self.assertFalse(responses[0].success)
+        self.assertEqual(responses[0].errors['error'],"Data Sender with Mobile Number = 1234567890 already exists.")
+        self.assertFalse(responses[1].success)
+        self.assertEqual(responses[1].errors['error'],"User with email address = test@mail.com already exists.")

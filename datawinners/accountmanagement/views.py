@@ -22,6 +22,7 @@ from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
 from datawinners.utils import get_organization
+from datawinners.utils import _get_email_template_name_for_reset_password
 
 def is_admin(f):
     def wrapper(*args, **kw):
@@ -148,10 +149,6 @@ def custom_login(request, template_name, authentication_form):
             return login(request, template_name=template_name, authentication_form=authentication_form)
         except AccountExpiredException:
             return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
-
-
-def _get_email_template_name_for_reset_password(language):
-    return 'registration/password_reset_email_' + language + '.html'
 
 
 def custom_reset_password(request):
