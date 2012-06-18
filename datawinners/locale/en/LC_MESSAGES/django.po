@@ -1748,7 +1748,7 @@ msgid "Questionnarie Code:"
 msgstr ""
 
 #: templates/project/questionnaire_preview.html:23
-msgid "Example SMS Answer:"
+msgid "Example:"
 msgstr ""
 
 #: templates/project/questionnaire_wizard.html:62

@@ -1775,8 +1775,8 @@ msgid "Questionnarie Code:"
 msgstr "Code Questionnaire :"
 
 #: templates/project/questionnaire_preview.html:23
-msgid "Example SMS Answer:"
-msgstr "Exemple de SMS Réponse:"
+msgid "Example:"
+msgstr "Exemple:"
 
 #: templates/project/questionnaire_wizard.html:62
 msgid "Define the questions you want your Data Senders to answer."
