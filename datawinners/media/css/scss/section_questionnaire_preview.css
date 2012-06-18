@@ -120,7 +120,8 @@ p.instructions {
   margin: 5px 0; }
 
 .olpreview {
-  padding-left: 20px; }
+  padding-left: 20px;
+  padding-right: 5px; }
   .olpreview li {
     float: none !important;
     vertical-align: top; }
