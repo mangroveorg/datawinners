@@ -109,7 +109,8 @@ p.instructions {
   height: 30px;
   float: right;
   width: 250px;
-  margin-top: -31px; }
+  margin-top: -31px;
+  border: 1px solid #CCC; }
 .sms-questionnaire .olpreview > li {
   padding: 10px 0; }
 .sms-questionnaire .sms-answer {
