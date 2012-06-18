@@ -31,7 +31,7 @@ class Command(BaseCommand):
            form_code = list(args)[0]
            if form_code in crs_questionnaires:
                crs_questionnaires = [form_code]
-        except KeyError:
+        except Exception:
             pass
 
         try:
