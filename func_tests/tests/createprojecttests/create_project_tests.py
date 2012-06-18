@@ -57,7 +57,7 @@ class TestCreateProject(BaseTest):
         sms_questionnaire_preview_page = preview_navigation_page.sms_questionnaire_preview()
 
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
-        self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(), "^Project: %s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))
+        self.assertRegexpMatches(sms_questionnaire_preview_page.get_project_name(), "^%s" % fetch_(PROJECT_NAME, from_(VALID_DATA)))
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
         
         sms_questionnaire_preview_page.close_preview()

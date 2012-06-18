@@ -60,7 +60,7 @@ class TestEditQuestionnaire(BaseTest):
         sms_questionnaire_preview_page = preview_navigation_page.sms_questionnaire_preview()
 
         self.assertIsNotNone(sms_questionnaire_preview_page.sms_questionnaire())
-        self.assertEqual(sms_questionnaire_preview_page.get_project_name(), "Project: %s" % "clinic test project")
+        self.assertEqual(sms_questionnaire_preview_page.get_project_name(), "clinic test project")
         self.assertIsNotNone(sms_questionnaire_preview_page.get_sms_instruction())
         
         sms_questionnaire_preview_page.close_preview()
