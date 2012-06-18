@@ -139,6 +139,17 @@ p.instructions {
   font-weight: bold; }
   .preview-steps > li div {
     font-weight: normal; }
+    .preview-steps > li div .sms-answer {
+      color: blue;
+      font-family: "Lucida Grande" sans-serif;
+      font-weight: bold;
+      font-style: italic; }
+
+.fill-answers {
+  display: block;
+  float: right;
+  width: 250px;
+  margin-top: -10px; }
 
 .org_number_link {
   margin-top: 5px;

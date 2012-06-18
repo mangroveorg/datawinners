@@ -185,13 +185,26 @@ p.instructions {
   }
 }
 
-.preview-steps{
+.preview-steps {
   > li {
     font-weight: bold;
     div {
       font-weight: normal;
+      .sms-answer {
+        color: blue;
+        font-family: "Lucida Grande" sans-serif;
+        font-weight: bold;
+        font-style: italic;
+      }
     }
   }
+}
+
+.fill-answers {
+  display: block;
+  float: right;
+  width: 250px;
+  margin-top: -10px;
 }
 
 .org_number_link {
