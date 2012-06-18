@@ -7,11 +7,7 @@ DW.questionnaire_tab_get_post_data = function(){
 };
 
 DW.web_instruction_and_preview.prototype.get_post_data = DW.questionnaire_tab_get_post_data;
-
-DW.sms_instruction_and_preview = function () {};
-DW.sms_instruction_and_preview.prototype = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
 DW.sms_instruction_and_preview.prototype.get_post_data = DW.questionnaire_tab_get_post_data;
-
 
 DW.questionnaire_form_validate = function(){
     return $('#question_form').valid();

@@ -7,6 +7,7 @@ DW.instruction_and_preview.prototype = {
     bind_preview_navigation_item:function () {
         var that = this;
         $(this.preview_navigation_item).live('click', function () {
+            DW.instruction_and_preview.remove_sms_questionnaire_print()
             if ($("#questionnaire_preview_instruction").css("display") == "none") {
                 if (DW.questionnaire_form_validate()) {
                     that.load_preview_content();
@@ -57,6 +58,15 @@ DW.web_instruction_and_preview.prototype.post_callback = function () {
     }).dynamic({ bottom:{ direction:'down', bounce:true } });
 };
 
+DW.sms_instruction_and_preview = function () {};
+DW.sms_instruction_and_preview.prototype = new DW.instruction_and_preview(sms_preview_link, '.navigation-sms-preview');
+DW.sms_instruction_and_preview.prototype.post_callback = function () {
+    var questionnaire = $(".sms-questionnaire").clone();
+    questionnaire.addClass("sms-questionnaire");
+    questionnaire.hide();
+    questionnaire.appendTo($("body"));
+};
+
 DW.smart_phone_instruction_and_preview = function () {};
 DW.smart_phone_instruction_and_preview.prototype = new DW.instruction_and_preview(smart_phone_preview_link, '.navigation-smart-phone-preview');
 DW.smart_phone_instruction_and_preview.prototype.get_post_data = function () {
@@ -68,18 +78,18 @@ DW.instruction_and_preview.bind_cancel_button = function() {
         $("#questionnaire_content").html("");
         $("#questionnaire_preview_instruction").hide();
         $(".shadow-background").removeClass("shadow-background");
+        DW.instruction_and_preview.remove_sms_questionnaire_print()
     });
 };
 
+DW.instruction_and_preview.remove_sms_questionnaire_print = function(){
+    $("body > .sms-questionnaire").remove()
+}
+
 DW.instruction_and_preview.bind_print_button = function() {
-    $(".printBtn").live('click', function() {
-        var questionnaire = $(".sms-questionnaire").clone();
-        questionnaire.addClass("sms-questionnaire");
-        questionnaire.css("display:none");
-        questionnaire.appendTo($("body"));
+    $(".printBtn").live('click', function(event) {
         window.print();
-        questionnaire.remove();
-        this.preventDefault();
+        event.preventDefault();
     });
 };
 
