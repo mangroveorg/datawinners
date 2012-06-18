@@ -150,7 +150,7 @@ p.instructions {
     height: 30px;
     float: right;
     width: 250px;
-    margin-top: -35px;
+    margin-top: -31px;
   }
   .olpreview > li {
     padding: 10px 0;
@@ -180,6 +180,15 @@ p.instructions {
         margin-left: 20px;
         list-style: lower-alpha;
       }
+    }
+  }
+}
+
+.preview-steps{
+  > li {
+    font-weight: bold;
+    div {
+      font-weight: normal;
     }
   }
 }

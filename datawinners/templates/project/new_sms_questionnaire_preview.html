@@ -3,26 +3,26 @@
 
 <div class="sms-questionnaire">
     <h4 class="project-name padding_bottom_10">{{ project.name }}</h4>
-    <ol class="olpreview">
+    <ol class="olpreview preview-steps">
         <li>
             <h5>{% trans "Answer the questions" %}</h5>
             <div>
                 <ol class="olpreview">
                     {% for question in questions %}
                         <li>
-                            <h6>{{ question.description }}</h6>
+                            <span>{{ question.description }}</span>
                             <div class="answer">
                                 {% if question.type == "select1" %}
                                     <ol class="multiple_select">
                                         {% for option in question.constraints %}
-                                            <li><label>{{ option }}</label></li>
+                                            <li><span>{{ option }}</span></li>
                                         {% endfor %}
                                     </ol>
                                 {% endif %}
                                 {% if question.type == "select" %}
                                     <ol class="multiple_select">
                                         {% for option in question.constraints %}
-                                            <li><label>{{ option }}</label></li>
+                                            <li><span>{{ option }}</span></li>
                                         {% endfor %}
                                     </ol>
                                 {% endif %}
@@ -48,7 +48,7 @@
             <h5>{% trans "Prepare your SMS" %}</h5>
             <div>
                 {% trans "Enter all your answers in the following ﬁeld. Use a space to separate the answers." %}
-                <div class="sms-answer"></div>
+                <div class="sms-answer">{{ questionnaire_code }}</div>
                 {% trans "Example SMS Answer:" %}<span class="italic">{{ example_sms }}</span>
             </div>
         </li>
