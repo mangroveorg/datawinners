@@ -2,6 +2,7 @@
 from nose.plugins.attrib import attr
 from framework.base_test import BaseTest
 from pages.loginpage.login_page import LoginPage
+from pages.smsquestionnairepreviewpage.sms_questionnaire_preview_page import SmsQuestionnairePreviewPage
 from testdata.test_data import *
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projectsoverview.project_overview_data import PROJECT_NAME, PREVIEW_TITLE
@@ -27,3 +28,5 @@ class TestProjectOverview(BaseTest):
         project_overview_page = all_project_page.navigate_to_project_overview_page(PROJECT_NAME)
         light_box = project_overview_page.open_sms_questionnaire_preview()
         self.assertEqual(light_box.get_title_of_light_box(), PREVIEW_TITLE)
+        sms_questionnaire_preview_page = SmsQuestionnairePreviewPage(self.driver)
+        self.assertTrue(sms_questionnaire_preview_page.has_preview_steps())

@@ -5,3 +5,7 @@ QUESTIONNAIRE_PREVIEW = by_css("#questionnaire_preview_instruction #questionnair
 PROJECT_NAME = by_css("#questionnaire_preview_instruction .project-name")
 
 INSTRUCTION = by_css("#questionnaire_preview_instruction .preview-instruction")
+
+PREVIEW_STEPS = by_css(".preview-steps")
+
+CLOSE_PREVIEW = by_css(".close_preview")
