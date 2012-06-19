@@ -1,6 +1,27 @@
 $(document).ready(function() {
-    $(".questionnaire_preview").dialog({
-                title: $(".questionnaire_preview").attr("src_data") || gettext("Questionnaire Preview"),
+    DW.questionnaire_preview.init();
+});
+
+DW.questionnaire_preview = {
+    init:function(){
+        DW.questionnaire_preview.init_sms_questionnaire_preview();
+        DW.questionnaire_preview.init_questionnaire_preview();
+    },
+
+    init_sms_questionnaire_preview:function(){
+        DW.questionnaire_preview.init_dialog(".sms-questionnaire-preview", sms_questionnaire_preview_link);
+        DW.questionnaire_preview.bind(".sms-questionnaire-preview", ".sms-preview");
+    },
+
+    init_questionnaire_preview:function(){
+        DW.questionnaire_preview.init_dialog(".questionnaire_preview", questionnaire_preview_link);
+        DW.questionnaire_preview.bind(".questionnaire_preview", ".preview");
+    },
+
+    init_dialog:function(dialog_element, questionnaire_preview_link){
+        var questionnaire_preview = $(dialog_element);
+        questionnaire_preview.dialog({
+                title: questionnaire_preview.attr("src_data") || gettext("Questionnaire Preview"),
                 modal: true,
                 autoOpen: false,
                 height: 700,
@@ -9,12 +30,17 @@ $(document).ready(function() {
                 zIndex: 1300,
                 open: function() {
                     // Here I load the content. This is the content of your link.
-                    $(".questionnaire_preview").load(quessionarie_preview_link, function() {});
+                    questionnaire_preview.load(questionnaire_preview_link, function() {});
                 }
             }
-    );
-    $(".preview").bind("click", function() {
-        $(".questionnaire_preview").dialog("open");
-        return false;
-    });
-});
+        );
+    },
+
+    bind: function(dialog_element, preview_link){
+        $(preview_link).bind("click", function() {
+            $(dialog_element).dialog("open");
+            return false;
+        });
+    }
+
+}

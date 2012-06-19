@@ -9,7 +9,7 @@ $(document).ready(function() {
         title: sms_tester_title,
         zIndex:1100,
         open: function(){
-            $(".questionnaire_preview1").load(quessionarie_preview_link, function() {
+            $(".questionnaire_preview1").load(questionnaire_preview_link, function() {
                 $('.printBtn').addClass('none');
                 $('.displayText').hide();
                 $('.questionnaire-code').text($('#questionnaire-code').text())
