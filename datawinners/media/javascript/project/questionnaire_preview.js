@@ -6,6 +6,7 @@ $(document).ready(function() {
                 height: 700,
                 width: 800,
                 closeText: 'hide',
+                zIndex: 1300,
                 open: function() {
                     // Here I load the content. This is the content of your link.
                     $(".questionnaire_preview").load(quessionarie_preview_link, function() {});
