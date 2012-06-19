@@ -105,8 +105,8 @@ def create_datasender(request):
             context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
-        form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
         if len(form.errors) == 0 and form.requires_web_access():
             email_id = request.POST['email']
@@ -138,7 +138,8 @@ def edit_datasender(request,reporter_id):
             ,'create_datasender' : create_datasender },context_instance = RequestContext(request))
 
     if request.method == 'POST':
-        form = ReporterRegistrationForm(request.POST)
+        org_id = request.user.get_profile().org_id
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         message = None
         if form.is_valid():
             try:

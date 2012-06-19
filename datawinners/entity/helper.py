@@ -161,7 +161,7 @@ def process_create_data_sender_form(dbm, form, org_id):
     message = None
     data_sender_id = None
 
-    if form.is_valid:
+    if form.is_valid():
         try:
             organization = Organization.objects.get(org_id=org_id)
             if organization.in_trial_mode:
@@ -169,8 +169,11 @@ def process_create_data_sender_form(dbm, form, org_id):
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name()),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
-            data_sender_id = response.short_code
-            message = get_success_msg_for_registration_using(response, "web")
+            if response.success:
+                data_sender_id = response.short_code
+                message = get_success_msg_for_registration_using(response, "web")
+            else:
+                form.update_errors(response.errors)
 
         except MangroveException as exception:
             message = exception.message

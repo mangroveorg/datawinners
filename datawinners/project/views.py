@@ -1089,7 +1089,7 @@ def create_data_sender_and_web_user(request, project_id=None):
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
-        form = ReporterRegistrationForm(request.POST, initial={'dbm': manager, 'org_id': org_id})
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
         reporter_id,message = process_create_data_sender_form(manager, form, org_id)
         if not len(form.errors):
             project.associate_data_sender_to_project(manager, reporter_id)
