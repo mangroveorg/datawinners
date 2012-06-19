@@ -5608,28 +5608,28 @@ and pl_code ilike ?]]></xml-property>
                             <cell id="945">
                                 <property name="style">with_medium_border</property>
                                 <label id="1492">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_riz_received"];vars["total_riz_available"] += vars["total_riz_received"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_riz_received"], 2);vars["total_riz_available"] += vars["total_riz_received"];]]></method>
                                 </label>
                             </cell>
                             <cell id="1036"/>
                             <cell id="946">
                                 <property name="style">with_medium_border</property>
                                 <label id="1493">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_oil_received"];vars["total_oil_available"] += vars["total_oil_received"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_oil_received"], 2);vars["total_oil_available"] += vars["total_oil_received"];]]></method>
                                 </label>
                             </cell>
                             <cell id="1057"/>
                             <cell id="947">
                                 <property name="style">with_medium_border</property>
                                 <label id="1501">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_csb_received"]; vars["total_csb_available"] += vars["total_csb_received"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_csb_received"], 2); vars["total_csb_available"] += vars["total_csb_received"];]]></method>
                                 </label>
                             </cell>
                             <cell id="1099"/>
                             <cell id="948">
                                 <property name="style">with_medium_border</property>
                                 <label id="1502">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_sorgho_received"];vars["total_sorgho_available"] += vars["total_sorgho_received"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_sorgho_received"], 2);vars["total_sorgho_available"] += vars["total_sorgho_received"];]]></method>
                                 </label>
                             </cell>
                         </row>
@@ -5657,28 +5657,28 @@ and pl_code ilike ?]]></xml-property>
                             <cell id="957">
                                 <property name="style">with_border</property>
                                 <label id="1504">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_riz_available"]; vars["riz_theoritical_stock"] += vars["total_riz_available"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_riz_available"], 2); vars["riz_theoritical_stock"] += vars["total_riz_available"];]]></method>
                                 </label>
                             </cell>
                             <cell id="1038"/>
                             <cell id="958">
                                 <property name="style">with_border</property>
                                 <label id="1505">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_oil_available"]; vars["oil_theoritical_stock"] += vars["total_oil_available"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_oil_available"], 2); vars["oil_theoritical_stock"] += vars["total_oil_available"];]]></method>
                                 </label>
                             </cell>
                             <cell id="1059"/>
                             <cell id="959">
                                 <property name="style">with_border</property>
                                 <label id="1506">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_csb_available"]; vars["csb_theoritical_stock"] += vars["total_csb_available"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_csb_available"], 2); vars["csb_theoritical_stock"] += vars["total_csb_available"];]]></method>
                                 </label>
                             </cell>
                             <cell id="1101"/>
                             <cell id="960">
                                 <property name="style">with_border</property>
                                 <label id="1507">
-                                    <method name="onCreate"><![CDATA[this.text = vars["total_sorgho_available"]; vars["sorgho_theoritical_stock"] += vars["total_sorgho_available"];]]></method>
+                                    <method name="onCreate"><![CDATA[this.text = BirtMath.round(vars["total_sorgho_available"], 2); vars["sorgho_theoritical_stock"] += vars["total_sorgho_available"];]]></method>
                                 </label>
                             </cell>
                         </row>
