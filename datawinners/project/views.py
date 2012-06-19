@@ -16,11 +16,11 @@ from django.conf import settings
 from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from datawinners.project.view_models import ReporterEntity
 from mangrove.datastore.entity import get_by_short_code
-from mangrove.form_model.location import LOCATION_TYPE_FIELD_NAME, GEO_CODE_FIELD_NAME
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import process_create_datasender_form, add_imported_data_sender_to_trial_organization, _get_data
+from datawinners.entity.helper import process_create_data_sender_form, add_imported_data_sender_to_trial_organization, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity import import_data as import_module
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_organization
@@ -32,7 +32,7 @@ from mangrove.datastore.queries import get_entity_count_for_type, get_non_voided
 from mangrove.errors.MangroveException import QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectAlreadyExists, DataObjectNotFound, QuestionAlreadyExistsException, MangroveException
 from mangrove.form_model import form_model
 from mangrove.form_model.field import field_to_json
-from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER, NAME_FIELD, MOBILE_NUMBER_FIELD
+from mangrove.form_model.form_model import get_form_model_by_code, FormModel, REGISTRATION_FORM_CODE, get_form_model_by_entity_type, REPORTER
 from mangrove.transport.facade import TransportInfo, Request
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport.submissions import Submission, get_submissions, submission_count
@@ -48,7 +48,7 @@ from datawinners.accountmanagement.views import is_datasender, is_datasender_all
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields, get_entity_type_infos
 from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import get_database_manager
-from datawinners.messageprovider.message_handler import get_exception_message_for, get_success_msg_for_registration_using
+from datawinners.messageprovider.message_handler import get_exception_message_for
 from datawinners.messageprovider.messages import exception_messages, WEB
 from datawinners.project.forms import BroadcastMessageForm
 from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_reminder_logs_for_project, get_all_projects
@@ -122,8 +122,8 @@ def make_subject_links(project):
 def make_data_sender_links(project,reporter_id=None):
     project_id = project.id
     datasender_links = {'datasenders_link': reverse(all_datasenders),
-                        'edit_datasender_link' : reverse(edit_datasender,args=[project_id,reporter_id]),
-                        'register_datasenders_link': reverse(create_datasender_and_webuser, args=[project_id]),
+                        'edit_datasender_link' : reverse(edit_data_sender,args=[project_id,reporter_id]),
+                        'register_datasenders_link': reverse(create_data_sender_and_web_user, args=[project_id]),
                         'registered_datasenders_link': reverse(registered_datasenders, args=[project_id])}
     return datasender_links
 
@@ -1075,7 +1075,7 @@ def edit_subject(request, project_id=None):
 @is_datasender_allowed
 @project_has_web_device
 @is_not_expired
-def create_datasender_and_webuser(request, project_id=None):
+def create_data_sender_and_web_user(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
     in_trial_mode = _in_trial_mode(request)
@@ -1088,10 +1088,10 @@ def create_datasender_and_webuser(request, project_id=None):
             context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
-        reporter_id,message = process_create_datasender_form(manager, form, org_id)
-        if len(form.errors) == 0:
+        form = ReporterRegistrationForm(request.POST, initial={'dbm': manager, 'org_id': org_id})
+        reporter_id,message = process_create_data_sender_form(manager, form, org_id)
+        if not len(form.errors):
             project.associate_data_sender_to_project(manager, reporter_id)
             if form.requires_web_access() :
                 email_id = request.POST['email']
@@ -1102,32 +1102,36 @@ def create_datasender_and_webuser(request, project_id=None):
                 {'form': form, 'message': message, 'in_trial_mode': in_trial_mode},
             context_instance=RequestContext(request))
 
-
-def edit_datasender(request, project_id, reporter_id):
+def edit_data_sender(request, project_id, reporter_id):
     manager = get_database_manager(request.user)
-    reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+    reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
     project, links = _get_project_and_project_link(manager, project_id, reporter_id)
 
     if request.method == 'GET':
-        location = ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)) if reporter_entity.value(LOCATION_TYPE_FIELD_NAME) is not None else None
-        geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
-        form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.value(NAME_FIELD),
-                                                 'telephone_number' : reporter_entity.value(MOBILE_NUMBER_FIELD),'location' : location,'geo_code' : geo_code})
+        location = reporter_entity.location
+        geo_code = reporter_entity.geo_code
+        form = ReporterRegistrationForm(initial={'project_id': project_id,'name' : reporter_entity.name,
+                                                 'telephone_number' : reporter_entity.mobile_number,'location' : location,'geo_code' : geo_code})
         return render_to_response('project/edit_datasender.html',{'project' : project,'reporter_id' : reporter_id,'form' : form, 'project_links': links,'in_trial_mode' : _in_trial_mode(request)},context_instance = RequestContext(request))
 
     if request.method == 'POST':
-        form = ReporterRegistrationForm(request.POST)
+        org_id = request.user.get_profile().org_id
+        form = ReporterRegistrationForm(org_id=org_id, data=request.POST)
+
         message = None
         if form.is_valid():
             try:
-                org_id = request.user.get_profile().org_id
                 organization = Organization.objects.get(org_id=org_id)
+                current_telephone_number = reporter_entity.mobile_number
                 web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
                 response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
                     transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
                 if response.success:
+                    if organization.in_trial_mode:
+                        update_data_sender_from_trial_organization(current_telephone_number,form.cleaned_data["telephone_number"], org_id)
                     message = _("Your changes have been saved.")
-
+                else :
+                    form.update_errors(response.errors)
             except MangroveException as exception:
                 message = exception.message
 
