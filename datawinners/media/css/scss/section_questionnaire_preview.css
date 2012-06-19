@@ -97,27 +97,45 @@ p.instructions {
   font-style: italic;
   font-size: 12px; }
 
-.sms-questionnaire .instructions-container {
+.sms-questionnaire.questionnaire-preview .instructions-container {
   margin-right: 255px; }
-.sms-questionnaire .instructions {
+.sms-questionnaire.questionnaire-preview .instructions {
   background-color: white; }
-.sms-questionnaire .dash {
+.sms-questionnaire.questionnaire-preview .dash {
   width: 100%;
   border-bottom: 2px dotted #666;
   margin-top: -10px; }
-.sms-questionnaire .displayText {
+.sms-questionnaire.questionnaire-preview .displayText {
   height: 30px;
   float: right;
   width: 250px;
   margin-top: -31px;
   border: 1px solid #ccc; }
-.sms-questionnaire .olpreview > li {
+.sms-questionnaire.questionnaire-preview .olpreview > li {
   padding: 10px 0; }
-.sms-questionnaire .sms-answer {
+.sms-questionnaire.questionnaire-preview .sms-answer {
   width: 100%;
   height: 60px;
   border: 1px solid #ccc;
   margin: 5px 0; }
+.sms-questionnaire.questionnaire-preview .preview-steps > li {
+  font-weight: bold; }
+  .sms-questionnaire.questionnaire-preview .preview-steps > li div {
+    font-weight: normal; }
+    .sms-questionnaire.questionnaire-preview .preview-steps > li div .sms-answer {
+      color: blue;
+      font-family: "Lucida Grande" sans-serif;
+      font-weight: bold;
+      font-style: italic; }
+.sms-questionnaire.questionnaire-preview .fill-answers {
+  display: block;
+  float: right;
+  width: 250px;
+  margin-top: -10px; }
+.sms-questionnaire.questionnaire-preview .org_number_link {
+  margin-top: 5px;
+  font-size: 12px !important;
+  position: absolute; }
 
 .olpreview {
   padding-left: 20px;
@@ -134,28 +152,7 @@ p.instructions {
       clear: left !important; }
       .olpreview li .answer ol {
         margin-left: 20px;
-        list-style: upper-alpha; }
-
-.preview-steps > li {
-  font-weight: bold; }
-  .preview-steps > li div {
-    font-weight: normal; }
-    .preview-steps > li div .sms-answer {
-      color: blue;
-      font-family: "Lucida Grande" sans-serif;
-      font-weight: bold;
-      font-style: italic; }
-
-.fill-answers {
-  display: block;
-  float: right;
-  width: 250px;
-  margin-top: -10px; }
-
-.org_number_link {
-  margin-top: 5px;
-  font-size: 12px !important;
-  position: absolute; }
+        list-style: lower-alpha; }
 
 .content.grid_23 {
   border: 1px solid #CCC !important;

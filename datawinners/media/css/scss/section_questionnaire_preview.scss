@@ -134,7 +134,7 @@ p.instructions {
   font-size: 12px;
 }
 
-.sms-questionnaire {
+.sms-questionnaire.questionnaire-preview {
   .instructions-container {
     margin-right: 255px;
   }
@@ -162,6 +162,34 @@ p.instructions {
     border: 1px solid #ccc;
     margin: 5px 0;
   }
+
+  .preview-steps {
+    > li {
+      font-weight: bold;
+      div {
+        font-weight: normal;
+        .sms-answer {
+          color: blue;
+          font-family: "Lucida Grande" sans-serif;
+          font-weight: bold;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .fill-answers {
+    display: block;
+    float: right;
+    width: 250px;
+    margin-top: -10px;
+  }
+
+  .org_number_link {
+    margin-top: 5px;
+    font-size: 12px !important;
+    position: absolute;
+  }
 }
 
 .olpreview {
@@ -180,39 +208,12 @@ p.instructions {
       clear: left !important;
       ol {
         margin-left: 20px;
-        list-style: upper-alpha;
+        list-style: lower-alpha;
       }
     }
   }
 }
 
-.preview-steps {
-  > li {
-    font-weight: bold;
-    div {
-      font-weight: normal;
-      .sms-answer {
-        color: blue;
-        font-family: "Lucida Grande" sans-serif;
-        font-weight: bold;
-        font-style: italic;
-      }
-    }
-  }
-}
-
-.fill-answers {
-  display: block;
-  float: right;
-  width: 250px;
-  margin-top: -10px;
-}
-
-.org_number_link {
-  margin-top: 5px;
-  font-size: 12px !important;
-  position: absolute;
-}
 
 .content {
   &.grid_23 {
