@@ -14,7 +14,7 @@ from mangrove.form_model.form_model import FormModel, NAME_FIELD,\
 from mangrove.form_model.validation import TextLengthConstraint,\
     RegexConstraint
 from mangrove.transport.player.player import WebPlayer
-from mangrove.utils.types import is_empty, is_sequence, is_not_empty
+from mangrove.utils.types import  is_sequence, is_not_empty
 import re
 from mangrove.errors.MangroveException import NumberNotRegisteredException,\
     DataObjectNotFound
@@ -151,27 +151,21 @@ def add_data_sender_to_trial_organization(telephone_number, org_id):
         organization=Organization.objects.get(org_id=org_id))
     data_sender.save()
 
+def update_data_sender_from_trial_organization(old_telephone_number,new_telephone_number, org_id):
+    data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=old_telephone_number,
+        organization=Organization.objects.get(org_id=org_id))
+    data_sender.mobile_number = new_telephone_number
+    data_sender.save()
 
-def process_create_datasender_form(dbm, form, org_id):
+def process_create_data_sender_form(dbm, form, org_id):
     message = None
     data_sender_id = None
-    if form.is_valid():
-        telephone_number = form.cleaned_data["telephone_number"]
-        if not unique(dbm, telephone_number):
-            form._errors['telephone_number'] = form.error_class(
-                [(u"Sorry, the telephone number %s has already been registered") % (telephone_number,)])
-            return None,message
 
-        organization = Organization.objects.get(org_id=org_id)
-        if organization.in_trial_mode:
-            if DataSenderOnTrialAccount.objects.filter(mobile_number=telephone_number).exists():
-                form._errors['telephone_number'] = form.error_class(
-                    [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
-                return None,message
-            else:
-                add_data_sender_to_trial_organization(telephone_number, org_id)
-
+    if form.is_valid:
         try:
+            organization = Organization.objects.get(org_id=org_id)
+            if organization.in_trial_mode:
+                add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
             response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name()),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))

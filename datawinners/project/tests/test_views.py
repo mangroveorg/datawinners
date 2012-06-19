@@ -8,7 +8,7 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_datasender_and_webuser, registered_datasenders, make_data_sender_links, add_link, all_datasenders
+from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
@@ -61,7 +61,7 @@ class TestProjectViews(unittest.TestCase):
         project.id = project_id
         datasender_links = make_data_sender_links(project)
         self.assertEqual(reverse(all_datasenders), datasender_links['datasenders_link'])
-        self.assertEqual(reverse(create_datasender_and_webuser, args=[project_id]), datasender_links['register_datasenders_link'])
+        self.assertEqual(reverse(create_data_sender_and_web_user, args=[project_id]), datasender_links['register_datasenders_link'])
         self.assertEqual(reverse(registered_datasenders, args=[project_id]),
             datasender_links['registered_datasenders_link'])
 
@@ -79,7 +79,7 @@ class TestProjectViews(unittest.TestCase):
         project.id = "1"
         project.entity_type = "reporter"
         link = add_link(project)
-        self.assertEqual(reverse(create_datasender_and_webuser, args=[project.id]), link.url)
+        self.assertEqual(reverse(create_data_sender_and_web_user, args=[project.id]), link.url)
         self.assertEqual('Add a datasender', link.text)
 
     def test_should_get_correct_template_for_non_data_sender(self):

@@ -6,6 +6,8 @@ from django.forms.widgets import CheckboxSelectMultiple, TextInput
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import Form
+from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
+from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
 from mangrove.utils.types import is_empty
 from datawinners import settings
 from datawinners.entity.fields import PhoneNumberField
@@ -59,12 +61,12 @@ class ReporterRegistrationForm(Form):
         error_messages={
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
-    def __init__(self, *args, **kwargs):
+#    Needed for telephone number validation
+    org_id = None
+
+    def __init__(self, org_id=None, *args, **kwargs):
+        self.org_id = org_id
         super(ReporterRegistrationForm, self).__init__(*args, **kwargs)
-#        self.fields['name'].widget.attrs['watermark'] = _("Enter Data Sender's name")
-#        self.fields['telephone_number'].widget.attrs['watermark'] = _("Enter Data Sender's number")
-#        self.fields['location'].widget.attrs['watermark'] = _("Enter region, district or commune")
-#        self.fields['geo_code'].widget.attrs['watermark'] = _("Enter lat and long eg: 19.3,42.37")
 
     def _is_int(self, s):
         try:
@@ -106,6 +108,19 @@ class ReporterRegistrationForm(Form):
             self._geo_code_validations(geo_code)
         return self.cleaned_data
 
+    def clean_telephone_number(self):
+        """
+        Validate telephone number. This expects the dbm to be set on the form before trying to clean.
+        """
+
+        organization = Organization.objects.get(org_id=self.org_id)
+        if organization.in_trial_mode:
+            if DataSenderOnTrialAccount.objects.filter(mobile_number=(self.cleaned_data.get('telephone_number'))).exists():
+                self._errors['telephone_number'] = self.error_class(
+                    [(u"Sorry, this number has already been used for a different DataWinners trial account.")])
+        return self.cleaned_data.get('telephone_number')
+
+
     def clean_email(self):
         """
         Validate that the supplied email address is unique for the
@@ -113,13 +128,13 @@ class ReporterRegistrationForm(Form):
 
         """
         if not self.requires_web_access():
-            return
+            return None
 
         email = self.cleaned_data.get('email')
         if is_empty(email):
             msg = _('This field is required.')
             self._errors['email'] = self.error_class([msg])
-            return
+            return None
 
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
@@ -133,6 +148,11 @@ class ReporterRegistrationForm(Form):
     def requires_web_access(self):
         devices = self.cleaned_data.get('devices')
         return devices.__contains__('web')
+
+    def update_errors(self, validation_errors):
+        mapper = {MOBILE_NUMBER_FIELD_CODE: 'telephone_number'}
+        validation_error = validation_errors.get(MOBILE_NUMBER_FIELD_CODE)
+        self._errors[mapper[MOBILE_NUMBER_FIELD_CODE]]= self.error_class([validation_error])
 
 
 class SubjectUploadForm(Form):
