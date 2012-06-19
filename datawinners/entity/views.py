@@ -17,13 +17,15 @@ from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
+from gdata.apps import organization
 from mangrove.form_model.field import field_to_json
+from mangrove.form_model.location import LOCATION_TYPE_FIELD_NAME
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
 from datawinners.accountmanagement.models import NGOUserProfile, get_ngo_admin_user_profiles_for, Organization
 from datawinners.accountmanagement.views import is_datasender, is_new_user, is_not_expired
 from datawinners.custom_report_router.report_router import ReportRouter
-from datawinners.entity.helper import create_registration_form, process_create_data_sender_form,\
+from datawinners.entity.helper import create_registration_form, process_create_datasender_form,\
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
     delete_datasender_users_if_any, _get_data
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
@@ -36,7 +38,7 @@ from datawinners.project.models import Project, get_all_projects
 from mangrove.datastore.entity_type import  define_type
 from mangrove.errors.MangroveException import EntityTypeAlreadyDefined, MangroveException, DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, DataObjectNotFound, QuestionAlreadyExistsException
 from datawinners.entity.forms import EntityTypeForm, ReporterRegistrationForm
-from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME, REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, MOBILE_NUMBER_FIELD, SHORT_CODE_FIELD
+from mangrove.form_model.form_model import REGISTRATION_FORM_CODE, LOCATION_TYPE_FIELD_CODE, REPORTER, get_form_model_by_entity_type, get_form_model_by_code, GEO_CODE_FIELD_NAME, NAME_FIELD, MOBILE_NUMBER_FIELD, SHORT_CODE_FIELD
 from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
@@ -107,7 +109,7 @@ def create_datasender(request):
         dbm = get_database_manager(request.user)
         form = ReporterRegistrationForm(request.POST)
         org_id = request.user.get_profile().org_id
-        reporter_id, message = process_create_data_sender_form(dbm, form, org_id)
+        reporter_id, message = process_create_datasender_form(dbm, form, org_id)
         if len(form.errors) == 0 and form.requires_web_access():
             email_id = request.POST['email']
             create_single_web_user(org_id=org_id, email_address=email_id, reporter_id=reporter_id,
