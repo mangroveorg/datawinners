@@ -119,7 +119,8 @@ p.instructions {
   border: 1px solid #ccc;
   margin: 5px 0; }
 .sms-questionnaire.questionnaire-preview .preview-steps > li {
-  font-weight: bold; }
+  font-weight: bold;
+  list-style: upper-alpha; }
   .sms-questionnaire.questionnaire-preview .preview-steps > li div {
     font-weight: normal; }
     .sms-questionnaire.questionnaire-preview .preview-steps > li div .sms-answer {
