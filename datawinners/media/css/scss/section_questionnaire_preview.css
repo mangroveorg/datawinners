@@ -98,7 +98,7 @@ p.instructions {
   font-size: 12px; }
 
 .sms-questionnaire.questionnaire-preview .instructions-container {
-  margin-right: 255px; }
+  margin-right: 245px; }
 .sms-questionnaire.questionnaire-preview .instructions {
   background-color: white; }
 .sms-questionnaire.questionnaire-preview .dash {
@@ -110,7 +110,8 @@ p.instructions {
   float: right;
   width: 250px;
   margin-top: -31px;
-  border: 1px solid #ccc; }
+  border: 1px solid #ccc;
+  background-color: white; }
 .sms-questionnaire.questionnaire-preview .olpreview > li {
   padding: 10px 0; }
 .sms-questionnaire.questionnaire-preview .sms-answer {
