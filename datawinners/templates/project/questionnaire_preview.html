@@ -6,17 +6,19 @@
 {% block page_title %}{% trans "Project - Questionnaire" %} {% endblock %}
 {% block page_scss %}
     {{ block.super }}
-    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_questionnaire_preview.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
     <div id="questionnaire_preview">
         <div class="preview_block"><a href="#" class="printBtn">{% trans "Print" %}</a></div>
-        {% include "project/questionnaire_list.html" %}
+        {% block questinnaire %}
+            {% include "project/sms_questionnaire_preview.html" %}
+        {% endblock %}
     </div>
     <script>
-        $(document).ready(function() {
-            $('.printBtn').bind('click', function(event) {
+        $(document).ready(function () {
+            $('.printBtn').bind('click', function (event) {
                 {#            var thePopup = window.open( '{{ project_links.questionnaire_preview_link }}', "Customer Listing", "menubar=0,location=0,height=700,width=700" );#}
 //            thePopup.onload = function(){this.print(); this.close(); }
                 window.print();

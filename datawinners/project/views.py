@@ -80,7 +80,8 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
     project_links = {'overview_link': reverse(project_overview, args=[project_id]),
                      'activate_project_link': reverse(activate_project, args=[project_id]),
                      'delete_project_link': reverse(delete_project, args=[project_id]),
-                     'questionnaire_preview_link': reverse(questionnaire_preview, args=[project_id]),
+                     'questionnaire_preview_link': reverse("questionnaire_preview", args=[project_id]),
+                     'sms_questionnaire_preview_link': reverse("sms_questionnaire_preview", args=[project_id]),
                      'current_language': translation.get_language()
     }
 
@@ -947,7 +948,7 @@ def get_example_sms(fields):
 
 @login_required(login_url='/login')
 @is_not_expired
-def questionnaire_preview(request, project_id=None):
+def questionnaire_preview(request, project_id=None, sms_preview = False):
     manager = get_database_manager(request.user)
     if request.method == 'GET':
         project = Project.load(manager.database, project_id)
@@ -963,7 +964,9 @@ def questionnaire_preview(request, project_id=None):
         example_sms = "%s" % (
             form_model.form_code)
         example_sms += get_example_sms(fields)
-        return render_to_response('project/questionnaire_preview.html',
+
+        template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
+        return render_to_response(template,
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
@@ -1007,7 +1010,7 @@ def subject_registration_form_preview(request, project_id=None):
         fields, project_links, questions, registration_questionnaire = _get_registration_form(manager,
             project, project.entity_type)
         example_sms = get_example_sms_message(fields, registration_questionnaire)
-        return render_to_response('project/questionnaire_preview.html',
+        return render_to_response('project/questionnaire_preview_list.html',
                 {"questions": questions, 'questionnaire_code': registration_questionnaire.form_code,
                  'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
@@ -1025,7 +1028,7 @@ def sender_registration_form_preview(request, project_id=None):
             type_of_subject='reporter')
         datasender_questions = _get_questions_for_datasenders_registration_for_print_preview(questions)
         example_sms = get_example_sms_message(datasender_questions, registration_questionnaire)
-        return render_to_response('project/questionnaire_preview.html',
+        return render_to_response('project/questionnaire_preview_list.html',
                 {"questions": datasender_questions, 'questionnaire_code': registration_questionnaire.form_code,
                  'project': project, 'project_links': project_links,
                  'example_sms': example_sms, 'org_number': get_organization_telephone_number(request)},
