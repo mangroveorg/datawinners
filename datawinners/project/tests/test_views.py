@@ -210,7 +210,7 @@ class TestProjectViews(unittest.TestCase):
         
         with patch("project.preview_views.get_questionnaire_form_model") as questionnaire_form_model:
             questionnaire_form_model.return_value = form_model
-            with patch("project.preview_views.WebQuestionnaireFormCreater") as web_questionnaire_form_creator:
+            with patch("project.preview_views.WebQuestionnaireFormCreator") as web_questionnaire_form_creator:
                 web_questionnaire_form_creator.return_value = web_questionnaire_form_creator
                 with patch.object(web_questionnaire_form_creator, "create") as create_form:
                     create_form.return_value = QuestionnaireForm

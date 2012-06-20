@@ -1,19 +1,16 @@
 import json
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.form_model.form_model import REPORTER
-from accountmanagement.views import is_not_expired
-from main.utils import get_database_manager
-from project.forms import CreateProject
-from project.helper import remove_reporter, get_preview_for_field, hide_entity_question
-from project.models import Project
-from project.views import get_example_sms, get_organization_telephone_number
-from project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
-from project.wizard_view import create_questionnaire
+from datawinners.accountmanagement.views import is_not_expired
+from datawinners.main.utils import get_database_manager
+from datawinners.project.helper import  get_preview_for_field, hide_entity_question
+from datawinners.project.models import Project
+from datawinners.project.views import get_example_sms, get_organization_telephone_number
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
+from datawinners.project.wizard_view import create_questionnaire
 
 
 def get_questions(form_model):
@@ -34,7 +31,7 @@ def get_questionnaire_form_model(manager, project_info, post):
 
 def get_sms_preview_context(manager, post, project_info):
     form_model = get_questionnaire_form_model(manager, project_info, post)
-    example_sms = "%s" % (form_model.form_code)
+    example_sms = "%s" % form_model.form_code
     example_sms += get_example_sms(form_model.fields)
     return {"questionnaire_code": post["questionnaire-code"],
             "questions": get_questions(form_model),
@@ -70,7 +67,7 @@ def get_web_preview_context(manager, post, project_info):
                       state=post['project_state'], devices=[u'sms', u'web', u'smartPhone'],
                       language=unicode(project_info['language']))
 
-    QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
+    QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(manager, project),
                                                     form_model=form_model).create()
     questionnaire_form = QuestionnaireForm()
     return {'project': project_info,
