@@ -726,6 +726,11 @@ msgstr "Nom"
 msgid "Email"
 msgstr "Adresse E-mail"
 
+#: templates/entity/datasenders_table.html: 14
+#: templates/project/registered_datasenders.html: 90
+msgid "Devices"
+msgstr "Appareils"
+
 #: templates/accountmanagement/profile/index.html:11
 msgid "Contact Info"
 msgstr "Informations sur le contact"
@@ -1198,8 +1203,8 @@ msgid "Project Description:"
 msgstr "Description du projet :"
 
 #: templates/project/finish_and_test.html:71
-msgid "Devices"
-msgstr "Canaux"
+msgid "Devices:"
+msgstr "Canaux:"
 
 #: templates/project/finish_and_test.html:75
 #: templates/project/finish_and_test.html:98
