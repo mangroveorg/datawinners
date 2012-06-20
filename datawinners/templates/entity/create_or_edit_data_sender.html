@@ -1,14 +1,14 @@
 {% extends 'layout_application.html' %}
 {% load i18n %}
 {% block page_title %}
-    {% if create_datasender %}
+    {% if create_data_sender %}
         {% trans "Add A Data Sender" %}
     {% else %}
         {% trans "Edit A Data Sender" %}
     {% endif %}
 {% endblock %}
 {% block section_title %}
-    {% if create_datasender %}
+    {% if create_data_sender %}
         {% trans "Add A Data Sender" %}
     {% else %}
         {% trans "Edit A Data Sender" %}
@@ -24,7 +24,7 @@
 {% block page_js %}
     {{ block.super }}
     <script type="text/javascript" src="/media/javascript/jquery_autocomplete/jquery.autocomplete.js"></script>
-    {% if create_datasender %}
+    {% if create_data_sender %}
     <script type="text/javascript">
         var sender_registration_link = "/entity/datasender/create";
     </script>
@@ -61,7 +61,7 @@
         <a href="{{ entity_links.back_link }}" class="back-to-list"> « {% trans "Back to Data Sender List" %}</a>
     </div>
     <div id="add_data_sender_form" class="">
-  {% if create_datasender %}
+  {% if create_data_sender %}
       {% include "datasender_form.html" %}
   {% else %}
       {% include "edit_datasender_form.html" %}

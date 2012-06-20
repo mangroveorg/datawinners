@@ -44,7 +44,7 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
-    get_database_manager_for_org, send_reset_password_email,  _get_email_template_name_for_reset_password
+    get_database_manager_for_org, send_reset_password_email
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
@@ -93,14 +93,14 @@ def submit(request):
 
 @login_required(login_url='/login')
 @is_not_expired
-def create_datasender(request):
-    create_datasender = True
+def create_data_sender(request):
+    create_data_sender = True
     entity_links = {'back_link': reverse(all_datasenders)}
 
     if request.method == 'GET':
         form = ReporterRegistrationForm()
-        return render_to_response('entity/create_or_edit_datasender.html', {'form': form,
-                                                                            'create_datasender' : create_datasender,
+        return render_to_response('entity/create_or_edit_data_sender.html', {'form': form,
+                                                                            'create_data_sender' : create_data_sender,
                                                                             'entity_links' : entity_links},
             context_instance=RequestContext(request))
     if request.method == 'POST':
@@ -121,8 +121,8 @@ def create_datasender(request):
 
 @login_required(login_url='/login')
 @is_not_expired
-def edit_datasender(request,reporter_id):
-    create_datasender = False
+def edit_data_sender(request,reporter_id):
+    create_data_sender = False
     manager = get_database_manager(request.user)
     reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
     entity_links = {'back_link': reverse(all_datasenders)}
@@ -134,8 +134,8 @@ def edit_datasender(request,reporter_id):
         geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
         form = ReporterRegistrationForm(initial={'name' : name,
                                                  'telephone_number' : phone_number,'location' : location,'geo_code' : geo_code})
-        return render_to_response('entity/create_or_edit_datasender.html',{'reporter_id' : reporter_id,'form' : form, 'entity_links' : entity_links
-            ,'create_datasender' : create_datasender },context_instance = RequestContext(request))
+        return render_to_response('entity/create_or_edit_data_sender.html',{'reporter_id' : reporter_id,'form' : form, 'entity_links' : entity_links
+            , 'create_data_sender': create_data_sender },context_instance = RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -600,7 +600,7 @@ def edit_subject_questionnaire(request, entity_type=None):
     return render_to_response('entity/questionnaire.html',
             {'existing_questions': repr(existing_questions),
              'questionnaire_code': form_model.form_code,
-             'langauge': form_model.activeLanguages[0],
+             'language': form_model.activeLanguages[0],
              'entity_type': entity_type,
              'post_url': reverse(save_questionnaire)},
         context_instance=RequestContext(request))

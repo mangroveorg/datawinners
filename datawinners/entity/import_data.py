@@ -208,14 +208,14 @@ def _get_registration_form_models(manager):
     return subjects
 
 
-def get_field_infos(fields,langauge='en'):
+def get_field_infos(fields,language='en'):
     fields_names = []
     labels = []
     codes = []
     for field in fields:
         if field['name'] != 'entity_type':
             fields_names.append(field['name'])
-            labels.append(field['label'][langauge])
+            labels.append(field['label'][language])
             codes.append(field['code'])
     return fields_names, labels, codes
 
