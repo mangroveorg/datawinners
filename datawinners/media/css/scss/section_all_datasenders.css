@@ -14,7 +14,7 @@
   position: relative; }
   .devices .device-icons {
     position: absolute;
-    bottom: 5px; }
+    top: 60px; }
     .devices .device-icons > div {
       float: left; }
     .devices .device-icons .web-icon {
