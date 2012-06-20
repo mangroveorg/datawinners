@@ -4,14 +4,15 @@ from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 from framework.utils.data_fetcher import fetch_, from_
 from framework.base_test import  setup_driver, teardown_driver
+from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.alldatasenderstests.add_data_senders_data import *
 
 @attr('suit_1')
-class TestAddDataSender(unittest.TestCase):
+class TestAllDataSender(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = setup_driver()
@@ -19,10 +20,10 @@ class TestAddDataSender(unittest.TestCase):
         login_page = LoginPage(cls.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
         cls.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
-        cls.page = AddDataSenderPage(cls.driver)
+        cls.current_page = AddDataSenderPage(cls.driver)
 
     def setUp(self):
-        TestAddDataSender.driver.refresh()
+        TestAllDataSender.driver.refresh()
 
     def tearDown(self):
         import sys
@@ -39,16 +40,23 @@ class TestAddDataSender(unittest.TestCase):
         teardown_driver(cls.driver)
 
     @attr('functional_test', 'smoke')
-    def test_successful_addition_of_data_sender(self):
+    def test_successful_addition_editing_of_data_sender(self):
         """
         Function to test the successful Addition of DataSender with given
         details e.g. first name, last name, telephone number and commune
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(VALID_DATA)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
 
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA)))
+        self.driver.go_to(DATA_WINNER_ALL_DATA_SENDERS_PAGE)
+        all_data_senders_page = AllDataSendersPage(self.driver)
+        all_data_senders_page.select_a_data_sender_by_mobile(VALID_DATA[MOBILE_NUMBER_WITHOUT_HYPHENS])
+        all_data_senders_page.select_edit_action()
+        self.current_page.enter_data_sender_details_from(VALID_EDIT_DATA)
+        self.assertRegexpMatches(self.current_page.get_success_message(),
+            fetch_(SUCCESS_MSG, from_(VALID_EDIT_DATA)))
 
     @attr('functional_test', 'smoke')
     def test_successful_addition_of_data_sender_with_email_address(self):
@@ -56,10 +64,10 @@ class TestAddDataSender(unittest.TestCase):
         Function to test the successful Addition of DataSender with given
         details e.g. first name, last name, telephone number and commune
         """
-        add_data_sender_page = self.page
+        add_data_sender_page = self.current_page
         add_data_sender_page.select_web_device()
         add_data_sender_page.enter_email(VALID_DATA_WITH_EMAIL)
-        add_data_sender_page.add_data_sender_with(VALID_DATA_WITH_EMAIL)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITH_EMAIL)
 
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(VALID_DATA_WITH_EMAIL)))
@@ -70,9 +78,9 @@ class TestAddDataSender(unittest.TestCase):
         Function to test the successful Addition of DataSender with given
         details e.g. first name, last name, telephone number and commune
         """
-        add_data_sender_page = self.page
+        add_data_sender_page = self.current_page
         add_data_sender_page.select_web_device()
-        add_data_sender_page.add_data_sender_with(VALID_DATA_WITHOUT_EMAIL)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_WITHOUT_EMAIL)
 
         self.assertRegexpMatches(add_data_sender_page.get_error_message(),
                                  fetch_(ERROR_MSG, from_(VALID_DATA_WITHOUT_EMAIL)))
@@ -82,8 +90,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender without giving any data
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(BLANK_FIELDS)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(BLANK_FIELDS)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(BLANK_FIELDS)))
 
@@ -93,8 +101,8 @@ class TestAddDataSender(unittest.TestCase):
         Function to test the Addition of DataSender with given existing
         details e.g. first name, last name, telephone number and commune
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(EXISTING_DATA)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(EXISTING_DATA)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(EXISTING_DATA)))
 
@@ -104,8 +112,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender without giving location name
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(WITHOUT_LOCATION_NAME)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(WITHOUT_LOCATION_NAME)
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(WITHOUT_LOCATION_NAME)))
 
@@ -114,8 +122,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender with invalid GPS
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(WITHOUT_GPS)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(WITHOUT_GPS)
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MSG, from_(WITHOUT_GPS)))
 
@@ -124,8 +132,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender with invalid GPS
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(INVALID_GPS)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(INVALID_GPS)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(INVALID_GPS)))
 
@@ -134,8 +142,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender with invalid GPS
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(INVALID_LATITUDE_GPS)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(INVALID_LATITUDE_GPS)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(INVALID_LATITUDE_GPS)))
 
@@ -144,8 +152,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender with invalid GPS
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(INVALID_LONGITUDE_GPS)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(INVALID_LONGITUDE_GPS)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(INVALID_LONGITUDE_GPS)))
 
@@ -154,8 +162,8 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender with invalid GPS
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(WITH_UNICODE_IN_GPS)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(WITH_UNICODE_IN_GPS)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(WITH_UNICODE_IN_GPS)))
 
@@ -164,7 +172,7 @@ class TestAddDataSender(unittest.TestCase):
         """
         Function to test the Addition of DataSender with invalid GPS
         """
-        add_data_sender_page = self.page
-        add_data_sender_page.add_data_sender_with(INVALID_GPS_WITH_COMMA)
+        add_data_sender_page = self.current_page
+        add_data_sender_page.enter_data_sender_details_from(INVALID_GPS_WITH_COMMA)
         self.assertEqual(add_data_sender_page.get_error_message(),
                          fetch_(ERROR_MSG, from_(INVALID_GPS_WITH_COMMA)))

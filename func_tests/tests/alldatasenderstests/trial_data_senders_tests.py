@@ -50,7 +50,7 @@ class TestTrialDataSenders(BaseTest):
         self.create_project(dashboard_page.navigate_to_create_project_page()) #TODO There was some code related to creating a questionnaire. We have removed it in a deliberate attempt to fix the test. Kindly review the code. Diptanu/Neetu
 
         add_data_sender_page = global_navigation.navigate_to_all_data_sender_page().navigate_to_add_a_data_sender_page()
-        add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_DATA_SENDER1)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_DATA_SENDER1)
         return add_data_sender_page
 
     def test_should_not_allow_data_senders_register_with_same_phone_number_for_different_accounts(self):

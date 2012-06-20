@@ -18,7 +18,7 @@ class AddDataSenderPage(Page):
         generated_email_address = email_address_prefix + generateId() + "@abc.com"
         self.driver.find_text_box(EMAIL_TB).enter_text(generated_email_address)
 
-    def add_data_sender_with(self, registration_data):
+    def enter_data_sender_details_from(self, registration_data):
         """
         Function to enter and submit the data on add data sender page
 

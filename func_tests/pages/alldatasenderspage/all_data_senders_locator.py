@@ -18,7 +18,7 @@ LOCATOR = "locator"
 BY = "by"
 
 ADD_A_DATA_SENDER_LINK = by_css("a[class~='add_subject_link']")
-DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH = "//tr/td[7][text()='%s']/../td[1]/input"
+DATA_SENDER_CHECK_BOX_BY_MOBILE_XPATH = "//tr/td[6][text()='%s']/../td[1]/input"
 DATA_SENDER_CHECK_BOX_BY_UID_XPATH = "//input[@id='%s']"
 PROJECT_CB_XPATH = "//div[contains(@class,'ui-dialog') and contains(@style, 'block')]/div/ul[@id='all_projects']/li[text()='%s']/input"
 ACTION_DROP_DOWN = by_css("select#action")

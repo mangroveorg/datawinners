@@ -5,7 +5,7 @@ from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE
-from tests.alldatasendertests.all_data_sender_data import DATA_SENDER_ID_WITH_WEB_ACCESS, DATA_SENDER_ID_WITHOUT_WEB_ACCESS
+from tests.alldatasenderstests.all_data_sender_data import DATA_SENDER_ID_WITH_WEB_ACCESS, DATA_SENDER_ID_WITHOUT_WEB_ACCESS
 from tests.logintests.login_data import VALID_CREDENTIALS
 from tests.projectdatasenderstests.registered_datasenders_data import *
 
@@ -34,7 +34,7 @@ class ProjectDataSenders(BaseTest):
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()
 
         add_data_sender_page = project_datasenders_page.navigate_to_add_a_data_sender_page()
-        add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_ADDING_DATASENDER)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_ADDING_DATASENDER)
         self.driver.wait_until_modal_dismissed()
 
         project_datasenders_page = project_overview_page.navigate_to_datasenders_page()

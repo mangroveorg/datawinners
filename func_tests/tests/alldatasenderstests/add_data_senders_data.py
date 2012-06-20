@@ -4,6 +4,7 @@
 ##Variables
 NAME = "name"
 MOBILE_NUMBER = "mobile_number"
+MOBILE_NUMBER_WITHOUT_HYPHENS = "mobile_number_without_hyphens"
 COMMUNE = "commune"
 GPS = "gps"
 WEB_CHANNEL = False
@@ -19,9 +20,15 @@ BLANK_FIELDS = {NAME: "",
 
 VALID_DATA = {NAME: "Mickey Duck",
               MOBILE_NUMBER: "9876-543-2101",
+              MOBILE_NUMBER_WITHOUT_HYPHENS: "98765432101",
               COMMUNE: "MAHAVELO,AMBOTAKA,MANAKARA ATSIMO,VATOVAVY FITOVINANY",
               GPS: "-21.7622088847 48.0690991394",
               SUCCESS_MSG: "Registration successful. ID is: rep"}
+VALID_EDIT_DATA = {NAME: "EDIT Mickey Duck",
+              MOBILE_NUMBER: "9876-543-2107",
+              COMMUNE: "PUNE",
+              GPS: "",
+              SUCCESS_MSG: "Your changes have been saved."}
 
 VALID_DATA_WITH_EMAIL = {NAME: "Mickey Duck",
               MOBILE_NUMBER: "9876-544-2103",

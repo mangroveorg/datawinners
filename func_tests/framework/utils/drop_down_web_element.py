@@ -37,6 +37,7 @@ class DropDown(WebElement):
             value = option.get_attribute("value")
             if value == itemText:
                 option.click()
+                break
 
     def set_selected_by_text(self, itemText):
         """ Selects the provided itemText in the drop down
@@ -45,3 +46,4 @@ class DropDown(WebElement):
             value = option.text
             if value == itemText:
                 option.click()
+                break

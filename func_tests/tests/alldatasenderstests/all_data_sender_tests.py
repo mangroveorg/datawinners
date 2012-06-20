@@ -8,7 +8,7 @@ from pages.globalnavigationpage.global_navigation_page import GlobalNavigationPa
 from pages.loginpage.login_page import LoginPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_SMS_TESTER_PAGE, DATA_WINNER_CREATE_DATA_SENDERS, DATA_WINNER_ALL_DATA_SENDERS_PAGE
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.alldatasendertests.all_data_sender_data import *
+from tests.alldatasenderstests.all_data_sender_data import *
 from pages.smstesterpage.sms_tester_page import SMSTesterPage
 from pages.alldatasenderspage.all_data_senders_page import AllDataSendersPage
 
@@ -148,7 +148,7 @@ class TestAllDataSender(unittest.TestCase):
         self.login()
         self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
         add_data_sender_page = AddDataSenderPage(self.driver)
-        add_data_sender_page.add_data_sender_with(VALID_DATA)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA)
         message = add_data_sender_page.get_success_message()
         self.assertRegexpMatches(message, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
         self.assertNotEqual(message.split()[-1], fetch_(UID, from_(DELETE_DATA_SENDER)))

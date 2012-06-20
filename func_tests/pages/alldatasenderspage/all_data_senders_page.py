@@ -2,7 +2,7 @@
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from pages.alldatasenderspage.all_data_senders_locator import *
 from pages.page import Page
-from tests.alldatasendertests.all_data_sender_data import *
+from tests.alldatasenderstests.all_data_sender_data import *
 
 
 class AllDataSendersPage(Page):
@@ -74,6 +74,11 @@ class AllDataSendersPage(Page):
         Function to associate data sender with project
          """
         self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(ASSOCIATE)
+    def select_edit_action(self):
+            """
+            Function to associate data sender with project
+             """
+            self.driver.find_drop_down(ACTION_DROP_DOWN).set_selected(EDIT)
 
     def dissociate_data_sender(self):
         """

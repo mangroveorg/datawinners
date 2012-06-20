@@ -75,7 +75,7 @@ class TestApplicationEndToEnd(BaseTest):
 
     def add_a_data_sender(self, dashboard_page):
         add_data_sender_page = dashboard_page.navigate_to_add_data_sender_page()
-        add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_DATA_SENDER)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_DATA_SENDER)
         self.assertRegexpMatches(add_data_sender_page.get_success_message(),
                                  fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_DATA_SENDER)))
 
@@ -91,7 +91,7 @@ class TestApplicationEndToEnd(BaseTest):
         self.assertEqual(add_subject_page.get_flash_message(), fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_SUBJECT)))
 
     def add_a_data_sender(self, add_data_sender_page):
-        add_data_sender_page.add_data_sender_with(VALID_DATA_FOR_DATA_SENDER)
+        add_data_sender_page.enter_data_sender_details_from(VALID_DATA_FOR_DATA_SENDER)
         self.assertEqual(add_data_sender_page.get_success_message(),
                          fetch_(SUCCESS_MESSAGE, from_(VALID_DATA_FOR_DATA_SENDER)))
 
