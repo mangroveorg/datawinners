@@ -41,7 +41,7 @@ from mangrove.transport.player.player import WebPlayer
 from mangrove.transport import Request, TransportInfo
 from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
     get_database_manager_for_org, send_reset_password_email
@@ -438,7 +438,7 @@ def edit_subject(request,entity_type,entity_id):
 
 
 
-    QuestionnaireForm = WebQuestionnaireFormCreater(None, form_model=form_model).create()
+    QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model).create()
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
@@ -482,8 +482,6 @@ def edit_subject(request,entity_type,entity_id):
         except DataObjectNotFound:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
             error_message = _(message) % (form_model.entity_type[0], form_model.entity_type[0])
-        except DataObjectAlreadyExists as exception:
-            error_message = _("Entity with Unique Identification Number (ID) = %s already exists.") % exception.data[1]
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
@@ -501,7 +499,7 @@ def create_subject(request, entity_type=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
 
-    QuestionnaireForm = WebQuestionnaireFormCreater(None, form_model=form_model).create()
+    QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model).create()
 
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)

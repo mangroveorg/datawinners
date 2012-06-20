@@ -85,7 +85,7 @@ def get_country_appended_location(location_hierarchy, country):
     return ','.join(location_hierarchy) + ',' + country  if location_hierarchy is not None else None
 
 
-class WebQuestionnaireFormCreater(object):
+class WebQuestionnaireFormCreator(object):
     def __init__(self, subject_question_creator, form_model):
         self.subject_question_creator = subject_question_creator
         self.form_model = form_model

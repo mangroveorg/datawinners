@@ -58,7 +58,7 @@ from datawinners.entity.views import import_subjects_from_project_wizard, all_da
 from datawinners.project.wizard_view import edit_project, reminder_settings, reminders
 from datawinners.location.LocationTree import get_location_hierarchy
 from datawinners.project import models
-from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreater, SubjectQuestionFieldCreator
+from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator, SubjectQuestionFieldCreator
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
@@ -880,7 +880,7 @@ def web_questionnaire(request, project_id=None, subject=False):
 
     form_model, template = get_form_model_and_template(manager, project, is_data_sender, subject)
 
-    QuestionnaireForm = WebQuestionnaireFormCreater(SubjectQuestionFieldCreator(manager, project),
+    QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(manager, project),
                                                     form_model = form_model).create()
 
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
