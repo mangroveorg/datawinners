@@ -3,7 +3,7 @@ from framework.utils.common_utils import generateId
 from pages.page import Page
 from framework.utils.data_fetcher import *
 from pages.adddatasenderspage.add_data_senders_locator import *
-from tests.adddatasenderstests.add_data_senders_data import *
+from tests.alldatasenderstests.add_data_senders_data import *
 
 
 class AddDataSenderPage(Page):

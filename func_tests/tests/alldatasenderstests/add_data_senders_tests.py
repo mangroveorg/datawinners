@@ -1,15 +1,14 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
-import time
 import unittest
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 from framework.utils.data_fetcher import fetch_, from_
-from framework.base_test import BaseTest, setup_driver, teardown_driver
+from framework.base_test import  setup_driver, teardown_driver
 from pages.loginpage.login_page import LoginPage
 from pages.adddatasenderspage.add_data_senders_page import AddDataSenderPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_CREATE_DATA_SENDERS
 from tests.logintests.login_data import VALID_CREDENTIALS
-from tests.adddatasenderstests.add_data_senders_data import *
+from tests.alldatasenderstests.add_data_senders_data import *
 
 @attr('suit_1')
 class TestAddDataSender(unittest.TestCase):
