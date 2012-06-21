@@ -434,7 +434,7 @@ def edit_subject(request,entity_type,entity_id):
         elif field.name == SHORT_CODE_FIELD:
             field.value = subject.short_code
         else:
-            field.value = subject.data[field.name]['value']
+            field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
 
 
 

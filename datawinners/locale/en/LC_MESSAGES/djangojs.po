@@ -623,4 +623,6 @@ msgstr ""
 
 msgid "Please select atleast 1 subject"
 msgstr ""
+msgid "Please select only 1 subject"
+msgstr ""
 

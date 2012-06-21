@@ -634,3 +634,7 @@ msgstr "réponse"
 
 msgid "Please select atleast 1 subject"
 msgstr "Veuillez sélectionner au moins 1 Sujet"
+
+msgid "Please select only 1 subject"
+msgstr "Veuillez choisir un seul sujet"
+
