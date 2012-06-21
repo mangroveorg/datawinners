@@ -19,11 +19,11 @@ class TestAllDataSender(unittest.TestCase):
         cls.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(cls.driver)
         login_page.do_successful_login_with(VALID_CREDENTIALS)
-        cls.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
-        cls.current_page = AddDataSenderPage(cls.driver)
 
     def setUp(self):
         TestAllDataSender.driver.refresh()
+        self.driver.go_to(DATA_WINNER_CREATE_DATA_SENDERS)
+        self.current_page = AddDataSenderPage(self.driver)
 
     def tearDown(self):
         import sys
