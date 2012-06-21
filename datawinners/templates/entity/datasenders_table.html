@@ -9,11 +9,9 @@
             {% endfor %}
             <th>{% trans "Projects" %}</th>
             <th>{% trans "Email" %}</th>
-            <th colspan="3">
-                <div class="devices">
-                    {% trans "Devices" %}
-                    {% include "alldata/device_icons.html" %}
-                </div>
+            <th class="devices" colspan="3">
+                <span>{% trans "Devices" %}</span>
+                {% include "alldata/device_icons.html" %}
             </th>
         </thead>
         <tbody id='all_data_senders' class="datasenders_list">

@@ -17,10 +17,12 @@
 }
 
 .devices {
-  position: relative;
+  vertical-align: bottom !important;
+  span {
+    display: block;
+  }
   .device-icons {
-    position: absolute;
-    top: 60px;
+    padding-top: 33px;
     > div {
       float: left;
     }

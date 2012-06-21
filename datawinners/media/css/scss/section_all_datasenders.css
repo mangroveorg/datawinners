@@ -11,10 +11,11 @@
   overflow-x: scroll; }
 
 .devices {
-  position: relative; }
+  vertical-align: bottom !important; }
+  .devices span {
+    display: block; }
   .devices .device-icons {
-    position: absolute;
-    top: 60px; }
+    padding-top: 33px; }
     .devices .device-icons > div {
       float: left; }
     .devices .device-icons .web-icon {
