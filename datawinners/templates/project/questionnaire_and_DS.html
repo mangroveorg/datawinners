@@ -12,7 +12,7 @@
     </div>
     <div class="quarter">
     <ul>
-        <li><b>{{ number_of_questions }}</b> {% trans "Questions" %}</li>
+        <li><span style="font-weight: bold;">{{ number_of_questions }}</span> {% trans "Questions" %}</li>
         <div class="line"></div>
         <li><img src="/media/images/mini_mobile.png" /><a href="#" class="sms_questionnaire sms-preview"> {% trans "SMS Questionnaire" %}</a></li>
         <div class="sms-questionnaire-preview" src_data="{% trans "SMS Questionnaire" %}">
@@ -23,7 +23,7 @@
             <li><img src="/media/images/mini_computer.png"/><a href="{{ links.web_questionnaire_list }}" class="web_questionnaire"> {% trans "Web Questionnaire" %}</a></li>
         {% endif %}
         <div class="line"></div>
-        {% if SMARTPHONE_ENABLED and 'smartPhone' in project.devices %}
+        {% if 'smartPhone' in project.devices %}
             <li><img src="/media/images/smart_phone.png"/> {% trans "SmartPhone" %}</li>
         {% endif %}
     </ul>

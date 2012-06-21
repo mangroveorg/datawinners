@@ -634,8 +634,6 @@ def review_and_test(request, project_id=None):
         is_reminder = "enabled" if project['reminder_and_deadline']['has_deadline'] else "disabled"
 
         project_devices = project.devices
-        if not settings.SMARTPHONE_ENABLED:
-            project_devices.remove('smartPhone')
         devices = ", ".join(project_devices).replace('sms', 'SMS').replace('web', 'Web').replace('smartPhone', 'Smartphone')
 
         in_trial_mode = _in_trial_mode(request)

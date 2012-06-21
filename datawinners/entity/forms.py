@@ -36,9 +36,7 @@ class SubjectForm(Form):
 
 
 def smartphone_icon():
-    if settings.SMARTPHONE_ENABLED:
-        return ' + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>'
-    return ""
+    return ' + <img src="/media/images/smart_phone.png" /><span>Smartphone</span>'
 
 class ReporterRegistrationForm(Form):
     required_css_class = 'required'
