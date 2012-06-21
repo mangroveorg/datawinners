@@ -4369,3 +4369,6 @@ msgstr "Une erreur inattendue s'est produite. Veuillez vérifier le fichier Exce
 
 msgid "The imported file is empty."
 msgstr "Le fichier importé est vide."
+
+msgid "Back to Subject List"
+msgstr ""

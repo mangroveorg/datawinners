@@ -6,6 +6,7 @@ from django.forms.fields import ChoiceField
 from django.forms.forms import Form
 from django.forms.widgets import HiddenInput
 from django.utils.translation import ugettext
+from datawinners.entity.helper import get_country_appended_location
 from mangrove.form_model.form_model import LOCATION_TYPE_FIELD_NAME
 from mangrove.form_model.validation import GeoCodeConstraint
 from datawinners.entity.import_data import load_all_subjects_of_type
@@ -78,11 +79,6 @@ def clean_geocode(self):
             raise ValidationError(_(
                 "Incorrect GPS format. The GPS coordinates must be in the following format: xx.xxxx,yy.yyyy. Example -18.8665,47.5315"))
     return self.cleaned_data[geo_code_field_code]
-
-
-def get_country_appended_location(location_hierarchy, country):
-    location_hierarchy = location_hierarchy.split(',')
-    return ','.join(location_hierarchy) + ',' + country  if location_hierarchy is not None else None
 
 
 class WebQuestionnaireFormCreator(object):
