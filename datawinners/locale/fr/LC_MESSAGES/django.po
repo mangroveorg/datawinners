@@ -2267,8 +2267,8 @@ msgstr "Les paramètres ont été mis à jour avec succès"
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
 msgstr "Jusqu’à ce jour, aucun numéro de téléphone n’a encore été attribué à votre organisation. Veuillez contacter le Service d’Assistance de DataWinners."
 
-msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
-msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser un fichier CSV ​​(.csv) ou un Excel (.xls)!"
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the import template file!"
+msgstr "Nous ne pouvons pas importer vos données! Vous utilisez un format de document nous reconnu. Veuillez utiliser le fichier modèle d'importation!"
 
 msgid "Register"
 msgstr "S'enregistrer"
@@ -4363,3 +4363,9 @@ msgid "Edit a"
 msgstr "Modifier un(e)"
 msgid "Edit A Data Sender"
 msgstr "Modifier un Expéditeur de Données"
+
+msgid "Some unexpected error happened. Please check the excel file and import again."
+msgstr "Une erreur inattendue s'est produite. Veuillez vérifier le fichier Excel et importez à nouveau."
+
+msgid "The imported file is empty."
+msgstr "Le fichier importé est vide."

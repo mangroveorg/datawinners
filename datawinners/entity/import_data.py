@@ -318,11 +318,13 @@ def import_data(request, manager, default_parser=None):
     except CSVParserInvalidHeaderFormatException or XlsParserInvalidHeaderFormatException as e:
         error_message = e.message
     except InvalidFileFormatException:
-        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!")
+        error_message = _(u"We could not import your data ! You are using a document format we canʼt import. Please use the import template file!")
     except Exception:
-        error_message = 'Some unexpected error happened. Please check the CSV file and import again.'
+        error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
         if settings.DEBUG:
             raise
+    if total == 0:
+        error_message = _("The imported file is empty.")
     return error_message, failure_imports, response_message, imported_entities
 
 def _file_and_name_for_ie(request):

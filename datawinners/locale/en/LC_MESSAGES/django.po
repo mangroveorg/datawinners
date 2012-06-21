@@ -2250,7 +2250,7 @@ msgstr ""
 msgid "Your organization does not have a telephone number assigned. Please contact DataWinners Support."
 msgstr ""
 
-msgid "We could not import your data ! You are using a document format we canʼt import. Please use a Comma Separated Values (.csv) or a Excel (.xls) file!"
+msgid "We could not import your data ! You are using a document format we canʼt import. Please use the import template file!"
 msgstr ""
 
 msgid "Register"
@@ -4307,4 +4307,10 @@ msgid "Edit A Data Sender"
 msgstr ""
 
 msgid "There should not be any space at the beginning and the end of the password."
+msgstr ""
+
+msgid "Some unexpected error happened. Please check the excel file and import again."
+msgstr ""
+
+msgid "The imported file is empty."
 msgstr ""
