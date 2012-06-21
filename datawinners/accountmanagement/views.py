@@ -21,8 +21,7 @@ from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
 from django.utils.translation import ugettext as _
 from datawinners.project.models import Project
-from datawinners.utils import get_organization
-from datawinners.utils import _get_email_template_name_for_reset_password
+from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
 
 def is_admin(f):
     def wrapper(*args, **kw):

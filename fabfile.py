@@ -1,6 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 
-from fabric.api import run, env, sudo
+from fabric.api import run, env
 from fabric.context_managers import cd, settings
 import os
 from datetime import date
