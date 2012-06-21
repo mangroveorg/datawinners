@@ -278,11 +278,14 @@ def _handle_uploaded_file(file_name, file, manager, default_parser=None):
 def _get_imported_entities(responses):
     short_codes = dict()
     datarecords_id = []
+    form_code = []
     for response in responses:
         if response.success:
             short_codes.update({response.short_code: response.entity_type[0]})
             datarecords_id.append(response.datarecord_id)
-    return {"short_codes":short_codes, "datarecords_id": datarecords_id }
+            if response.form_code not in form_code:
+                form_code.append(response.form_code)
+    return {"short_codes":short_codes, "datarecords_id": datarecords_id , "form_code": form_code}
 
 
 def _get_failed_responses(responses):
@@ -301,17 +304,19 @@ def import_data(request, manager, default_parser=None):
     try:
         #IE sends the file in request.FILES['qqfile'] whereas all other browsers in request.GET['qqfile']. The following flow handles that flow.
         file_name, file = _file_and_name(request) if 'qqfile' in request.GET else _file_and_name_for_ie(request)
-        form_code = request.GET.get("form_code", None)
         responses = _handle_uploaded_file(file_name=file_name, file=file, manager=manager, default_parser=default_parser)
         imported_entities = _get_imported_entities(responses)
-        if form_code is not None and len(imported_entities.get("datarecords_id")) and \
-           settings.CRS_ORG_ID==get_organization(request).org_id:
+        form_code = imported_entities.get("form_code")[0] if len(imported_entities.get("form_code")) == 1 else None
+        if form_code is not None and \
+           len(imported_entities.get("datarecords_id")) and settings.CRS_ORG_ID==get_organization(request).org_id:
             from django.core.management import call_command
             datarecords_id = imported_entities.get("datarecords_id")
             call_command('crs_datamigration', form_code, *datarecords_id)
         imported_entities = imported_entities.get("short_codes")
         successful_imports = len(imported_entities)
         total = len(responses)
+        if total == 0:
+            error_message = _("The imported file is empty.")
         failures = _get_failed_responses(responses)
         failure_imports = tabulate_failures(failures)
         response_message = ugettext_lazy('%s of %s records uploaded') % (successful_imports, total)
@@ -323,8 +328,6 @@ def import_data(request, manager, default_parser=None):
         error_message = _(u"Some unexpected error happened. Please check the excel file and import again.")
         if settings.DEBUG:
             raise
-    if total == 0:
-        error_message = _("The imported file is empty.")
     return error_message, failure_imports, response_message, imported_entities
 
 def _file_and_name_for_ie(request):

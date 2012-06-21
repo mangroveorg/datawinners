@@ -40,6 +40,7 @@ class TestImport(MangroveTestCase):
             get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
             error_message, failure_imports, success_message, imported_entities = import_data(request=request,
                                                                                          manager=self.manager)
+            imported_entities = imported_entities.get("short_codes")
         self.assertEqual(4, get_entity_count_for_type(self.manager, entity_type="reporter"))
         self.assertEqual(4, len(imported_entities))
         self.assertEqual('reporter', imported_entities["r1"])
@@ -57,6 +58,7 @@ class TestImport(MangroveTestCase):
             get_organization_from_dbm_mock.return_value = Mock(return_value=organization)
             error_message, failure_imports, success_message, imported_entities = import_data(request=request,
                                                                                          manager=self.manager)
+            imported_entities = imported_entities.get("short_codes")
         self.assertEqual(4, get_entity_count_for_type(self.manager, entity_type="reporter"))
         self.assertEqual(4, len(imported_entities))
         self.assertEqual('reporter', imported_entities["rep1"])
