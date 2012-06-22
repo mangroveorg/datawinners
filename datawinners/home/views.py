@@ -28,14 +28,14 @@ def index(request):
 def switch_language(request, language):
     request.session['django_language'] = language
     if request.META.has_key('HTTP_REFERER'):
-        referer= '/' + '/'.join(request.META['HTTP_REFERER'].split('/')[3:])
+        referrer= '/' + '/'.join(request.META['HTTP_REFERER'].split('/')[3:])
     else:
-        referer= '/'
+        referrer= '/'
 
-    if referer[:4] in ["/en/", "/fr/"]:
-        referer = "/%s/%s" % (language, referer[4:])
+    if referrer[:4] in ["/en/", "/fr/"]:
+        referrer = "/%s/%s" % (language, referrer[4:])
 
-    return redirect(referer)
+    return redirect(referrer)
 
 def ask_us(request):
     if request.method == "GET":
