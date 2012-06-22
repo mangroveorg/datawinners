@@ -48,7 +48,7 @@ $(document).ready(function() {
                 $(this).val('');
             }
             else{
-                location.href = '/project/edit_datasender/' + $("#project_id").val() + '/' + allIds[0] + '/';
+                location.href = '/project/datasender/edit/' + $("#project_id").val() + '/' + allIds[0] + '/';
             }
         }
     });
