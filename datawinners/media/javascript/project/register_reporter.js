@@ -47,6 +47,8 @@ $(document).ready(function () {
             message:'<h1><img src="/media/images/ajax-loader.gif"/><span class="loading">' + gettext("Just a moment") + '...</span></h1>',
             css:{ width:'275px', top:'400px', left:'800px'}
         });
+        $('#id_location').val($.trim($('#id_location').val()));
+        $('#id_geo_code').val($.trim($('#id_geo_code').val()));
         $.ajax({
             type:'POST',
             url:sender_registration_link,
