@@ -43,7 +43,7 @@ class TestHome(unittest.TestCase):
         self.assertEqual(response._headers['location'][1], '/en/home/')
 
 
-    def test_should_redirect_to_login_redirect_url_if_unauthorized(self):
+    def test_should_redirect_to_login_redirect_url_if_authorized(self):
         request = Mock()
         request.session = {'django_language': 'en'}
         user = Mock()
