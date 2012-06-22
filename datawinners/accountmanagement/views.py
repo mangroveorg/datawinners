@@ -88,17 +88,6 @@ def is_new_user(f):
 
     return wrapper
 
-
-def is_expired(f):
-    def wrapper(*args, **kw):
-        request = args[0]
-        user = request.user
-        org = Organization.objects.get(org_id=user.get_profile().org_id)
-        if org.is_expired():
-            request.session.clear()
-            return HttpResponseRedirect(django_settings.TRIAL_EXPIRED_URL)
-        return f(*args, **kw)
-
 def is_not_expired(f):
     def wrapper(*args, **kw):
         request = args[0]
