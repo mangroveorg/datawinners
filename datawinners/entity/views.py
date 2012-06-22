@@ -409,23 +409,27 @@ def import_subjects_from_project_wizard(request):
              'error_message': error_message,
              'failure_imports': failure_imports}))
 
-def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False):
+def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,back_link=None):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
             "hide_link_class": hide_link_class,
             'back_to_project_link': reverse("alldata_index"),
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
-            'is_update' : is_update
+            'is_update' : is_update,
+            'back_link' : back_link
             }
 
 def get_template(user):
     return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
 
+@login_required(login_url='/login')
+@is_not_expired
 def edit_subject(request,entity_type,entity_id):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     subject = get_by_short_code(manager,entity_id,[entity_type.lower()])
+    back_link = request.META.get("HTTP_REFERER", "/entity/subjects/")
     for field in form_model.fields:
         if field.name == LOCATION_TYPE_FIELD_NAME:
             field.value = ','.join(subject.location_path)
@@ -435,15 +439,13 @@ def edit_subject(request,entity_type,entity_id):
             field.value = subject.short_code
         else:
             field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
-
-
-
+        field.value = field._to_str()
     QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model).create()
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,back_link)
         return render_to_response(web_questionnaire_template,
             form_context,
             context_instance=RequestContext(request))
@@ -452,7 +454,7 @@ def edit_subject(request,entity_type,entity_id):
         post_data[QuestionnaireForm.short_code_question_code] = subject.short_code
         questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=post_data)
         if not questionnaire_form.is_valid():
-            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,back_link)
             return render_to_response(web_questionnaire_template,
                 form_context,
                 context_instance=RequestContext(request))
@@ -474,7 +476,7 @@ def edit_subject(request,entity_type,entity_id):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                    True)
+                    True,back_link)
                 return render_to_response(web_questionnaire_template,
                     form_context,
                     context_instance=RequestContext(request))
@@ -485,7 +487,7 @@ def edit_subject(request,entity_type,entity_id):
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True)
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,back_link)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,

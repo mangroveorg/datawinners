@@ -19,9 +19,6 @@
 {% if questionnaire_form.non_fielderrors %}
     <div class="message-box">{{ questionnaire_form.non_field_errors }}</div>
 {% endif %}
-<div >
-    <a href="/entity/subjects/" class="back-to-list"> « {% trans "Back to Subject List" %}</a>
-</div>
 
 <form method="POST">
     {% csrf_token %}
@@ -103,6 +100,7 @@
         {% if is_update %}
             <a id="cancel">{% trans "Cancel Editing" %}</a>
             {% include "warning_section.html" %}
+
         {% endif %}
         {% endblock %}
 

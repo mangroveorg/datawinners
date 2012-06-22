@@ -22,10 +22,9 @@
     {% include "web_questionnaire_questions_js.html" %}
 {% endblock %}
 
-<div >
-    <a href="{{ project_links.registered_datasenders_link }}" class="back-to-list"> « {% trans "Back to Data Sender List" %}</a>
-</div>
-
 {% block content %}
+    <div >
+        <a href="{{ back_link }}" class="back-to-list"> {% trans "Back to Subject List" %}</a>
+    </div>
     {% include 'entity/subject_questionnaire.html' %}
 {% endblock %}
