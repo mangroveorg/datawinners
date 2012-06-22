@@ -91,6 +91,12 @@ var questionnaireViewModel =
         questionnaireViewModel.selectedQuestion.valueHasMutated();
         questionnaireViewModel.questions.valueHasMutated();
         $(this).addClass("question_selected");
+        if($("#question_title").hasClass("blue_frame")){
+            $("#question_title").removeClass("blue_frame");
+        }
+        if($("#periode_green_message").length>0){
+            $("#periode_green_message").hide();
+        }
     },
     clearChoices: function() {
         questionnaireViewModel.selectedQuestion().choices([]);

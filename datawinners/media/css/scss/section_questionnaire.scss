@@ -107,6 +107,7 @@
         }
         .question {
           width: auto;
+          height: 85px;
         }
         .add_link {
           display: block;
@@ -360,4 +361,10 @@
       }
     }
   }
+}
+.blue_frame{
+  border: 1px solid blue !important;
+}
+#green_message{
+  display: none;
 }

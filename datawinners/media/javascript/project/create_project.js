@@ -238,9 +238,10 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#question_title").blur(function () {
+    $("#question_title").focus(function () {
         if (questionnaireViewModel.selectedQuestion().event_time_field_flag()) {
-            $("#edit_question").dialog("open");
+            $(this).addClass("blue_frame");
+            $("#periode_green_message").show();
         }
     });
 

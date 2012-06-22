@@ -79,7 +79,8 @@
       width: auto;
       margin-left: 10px; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question {
-      width: auto; }
+      width: auto;
+      height: 85px;}
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .add_link {
       display: block; }
     .wizard_content .content_wrapper .questionnare_content #question-detail-panel .question_type {
@@ -267,3 +268,6 @@
         cursor: auto; }
     #container_content .questionnaire_form_header .preview-navigation .shadow-background:hover {
       cursor: auto; }
+.blue_frame{
+  border: 1px solid blue !important;
+}

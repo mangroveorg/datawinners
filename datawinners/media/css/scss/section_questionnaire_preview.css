@@ -212,3 +212,9 @@ p.instructions {
         paddin-top: 40px; }
         .questionnare_content #question-detail-panel .sms-preview #char-count-span #char-count span {
           font-weight: bold; }
+
+#periode_green_message {
+  color: #066B06;
+  text-decoration: none;
+  font-size: 12px;
+  display: none;}

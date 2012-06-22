@@ -4316,3 +4316,6 @@ msgid "The imported file is empty."
 msgstr ""
 msgid "Back to Subject List"
 msgstr ""
+
+msgid "change_event_time_field_message"
+msgstr "Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."

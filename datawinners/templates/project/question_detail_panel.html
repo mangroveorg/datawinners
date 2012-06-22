@@ -4,8 +4,9 @@
         <label>{% trans "Question" %}</label>
         <input id="question_title" name="question_title" type="text" class="required"
                data-bind="value: selectedQuestion().title, valueUpdate: 'keyup', uniqueName: true, enable: questionnaireViewModel.isEnabled() "/>
+        <span id="periode_green_message"><br/>{% trans "change_event_time_field_message" %}<br/></span>
     </li>
-    <li>
+    <li style="display: none;">
 
         <div id="question_code" style="display: none;">
             <label>{% trans "Code" %}<img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;"></label>
