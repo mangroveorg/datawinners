@@ -1,5 +1,3 @@
-from unittest.case import TestCase
-import django
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
 from django.forms.fields import CharField
