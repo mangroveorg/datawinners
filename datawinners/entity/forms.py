@@ -9,7 +9,6 @@ from django.forms.forms import Form
 from datawinners.accountmanagement.models import Organization, DataSenderOnTrialAccount
 from mangrove.form_model.form_model import MOBILE_NUMBER_FIELD_CODE
 from mangrove.utils.types import is_empty
-from datawinners import settings
 from datawinners.entity.fields import PhoneNumberField
 import re
 
@@ -96,8 +95,8 @@ class ReporterRegistrationForm(Form):
 
     def clean(self):
         self.convert_email_to_lowercase()
-        location = self.cleaned_data.get("location")
-        geo_code = self.cleaned_data.get("geo_code")
+        location = self.cleaned_data.get("location").strip()
+        geo_code = self.cleaned_data.get("geo_code").strip()
         if not (bool(location) or bool(geo_code)):
             msg = _("Please fill out at least one location field correctly.")
             self._errors['location'] = self.error_class([msg])
