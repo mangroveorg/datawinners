@@ -19,10 +19,15 @@ ENVIRONMENT_VES = {
     "production": "/home/mangrover/ve"
 }
 
+ENVIRONMENT_TOMCAT = {
+    "showcase": "/home/mangrover/tomcat",
+    "production": "/home/mangrover/tomcat7"
+}
+
 def git_clone_datawinners_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
         run("git clone git://github.com/mangroveorg/datawinners.git %s" % code_dir)
-        
+
 def git_clone_mangrove_if_not_present(code_dir):
     if run("test -d %s" % code_dir).failed:
         run("git clone git://github.com/mangroveorg/mangrove.git %s" % code_dir)
@@ -199,6 +204,20 @@ def check_out_datawinners_code_for_production(code_dir, virtual_env):
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
+def check_out_latest_custom_reports_code_for_production(code_dir):
+    if run("cd %s && ls | grep custom_reports" % code_dir).failed:
+        run('cd %s && git clone git://github.com/mangroveorg/custom_reports.git' % code_dir)
+    custom_reports_dir = code_dir + '/custom_reports'
+    with cd(custom_reports_dir):
+        run("git reset --hard HEAD")
+        run("git checkout develop")
+        run("git pull origin develop")
+        custom_reports_branch = str(date.today()).replace('-', '')
+        if not run("git branch -a|grep %s" % custom_reports_branch).failed:
+            run("git branch -D %s" % custom_reports_branch)
+        run("git checkout -b %s HEAD" % custom_reports_branch)
+        run("git checkout .")
+
 def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase',
                       couch_migration_file=None):
     stop_servers()
@@ -232,3 +251,12 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
     run('ln -s %s/datawinners/ datawinners' % code_dir)
 
     start_servers()
+
+def custom_reports_deploy(code_dir, environment = 'showcase'):
+    check_out_latest_custom_reports_code_for_production(code_dir)
+
+    with cd('%s/webapps/birt-viewer/' % ENVIRONMENT_TOMCAT[environment]):
+        if not run('cd crs').failed:
+            run('rm crs')
+        run('ln -s %s/custom_reports/crs/ crs' % code_dir)
+
