@@ -161,6 +161,9 @@ class WebQuestionnaireFormCreator(object):
         return {field.code: django_field}
 
     def _create_select_field(self, field, language):
+        for opt in field.options:
+            if opt['text'][language] == field.value:
+                field.value = opt['val']
         if field.single_select_flag:
             return ChoiceField(choices=self._create_choices(field, language), required=field.is_required(),
                 label=field.label[language],
