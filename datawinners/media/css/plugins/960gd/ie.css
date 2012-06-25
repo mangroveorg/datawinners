@@ -20,3 +20,7 @@ ol.que_width li .answer ul li label {
 ol.que_width li .answer ul li input {
     margin-right: 3px;
 }
+
+.dash {
+    display: none;
+}
