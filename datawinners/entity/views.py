@@ -25,7 +25,7 @@ from datawinners.accountmanagement.views import is_datasender, is_new_user, is_n
 from datawinners.custom_report_router.report_router import ReportRouter
 from datawinners.entity.helper import create_registration_form, process_create_data_sender_form,\
     delete_datasender_for_trial_mode, delete_entity_instance, delete_datasender_from_project,\
-    delete_datasender_users_if_any, _get_data
+    delete_datasender_users_if_any, _get_data, update_data_sender_from_trial_organization
 from datawinners.entity.import_data import load_all_subjects_of_type, get_entity_type_fields
 from datawinners.location.LocationTree import get_location_tree, get_location_hierarchy
 from datawinners.main.utils import get_database_manager, include_of_type
@@ -144,11 +144,15 @@ def edit_data_sender(request,reporter_id):
         if form.is_valid():
             try:
                 org_id = request.user.get_profile().org_id
+                current_telephone_number = reporter_entity.mobile_number
                 organization = Organization.objects.get(org_id=org_id)
                 web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
                 response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
                     transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
                 if response.success:
+                    if organization.in_trial_mode:
+                        update_data_sender_from_trial_organization(current_telephone_number,form.cleaned_data["telephone_number"], org_id)
+
                     message = _("Your changes have been saved.")
 
             except MangroveException as exception:

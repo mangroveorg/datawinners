@@ -154,8 +154,8 @@ def add_data_sender_to_trial_organization(telephone_number, org_id):
 def update_data_sender_from_trial_organization(old_telephone_number,new_telephone_number, org_id):
     data_sender = DataSenderOnTrialAccount.objects.model(mobile_number=old_telephone_number,
         organization=Organization.objects.get(org_id=org_id))
-    data_sender.mobile_number = new_telephone_number
-    data_sender.save()
+    data_sender.delete()
+    add_data_sender_to_trial_organization(new_telephone_number,org_id=org_id)
 
 def process_create_data_sender_form(dbm, form, org_id):
     message = None
