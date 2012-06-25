@@ -76,7 +76,10 @@ body .sms-questionnaire {
   width: 100% !important;
   overflow: visible !important;
   border: none !important;
-  margin: none !important; }
+  margin: none !important;
+  font-size: 14px;
+  font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  padding: 2px; }
 
 @-moz-document url-prefix() {
   .questionnaire_preview ol li {
