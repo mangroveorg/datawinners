@@ -1,120 +1,129 @@
 $text_box_width: 350px;
-$select_box_width:150px;
+$select_box_width: 150px;
 $border_color: #CCCCCC;
-$link_color:#0070ac;
+$link_color: #0070ac;
 
 body {
   font: 13px/1.5 'Helvetica', Arial, 'Liberation Sans', FreeSans, sans-serif;
 }
-ul li{
-    list-style-type:none;
-    padding:0;
+
+ul li {
+  list-style-type: none;
+  padding: 0;
 
 }
-p{
-    margin:0;
+
+p {
+  margin: 0;
 }
-#print_page{
-    a{
-        color:$link_color;
-        outline:none;
-    }
-}
-.preview_block{
-    text-align:right;
- }
- #questionnaire_preview{
-  margin-left:20px;
-  .printBtn{
-    display:none;
+
+#print_page {
+  a {
+    color: $link_color;
+    outline: none;
   }
-.questionnaire_preview{
- h6{
-    font-size:14px;
-    margin:0;
- }
- p.instructions{
-    font-style:italic;
-    font-size:12px;
- }
-li{
-    margin-bottom:10px;
-    width:100%;
-    float:left;
-}
-.answer{
-    margin-bottom:5px;
-}
-label{
-    font-weight:normal;
-}
-input[type=radio], input[type=checkbox]{
-    float:left !important;
-}
-input[type=text]{
-    width:300px;
-}
-div{
-    width:100%;
-    float:left;
-}
-}
- }
-
-.questionnaire_title{
-    margin-bottom:20px;
-    float:left;
-    li{
-        width:100%;
-        float:left;
-        p, h5{
-            float:left;
-        }
-        h5{
-            margin:0px 0  0 10px;
-            font-size:14px;
-        }
-        p.content{
-            margin-left:10px;
-            font-style:italic;
-        }
-
-    }
 }
 
-body{
-    > div{
-        display:none;
-    }
-    .ui-dialog{
-        display:block;
-        left:0px !important;
-        top:0px !important;
-        width:100% !important;
-        overflow:visible !important;
-        .ui-dialog-titlebar, .preview_block {
-            display:none;
-        }
-        .ui-dialog-content{
-            overflow:visible !important;
-            ol li{
-                page-break-inside:avoid;
-            }
-        }
-    }
-    .sms-questionnaire {
-        display: block !important;
-        position: absolute;
-        left:0px !important;
-        top:0px !important;
-        width:100% !important;
-        overflow:visible !important;
-        border: none !important;
-        margin: none !important;
-    }
+.preview_block {
+  text-align: right;
 }
+
+#questionnaire_preview {
+  margin-left: 20px;
+  .printBtn {
+    display: none;
+  }
+  .questionnaire_preview {
+    h6 {
+      font-size: 14px;
+      margin: 0;
+    }
+    p.instructions {
+      font-style: italic;
+      font-size: 12px;
+    }
+    li {
+      margin-bottom: 10px;
+      width: 100%;
+      float: left;
+    }
+    .answer {
+      margin-bottom: 5px;
+    }
+    label {
+      font-weight: normal;
+    }
+    input[type=radio], input[type=checkbox] {
+      float: left !important;
+    }
+    input[type=text] {
+      width: 300px;
+    }
+    div {
+      width: 100%;
+      float: left;
+    }
+  }
+}
+
+.questionnaire_title {
+  margin-bottom: 20px;
+  float: left;
+  li {
+    width: 100%;
+    float: left;
+    p, h5 {
+      float: left;
+    }
+    h5 {
+      margin: 0px 0 0 10px;
+      font-size: 14px;
+    }
+    p.content {
+      margin-left: 10px;
+      font-style: italic;
+    }
+
+  }
+}
+
+body {
+  > div {
+    display: none;
+  }
+  .ui-dialog {
+    display: block;
+    left: 0px !important;
+    top: 0px !important;
+    width: 100% !important;
+    overflow: visible !important;
+    .ui-dialog-titlebar, .preview_block {
+      display: none;
+    }
+    .ui-dialog-content {
+      overflow: visible !important;
+      ol li {
+        page-break-inside: avoid;
+      }
+    }
+  }
+  .sms-questionnaire {
+    display: block !important;
+    position: absolute;
+    left: 0px !important;
+    top: 0px !important;
+    width: 100% !important;
+    overflow: visible !important;
+    border: none !important;
+    margin: none !important;
+    ol li {
+      page-break-inside: avoid;
+    }
+  }
+}
+
 @-moz-document url-prefix() { .questionnaire_preview ol li { float:none !important; } }
-.ui-widget-content{
-    border:0 !important;
+.ui-widget-content {
+  border: 0 !important;
 }
 

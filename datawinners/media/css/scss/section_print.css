@@ -50,7 +50,7 @@ p {
     .questionnaire_title li p, .questionnaire_title li h5 {
       float: left; }
     .questionnaire_title li h5 {
-      margin: 0px 0  0 10px;
+      margin: 0px 0 0 10px;
       font-size: 14px; }
     .questionnaire_title li p.content {
       margin-left: 10px;
@@ -79,6 +79,8 @@ body .sms-questionnaire {
   overflow: visible !important;
   border: none !important;
   margin: none !important; }
+  body .sms-questionnaire ol li {
+    page-break-inside: avoid; }
 
 @-moz-document url-prefix() {
   .questionnaire_preview ol li {
