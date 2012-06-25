@@ -138,7 +138,7 @@ p.instructions {
     font-weight: normal; }
     .sms-questionnaire.questionnaire-preview .preview-steps > li div .sms-answer {
       color: blue;
-      font-family: "ChalkDustRegular" "Lucida Grande" sans-serif;
+      font-family: "ChalkDustRegular", "Lucida Grande", sans-serif;
       font-weight: bold;
       font-style: italic; }
 .sms-questionnaire.questionnaire-preview .fill-answers {
