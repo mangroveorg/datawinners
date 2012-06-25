@@ -632,11 +632,11 @@ def save_questionnaire(request):
             form_model.save()
             return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
-            return HttpResponse(json.dumps({'success': False, 'error_message': e.message}))
+            return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))
         except QuestionAlreadyExistsException as e:
-            return HttpResponse(json.dumps({'success': False, 'error_message': e.message}))
+            return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))
         except EntityQuestionAlreadyExistsException as e:
-            return HttpResponse(json.dumps({'success': False, 'error_message': e.message}))
+            return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))
 
 
 @login_required(login_url='/login')
