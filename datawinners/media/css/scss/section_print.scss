@@ -102,9 +102,6 @@ body {
     }
     .ui-dialog-content {
       overflow: visible !important;
-      ol li {
-        page-break-inside: avoid;
-      }
     }
   }
   .sms-questionnaire {
@@ -116,9 +113,6 @@ body {
     overflow: visible !important;
     border: none !important;
     margin: none !important;
-    ol li {
-      page-break-inside: avoid;
-    }
   }
 }
 

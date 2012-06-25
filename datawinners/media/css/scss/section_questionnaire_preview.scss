@@ -176,9 +176,16 @@ p.instructions {
   }
 
   .preview-steps {
+    .breakable {
+      page-break-inside: auto;
+      ol li {
+        page-break-inside: avoid;
+      }
+    }
     > li {
       font-weight: bold;
       list-style: upper-alpha;
+      page-break-inside: avoid;
       div {
         font-weight: normal;
         .sms-answer {

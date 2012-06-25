@@ -68,8 +68,6 @@ body .ui-dialog {
     display: none; }
   body .ui-dialog .ui-dialog-content {
     overflow: visible !important; }
-    body .ui-dialog .ui-dialog-content ol li {
-      page-break-inside: avoid; }
 body .sms-questionnaire {
   display: block !important;
   position: absolute;
@@ -79,8 +77,6 @@ body .sms-questionnaire {
   overflow: visible !important;
   border: none !important;
   margin: none !important; }
-  body .sms-questionnaire ol li {
-    page-break-inside: avoid; }
 
 @-moz-document url-prefix() {
   .questionnaire_preview ol li {
