@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'ChalkDustRegular';
+  src: url("/media/css/font/chalkdust-webfont.eot");
+  src: url("/media/css/font/chalkdust-webfont.eot?#iefix") format("embedded-opentype"), url("/media/css/font/chalkdust-webfont.woff") format("woff"), url("/media/css/font/chalkdust-webfont.ttf") format("truetype"), url("/media/css/font/chalkdust-webfont.svg#ChalkDustRegular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
 .preview_block {
   text-align: right; }
 
@@ -126,7 +133,7 @@ p.instructions {
     font-weight: normal; }
     .sms-questionnaire.questionnaire-preview .preview-steps > li div .sms-answer {
       color: blue;
-      font-family: "Lucida Grande" sans-serif;
+      font-family: "ChalkDustRegular" "Lucida Grande" sans-serif;
       font-weight: bold;
       font-style: italic; }
 .sms-questionnaire.questionnaire-preview .fill-answers {
