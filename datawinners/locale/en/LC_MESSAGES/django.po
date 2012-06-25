@@ -1618,6 +1618,38 @@ msgstr "Print out the SMS Questionnaire and give it to your registered Data Send
 "for each question on the paper Questionnaire. Then your Data Senders follow the “Example SMS"
 " Answer” format on the Questionnaire to type their SMS into the phone and send it in a single SMS."
 
+#: templates/project/sms_questionnaire_preview.html: 11
+msgid "Answer the questions"
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 13
+msgid "Fill in your answers:"
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 52
+msgid "Prepare your SMS"
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 54
+msgid "Enter all your answers. Use a space to separate them."
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 60
+msgid "Send your answers using SMS"
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 61
+msgid "Send your SMS to the telephone number:"
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 64
+msgid "Wait for our reply SMS"
+msgstr ""
+
+#: templates/project/sms_questionnaire_preview.html: 65
+msgid "You will receive an SMS confirmation or specific error message."
+msgstr ""
+
 #: templates/project/web_instruction_preview.html: 7
 msgid "Collect Data via Web"
 msgstr ""
@@ -1753,6 +1785,7 @@ msgid "Questionnarie Code:"
 msgstr ""
 
 #: templates/project/questionnaire_preview.html:23
+#: templates/project/sms_questionnaire_preview.html:56
 msgid "Example:"
 msgstr ""
 

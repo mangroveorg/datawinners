@@ -51,18 +51,18 @@
         <li>
             <h5>{% trans "Prepare your SMS" %}</h5>
             <div>
-                {% trans "Enter all your answers in the following ﬁeld. Use a space to separate the answers." %}
+                {% trans "Enter all your answers. Use a space to separate them." %}
                 <div class="sms-answer">{{ questionnaire_code }}</div>
                 {% trans "Example:" %} <span class="italic">{{ example_sms }}</span>
             </div>
         </li>
         <li>
-            <h5>{% trans "Send your answers via SMS" %}</h5>
-            <div>{% trans "Send your SMS to the telephone number: " %}{{ org_number|format_organization_number }}</div>
+            <h5>{% trans "Send your answers using SMS" %}</h5>
+            <div>{% trans "Send your SMS to the telephone number:" %} {{ org_number|format_organization_number }}</div>
         </li>
         <li>
             <h5>{% trans "Wait for our reply SMS" %}</h5>
-            <div>{% trans "You will receive an SMS to conﬁrm your sent in SMS or to tell you what went wrong." %}</div>
+            <div>{% trans "You will receive an SMS confirmation or specific error message." %}</div>
         </li>
     </ol>
 </div>

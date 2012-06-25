@@ -1644,6 +1644,38 @@ msgstr "Imprimez le Questionnaire SMS et remettez-le à vos Expéditeurs de Donn
 "Par la suite, vos Expéditeurs de Données suivent le format de « l’Exemple de Réponse SMS » sur"
 "le Questionnaire pour taper leur SMS sur le téléphone et l'envoyer en un seul SMS."
 
+#: templates/project/sms_questionnaire_preview.html: 11
+msgid "Answer the questions"
+msgstr "Répondez aux questions"
+
+#: templates/project/sms_questionnaire_preview.html: 13
+msgid "Fill in your answers:"
+msgstr "Tapez vos réponses"
+
+#: templates/project/sms_questionnaire_preview.html: 52
+msgid "Prepare your SMS"
+msgstr "Préparez vos SMS"
+
+#: templates/project/sms_questionnaire_preview.html: 54
+msgid "Enter all your answers. Use a space to separate them."
+msgstr "Tapez toutes vos réponses dans le champ suivant. Utilisez un espace pour séparer les réponses."
+
+#: templates/project/sms_questionnaire_preview.html: 60
+msgid "Send your answers using SMS"
+msgstr "Envoyez vos réponses par SMS"
+
+#: templates/project/sms_questionnaire_preview.html: 61
+msgid "Send your SMS to the telephone number:"
+msgstr "Envoyez vos SMS vers le numéro suivant:"
+
+#: templates/project/sms_questionnaire_preview.html: 64
+msgid "Wait for our reply SMS"
+msgstr "Attendez de recevoir notre réponse SMS"
+
+#: templates/project/sms_questionnaire_preview.html: 65
+msgid "You will receive an SMS confirmation or specific error message."
+msgstr "Vous recevrez un SMS pour confirmer que votre SMS a bien été envoyé ou pour vous informer d’une erreur."
+
 #: templates/project/web_instruction_preview.html: 7
 msgid "Collect Data via Web"
 msgstr "Collecter des Données via le Web"
@@ -1780,6 +1812,7 @@ msgid "Questionnarie Code:"
 msgstr "Code Questionnaire :"
 
 #: templates/project/questionnaire_preview.html:23
+#: templates/project/sms_questionnaire_preview.html:56
 msgid "Example:"
 msgstr "Exemple:"
 
@@ -4249,6 +4282,7 @@ msgstr "Enregistrer un Expéditeur de Données"
 msgid "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone"
 msgstr "Répondez aux questions figurant sur votre Questionnaire SMS. Ensuite, suivez l’Exemple de Format de Réponse SMS pour taper le SMS dans le téléphone. Notez que vous pouvez aussi utiliser votre propre téléphone cellulaire."
 
+#: templates/project/sms_questionnaire_preview.html: 11
 msgid "Answer the Questions"
 msgstr "Répondez aux Questions"
 
