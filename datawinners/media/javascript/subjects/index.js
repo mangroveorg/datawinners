@@ -63,6 +63,9 @@ function getEntityIdsToBeDeleted(action_element) {
 function getEntityType(action_element){
     return $(action_element).val().split('-')[0];
 }
+function getEditURL(){
+    return edit_url;// current page is All Subjects Page
+}
 
 function getActionValue(action_element){
     var separated_values = $(action_element).val().split('-');

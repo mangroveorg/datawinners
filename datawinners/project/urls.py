@@ -1,5 +1,6 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.conf.urls.defaults import patterns, url
+from datawinners.entity.views import edit_subject
 
 from datawinners.project.views import  save_questionnaire, index, project_overview,\
     project_results, project_data, export_data, export_log, activate_project,\
@@ -7,7 +8,7 @@ from datawinners.project.views import  save_questionnaire, index, project_overvi
     submissions, subject_registration_form_preview, sender_registration_form_preview, web_questionnaire, \
     manage_reminders, disassociate_datasenders, delete_project, undelete_project, create_reminder, get_reminder, \
     delete_reminder, sent_reminders, broadcast_message, review_and_test, \
-    edit_subject, create_data_sender_and_web_user, edit_data_sender
+    edit_subject_questionaire, create_data_sender_and_web_user, edit_data_sender
 from datawinners.project.wizard_view import create_project, edit_project, reminders, reminder_settings
 from datawinners.project.preview_views import sms_preview, web_preview, smart_phone_preview, questionnaire_sms_preview, questionnaire_web_preview
 
@@ -36,6 +37,7 @@ urlpatterns = patterns('',
         (r'^project/(?P<project_id>.+?)/data/(?P<questionnaire_code>.+?)/$', project_data),
         (r'^project/subjects/(?P<project_id>.+?)/$', subjects),
         (r'^project/registered_subjects/(?P<project_id>.+?)/$', registered_subjects),
+        (r'^project/subject/edit/(?P<project_id>.+?)/(?P<entity_type>.+?)/(?P<entity_id>.+?)/$', edit_subject),
         (r'^project/datasenders/(?P<project_id>.+?)/$', create_data_sender_and_web_user),
         (r'^project/datasender/edit/(?P<project_id>.+?)/(?P<reporter_id>.+?)/$', edit_data_sender),
         (r'^project/registered_datasenders/(?P<project_id>.+?)/$', registered_datasenders),
@@ -54,7 +56,7 @@ urlpatterns = patterns('',
         (r'^project/undelete/(?P<project_id>.+?)/$', undelete_project),
         (r'^project/datarecords/filter$', submissions),
         (r'^project/finish/(?P<project_id>.+?)/$', review_and_test),
-        (r'^project/edit_subjects/(?P<project_id>.+?)/$', edit_subject),
+        (r'^project/edit_subjects/(?P<project_id>.+?)/$', edit_subject_questionaire),
         url(r'^project/sms_preview$', sms_preview, name="sms_preview"),
         url(r'^project/web_preview$', web_preview, name="web_preview"),
         url(r'^project/smart_phone_preview$', smart_phone_preview, name="smart_phone_preview"),

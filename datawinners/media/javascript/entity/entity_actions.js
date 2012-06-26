@@ -49,7 +49,7 @@ $(document).ready(function () {
                 return;
             }
             else {
-                location.href = '/entity/subject/edit' + '/' + entity_type + '/' + allIds[0] + '/';
+                location.href = getEditURL() + entity_type + '/' + allIds[0] + '/';
             }
 
         }

@@ -111,7 +111,7 @@ def make_project_links(project, questionnaire_code, reporter_id=None):
 def make_subject_links(project):
     project_id = project.id
     subject_links = {'subjects_link': reverse(subjects, args=[project_id]),
-                     'subjects_edit_link': reverse(edit_subject, args=[project_id]),
+                     'subjects_edit_link': reverse(edit_subject_questionaire, args=[project_id]),
                      'register_subjects_link': reverse('subject_questionnaire', args=[project_id]),
                      'registered_subjects_link': reverse(registered_subjects, args=[project_id]),
                      'subject_registration_preview_link': reverse(subject_registration_form_preview,
@@ -686,9 +686,8 @@ def registered_subjects(request, project_id=None):
     in_trial_mode = _in_trial_mode(request)
     return render_to_response('project/registered_subjects.html',
             {'project': project, 'project_links': project_links, 'all_data': all_data, "labels": labels,
-             "subject": subject, 'in_trial_mode': in_trial_mode},
+             "subject": subject, 'in_trial_mode': in_trial_mode,'edit_url' : '/project/subject/edit/%s/' % project_id},
         context_instance=RequestContext(request))
-
 
 @login_required(login_url='/login')
 @csrf_exempt
@@ -1047,7 +1046,7 @@ def _get_subject_form_model(manager, entity_type):
 
 @login_required(login_url='/login')
 @is_not_expired
-def edit_subject(request, project_id=None):
+def edit_subject_questionaire(request, project_id=None):
     manager = get_database_manager(request.user)
     project, project_links = _get_project_and_project_link(manager, project_id)
 

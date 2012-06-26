@@ -203,7 +203,7 @@ def all_subjects(request):
                  'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
     subjects_data = import_module.load_all_subjects(manager)
     return render_to_response('entity/all_subjects.html',
-            {'all_data': subjects_data, 'current_language': translation.get_language()},
+            {'all_data': subjects_data, 'current_language': translation.get_language(),'edit_url': '/entity/subject/edit/'},
         context_instance=RequestContext(request))
 
 
@@ -429,11 +429,15 @@ def get_template(user):
 
 @login_required(login_url='/login')
 @is_not_expired
-def edit_subject(request,entity_type,entity_id):
+def edit_subject(request,entity_type,entity_id, project_id=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
     subject = get_by_short_code(manager,entity_id,[entity_type.lower()])
-    back_link = request.META.get("HTTP_REFERER", "/entity/subjects/")
+    if project_id is not None:
+        back_link = '/project/registered_subjects/%s/' % project_id
+    else:
+        back_link = reverse(all_subjects)
+
     for field in form_model.fields:
         if field.name == LOCATION_TYPE_FIELD_NAME:
             field.value = ','.join(subject.location_path)
@@ -444,6 +448,7 @@ def edit_subject(request,entity_type,entity_id):
         else:
             field.value = subject.data[field.name]['value'] if field.name in subject.data.keys() else None
         field.value = field._to_str()
+
     QuestionnaireForm = WebQuestionnaireFormCreator(None, form_model=form_model).create()
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)

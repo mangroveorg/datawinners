@@ -14,3 +14,6 @@ function getEntityType(action_element){
 function getActionValue(action_element){
     return $(action_element).val();
 }
+function getEditURL(){
+    return edit_url;
+}

@@ -8,7 +8,7 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.form_model.form_model import FormModel
 from mock import Mock, patch
 from datawinners.project.models import Reminder, RemindTo, ReminderMode, Project
-from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders
+from datawinners.project.views import _format_reminders, subject_registration_form_preview, registered_subjects, edit_subject_questionaire, create_data_sender_and_web_user, registered_datasenders, make_data_sender_links, add_link, all_datasenders
 from datawinners.project.views import make_subject_links, subjects
 from project.models import ProjectState
 from project.preview_views import get_sms_preview_context, get_questions, get_web_preview_context, add_link_context
@@ -49,7 +49,7 @@ class TestProjectViews(unittest.TestCase):
         project.id = project_id
         subject_links = make_subject_links(project)
         self.assertEqual(reverse(subjects, args=[project_id]), subject_links['subjects_link'])
-        self.assertEqual(reverse(edit_subject, args=[project_id]), subject_links['subjects_edit_link'])
+        self.assertEqual(reverse(edit_subject_questionaire, args=[project_id]), subject_links['subjects_edit_link'])
         self.assertEqual(reverse(subject_registration_form_preview, args=[project_id]),
             subject_links['subject_registration_preview_link'])
         self.assertEqual(reverse(registered_subjects, args=[project_id]), subject_links['registered_subjects_link'])
