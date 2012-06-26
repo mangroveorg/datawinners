@@ -255,8 +255,13 @@ def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, 
 def custom_reports_deploy(code_dir, environment = 'showcase'):
     check_out_latest_custom_reports_code_for_production(code_dir)
 
+    with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
+        run('./catalina.sh stop')
+
     with cd('%s/webapps/birt-viewer/' % ENVIRONMENT_TOMCAT[environment]):
         if not run('cd crs').failed:
             run('rm crs')
         run('ln -s %s/custom_reports/crs/ crs' % code_dir)
 
+    with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
+        run('./catalina.sh start')
