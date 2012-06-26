@@ -146,8 +146,10 @@ p.instructions {
   float: right;
   width: 250px;
   margin-top: -10px; }
+.sms-questionnaire.questionnaire-preview .org-number {
+  position: relative; }
 .sms-questionnaire.questionnaire-preview .org_number_link {
-  margin-top: 5px;
+  margin-top: 2px;
   font-size: 12px !important;
   position: absolute; }
 
