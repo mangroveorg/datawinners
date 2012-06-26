@@ -26,5 +26,3 @@ EMAIL_PORT = 587
 HNI_BLOG_FEED = 'http://datawinners.wordpress.com/feed/'
 
 CRS_ORG_ID = 'TVZ184210'
-
-#USE_NEW_VUMI = True
