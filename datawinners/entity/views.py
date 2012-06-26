@@ -306,9 +306,9 @@ def send_activation_email_for_data_sender(user, language_code, request=None):
         'token': default_token_generator.make_token(user),
         'protocol': 'http',
         }
-    subject = render_to_string('email/activation_email_subject_for_data_sender_account_' + language_code + '.txt')
+    subject = render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_' + language_code + '.txt')
     subject = ''.join(subject.splitlines())
-    message = render_to_string('email/activation_email_for_data_sender_account_' + language_code + '.html', ctx_dict)
+    message = render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_' + language_code + '.html', ctx_dict)
     email = EmailMessage(subject, message, EMAIL_HOST_USER, [user.email], [HNI_SUPPORT_EMAIL_ID])
     email.content_subtype = "html"
     email.send()

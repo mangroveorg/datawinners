@@ -8,7 +8,7 @@ from mangrove.datastore.database import DatabaseManager
 from mangrove.datastore.entity import Entity
 from mock import  Mock, patch
 from accountmanagement.models import Organization, NGOUserProfile
-from entity.views import send_activation_email_for_data_sender, create_single_web_user, create_subject
+from entity.views import send_activation_email_for_data_sender, create_single_web_user
 from django.core import mail
 from datawinners.tests.test_email_utils import set_email_settings
 
@@ -16,7 +16,6 @@ WEB_USER_TEST_EMAIL = "test_email_for_create_single_web_user@test.com"
 
 
 class TestView(TestCase):
-
     def setUp(self):
         set_email_settings()
 
@@ -51,7 +50,7 @@ class TestView(TestCase):
                             'token': "token",
                             'protocol': 'http',
                             }
-                        self.assertEqual(render_to_string('registration/password_reset_email_en.html', ctx_dict), sent_email.body)
+                        self.assertEqual(render_to_string('registration/password_reset_email_en.html', ctx_dict),sent_email.body)
 
         users = User.objects.filter(email = WEB_USER_TEST_EMAIL)
         NGOUserProfile.objects.filter(org_id = org.org_id).delete()
@@ -59,7 +58,7 @@ class TestView(TestCase):
 
     def test_should_send_correct_email_in_html_format_in_english(self):
         site = get_current_site(None)
-        user = Mock(spec=User)
+        user = Mock(spec = User)
         user.email = 'test@mail.com'
         user.id = 1
         user.first_name = "test"
@@ -83,12 +82,12 @@ class TestView(TestCase):
                 'token': "token",
                 'protocol': 'http',
                 }
-            self.assertEqual(render_to_string('email/activation_email_subject_for_data_sender_account_en.txt'), sent_email.subject)
-            self.assertEqual(render_to_string('email/activation_email_for_data_sender_account_en.html', ctx_dict), sent_email.body)
+            self.assertEqual(render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_en.txt'), sent_email.subject)
+            self.assertEqual(render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_en.html', ctx_dict), sent_email.body)
 
     def test_should_send_correct_email_in_html_format_in_french(self):
         site = get_current_site(None)
-        user = Mock(spec=User)
+        user = Mock(spec = User)
         user.email = 'test@mail.com'
         user.id = 1
         user.first_name = "test"
@@ -112,6 +111,6 @@ class TestView(TestCase):
                 'token': "token",
                 'protocol': 'http',
                 }
-            self.assertEqual(render_to_string('email/activation_email_subject_for_data_sender_account_fr.txt'), sent_email.subject)
-            self.assertEqual(render_to_string('email/activation_email_for_data_sender_account_fr.html', ctx_dict), sent_email.body)
+            self.assertEqual(render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_fr.txt'), sent_email.subject)
+            self.assertEqual(render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_fr.html', ctx_dict), sent_email.body)
 
