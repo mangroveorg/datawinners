@@ -17,6 +17,7 @@ from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
+from datawinners import utils
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -322,6 +323,7 @@ def all_datasenders(request):
     manager = get_database_manager(request.user)
     projects = get_all_projects(manager)
     fields, old_labels, codes = get_entity_type_fields(manager)
+    in_trial_mode = utils.get_organization(request).in_trial_mode
     labels = []
     for label in old_labels:
         if label != "What is the mobile number associated with the subject?":
@@ -348,7 +350,7 @@ def all_datasenders(request):
     all_data_senders = _get_all_datasenders(manager, projects, request.user)
     return render_to_response('entity/all_datasenders.html',
             {'all_data': all_data_senders, 'projects': projects, 'grant_web_access': grant_web_access, "labels": labels,
-             'current_language': translation.get_language()},
+             'current_language': translation.get_language(), 'in_trial_mode': in_trial_mode},
         context_instance=RequestContext(request))
 
 

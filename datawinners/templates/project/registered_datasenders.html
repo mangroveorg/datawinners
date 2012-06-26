@@ -69,7 +69,7 @@
     <label class="float_left">{% trans "Actions:" %} </label>
     <select id='action' class="margin_bottom_20">
         <option value="">--</option>
-        {% if EDIT_DATA_SENDERS_ENABLED %}
+        {% if EDIT_DATA_SENDERS_ENABLED and not in_trial_mode %}
         <option value="edit">{% trans "Edit" %}</option>
         {% endif %}
         <option value="disassociate">{% trans "Dis-Associate" %}</option>
