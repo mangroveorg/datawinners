@@ -26,6 +26,10 @@ class TestView(TestCase):
         mock_entity = Mock(spec = Entity)
         mock_entity.value.return_value = 'test'
 
+        users = User.objects.filter(email = WEB_USER_TEST_EMAIL)
+        NGOUserProfile.objects.filter(org_id = org.org_id).delete()
+        users.delete()
+
         with patch("django.contrib.auth.tokens.default_token_generator.make_token") as make_token:
             make_token.return_value = "token"
             with patch("entity.views.get_database_manager_for_org") as get_dbm:
@@ -50,11 +54,10 @@ class TestView(TestCase):
                             'token': "token",
                             'protocol': 'http',
                             }
-                        self.assertEqual(render_to_string('registration/password_reset_email_en.html', ctx_dict),sent_email.body)
+                        self.assertEqual(render_to_string('activatedatasenderemail/activation_email_subject_for_data_sender_account_en.txt'), sent_email.subject)
+                        self.assertEqual(render_to_string('activatedatasenderemail/activation_email_for_data_sender_account_en.html', ctx_dict), sent_email.body)
 
-        users = User.objects.filter(email = WEB_USER_TEST_EMAIL)
-        NGOUserProfile.objects.filter(org_id = org.org_id).delete()
-        users.delete()
+
 
     def test_should_send_correct_email_in_html_format_in_english(self):
         site = get_current_site(None)

@@ -263,8 +263,7 @@ def _get_project_association(projects):
             project_association[datasender].append(project['value']['name'])
     return project_association
 
-
-def __create_web_users(org_id, reporter_details, language_code, is_create_data_sender=True):
+def __create_web_users(org_id, reporter_details, language_code):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
     errors = []
     dbm = get_database_manager_for_org(Organization.objects.get(org_id=org_id))
@@ -284,8 +283,7 @@ def __create_web_users(org_id, reporter_details, language_code, is_create_data_s
                 reporter_id=reporter['reporter_id'])
             profile.save()
 
-            send_reset_password_email(user,
-                language_code) if is_create_data_sender else send_activation_email_for_data_sender(user, language_code)
+            send_activation_email_for_data_sender(user, language_code)
 
         content = json.dumps({'success': True, 'message': "Users has been created"})
     return content
@@ -322,7 +320,7 @@ def create_multiple_web_users(request):
     org_id = request.user.get_profile().org_id
     if request.method == 'POST':
         post_data = json.loads(request.POST['post_data'])
-        content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE, False)
+        content = __create_web_users(org_id, post_data, request.LANGUAGE_CODE)
         return HttpResponse(content)
 
 
