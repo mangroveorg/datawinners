@@ -144,7 +144,7 @@ def edit_data_sender(request,reporter_id):
         if form.is_valid():
             try:
                 org_id = request.user.get_profile().org_id
-                current_telephone_number = reporter_entity.mobile_number
+                current_telephone_number = reporter_entity.value(MOBILE_NUMBER_FIELD)
                 organization = Organization.objects.get(org_id=org_id)
                 web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
                 response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
