@@ -1,6 +1,8 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
 from copy import copy
+from distutils.command.clean import clean
+from mangrove.data_cleaner import TelephoneNumber
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
 import os
@@ -81,7 +83,7 @@ class FilePlayer(Player):
             try:
                 form_model, values = self._process(form_code, values)
                 if case_insensitive_lookup(values, ENTITY_TYPE_FIELD_CODE) == REPORTER:
-                    phone_number = case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE)
+                    phone_number = TelephoneNumber().clean(case_insensitive_lookup(values, MOBILE_NUMBER_FIELD_CODE))
                     if phone_number in registered_phone_numbers:
                         raise DataObjectAlreadyExists(_("Data Sender"), _("Mobile Number"), phone_number)
 
