@@ -11,7 +11,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import  include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
-from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, InvalidEmailException
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
     NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
@@ -94,7 +94,7 @@ class FilePlayer(Player):
                             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
                         if not email_re.match(email):
-                            raise InvalidEmailException()
+                            raise MangroveException(message="Invalid email address.")
 
                         response = self.submit(form_model, values, submission, [])
                         user = User.objects.create_user(email, email, 'password')
