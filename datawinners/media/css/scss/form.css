@@ -52,10 +52,10 @@ form ul li {
       form ul li ul li label.error {
         margin-left: 0px; }
   form ul li ul.errorlist {
-    position: absolute;
-    float: none;
+    float: left;
     color: #FFFFFF;
     display: inline;
+    max-width: 360px;
     background: url(/media/images/arrow_error.png) no-repeat left 10px;
     margin-top: -5px;
     padding: 3px 10px 3px 10px;
@@ -100,7 +100,7 @@ span .error_arrow label, div.error_arrow label, #questionnaire-code-error label,
   background: #fdd3d2 url(/media/images/error_alert.png) no-repeat 10px 3px;
   color: #000000 !important;
   margin: 10px;
-  padding: 1px 10px 7px 40px;
+  padding: 7px 10px 7px 40px;
   border: 1px solid #FF0000; }
   .message-box label {
     color: #000000;
@@ -387,7 +387,6 @@ select {
       margin: 0 !important; }
 
 .que_width ul.errorlist {
-  max-width: 490px;
   margin-top: 5px;
   list-style-type: none !important; }
 

@@ -5,24 +5,6 @@
 {% endblock %}
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
 <form id="registration_form" class="" action="" method="POST">
-    <div class="horizontal_list form_header">
-        <ul>
-            <li>
-                <label>{% trans "You are editing the Data Senderʼs Details" %}</label>
-            </li>
-            <li>
-                <div class="button_block">
-                    {% block cancel_block %}
-                        <a id="cancel">{% trans "Cancel Editing" %}</a>
-                        {% include "warning_section.html" %}
-                    {% endblock %}
-                    <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"
-                           class="button margin_top_20"/>
-                </div>
-            </li>
-        </ul>
-    </div>
-
     <div class="application_register">
         {% if message %}
             <div id="flash-message" class="success-message-box">
@@ -35,6 +17,9 @@
         {% csrf_token %}
 
         <ul>
+            <li>
+                <h6>{% trans "You are editing the Data Senderʼs Details" %}</h6>
+            </li>
             <li class="{{ form.name.css_classes }} form-row-10px">
                 {{ form.name.label_tag }}
                 {{ form.name }}
@@ -87,7 +72,16 @@
                     </li>
                 </ul>
             </li>
-
+            <li>
+                <div class="button_block">
+                    {% block cancel_block %}
+                        <a id="cancel">{% trans "Cancel Editing" %}</a>
+                        {% include "warning_section.html" %}
+                    {% endblock %}
+                    <input type="button" id="id_register_button" value="{% trans 'Save Changes' %}"
+                           class="button margin_top_20"/>
+                </div>
+            </li>
         </ul>
     </fieldset>
 </form>

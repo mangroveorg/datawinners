@@ -76,10 +76,10 @@ form{
             }
         }
         ul.errorlist{
-            position:absolute;
-            float:none;
+            float:left;
             color:#FFFFFF;
             display:inline;
+            max-width: 360px;
             background:url(/media/images/arrow_error.png) no-repeat left 10px;
             margin-top:-5px;
             padding:3px 10px 3px 10px;
