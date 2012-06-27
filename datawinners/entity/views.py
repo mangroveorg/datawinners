@@ -44,7 +44,7 @@ from datawinners.entity import import_data as import_module
 from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator
 from datawinners.submission.location import LocationBridge
-from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country, \
+from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country,\
     get_database_manager_for_org, send_reset_password_email
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
@@ -101,8 +101,8 @@ def create_data_sender(request):
     if request.method == 'GET':
         form = ReporterRegistrationForm()
         return render_to_response('entity/create_or_edit_data_sender.html', {'form': form,
-                                                                            'create_data_sender' : create_data_sender,
-                                                                            'entity_links' : entity_links},
+                                                                             'create_data_sender': create_data_sender,
+                                                                             'entity_links': entity_links},
             context_instance=RequestContext(request))
     if request.method == 'POST':
         dbm = get_database_manager(request.user)
@@ -117,12 +117,13 @@ def create_data_sender(request):
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
-                {'form': form, 'message': message, 'entity_links' : entity_links},
+                {'form': form, 'message': message, 'entity_links': entity_links},
             context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @is_not_expired
-def edit_data_sender(request,reporter_id):
+def edit_data_sender(request, reporter_id):
     create_data_sender = False
     manager = get_database_manager(request.user)
     reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
@@ -131,12 +132,14 @@ def edit_data_sender(request,reporter_id):
     if request.method == 'GET':
         name = reporter_entity.value(NAME_FIELD)
         phone_number = reporter_entity.value(MOBILE_NUMBER_FIELD)
-        location = ', '.join(reporter_entity.value(LOCATION_TYPE_FIELD_NAME)) if reporter_entity.value(LOCATION_TYPE_FIELD_NAME) is not None else None
-        geo_code = ','.join(str(val) for val in reporter_entity.value(GEO_CODE_FIELD_NAME)) if reporter_entity.value(GEO_CODE_FIELD_NAME) is not None else None
-        form = ReporterRegistrationForm(initial={'name' : name,
-                                                 'telephone_number' : phone_number,'location' : location,'geo_code' : geo_code})
-        return render_to_response('entity/create_or_edit_data_sender.html',{'reporter_id' : reporter_id,'form' : form, 'entity_links' : entity_links
-            , 'create_data_sender': create_data_sender },context_instance = RequestContext(request))
+        location = ','.join(reporter_entity.location_path)
+        geo_code = ','.join(map(str, reporter_entity.geometry['coordinates']))
+        form = ReporterRegistrationForm(initial={'name': name,
+                                                 'telephone_number': phone_number, 'location': location,
+                                                 'geo_code': geo_code})
+        return render_to_response('entity/create_or_edit_data_sender.html',
+                {'reporter_id': reporter_id, 'form': form, 'entity_links': entity_links
+                , 'create_data_sender': create_data_sender}, context_instance=RequestContext(request))
 
     if request.method == 'POST':
         org_id = request.user.get_profile().org_id
@@ -147,19 +150,26 @@ def edit_data_sender(request,reporter_id):
                 org_id = request.user.get_profile().org_id
                 current_telephone_number = reporter_entity.value(MOBILE_NUMBER_FIELD)
                 organization = Organization.objects.get(org_id=org_id)
-                web_player = WebPlayer(manager, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-                response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(),reporter_id),
-                    transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'), is_update=True))
+                web_player = WebPlayer(manager,
+                    LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
+                response = web_player.accept(
+                    Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
+                        transportInfo=TransportInfo(transport='web', source='web', destination='mangrove'),
+                        is_update=True))
                 if response.success:
                     if organization.in_trial_mode:
-                        update_data_sender_from_trial_organization(current_telephone_number,form.cleaned_data["telephone_number"], org_id)
+                        update_data_sender_from_trial_organization(current_telephone_number,
+                            form.cleaned_data["telephone_number"], org_id)
 
                     message = _("Your changes have been saved.")
 
             except MangroveException as exception:
                 message = exception.message
 
-        return render_to_response('edit_datasender_form.html',{'form':form,'message':message, 'entity_links':entity_links},context_instance=RequestContext(request))
+        return render_to_response('edit_datasender_form.html',
+                {'form': form, 'message': message, 'entity_links': entity_links},
+            context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login')
 @is_not_expired
@@ -204,7 +214,8 @@ def all_subjects(request):
                  'failure_imports': failure_imports, 'all_data': subjects_data, 'imported': imported_entities.keys()}))
     subjects_data = import_module.load_all_subjects(manager)
     return render_to_response('entity/all_subjects.html',
-            {'all_data': subjects_data, 'current_language': translation.get_language(),'edit_url': '/entity/subject/edit/'},
+            {'all_data': subjects_data, 'current_language': translation.get_language(),
+             'edit_url': '/entity/subject/edit/'},
         context_instance=RequestContext(request))
 
 
@@ -250,6 +261,7 @@ def _get_project_association(projects):
         for datasender in project['value']['data_senders']:
             project_association[datasender].append(project['value']['name'])
     return project_association
+
 
 def __create_web_users(org_id, reporter_details, language_code, is_create_data_sender=True):
     duplicate_email_ids = User.objects.filter(email__in=[x['email'] for x in reporter_details]).values('email')
@@ -415,26 +427,30 @@ def import_subjects_from_project_wizard(request):
              'error_message': error_message,
              'failure_imports': failure_imports}))
 
-def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,back_link=None):
+
+def _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, is_update=False,
+                       back_link=None):
     return {'questionnaire_form': questionnaire_form,
             'entity_type': entity_type,
             "disable_link_class": disable_link_class,
             "hide_link_class": hide_link_class,
             'back_to_project_link': reverse("alldata_index"),
             'smart_phone_instruction_link': reverse("smart_phone_instruction"),
-            'is_update' : is_update,
-            'back_link' : back_link
-            }
+            'is_update': is_update,
+            'back_link': back_link
+    }
+
 
 def get_template(user):
     return 'entity/register_subject.html' if user.get_profile().reporter else 'entity/web_questionnaire.html'
 
+
 @login_required(login_url='/login')
 @is_not_expired
-def edit_subject(request,entity_type,entity_id, project_id=None):
+def edit_subject(request, entity_type, entity_id, project_id=None):
     manager = get_database_manager(request.user)
     form_model = get_form_model_by_entity_type(manager, [entity_type.lower()])
-    subject = get_by_short_code(manager,entity_id,[entity_type.lower()])
+    subject = get_by_short_code(manager, entity_id, [entity_type.lower()])
     if project_id is not None:
         back_link = '/project/registered_subjects/%s/' % project_id
     else:
@@ -444,7 +460,7 @@ def edit_subject(request,entity_type,entity_id, project_id=None):
         if field.name == LOCATION_TYPE_FIELD_NAME:
             field.value = ','.join(subject.location_path)
         elif field.name == GEO_CODE_FIELD_NAME:
-            field.value = ','.join(map(str,subject.geometry['coordinates']))
+            field.value = ','.join(map(str, subject.geometry['coordinates']))
         elif field.name == SHORT_CODE_FIELD:
             field.value = subject.short_code
         else:
@@ -456,7 +472,8 @@ def edit_subject(request,entity_type,entity_id, project_id=None):
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,back_link)
+        form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
+            back_link)
         return render_to_response(web_questionnaire_template,
             form_context,
             context_instance=RequestContext(request))
@@ -465,7 +482,8 @@ def edit_subject(request,entity_type,entity_id, project_id=None):
         post_data[QuestionnaireForm.short_code_question_code] = subject.short_code
         questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=post_data)
         if not questionnaire_form.is_valid():
-            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,back_link)
+            form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True
+                , back_link)
             return render_to_response(web_questionnaire_template,
                 form_context,
                 context_instance=RequestContext(request))
@@ -477,7 +495,7 @@ def edit_subject(request,entity_type,entity_id, project_id=None):
 
             response = WebPlayer(manager,
                 LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy)).accept(
-                create_request(questionnaire_form, request.user.username,is_update=True))
+                create_request(questionnaire_form, request.user.username, is_update=True))
 
             if response.success:
                 success_message = _("Your changes have been saved.")
@@ -487,7 +505,7 @@ def edit_subject(request,entity_type,entity_id, project_id=None):
 
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class,
-                    True,back_link)
+                    True, back_link)
                 return render_to_response(web_questionnaire_template,
                     form_context,
                     context_instance=RequestContext(request))
@@ -498,12 +516,12 @@ def edit_subject(request,entity_type,entity_id, project_id=None):
         except Exception as exception:
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,back_link)
+        subject_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class, True,
+            back_link)
         subject_context.update({'success_message': success_message, 'error_message': error_message})
 
         return render_to_response(web_questionnaire_template, subject_context,
             context_instance=RequestContext(request))
-
 
 
 @login_required(login_url='/login')
@@ -517,21 +535,20 @@ def create_subject(request, entity_type=None):
     web_questionnaire_template = get_template(request.user)
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
 
-
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
         form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
         return render_to_response(web_questionnaire_template,
-                                  form_context,
-                                  context_instance=RequestContext(request))
+            form_context,
+            context_instance=RequestContext(request))
 
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
             form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
             return render_to_response(web_questionnaire_template,
-                                      form_context,
-                                      context_instance=RequestContext(request))
+                form_context,
+                context_instance=RequestContext(request))
 
         success_message = None
         error_message = None
@@ -552,8 +569,8 @@ def create_subject(request, entity_type=None):
                 questionnaire_form._errors = errors_to_list(response.errors, form_model.fields)
                 form_context = _make_form_context(questionnaire_form, entity_type, disable_link_class, hide_link_class)
                 return render_to_response(web_questionnaire_template,
-                                          form_context,
-                                          context_instance=RequestContext(request))
+                    form_context,
+                    context_instance=RequestContext(request))
 
         except DataObjectNotFound:
             message = exception_messages.get(DataObjectNotFound).get(WEB)
