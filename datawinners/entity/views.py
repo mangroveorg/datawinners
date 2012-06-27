@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext as _
 from datawinners import utils
+from datawinners.project.view_models import ReporterEntity
 from mangrove.form_model.field import field_to_json
 from mangrove.transport import Channel
 from datawinners.alldata.helper import get_visibility_settings_for
@@ -126,14 +127,14 @@ def create_data_sender(request):
 def edit_data_sender(request, reporter_id):
     create_data_sender = False
     manager = get_database_manager(request.user)
-    reporter_entity = get_by_short_code(manager, reporter_id, [REPORTER])
+    reporter_entity = ReporterEntity(get_by_short_code(manager, reporter_id, [REPORTER]))
     entity_links = {'back_link': reverse(all_datasenders)}
 
     if request.method == 'GET':
-        name = reporter_entity.value(NAME_FIELD)
-        phone_number = reporter_entity.value(MOBILE_NUMBER_FIELD)
-        location = ','.join(reporter_entity.location_path)
-        geo_code = ','.join(map(str, reporter_entity.geometry['coordinates']))
+        name = reporter_entity.name
+        phone_number = reporter_entity.mobile_number
+        location = reporter_entity.location
+        geo_code = reporter_entity.geo_code
         form = ReporterRegistrationForm(initial={'name': name,
                                                  'telephone_number': phone_number, 'location': location,
                                                  'geo_code': geo_code})
@@ -148,7 +149,7 @@ def edit_data_sender(request, reporter_id):
         if form.is_valid():
             try:
                 org_id = request.user.get_profile().org_id
-                current_telephone_number = reporter_entity.value(MOBILE_NUMBER_FIELD)
+                current_telephone_number = reporter_entity.mobile_number
                 organization = Organization.objects.get(org_id=org_id)
                 web_player = WebPlayer(manager,
                     LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
