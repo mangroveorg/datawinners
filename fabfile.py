@@ -91,7 +91,7 @@ def set_mangrove_commit_sha(branch, mangrove_build_number):
     run("export MANGROVE_COMMIT_SHA=`curl -s http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
             branch, mangrove_build_number))
     run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA" )
-    
+
 def set_datawinner_commit_sha(datawinner_build_number):
     if datawinner_build_number == 'lastSuccessfulBuild':
         datawinner_build_number = run(
@@ -112,7 +112,7 @@ def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, vi
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
         activate_and_run(virtual_env, "python setup.py develop")
-        
+
 def check_out_datawinners_code(datawinner_build_number, datawinners_code_dir, virtual_env):
     git_clone_datawinners_if_not_present(datawinners_code_dir)
     with cd(datawinners_code_dir):
@@ -175,7 +175,15 @@ def production():
 def anonymous():
     run("uname -a")
 
-def checkout_mangrove_to_production(code_dir, virtual_env):
+def checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env):
+    mangrove_job_name = 'Mangrove-develop'
+    if mangrove_build_number == 'lastSuccessfulBuild':
+        mangrove_build_number = run(
+            "curl http://178.79.163.33:8080/job/%s/lastSuccessfulBuild/buildNumber" % (mangrove_job_name,))
+    print("Checking the mangrove commit sha for build number %s" % mangrove_build_number)
+    mangrove_commit_sha = run("curl -s http://178.79.163.33:8080/job/%s/%s/artifact/last_successful_commit_sha" % (mangrove_job_name, mangrove_build_number))
+    print("mangrove_commit_sha: %s" % mangrove_commit_sha)
+
     if run("cd %s && ls | grep mangrove" % code_dir).failed:
         run('cd %s && git clone git://github.com/mangroveorg/mangrove.git' % code_dir)
     mangrove_dir = code_dir + '/mangrove'
@@ -186,12 +194,20 @@ def checkout_mangrove_to_production(code_dir, virtual_env):
         mangrove_branch = str(date.today()).replace('-', '')
         if not run("git branch -a|grep %s" % mangrove_branch).failed:
             run("git branch -D %s" % mangrove_branch)
-        run("git checkout -b %s $MANGROVE_COMMIT_SHA" % mangrove_branch)
+        run("git checkout -b %s %s" % (mangrove_branch, mangrove_commit_sha))
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
         activate_and_run(virtual_env, "python setup.py develop")
 
-def check_out_datawinners_code_for_production(code_dir, virtual_env):
+def check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env):
+    if datawinner_build_number == 'lastSuccessfulBuild':
+        datawinner_build_number = run(
+            "curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
+    print("Checking the datawinner commit sha for build number %s" % datawinner_build_number)
+    datawinner_commit_sha = run("curl -s http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha" % (
+        datawinner_build_number))
+    print("datawinner_commit_sha: %s" % datawinner_commit_sha)
+
     if run("cd %s && ls | grep datawinners" % code_dir).failed:
         run('cd %s && git clone git://github.com/mangroveorg/datawinners.git' % code_dir)
     datawinners_dir = code_dir + '/datawinners'
@@ -202,7 +218,7 @@ def check_out_datawinners_code_for_production(code_dir, virtual_env):
         datawinner_branch = str(date.today()).replace('-', '')
         if not run("git branch -a|grep %s" % datawinner_branch).failed:
             run("git branch -D %s" % datawinner_branch)
-        run("git checkout -b %s $DATAWINNER_COMMIT_SHA" % datawinner_branch)
+        run("git checkout -b %s %s" % (datawinner_branch, datawinner_commit_sha))
         run("git checkout .")
         activate_and_run(virtual_env, "pip install -r requirements.pip")
 
@@ -223,15 +239,13 @@ def check_out_latest_custom_reports_code_for_production(code_dir):
 def production_deploy(mangrove_build_number, datawinner_build_number, code_dir, environment = 'showcase',
                       couch_migration_file=None):
     stop_servers()
-    set_mangrove_commit_sha('develop', mangrove_build_number)
-    set_datawinner_commit_sha(datawinner_build_number)
 
     if run('cd %s' % code_dir).failed:
         run('mkdir %s' % code_dir)
 
     virtual_env = ENVIRONMENT_VES[environment]
-    checkout_mangrove_to_production(code_dir, virtual_env)
-    check_out_datawinners_code_for_production(code_dir, virtual_env)
+    checkout_mangrove_to_production(code_dir, mangrove_build_number, virtual_env)
+    check_out_datawinners_code_for_production(code_dir, datawinner_build_number, virtual_env)
 
     datawinners_dir = code_dir + '/datawinners/datawinners'
     with cd(datawinners_dir):
