@@ -38,8 +38,6 @@
     margin-left: 13px;
 }
 
-
-
 .container_24 .grid_23 .data_ana{
     clear: both;
 }
@@ -121,10 +119,6 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
     margin-left: 0px !important;
 }
 
-#questionnaire_preview li{
-    width:500px;
-}
-
 .add_subject_form ul li label.error {
     margin-right: 118px;
     width: 100px
@@ -144,4 +138,17 @@ span.error_arrow,#questionnaire-code-error, label.error_arrow{
 
 .dash {
     display: none;
+}
+
+#questions-panel .question_list ol li.question_selected{
+    position: static;
+}
+
+#questions-panel .question_list ol li span.selected_question_arrow {
+    display: none;
+    background: none;
+}
+
+.questionnaire-preview.sms-questionnaire .sms-answer {
+    width: 600px;
 }
