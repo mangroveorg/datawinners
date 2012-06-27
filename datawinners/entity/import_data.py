@@ -1,7 +1,7 @@
 # vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from collections import OrderedDict
 from copy import copy
-from distutils.command.clean import clean
+from datawinners.exceptions import InvalidEmailException
 from mangrove.data_cleaner import TelephoneNumber
 from mangrove.datastore.documents import attributes
 from mangrove.datastore.entity_type import get_all_entity_types
@@ -41,7 +41,7 @@ class FilePlayer(Player):
         self.channel_name = channel_name
 
     @classmethod
-    def build(cls, manager, extension, location_tree, default_parser=None):
+    def build(cls, manager, extension, default_parser=None):
         channels = dict({".xls":Channel.XLS,".csv":Channel.CSV})
         try:
             channel = channels[extension]
@@ -94,7 +94,7 @@ class FilePlayer(Player):
                             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
                         if not email_re.match(email):
-                            raise MangroveException(message="Invalid email address.")
+                            raise InvalidEmailException(message="Invalid email address.")
 
                         response = self.submit(form_model, values, submission, [])
                         user = User.objects.create_user(email, email, 'password')
@@ -119,7 +119,7 @@ class FilePlayer(Player):
                 message = ugettext("%s with %s = %s already exists.")
                 response.errors = dict(error=message % (e.data[2], e.data[0], e.data[1]), row=values)
                 responses.append(response)
-            except MangroveException as e:
+            except (InvalidEmailException, MangroveException) as e:
                 response = Response(reporters=[], submission_id=None)
                 response.success = False
                 response.errors = dict(error=ugettext(e.message), row=values)
@@ -276,7 +276,7 @@ def load_all_subjects_of_type(manager, filter_entities=include_of_type, type=REP
 
 def _handle_uploaded_file(file_name, file, manager, default_parser=None):
     base_name, extension = os.path.splitext(file_name)
-    player = FilePlayer.build(manager, extension, get_location_tree(), default_parser=default_parser)
+    player = FilePlayer.build(manager, extension, default_parser=default_parser)
     response = player.accept(file)
     return response
 
