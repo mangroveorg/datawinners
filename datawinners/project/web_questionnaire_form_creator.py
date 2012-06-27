@@ -170,12 +170,15 @@ class WebQuestionnaireFormCreator(object):
                 label=field.label[language],
                 initial=field.value, help_text=field.instruction)
         else:
-            field_labels = field.value.split(',')
             field_values = []
-            for opt in field.options:
-                if opt['text'][language] in field_labels:
-                    field_values.append(opt['val'])
-            return forms.MultipleChoiceField(label=field.label[language], widget=forms.CheckboxSelectMultiple,
+            if field.value is not None:
+                field_labels = field.value.split(',')
+                for opt in field.options:
+                    if opt['text'][language] in field_labels:
+                        field_values.append(opt['val'])
+
+
+        return forms.MultipleChoiceField(label=field.label[language], widget=forms.CheckboxSelectMultiple,
             choices=self._create_choices(field, language),
             initial=field_values, required=field.is_required(), help_text=field.instruction)
 
