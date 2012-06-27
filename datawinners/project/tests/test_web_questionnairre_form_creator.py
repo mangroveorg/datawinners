@@ -266,6 +266,7 @@ class TestWebQuestionnaireFormCreator(unittest.TestCase):
         text_field = SelectField(name=label, code=self.select_field_code, label=label,
             ddtype=Mock(spec=DataDictType),
             options=choices, single_select_flag=single_select_flag, required=is_required)
+        text_field.value = "Red,Green,Blue"
         return expected_choices, text_field
 
 
