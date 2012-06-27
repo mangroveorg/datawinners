@@ -168,7 +168,7 @@ def edit_data_sender(request, reporter_id):
                 message = exception.message
 
         return render_to_response('edit_datasender_form.html',
-                {'form': form, 'message': message, 'entity_links': entity_links},
+                {'form': form, 'message': message, 'reporter_id': reporter_id, 'entity_links': entity_links},
             context_instance=RequestContext(request))
 
 
