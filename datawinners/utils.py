@@ -77,8 +77,8 @@ def get_organization_from_manager(manager):
 
 def send_reset_password_email(user, language_code):
     reset_form = PasswordResetForm({"email": user.email})
-    reset_form.is_valid()
-    reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
+    if reset_form.is_valid():
+        reset_form.save(email_template_name=_get_email_template_name_for_reset_password(language_code))
 
 def _get_email_template_name_for_reset_password(language):
     return 'registration/password_reset_email_' + unicode(language) + '.html'
