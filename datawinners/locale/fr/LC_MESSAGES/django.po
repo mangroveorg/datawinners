@@ -1658,11 +1658,11 @@ msgstr "Préparez vos SMS"
 
 #: templates/project/sms_questionnaire_preview.html: 54
 msgid "Enter all your answers. Use a space to separate them."
-msgstr "Tapez toutes vos réponses dans le champ suivant. Utilisez un espace pour séparer les réponses."
+msgstr "Tapez toutes vos réponses. Utilisez un espace pour les séparer."
 
 #: templates/project/sms_questionnaire_preview.html: 60
 msgid "Send your answers using SMS"
-msgstr "Envoyez vos réponses par SMS"
+msgstr "Envoyez vos réponses par SMS."
 
 #: templates/project/sms_questionnaire_preview.html: 61
 msgid "Send your SMS to the telephone number:"
@@ -1674,7 +1674,7 @@ msgstr "Attendez de recevoir notre réponse SMS"
 
 #: templates/project/sms_questionnaire_preview.html: 65
 msgid "You will receive an SMS confirmation or specific error message."
-msgstr "Vous recevrez un SMS pour confirmer que votre SMS a bien été envoyé ou pour vous informer d’une erreur."
+msgstr "Vous recevrez une confirmation SMS ou un message d’erreur spécifique."
 
 #: templates/project/web_instruction_preview.html: 7
 msgid "Collect Data via Web"
