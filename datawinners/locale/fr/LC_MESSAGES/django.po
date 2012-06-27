@@ -4409,3 +4409,6 @@ msgstr ""
 
 msgid "change_event_time_field_message"
 msgstr "Traduisez ou reformulez cette question si besoin. Mais ne changez pas sa signification. Vous pouvez aussi supprimez cette question si vous n'en avez pas besoin pour votre projet."
+
+msgid "Invalid email address."
+msgstr "Adresse email invalide."

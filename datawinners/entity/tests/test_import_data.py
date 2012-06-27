@@ -301,7 +301,8 @@ class TestFilePlayer(MangroveTestCase):
             with patch.object(XlsDatasenderParser, "parse") as parse_mock:
                 parse_mock.return_value = [
                     ("reg", {u"email": u'', u'g': u'-18.13,27.65', u'l': u'Nairobi',u'm': u'1234567890', u'n': u'Thierry Rakoto', u't': 'reporter'}),
-                    ("reg", {u"email": u'test@mail.com', u'g': u'-18.13,27.65', u'l': u'Nairobi',u'm': u'033333333', u'n': u'Thierry Rakoto', u't': 'reporter'})
+                    ("reg", {u"email": u'test@mail.com', u'g': u'-18.13,27.65', u'l': u'Nairobi',u'm': u'033333333', u'n': u'Thierry Rakoto', u't': 'reporter'}),
+                    ("reg", {u"email": u'a.com', u'g': u'-18.13,27.65', u'l': u'Nairobi',u'm': u'033333333', u'n': u'Thierry Rakoto', u't': 'reporter'})
                 ]
                 with patch.object(UserManager, "values_list") as get_ds_mobile:
                     get_ds_mobile.return_value = ["test@mail.com"]
@@ -311,3 +312,5 @@ class TestFilePlayer(MangroveTestCase):
         self.assertEqual(responses[0].errors['error'],"Data Sender with Mobile Number = 1234567890 already exists.")
         self.assertFalse(responses[1].success)
         self.assertEqual(responses[1].errors['error'],"User with email address = test@mail.com already exists.")
+        self.assertFalse(responses[2].success)
+        self.assertEqual(responses[2].errors['error'],"Invalid email address.")

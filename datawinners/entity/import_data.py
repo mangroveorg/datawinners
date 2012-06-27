@@ -11,7 +11,7 @@ from datawinners.location.LocationTree import get_location_tree
 from datawinners.main.utils import  include_of_type, exclude_of_type
 from datawinners.entity.entity_exceptions import InvalidFileFormatException
 from mangrove.datastore.entity import get_all_entities
-from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists
+from mangrove.errors.MangroveException import MangroveException, DataObjectAlreadyExists, InvalidEmailException
 from mangrove.errors.MangroveException import CSVParserInvalidHeaderFormatException, XlsParserInvalidHeaderFormatException
 from mangrove.form_model.form_model import REPORTER, get_form_model_by_code, get_form_model_by_entity_type, \
     NAME_FIELD_CODE, SHORT_CODE, MOBILE_NUMBER_FIELD
@@ -32,6 +32,7 @@ from datawinners.utils import get_organization
 from django.contrib.auth.models import User, Group
 from datawinners.accountmanagement.models import NGOUserProfile
 from datawinners.utils import send_reset_password_email
+from django.core.validators import email_re
 
 class FilePlayer(Player):
     def __init__(self, dbm, parser, channel_name, location_tree=None):
@@ -92,6 +93,9 @@ class FilePlayer(Player):
                         if email in registered_emails:
                             raise DataObjectAlreadyExists(_("User"), _("email address"), email)
 
+                        if not email_re.match(email):
+                            raise InvalidEmailException()
+
                         response = self.submit(form_model, values, submission, [])
                         user = User.objects.create_user(email, email, 'password')
                         group = Group.objects.filter(name="Data Senders")[0]
@@ -118,7 +122,7 @@ class FilePlayer(Player):
             except MangroveException as e:
                 response = Response(reporters=[], submission_id=None)
                 response.success = False
-                response.errors = dict(error=e.message, row=values)
+                response.errors = dict(error=ugettext(e.message), row=values)
                 responses.append(response)
         return responses
 
