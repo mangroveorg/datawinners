@@ -23,13 +23,11 @@
   height: 300px;
   width: 200px;
   margin: 20px 30px 30px 0;
-  position: relative;
   overflow: hidden;
   textarea {
-    position: absolute;
     height: 91px !important;
-    left: 37px;
-    top: 98px;
+    margin-left: 37px;
+    margin-top: 98px;
     width: 127px !important;
     font-size: 12px;
     padding: 0 !important;
@@ -268,6 +266,7 @@
     position: absolute;
     z-index: 1002;
     top: 63px;
+    left: 0px;
     box-shadow: 3px 3px 5px gray, -3px 3px 5px gray;
     background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F2F2F2));
     background: -moz-linear-gradient(top,  white,  #F2F2F2);
