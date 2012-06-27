@@ -27,6 +27,14 @@ var questionnaireViewModel =
     canQuestionBeDeleted: function() {
         return questionnaireViewModel.questions().length > 2;
     },
+    renumberQuestions: function(){
+        var questionPattern = /^Question \d+$/
+        for (var i = 0; i < questionnaireViewModel.questions().length; i++){
+            var question = questionnaireViewModel.questions()[i];
+            if (questionPattern.test(question.title()) )
+                question.title("Question " + (i + 1));
+        }
+    },
     removeQuestion: function(question) {
         var index = $.inArray(question, questionnaireViewModel.questions());
         questionnaireViewModel.questions.remove(question);
@@ -34,6 +42,7 @@ var questionnaireViewModel =
             questionnaireViewModel.addQuestion();
             return;
         }
+        questionnaireViewModel.renumberQuestions();
         var next_index = (index) % questionnaireViewModel.questions().length;
         questionnaireViewModel.changeSelectedQuestion(questionnaireViewModel.questions()[next_index]);
         questionnaireViewModel.hasAddedNewQuestions = true;
@@ -114,7 +123,7 @@ var questionnaireViewModel =
     },
     isEnabled: function(){
         if($("#not_wizard").length>0){
-            return questionnaireViewModel.selectedQuestion().isenabled();
+            return questionnaireViewModel.selectedQuestion().isEnabled();
         }
         else{
             return true;
