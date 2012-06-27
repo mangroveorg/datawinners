@@ -342,6 +342,10 @@ msgstr ""
 msgid "Please select at least 1 data sender"
 msgstr ""
 
+#: media/javascript/project/registered_datasenders.js:26
+msgid "Please select only 1 data sender"
+msgstr ""
+
 #: media/javascript/project/reminders.js:14
 msgid "Hello. We have not received your data for "
 msgstr ""
@@ -623,6 +627,7 @@ msgstr ""
 
 msgid "Please select atleast 1 subject"
 msgstr ""
+
 msgid "Please select only 1 subject"
 msgstr ""
 

@@ -386,6 +386,10 @@ msgstr "Veuillez patienter"
 msgid "Please select at least 1 data sender"
 msgstr "Veuillez remplir au moins un champ de localité"
 
+#: media/javascript/project/registered_datasenders.js:26
+msgid "Please select only 1 data sender"
+msgstr "Veuillez choisir un seul envoyeur"
+
 #: media/javascript/project/reminders.js:49
 msgid "Can't be blank."
 msgstr "Ne peut être vide"
