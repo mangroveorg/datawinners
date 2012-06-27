@@ -87,17 +87,19 @@ def set_mangrove_commit_sha(branch, mangrove_build_number):
     if mangrove_build_number == 'lastSuccessfulBuild':
         mangrove_build_number = run(
             "curl http://178.79.163.33:8080/job/Mangrove-%s/lastSuccessfulBuild/buildNumber" % (branch,))
-    run(
-        "export MANGROVE_COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
+    run("echo 'Checking the mangrove commit sha for build number %s'" % mangrove_build_number)
+    run("export MANGROVE_COMMIT_SHA=`curl http://178.79.163.33:8080/job/Mangrove-%s/%s/artifact/last_successful_commit_sha`" % (
             branch, mangrove_build_number))
+    run("echo MANGROVE_COMMIT_SHA=$MANGROVE_COMMIT_SHA" )
     
 def set_datawinner_commit_sha(datawinner_build_number):
     if datawinner_build_number == 'lastSuccessfulBuild':
         datawinner_build_number = run(
             "curl http://178.79.163.33:8080/job/Datawinners/lastSuccessfulBuild/buildNumber")
-    run(
-        "export DATWINNER_COMMIT_SHA=`curl http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
+    run("echo 'Checking the datawinner commit sha for build number %s'" % datawinner_build_number)
+    run("export DATAWINNER_COMMIT_SHA=`curl http://178.79.163.33:8080/job/Datawinners/%s/artifact/last_successful_commit_sha`" % (
             datawinner_build_number))
+    run("echo DATAWINNER_COMMIT_SHA=DATAWINNER_COMMIT_SHA" )
 
 def check_out_mangrove_code(mangrove_build_number, mangrove_code_dir, branch, virtual_env):
     git_clone_mangrove_if_not_present(mangrove_code_dir)
