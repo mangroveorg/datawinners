@@ -164,11 +164,11 @@ def local():
     env.hosts = ["127.0.0.1"]
     env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
 
-#def production():
-#    env.user = "mangrover"
-#    env.hosts = ["178.79.185.34"]
-#    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
-#    env.warn_only = True
+def production():
+    env.user = "mangrover"
+    env.hosts = ["178.79.185.34"]
+    env.key_filename = ["/var/lib/jenkins/.ssh/id_rsa"]
+    env.warn_only = True
 
 def anonymous():
     run("uname -a")
