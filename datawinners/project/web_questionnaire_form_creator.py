@@ -161,16 +161,23 @@ class WebQuestionnaireFormCreator(object):
         return {field.code: django_field}
 
     def _create_select_field(self, field, language):
-        for opt in field.options:
-            if opt['text'][language] == field.value:
-                field.value = opt['val']
         if field.single_select_flag:
+            for opt in field.options:
+                if opt['text'][language] == field.value:
+                    field.value = opt['val']
+
             return ChoiceField(choices=self._create_choices(field, language), required=field.is_required(),
                 label=field.label[language],
                 initial=field.value, help_text=field.instruction)
-        return forms.MultipleChoiceField(label=field.label[language], widget=forms.CheckboxSelectMultiple,
+        else:
+            field_labels = field.value.split(',')
+            field_values = []
+            for opt in field.options:
+                if opt['text'][language] in field_labels:
+                    field_values.append(opt['val'])
+            return forms.MultipleChoiceField(label=field.label[language], widget=forms.CheckboxSelectMultiple,
             choices=self._create_choices(field, language),
-            initial=field.value, required=field.is_required(), help_text=field.instruction)
+            initial=field_values, required=field.is_required(), help_text=field.instruction)
 
     def _create_choices(self, field, language):
         choice_list = [('', '--None--')] if field.single_select_flag else []
