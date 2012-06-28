@@ -4,44 +4,60 @@
 
 <p>Hello {{ name }},</p>
 
-<p>Thank you for signing up for a DataWinners Trial Account!
-   For the next 30 days, test-drive your free trial account to see how DataWinners can fit your needs.</p>
+<p>Thank you for signing up for your 30 day DataWinners Trial Account!<br>
+    <a href="http://{{ site.domain }}{% url registration_activate activation_key %}" style="text-decoration: none">
+        Activate your account</a> and see how DataWinners can fit your needs.
+</p>
 
-<p>Click on this link to activate your DataWinners account:</p>
+<p><b>How to Collect Data</b><br>
+    DataWinners allows you to collect your data in 3 different ways. Choose the channels most convenient for you and your Data Senders.
+    <ol>
+        <li>
+            <b>Web</b>
+            <div>
+                Collect an unlimited amount of data using the online Questionnaire.
+            </div>
+        </li>
+        <li>
+            <b>Android Smartphone</b>
 
-<p>http://{{ site.domain }}{% url registration_activate activation_key %}</p>
+            <div>
+                Download the Questionnaires directly onto your Android Smartphone.
+            </div>
+        </li>
+        <li>
+            <b>SMS</b>
 
-<p>This link is good for {{ expiration_days }} days.</p>
-
-<p><b>Collect Data via Web</b><br>
-    Create your online questionnaires and collect an unlimited amount of data using the Internet.</p>
-
-<p><b>Collect Data via SMS</b><br>
-    See which telephone number you can use to send in your data: <br>
-    http://{{ site.domain }}/en/your-account-phone-number </p>
-
-<p> For the free trial account, International SMS rates apply.
-    You pay to send your messages to DataWinners.
-    DataWinners will send automatic confirmation and error messages back in response to your SMS.
-    You can submit up to 100 messages during your trial period.
+            <div>Use any simple mobile phone to send in data using a single SMS.
+            </div>
+            <div>
+                <a href="http://{{ site.domain }}/en/your-account-phone-number" style="text-decoration: none">See which telephone number you can use</a>
+                to send in your data.For the free trial account, International SMS rates apply. You pay to send your
+                messages to DataWinners. DataWinners will send automatic confirmation and error messages back in
+                response to your SMS. You can submit up to 50 messages during your trial period.
+            </div>
+        </li>
+    </ol>
 </p>
 
 <p><b>Need Help?</b><br>
-    If you need help getting started, check out our <a href='http://{{ site.domain }}/en/support/find-answers/'>FAQs</a> and other online
-    <a href="http://{{ site.domain }}/en/support/">support</a>. <br>
+    If you need help getting started, check out our <a href='http://{{ site.domain }}/en/support/find-answers/' style="text-decoration: none">FAQs</a> and other online
+    <a href="http://{{ site.domain }}/en/support/" style="text-decoration: none">support</a>. <br>
     We can also be reach via Email at support@datawinners.com. We're here to help!
 </p>
 
 <p><b>Stay Connected</b><br>
-    We'd love to hear from you! You can follow us on <a href="https://twitter.com/#!/datawinners">Twitter</a>, post on
-    our <a href="http://www.facebook.com/DataWinners">Facebook</a> wall and comment on our
-    <a href="http://datawinners.wordpress.com/ ">blog</a>. The blog is a great way to learn about new features and
+    We'd love to hear from you! You can follow us on <a href="https://twitter.com/#!/datawinners" style="text-decoration: none">Twitter</a>, post on
+    our <a href="http://www.facebook.com/DataWinners" style="text-decoration: none">Facebook</a> wall and comment on our
+    <a href="http://datawinners.wordpress.com/" style="text-decoration: none">blog</a>. The blog is a great way to learn about new features and
     upcoming DataWinners events.
 </p>
 
 <p>Have fun, <br><br>
-Your DataWinners Team <br>
-www.datawinners.com</p>
-
+    Your DataWinners Team <br>
+        <a href="http://www.datawinners.com" style="text-decoration: none">www.datawinners.com</a> |
+        <a href="http://datawinners.wordpress.com/" style="text-decoration: none">Blog</a> |
+        <a href="https://twitter.com/#!/datawinners" style="text-decoration: none">Twitter</a>
+</p>
 </body>
 </html>
