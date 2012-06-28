@@ -1,42 +1,65 @@
 <html>
+
 <body>
+
 <p>Bonjour {{ name }},</p>
 
-<p>Merci d’avoir souscrit à un Compte d'Essai DataWinners!
-   Testez votre compte d'essai gratuit pendant les 30 prochains jours pour voir dans quelle mesure DataWinners peut
-   répondre à vos besoins. </p>
-
-<p>Cliquez sur ce lien pour activer votre compte DataWinners:</p>
-
-<p>http://{{ site.domain }}{% url registration_activate activation_key %}</p>
-
-<p>Ce lien est valide pour {{ expiration_days }} jours.</p>
-
-<p><b>Collectez des Données via Internet</b> <br>
-    Créez vos questionnaires en ligne et collectez une quantité illimitée de données via Internet.
+<p>Merci de vous être enregistré pour un Compte d’Essai dataWinners de 30 jours!<br>
+    <a href="http://{{ site.domain }}{% url registration_activate activation_key %}" style="text-decoration: none">
+        Activez votre compte</a> et voyez comment DataWinners peut répondre à vos besoins.
 </p>
 
-<p><b>Collectez des Données via SMS</b> <br>
-    Voyez vers quel numéro de téléphone vous pouvez envoyer vos données <br>
-    http://{{ site.domain }}/fr/your-account-phone-number </p>
+<p><b>Comment Collecter des Données</b><br>
+    DataWinners vous permet de collecter vos données de 3 différentes manières. Choisissez les canaux qui vous
+    conviennent le mieux, à vous et à vos Expéditeurs de Données.
+<ol>
+    <li>
+        <b>Internet </b>
+        <div>
+            Collectez un nombre illimité de données en utilisant le Questionnaire en ligne.
+        </div>
+    </li>
+    <li>
+        <b>Smartphone Android</b>
 
-<p><b>Besoin d’aide ?</b> <br>
-    Si vous avez besoin d'aide pour démarrer, consultez notre <a href='http://{{ site.domain }}/fr/support/find-answers/'>Foire Aux
-    Questions</a> ainsi que d’autres formes
-    <a href="http://{{ site.domain }}/fr/support/">d’assistance</a> en ligne. <br>
-    Nous pouvons aussi être accessible via un e-mail adressé à support@datawinners.com. Nous sommes là pour vous aider!
+        <div>
+            Téléchargez les Questionnaires directement sur votre Smartphone Android.
+        </div>
+    </li>
+    <li>
+        <b>SMS</b>
+
+        <div>
+            Utilisez un simple téléphone mobile pour envoyer des données en utilisant un seul SMS.
+        </div>
+        <div>
+            <a href="http://{{ site.domain }}/en/your-account-phone-number" style="text-decoration: none">Voyez quel numéro de téléphone vous pouvez utiliser</a>
+            pour envoyer des données. Pour le compte d’essai gratuit, les tarifs SMS internationaux s’appliquent.
+            Vous pouvez payer pour envoyer vos messages à DataWinners. DataWinners enverra une confirmation automatique
+            et des messages d’erreur suite à votre SMS. Vous pouvez soumettre jusqu’à 50 messages durant votre période d’essai.
+        </div>
+    </li>
+</ol>
 </p>
 
-<p><b>Restez Connecté</b> <br>
-    Nous aimerions avoir de vos nouvelles! Vous pouvez nous voir sur <a href="https://twitter.com/#!/datawinners">Twitter</a>,
-    publier sur notre mur <a href="http://www.facebook.com/DataWinners">Facebook</a>, et commenter sur notre
-    <a href="http://datawinners.wordpress.com/ ">blog</a>. Le blog est un excellent moyen pour apprendre sur les
-    nouvelles fonctionnalités et les événements à venir de DataWinners.</p>
-
-<p>Amusez-vous, <br><br>
-   Votre Equipe DataWinners <br>
-   www.datawinners.com
+<p><b>Besoin d’Aide?</b><br>
+    Si vous avez besoin d’aide pour commencer, visitez notre <a href='http://{{ site.domain }}/en/support/find-answers/' style="text-decoration: none">FAQ</a> et autres
+    <a href="http://{{ site.domain }}/en/support/" style="text-decoration: none">supports</a> en ligne. <br>
+    Vous pouvez aussi nous contacter par email à l’adresse support@datawinners.com. Nous sommes là pour aider !
 </p>
 
+<p><b>Restez Connecté</b><br>
+     Nous aimerions avoir de vos nouvelles ! Vous pouvez nous suivre sur <a href="https://twitter.com/#!/datawinners" style="text-decoration: none">Twitter</a>,
+    publier sur notre mur sur <a href="http://www.facebook.com/DataWinners" style="text-decoration: none">Facebook</a> et commenter sur notre
+    <a href="http://datawinners.wordpress.com/" style="text-decoration: none">blog</a>. Le blog est un excellent moyen de connaître les nouvelles
+    fonctionnalités et les événements DataWinners à venir.
+</p>
+
+<p>Amusez-vous,<br><br>
+    Votre Equipe DataWinners <br>
+    <a href="http://www.datawinners.com" style="text-decoration: none">www.datawinners.com</a> |
+    <a href="http://datawinners.wordpress.com/" style="text-decoration: none">Blog</a> |
+    <a href="https://twitter.com/#!/datawinners" style="text-decoration: none">Twitter</a>
+</p>
 </body>
 </html>
