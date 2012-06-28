@@ -66,7 +66,7 @@
                 <li data-bind="click: function() { if($('#question_form').valid()) questionnaireViewModel.changeSelectedQuestion(question); }, css:{question_selected:question == questionnaireViewModel.selectedQuestion()}  ">
                     <a href="questionnaire_wizard.html#" data-bind="text: question.display"></a>
 
-                    <div data-bind="visible: question.isenabled()" class="question_delete_link delete">
+                    <div data-bind="visible: question.isEnabled()" class="question_delete_link delete">
                         <a href="questionnaire_wizard.html#" class="delete_link" data-bind="click: function() {if($('#question_form').valid()){ questionnaireViewModel.removeQuestion(question);} else {questionnaireViewModel.removeIfQuestionIsSelectedQuestion(question);} }">{% trans "Delete"%}</a>
                     </div>
 
