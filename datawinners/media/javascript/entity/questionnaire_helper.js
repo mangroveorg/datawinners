@@ -147,7 +147,7 @@ DW.question.prototype = {
             return (!this.is_entity_question());
         }
     };
-    this.isEnabled = function(){
+    this.isenabled = function(){
       return this.newly_added_question();
     };
 
@@ -207,12 +207,17 @@ DW.removeQuestionCheckForSubmission = function(question){
         return false;
     });
 
-};
+}
 
 DW.isRegistrationQuestionnaire = function() {
-    return $('#qtype').val() == 'subject';
+    if($('#qtype').val() == 'subject') {
+        return true;
+    } else {
+        return false;
+    }
 };
 
+DW.next_question_number = 1;
 DW.next_question_name_generator = function(){
-    return 'Question '+ ($('div.question_list ol li').length + 1);
+    return 'Question'+ DW.next_question_number++;
 };
