@@ -167,64 +167,64 @@
         }
     } ,
     {
-        "pk": 3,
+        "pk": -3,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "mobile_phone": "876765654",
             "title": "Mr",
             "org_id": "SLX364903",
             "reporter_id": "rep3",
-            "user": 4
+            "user": -4
         }
     },
     {
-        "pk": 4,
+        "pk": -4,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "title": "Mr",
             "org_id": "COJ00000",
             "mobile_phone": "12345687",
-            "user": 5
+            "user": -5
         }
     },
     {
-        "pk": 5,
+        "pk": -5,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "title": "Mr",
             "org_id": "COJ00001",
             "mobile_phone": "98876765",
-            "user": 6
+            "user": -6
         }
     },
     {
-        "pk": 6,
+        "pk": -6,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "title": "Mr",
             "org_id": "COJ00002",
             "mobile_phone": "64454334",
-            "user": 7
+            "user": -7
         }
     },    {
-        "pk": 7,
+        "pk": -7,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "title": "Mr",
             "org_id": "COJ00003",
             "mobile_phone": "675454333",
-            "user": 8
+            "user": -8
         }
     },
     {
-        "pk": 8,
+        "pk": -8,
         "model": "accountmanagement.ngouserprofile",
         "fields": {
             "mobile_phone": "874827212",
             "title": "Mr",
             "org_id": "SLX364903",
             "reporter_id": "rep9",
-            "user": 9
+            "user": -9
         }
     },
     {
@@ -246,7 +246,7 @@
         }
     },
     {
-        "pk": 3,
+        "pk": -3,
         "model": "accountmanagement.organizationsetting",
         "fields": {
             "organization": "COJ00000",
@@ -254,7 +254,7 @@
             "sms_tel_number": "987654321"
         }
     },    {
-        "pk": 4,
+        "pk": -4,
         "model": "accountmanagement.organizationsetting",
         "fields": {
             "organization": "COJ00001",
@@ -262,7 +262,7 @@
             "sms_tel_number": "987654322"
         }
     },    {
-        "pk": 5,
+        "pk": -5,
         "model": "accountmanagement.organizationsetting",
         "fields": {
             "organization": "COJ00002",
@@ -271,7 +271,7 @@
         }
     },
     {
-        "pk": 6,
+        "pk": -6,
         "model": "accountmanagement.organizationsetting",
         "fields": {
             "organization": "COJ00003",
@@ -362,7 +362,7 @@
         }
     },
     {
-        "pk": 4,
+        "pk": -4,
         "model": "auth.user",
         "fields": {
             "username": "datasender@hni.com",
@@ -382,7 +382,7 @@
         }
     },
     {
-        "pk": 5,
+        "pk": -5,
         "model": "auth.user",
         "fields": {
             "username": "chinatwu@gmail.com",
@@ -403,7 +403,7 @@
             "date_joined": "2011-04-17 04:46:57"
         }
     },{
-        "pk": 6,
+        "pk": -6,
         "model": "auth.user",
         "fields": {
             "username": "chinatwu2@gmail.com",
@@ -424,7 +424,7 @@
             "date_joined": "2020-10-17 04:46:57"
         }
     },{
-        "pk": 7,
+        "pk": -7,
         "model": "auth.user",
         "fields": {
             "username": "chinatwu3@gmail.com",
@@ -446,7 +446,7 @@
         }
     },
     {
-        "pk": 8,
+        "pk": -8,
         "model": "auth.user",
         "fields": {
             "username": "chinatwu4@gmail.com",
@@ -468,7 +468,7 @@
         }
     },
     {
-        "pk": 9,
+        "pk": -9,
         "model": "auth.user",
         "fields": {
             "username": "datasender@test.com",

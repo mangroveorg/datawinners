@@ -12,6 +12,16 @@ from tests.projectdatasenderstests.registered_datasenders_data import *
 
 @attr('suit_2')
 class ProjectDataSenders(BaseTest):
+    def tearDown(self):
+        import sys
+
+        exception_info = sys.exc_info()
+        if exception_info != (None, None, None):
+            import os
+            if not os.path.exists("screenshots"):
+                os.mkdir("screenshots")
+            self.driver.get_screenshot_as_file("screenshots/screenshot-%s-%s.png" % (self.__class__.__name__, self._testMethodName))
+
     def all_projects_page(self):
         # doing successful login with valid credentials
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
