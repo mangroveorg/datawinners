@@ -275,8 +275,8 @@ def custom_reports_deploy(code_dir, environment = 'showcase'):
         run('./catalina.sh stop')
 
     with cd('%s/webapps/birt-viewer/' % ENVIRONMENT_TOMCAT[environment]):
-        if not run('cd crs').failed:
-            run('rm crs')
+#        if not run('cd crs').failed:
+        run('rm crs')
         run('ln -s %s/custom_reports/crs/ crs' % code_dir)
 
     with cd('%s/bin/' % ENVIRONMENT_TOMCAT[environment]):
