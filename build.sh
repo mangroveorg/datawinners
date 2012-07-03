@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #set -x
 function prepare_mangrove_env {
 	cd ../mangrove && \
@@ -17,9 +17,11 @@ function migrate_db {
 }
 
 function pre_commit {
+    update_source && \
 	prepare_mangrove_env && \
 	prepare_datawinner_env && \
-	migrate_db && \
+	restore_database && \
+	cd .. & \
 	unit_test && \
 	function_test
 }
@@ -59,6 +61,15 @@ function show_help {
 	echo "ut: \tthis will run all the unit test"
 	echo "ft: \tthis will run all the function test"
 	echo "rd: \tdestory and recreate database"
+	echo "us: \tupdate source codes of mangrove and datawinners"
+}
+
+function update_source {
+    echo "Update source code ...."
+    cd ../mangrove && \
+    git pull --rebase && \
+    cd ../datawinners && \
+    git pull --rebase
 }
 
 function main {
@@ -67,6 +78,7 @@ function main {
 		ut) unit_test;;
 		ft) function_test;;
 		rd) restore_database;;
+		us) update_source;;
 		*) show_help && exit 1;;
 	esac
 }
