@@ -21,7 +21,7 @@ function pre_commit {
 }
 
 function prepare_env {
-  	update_source && prepare_mangrove_env && prepare_datawinner_env && restore_postgresql_database
+  	update_source && prepare_mangrove_env && prepare_datawinner_env 
 }
 
 function unit_test {
