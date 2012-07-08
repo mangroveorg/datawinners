@@ -21,7 +21,10 @@ $(document).ready(function () {
         var allIds = $('#delete_entity_block').data("allIds");
         var entity_type = $('#delete_entity_block').data("entity_type");
         var path = $(this).attr("href");
-        $.post("/entity/delete/", {'all_ids':allIds.join(';'), 'entity_type':entity_type},
+        post_data = {'all_ids':allIds.join(';'), 'entity_type':entity_type}
+        if ($("#project_name").length)
+            post_data.project = $("#project_name").val();
+        $.post("/entity/delete/", post_data,
             function (json_response) {
                 var response = $.parseJSON(json_response);
                 if (response.success) {

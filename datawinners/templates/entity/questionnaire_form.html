@@ -15,6 +15,7 @@
                     <input id="questionnaire-code" class="required" value="{{ questionnaire_code }}" {% ifequal type 'datasenders' %}readonly="readonly"{% endifequal %}/>
                     <input id="entity-type" type="hidden" value="{{ entity_type }}" name="entity-type"/>
                     <input id="saved-questionnaire-code" type="hidden" value="{{ questionnaire_code }}"/>
+                    <input type="hidden" name="project_name" value="{% if project %}{{ project.name }}{% endif %}" id="project-name"/>
                     <span id="questionnaire-code-error"></span>
                     <img src="/media/images/help_icon.png" class="help_icon" style="margin-top:-6px;">
                     <div class="tooltip"><p>

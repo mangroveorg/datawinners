@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language, activate
 from django.utils.translation import ugettext
 from django.conf import settings
 from django.utils import translation
@@ -62,6 +62,7 @@ from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireF
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from mangrove.transport.player.parser import XlsDatasenderParser
+from activitylog.models import UserActivityLog
 
 logger = logging.getLogger("django")
 
@@ -193,6 +194,7 @@ def delete_project(request, project_id):
     undelete_link = reverse(undelete_project, args=[project_id])
     if len(get_all_projects(manager)) > 0:
         messages.info(request, undelete_link)
+    UserActivityLog().log(request, action='Deleted Project', project=project.name)
     return HttpResponseRedirect(reverse(index))
 
 
@@ -264,11 +266,15 @@ def project_results(request, project_id=None, questionnaire_code=None):
         )
     if request.method == "POST":
         submission_ids = json.loads(request.POST.get('id_list'))
+        received_times = []
         for submission_id in submission_ids:
             submission = Submission.get(manager, submission_id)
+            received_times.append( datetime.datetime.strftime(submission.created, "%d/%m/%Y %X"))
             submission.void()
             ReportRouter().delete(get_organization(request).org_id,submission.form_code,submission.data_record.id)
-
+        if len(received_times):
+            UserActivityLog().log(request, action="Deleted Data Submission", project=project.name.capitalize(),
+                                  detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
         submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
         return render_to_response('project/log_table.html',
@@ -616,6 +622,7 @@ def activate_project(request, project_id=None):
         to_time=int(mktime(tomorrow.timetuple())) * 1000, page_size=None)
     for submission in submissions:
         submission.void()
+    UserActivityLog().log(request, action='Activated Project', project=project.name)
     return HttpResponseRedirect(reverse(project_overview, args=[project_id]))
 
 
@@ -736,6 +743,10 @@ def registered_datasenders(request, project_id=None):
         all_data_senders, fields, labels = import_module.load_all_subjects_of_type(manager)
         project.data_senders.extend([id for id in imported_entities.keys()])
         project.save(manager)
+
+        if len(imported_entities.keys()):
+            UserActivityLog().log(request, action="Imported Data Senders",
+                detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_entities.keys())})), project=project.name)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_entities,
             all_data_senders=all_data_senders, index=mobile_number_index)
@@ -755,6 +766,10 @@ def disassociate_datasenders(request):
     project = Project.load(manager.database, request.POST['project_id'])
     [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
     project.save(manager)
+    ids = request.POST["ids"].split(";")
+    if len(ids):
+        UserActivityLog().log(request, action="Removed Data Sender from Project", project=project.name,
+                          detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(ids)})))
     return HttpResponse(reverse(registered_datasenders, args=(project.id,)))
 
 
@@ -908,6 +923,9 @@ def web_questionnaire(request, project_id=None, subject=False):
                 if subject:
                     success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                         response.short_code,)
+                    detail_dict = dict({"Subject Type":project.entity_type.capitalize(), "Unique ID": response.short_code})
+                    UserActivityLog().log(request, action='Registered Subject', project=project.name.capitalize(),
+                                          detail=json.dumps(detail_dict))
                 else:
                     success_message = _("Successfully submitted")
                 questionnaire_form = QuestionnaireForm()
@@ -1093,6 +1111,8 @@ def create_data_sender_and_web_user(request, project_id=None):
             if form.requires_web_access() :
                 email_id = request.POST['email']
                 create_single_web_user(org_id=org_id,email_address=email_id,reporter_id=reporter_id,language_code=request.LANGUAGE_CODE)
+            UserActivityLog().log(request, action="Registered Data Sender",
+                                      detail=json.dumps(dict({"Unique ID": reporter_id})), project=project.name)
         if message is not None:
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
@@ -1127,6 +1147,19 @@ def edit_data_sender(request, project_id, reporter_id):
                     if organization.in_trial_mode:
                         update_data_sender_from_trial_organization(current_telephone_number,form.cleaned_data["telephone_number"], org_id)
                     message = _("Your changes have been saved.")
+
+                    detail_dict = {"Unique ID": reporter_id}
+                    current_lang = get_language()
+                    activate("en")
+                    field_mapping = dict(mobile_number="telephone_number")
+                    for field in ["geo_code", "location", "mobile_number", "name"]:
+                        if getattr(reporter_entity, field) != form.cleaned_data.get(field_mapping.get(field, field)):
+                            label = u"%s" % form.fields[field_mapping.get(field, field)].label
+                            detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
+                    activate(current_lang)
+                    if len(detail_dict) > 1 :
+                        detail_as_string = json.dumps(detail_dict)
+                        UserActivityLog().log(request, action='Edited Data Sender', detail=detail_as_string, project=project.name)
                 else :
                     form.update_errors(response.errors)
             except MangroveException as exception:

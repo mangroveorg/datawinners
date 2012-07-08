@@ -19,9 +19,12 @@ from datawinners.accountmanagement.models import Organization, NGOUserProfile, P
 from django.contrib.auth.views import login, password_reset
 from datawinners.main.utils import get_database_manager
 from datawinners.project.models import get_all_projects
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, get_language, activate
 from datawinners.project.models import Project
 from datawinners.utils import get_organization, _get_email_template_name_for_reset_password
+from datawinners.activitylog.models import UserActivityLog
+import json
+
 
 def is_admin(f):
     def wrapper(*args, **kw):
@@ -159,7 +162,23 @@ def settings(request):
     if request.method == 'POST':
         organization = Organization.objects.get(org_id=request.POST["org_id"])
         organization_form = OrganizationForm(request.POST, instance=organization).update()
-        message = "" if organization_form.errors else _('Settings have been updated successfully')
+        if organization_form.errors:
+            message = ""
+        else:
+            message = _('Settings have been updated successfully')
+            changed_data = organization_form.changed_data
+            if len(changed_data) != 0:
+                detail_dict = dict()
+                current_lang = get_language()
+                activate("en")
+                for changed in changed_data:
+                    label = u"%s" % organization_form.fields[changed].label
+                    detail_dict.update({label: organization_form.cleaned_data.get(changed)})
+                activate(current_lang)
+                detail_as_string = json.dumps(detail_dict)
+                UserActivityLog().log(request, action='Changed Account Information', detail=detail_as_string)
+
+            
         return render_to_response("accountmanagement/account/org_settings.html",
                 {'organization_form': organization_form, 'message': message}, context_instance=RequestContext(request))
 
@@ -208,8 +227,10 @@ def new_user(request):
                 reset_form = PasswordResetForm({"email": username})
                 reset_form.is_valid()
                 reset_form.save(email_template_name=_get_email_template_name_for_reset_password(request.LANGUAGE_CODE))
+                first_name = form.cleaned_data.get("first_name")
                 form = UserProfileForm()
                 add_user_success = True
+                UserActivityLog().log(request, action='Added User', detail=first_name)
 
         return render_to_response("accountmanagement/account/add_user.html",
                 {'profile_form': form, 'add_user_success': add_user_success},

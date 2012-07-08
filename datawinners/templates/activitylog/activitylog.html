@@ -1,0 +1,79 @@
+{% extends 'accountmanagement/account/index.html' %}
+{% load i18n %}
+{% block page_title %} {% trans "Activity Log" %} {% endblock %}
+
+{% block page_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/media/css/scss/section_log.css" />
+    <link rel="stylesheet" href="/media/css/scss/section_public.css" />
+    <link href="/media/javascript/dateRangePicker/css/ui.daterangepicker.css" rel="stylesheet" />
+    <link href="/media/javascript/dateRangePicker/css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <link href="/media/javascript/data_tables/css/demo_page.css" rel="stylesheet" />
+    <link href="/media/javascript/data_tables/css/demo_table.css" rel="stylesheet" />
+    <link href="/media/css/scss/section_data.css" rel="stylesheet" />
+{% endblock %}
+
+{% block page_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="/media/javascript/csrf_token_handler.js" ></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/daterangepicker.jQuery.js"></script>
+    <script type="text/javascript" src="/media/javascript/dateRangePicker/js/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="/media/javascript/data_tables/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/media/javascript/datepicker.{% trans "en" %}.js"></script>
+    <script type="text/javascript" src="/media/javascript/useractivity/log.js"></script>
+    <script type="text/javascript">
+        var log_data = JSON.parse({{log_data|safe}});
+    </script>
+{% endblock %}
+
+{% load dw_tabs %}
+{% block navigation %}
+{% activetab "tab_nav" "activity_log" %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="text_align_left margin_bottom_20">
+  <h3>{% trans "Activity Log" %}</h3>
+</div>
+<form action="" method="post">
+<fieldset>
+    {% csrf_token %}
+    <table id="filterlog">
+        <tr>
+            {% for field in form %}
+                <td><b>{{ field.label }}:</b> <br/>{{ field }}</td>
+            {% endfor %}
+            <td><input type="submit" class="button_blue" value="{% trans "Filter" %}" id="log_filter"></td>
+        </tr>
+    </table>
+</fieldset>
+</form>
+<br/>
+<div id="users_list">
+    <table  class="styled_table" id="log_data">
+    <thead>
+      <tr>
+      <th width="80">
+        {% trans "First Name" %}
+      </th>
+      <th width="100">
+        {% trans "Action" %}
+      </th>
+      <th width="200">
+        {% trans "Projects" %}
+      </th>
+      <th width="200">
+        {% trans "Details" %}
+      </th>
+      <th width="90">
+        {% trans "Time" %}
+      </th>
+    </thead>
+    <tbody>
+      
+    </tbody>
+    </table>
+
+  </div>
+{% endblock %}

@@ -8,7 +8,8 @@ DW.hide_message = function() {
 DW.post_subject_data = function(){
     var questionnaire_data = JSON.stringify(ko.toJS(questionnaireViewModel.questions()), null, 2);
     var post_data = {'questionnaire-code':$('#questionnaire-code').val(),'question-set':questionnaire_data, 'entity-type':$('#entity-type').val(),
-                    'saved-questionnaire-code':$('#saved-questionnaire-code').val(), 'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val()};
+                    'saved-questionnaire-code':$('#saved-questionnaire-code').val(), 'csrfmiddlewaretoken':$('#question_form input[name=csrfmiddlewaretoken]').val(),
+                    'project-name': $('#project-name').val()};
     $.post($('#post_url').val(), post_data, function(response){
         var responseJson = $.parseJSON(response);
         if (responseJson.success) {

@@ -16,7 +16,7 @@ from django.template.context import RequestContext
 from django.utils.http import int_to_base36
 from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, activate, get_language
 from datawinners import utils
 from datawinners.project.view_models import ReporterEntity
 from mangrove.form_model.field import field_to_json
@@ -46,7 +46,7 @@ from mangrove.utils.types import is_empty
 from datawinners.project.web_questionnaire_form_creator import WebQuestionnaireFormCreator
 from datawinners.submission.location import LocationBridge
 from datawinners.utils import get_excel_sheet, workbook_add_sheet, get_organization, get_organization_country,\
-    get_database_manager_for_org, send_reset_password_email
+    get_database_manager_for_org, send_reset_password_email, get_changed_questions
 from datawinners.entity.helper import get_country_appended_location, add_imported_data_sender_to_trial_organization
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 import xlwt
@@ -54,6 +54,8 @@ from django.contrib import messages
 from datawinners.settings import HNI_SUPPORT_EMAIL_ID, EMAIL_HOST_USER
 from mangrove.datastore.entity import get_by_short_code
 from mangrove.transport.player.parser import XlsOrderedParser, XlsDatasenderParser
+from datawinners.activitylog.models import UserActivityLog
+
 
 COUNTRY = ',MADAGASCAR'
 
@@ -116,6 +118,14 @@ def create_data_sender(request):
                 language_code=request.LANGUAGE_CODE)
 
         if message is not None:
+            if form.cleaned_data['project_id'] != "":
+                project = Project.load(dbm.database, form.cleaned_data['project_id'])
+                project = project.name
+            else:
+                project = ""
+            if not len(form.errors):
+                UserActivityLog().log(request, action="Registered Data Sender",
+                                      detail=json.dumps(dict({"Unique ID": reporter_id})), project=project)
             form = ReporterRegistrationForm(initial={'project_id': form.cleaned_data['project_id']})
         return render_to_response('datasender_form.html',
                 {'form': form, 'message': message, 'entity_links': entity_links},
@@ -164,6 +174,19 @@ def edit_data_sender(request, reporter_id):
 
                     message = _("Your changes have been saved.")
 
+                    detail_dict = {"Unique ID": reporter_id}
+                    current_lang = get_language()
+                    activate("en")
+                    field_mapping = dict(mobile_number="telephone_number")
+                    for field in ["geo_code", "location", "mobile_number", "name"]:
+                        if getattr(reporter_entity, field) != form.cleaned_data.get(field_mapping.get(field, field)):
+                            label = u"%s" % form.fields[field_mapping.get(field, field)].label
+                            detail_dict.update({label: form.cleaned_data.get(field_mapping.get(field, field))})
+                    activate(current_lang)
+                    if len(detail_dict) > 1 :
+                        detail_as_string = json.dumps(detail_dict)
+                        UserActivityLog().log(request, action='Edited Data Sender', detail=detail_as_string)
+
             except MangroveException as exception:
                 message = exception.message
 
@@ -186,6 +209,7 @@ def create_type(request):
             create_registration_form(manager, entity_name)
             message = _("Entity definition successful")
             success = True
+            UserActivityLog().log(request, action='Added Subject Type', detail=entity_name[0].capitalize())
         except EntityTypeAlreadyDefined:
             if request.POST["referer"] == 'project':
                 message = _("%s already registered as a subject type. Please select %s from the drop down menu.") % (
@@ -208,6 +232,17 @@ def all_subjects(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_entities = import_module.import_data(request, manager,
             default_parser=XlsOrderedParser)
+        if len(imported_entities) !=0 :
+            detail_dict = dict()
+            for short_code,entity_type in imported_entities.items():
+                entity_type = entity_type.capitalize()
+                if detail_dict.get(entity_type) is not None:
+                    detail_dict.update({entity_type: detail_dict.get(entity_type).append(short_code)})
+                else:
+                    detail_dict.update({entity_type: [short_code]})
+            for key,detail in detail_dict.items():
+                detail_dict.update({key: "[%s]" % ", ".join(detail)})
+            UserActivityLog().log(request, action='Imported Subjects', detail=json.dumps(detail_dict))
         subjects_data = import_module.load_all_subjects(manager)
         return HttpResponse(json.dumps(
                 {'success': error_message is None and is_empty(failure_imports), 'message': success_message,
@@ -240,6 +275,7 @@ def delete_entity(request):
     organization = get_organization(request)
     transport_info = TransportInfo("web", request.user.username, "")
     entity_type = request.POST['entity_type']
+    project = request.POST.get("project", "")
     all_ids = request.POST['all_ids'].split(';')
     ngo_admin_user_profile = get_ngo_admin_user_profiles_for(organization)[0]
     if ngo_admin_user_profile.reporter_id in all_ids:
@@ -252,6 +288,11 @@ def delete_entity(request):
             delete_datasender_users_if_any(all_ids, organization)
             if organization.in_trial_mode:
                 delete_datasender_for_trial_mode(manager, all_ids, entity_type)
+            action = "Deleted Data Senders"
+        else:
+            action = "Deleted Subjects"
+        UserActivityLog().log(request, action=action, detail="%s: [%s]" % (entity_type.capitalize(), ", ".join(all_ids)),
+                              project=project.capitalize())
         messages.success(request, get_success_message(entity_type))
     return HttpResponse(json.dumps({'success': True}))
 
@@ -347,6 +388,9 @@ def all_datasenders(request):
     if request.method == 'POST':
         error_message, failure_imports, success_message, imported_datasenders = import_module.import_data(request,
             manager, default_parser=XlsDatasenderParser)
+        if len(imported_datasenders.keys()):
+            UserActivityLog().log(request, action="Imported Data Senders",
+                detail=json.dumps(dict({"Unique ID": "[%s]" % ", ".join(imported_datasenders.keys())})))
         all_data_senders = _get_all_datasenders(manager, projects, request.user)
         mobile_number_index = fields.index('mobile_number')
         add_imported_data_sender_to_trial_organization(request, imported_datasenders,
@@ -373,10 +417,15 @@ def all_datasenders(request):
 def disassociate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = _get_projects(manager, request)
-
+    projects_name = []
     for project in projects:
         [project.data_senders.remove(id) for id in request.POST['ids'].split(';') if id in project.data_senders]
         project.save(manager)
+        projects_name.append(project.name.capitalize())
+    ids = request.POST["ids"].split(";")
+    if len(ids):
+        UserActivityLog().log(request, action="Removed Data Sender from Project",
+            detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids), "Projects": "[%s]" % ", ".join(projects_name)}))
     return HttpResponse(reverse(all_datasenders))
 
 
@@ -398,9 +447,15 @@ def _get_projects(manager, request):
 def associate_datasenders(request):
     manager = get_database_manager(request.user)
     projects = _get_projects(manager, request)
+    projects_name = []
     for project in projects:
         project.data_senders.extend([id for id in request.POST['ids'].split(';') if not id in project.data_senders])
+        projects_name.append(project.name.capitalize())
         project.save(manager)
+    ids = request.POST["ids"].split(';')
+    if len(ids):
+        UserActivityLog().log(request, action="Added Data Senders to Projects",
+            detail=json.dumps({"Unique ID": "[%s]" % ", ".join(ids), "Projects": "[%s]" % ", ".join(projects_name)}))
     return HttpResponse(reverse(all_datasenders))
 
 
@@ -561,6 +616,8 @@ def create_subject(request, entity_type=None):
                 ReportRouter().route(get_organization(request).org_id, response)
                 success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                     response.short_code,)
+                detail_dict = dict({"Subject Type":entity_type.capitalize(), "Unique ID": response.short_code})
+                UserActivityLog().log(request, action='Registered Subject', detail=json.dumps(detail_dict))
                 questionnaire_form = QuestionnaireForm()
             else:
                 from datawinners.project.helper import errors_to_list
@@ -642,10 +699,12 @@ def save_questionnaire(request):
         saved_short_code = request.POST['saved-questionnaire-code'].lower()
 
         form_model = get_form_model_by_code(manager, saved_short_code)
+        detail_dict = dict()
         if new_short_code != saved_short_code:
             try:
                 form_model.form_code = new_short_code
                 form_model.save()
+                detail_dict.update({"form_code": new_short_code})
             except DataObjectAlreadyExists as e:
                 if e.message.find("Form") >= 0:
                     return HttpResponse(json.dumps({'success': False,
@@ -655,8 +714,16 @@ def save_questionnaire(request):
         json_string = request.POST['question-set']
         question_set = json.loads(json_string)
         try:
+            saved_fields = form_model.fields
             QuestionnaireBuilder(form_model, manager).update_questionnaire_with_questions(question_set)
             form_model.save()
+            changed = get_changed_questions(saved_fields, form_model.fields, form_model.activeLanguages[0])
+            changed.update(dict(entity_type=form_model.entity_type[0].capitalize()))
+            detail_dict.update(changed)
+            kwargs = dict()
+            if request.POST.get("project-name") is not None:
+                kwargs.update(dict(project=request.POST.get("project-name").capitalize()))
+            UserActivityLog().log(request, action='Edited Registration Form', detail=json.dumps(detail_dict), **kwargs)
             return HttpResponse(json.dumps({'success': True, 'form_code': form_model.form_code}))
         except QuestionCodeAlreadyExistsException as e:
             return HttpResponse(json.dumps({'success': False, 'error_message': _(e.message)}))

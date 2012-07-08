@@ -76,6 +76,7 @@
         <option value="makewebuser">{% trans "Give Web Submission Access" %}</option>
         <option value="delete">{% trans "Delete" %}</option>
     </select>
+
     <div class="data-sender-table-wrapper">
         <table id='associated_data_senders' class="styled_table">
             <thead>
@@ -129,6 +130,7 @@
         <a href="#" class="cancel_link">{% trans "Cancel" %}</a>
     </div>
     <input type="text" value="{{ project.id }}" class="none" id="project_id"/>
+    <input type="hidden" value="{{ project.name }}" id="project_name"/>
     <div id="popup-import">
         {% include "import-datasenders.html" %}
     </div>

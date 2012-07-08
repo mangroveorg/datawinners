@@ -4405,10 +4405,100 @@ msgid "The imported file is empty."
 msgstr "Le fichier importé est vide."
 
 msgid "Back to Subject List"
-msgstr ""
+msgstr "Retour à la liste des sujets"
 
 msgid "change_event_time_field_message"
 msgstr "Traduisez ou reformulez cette question si besoin. Mais ne changez pas sa signification. Vous pouvez aussi supprimez cette question si vous n'en avez pas besoin pour votre projet."
 
 msgid "Invalid email address."
 msgstr "Adresse email invalide."
+
+msgid "Activity Log"
+msgstr "Journal des activités"
+
+msgid "Created Project"
+msgstr "A créé un projet"
+
+msgid "Activated Project"
+msgstr "A activé un projet"
+
+msgid "Deleted Project"
+msgstr "A supprimé un projet"
+
+msgid "All Actions"
+msgstr "Toute les actions"
+
+msgid "Date Range"
+msgstr "Intervalle de dates"
+
+msgid "Account Administration"
+msgstr "Administration compte"
+
+msgid "Added User"
+msgstr "A ajouté un utilisateur"
+
+msgid "Changed Account Information"
+msgstr "A changé les informations du compte"
+
+msgid "Added Subject Type"
+msgstr "A ajouté un type de sujet"
+
+msgid "Edited Registration Form"
+msgstr "A edité le formulaire d'enregistrement"
+
+msgid "Registered Subject"
+msgstr "A enregistré un sujet"
+
+msgid "Imported Subjects"
+msgstr "A importé des sujets"
+
+msgid "Deleted Subjects"
+msgstr "A supprimé des sujets"
+
+msgid "Registered Data Sender"
+msgstr "A enregistré un expéditeur"
+
+msgid "Imported Data Senders"
+msgstr "A importé des expéditeurs"
+
+msgid "Edited Data Sender"
+msgstr "A edité un expéditeur"
+
+msgid "Deleted Data Senders"
+msgstr "A supprimé des expéditeurs"
+
+msgid "Added Data Senders to Projects"
+msgstr "A ajouté des expéditeurs à des projets"
+
+msgid "Removed Data Sender from Project"
+msgstr "A enlevé un expéditeur à un projet"
+
+msgid "Data Submissions"
+msgstr "Soumissions de données"
+
+msgid "Deleted Data Submission"
+msgstr "A supprimé une soumission de données"
+
+msgid "Activated Reminders"
+msgstr "A activé les rappels"
+
+msgid "De-Activated Reminders"
+msgstr "A desactivé les rappels"
+
+msgid "Set Deadline"
+msgstr "A fixé la date limite"
+
+msgid "Subject Type"
+msgstr "Type de sujet"
+
+msgid "Deleted Questions"
+msgstr "Questions supprimées"
+
+msgid "Added Questions"
+msgstr "Questions ajoutées"
+
+msgid "Answer type changed to %(answer_type)s for \"%(question_label)s\""
+msgstr "Type de réponse changé en %(answer_type)s pour \"%(question_label)s\""
+
+msgid "Question Labels Changed"
+msgstr "Libellés de questions changés"

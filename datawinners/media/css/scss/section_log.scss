@@ -1,0 +1,16 @@
+#filterlog tr{
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    td {
+        border: none;
+        input[text]{
+            height: 18px;
+        }
+        select{
+            width: 130px;
+        }
+        .button_blue{
+            margin-top: 16px
+        }
+    }
+}

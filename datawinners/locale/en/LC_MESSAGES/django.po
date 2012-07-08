@@ -4355,3 +4355,93 @@ msgstr "Translate or re-word this question if needed, but donʼt change its mean
 
 msgid "Invalid email address."
 msgstr ""
+
+msgid "Activity Log"
+msgstr ""
+
+msgid "Created Project"
+msgstr ""
+
+msgid "Activated Project"
+msgstr ""
+
+msgid "Deleted Project"
+msgstr ""
+
+msgid "All Actions"
+msgstr ""
+
+msgid "Date Range"
+msgstr ""
+
+msgid "Account Administration"
+msgstr ""
+
+msgid "Added User"
+msgstr ""
+
+msgid "Changed Account Information"
+msgstr ""
+
+msgid "Added Subject Type"
+msgstr ""
+
+msgid "Edited Registration Form"
+msgstr ""
+
+msgid "Registered Subject"
+msgstr ""
+
+msgid "Imported Subjects"
+msgstr ""
+
+msgid "Deleted Subjects"
+msgstr ""
+
+msgid "Registered Data Sender"
+msgstr ""
+
+msgid "Imported Data Senders"
+msgstr ""
+
+msgid "Edited Data Sender"
+msgstr ""
+
+msgid "Deleted Data Senders"
+msgstr ""
+
+msgid "Added Data Senders to Projects"
+msgstr ""
+
+msgid "Removed Data Sender from Project"
+msgstr ""
+
+msgid "Data Submissions"
+msgstr ""
+
+msgid "Deleted Data Submission"
+msgstr ""
+
+msgid "Activated Reminders"
+msgstr ""
+
+msgid "De-Activated Reminders"
+msgstr ""
+
+msgid "Set Deadline"
+msgstr ""
+
+msgid "Subject Type"
+msgstr ""
+
+msgid "Deleted Questions"
+msgstr ""
+
+msgid "Added Questions"
+msgstr ""
+
+msgid "Answer type changed to %(answer_type)s for \"%(question_label)s\""
+msgstr ""
+
+msgid "Questions Labels Changed"
+msgstr ""

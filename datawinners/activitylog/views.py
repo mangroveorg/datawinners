@@ -1,0 +1,38 @@
+from datawinners.accountmanagement.views import is_not_expired
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template.context import RequestContext
+from django.shortcuts import render_to_response
+from datawinners.activitylog.forms import LogFilterForm
+from datawinners.activitylog.models import UserActivityLog
+from datawinners.utils import convert_dmy_to_ymd
+from datetime import date
+from mangrove.utils.json_codecs import encode_json
+
+
+@login_required(login_url='/login')
+@csrf_exempt
+@is_not_expired
+def show_log(request):
+    args = dict()
+    if request.method == 'GET':
+        form = LogFilterForm(request=request)
+    else:
+        form = LogFilterForm(request.POST, request=request)
+        filter = form.data.copy()
+        args = dict()
+        filter.pop("csrfmiddlewaretoken")
+        for key,value in filter.items():
+            if value != "":
+                if key == "daterange":
+                    dates = value.split(" / ")
+                    args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
+                    try:
+                        args["log_date__lte"] = convert_dmy_to_ymd(dates[1])
+                    except KeyError:
+                        args["log_date__lte"] = date.today()
+                    continue
+                args[key] = value
+    log_data = UserActivityLog.objects.select_related().filter(**args).order_by("-log_date")
+    return render_to_response("activitylog/activitylog.html", {'form': form, 'log_data': repr(encode_json([log.to_render() for log in log_data]))}, context_instance=RequestContext(request))

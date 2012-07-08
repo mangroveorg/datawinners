@@ -82,3 +82,44 @@ def send_reset_password_email(user, language_code):
 
 def _get_email_template_name_for_reset_password(language):
     return 'registration/password_reset_email_' + unicode(language) + '.html'
+
+def convert_dmy_to_ymd(str_date):
+    date = datetime.strptime(str_date, "%d-%m-%Y")
+    return datetime.strftime(date, "%Y-%m-%d")
+
+def get_changed_questions(olds, news, language):
+    i_old = 0
+    deleted = []
+    added = []
+    changed = []
+    changed_type = []
+    if olds[-1].label.get(language) != news[-1].label.get(language):
+        changed.append(news[-1].label.get(language))
+    olds = olds[:-1]
+    news = news[:-1]
+    for i_new, new in enumerate(news):
+        while True:
+            try:
+                if new.name == olds[i_old].name:
+                    if new.label.get(language) != olds[i_old].label.get(language):
+                        changed.append(new.label.get(language))
+                    elif new.type != olds[i_old].type:
+                        changed_type.append(dict({"label": new.label.get(language), "type": new.type}))
+                    i_old += 1
+                    break
+                deleted.append(olds[i_old].label.get(language))
+                i_old += 1
+            except IndexError:
+                added.append(new.label.get(language))
+                break
+
+    if i_old < len(olds) :
+        for key, old in enumerate(olds[i_old:]):
+            deleted.append(old.label.get(language))
+
+    all_type_dict = dict(changed=changed, changed_type=changed_type, added=added, deleted=deleted)
+    return_dict = dict()
+    for type, value in all_type_dict.items():
+        if len(value) != 0:
+            return_dict.update({type: value})
+    return return_dict

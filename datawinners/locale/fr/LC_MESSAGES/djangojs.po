@@ -162,7 +162,7 @@ msgid "Year to date"
 msgstr "Du début de l'année à date"
 
 msgid "Date Range"
-msgstr "Intervalle de date"
+msgstr "Intervalle de dates"
 
 #: media/javascript/project/datasender.js:7
 msgid "Add A Data Sender"

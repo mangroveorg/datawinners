@@ -22,6 +22,7 @@ from datawinners.utils import get_organization
 from mangrove.form_model.form_model import  FormModel
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
+from datawinners.activitylog.models import UserActivityLog
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -102,6 +103,7 @@ def create_project(request):
 
             try:
                 project.save(manager)
+                UserActivityLog().log(request, action='Created project', project=project.name, detail=project.name)
             except DataObjectAlreadyExists as ex:
                 questionnaire.delete()
                 message  = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
@@ -153,6 +155,7 @@ def edit_project(request, project_id=None):
 
             try:
                 project.save(manager)
+
             except DataObjectAlreadyExists as ex:
                 message  = _("%s with %s = %s already exists.") % (_(ex.data[2]), _(ex.data[0]), "'%s'" % project.name)
                 return HttpResponse(json.dumps({'success': False ,'error_message': message, 'error_in_project_section': True}))

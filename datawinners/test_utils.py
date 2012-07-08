@@ -57,3 +57,7 @@ class TestUtils(unittest.TestCase):
         mock_profile.org_id = Mock(return_value=org_id)
         request.user.get_profile = Mock(return_value=mock_profile)
         return request
+
+    def test_should_return_ymd(self):
+        result = utils.convert_dmy_to_ymd("06-07-2012")
+        self.assertEquals(result, "2012-07-06")

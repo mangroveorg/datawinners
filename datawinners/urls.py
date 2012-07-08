@@ -15,6 +15,7 @@ js_info_dict = {
 urlpatterns = patterns('',
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
                        (r'', include('datawinners.accountmanagement.urls')),
+                       (r'', include('datawinners.activitylog.urls')),
                        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
                        (r'', include('datawinners.project.urls')),
                        (r'', include('datawinners.smstester.urls')),
