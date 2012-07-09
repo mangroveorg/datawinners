@@ -15,7 +15,7 @@ function main {
 		pc) pre_commit;;
 		ut) unit_test;;
 		ft) function_test;;
-		rd) restore_database;;
+		rd) restore_postgresql_database;;
 		us) update_source;;
 		*) show_help && exit 1;;
 	esac	

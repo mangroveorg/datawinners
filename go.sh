@@ -52,6 +52,7 @@ function init_env {
 	bash -c dw
 	prepare_env && \
 	(cd "$DWROOT_DIR/datawinners" &&  python manage.py compilemessages) && \
+	restore_postgresql_database && \
 	unit_test && function_test
 }
 
