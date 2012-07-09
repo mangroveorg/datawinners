@@ -208,8 +208,14 @@ def reminder_settings(request, project_id):
         if form.is_valid():
             org_id = NGOUserProfile.objects.get(user = request.user).org_id
             organization = Organization.objects.get(org_id = org_id)
-            project = _add_reminder_info_to_project(form.cleaned_data, project, organization)
+            reminder_list = Reminder.objects.filter(project_id = project.id)
+            action = _get_activity_log_action(reminder_list, form.cleaned_data)
+            project, set_deadline = _add_reminder_info_to_project(form.cleaned_data, project, organization, reminder_list=reminder_list)
             project.save(dbm)
+            if action is not None:
+                UserActivityLog().log(request, action=action, project=project.name.capitalize())
+            if set_deadline:
+                UserActivityLog().log(request, action="Set Deadline", project=project.name.capitalize())
             messages.success(request, _("Reminder settings saved successfully."))
             return HttpResponseRedirect('')
         else:
@@ -228,8 +234,6 @@ def _reminder_info_about_project(project):
         else:
             data['deadline_week'] = deadline_information['deadline_week']
         data['deadline_type'] = deadline_information['deadline_type']
-        data['deadline_type_week'] = deadline_information['deadline_type']
-        data['deadline_type_month'] = deadline_information['deadline_type']
         reminder_before_deadline = Reminder.objects.filter(reminder_mode=ReminderMode.BEFORE_DEADLINE, project_id=project.id)
         if  reminder_before_deadline.count()>0:
             data['should_send_reminders_before_deadline'] = True
@@ -264,20 +268,26 @@ def _reminder_info_about_project(project):
 
     return data
 
-def _add_reminder_info_to_project(cleaned_data, project, organization):
+def _add_reminder_info_to_project(cleaned_data, project, organization, reminder_list=None):
+    set_deadline = False
     if project['reminder_and_deadline']['has_deadline']:
         project['reminder_and_deadline']['frequency_period'] = cleaned_data['frequency_period']
         if cleaned_data['frequency_period'] == 'month':
             if project['reminder_and_deadline'].get('deadline_week'):
                 del project['reminder_and_deadline']['deadline_week']
+                set_deadline = True
             project['reminder_and_deadline']['deadline_month'] = cleaned_data['deadline_month']
         else:
             if project['reminder_and_deadline'].get('deadline_month'):
                 del project['reminder_and_deadline']['deadline_month']
+                set_deadline = True
             project['reminder_and_deadline']['deadline_week'] = cleaned_data['deadline_week']
+        if project['reminder_and_deadline']['deadline_type'] != cleaned_data['deadline_type']:
+            set_deadline = True
         project['reminder_and_deadline']['deadline_type'] = cleaned_data['deadline_type']
 
-        reminder_list = Reminder.objects.filter(project_id = project.id)
+        if reminder_list is None:
+            reminder_list = Reminder.objects.filter(project_id = project.id)
         reminder_list.delete()
 
         if cleaned_data['should_send_reminders_before_deadline']:
@@ -299,4 +309,17 @@ def _add_reminder_info_to_project(cleaned_data, project, organization):
         reminder_list = Reminder.objects.filter(project_id = project.id)
         reminder_list.delete()
 
-    return project
+    return project, set_deadline
+
+def _get_activity_log_action(reminder_list, new_value):
+    action = None
+    if reminder_list.count() == 0 and (new_value['should_send_reminders_after_deadline'] or
+                                       new_value['should_send_reminders_on_deadline'] or
+                                       new_value['should_send_reminders_before_deadline']) :
+        action = "Activated Reminders"
+    if reminder_list.count() > 0 and not (new_value['should_send_reminders_after_deadline'] or
+                                       new_value['should_send_reminders_on_deadline'] or
+                                       new_value['should_send_reminders_before_deadline']):
+        action = "De-Activated Reminders"
+    return action
+    
