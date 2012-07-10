@@ -11,7 +11,6 @@ $(document).ready(function() {
         open: function(){
             $(".questionnaire_preview1").load(questionnaire_preview_link, function() {
                 $('.printBtn').addClass('none');
-                $('.displayText').hide();
                 $('.questionnaire-code').text($('#questionnaire-code').text())
             });
         }

@@ -8,6 +8,9 @@
 .preview_block {
   text-align: right; }
 
+.questionnaire_preview1 {
+  border: solid 1px #ccc; }
+
 #questionnaire_preview {
   margin-left: 10px; }
   #questionnaire_preview .questionnaire_preview > li {

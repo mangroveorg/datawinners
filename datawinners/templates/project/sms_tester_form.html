@@ -1,26 +1,26 @@
 {% load i18n %}
 <div class="sms_tester_form none">
-    <div class="content italic padding_bottom_10">
-        {% trans "Answer the questions in your SMS Questionnaire. Then, follow the Example SMS Answer Format to type the SMS into the phone. Note, you can also use your own mobile phone" %}
-    </div>
     <table class="no_border">
         <tr>
-            <td width="50%">
-                <h4>1. {% trans "Answer the Questions" %}</h4>
+            <td width="55%">
+                <h4>1. {% trans "View the SMS Questionnaire" %}</h4>
             </td>
-            <td width="50%">
-                <h4>2. {% trans "Send all your Answers in a single SMS" %}</h4>
+            <td width="45%">
+                <h4>2. {% trans "Send your Answers" %}</h4>
             </td>
         </tr>
     </table>
-    <table>
+    <table class="no_border">
         <tr>
-            <td width="50%">
+            <td width="55%">
                 <div class="questionnaire_preview1">
                 </div>
             </td>
 
-            <td width="50%">
+            <td width="45%" class="padding_top_null">
+                <div class="content italic padding_bottom_10">
+                    {% trans "Use the phone below or your own mobile phone to send in your test answers." %}
+                </div>
                 <div class="mobile_container">
                     <div class="mobile_image">
                         <div class="margin_left_20 mobile_block">

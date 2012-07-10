@@ -980,7 +980,7 @@ def questionnaire_preview(request, project_id=None, sms_preview = False):
             form_model.form_code)
         example_sms += get_example_sms(fields)
 
-        template = 'project/questionnaire_preview.html' if sms_preview else 'project/questionnaire_preview_list.html'
+        template = 'project/questionnaire_preview.html'
         return render_to_response(template,
                 {"questions": questions, 'questionnaire_code': form_model.form_code,
                  'project': project, 'project_links': project_links,
