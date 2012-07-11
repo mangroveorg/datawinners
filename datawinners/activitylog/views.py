@@ -6,16 +6,18 @@ from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 from datawinners.activitylog.forms import LogFilterForm
 from datawinners.activitylog.models import UserActivityLog
-from datawinners.utils import convert_dmy_to_ymd
+from datawinners.utils import convert_dmy_to_ymd, get_organization
 from datetime import date
 from mangrove.utils.json_codecs import encode_json
+from django.utils.translation import ugettext
 
 
 @login_required(login_url='/login')
 @csrf_exempt
 @is_not_expired
 def show_log(request):
-    args = dict()
+    org_id = get_organization(request).org_id
+    args = dict(organization=org_id)
     if request.method == 'GET':
         form = LogFilterForm(request=request)
     else:
@@ -26,7 +28,7 @@ def show_log(request):
         for key,value in filter.items():
             if value != "":
                 if key == "daterange":
-                    dates = value.split(" / ")
+                    dates = value.split(" %s " % ugettext("to"))
                     args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
                     try:
                         args["log_date__lte"] = convert_dmy_to_ymd(dates[1])

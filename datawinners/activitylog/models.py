@@ -118,5 +118,5 @@ class UserActivityLog(models.Model):
             return "<br/>".join(detail_list)
 
     def to_render(self):
-        return [self.user.last_name.capitalize(), self.translated_action(), self.project.capitalize(),
-                self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")] 
+        return ["%s %s" % (self.user.first_name.capitalize(), self.user.last_name.capitalize()), self.translated_action(),
+                self.project.capitalize(), self.translated_detail(), datetime.strftime(self.log_date,  "%d.%m.%Y %R")]

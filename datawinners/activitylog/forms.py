@@ -18,9 +18,16 @@ class LogFilterForm(forms.Form):
         assert request is not None
         forms.Form.__init__(self, *args, **kwargs)
         org_id = request.user.get_profile().org_id
-        users_rs = NGOUserProfile.objects.filter(org_id=org_id).order_by("-user__first_name")
+
+        users_rs = NGOUserProfile.objects.select_related().\
+            extra(select={'lower_username': 'lower(auth_user.first_name)||lower(auth_user.last_name)'}).\
+            filter(org_id=org_id).order_by("lower_username")
+
         all_users = [("",_("All Users"))]
-        all_users.extend([(user.user.id, user.user.last_name.capitalize())  for user in users_rs])
+
+        all_users.extend([(user.user.id, "%s %s" % (user.user.first_name.capitalize(),user.user.last_name.capitalize()))
+            for user in users_rs])
+
         self.fields["user"].choices = all_users
         project_choices = [("", _("All Projects"))]
         projects = get_all_projects(get_database_manager(request.user))

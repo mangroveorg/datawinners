@@ -10,7 +10,7 @@ $(document).ready(function(){
         presetRanges: [],
         presets: {dateRange: gettext('Date Range')},
         dateFormat:'dd-mm-yy',
-        rangeSplitter:'/'
+        rangeSplitter:gettext("to")
     });
 
     $('#log_data').dataTable({
