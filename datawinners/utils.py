@@ -123,3 +123,12 @@ def get_changed_questions(olds, news, language):
         if len(value) != 0:
             return_dict.update({type: value})
     return return_dict
+
+def generate_project_name(projects_name):
+    default_name = _("Untitled Project")
+    current_project = unicode(default_name)
+    i = 1
+    while current_project.lower() in projects_name:
+        current_project = u"%s - %d" % (default_name, i)
+        i += 1
+    return current_project

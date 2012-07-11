@@ -11,14 +11,14 @@ from datawinners.accountmanagement.views import is_datasender
 from datawinners.main.utils import get_database_manager
 from datawinners.project import helper
 from datawinners.project.forms import CreateProject, ReminderForm
-from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode
+from datawinners.project.models import Project, ProjectState, Reminder, ReminderMode, get_all_projects
 from mangrove.datastore.entity_type import get_all_entity_types
 from mangrove.errors.MangroveException import DataObjectAlreadyExists, QuestionCodeAlreadyExistsException, EntityQuestionAlreadyExistsException, QuestionAlreadyExistsException
 from django.contrib import messages
 from mangrove.form_model.field import field_to_json
 from mangrove.utils.types import is_string
 from django.utils.translation import ugettext as _
-from datawinners.utils import get_organization
+from datawinners.utils import get_organization, generate_project_name
 from mangrove.form_model.form_model import  FormModel
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
@@ -62,12 +62,14 @@ def create_project(request):
     manager = get_database_manager(request.user)
     entity_list = get_all_entity_types(manager)
     entity_list = helper.remove_reporter(entity_list)
-    name = ugettext_lazy("Create a New Project")
+    projects = get_all_projects(get_database_manager(request.user))
+    all_projects_name = [prj["value"]["name"] for prj in projects]
+    name = generate_project_name(all_projects_name)
     project_summary = dict(name=name)
     ngo_admin = NGOUserProfile.objects.get(user=request.user)
 
     if request.method == 'GET':
-        form = CreateProject(entity_list=entity_list)
+        form = CreateProject(entity_list=entity_list, initial={'name':name})
         activity_report_questions = json.dumps(helper.get_activity_report_questions(manager), default=field_to_json)
         subject_report_questions = json.dumps(helper.get_subject_report_questions(manager), default=field_to_json)
         return render_to_response('project/create_project.html',

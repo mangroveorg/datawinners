@@ -61,3 +61,8 @@ class TestUtils(unittest.TestCase):
     def test_should_return_ymd(self):
         result = utils.convert_dmy_to_ymd("06-07-2012")
         self.assertEquals(result, "2012-07-06")
+
+    def test_project_name_generator(self):
+        projects_name = [ "test project", "untitled project"]
+        generated = utils.generate_project_name(projects_name)
+        self.assertEqual("Untitled Project - 1", unicode(generated))

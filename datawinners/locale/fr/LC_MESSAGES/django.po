@@ -4502,3 +4502,6 @@ msgstr "Type de réponse changé en %(answer_type)s pour \"%(question_label)s\""
 
 msgid "Question Labels Changed"
 msgstr "Libellés de questions changés"
+
+msgid "Untitled Project"
+msgstr "Projet sans titre"
