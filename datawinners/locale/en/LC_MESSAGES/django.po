@@ -1977,6 +1977,18 @@ msgstr ""
 msgid "page to view submission status)"
 msgstr ""
 
+#: templates/project/sms_tester_form.html:6
+msgid "View the SMS Questionnaire"
+msgstr ""
+
+#: templates/project/sms_tester_form.html:6
+msgid "Send your Answers"
+msgstr ""
+
+#: templates/project/sms_tester_form.html:6
+msgid "Use the phone below or your own mobile phone to send in your test answers."
+msgstr ""
+
 #: templates/project/subjects.html:34
 #: templates/project/subjects_wizard.html:51
 msgid "Review the questions by clicking on each"

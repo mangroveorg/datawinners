@@ -2005,6 +2005,18 @@ msgstr "Toutes les données "
 msgid "page to view submission status)"
 msgstr "pour voir l'état de votre envoi)"
 
+#: templates/project/sms_tester_form.html:6
+msgid "View the SMS Questionnaire"
+msgstr "Voyez votre Questionnaire SMS"
+
+#: templates/project/sms_tester_form.html:6
+msgid "Send your Answers"
+msgstr "Envoyez vos Réponses"
+
+#: templates/project/sms_tester_form.html:6
+msgid "Use the phone below or your own mobile phone to send in your test answers."
+msgstr "Utilisez le téléphone ci-dessous ou votre propre téléphone mobile pour envoyer vos réponses test."
+
 #: templates/project/subjects.html:34
 #: templates/project/subjects_wizard.html:51
 msgid "Review the questions by clicking on each"
