@@ -37,17 +37,6 @@ class TestCreateProject(BaseTest):
                                  fetch_(PAGE_TITLE, from_(VALID_DATA)))
 
     @attr('functional_test')
-    def test_create_project_without_entering_data(self):
-        """
-        Function to test the error message on the set up project page while
-        creation of project
-        """
-        create_project_page = self.prerequisites_of_create_project()
-        create_project_page.continue_create_project()
-        self.assertEqual(create_project_page.get_error_message(),
-                         fetch_(ERROR_MSG, from_(BLANK_FIELDS)))
-
-    @attr('functional_test')
     def test_sms_preview_of_questionnaire_when_create_project(self):
         create_project_page = self.prerequisites_of_create_project()
         create_project_page.create_project_with(VALID_DATA)
