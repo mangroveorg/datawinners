@@ -215,9 +215,9 @@ def reminder_settings(request, project_id):
             project, set_deadline = _add_reminder_info_to_project(form.cleaned_data, project, organization, reminder_list=reminder_list)
             project.save(dbm)
             if action is not None:
-                UserActivityLog().log(request, action=action, project=project.name.capitalize())
+                UserActivityLog().log(request, action=action, project=project.name)
             if set_deadline:
-                UserActivityLog().log(request, action="Set Deadline", project=project.name.capitalize())
+                UserActivityLog().log(request, action="Set Deadline", project=project.name)
             messages.success(request, _("Reminder settings saved successfully."))
             return HttpResponseRedirect('')
         else:

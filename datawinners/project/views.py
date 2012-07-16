@@ -273,7 +273,7 @@ def project_results(request, project_id=None, questionnaire_code=None):
             submission.void()
             ReportRouter().delete(get_organization(request).org_id,submission.form_code,submission.data_record.id)
         if len(received_times):
-            UserActivityLog().log(request, action="Deleted Data Submission", project=project.name.capitalize(),
+            UserActivityLog().log(request, action="Deleted Data Submission", project=project.name,
                                   detail=json.dumps({"Date Received": "[%s]" % ", ".join(received_times)}))
         count, submissions, error_message = _get_submissions(manager, questionnaire_code, request)
         submission_display = helper.adapt_submissions_for_template(questionnaire.fields, submissions)
@@ -924,7 +924,7 @@ def web_questionnaire(request, project_id=None, subject=False):
                     success_message = (_("Successfully submitted. Unique identification number(ID) is:") + " %s") % (
                         response.short_code,)
                     detail_dict = dict({"Subject Type":project.entity_type.capitalize(), "Unique ID": response.short_code})
-                    UserActivityLog().log(request, action='Registered Subject', project=project.name.capitalize(),
+                    UserActivityLog().log(request, action='Registered Subject', project=project.name,
                                           detail=json.dumps(detail_dict))
                 else:
                     success_message = _("Successfully submitted")

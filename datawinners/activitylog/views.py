@@ -31,9 +31,9 @@ def show_log(request):
                     dates = value.split(" %s " % ugettext("to"))
                     args["log_date__gte"] = convert_dmy_to_ymd(dates[0])
                     try:
-                        args["log_date__lte"] = convert_dmy_to_ymd(dates[1])
+                        args["log_date__lte"] = "%s 23:59:59" % convert_dmy_to_ymd(dates[1])
                     except KeyError:
-                        args["log_date__lte"] = date.today()
+                        args["log_date__lte"] = "%s 23:59:59" % date.today()
                     continue
                 args[key] = value
     log_data = UserActivityLog.objects.select_related().filter(**args).order_by("-log_date")
