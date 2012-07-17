@@ -2277,7 +2277,7 @@ msgid "%s already registered as a subject type."
 msgstr "Le type de sujet %s existe déja."
 
 msgid "Entity with Unique Identification Number (ID) = %s already exists."
-msgstr "L'entité avec le numéro d'identification unique (ID) =% s existe déjà."
+msgstr "Une entité avec le numéro d'identification unique (ID) =% s existe déjà."
 
 msgid "answer"
 msgstr "réponse"
@@ -4520,3 +4520,6 @@ msgstr "Projet sans titre"
 
 msgid "to"
 msgstr "au"
+
+msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
+msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe déjà."

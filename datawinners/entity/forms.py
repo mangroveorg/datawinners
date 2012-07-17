@@ -58,6 +58,10 @@ class ReporterRegistrationForm(Form):
         error_messages={
             'invalid': _('Enter a valid email address. Example:name@organization.com')})
 
+    short_code = RegexField("^[a-zA-Z0-9]+$", label=_("Unique ID"), required=False,
+                             widget=TextInput(attrs=dict({'class': 'subject_field','disabled':'disabled'})),
+                             error_message=_("Only letters and numbers are valid"))
+
 #    Needed for telephone number validation
     org_id = None
 

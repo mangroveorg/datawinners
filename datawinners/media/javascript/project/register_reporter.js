@@ -60,7 +60,14 @@ $(document).ready(function () {
                 sms_device.checked();
                 sms_device.disable();
                 email.setVisibility();
-
+                $("#generate_id").unbind().click(function() {
+                    if($(this).is(":checked")) {
+                        $(".subject_field").attr("disabled", "disabled");
+                        $(".subject_field").val('');
+                    } else {
+                        $(".subject_field").removeAttr("disabled");
+                    }
+                });
             },
             error:function (e) {
                 $("#message-label").show().html("<label class='error_message'>" + e.responseText + "</label>");

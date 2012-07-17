@@ -6,7 +6,7 @@
 <input id='post_url' type="hidden" value="{{ post_url }}"/>
   <div class="application_register">
       {% if message %}
-           <div id="flash-message" class="success-message-box">
+           <div id="flash-message" class="{% if success %}success-message-box{% else %}message-box{% endif %}">
                {{ message }}
            </div>
       {% endif %}
@@ -60,6 +60,7 @@
                       {{ form.location.label_tag }}
                       {{ form.location }}
                       {{ form.location.errors }}
+                  </li>
                   <li class="italic_grey margin_bottom_5 instruction_text">
                       {% trans "location_name_example" %}
                   </li>
@@ -80,6 +81,14 @@
                       {{ form.project_id.as_hidden }}
                   </li>
               </ul>
+          </li>
+          <li class="{{ form.short_code.css_classes }} form-row-10px">
+              {{ form.short_code.label_tag }}
+              {{ form.short_code }}
+              <input type="checkbox" id="generate_id" name="generate_id" value="" checked="checked" />
+              <span>{% trans "Let us generate an ID for you" %}</span>
+
+              {{ form.short_code.errors }}
           </li>
           <li class="button_block">
               <a href="/entity/datasenders/" class="cancel_link">{% trans "Cancel" %}</a>

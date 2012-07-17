@@ -4463,3 +4463,6 @@ msgstr ""
 
 msgid "to"
 msgstr ""
+
+msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
+msgstr ""

@@ -167,7 +167,8 @@ def process_create_data_sender_form(dbm, form, org_id):
             if organization.in_trial_mode:
                 add_data_sender_to_trial_organization(form.cleaned_data["telephone_number"], org_id)
             web_player = WebPlayer(dbm, LocationBridge(location_tree=get_location_tree(), get_loc_hierarchy=get_location_hierarchy))
-            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name()),
+            reporter_id = form.cleaned_data["short_code"] if form.cleaned_data != "" else None
+            response = web_player.accept(Request(message=_get_data(form.cleaned_data, organization.country_name(), reporter_id),
                 transportInfo=TransportInfo(transport='web', source='web', destination='mangrove')))
             if response.success:
                 data_sender_id = response.short_code
