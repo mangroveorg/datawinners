@@ -79,7 +79,7 @@ EXISTING_EMAIL_ADDRESS = {ORGANIZATION_NAME: u"NGO 001",
                           REGISTRATION_PASSWORD: u"ngo001",
                           REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
 
-EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address.Invoice Period Monthly: $ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 765 per month Save 10% by paying 6 months in advance This field is required."
+EXISTING_EMAIL_ADDRESS_ERROR_MESSAGE = u"Office Phone Number optional Please enter a valid phone number.Email address This email address is already in use. Please supply a different email address.Invoice Period Monthly: $ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 359 per month Save 10% by paying 6 months in advance This field is required."
 
 INVALID_EMAIL_FORMAT = {ORGANIZATION_NAME: u"NGO 001",
                         ORGANIZATION_SECTOR: u"PublicHealth",
@@ -117,7 +117,7 @@ UNMATCHED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                       REGISTRATION_PASSWORD: u"password",
                       REGISTRATION_CONFIRM_PASSWORD: u"different_password"}
 
-UNMATCHED_PASSWORD_ERROR_MESSAGE = u"Password The two password fields didn't match. Example: Minimum of 6 characters in lengthInvoice Period Monthly: $ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 765 per month Save 10% by paying 6 months in advance This field is required."
+UNMATCHED_PASSWORD_ERROR_MESSAGE = u"Password The two password fields didn't match. Example: Minimum of 6 characters in lengthInvoice Period Monthly: $ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 359 per month Save 10% by paying 6 months in advance This field is required."
 
 WITHOUT_ENTERING_REQUIRED_FIELDS = {ORGANIZATION_NAME: u"",
                                     ORGANIZATION_SECTOR: u"PublicHealth",
@@ -154,7 +154,7 @@ WITHOUT_PREFERRED_PAYMENT = {ORGANIZATION_NAME: u"ÑGÓ 001",
                                                  REGISTRATION_CONFIRM_PASSWORD: u"ngo001",
                                                  PAY_MONTHLY: PAY_MONTHLY}
 
-WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal \/ Zip Code This field is required.Country.*Islands This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword \(again\) This field is required.Invoice Period Monthly: \$ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:\$ 765 per month Save 10% by paying 6 months in advance This field is required."
+WITHOUT_ENTERING_REQUIRED_FIELDS_ERROR_MESSAGE = u"Organization Name This field is required.Address This field is required.City This field is required.Postal \/ Zip Code This field is required.Country.*Islands This field is required.First name This field is required.Last name This field is required.Email address This field is required.Password This field is required. Example: Minimum of 6 characters in lengthPassword \(again\) This field is required.Invoice Period Monthly: \$ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:\$ 359 per month Save 10% by paying 6 months in advance This field is required."
 
 INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        ORGANIZATION_SECTOR: u"PublicHealth",
@@ -173,7 +173,7 @@ INVALID_WEBSITE_URL = {ORGANIZATION_NAME: u"NGO 001",
                        REGISTRATION_PASSWORD: u"ngo001",
                        REGISTRATION_CONFIRM_PASSWORD: u"ngo001"}
 
-INVALID_WEBSITE_URL_ERROR_MESSAGE= u"Office Phone Number optional Please enter a valid phone number.Website optional Enter a valid URL. Example: www.organization.comInvoice Period Monthly: $ 850 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 765 per month Save 10% by paying 6 months in advance This field is required."
+INVALID_WEBSITE_URL_ERROR_MESSAGE= u"Office Phone Number optional Please enter a valid phone number.Website optional Enter a valid URL. Example: www.organization.comInvoice Period Monthly: $ 399 per month Renews automatically each month. Cancel at any time without penalty. 6 months:$ 359 per month Save 10% by paying 6 months in advance This field is required."
 
 BEGIN_END_SPACED_PASSWORD = {ORGANIZATION_NAME: u"NGO 001",
                       ORGANIZATION_SECTOR: u"PublicHealth",

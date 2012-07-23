@@ -3069,10 +3069,10 @@ msgstr ""
 msgid "Invoice Period"
 msgstr ""
 
-msgid "<div class='radio_title'>Monthly: $ 850 per month</div><div class='subtitle_for_radio_button pay_monthly'></div>"
+msgid "<div class='radio_title'>Monthly: $ 399 per month</div><div class='subtitle_for_radio_button pay_monthly'></div>"
 msgstr ""
 
-msgid "<div class='radio_title'>6 months:$ 765 per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> "
+msgid "<div class='radio_title'>6 months:$ 359 per month</div><div class='subtitle_for_radio_button pay_half_yearly'></div> "
 msgstr ""
 
 msgid "Preferred Payment"
