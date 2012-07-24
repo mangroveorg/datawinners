@@ -4523,3 +4523,6 @@ msgstr "au"
 
 msgid "Data Sender with Unique Identification Number (ID) = %s already exists."
 msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe déjà."
+
+msgid "What do you want to do?"
+msgstr "Qu'est ce que vous voulez faire?"
