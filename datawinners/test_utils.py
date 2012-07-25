@@ -66,3 +66,19 @@ class TestUtils(unittest.TestCase):
         projects_name = [ "test project", "untitled project"]
         generated = utils.generate_project_name(projects_name)
         self.assertEqual("Untitled Project - 1", unicode(generated))
+
+    def test_should_find_changed_questions(self):
+        old_questionnaire = [dict({'label': dict({'en': 'question1'}), 'language': 'en', 'name': 'quest1', 'type': 'text'}),
+                             dict({'label': dict({'en': 'old question1'}), 'language': 'en', 'name': 'old1', 'type': 'int'}),
+            ]
+
+        self.old_questionnaire = [type('Field', (object, ), question) for question in old_questionnaire]
+        
+        new_questionnaire = [dict({'label': dict({'en': 'new question1'}), 'language': 'en', 'name': 'quest1', 'type': 'text'}),
+                dict({'label': dict({'en': 'old question1'}), 'language': 'en', 'name': 'old1', 'type': 'int'}),
+                dict({'label': dict({'en': 'new question'}), 'language': 'en', 'name': 'quest2', 'type': 'text'})
+            ]
+        self.new_questionnaire = [type('Field', (object, ), question) for question in new_questionnaire]
+        changed_questionnaire = utils.get_changed_questions(self.old_questionnaire, self.new_questionnaire, subject=False)
+        self.assertEqual(changed_questionnaire["added"], ['new question'])
+        self.assertEqual(changed_questionnaire["changed"], ['new question1'])

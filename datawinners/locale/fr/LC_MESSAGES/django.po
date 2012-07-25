@@ -4513,7 +4513,7 @@ msgid "Answer type changed to %(answer_type)s for \"%(question_label)s\""
 msgstr "Type de réponse changé en %(answer_type)s pour \"%(question_label)s\""
 
 msgid "Question Labels Changed"
-msgstr "Libellés de questions changés"
+msgstr "Questions reformulées"
 
 msgid "Untitled Project"
 msgstr "Projet sans titre"
@@ -4526,3 +4526,6 @@ msgstr "Un expéditeur avec le numéro d'identification unique (ID) =% s existe 
 
 msgid "What do you want to do?"
 msgstr "Qu'est ce que vous voulez faire?"
+
+msgid "Edited Project"
+msgstr "A edité un projet"

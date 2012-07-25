@@ -23,6 +23,7 @@ from mangrove.form_model.form_model import  FormModel
 from datawinners.questionnaire.questionnaire_builder import QuestionnaireBuilder
 from datawinners.accountmanagement.views import is_not_expired
 from datawinners.activitylog.models import UserActivityLog
+from datawinners.utils import get_changed_questions
 
 def create_questionnaire(post, manager, entity_type, name, language):
     entity_type = [entity_type] if is_string(entity_type) else entity_type
@@ -144,11 +145,19 @@ def edit_project(request, project_id=None):
         project_info = json.loads(request.POST['profile_form'])
         form = CreateProject(entity_list, data=project_info)
         if form.is_valid():
+            detail = dict()
+            for key, changed in enumerate(form.changed_data):
+                if getattr(project, changed) != form.cleaned_data.get(changed):
+                    detail.update({changed.capitalize():form.cleaned_data.get(changed)})
             project.update(form.cleaned_data)
             try:
+                old_questionnaire = questionnaire.fields
                 questionnaire = update_questionnaire(questionnaire, request.POST, form.cleaned_data['entity_type'], form.cleaned_data['name'], manager, form.cleaned_data['language'])
+                changed_questions = get_changed_questions(old_questionnaire, questionnaire.fields, subject=False)
+                detail.update(changed_questions)
                 project.state = request.POST['project_state']
                 project.qid = questionnaire.save()
+                UserActivityLog().log(request, project=project.name, action="Edited Project", detail=json.dumps(detail))
             except (QuestionCodeAlreadyExistsException, QuestionAlreadyExistsException, EntityQuestionAlreadyExistsException) as ex:
                 return HttpResponse(json.dumps({'success': False, 'error_in_project_section': False ,'error_message': _(ex.message)}))
             except DataObjectAlreadyExists:

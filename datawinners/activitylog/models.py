@@ -16,6 +16,7 @@ action_list = (
     (_('Project'),(
         ('Created Project', _('Created Project')),
         ('Activated Project', _('Activated Project')),
+        ('Edited Project', _('Edited Project')),
         ('Deleted Project', _('Deleted Project'))
     )),
 
@@ -83,39 +84,56 @@ class UserActivityLog(models.Model):
             except KeyError:
                 pass
 
-            for type in ["added", "deleted"]:
-                try:
-                    str = '<ul class="bulleted">'
-                    for item in detail_dict[type]:
-                        str += "<li>%s</li>" % item
-                    str += "</ul>"
-                    detail_list.append( "%s: %s" % (ugettext("%s Questions" % type.capitalize()), str))
-                except KeyError:
-                    pass
+            detail_list.append(self._get_questionnaire_detail(detail_dict))
 
+        elif self.action == "Edited Project" :
+            questionnaire_detail = [self._get_questionnaire_detail(detail_dict)]
+            for type in ["changed","added","changed_type", "deleted"]:
+                try:
+                    detail_dict.pop(type)
+                except:
+                    pass
+            detail_list = self._get_detail(detail_dict)
+            detail_list.extend(questionnaire_detail)
+        else:
+            detail_list = self._get_detail(detail_dict)
+        return "<br/>".join(detail_list)
+
+    def _get_questionnaire_detail(self, detail_dict):
+        detail_list = []
+        for type in ["added", "deleted"]:
             try:
                 str = '<ul class="bulleted">'
-                for changed in detail_dict["changed"]:
-                    str += "<li>%s</li>" % changed
+                for item in detail_dict[type]:
+                    str += "<li>%s</li>" % item
                 str += "</ul>"
-                detail_list.append("%s: %s" % (ugettext("Questions Labels Changed"), str))
+                detail_list.append( "%s: %s" % (ugettext("%s Questions" % type.capitalize()), str))
             except KeyError:
                 pass
 
-            try:
-                for type_changed in detail_dict["changed_type"]:
-                    detail_dict.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"' %
-                                                (type_changed.type, type_changed.label)))
-            except KeyError:
-                pass
+        try:
+            str = '<ul class="bulleted">'
+            for changed in detail_dict["changed"]:
+                if changed is not None:
+                    str += "<li>%s</li>" % changed
+            str += "</ul>"
+            detail_list.append("%s: %s" % (ugettext("Question Labels Changed"), str))
+        except KeyError:
+            pass
 
-            return "<br/>".join(detail_list)
-            
-        else: #self.action.find("Changed") != -1 or self.action.find("Edited") != -1:
-            detail_list = []
-            for key,changed in detail_dict.items():
-                detail_list.append("%s: %s" % (ugettext(key),  changed))
-            return "<br/>".join(detail_list)
+        try:
+            for type_changed in detail_dict["changed_type"]:
+                detail_dict.append(ugettext('Answer type changed to %(answer_type)s for \"%(question_label)s\"' %
+                                            (type_changed.type, type_changed.label)))
+        except KeyError:
+            pass
+        return "<br/>".join(detail_list)
+
+    def _get_detail(self, detail_dict):
+        detail_list = []
+        for key,changed in detail_dict.items():
+            detail_list.append("%s: %s" % (ugettext(key),  changed))
+        return detail_list
 
     def to_render(self):
         return ["%s %s" % (self.user.first_name.capitalize(), self.user.last_name.capitalize()), self.translated_action(),

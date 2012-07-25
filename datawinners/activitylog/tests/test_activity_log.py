@@ -17,9 +17,6 @@ class TestUserActivityLog(unittest.TestCase):
     def setUp(self):
         pass
 
-    def tearDown(self):
-        self.matched.delete()
-
     def test_should_log_activity(self):
         request = Mock()
         request.user = self.user
@@ -32,4 +29,11 @@ class TestUserActivityLog(unittest.TestCase):
             inserted = self.matched[0]
             self.assertEquals(len(self.matched), 1)
             self.assertEquals(datetime.strftime(inserted.log_date, "%Y-%m-%d"), datetime.strftime(date.today(), "%Y-%m-%d"))
+            self.matched.delete()
+
+    def test_should_return_the_translated_detail(self):
+        from datawinners.activitylog.models import UserActivityLog
+        log = UserActivityLog(project='untitled', detail=u'{"deleted": ["added", "new add"]}', action="Edited Project")
+
+        self.assertEqual(log.translated_detail(), u'Deleted Questions: <ul class="bulleted"><li>added</li><li>new add</li></ul>')
 

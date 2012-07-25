@@ -87,30 +87,33 @@ def convert_dmy_to_ymd(str_date):
     date = datetime.strptime(str_date, "%d-%m-%Y")
     return datetime.strftime(date, "%Y-%m-%d")
 
-def get_changed_questions(olds, news, language):
+def get_changed_questions(olds, news, language=None, new_language=None, subject=True):
     i_old = 0
     deleted = []
     added = []
     changed = []
     changed_type = []
-    if olds[-1].label.get(language) != news[-1].label.get(language):
-        changed.append(news[-1].label.get(language))
-    olds = olds[:-1]
-    news = news[:-1]
+    if new_language is None: new_language = news[0].language
+    if language is None: language = olds[0].language
+    if subject:
+        if olds[-1].label.get(language) != news[-1].label.get(new_language):
+            changed.append(news[-1].label.get(new_language))
+        olds = olds[:-1]
+        news = news[:-1]
     for i_new, new in enumerate(news):
         while True:
             try:
                 if new.name == olds[i_old].name:
-                    if new.label.get(language) != olds[i_old].label.get(language):
-                        changed.append(new.label.get(language))
+                    if new.label.get(new_language) != olds[i_old].label.get(language):
+                        changed.append(new.label.get(new_language))
                     elif new.type != olds[i_old].type:
-                        changed_type.append(dict({"label": new.label.get(language), "type": new.type}))
+                        changed_type.append(dict({"label": new.label.get(new_language), "type": new.type}))
                     i_old += 1
                     break
                 deleted.append(olds[i_old].label.get(language))
                 i_old += 1
             except IndexError:
-                added.append(new.label.get(language))
+                added.append(new.label.get(new_language))
                 break
 
     if i_old < len(olds) :
