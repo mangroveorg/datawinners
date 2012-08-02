@@ -114,10 +114,18 @@ def adapt_submissions_for_template(questions, submissions):
         formatted_list.append(
             [each.uuid, each.destination, each.source, each.created, each.errors, "Success" if each.status else "Error"] +
             ["Yes" if is_submission_deleted(each.data_record) else "No"] + [
-            case_insensitive_dict.get(q.code.lower(), '--') for q in questions])
+            _get_according_value(case_insensitive_dict, q) for q in questions])
 
     return [tuple(each) for each in formatted_list]
 
+def _get_according_value(value_dict, question):
+    value = value_dict.get(question.code.lower(), '--')
+    if value != '--' and question.type in ['select1', 'select']:
+        value_list = []
+        for response in value:
+            value_list.extend([opt['text'][question.language] for opt in question.options if opt['val'] == response])
+        return ", ".join(value_list)
+    return value
 
 def generate_questionnaire_code(dbm):
     all_projects_count = models.count_projects(dbm)
