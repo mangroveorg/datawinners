@@ -644,3 +644,6 @@ msgstr "Veuillez choisir un seul sujet"
 
 msgid "to"
 msgstr "au"
+
+msgid "This question is a duplicate"
+msgstr "Cette question est un doublon"

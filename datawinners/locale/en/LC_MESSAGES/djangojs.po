@@ -633,3 +633,6 @@ msgstr ""
 
 msgid "to"
 msgstr ""
+
+msgid "This question is a duplicate"
+msgstr ""

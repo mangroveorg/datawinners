@@ -138,6 +138,21 @@ $(document).ready(function() {
         return num != 0;
     }, gettext("Answer cannot be of length less than 1"));
 
+    $.validator.addMethod('duplicate', function(value, element, params) {
+        var val = $('#' + element.id).val();
+        var valid = true;
+        if (!questionnaireViewModel.hasAddedNewQuestions)
+            return true;
+        for(index in questionnaireViewModel.questions()){
+            var question = questionnaireViewModel.questions()[index];
+            if (question != questionnaireViewModel.selectedQuestion() && question.display().toLowerCase() == val.toLowerCase()){
+                valid = false;
+                break;
+            }
+        }
+        return valid;
+    }, gettext("This question is a duplicate"));
+
     $("#question_form").validate({
         messages: {
             max_length:{
@@ -145,9 +160,6 @@ $(document).ready(function() {
             }
         },
         rules: {
-            question_title:{
-                required: true
-            },
             code:{
                 required: true,
                 spacerule: true,
@@ -176,6 +188,8 @@ $(document).ready(function() {
             error.addClass('error_arrow');  // add a class to the wrapper
         }
     });
+
+    $("#question_title").rules("add", {duplicate: true})
 
     $('input[name=type]:radio').change(
         function() {
