@@ -56,6 +56,10 @@ function init_env {
 	unit_test && function_test
 }
 
+function compile_messages {
+    cd "$DWROOT_DIR/datawinners" && python manage.py compilemessages
+}
+
 function show_help {
 	echo "Usage: build.sh [COMMAND]"
 	echo "COMMAND"
@@ -64,5 +68,6 @@ function show_help {
 	echo "ft: \tthis will run all the function test"
 	echo "rd: \tdestory and recreate database"
 	echo "us: \tupdate source codes of mangrove and datawinners"
+	echo "cm: \tcimpile the django.po"
 	echo "init: \t initialize environment for the first time"
 }
