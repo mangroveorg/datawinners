@@ -1,3 +1,5 @@
+from urllib2 import urlopen
+from simplejson.decoder import JSONDecoder
 from framework.base_test import BaseTest
 from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
@@ -7,12 +9,11 @@ from pages.createquestionnairepage.create_questionnaire_page import CreateQuesti
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url, DATA_WINNER_HOST, DATA_WINNER_PORT
 from tests.dataextractionapitests.data_extraction_api_data import *
 
 
 class DataExtractionAPITestCase(BaseTest):
-
     def login(self):
         self.driver.go_to(DATA_WINNER_LOGIN_PAGE)
         login_page = LoginPage(self.driver)
@@ -23,15 +24,16 @@ class DataExtractionAPITestCase(BaseTest):
         add_subject_type_page = AddSubjectTypePage(self.driver)
         add_subject_type_page.click_on_accordian_link()
         self.subject_type = SUBJECT_TYPE + generateId()
+        self.subject_type = self.subject_type.strip()
         add_subject_type_page.add_entity_type_with(self.subject_type)
 
     def prepare_subject(self):
-        self.driver.go_to(DATA_WINNER_ADD_SUBJECT +self.subject_type)
+        self.driver.go_to(DATA_WINNER_ADD_SUBJECT + self.subject_type)
         add_subject_page = AddSubjectPage(self.driver)
         add_subject_page.add_subject_with(VALID_DATA)
         add_subject_page.submit_subject()
         flash_message = add_subject_page.get_flash_message()
-        self.subject_id = flash_message[flash_message.find(":") + 1 :]
+        self.subject_id = flash_message[flash_message.find(":") + 1:].strip()
 
     def create_project(self):
         self.driver.go_to(DATA_WINNER_DASHBOARD_PAGE)
@@ -67,5 +69,11 @@ class DataExtractionAPITestCase(BaseTest):
         self.activate_project()
         self.submit_data()
 
+    def get_data_by_uri(self, uri):
+        http_response = urlopen(url(uri))
+        return JSONDecoder.decode(http_response.read())
+
     def test_get_data_by_subject_type_and_subject_id(self):
         self.prepare_submission_data()
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s" % (self.subject_type, self.subject_id))
+        self.assertTrue(isinstance(result, list))
