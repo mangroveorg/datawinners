@@ -64,3 +64,7 @@ class WebSubmissionPage(Page):
     def navigate_to_smart_phone_instruction(self):
         self.driver.find(SMARTPHONE_NAV).click()
         return SmartPhoneInstructionPage(self.driver)
+
+    def fill_and_submit_answer(self, answer):
+        self.fill_questionnaire_with(answer)
+        self.submit_answers()

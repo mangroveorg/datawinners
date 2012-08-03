@@ -3,6 +3,7 @@ import time
 from pages.dataanalysispage.data_analysis_locator import *
 from pages.page import Page
 from pages.submissionlogpage.submission_log_page import SubmissionLogPage
+from pages.websubmissionpage.web_submission_page import WebSubmissionPage
 from tests.dataanalysistests.data_analysis_data import CURRENT_MONTH, LAST_MONTH, YEAR_TO_DATE
 
 
@@ -145,3 +146,7 @@ class DataAnalysisPage(Page):
         Function to navigate on next data records page
         """
         self.driver.find(NEXT_BUTTON).click()
+
+    def navigate_to_web_submission_tab(self):
+        self.driver.find(by_css('.secondary_tab>li:nth-child(4) a')).click()
+        return WebSubmissionPage(self.driver)

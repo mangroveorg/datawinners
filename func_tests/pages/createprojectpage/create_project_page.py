@@ -40,7 +40,7 @@ class CreateProjectPage(Page):
         except KeyError:
             gen_random = False
         if gen_random:
-            project_name = project_name + generateId()
+            project_name += generateId()
         self.driver.find_text_box(PROJECT_NAME_TB).enter_text(project_name)
 
     def create_project_with(self, project_data):
