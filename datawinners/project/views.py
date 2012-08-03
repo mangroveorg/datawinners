@@ -422,7 +422,7 @@ def export_log(request):
         raw_data_list.extend(
             [[submission.destination, submission.source, submission.created, ugettext(str(submission.status)),
               ugettext(str(submission.data_record.is_void() if submission.data_record is not None else True)),
-              submission.errors] + [submission.values.get(q.code.lower()) for q in questionnaire.fields] for submission
+              submission.errors] + [helper.get_according_value(submission.values, q) for q in questionnaire.fields] for submission
              in submissions])
 
     file_name = request.GET.get(u"project_name") + '_log'
