@@ -152,6 +152,7 @@ class TestAllDataSender(unittest.TestCase):
         message = add_data_sender_page.get_success_message()
         self.assertRegexpMatches(message, fetch_(SUCCESS_MSG, from_(VALID_DATA)))
         self.assertNotEqual(message.split()[-1], fetch_(UID, from_(DELETE_DATA_SENDER)))
+        self.driver.wait_until_modal_dismissed(10)
         global_navigation.sign_out()
 
         self.send_sms(VALID_SMS, sms_tester_page)

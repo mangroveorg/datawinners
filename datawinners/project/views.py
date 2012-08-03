@@ -416,7 +416,7 @@ def export_log(request):
 
     header_list = [ugettext("To"), ugettext("From"), ugettext("Date Received"), ugettext("Submission status"),
                    ugettext("Deleted Record"), ugettext("Errors")]
-    header_list.extend([field.code for field in questionnaire.fields])
+    header_list.extend([field.label.get(field.language) for field in questionnaire.fields])
     raw_data_list = [header_list]
     if count:
         raw_data_list.extend(
