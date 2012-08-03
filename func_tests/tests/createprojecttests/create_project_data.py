@@ -15,6 +15,7 @@ SURVEY = "survey"
 PUBLIC_INFO = "public information"
 DATA_SENDER_WORK = "data sender work"
 OTHER_SUBJECT = "other subject"
+WARNING_MESSAGE = "warning_message"
 
 VALID_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
               PROJECT_BACKGROUND: "This project is created by functional automation suite.",
@@ -22,7 +23,9 @@ VALID_DATA = {PROJECT_NAME: "Reporter Activities ", GEN_RANDOM: True,
               SUBJECT: "",
               REPORT_TYPE: "data sender work",
               DEVICES: "sms",
-              PAGE_TITLE: "Projects - Overview"}
+              PAGE_TITLE: "Projects - Overview",
+              WARNING_MESSAGE:
+                  u"Translate or re-word this question if needed, but donʼt change its meaning. You can also delete the question if you donʼt need it for your project."}
 
 VALID_DATA2 = {PROJECT_NAME: "Water Point2 Morondava ", GEN_RANDOM: True,
                PROJECT_BACKGROUND: "This project is created by functional automation suite.",

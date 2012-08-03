@@ -182,3 +182,9 @@ class CreateProjectPage(Page):
             project_details[SUBJECT] = ""
         #project_details[DEVICES] = self.get_devices()
         return project_details
+
+    def select_predefined_periodicity_question_text(self):
+        self.driver.find_text_box(by_css("#question_title")).click()
+
+    def get_warning_message(self):
+        return self.driver.find(by_css("#periode_green_message")).text

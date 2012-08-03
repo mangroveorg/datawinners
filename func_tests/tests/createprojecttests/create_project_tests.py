@@ -73,3 +73,12 @@ class TestCreateProject(BaseTest):
         preview_navigation_page = PreviewNavigationPage(self.driver)
         smart_phone_instruction_page = preview_navigation_page.smart_phone_preview()
         self.assertIsNotNone(smart_phone_instruction_page.get_smart_phone_instruction())
+
+    @attr('functional_test')
+    def test_warning_message_when_Osi_change_pre_defined_periodicity_question(self):
+        create_project_page = self.prerequisites_of_create_project()
+        create_project_page.create_project_with(VALID_DATA)
+        create_project_page.continue_create_project()
+        create_project_page.select_predefined_periodicity_question_text()
+        warning_message = create_project_page.get_warning_message()
+        self.assertEqual(warning_message, fetch_(WARNING_MESSAGE, from_(VALID_DATA)))
