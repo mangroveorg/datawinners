@@ -5,7 +5,6 @@ function(doc) {
         var entity = doc.entity;
         var entity_type = entity.aggregation_paths['_type'];
         var entity_id = entity.short_code;
-        var form_code = doc.submission.form_code;
         var data = {};
         for (k in doc.data) {
             value = doc.data[k].value;
