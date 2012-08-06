@@ -1,5 +1,5 @@
+import json
 from urllib2 import urlopen
-from simplejson.decoder import JSONDecoder
 from framework.base_test import BaseTest
 from framework.utils.common_utils import generateId
 from framework.utils.data_fetcher import fetch_, from_
@@ -9,7 +9,7 @@ from pages.createquestionnairepage.create_questionnaire_page import CreateQuesti
 from pages.dashboardpage.dashboard_page import DashboardPage
 from pages.loginpage.login_page import LoginPage
 from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
-from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url, DATA_WINNER_HOST, DATA_WINNER_PORT
+from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
 
 
@@ -71,9 +71,46 @@ class DataExtractionAPITestCase(BaseTest):
 
     def get_data_by_uri(self, uri):
         http_response = urlopen(url(uri))
-        return JSONDecoder.decode(http_response.read())
 
-    def test_get_data_by_subject_type_and_subject_id(self):
+        return json.loads(http_response.read())
+
+    def test_get_data_for_subject(self):
         self.prepare_submission_data()
-        result = self.get_data_by_uri("/api/get_for_subject/%s/%s" % (self.subject_type, self.subject_id))
-        self.assertTrue(isinstance(result, list))
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % (self.subject_type, self.subject_id))
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 5)
+        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/%s/%s" % (self.subject_type, self.subject_id, "03-08-2012", "03-08-2012"))
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 1)
+        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/%s/%s" % (self.subject_type, self.subject_id, "03-08-2012", "06-08-2012"))
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 4)
+        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % ("not_exist", "001"))
+        self.assertFalse(result['success'])
+        self.assertEqual(result['message'], "Entity type [not_exist] is not defined.")
+
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % (self.subject_type, "not_exist"))
+        self.assertFalse(result['success'])
+        self.assertEqual(result['message'], "Entity [not_exist] is not registered.")
+
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/%s/%s" % (self.subject_type, self.subject_id, "03082012", "06082012"))
+        self.assertFalse(result['success'])
+        self.assertEqual(result['message'], "The format of start and end date should be DD-MM-YYYY.")
+
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/%s/%s" % (self.subject_type, self.subject_id, "06-08-2012", "03-08-2012"))
+        self.assertFalse(result['success'])
+        self.assertEqual(result['message'], "Start date must before end date.")
+
+

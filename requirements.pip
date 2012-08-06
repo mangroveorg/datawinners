@@ -4,6 +4,7 @@ https://github.com/nose-devs/nose/zipball/master
 CouchDB==0.8
 coverage==3.4
 simplejson
+jsonpickle
 ipython
 mock
 selenium==2.16
