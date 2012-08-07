@@ -10,3 +10,8 @@ def get_for_subject(request, subject_type, subject_id, start_date=None, end_date
         data_for_subject = encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
         return convert_to_json_response(data_for_subject)
     return HttpResponse("Error. Only support GET method.")
+
+def get_for_form(request, form_code):
+    if request.method == 'GET':
+        return HttpResponse("success")
+    return HttpResponse("Error. Only support GET method.")
