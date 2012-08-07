@@ -389,3 +389,6 @@ class CreateQuestionnairePage(CreateProjectPage):
 
     def go_back(self):
         self.driver.find(BACK_LINK).click()
+
+    def get_questionnaire_code(self):
+        return self.driver.find_text_box(QUESTIONNAIRE_CODE_TB).get_attribute("value")

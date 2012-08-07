@@ -58,6 +58,7 @@ class DataExtractionAPITestCase(BaseTest):
         create_project_page.create_project_with(VALID_PROJECT_DATA)
         create_project_page.continue_create_project()
         create_questionnaire_page = CreateQuestionnairePage(cls.driver)
+        cls.questionnaire_code = create_questionnaire_page.get_questionnaire_code()
         create_questionnaire_page.add_question(QUESTION)
         create_questionnaire_page.save_and_create_project_successfully()
         cls.driver.wait_for_page_with_title(15, fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
