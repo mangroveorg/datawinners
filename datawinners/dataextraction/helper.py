@@ -18,11 +18,24 @@ def get_data_for_subject(dbm, subject_type, subject_id, start_date=None, end_dat
 
     return [row["value"] for row in rows]
 
+def get_data_for_form(dbm, form_code):
+    start_key = [form_code]
+    end_key = [form_code, {}]
+
+    rows = dbm.load_all_rows_in_view('form_data_by_form_code_time', startkey=start_key, endkey=end_key)
+
+    return [row["value"] for row in rows]
+
 def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
     result = validate(dbm, subject_type, subject_id, start_date, end_date)
     if not result.success:
         return result
     result.value = get_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
+    return result
+
+def encapsulate_data_for_form(dbm, form_code):
+    result = DataExtractionResult()
+    result.value = get_data_for_form(dbm, form_code)
     return result
 
 def validate(dbm, subject_type, subject_id, start_date=None, end_date=None):

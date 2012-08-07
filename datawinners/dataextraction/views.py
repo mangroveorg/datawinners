@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from dataextraction.helper import  encapsulate_data_for_subject, convert_to_json_response
+from dataextraction.helper import  encapsulate_data_for_subject, convert_to_json_response, encapsulate_data_for_form
 from main.utils import get_database_manager
 
 def get_for_subject(request, subject_type, subject_id, start_date=None, end_date=None):
@@ -13,5 +13,8 @@ def get_for_subject(request, subject_type, subject_id, start_date=None, end_date
 
 def get_for_form(request, form_code):
     if request.method == 'GET':
-        return HttpResponse("success")
+        user = User.objects.filter(email="tester150411@gmail.com")[0]
+        dbm = get_database_manager(user)
+        data_for_form = encapsulate_data_for_form(dbm, form_code)
+        return convert_to_json_response(data_for_form)
     return HttpResponse("Error. Only support GET method.")

@@ -3,8 +3,7 @@ from mangrove.datastore.database import DatabaseManager
 from mock import Mock
 from mock import patch
 from dataextraction.models import DataExtractionResult
-from dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject
-
+from dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject, get_data_for_form, encapsulate_data_for_form
 
 class TestHelper(TestCase):
 
@@ -41,7 +40,7 @@ class TestHelper(TestCase):
             self.assertTrue(isinstance(subject_data, list))
             self.assertEqual(2, len(subject_data))
 
-    def test_should_return_data_with_success_status_and_value(self):
+    def test_should_return_data_with_success_status_and_value_for_subject(self):
         dbm = Mock()
         with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
             get_data_for_subject.return_value = [ {"What is the GPS code for clinic?": [79.2, 20.34567]},
@@ -116,4 +115,23 @@ class TestHelper(TestCase):
                     self.assertEqual(data_for_subject.message, "Start date must before end date.")
                     self.assertEqual(0, len(data_for_subject.value))
 
+    def test_should_return_data_of_form_by_form_code(self):
+        dbm = Mock(spec=DatabaseManager)
+        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+            load_all_rows_in_view.return_value =  [{"id": "1", "key": [["clinic"], "cid001", 1],
+                                                    "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}},
+                    {"id": "1", "key": [["clinic"], "cid001", 1],
+                     "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}}]
+            form_data = get_data_for_form(dbm, "cli")
+            self.assertTrue(isinstance(form_data, list))
+            self.assertEqual(2, len(form_data))
 
+    def test_should_return_data_with_success_status_and_value_for_form(self):
+        dbm = Mock()
+        with patch("dataextraction.helper.get_data_for_form") as get_data_for_form:
+            get_data_for_form.return_value = [ {"What is the GPS code for clinic?": [79.2, 20.34567]},
+                    {"What is the GPS code for clinic?": [79.2, 20.34567]}]
+            data_for_form = encapsulate_data_for_form(dbm, "cli")
+            self.assertIsInstance(data_for_form, DataExtractionResult)
+            self.assertTrue(data_for_form.success)
+            self.assertEqual(2, len(data_for_form.value))
