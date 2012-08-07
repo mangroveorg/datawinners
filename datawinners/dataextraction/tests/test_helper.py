@@ -87,7 +87,7 @@ class TestHelper(TestCase):
                     data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001", "03082012", "06082012")
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
                     self.assertFalse(data_for_subject.success)
-                    self.assertEqual(data_for_subject.message, "The format of start and end date should be DD-MM-YYYY.")
+                    self.assertEqual(data_for_subject.message, "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
                     self.assertEqual(0, len(data_for_subject.value))
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_date(self):

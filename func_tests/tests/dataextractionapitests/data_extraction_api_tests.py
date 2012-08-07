@@ -145,7 +145,7 @@ class DataExtractionAPITestCase(BaseTest):
             "/api/get_for_subject/%s/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "03082012", "06082012"))
         self.assertFalse(result['success'])
-        self.assertEqual(result['message'], "The format of start and end date should be DD-MM-YYYY.")
+        self.assertEqual(result['message'], "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_wrong_date(self):

@@ -37,7 +37,7 @@ def validate(dbm, subject_type, subject_id, start_date=None, end_date=None):
         return result
     if not check_start_and_end_date_format(start_date, end_date):
         result.success = False
-        result.message = "The format of start and end date should be DD-MM-YYYY."
+        result.message = "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
         return result
     if not check_start_before_end(start_date, end_date):
         result.success = False
