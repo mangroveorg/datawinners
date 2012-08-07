@@ -14,7 +14,7 @@ class TestDataExtraction(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.content, "Error. Only support GET method.")
 
-    def test_should_get_subject_data_by_subject_and_date(self):
+    def test_should_get_subject_data_by_subject_and_dates(self):
         response = self.client.get('/api/get_for_subject/clinic/cid001/03-08-2012/06-08-2012/')
         self.assertEquals(response.status_code, 200)
 
@@ -24,4 +24,8 @@ class TestDataExtraction(TestCase):
 
     def test_should_get_form_data_by_form_code(self):
         response = self.client.get('/api/get_for_form/cli/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_should_get_form_data_by_form_code_and_dates(self):
+        response = self.client.get('/api/get_for_form/cli/03-08-2012/06-08-2012/')
         self.assertEquals(response.status_code, 200)

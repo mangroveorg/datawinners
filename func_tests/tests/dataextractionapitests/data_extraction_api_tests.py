@@ -181,3 +181,14 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(len(value), 4)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+
+    @attr('functional_test')
+    def test_get_data_for_form_with_form_code_and_same_date(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, '03-08-2012', '03-08-2012'))
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 1)
+        self.assertEqual(result["message"], "You can access the data in value field.")
+        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
