@@ -108,6 +108,17 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
+    def test_get_data_for_subject_with_subject_type_and_subject_id_without_data_return(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_subject/%s/%s/%s/%s" % (
+                self.__class__.subject_type, self.__class__.subject_id, "02-08-2012", "02-08-2012"))
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 0)
+        self.assertEqual(result["message"], "No submission data under this subject during this period.")
+
+    @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_same_date(self):
         result = self.get_data_by_uri(
             "/api/get_for_subject/%s/%s/%s/%s" % (

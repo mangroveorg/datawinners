@@ -54,6 +54,20 @@ class TestHelper(TestCase):
                     self.assertTrue(data_for_subject.success)
                     self.assertEqual(2, len(data_for_subject.value))
 
+    def test_should_return_data_with_success_status_and_no_data_message_for_subject_when_no_data(self):
+        dbm = Mock()
+        with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
+            get_data_for_subject.return_value = []
+            with patch("dataextraction.helper.entity_type_already_defined") as entity_type_already_defined:
+                entity_type_already_defined.return_value = True
+                with patch("dataextraction.helper.check_if_subject_exists") as check_if_subject_exists:
+                    check_if_subject_exists.return_value = True
+                    data_for_subject = encapsulate_data_for_subject(dbm, "clinic", "cid001")
+                    self.assertIsInstance(data_for_subject, DataExtractionResult)
+                    self.assertTrue(data_for_subject.success)
+                    self.assertEqual(0, len(data_for_subject.value))
+                    self.assertEqual("No submission data under this subject during this period.", data_for_subject.message)
+
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_type(self):
         dbm = Mock()
         with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:
