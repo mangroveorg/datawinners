@@ -17,3 +17,7 @@ class TestDataExtraction(TestCase):
     def test_should_get_data_by_subject_and_date(self):
         response = self.client.get('/api/get_for_subject/clinic/cid001/03-08-2012/06-08-2012/')
         self.assertEquals(response.status_code, 200)
+
+    def test_should_get_data_by_subject_and_start_date(self):
+        response = self.client.get('/api/get_for_subject/clinic/cid001/03-08-2012/')
+        self.assertEquals(response.status_code, 200)

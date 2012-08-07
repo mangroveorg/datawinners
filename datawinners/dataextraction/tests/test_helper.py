@@ -30,6 +30,17 @@ class TestHelper(TestCase):
             self.assertTrue(isinstance(subject_data, list))
             self.assertEqual(2, len(subject_data))
 
+    def test_should_return_data_of_subject_by_type_and_id_and_start_date(self):
+        dbm = Mock(spec=DatabaseManager)
+        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+            load_all_rows_in_view.return_value =  [{"id": "1", "key": [["clinic"], "cid001", 1],
+                                                   "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}},
+                    {"id": "1", "key": [["clinic"], "cid001", 1],
+                     "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}}]
+            subject_data = get_data_for_subject(dbm, "clinic", "cid001", "06-08-2012")
+            self.assertTrue(isinstance(subject_data, list))
+            self.assertEqual(2, len(subject_data))
+
     def test_should_return_data_with_success_status_and_value(self):
         dbm = Mock()
         with patch("dataextraction.helper.get_data_for_subject") as get_data_for_subject:

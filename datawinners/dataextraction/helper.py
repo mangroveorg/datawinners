@@ -46,6 +46,10 @@ def validate(dbm, subject_type, subject_id, start_date=None, end_date=None):
     return result
 
 def check_start_before_end(start_date, end_date):
+    if start_date is None:
+        return True
+    elif end_date is None:
+        return True
     return convert_date_string_to_UTC(start_date) <= convert_date_string_to_UTC(end_date)
 
 def check_start_and_end_date_format(start_date, end_date):

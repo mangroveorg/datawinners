@@ -1,5 +1,5 @@
 class DataExtractionResult(object):
     def __init__(self):
         self.success = True
-        self.message = ""
+        self.message = "You can access the data in value field."
         self.value = []

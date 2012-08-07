@@ -103,6 +103,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertTrue(len(value), 5)
+        self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -114,6 +115,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertTrue(len(value), 1)
+        self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -125,6 +127,19 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertTrue(len(value), 4)
+        self.assertEqual(result["message"], "You can access the data in value field.")
+        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+
+    @attr('functional_test')
+    def test_get_data_for_subject_with_subject_type_and_subject_id_and_start_date(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_subject/%s/%s/%s" % (
+                self.__class__.subject_type, self.__class__.subject_id, "03-08-2012"))
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 4)
+        self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
