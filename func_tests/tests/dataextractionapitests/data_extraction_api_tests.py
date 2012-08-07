@@ -58,7 +58,7 @@ class DataExtractionAPITestCase(BaseTest):
         create_project_page.create_project_with(VALID_PROJECT_DATA)
         create_project_page.continue_create_project()
         create_questionnaire_page = CreateQuestionnairePage(cls.driver)
-        cls.questionnaire_code = create_questionnaire_page.get_questionnaire_code()
+        cls.form_code = create_questionnaire_page.get_questionnaire_code()
         create_questionnaire_page.add_question(QUESTION)
         create_questionnaire_page.save_and_create_project_successfully()
         cls.driver.wait_for_page_with_title(15, fetch_(PAGE_TITLE, from_(VALID_PROJECT_DATA)))
@@ -170,3 +170,14 @@ class DataExtractionAPITestCase(BaseTest):
                 self.__class__.subject_type, self.__class__.subject_id, "06-08-2012", "03-08-2012"))
         self.assertFalse(result['success'])
         self.assertEqual(result['message'], "Start date must before end date.")
+
+    @attr('functional_test')
+    def test_get_data_for_form_with_form_code(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_form/%s/" % self.__class__.form_code)
+        value = result['value']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertTrue(len(value), 4)
+        self.assertEqual(result["message"], "You can access the data in value field.")
+        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
