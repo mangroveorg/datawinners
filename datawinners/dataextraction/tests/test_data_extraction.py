@@ -29,3 +29,7 @@ class TestDataExtraction(TestCase):
     def test_should_get_form_data_by_form_code_and_dates(self):
         response = self.client.get('/api/get_for_form/cli/03-08-2012/06-08-2012/')
         self.assertEquals(response.status_code, 200)
+
+    def test_should_get_form_data_by_form_code_and_only_start_date(self):
+        response = self.client.get('/api/get_for_form/cli/03-08-2012/')
+        self.assertEquals(response.status_code, 200)
