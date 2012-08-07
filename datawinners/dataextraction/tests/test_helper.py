@@ -117,21 +117,36 @@ class TestHelper(TestCase):
 
     def test_should_return_data_of_form_by_form_code(self):
         dbm = Mock(spec=DatabaseManager)
-        with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
-            load_all_rows_in_view.return_value =  [{"id": "1", "key": [["clinic"], "cid001", 1],
-                                                    "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}},
-                    {"id": "1", "key": [["clinic"], "cid001", 1],
-                     "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}}]
-            form_data = get_data_for_form(dbm, "cli")
-            self.assertTrue(isinstance(form_data, list))
-            self.assertEqual(2, len(form_data))
+        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+            check_if_form_exists.return_value = True
+            with patch.object(dbm, "load_all_rows_in_view") as load_all_rows_in_view:
+                load_all_rows_in_view.return_value =  [{"id": "1", "key": [["clinic"], "cid001", 1],
+                                                        "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}},
+                        {"id": "1", "key": [["clinic"], "cid001", 1],
+                         "value": {"What is the GPS code for clinic?": [79.2, 20.34567]}}]
+                form_data = get_data_for_form(dbm, "cli")
+                self.assertTrue(isinstance(form_data, list))
+                self.assertEqual(2, len(form_data))
 
     def test_should_return_data_with_success_status_and_value_for_form(self):
         dbm = Mock()
-        with patch("dataextraction.helper.get_data_for_form") as get_data_for_form:
-            get_data_for_form.return_value = [ {"What is the GPS code for clinic?": [79.2, 20.34567]},
-                    {"What is the GPS code for clinic?": [79.2, 20.34567]}]
-            data_for_form = encapsulate_data_for_form(dbm, "cli")
+        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+            check_if_form_exists.return_value = True
+            with patch("dataextraction.helper.get_data_for_form") as get_data_for_form:
+                get_data_for_form.return_value = [ {"What is the GPS code for clinic?": [79.2, 20.34567]},
+                        {"What is the GPS code for clinic?": [79.2, 20.34567]}]
+                data_for_form = encapsulate_data_for_form(dbm, "cli")
+                self.assertIsInstance(data_for_form, DataExtractionResult)
+                self.assertTrue(data_for_form.success)
+                self.assertEqual(2, len(data_for_form.value))
+
+    def test_should_return_data_with_failed_status_for_form_when_pass_not_exist_form_code(self):
+        dbm = Mock()
+        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+            check_if_form_exists.return_value = False
+            not_exist_form_code = "cli"
+            data_for_form = encapsulate_data_for_form(dbm, not_exist_form_code)
             self.assertIsInstance(data_for_form, DataExtractionResult)
-            self.assertTrue(data_for_form.success)
-            self.assertEqual(2, len(data_for_form.value))
+            self.assertFalse(data_for_form.success)
+            self.assertEqual(0, len(data_for_form.value))
+            self.assertEqual(data_for_form.message, "From code [%s] does not existed." % not_exist_form_code)

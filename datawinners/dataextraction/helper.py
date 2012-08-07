@@ -3,7 +3,8 @@ from django.http import HttpResponse
 import jsonpickle
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.datastore.entity_type import entity_type_already_defined
-from mangrove.errors.MangroveException import DataObjectNotFound
+from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
+from mangrove.form_model.form_model import get_form_model_by_code
 from mangrove.utils.dates import convert_date_string_in_UTC_to_epoch
 from dataextraction.models import DataExtractionResult
 
@@ -38,6 +39,10 @@ def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None,
 
 def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
     result = DataExtractionResult()
+    if not check_if_form_exists(dbm, form_code):
+        result.success = False
+        result.message = "From code [%s] does not existed." % form_code
+        return result
     result.value = get_data_for_form(dbm, form_code, start_date, end_date)
     return result
 
@@ -85,6 +90,13 @@ def check_if_subject_exists(dbm, subject_id, subject_type):
         get_by_short_code_include_voided(dbm, subject_id, subject_type)
         return True
     except DataObjectNotFound:
+        return False
+
+def check_if_form_exists(dbm, form_code):
+    try:
+        get_form_model_by_code(dbm, form_code)
+        return True
+    except FormModelDoesNotExistsException:
         return False
 
 def convert_to_json_response(result):
