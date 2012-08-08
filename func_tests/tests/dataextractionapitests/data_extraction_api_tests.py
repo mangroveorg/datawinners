@@ -13,7 +13,6 @@ from pages.projectoverviewpage.project_overview_page import ProjectOverviewPage
 from testdata.test_data import DATA_WINNER_LOGIN_PAGE, DATA_WINNER_ALL_SUBJECT, DATA_WINNER_ADD_SUBJECT, DATA_WINNER_DASHBOARD_PAGE, url
 from tests.dataextractionapitests.data_extraction_api_data import *
 
-
 class DataExtractionAPITestCase(BaseTest):
     @classmethod
     def setUpClass(cls):
@@ -104,7 +103,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 5)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -116,7 +115,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], "No submission data under this subject during this period.")
+        self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE)
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_same_date(self):
@@ -127,7 +126,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 1)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -139,7 +138,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -151,20 +150,22 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 5)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_not_exist_subject_type(self):
-        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % ("not_exist", "001"))
+        not_exist_subject_type = "not_exist"
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % (not_exist_subject_type, "001"))
         self.assertFalse(result['success'])
-        self.assertEqual(result['message'], "Entity type [not_exist] is not defined.")
+        self.assertEqual(result['message'], NOT_EXIST_SUBJECT_TYPE_ERROR_MESSAGE_PATTERN % not_exist_subject_type)
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_not_exist_subject_id(self):
-        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % (self.__class__.subject_type, "not_exist"))
+        not_exist_subject_id = "not_exist"
+        result = self.get_data_by_uri("/api/get_for_subject/%s/%s/" % (self.__class__.subject_type, not_exist_subject_id))
         self.assertFalse(result['success'])
-        self.assertEqual(result['message'], "Entity [not_exist] is not registered.")
+        self.assertEqual(result['message'], NOT_EXIST_SUBJECT_ID_ERROR_MESSAGE_PATTERN % not_exist_subject_id)
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_wrong_date_format(self):
@@ -172,7 +173,7 @@ class DataExtractionAPITestCase(BaseTest):
             "/api/get_for_subject/%s/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "03082012", "06082012"))
         self.assertFalse(result['success'])
-        self.assertEqual(result['message'], "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
+        self.assertEqual(result['message'], DATA_FORMAT_ERROR_MESSAGE)
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_wrong_date(self):
@@ -180,7 +181,7 @@ class DataExtractionAPITestCase(BaseTest):
             "/api/get_for_subject/%s/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "06-08-2012", "03-08-2012"))
         self.assertFalse(result['success'])
-        self.assertEqual(result['message'], "Start date must before end date.")
+        self.assertEqual(result['message'], DATE_WRONG_ORDER_ERROR_MESSAGE)
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code(self):
@@ -190,7 +191,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -201,7 +202,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 1)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -212,7 +213,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 4)
-        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(result["message"], SUCCESS_MESSAGE)
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
@@ -224,7 +225,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], "From code [%s] does not existed." % unknow_form_code)
+        self.assertEqual(result["message"], DOES_NOT_EXISTED_FORM_ERROR_MESSAGE_PATTERN % unknow_form_code)
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_wrong_date_format(self):
@@ -234,7 +235,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
+        self.assertEqual(result["message"], DATA_FORMAT_ERROR_MESSAGE)
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_end_date_before_start_date(self):
@@ -244,7 +245,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertFalse(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], "Start date must before end date.")
+        self.assertEqual(result["message"], DATE_WRONG_ORDER_ERROR_MESSAGE)
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_without_data_return(self):
@@ -254,4 +255,4 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], "No submission data under this subject during this period.")
+        self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE)
