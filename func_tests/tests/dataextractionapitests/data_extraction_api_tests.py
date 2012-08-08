@@ -103,7 +103,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 5)
+        self.assertEqual(len(value), 5)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
@@ -115,7 +115,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 0)
+        self.assertEqual(len(value), 0)
         self.assertEqual(result["message"], "No submission data under this subject during this period.")
 
     @attr('functional_test')
@@ -126,7 +126,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 1)
+        self.assertEqual(len(value), 1)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
@@ -138,7 +138,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 4)
+        self.assertEqual(len(value), 4)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
@@ -150,7 +150,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 4)
+        self.assertEqual(len(value), 4)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
@@ -189,7 +189,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 4)
+        self.assertEqual(len(value), 4)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
@@ -211,7 +211,7 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 1)
+        self.assertEqual(len(value), 1)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
@@ -222,6 +222,6 @@ class DataExtractionAPITestCase(BaseTest):
         value = result['value']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertTrue(len(value), 4)
+        self.assertEqual(len(value), 4)
         self.assertEqual(result["message"], "You can access the data in value field.")
         self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
