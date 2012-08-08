@@ -1,4 +1,5 @@
 from datetime import datetime
+import cStringIO
 from django.http import HttpResponse
 import jsonpickle
 from mangrove.datastore.entity import get_by_short_code_include_voided
@@ -29,6 +30,13 @@ def get_data_for_form(dbm, form_code, start_date=None, end_date=None):
     rows = dbm.load_all_rows_in_view('form_data_by_form_code_time', startkey=start_key, endkey=end_key)
 
     return [row["value"] for row in rows]
+
+def generate_filename(main, start_date=None, end_date=None):
+    if start_date is None:
+        return main
+    elif end_date is None:
+        return '%s_%s' % (main, start_date)
+    return '%s_%s_%s' % (main, start_date, end_date)
 
 def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
     result = validate_for_subject(dbm, subject_type, subject_id, start_date, end_date)
@@ -121,6 +129,15 @@ def check_if_form_exists(dbm, form_code):
 def convert_to_json_response(result):
     return HttpResponse(jsonpickle.encode(result, unpicklable=False), content_type='application/json; charset=utf-8')
 
+def convert_to_json_file_download_response(result, file_name):
+    json_str = jsonpickle.encode(result, unpicklable=False)
+    json_file = cStringIO.StringIO()
+    json_file.write(json_str)
+    response = HttpResponse(json_str, content_type='application/json; charset=utf-8')
+    response['Content-Length'] = json_file.tell()
+    response['Content-Disposition'] = 'attachment; filename=%s.json' % file_name
+    json_file.close()
+    return response
 
 def convert_date_string_to_UTC(date_string):
     if date_string is None:

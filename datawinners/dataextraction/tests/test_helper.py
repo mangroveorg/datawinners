@@ -3,7 +3,7 @@ from mangrove.datastore.database import DatabaseManager
 from mock import Mock
 from mock import patch
 from dataextraction.models import DataExtractionResult
-from dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject, get_data_for_form, encapsulate_data_for_form
+from dataextraction.helper import get_data_for_subject, encapsulate_data_for_subject, get_data_for_form, encapsulate_data_for_form, generate_filename
 
 DATA_FROM_DB = [{"id": "1", "key": [["clinic"], "cid001", 1],
                  "value": {"submission_time": "2012-08-08 03:21:23.469462+00:00",
@@ -195,3 +195,21 @@ class TestHelper(TestCase):
                 self.assertTrue(data_for_form.success)
                 self.assertEqual(0, len(data_for_form.submissions))
                 self.assertEqual("No submission data under this subject during this period.", data_for_form.message)
+
+    def test_should_return_download_filename_which_only_contains_main_filename_when_not_pass_date(self):
+        main = "main_filename"
+        filename = generate_filename(main)
+        self.assertEqual(filename, main)
+
+    def test_should_return_download_filename_which_ends_with_start_date_when_pass_start_date(self):
+        main = "main_filename"
+        start_date = '06-08-2012'
+        filename = generate_filename(main, start_date)
+        self.assertEqual(filename, "%s_%s" % (main, start_date))
+
+    def test_should_return_download_filename_which_ends_with_start_and_end_date_when_pass_both_start_and_end_date(self):
+        main = "main_filename"
+        start_date = '06-08-2012'
+        end_date = '08-08-2012'
+        filename = generate_filename(main, start_date, end_date)
+        self.assertEqual(filename, "%s_%s_%s" % (main, start_date, end_date))
