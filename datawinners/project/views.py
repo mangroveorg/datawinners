@@ -881,6 +881,10 @@ def get_form_model_and_template(manager, project, is_data_sender, subject):
     return form_model, template
 
 
+def _get_form_code(manager, project):
+    return FormModel.get(manager, project.qid).form_code
+
+
 @login_required(login_url='/login')
 @is_datasender_allowed
 @project_has_web_device
@@ -896,11 +900,13 @@ def web_questionnaire(request, project_id=None, subject=False):
     QuestionnaireForm = WebQuestionnaireFormCreator(SubjectQuestionFieldCreator(manager, project),
                                                     form_model = form_model).create()
 
+    form_code_for_project_links = _get_form_code(manager, project) if subject else form_model.form_code
+
     disable_link_class, hide_link_class = get_visibility_settings_for(request.user)
 
     if request.method == 'GET':
         questionnaire_form = QuestionnaireForm()
-        form_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+        form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
                                          manager, hide_link_class, disable_link_class)
         return render_to_response(template, form_context,
                                   context_instance = RequestContext(request))
@@ -908,7 +914,7 @@ def web_questionnaire(request, project_id=None, subject=False):
     if request.method == 'POST':
         questionnaire_form = QuestionnaireForm(country=utils.get_organization_country(request), data=request.POST)
         if not questionnaire_form.is_valid():
-            form_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+            form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
                                              manager, hide_link_class, disable_link_class)
             return render_to_response(template, form_context,
                                       context_instance = RequestContext(request))
@@ -933,7 +939,7 @@ def web_questionnaire(request, project_id=None, subject=False):
             else:
                 questionnaire_form._errors = helper.errors_to_list(response.errors, form_model.fields)
 
-                form_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+                form_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
                                                  manager, hide_link_class, disable_link_class)
                 return render_to_response(template, form_context,
                                           context_instance = RequestContext(request))
@@ -946,7 +952,7 @@ def web_questionnaire(request, project_id=None, subject=False):
             logger.exception('Web Submission failure:-')
             error_message = _(get_exception_message_for(exception=exception, channel=Channel.WEB))
 
-        _project_context = _get_form_context(form_model.form_code, project, questionnaire_form,
+        _project_context = _get_form_context(form_code_for_project_links, project, questionnaire_form,
                                              manager, hide_link_class, disable_link_class)
 
         _project_context.update({'success_message': success_message, 'error_message': error_message})
