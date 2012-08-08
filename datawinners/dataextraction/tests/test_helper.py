@@ -163,3 +163,35 @@ class TestHelper(TestCase):
             self.assertFalse(data_for_form.success)
             self.assertEqual(0, len(data_for_form.submissions))
             self.assertEqual(data_for_form.message, "From code [%s] does not existed." % not_exist_form_code)
+
+    def test_should_return_data_with_failed_status_for_form_when_pass_wrong_date_format(self):
+        dbm = Mock()
+        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+            check_if_form_exists.return_value = True
+            data_for_form = encapsulate_data_for_form(dbm, "cli", "03082012", "06082012")
+            self.assertIsInstance(data_for_form, DataExtractionResult)
+            self.assertFalse(data_for_form.success)
+            self.assertEqual(0, len(data_for_form.submissions))
+            self.assertEqual(data_for_form.message, "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
+
+    def test_should_return_data_with_failed_status_for_form_when_end_date_before_start_date(self):
+        dbm = Mock()
+        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+            check_if_form_exists.return_value = True
+            data_for_form = encapsulate_data_for_form(dbm, "cli", "09-08-2012", "03-08-2012")
+            self.assertIsInstance(data_for_form, DataExtractionResult)
+            self.assertFalse(data_for_form.success)
+            self.assertEqual(0, len(data_for_form.submissions))
+            self.assertEqual(data_for_form.message, "Start date must before end date.")
+
+    def test_should_return_data_with_success_status_and_no_data_message_for_form_when_no_data(self):
+        dbm = Mock()
+        with patch("dataextraction.helper.check_if_form_exists") as check_if_form_exists:
+            check_if_form_exists.return_value = True
+            with patch("dataextraction.helper.get_data_for_form") as get_data_for_form:
+                get_data_for_form.return_value = []
+                data_for_form = encapsulate_data_for_form(dbm, "cli", "01-08-2012", "03-08-2012")
+                self.assertIsInstance(data_for_form, DataExtractionResult)
+                self.assertTrue(data_for_form.success)
+                self.assertEqual(0, len(data_for_form.submissions))
+                self.assertEqual("No submission data under this subject during this period.", data_for_form.message)

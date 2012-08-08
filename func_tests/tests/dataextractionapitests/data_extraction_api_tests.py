@@ -194,17 +194,6 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
-    def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_not_exist_form_code(self):
-        unknow_form_code = "unknow_form_code"
-        result = self.get_data_by_uri(
-            "/api/get_for_form/%s/" % unknow_form_code)
-        submissions = result['submissions']
-        self.assertFalse(result['success'])
-        self.assertIsInstance(result, dict)
-        self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], "From code [%s] does not existed." % unknow_form_code)
-
-    @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_same_date(self):
         result = self.get_data_by_uri(
             "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, '03-08-2012', '03-08-2012'))
@@ -225,3 +214,44 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertEqual(len(submissions), 4)
         self.assertEqual(result["message"], "You can access the data in submissions field.")
         self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+
+    @attr('functional_test')
+    def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_not_exist_form_code(self):
+        unknow_form_code = "unknow_form_code"
+        result = self.get_data_by_uri(
+            "/api/get_for_form/%s/" % unknow_form_code)
+        submissions = result['submissions']
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertEqual(len(submissions), 0)
+        self.assertEqual(result["message"], "From code [%s] does not existed." % unknow_form_code)
+
+    @attr('functional_test')
+    def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_wrong_date_format(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, "03082012", "06082012"))
+        submissions = result['submissions']
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertEqual(len(submissions), 0)
+        self.assertEqual(result["message"], "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
+
+    @attr('functional_test')
+    def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_end_date_before_start_date(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, '09-08-2012', '03-08-2012'))
+        submissions = result['submissions']
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertEqual(len(submissions), 0)
+        self.assertEqual(result["message"], "Start date must before end date.")
+
+    @attr('functional_test')
+    def test_get_data_for_form_with_form_code_without_data_return(self):
+        result = self.get_data_by_uri(
+            "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, '03-08-2011', '03-08-2011'))
+        submissions = result['submissions']
+        self.assertTrue(result['success'])
+        self.assertIsInstance(result, dict)
+        self.assertEqual(len(submissions), 0)
+        self.assertEqual(result["message"], "No submission data under this subject during this period.")

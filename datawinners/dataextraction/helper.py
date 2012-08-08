@@ -31,7 +31,7 @@ def get_data_for_form(dbm, form_code, start_date=None, end_date=None):
     return [row["value"] for row in rows]
 
 def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
-    result = validate(dbm, subject_type, subject_id, start_date, end_date)
+    result = validate_for_subject(dbm, subject_type, subject_id, start_date, end_date)
     if not result.success:
         return result
     result.submissions = get_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
@@ -40,15 +40,26 @@ def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None,
     return result
 
 def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
+    result = validate_for_form(dbm, form_code, start_date, end_date)
+    if not result.success:
+        return result
+    result.submissions = get_data_for_form(dbm, form_code, start_date, end_date)
+    if not result.submissions:
+        result.message = "No submission data under this subject during this period."
+    return result
+
+def validate_for_form(dbm, form_code, start_date=None, end_date=None):
     result = DataExtractionResult()
     if not check_if_form_exists(dbm, form_code):
         result.success = False
         result.message = "From code [%s] does not existed." % form_code
         return result
-    result.submissions = get_data_for_form(dbm, form_code, start_date, end_date)
+    result = validate_date(result, start_date, end_date)
+    if not result.success:
+        return result
     return result
 
-def validate(dbm, subject_type, subject_id, start_date=None, end_date=None):
+def validate_for_subject(dbm, subject_type, subject_id, start_date=None, end_date=None):
     result = DataExtractionResult()
     if not entity_type_already_defined(dbm, [subject_type]):
         result.success = False
@@ -58,6 +69,12 @@ def validate(dbm, subject_type, subject_id, start_date=None, end_date=None):
         result.success = False
         result.message = "Entity [%s] is not registered." % subject_id
         return result
+    result = validate_date(result, start_date, end_date)
+    if not result.success:
+        return result
+    return result
+
+def validate_date(result, start_date, end_date):
     if not check_start_and_end_date_format(start_date, end_date):
         result.success = False
         result.message = "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
