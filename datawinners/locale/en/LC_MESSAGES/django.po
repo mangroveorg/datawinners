@@ -4472,3 +4472,27 @@ msgstr ""
 
 msgid "Edited Project"
 msgstr ""
+
+#: dataextraction/helper.py:48, 57
+msgid "No submission data under this subject during this period."
+msgstr ""
+
+#: dataextraction/helper.py:64
+msgid "From code [%s] does not existed."
+msgstr ""
+
+#: dataextraction/helper.py:75
+msgid "Entity type [%s] is not defined."
+msgstr ""
+
+#: dataextraction/helper.py:79
+msgid "Entity [%s] is not registered."
+msgstr ""
+
+#: dataextraction/helper.py:89
+msgid "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
+msgstr ""
+
+#: dataextraction/helper.py:93
+msgid "Start date must before end date."
+msgstr ""

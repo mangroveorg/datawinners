@@ -2,6 +2,7 @@ from datetime import datetime
 import cStringIO
 from django.http import HttpResponse
 import jsonpickle
+from django.utils.translation import gettext as _
 from mangrove.datastore.entity import get_by_short_code_include_voided
 from mangrove.datastore.entity_type import entity_type_already_defined
 from mangrove.errors.MangroveException import DataObjectNotFound, FormModelDoesNotExistsException
@@ -44,7 +45,7 @@ def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None,
         return result
     result.submissions = get_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
     if not result.submissions:
-        result.message = "No submission data under this subject during this period."
+        result.message = _("No submission data under this subject during this period.")
     return result
 
 def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
@@ -53,14 +54,14 @@ def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
         return result
     result.submissions = get_data_for_form(dbm, form_code, start_date, end_date)
     if not result.submissions:
-        result.message = "No submission data under this subject during this period."
+        result.message = _("No submission data under this subject during this period.")
     return result
 
 def validate_for_form(dbm, form_code, start_date=None, end_date=None):
     result = DataExtractionResult()
     if not check_if_form_exists(dbm, form_code):
         result.success = False
-        result.message = "From code [%s] does not existed." % form_code
+        result.message = _("From code [%s] does not existed.") % form_code
         return result
     result = validate_date(result, start_date, end_date)
     if not result.success:
@@ -71,11 +72,11 @@ def validate_for_subject(dbm, subject_type, subject_id, start_date=None, end_dat
     result = DataExtractionResult()
     if not entity_type_already_defined(dbm, [subject_type]):
         result.success = False
-        result.message = "Entity type [%s] is not defined." % subject_type
+        result.message = _("Entity type [%s] is not defined.") % subject_type
         return result
     if not check_if_subject_exists(dbm, subject_id, [subject_type]):
         result.success = False
-        result.message = "Entity [%s] is not registered." % subject_id
+        result.message = _("Entity [%s] is not registered.") % subject_id
         return result
     result = validate_date(result, start_date, end_date)
     if not result.success:
@@ -85,11 +86,11 @@ def validate_for_subject(dbm, subject_type, subject_id, start_date=None, end_dat
 def validate_date(result, start_date, end_date):
     if not check_start_and_end_date_format(start_date, end_date):
         result.success = False
-        result.message = "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
+        result.message = _("The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011")
         return result
     if not check_start_before_end(start_date, end_date):
         result.success = False
-        result.message = "Start date must before end date."
+        result.message = _("Start date must before end date.")
         return result
     return result
 
