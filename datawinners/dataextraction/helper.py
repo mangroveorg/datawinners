@@ -34,8 +34,8 @@ def encapsulate_data_for_subject(dbm, subject_type, subject_id, start_date=None,
     result = validate(dbm, subject_type, subject_id, start_date, end_date)
     if not result.success:
         return result
-    result.value = get_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
-    if not result.value:
+    result.submissions = get_data_for_subject(dbm, subject_type, subject_id, start_date, end_date)
+    if not result.submissions:
         result.message = "No submission data under this subject during this period."
     return result
 
@@ -45,7 +45,7 @@ def encapsulate_data_for_form(dbm, form_code, start_date=None, end_date=None):
         result.success = False
         result.message = "From code [%s] does not existed." % form_code
         return result
-    result.value = get_data_for_form(dbm, form_code, start_date, end_date)
+    result.submissions = get_data_for_form(dbm, form_code, start_date, end_date)
     return result
 
 def validate(dbm, subject_type, subject_id, start_date=None, end_date=None):

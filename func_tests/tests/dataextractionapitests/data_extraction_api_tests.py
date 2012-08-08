@@ -100,22 +100,22 @@ class DataExtractionAPITestCase(BaseTest):
     def test_get_data_for_subject_with_subject_type_and_subject_id(self):
         result = self.get_data_by_uri(
             "/api/get_for_subject/%s/%s/" % (self.__class__.subject_type, self.__class__.subject_id))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 5)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 5)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_without_data_return(self):
         result = self.get_data_by_uri(
             "/api/get_for_subject/%s/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "02-08-2012", "02-08-2012"))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 0)
+        self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], "No submission data under this subject during this period.")
 
     @attr('functional_test')
@@ -123,36 +123,36 @@ class DataExtractionAPITestCase(BaseTest):
         result = self.get_data_by_uri(
             "/api/get_for_subject/%s/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "03-08-2012", "03-08-2012"))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 1)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 1)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_different_date(self):
         result = self.get_data_by_uri(
             "/api/get_for_subject/%s/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "03-08-2012", "06-08-2012"))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 4)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 4)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_start_date(self):
         result = self.get_data_by_uri(
             "/api/get_for_subject/%s/%s/%s" % (
                 self.__class__.subject_type, self.__class__.subject_id, "03-08-2012"))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 4)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 5)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_subject_with_not_exist_subject_type(self):
@@ -186,42 +186,42 @@ class DataExtractionAPITestCase(BaseTest):
     def test_get_data_for_form_with_form_code(self):
         result = self.get_data_by_uri(
             "/api/get_for_form/%s/" % self.__class__.form_code)
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 4)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 4)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_with_success_status_set_to_false_when_pass_not_exist_form_code(self):
         unknow_form_code = "unknow_form_code"
         result = self.get_data_by_uri(
             "/api/get_for_form/%s/" % unknow_form_code)
-        value = result['value']
+        submissions = result['submissions']
         self.assertFalse(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 0)
+        self.assertEqual(len(submissions), 0)
         self.assertEqual(result["message"], "From code [%s] does not existed." % unknow_form_code)
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_same_date(self):
         result = self.get_data_by_uri(
             "/api/get_for_form/%s/%s/%s/" % (self.__class__.form_code, '03-08-2012', '03-08-2012'))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 1)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 1)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
 
     @attr('functional_test')
     def test_get_data_for_form_with_form_code_and_only_start_date(self):
         result = self.get_data_by_uri(
             "/api/get_for_form/%s/%s/" % (self.__class__.form_code, '03-08-2012'))
-        value = result['value']
+        submissions = result['submissions']
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
-        self.assertEqual(len(value), 4)
-        self.assertEqual(result["message"], "You can access the data in value field.")
-        self.assertEqual(value[0][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])
+        self.assertEqual(len(submissions), 4)
+        self.assertEqual(result["message"], "You can access the data in submissions field.")
+        self.assertEqual(submissions[0]["submission_data"][QUESTION[QUESTION_NAME]], VALID_ANSWERS[0][1][ANSWER])

@@ -11,6 +11,6 @@ function(doc) {
             data[k] = value;
         }
         key = [entity_type,entity_id,date];
-        emit(key, data);
+        emit(key, {'submission_time' : doc.event_time, 'submission_data' : data});
     }
 }
