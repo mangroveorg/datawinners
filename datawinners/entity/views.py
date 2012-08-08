@@ -242,7 +242,7 @@ def all_subjects(request):
             for short_code,entity_type in imported_entities.items():
                 entity_type = entity_type.capitalize()
                 if detail_dict.get(entity_type) is not None:
-                    detail_dict.update({entity_type: detail_dict.get(entity_type).append(short_code)})
+                    detail_dict.get(entity_type).append(short_code)
                 else:
                     detail_dict.update({entity_type: [short_code]})
             for key,detail in detail_dict.items():
