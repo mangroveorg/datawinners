@@ -86,16 +86,18 @@ VALID_ANSWERS = [
 ]
 
 
-NOT_EXIST_SUBJECT_TYPE_ERROR_MESSAGE_PATTERN = "Entity type [%s] is not defined."
+NOT_EXIST_SUBJECT_TYPE_ERROR_MESSAGE_PATTERN = "Subject type [%s] is not defined."
 
-NOT_EXIST_SUBJECT_ID_ERROR_MESSAGE_PATTERN = "Entity [%s] is not registered."
+NOT_EXIST_SUBJECT_ID_ERROR_MESSAGE_PATTERN = "Subject [%s] is not registered."
 
-DOES_NOT_EXISTED_FORM_ERROR_MESSAGE_PATTERN = "From code [%s] does not existed."
+DOES_NOT_EXISTED_FORM_ERROR_MESSAGE_PATTERN = "Questionnaire code [%s] does not existed."
 
 DATA_FORMAT_ERROR_MESSAGE = "The format of start and end date should be DD-MM-YYYY. Example: 25-12-2011"
 
 DATE_WRONG_ORDER_ERROR_MESSAGE = "Start date must before end date."
 
-NO_DATA_SUCCESS_MESSAGE = "No submission data under this subject during this period."
+NO_DATA_SUCCESS_MESSAGE_FOR_SUBJECT = "No submission under this subject during this period."
+
+NO_DATA_SUCCESS_MESSAGE_FOR_QUESTIONNAIRE = "No submission under this questionnaire during this period."
 
 SUCCESS_MESSAGE = "You can access the data in submissions field."

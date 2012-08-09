@@ -115,7 +115,7 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE)
+        self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE_FOR_SUBJECT)
 
     @attr('functional_test')
     def test_get_data_for_subject_with_subject_type_and_subject_id_and_same_date(self):
@@ -255,4 +255,4 @@ class DataExtractionAPITestCase(BaseTest):
         self.assertTrue(result['success'])
         self.assertIsInstance(result, dict)
         self.assertEqual(len(submissions), 0)
-        self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE)
+        self.assertEqual(result["message"], NO_DATA_SUCCESS_MESSAGE_FOR_QUESTIONNAIRE)

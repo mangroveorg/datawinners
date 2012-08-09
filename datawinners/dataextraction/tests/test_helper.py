@@ -70,7 +70,7 @@ class TestHelper(TestCase):
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
                     self.assertTrue(data_for_subject.success)
                     self.assertEqual(0, len(data_for_subject.submissions))
-                    self.assertEqual("No submission data under this subject during this period.",
+                    self.assertEqual("No submission under this subject during this period.",
                         data_for_subject.message)
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_type(self):
@@ -83,7 +83,7 @@ class TestHelper(TestCase):
                 data_for_subject = encapsulate_data_for_subject(dbm, not_defined_entity, "cid001")
                 self.assertIsInstance(data_for_subject, DataExtractionResult)
                 self.assertFalse(data_for_subject.success)
-                self.assertEqual(data_for_subject.message, "Entity type [%s] is not defined." % not_defined_entity)
+                self.assertEqual(data_for_subject.message, "Subject type [%s] is not defined." % not_defined_entity)
                 self.assertEqual(0, len(data_for_subject.submissions))
 
     def test_should_return_data_with_success_status_set_to_false_when_pass_in_wrong_subject_id(self):
@@ -99,7 +99,7 @@ class TestHelper(TestCase):
                     self.assertIsInstance(data_for_subject, DataExtractionResult)
                     self.assertFalse(data_for_subject.success)
                     self.assertEqual(data_for_subject.message,
-                        "Entity [%s] is not registered." % not_registered_subject)
+                        "Subject [%s] is not registered." % not_registered_subject)
                     self.assertEqual(0, len(data_for_subject.submissions))
 
 
@@ -162,7 +162,7 @@ class TestHelper(TestCase):
             self.assertIsInstance(data_for_form, DataExtractionResult)
             self.assertFalse(data_for_form.success)
             self.assertEqual(0, len(data_for_form.submissions))
-            self.assertEqual(data_for_form.message, "From code [%s] does not existed." % not_exist_form_code)
+            self.assertEqual(data_for_form.message, "Questionnaire code [%s] does not existed." % not_exist_form_code)
 
     def test_should_return_data_with_failed_status_for_form_when_pass_wrong_date_format(self):
         dbm = Mock()
@@ -194,7 +194,7 @@ class TestHelper(TestCase):
                 self.assertIsInstance(data_for_form, DataExtractionResult)
                 self.assertTrue(data_for_form.success)
                 self.assertEqual(0, len(data_for_form.submissions))
-                self.assertEqual("No submission data under this subject during this period.", data_for_form.message)
+                self.assertEqual("No submission under this questionnaire during this period.", data_for_form.message)
 
     def test_should_return_download_filename_which_only_contains_main_filename_when_not_pass_date(self):
         main = "main_filename"
